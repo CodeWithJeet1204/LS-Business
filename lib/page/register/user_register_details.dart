@@ -1,0 +1,219 @@
+import 'package:find_easy/firebase/auth_methods.dart';
+import 'package:find_easy/page/register/business_register_details.dart';
+import 'package:find_easy/page/register/firestore_info.dart';
+import 'package:find_easy/utils/colors.dart';
+import 'package:find_easy/widgets/button.dart';
+import 'package:find_easy/widgets/head_text.dart';
+import 'package:find_easy/widgets/snack_bar.dart';
+import 'package:find_easy/widgets/text_form_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+class UserRegisterDetailsPage extends StatefulWidget {
+  const UserRegisterDetailsPage({
+    super.key,
+    required this.emailChosen,
+    required this.numberChosen,
+    required this.googleChosen,
+  });
+
+  final bool emailChosen;
+  final bool numberChosen;
+  final bool googleChosen;
+
+  @override
+  State<UserRegisterDetailsPage> createState() =>
+      _UserRegisterDetailsPageState();
+}
+
+class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final GlobalKey<FormState> userFormKey = GlobalKey<FormState>();
+  bool isImageSelected = false;
+  bool isNext = false;
+  var selectedImage;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.emailChosen) {
+      emailController.text == AuthMethods(FirebaseAuth.instance).user.email;
+    } else if (widget.numberChosen) {
+      phoneController.text ==
+          AuthMethods(FirebaseAuth.instance).user.phoneNumber;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    // ignore: unused_local_variable
+    final AuthMethods auth = AuthMethods(_auth);
+    final String uid = _auth.currentUser!.uid;
+
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: SizedBox(
+            height: 723,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 100),
+                HeadText(text: "USER\nDETAILS"),
+                SizedBox(height: 40),
+                widget.googleChosen
+                    ? Container()
+                    : Column(
+                        children: [
+                          isImageSelected
+                              ? Stack(
+                                  alignment: Alignment.bottomRight,
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 50,
+                                      child: selectedImage,
+                                    ),
+                                    Positioned(
+                                      bottom: 0,
+                                      right: 0,
+                                      child: IconButton.filledTonal(
+                                        icon: const Icon(
+                                            Icons.camera_alt_outlined),
+                                        iconSize: 30,
+                                        tooltip: "Change Shop Picture",
+                                        onPressed: () {},
+                                        color: primaryDark,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : CircleAvatar(
+                                  radius: 50,
+                                  child: Icon(
+                                    Icons.camera_alt_outlined,
+                                    size: 60,
+                                  ),
+                                ),
+                          SizedBox(height: 12),
+                        ],
+                      ),
+                Form(
+                  key: userFormKey,
+                  child: Column(
+                    children: [
+                      widget.googleChosen
+                          ? Container()
+                          : MyTextFormField(
+                              hintText: "Your Name",
+                              controller: nameController,
+                              borderRadius: 12,
+                              horizontalPadding: 20,
+                              verticalPadding: 12,
+                              autoFillHints: [AutofillHints.name],
+                            ),
+                      widget.emailChosen || widget.googleChosen
+                          ? Container()
+                          : MyTextFormField(
+                              hintText:
+                                  widget.emailChosen ? "Same Email" : "Email",
+                              controller: emailController,
+                              borderRadius: 12,
+                              horizontalPadding: 20,
+                              verticalPadding: 12,
+                              keyboardType: TextInputType.emailAddress,
+                              autoFillHints: [AutofillHints.email],
+                            ),
+                      widget.numberChosen
+                          ? Container()
+                          : MyTextFormField(
+                              hintText: "Your Phone Number (Personal)",
+                              controller: phoneController,
+                              borderRadius: 12,
+                              horizontalPadding: 20,
+                              verticalPadding: 12,
+                              keyboardType: TextInputType.number,
+                              autoFillHints: [AutofillHints.telephoneNumber],
+                            ),
+                      MyButton(
+                        text: "Next",
+                        onTap: () async {
+                          if (userFormKey.currentState!.validate()) {
+                            if (confirmPasswordController.text ==
+                                passwordController.text) {
+                              try {
+                                setState(() {
+                                  isNext = true;
+                                });
+                                await !widget.numberChosen
+                                    // ? store
+                                    //     .collection('Business')
+                                    //     .doc('Owners')
+                                    //     .collection('Users')
+                                    //     .doc(widget.uuid)
+                                    //     .set({
+                                    //     'Name': nameController.text.toString(),
+                                    //     'Phone Number':
+                                    //         "+91 ${phoneController.text.toString()}",
+                                    //     'Image': '',
+                                    //   })
+                                    ? UserFirestoreData.addAll(
+                                        {
+                                          "uid": uid,
+                                          "Name":
+                                              nameController.text.toString(),
+                                          "Phone Number":
+                                              phoneController.text.toString(),
+                                          "Image": "",
+                                        },
+                                      )
+                                    : null;
+                                print(UserFirestoreData);
+
+                                setState(() {
+                                  isNext = false;
+                                });
+                                SystemChannels.textInput
+                                    .invokeMethod('TextInput.hide');
+                                Navigator.of(context).pop();
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        BusinessRegisterDetailsPage(),
+                                  ),
+                                );
+                              } catch (e) {
+                                setState(() {
+                                  isNext = false;
+                                });
+                                mySnackBar(context, e.toString());
+                              }
+                            } else {
+                              mySnackBar(
+                                context,
+                                "Passwords do not match. Check Again!",
+                              );
+                            }
+                          }
+                        },
+                        isLoading: isNext,
+                        horizontalPadding: 20,
+                      ),
+                      SizedBox(height: 12),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -1,0 +1,119 @@
+import 'dart:async';
+
+import 'package:find_easy/firebase/auth_methods.dart';
+import 'package:find_easy/page/register/user_register_details.dart';
+import 'package:find_easy/utils/colors.dart';
+import 'package:find_easy/widgets/button.dart';
+import 'package:find_easy/widgets/snack_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+class EmailVerifyPage extends StatefulWidget {
+  const EmailVerifyPage({
+    super.key,
+  });
+
+  @override
+  State<EmailVerifyPage> createState() => _EmailVerifyPageState();
+}
+
+class _EmailVerifyPageState extends State<EmailVerifyPage> {
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   Timer.periodic(Duration(milliseconds: 100), (timer) async {
+  //     await AuthMethods(FirebaseAuth.instance).user.reload();
+  //     if (FirebaseAuth.instance.currentUser!.emailVerified) {
+  //       Timer(Duration(seconds: 1), () {
+  //         Navigator.of(context).pop();
+  //         Navigator.of(context).push(
+  //           MaterialPageRoute(
+  //             builder: ((context) => UserRegisterDetailsPage(
+  //                   emailChosen: true,
+  //                   numberChosen: false,
+  //                   googleChosen: false,
+  //                 )),
+  //           ),
+  //         );
+  //       });
+  //     }
+  //   });
+  // }
+
+  @override
+  Widget build(BuildContext context) {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final AuthMethods auth = AuthMethods(_auth);
+
+    return Scaffold(
+      body: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Column(
+              children: [
+                Expanded(child: Container()),
+                Text(
+                  "Click on the below button to send EMAIL VERIFICATION Email\n",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: primaryDark,
+                    fontSize: 16,
+                  ),
+                ),
+                MyButton(
+                  text: "Send Email",
+                  onTap: () {
+                    print(_auth.currentUser!.email);
+                    auth.sendEmailVerification(context);
+                  },
+                  isLoading: false,
+                  horizontalPadding: 20,
+                ),
+                SizedBox(height: 20),
+                Divider(),
+                SizedBox(height: 20),
+                Text(
+                  "An email has been sent to your account, pls click on it\nTo verify your account\n\nClick on the button after verifying the email\n\n(It may take some time for email to arrive)",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: primaryDark,
+                    fontSize: 16,
+                  ),
+                ),
+                SizedBox(height: 20),
+                MyButton(
+                  text: "I have verified my email",
+                  onTap: () async {
+                    await auth.user.reload();
+                    if (_auth.currentUser!.emailVerified) {
+                      Timer(Duration(milliseconds: 0), () {
+                        SystemChannels.textInput.invokeMethod('TextInput.hide');
+                        Navigator.of(context).pop();
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: ((context) => UserRegisterDetailsPage(
+                                  emailChosen: true,
+                                  numberChosen: false,
+                                  googleChosen: false,
+                                )),
+                          ),
+                        );
+                      });
+                    } else {
+                      mySnackBar(context, "Email not verified");
+                    }
+                  },
+                  isLoading: false,
+                  horizontalPadding: 24,
+                ),
+                Expanded(child: Container()),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
