@@ -152,17 +152,6 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                   isNext = true;
                                 });
                                 await !widget.numberChosen
-                                    // ? store
-                                    //     .collection('Business')
-                                    //     .doc('Owners')
-                                    //     .collection('Users')
-                                    //     .doc(widget.uuid)
-                                    //     .set({
-                                    //     'Name': nameController.text.toString(),
-                                    //     'Phone Number':
-                                    //         "+91 ${phoneController.text.toString()}",
-                                    //     'Image': '',
-                                    //   })
                                     ? UserFirestoreData.addAll(
                                         {
                                           "uid": uid,
@@ -173,7 +162,13 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                           "Image": "",
                                         },
                                       )
-                                    : null;
+                                    : UserFirestoreData.addAll({
+                                        "uid": uid,
+                                        "Email":
+                                            emailController.text.toString(),
+                                        "Name": nameController.text.toString(),
+                                        "Image": "",
+                                      });
                                 print(UserFirestoreData);
 
                                 setState(() {

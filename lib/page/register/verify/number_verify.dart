@@ -1,5 +1,5 @@
-import 'dart:async';
 import 'package:find_easy/page/profile_page.dart';
+import 'package:find_easy/page/register/firestore_info.dart';
 import 'package:find_easy/page/register/user_register_details.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
@@ -28,6 +28,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
   @override
   Widget build(BuildContext context) {
     final FirebaseAuth _auth = FirebaseAuth.instance;
+    bool isOTPVerifying = false;
 
     return Scaffold(
       body: SafeArea(
@@ -62,31 +63,43 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                       smsCode: otpController.text,
                     );
                     try {
-                      await _auth.signInWithCredential(credential);
-                      Timer(Duration(milliseconds: 0), () {
-                        SystemChannels.textInput.invokeMethod('TextInput.hide');
-                        Navigator.of(context).pop();
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: ((context) => widget.isLogging
-                                ? ProfilePage()
-                                : UserRegisterDetailsPage(
-                                    emailChosen: false,
-                                    numberChosen: true,
-                                    googleChosen: false,
-                                  )),
-                          ),
-                        );
+                      setState(() {
+                        isOTPVerifying = true;
                       });
+                      await _auth.signInWithCredential(credential);
+                      UserFirestoreData.addAll({
+                        'Phone Number': _auth.currentUser!.phoneNumber,
+                      });
+                      setState(() {
+                        isOTPVerifying = false;
+                      });
+                      SystemChannels.textInput.invokeMethod('TextInput.hide');
+                      Navigator.of(context).pop();
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: ((context) => widget.isLogging
+                              ? ProfilePage()
+                              : UserRegisterDetailsPage(
+                                  emailChosen: false,
+                                  numberChosen: true,
+                                  googleChosen: false,
+                                )),
+                        ),
+                      );
                     } catch (e) {
+                      setState(() {
+                        isOTPVerifying = false;
+                      });
                       setState(() {
                         mySnackBar(context, e.toString());
                       });
                     }
+                  } else {
+                    mySnackBar(context, "OTP should be 6 characters long");
                   }
                   return;
                 },
-                isLoading: false,
+                isLoading: isOTPVerifying,
                 horizontalPadding: 24,
               ),
               Expanded(child: Container()),

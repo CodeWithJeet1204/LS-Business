@@ -84,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                             SizedBox(height: 8),
                             MyButton(
                               text: "LOGIN",
-                              onTap: () {
+                              onTap: () async {
                                 if (numberLoginFormKey.currentState!
                                     .validate()) {
                                   try {
@@ -92,13 +92,11 @@ class _LoginPageState extends State<LoginPage> {
                                       isEmailLogging = true;
                                     });
                                     // Login
-                                    _auth.signInWithEmailAndPassword(
+                                    await _auth.signInWithEmailAndPassword(
                                       email: emailController.text.toString(),
                                       password:
                                           passwordController.text.toString(),
                                     );
-                                    // Navigator.of(context)
-                                    //     .popAndPushNamed('/profile');
                                     print(FirebaseAuth
                                         .instance.currentUser!.email);
                                     setState(() {
@@ -155,7 +153,7 @@ class _LoginPageState extends State<LoginPage> {
                             SizedBox(height: 8),
                             MyButton(
                               text: "LOGIN",
-                              onTap: () {
+                              onTap: () async {
                                 if (numberLoginFormKey.currentState!
                                     .validate()) {
                                   try {
@@ -164,17 +162,17 @@ class _LoginPageState extends State<LoginPage> {
                                     });
                                     // Register with Phone
                                     if (phoneController.text.contains("+91")) {
-                                      auth.phoneSignIn(
+                                      await auth.phoneSignIn(
                                           context, " ${phoneController.text}");
                                     } else if (phoneController.text
                                         .contains("+91 ")) {
-                                      auth.phoneSignIn(
+                                      await auth.phoneSignIn(
                                           context, phoneController.text);
                                     } else {
                                       setState(() {
                                         isPhoneLogging = true;
                                       });
-                                      _auth.verifyPhoneNumber(
+                                      await _auth.verifyPhoneNumber(
                                           phoneNumber:
                                               "+91 ${phoneController.text}",
                                           verificationCompleted: (_) {

@@ -119,17 +119,16 @@ class AuthMethods {
 
     _auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
-        verificationCompleted: (_) {
-          // setState(() {
-          //   isPhoneRegistering = false;
-          // });
+        timeout: Duration(seconds: 120),
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          await FirebaseAuth.instance.signInWithCredential(credential);
         },
-        verificationFailed: (e) {
+        verificationFailed: (FirebaseAuthException e) {
           mySnackBar(context, e.toString());
         },
-        codeSent: (String verificationId, int? token) {
+        codeSent: (String verificationId, int? resendToken) async {
+          print("CODE SENT.......");
           SystemChannels.textInput.invokeMethod('TextInput.hide');
-          Navigator.of(context).pop();
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => NumberVerifyPage(
@@ -138,13 +137,9 @@ class AuthMethods {
               ),
             ),
           );
-          // setState(() {
-          //   isPhoneRegistering = false;
-          // });
         },
-        codeAutoRetrievalTimeout: (e) {
-          mySnackBar(context, e.toString());
-          // isPhoneRegistering = false;
+        codeAutoRetrievalTimeout: (String verificationId) {
+          mySnackBar(context, verificationId.toString());
         });
   }
 

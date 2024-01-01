@@ -1,4 +1,3 @@
-import 'package:find_easy/firebase/auth_methods.dart';
 import 'package:find_easy/models/industry_segments.dart';
 import 'package:find_easy/page/register/firestore_info.dart';
 import 'package:find_easy/page/register/membership.dart';
@@ -45,10 +44,6 @@ class _BusinessRegisterDetailsPageState
 
   @override
   Widget build(BuildContext context) {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    // ignore: unused_local_variable
-    final AuthMethods auth = AuthMethods(_auth);
-
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -111,13 +106,6 @@ class _BusinessRegisterDetailsPageState
                         autoFillHints: [AutofillHints.streetAddressLevel2],
                       ),
                       GestureDetector(
-                        // onTap: () async {
-                        //   selectedCategory = await Navigator.of(context).push(
-                        //     MaterialPageRoute(
-                        //       builder: (context) => ImageContainer(),
-                        //     ),
-                        //   );
-                        // },
                         onTap: showCategoryDialog,
                         child: Container(
                           margin: EdgeInsets.symmetric(
@@ -196,20 +184,6 @@ class _BusinessRegisterDetailsPageState
                               setState(() {
                                 isNext = true;
                               });
-                              // await store
-                              //     .collection('Business')
-                              //     .doc('Owners')
-                              //     .collection('Shops')
-                              //     .doc(widget.uuid)
-                              //     .set({
-                              //   'Name': nameController.text.toString(),
-                              //   'Type': selectedCategory != "Other"
-                              //       ? selectedCategory.toString()
-                              //       : categoryNameController.text.toString(),
-                              //   'Address': addressController.text.toString(),
-                              //   'Industry': selectedIndustrySegment,
-                              //   'Image': '',
-                              // });
                               BusinessFirestoreData.addAll(
                                 {
                                   "Name": nameController.text.toString(),

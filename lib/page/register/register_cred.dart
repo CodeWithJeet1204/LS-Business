@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:find_easy/firebase/auth_methods.dart';
 import 'package:find_easy/page/register/business_register_details.dart';
 import 'package:find_easy/page/register/firestore_info.dart';
@@ -28,6 +27,7 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
       TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final GlobalKey<FormState> registerFormKey = GlobalKey<FormState>();
+  String phoneButtonText = "SIGNUP";
   bool isShowEmail = false;
   bool isShowNumber = false;
   bool isEmailRegistering = false;
@@ -178,11 +178,9 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                         ),
                       ),
                       onTap: () {
-                        Timer(Duration(milliseconds: 100), () {
-                          setState(() {
-                            isShowNumber = false;
-                            isShowEmail = !isShowEmail;
-                          });
+                        setState(() {
+                          isShowNumber = false;
+                          isShowEmail = !isShowEmail;
                         });
                       },
                     ),
@@ -207,27 +205,28 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                             ),
                             SizedBox(height: 8),
                             MyButton(
-                              text: "SIGNUP",
-                              onTap: () {
+                              text: phoneButtonText,
+                              onTap: () async {
                                 if (registerFormKey.currentState!.validate()) {
                                   try {
                                     setState(() {
                                       isPhoneRegistering = true;
+                                      phoneButtonText = "Please Wait";
                                     });
                                     isNumberChosen = true;
                                     // Register with Phone
                                     if (phoneController.text.contains("+91")) {
-                                      auth.phoneSignIn(
+                                      await auth.phoneSignIn(
                                           context, " ${phoneController.text}");
                                     } else if (phoneController.text
                                         .contains("+91 ")) {
-                                      auth.phoneSignIn(
+                                      await auth.phoneSignIn(
                                           context, phoneController.text);
                                     } else {
                                       setState(() {
                                         isPhoneRegistering = true;
                                       });
-                                      _auth.verifyPhoneNumber(
+                                      await _auth.verifyPhoneNumber(
                                           phoneNumber:
                                               "+91 ${phoneController.text}",
                                           verificationCompleted: (_) {
@@ -239,10 +238,13 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                                             mySnackBar(context, e.toString());
                                             setState(() {
                                               isPhoneRegistering = false;
+                                              phoneButtonText = "SIGNUP";
                                             });
                                           },
-                                          codeSent: (String verificationId,
-                                              int? token) {
+                                          codeSent: (
+                                            String verificationId,
+                                            int? token,
+                                          ) {
                                             SystemChannels.textInput
                                                 .invokeMethod('TextInput.hide');
                                             Navigator.of(context).pop();
@@ -258,19 +260,25 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                                             );
                                             setState(() {
                                               isPhoneRegistering = false;
+                                              phoneButtonText = "SIGNUP";
                                             });
                                           },
                                           codeAutoRetrievalTimeout: (e) {
                                             mySnackBar(context, e.toString());
-                                            isPhoneRegistering = false;
+                                            setState(() {
+                                              isPhoneRegistering = false;
+                                              phoneButtonText = "SIGNUP";
+                                            });
                                           });
                                     }
                                     setState(() {
                                       isPhoneRegistering = false;
+                                      phoneButtonText = "SIGNUP";
                                     });
                                   } catch (e) {
                                     setState(() {
                                       isPhoneRegistering = false;
+                                      phoneButtonText = "SIGNUP";
                                     });
                                     mySnackBar(context, e.toString());
                                   }
