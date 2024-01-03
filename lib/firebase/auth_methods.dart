@@ -1,3 +1,5 @@
+import 'package:find_easy/page/register/firestore_info.dart';
+import 'package:find_easy/page/register/user_register_details.dart';
 import 'package:find_easy/page/register/verify/number_verify.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -74,9 +76,26 @@ class AuthMethods {
       // ignore: unused_local_variable
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
-      // if (userCredential.user != null) {
-      //   if (userCredential.additionalUserInfo!.isNewUser) {}
-      // }
+      if (userCredential.user != null) {
+        if (userCredential.additionalUserInfo!.isNewUser) {
+          UserFirestoreData.addAll({
+            "uid": FirebaseAuth.instance.currentUser!.uid,
+            "Name": FirebaseAuth.instance.currentUser!.displayName,
+            "Email": FirebaseAuth.instance.currentUser!.email,
+            "Image": FirebaseAuth.instance.currentUser!.photoURL,
+          });
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: ((context) => UserRegisterDetailsPage(
+                    emailChosen: false,
+                    numberChosen: false,
+                    googleChosen: true,
+                  )),
+            ),
+            (route) => false,
+          );
+        }
+      }
       // }
       return userCredential;
     } on FirebaseAuthException catch (e) {

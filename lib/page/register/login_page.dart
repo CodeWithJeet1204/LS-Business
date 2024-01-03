@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:find_easy/firebase/auth_methods.dart';
-import 'package:find_easy/page/profile_page.dart';
+import 'package:find_easy/page/register/user_register_details.dart';
 import 'package:find_easy/page/register/verify/number_verify.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
@@ -26,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController phoneController = TextEditingController();
   final GlobalKey<FormState> numberLoginFormKey = GlobalKey<FormState>();
   String phoneText = "Verify";
-  String googleText = "LOGIN";
+  String googleText = "Sign in With GOOGLE";
   bool isGoogleLogging = false;
   bool isShowEmail = false;
   bool isShowNumber = false;
@@ -262,7 +262,11 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.of(context).pop();
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => ProfilePage(),
+                                builder: (context) => UserRegisterDetailsPage(
+                                  emailChosen: false,
+                                  numberChosen: false,
+                                  googleChosen: true,
+                                ),
                               ),
                             );
                           } else {
@@ -279,7 +283,9 @@ class _LoginPageState extends State<LoginPage> {
                         width: double.infinity,
                         child: isGoogleLogging
                             ? Center(
-                                child: CircularProgressIndicator(),
+                                child: CircularProgressIndicator(
+                                  color: primaryDark,
+                                ),
                               )
                             : Text(
                                 googleText,

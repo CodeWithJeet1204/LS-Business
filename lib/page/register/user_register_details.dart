@@ -132,15 +132,19 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                             ),
                       widget.numberChosen
                           ? Container()
-                          : MyTextFormField(
-                              hintText: "Your Phone Number (Personal)",
-                              controller: phoneController,
-                              borderRadius: 12,
-                              horizontalPadding: 20,
-                              verticalPadding: 12,
-                              keyboardType: TextInputType.number,
-                              autoFillHints: [AutofillHints.telephoneNumber],
-                            ),
+                          : widget.googleChosen
+                              ? MyTextFormField(
+                                  hintText: "Your Phone Number (Personal)",
+                                  controller: phoneController,
+                                  borderRadius: 12,
+                                  horizontalPadding: 20,
+                                  verticalPadding: 12,
+                                  keyboardType: TextInputType.number,
+                                  autoFillHints: [
+                                    AutofillHints.telephoneNumber
+                                  ],
+                                )
+                              : Container(),
                       MyButton(
                         text: "Next",
                         onTap: () async {
@@ -155,10 +159,11 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                     ? UserFirestoreData.addAll(
                                         {
                                           "uid": uid,
-                                          "Name":
-                                              nameController.text.toString(),
-                                          "Phone Number":
-                                              phoneController.text.toString(),
+                                          "Name": widget.googleChosen
+                                              ? FirebaseAuth.instance
+                                                  .currentUser!.displayName
+                                              : nameController.text.toString(),
+                                          "Phone Number": phoneController.text,
                                           "Image": "",
                                         },
                                       )

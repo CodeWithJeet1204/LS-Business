@@ -1,6 +1,6 @@
 import 'package:find_easy/firebase/auth_methods.dart';
-import 'package:find_easy/page/register/business_register_details.dart';
 import 'package:find_easy/page/register/firestore_info.dart';
+import 'package:find_easy/page/register/user_register_details.dart';
 import 'package:find_easy/page/register/verify/email_verify.dart';
 import 'package:find_easy/page/register/verify/number_verify.dart';
 import 'package:find_easy/utils/colors.dart';
@@ -320,19 +320,20 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                               "Email": FirebaseAuth.instance.currentUser!.email,
                               "Name": FirebaseAuth
                                   .instance.currentUser!.displayName,
-                              "Phone Number": FirebaseAuth
-                                  .instance.currentUser!.phoneNumber,
                               "uid": FirebaseAuth.instance.currentUser!.uid,
                               "Image":
                                   FirebaseAuth.instance.currentUser!.photoURL,
                             });
                             print("Data added");
                             // SystemChannels.textInput.invokeMethod('TextInput.hide');
-                            // Navigator.of(context).pop();
+                            Navigator.of(context).pop();
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: ((context) =>
-                                    BusinessRegisterDetailsPage()),
+                                builder: ((context) => UserRegisterDetailsPage(
+                                      emailChosen: false,
+                                      numberChosen: false,
+                                      googleChosen: true,
+                                    )),
                               ),
                             );
                           } else {
