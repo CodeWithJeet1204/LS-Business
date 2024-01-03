@@ -21,6 +21,11 @@ void main() async {
     ),
   );
   runApp(const MyApp());
+  if (FirebaseAuth.instance.currentUser == null) {
+    print("Not signed in");
+  } else {
+    print(FirebaseAuth.instance.currentUser!.email);
+  }
 }
 
 class MyApp extends StatelessWidget {

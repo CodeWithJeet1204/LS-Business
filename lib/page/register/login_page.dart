@@ -25,6 +25,9 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final GlobalKey<FormState> numberLoginFormKey = GlobalKey<FormState>();
+  String phoneText = "Verify";
+  String googleText = "LOGIN";
+  bool isGoogleLogging = false;
   bool isShowEmail = false;
   bool isShowNumber = false;
   bool isEmailLogging = false;
@@ -97,6 +100,9 @@ class _LoginPageState extends State<LoginPage> {
                                       password:
                                           passwordController.text.toString(),
                                     );
+                                    setState(() {});
+                                    Navigator.of(context)
+                                        .popAndPushNamed('/profile');
                                     print(FirebaseAuth
                                         .instance.currentUser!.email);
                                     setState(() {
@@ -152,13 +158,14 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             SizedBox(height: 8),
                             MyButton(
-                              text: "LOGIN",
+                              text: phoneText,
                               onTap: () async {
                                 if (numberLoginFormKey.currentState!
                                     .validate()) {
                                   try {
                                     setState(() {
                                       isPhoneLogging = true;
+                                      phoneText = "PLEASE WAIT";
                                     });
                                     // Register with Phone
                                     if (phoneController.text.contains("+91")) {
@@ -239,33 +246,49 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 16),
                     GestureDetector(
                       onTap: () async {
-                        setState(() {
-                          isShowEmail = false;
-                          isShowNumber = false;
-                        });
-                        // Sign In With Google
-                        await auth.signInWithGoogle(context);
-                        SystemChannels.textInput.invokeMethod('TextInput.hide');
-                        Navigator.of(context).pop();
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => ProfilePage(),
-                          ),
-                        );
+                        try {
+                          setState(() {
+                            isShowEmail = false;
+                            isShowNumber = false;
+                            googleText = "PLEASE WAIT";
+                            isGoogleLogging = true;
+                          });
+                          // Sign In With Google
+                          await AuthMethods(FirebaseAuth.instance)
+                              .signInWithGoogle(context);
+                          // SystemChannels.textInput
+                          //     .invokeMethod('TextInput.hide');
+                          if (FirebaseAuth.instance.currentUser != null) {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ProfilePage(),
+                              ),
+                            );
+                          } else {
+                            mySnackBar(context, "Some error occured!");
+                          }
+                        } on FirebaseAuthException catch (e) {
+                          mySnackBar(context, e.toString());
+                        }
                       },
                       child: Container(
                         margin: EdgeInsets.symmetric(horizontal: 20),
                         padding: EdgeInsets.symmetric(vertical: 12),
                         alignment: Alignment.center,
                         width: double.infinity,
-                        child: Text(
-                          "Sign In With Google",
-                          style: TextStyle(
-                            color: buttonColor,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18,
-                          ),
-                        ),
+                        child: isGoogleLogging
+                            ? Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : Text(
+                                googleText,
+                                style: TextStyle(
+                                  color: buttonColor,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18,
+                                ),
+                              ),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: primary2.withOpacity(0.2),

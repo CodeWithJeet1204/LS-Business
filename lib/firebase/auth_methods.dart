@@ -57,60 +57,32 @@ class AuthMethods {
   }
 
   // GOOGLE SIGN IN
-  Future<void> signInWithGoogle(BuildContext context) async {
+  final GoogleSignIn googleSignIn = GoogleSignIn(
+    hostedDomain: "", // Prevent automatic sign-in
+  );
+
+  /*Future<void>*/ signInWithGoogle(BuildContext context) async {
     try {
-      // Bypass any existing sessions or cached credentials
-      await GoogleSignIn()
-          .signOut(); // Explicitly sign out to ensure a fresh sign-in
-
-      // Prompt account picker directly
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-      if (googleUser != null) {
-        final GoogleSignInAuthentication? googleAuth =
-            await googleUser.authentication;
-
-        if (googleAuth?.accessToken != null && googleAuth?.idToken != null) {
-          // ignore: unused_local_variable
-          final credential = GoogleAuthProvider.credential(
-            accessToken: googleAuth?.accessToken,
-            idToken: googleAuth?.idToken,
-          );
-          // ... (rest of your sign-in logic, including registration handling)
-        }
-      }
-      print(googleUser!.displayName);
-      print(googleUser.email);
-      print(googleUser.photoUrl);
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser!.authentication;
+      // if (googleAuth.accessToken != null && googleAuth.idToken != null) {
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      // ignore: unused_local_variable
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      // if (userCredential.user != null) {
+      //   if (userCredential.additionalUserInfo!.isNewUser) {}
+      // }
+      // }
+      return userCredential;
     } on FirebaseAuthException catch (e) {
       mySnackBar(context, e.message!);
     }
   }
-
-  // final GoogleSignIn googleSignIn = GoogleSignIn(
-  //   hostedDomain: "", // Prevent automatic sign-in
-  // );
-
-  // Future<void> signInWithGoogle(BuildContext context) async {
-  //   try {
-  //     final GoogleSignInAccount? googleUser =
-  //         await googleSignIn.signInSilently();
-  //     if (googleUser == null) {
-  //       await googleSignIn.signIn(); // Prompt account picker
-  //       final GoogleSignInAuthentication? googleAuth =
-  //           await googleUser?.authentication;
-  //       if (googleAuth?.accessToken != null && googleAuth?.idToken != null) {
-  //         final credential = GoogleAuthProvider.credential(
-  //           accessToken: googleAuth?.accessToken,
-  //           idToken: googleAuth?.idToken,
-  //         );
-  //         // ...
-  //       }
-  //     }
-  //   } on FirebaseAuthException catch (e) {
-  //     mySnackBar(context, e.message!);
-  //   }
-  // }
 
   // PHONE SIGN IN
   Future<void> phoneSignIn(BuildContext context, String phoneNumber) async {

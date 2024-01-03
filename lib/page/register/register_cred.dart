@@ -28,6 +28,8 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
   final TextEditingController phoneController = TextEditingController();
   final GlobalKey<FormState> registerFormKey = GlobalKey<FormState>();
   String phoneButtonText = "SIGNUP";
+  String googleText = "SIGNUP";
+  bool isGoogleRegistering = false;
   bool isShowEmail = false;
   bool isShowNumber = false;
   bool isEmailRegistering = false;
@@ -131,16 +133,20 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                                       setState(() {
                                         isEmailRegistering = false;
                                       });
-
-                                      SystemChannels.textInput
-                                          .invokeMethod('TextInput.hide');
-                                      Navigator.of(context).pop();
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              EmailVerifyPage(),
-                                        ),
-                                      );
+                                      if (FirebaseAuth.instance.currentUser!
+                                                  .email !=
+                                              null ||
+                                          _auth.currentUser!.email != null) {
+                                        SystemChannels.textInput
+                                            .invokeMethod('TextInput.hide');
+                                        Navigator.of(context).pop();
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                EmailVerifyPage(),
+                                          ),
+                                        );
+                                      }
                                     } on FirebaseAuthException catch (e) {
                                       setState(() {
                                         isEmailRegistering = false;
@@ -151,10 +157,6 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                                           context,
                                           'This email is already in use.',
                                         );
-                                        SystemChannels.textInput
-                                            .invokeMethod('TextInput.hide');
-                                        Navigator.of(context)
-                                            .popAndPushNamed('/registerCred');
                                       } else {
                                         mySnackBar(context,
                                             e.message ?? 'An error occurred.');
@@ -303,43 +305,68 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                         setState(() {
                           isShowEmail = false;
                           isShowNumber = false;
+                          isGoogleRegistering = true;
+                          googleText = "PLEASE WAIT";
                         });
-                        // Sign In With Google
-                        await auth.signInWithGoogle(context);
-                        // isGoogleChosen = true;
-                        // SystemChannels.textInput.invokeMethod('TextInput.hide');
-                        // Navigator.of(context).pop();
-                        // Navigator.of(context).push(
-                        //   MaterialPageRoute(
-                        //     builder: (context) => UserRegisterDetailsPage(
-                        //       emailChosen: false,
-                        //       numberChosen: false,
-                        //       googleChosen: true,
-                        //     ),
-                        //   ),
-                        // );
-                        // Navigate to business details page
-                        SystemChannels.textInput.invokeMethod('TextInput.hide');
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: ((context) =>
-                                BusinessRegisterDetailsPage()),
-                          ),
-                        );
+                        try {
+                          // Sign In With Google
+                          await AuthMethods(FirebaseAuth.instance)
+                              .signInWithGoogle(context);
+                          print("Signed in");
+                          await _auth.currentUser!.reload();
+                          if (FirebaseAuth.instance.currentUser != null) {
+                            print(FirebaseAuth.instance.currentUser!.email);
+                            UserFirestoreData.addAll({
+                              "Email": FirebaseAuth.instance.currentUser!.email,
+                              "Name": FirebaseAuth
+                                  .instance.currentUser!.displayName,
+                              "Phone Number": FirebaseAuth
+                                  .instance.currentUser!.phoneNumber,
+                              "uid": FirebaseAuth.instance.currentUser!.uid,
+                              "Image":
+                                  FirebaseAuth.instance.currentUser!.photoURL,
+                            });
+                            print("Data added");
+                            // SystemChannels.textInput.invokeMethod('TextInput.hide');
+                            // Navigator.of(context).pop();
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: ((context) =>
+                                    BusinessRegisterDetailsPage()),
+                              ),
+                            );
+                          } else {
+                            print("User is null");
+                          }
+                          setState(() {
+                            isGoogleRegistering = false;
+                          });
+                        } on FirebaseAuthException catch (e) {
+                          setState(() {
+                            isShowEmail = false;
+                            isShowNumber = false;
+                            isGoogleRegistering = false;
+                          });
+                          mySnackBar(context, e.toString());
+                        }
                       },
                       child: Container(
                         margin: EdgeInsets.symmetric(horizontal: 20),
                         padding: EdgeInsets.symmetric(vertical: 12),
                         alignment: Alignment.center,
                         width: double.infinity,
-                        child: Text(
-                          "Sign In With Google",
-                          style: TextStyle(
-                            color: buttonColor,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18,
-                          ),
-                        ),
+                        child: isGoogleRegistering
+                            ? CircularProgressIndicator(
+                                color: primaryDark,
+                              )
+                            : Text(
+                                googleText,
+                                style: TextStyle(
+                                  color: buttonColor,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18,
+                                ),
+                              ),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: primary2.withOpacity(0.2),

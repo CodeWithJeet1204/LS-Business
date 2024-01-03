@@ -10,6 +10,7 @@ class MembershipCard extends StatefulWidget {
     required this.selectedBorderColor,
     required this.name,
     required this.price,
+    required this.width,
     required this.textColor,
     required this.priceTextColor,
     required this.benefitBackSelectedColor,
@@ -23,6 +24,7 @@ class MembershipCard extends StatefulWidget {
 
   final String name;
   final String price;
+  final double width;
   final int benefit1;
   final int benefit2;
   final int benefit3;
@@ -50,7 +52,7 @@ class _MembershipCardState extends State<MembershipCard> {
         child: Opacity(
           opacity: widget.isSelected ? 1 : 0.6,
           child: Container(
-            width: double.infinity,
+            width: widget.width,
             height: widget.isSelected ? 210 : 200,
             decoration: BoxDecoration(
               color: widget.selectedColor,
