@@ -3,7 +3,7 @@
 import 'package:find_easy/first_launch_detection.dart';
 import 'package:find_easy/page/intro/intro_page_view.dart';
 import 'package:find_easy/page/register/login_page.dart';
-import 'package:find_easy/page/main/profile_page.dart';
+import 'package:find_easy/page/main/profile/profile_page.dart';
 import 'package:find_easy/page/register/register_cred.dart';
 import 'package:find_easy/page/register/register_pay.dart';
 import 'package:find_easy/utils/colors.dart';
@@ -38,6 +38,27 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        appBarTheme: AppBarTheme(
+          // toolbarHeight: 50,
+          backgroundColor: primary,
+          foregroundColor: primaryDark,
+          titleTextStyle: TextStyle(
+            fontWeight: FontWeight.w600,
+            color: primaryDark,
+            fontSize: 22,
+            letterSpacing: 1,
+          ),
+          iconTheme: IconThemeData(
+            color: primaryDark,
+          ),
+        ),
+        iconButtonTheme: IconButtonThemeData(
+          style: ButtonStyle(
+            iconColor: MaterialStatePropertyAll(
+              primaryDark,
+            ),
+          ),
+        ),
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color.fromARGB(255, 10, 217, 213),
         ),
