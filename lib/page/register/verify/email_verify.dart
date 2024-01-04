@@ -43,6 +43,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: no_leading_underscores_for_local_identifiers
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final AuthMethods auth = AuthMethods(_auth);
 
@@ -54,7 +55,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
             child: Column(
               children: [
                 Expanded(child: Container()),
-                Text(
+                const Text(
                   "Click on the below button to send EMAIL VERIFICATION Email\n",
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -65,16 +66,15 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
                 MyButton(
                   text: "Send Email",
                   onTap: () {
-                    print(_auth.currentUser!.email);
                     auth.sendEmailVerification(context);
                   },
                   isLoading: false,
                   horizontalPadding: 20,
                 ),
-                SizedBox(height: 20),
-                Divider(),
-                SizedBox(height: 20),
-                Text(
+                const SizedBox(height: 20),
+                const Divider(),
+                const SizedBox(height: 20),
+                const Text(
                   "An email has been sent to your account, pls click on it\nTo verify your account\n\nClick on the button after verifying the email\n\n(It may take some time for email to arrive)",
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -82,18 +82,19 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
                     fontSize: 16,
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 MyButton(
                   text: "I have verified my email",
                   onTap: () async {
                     await auth.user.reload();
                     if (_auth.currentUser!.emailVerified) {
-                      Timer(Duration(milliseconds: 0), () {
+                      Timer(const Duration(milliseconds: 0), () {
                         SystemChannels.textInput.invokeMethod('TextInput.hide');
                         Navigator.of(context).pop();
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: ((context) => UserRegisterDetailsPage(
+                            builder: ((context) =>
+                                const UserRegisterDetailsPage(
                                   emailChosen: true,
                                   numberChosen: false,
                                   googleChosen: false,
@@ -102,7 +103,9 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
                         );
                       });
                     } else {
-                      mySnackBar(context, "Email not verified");
+                      if (context.mounted) {
+                        mySnackBar(context, "Email not verified");
+                      }
                     }
                   },
                   isLoading: false,

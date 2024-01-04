@@ -37,6 +37,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
   final GlobalKey<FormState> userFormKey = GlobalKey<FormState>();
   bool isImageSelected = false;
   bool isNext = false;
+  // ignore: prefer_typing_uninitialized_variables
   var selectedImage;
 
   @override
@@ -52,6 +53,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: no_leading_underscores_for_local_identifiers
     final FirebaseAuth _auth = FirebaseAuth.instance;
     // ignore: unused_local_variable
     final AuthMethods auth = AuthMethods(_auth);
@@ -65,9 +67,9 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: 100),
-                HeadText(text: "USER\nDETAILS"),
-                SizedBox(height: 40),
+                const SizedBox(height: 100),
+                const HeadText(text: "USER\nDETAILS"),
+                const SizedBox(height: 40),
                 widget.googleChosen
                     ? Container()
                     : Column(
@@ -94,14 +96,14 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                     ),
                                   ],
                                 )
-                              : CircleAvatar(
+                              : const CircleAvatar(
                                   radius: 50,
                                   child: Icon(
                                     Icons.camera_alt_outlined,
                                     size: 60,
                                   ),
                                 ),
-                          SizedBox(height: 12),
+                          const SizedBox(height: 12),
                         ],
                       ),
                 Form(
@@ -116,7 +118,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                               borderRadius: 12,
                               horizontalPadding: 20,
                               verticalPadding: 12,
-                              autoFillHints: [AutofillHints.name],
+                              autoFillHints: const [AutofillHints.name],
                             ),
                       widget.emailChosen || widget.googleChosen
                           ? Container()
@@ -128,11 +130,11 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                               horizontalPadding: 20,
                               verticalPadding: 12,
                               keyboardType: TextInputType.emailAddress,
-                              autoFillHints: [AutofillHints.email],
+                              autoFillHints: const [AutofillHints.email],
                             ),
                       widget.numberChosen
                           ? Container()
-                          : widget.googleChosen
+                          : widget.googleChosen || widget.emailChosen
                               ? MyTextFormField(
                                   hintText: "Your Phone Number (Personal)",
                                   controller: phoneController,
@@ -140,7 +142,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                   horizontalPadding: 20,
                                   verticalPadding: 12,
                                   keyboardType: TextInputType.number,
-                                  autoFillHints: [
+                                  autoFillHints: const [
                                     AutofillHints.telephoneNumber
                                   ],
                                 )
@@ -155,8 +157,8 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                 setState(() {
                                   isNext = true;
                                 });
-                                await !widget.numberChosen
-                                    ? UserFirestoreData.addAll(
+                                !widget.numberChosen
+                                    ? userFirestoreData.addAll(
                                         {
                                           "uid": uid,
                                           "Name": widget.googleChosen
@@ -167,14 +169,13 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                           "Image": "",
                                         },
                                       )
-                                    : UserFirestoreData.addAll({
+                                    : userFirestoreData.addAll({
                                         "uid": uid,
                                         "Email":
                                             emailController.text.toString(),
                                         "Name": nameController.text.toString(),
                                         "Image": "",
                                       });
-                                print(UserFirestoreData);
 
                                 setState(() {
                                   isNext = false;
@@ -185,14 +186,16 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        BusinessRegisterDetailsPage(),
+                                        const BusinessRegisterDetailsPage(),
                                   ),
                                 );
                               } catch (e) {
                                 setState(() {
                                   isNext = false;
                                 });
-                                mySnackBar(context, e.toString());
+                                if (context.mounted) {
+                                  mySnackBar(context, e.toString());
+                                }
                               }
                             } else {
                               mySnackBar(
@@ -205,7 +208,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                         isLoading: isNext,
                         horizontalPadding: 20,
                       ),
-                      SizedBox(height: 12),
+                      const SizedBox(height: 12),
                     ],
                   ),
                 ),

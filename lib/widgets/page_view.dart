@@ -33,7 +33,7 @@ class MyPageView extends StatelessWidget {
                 // width: 300,
               ),
             ),
-            SizedBox(height: 36),
+            const SizedBox(height: 36),
             text != "Lets get started"
                 ? Text(
                     text,

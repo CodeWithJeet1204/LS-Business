@@ -74,12 +74,11 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
                   onPressed: () {
                     setState(() {
                       isShowPassword = !isShowPassword;
-                      print(isShowPassword);
                     });
                   },
                   icon: isShowPassword
-                      ? Icon(Icons.remove_red_eye)
-                      : Icon(Icons.remove_red_eye_outlined),
+                      ? const Icon(Icons.remove_red_eye)
+                      : const Icon(Icons.remove_red_eye_outlined),
                 ),
               ],
             )

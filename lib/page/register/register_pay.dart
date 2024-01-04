@@ -24,15 +24,15 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
-              child: Container(),
               flex: 3,
-            ),
-            HeadText(text: "PAY"),
-            Expanded(
               child: Container(),
-              flex: 2,
             ),
-            Text(
+            const HeadText(text: "PAY"),
+            Expanded(
+              flex: 2,
+              child: Container(),
+            ),
+            const Text(
               "To continue using the app, please pay Rs. 100",
               style: TextStyle(
                 color: primaryDark,
@@ -56,7 +56,9 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                   setState(() {
                     isPaying = false;
                     if (context.mounted) {
-                      mySnackBar(context, e.toString());
+                      if (context.mounted) {
+                        mySnackBar(context, e.toString());
+                      }
                     }
                   });
                 }
@@ -65,13 +67,13 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
               isLoading: isPaying,
             ),
             Expanded(
-              child: Container(),
               flex: 4,
+              child: Container(),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Already have an account?"),
+                const Text("Already have an account?"),
                 MyTextButton(
                   onPressed: () {
                     SystemChannels.textInput.invokeMethod('TextInput.hide');
@@ -82,7 +84,7 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                 ),
               ],
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
           ],
         ),
       ),

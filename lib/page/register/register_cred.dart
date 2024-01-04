@@ -28,7 +28,7 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
   final TextEditingController phoneController = TextEditingController();
   final GlobalKey<FormState> registerFormKey = GlobalKey<FormState>();
   String phoneButtonText = "SIGNUP";
-  String googleText = "SIGNUP";
+  String googleText = "Signup With GOOGLE";
   bool isGoogleRegistering = false;
   bool isShowEmail = false;
   bool isShowNumber = false;
@@ -45,6 +45,7 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: no_leading_underscores_for_local_identifiers
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final AuthMethods auth = AuthMethods(_auth);
 
@@ -57,13 +58,13 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
-                  child: Container(),
                   flex: 4,
+                  child: Container(),
                 ),
-                HeadText(text: "REGISTER"),
+                const HeadText(text: "REGISTER"),
                 Expanded(
-                  child: Container(),
                   flex: 4,
+                  child: Container(),
                 ),
                 Column(
                   children: [
@@ -83,16 +84,16 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                               borderRadius: 16,
                               horizontalPadding: 24,
                               keyboardType: TextInputType.emailAddress,
-                              autoFillHints: [AutofillHints.email],
+                              autoFillHints: const [AutofillHints.email],
                             ),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                             MyTextFormField(
                               hintText: "Password",
                               controller: passwordController,
                               borderRadius: 16,
                               horizontalPadding: 24,
                               isPassword: true,
-                              autoFillHints: [AutofillHints.newPassword],
+                              autoFillHints: const [AutofillHints.newPassword],
                             ),
                             MyTextFormField(
                               hintText: "Confirm Password",
@@ -101,9 +102,9 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                               horizontalPadding: 20,
                               verticalPadding: 8,
                               isPassword: true,
-                              autoFillHints: [AutofillHints.newPassword],
+                              autoFillHints: const [AutofillHints.newPassword],
                             ),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                             MyButton(
                               text: "SIGNUP",
                               onTap: () async {
@@ -123,11 +124,10 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                                       );
 
                                       // Registration successful
-                                      UserFirestoreData.addAll({
+                                      userFirestoreData.addAll({
                                         'Email':
                                             emailController.text.toString(),
                                       });
-                                      print(UserFirestoreData);
 
                                       isEmailChosen = true;
                                       setState(() {
@@ -139,13 +139,15 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                                           _auth.currentUser!.email != null) {
                                         SystemChannels.textInput
                                             .invokeMethod('TextInput.hide');
-                                        Navigator.of(context).pop();
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                EmailVerifyPage(),
-                                          ),
-                                        );
+                                        if (context.mounted) {
+                                          Navigator.of(context).pop();
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const EmailVerifyPage(),
+                                            ),
+                                          );
+                                        }
                                       }
                                     } on FirebaseAuthException catch (e) {
                                       setState(() {
@@ -153,19 +155,27 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                                       });
 
                                       if (e.code == 'email-already-in-use') {
-                                        mySnackBar(
-                                          context,
-                                          'This email is already in use.',
-                                        );
+                                        if (context.mounted) {
+                                          mySnackBar(
+                                            context,
+                                            'This email is already in use.',
+                                          );
+                                        }
                                       } else {
-                                        mySnackBar(context,
-                                            e.message ?? 'An error occurred.');
+                                        if (context.mounted) {
+                                          mySnackBar(
+                                            context,
+                                            e.message ?? 'An error occurred.',
+                                          );
+                                        }
                                       }
                                     } catch (e) {
                                       setState(() {
                                         isEmailRegistering = false;
                                       });
-                                      mySnackBar(context, e.toString());
+                                      if (context.mounted) {
+                                        mySnackBar(context, e.toString());
+                                      }
                                     }
                                   } else {
                                     mySnackBar(
@@ -203,9 +213,11 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                               borderRadius: 16,
                               horizontalPadding: 24,
                               keyboardType: TextInputType.number,
-                              autoFillHints: [AutofillHints.telephoneNumber],
+                              autoFillHints: const [
+                                AutofillHints.telephoneNumber
+                              ],
                             ),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                             MyButton(
                               text: phoneButtonText,
                               onTap: () async {
@@ -237,7 +249,9 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                                             });
                                           },
                                           verificationFailed: (e) {
-                                            mySnackBar(context, e.toString());
+                                            if (context.mounted) {
+                                              mySnackBar(context, e.toString());
+                                            }
                                             setState(() {
                                               isPhoneRegistering = false;
                                               phoneButtonText = "SIGNUP";
@@ -266,7 +280,9 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                                             });
                                           },
                                           codeAutoRetrievalTimeout: (e) {
-                                            mySnackBar(context, e.toString());
+                                            if (context.mounted) {
+                                              mySnackBar(context, e.toString());
+                                            }
                                             setState(() {
                                               isPhoneRegistering = false;
                                               phoneButtonText = "SIGNUP";
@@ -282,7 +298,9 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                                       isPhoneRegistering = false;
                                       phoneButtonText = "SIGNUP";
                                     });
-                                    mySnackBar(context, e.toString());
+                                    if (context.mounted) {
+                                      mySnackBar(context, e.toString());
+                                    }
                                   }
                                 }
                               },
@@ -312,11 +330,9 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                           // Sign In With Google
                           await AuthMethods(FirebaseAuth.instance)
                               .signInWithGoogle(context);
-                          print("Signed in");
                           await _auth.currentUser!.reload();
                           if (FirebaseAuth.instance.currentUser != null) {
-                            print(FirebaseAuth.instance.currentUser!.email);
-                            UserFirestoreData.addAll({
+                            userFirestoreData.addAll({
                               "Email": FirebaseAuth.instance.currentUser!.email,
                               "Name": FirebaseAuth
                                   .instance.currentUser!.displayName,
@@ -324,21 +340,21 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                               "Image":
                                   FirebaseAuth.instance.currentUser!.photoURL,
                             });
-                            print("Data added");
                             // SystemChannels.textInput.invokeMethod('TextInput.hide');
-                            Navigator.of(context).pop();
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: ((context) => UserRegisterDetailsPage(
-                                      emailChosen: false,
-                                      numberChosen: false,
-                                      googleChosen: true,
-                                    )),
-                              ),
-                            );
-                          } else {
-                            print("User is null");
-                          }
+                            if (context.mounted) {
+                              Navigator.of(context).pop();
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: ((context) =>
+                                      const UserRegisterDetailsPage(
+                                        emailChosen: false,
+                                        numberChosen: false,
+                                        googleChosen: true,
+                                      )),
+                                ),
+                              );
+                            }
+                          } else {}
                           setState(() {
                             isGoogleRegistering = false;
                           });
@@ -348,37 +364,39 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                             isShowNumber = false;
                             isGoogleRegistering = false;
                           });
-                          mySnackBar(context, e.toString());
+                          if (context.mounted) {
+                            mySnackBar(context, e.toString());
+                          }
                         }
                       },
                       child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 20),
-                        padding: EdgeInsets.symmetric(vertical: 12),
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
                         alignment: Alignment.center,
                         width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: primary2.withOpacity(0.2),
+                        ),
                         child: isGoogleRegistering
-                            ? CircularProgressIndicator(
+                            ? const CircularProgressIndicator(
                                 color: primaryDark,
                               )
                             : Text(
                                 googleText,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: buttonColor,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 18,
                                 ),
                               ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: primary2.withOpacity(0.2),
-                        ),
                       ),
                     ),
                   ],
                 ),
                 Expanded(
-                  child: Container(),
                   flex: 1,
+                  child: Container(),
                 ),
               ],
             ),

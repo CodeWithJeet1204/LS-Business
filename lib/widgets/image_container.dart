@@ -10,17 +10,17 @@ class ImageContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(),
+      shape: const RoundedRectangleBorder(),
       child: Container(
         height: double.infinity,
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 200, 238, 255),
+          color: const Color.fromARGB(255, 200, 238, 255),
           borderRadius: BorderRadius.circular(16),
         ),
         child: GridView.builder(
           itemCount: businessCategories.length,
-          gridDelegate:
-              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2),
           itemBuilder: ((context, index) {
             return ImageTextContainer(
               imageUrl: businessCategories[index][1],

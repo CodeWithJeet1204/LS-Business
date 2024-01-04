@@ -1,2 +1,2 @@
-Map<String, dynamic> UserFirestoreData = {};
-Map<String, dynamic> BusinessFirestoreData = {};
+Map<String, dynamic> userFirestoreData = {};
+Map<String, dynamic> businessFirestoreData = {};

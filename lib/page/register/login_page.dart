@@ -35,6 +35,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: no_leading_underscores_for_local_identifiers
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final AuthMethods auth = AuthMethods(_auth);
 
@@ -47,13 +48,13 @@ class _LoginPageState extends State<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
-                  child: Container(),
                   flex: 1,
+                  child: Container(),
                 ),
-                HeadText(text: "LOGIN"),
+                const HeadText(text: "LOGIN"),
                 Expanded(
-                  child: Container(),
                   flex: 1,
+                  child: Container(),
                 ),
                 Column(
                   children: [
@@ -73,18 +74,18 @@ class _LoginPageState extends State<LoginPage> {
                               borderRadius: 16,
                               horizontalPadding: 24,
                               keyboardType: TextInputType.emailAddress,
-                              autoFillHints: [AutofillHints.email],
+                              autoFillHints: const [AutofillHints.email],
                             ),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                             MyTextFormField(
                               hintText: "Password",
                               controller: passwordController,
                               borderRadius: 16,
                               horizontalPadding: 24,
                               isPassword: true,
-                              autoFillHints: [AutofillHints.password],
+                              autoFillHints: const [AutofillHints.password],
                             ),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                             MyButton(
                               text: "LOGIN",
                               onTap: () async {
@@ -101,10 +102,10 @@ class _LoginPageState extends State<LoginPage> {
                                           passwordController.text.toString(),
                                     );
                                     setState(() {});
-                                    Navigator.of(context)
-                                        .popAndPushNamed('/profile');
-                                    print(FirebaseAuth
-                                        .instance.currentUser!.email);
+                                    if (context.mounted) {
+                                      Navigator.of(context)
+                                          .popAndPushNamed('/profile');
+                                    }
                                     setState(() {
                                       isEmailLogging = false;
                                     });
@@ -114,8 +115,11 @@ class _LoginPageState extends State<LoginPage> {
                                     });
                                     if (context.mounted) {
                                       if (e !=
-                                          "Null check operator used on a null value")
-                                        mySnackBar(context, e.toString());
+                                          "Null check operator used on a null value") {
+                                        if (context.mounted) {
+                                          mySnackBar(context, e.toString());
+                                        }
+                                      }
                                     }
                                   }
                                 }
@@ -127,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       onTap: () {
-                        Timer(Duration(milliseconds: 100), () {
+                        Timer(const Duration(milliseconds: 100), () {
                           setState(() {
                             isShowNumber = false;
                             isShowEmail = !isShowEmail;
@@ -152,11 +156,11 @@ class _LoginPageState extends State<LoginPage> {
                               borderRadius: 16,
                               horizontalPadding: 24,
                               keyboardType: TextInputType.number,
-                              autoFillHints: [
+                              autoFillHints: const [
                                 AutofillHints.telephoneNumberDevice
                               ],
                             ),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                             MyButton(
                               text: phoneText,
                               onTap: () async {
@@ -188,7 +192,9 @@ class _LoginPageState extends State<LoginPage> {
                                             });
                                           },
                                           verificationFailed: (e) {
-                                            mySnackBar(context, e.toString());
+                                            if (context.mounted) {
+                                              mySnackBar(context, e.toString());
+                                            }
                                             setState(() {
                                               isPhoneLogging = false;
                                             });
@@ -213,7 +219,9 @@ class _LoginPageState extends State<LoginPage> {
                                             });
                                           },
                                           codeAutoRetrievalTimeout: (e) {
-                                            mySnackBar(context, e.toString());
+                                            if (context.mounted) {
+                                              mySnackBar(context, e.toString());
+                                            }
                                             isPhoneLogging = false;
                                           });
                                     }
@@ -224,7 +232,9 @@ class _LoginPageState extends State<LoginPage> {
                                     setState(() {
                                       isPhoneLogging = false;
                                     });
-                                    mySnackBar(context, e.toString());
+                                    if (context.mounted) {
+                                      mySnackBar(context, e.toString());
+                                    }
                                   }
                                 }
                               },
@@ -235,7 +245,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       onTap: () {
-                        Timer(Duration(milliseconds: 100), () {
+                        Timer(const Duration(milliseconds: 100), () {
                           setState(() {
                             isShowEmail = false;
                             isShowNumber = !isShowNumber;
@@ -259,58 +269,65 @@ class _LoginPageState extends State<LoginPage> {
                           // SystemChannels.textInput
                           //     .invokeMethod('TextInput.hide');
                           if (FirebaseAuth.instance.currentUser != null) {
-                            Navigator.of(context).pop();
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => UserRegisterDetailsPage(
-                                  emailChosen: false,
-                                  numberChosen: false,
-                                  googleChosen: true,
+                            if (context.mounted) {
+                              Navigator.of(context).pop();
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const UserRegisterDetailsPage(
+                                    emailChosen: false,
+                                    numberChosen: false,
+                                    googleChosen: true,
+                                  ),
                                 ),
-                              ),
-                            );
+                              );
+                            }
                           } else {
-                            mySnackBar(context, "Some error occured!");
+                            if (context.mounted) {
+                              mySnackBar(context, "Some error occured!");
+                            }
                           }
                         } on FirebaseAuthException catch (e) {
-                          mySnackBar(context, e.toString());
+                          if (context.mounted) {
+                            mySnackBar(context, e.toString());
+                          }
                         }
                       },
                       child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 20),
-                        padding: EdgeInsets.symmetric(vertical: 12),
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
                         alignment: Alignment.center,
                         width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: primary2.withOpacity(0.2),
+                        ),
                         child: isGoogleLogging
-                            ? Center(
+                            ? const Center(
                                 child: CircularProgressIndicator(
                                   color: primaryDark,
                                 ),
                               )
                             : Text(
                                 googleText,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: buttonColor,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 18,
                                 ),
                               ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: primary2.withOpacity(0.2),
-                        ),
                       ),
                     ),
                   ],
                 ),
                 Expanded(
-                  child: Container(),
                   flex: 2,
+                  child: Container(),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Don't have an account?"),
+                    const Text("Don't have an account?"),
                     MyTextButton(
                       onPressed: () {
                         setState(() {
@@ -326,8 +343,8 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
                 Expanded(
-                  child: Container(),
                   flex: 1,
+                  child: Container(),
                 ),
               ],
             ),

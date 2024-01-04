@@ -58,12 +58,12 @@ class _IntroPageViewState extends State<IntroPageView> {
                 }
               });
             },
-            children: [
+            children: const [
               MyPageView(
                 text: "Reach new customers in your neighborhood",
                 animation:
                     'https://lottie.host/42f81d17-142d-477a-a114-0e8fd17cf3d1/BtWfHFygeT.json',
-                textColor: const Color.fromARGB(255, 255, 53, 39),
+                textColor: Color.fromARGB(255, 255, 53, 39),
                 backgroundColor: Color.fromARGB(255, 251, 227, 225),
               ),
               MyPageView(
@@ -71,7 +71,7 @@ class _IntroPageViewState extends State<IntroPageView> {
                 animation:
                     'https://lottie.host/45111ab9-1b7f-4f96-bda8-3ff1bda7a995/t750Okdqh3.json',
                 textColor: Colors.green,
-                backgroundColor: const Color.fromARGB(255, 210, 255, 211),
+                backgroundColor: Color.fromARGB(255, 210, 255, 211),
               ),
               MyPageView(
                 text: "Lets get Started",
@@ -83,7 +83,7 @@ class _IntroPageViewState extends State<IntroPageView> {
             ],
           ),
           Container(
-            alignment: Alignment(0, 0.85),
+            alignment: const Alignment(0, 0.85),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -100,7 +100,7 @@ class _IntroPageViewState extends State<IntroPageView> {
                   onPressed: onNext,
                   child: Text(
                     nextText,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                       color: Colors.blueAccent,
                     ),

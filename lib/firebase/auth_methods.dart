@@ -28,7 +28,9 @@ class AuthMethods {
         password: password,
       );
     } on FirebaseAuthException catch (e) {
-      mySnackBar(context, e.message!);
+      if (context.mounted) {
+        mySnackBar(context, e.message!);
+      }
     }
   }
 
@@ -38,7 +40,9 @@ class AuthMethods {
       _auth.currentUser!.sendEmailVerification();
       mySnackBar(context, "Email Verification has been sent");
     } on FirebaseAuthException catch (e) {
-      mySnackBar(context, e.message!);
+      if (context.mounted) {
+        mySnackBar(context, e.message!);
+      }
     }
   }
 
@@ -51,10 +55,14 @@ class AuthMethods {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       if (!_auth.currentUser!.emailVerified) {
-        await sendEmailVerification(context);
+        if (context.mounted) {
+          await sendEmailVerification(context);
+        }
       }
     } on FirebaseAuthException catch (e) {
-      mySnackBar(context, e.message!);
+      if (context.mounted) {
+        mySnackBar(context, e.message!);
+      }
     }
   }
 
@@ -78,28 +86,32 @@ class AuthMethods {
           await FirebaseAuth.instance.signInWithCredential(credential);
       if (userCredential.user != null) {
         if (userCredential.additionalUserInfo!.isNewUser) {
-          UserFirestoreData.addAll({
+          userFirestoreData.addAll({
             "uid": FirebaseAuth.instance.currentUser!.uid,
             "Name": FirebaseAuth.instance.currentUser!.displayName,
             "Email": FirebaseAuth.instance.currentUser!.email,
             "Image": FirebaseAuth.instance.currentUser!.photoURL,
           });
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-              builder: ((context) => UserRegisterDetailsPage(
-                    emailChosen: false,
-                    numberChosen: false,
-                    googleChosen: true,
-                  )),
-            ),
-            (route) => false,
-          );
+          if (context.mounted) {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: ((context) => const UserRegisterDetailsPage(
+                      emailChosen: false,
+                      numberChosen: false,
+                      googleChosen: true,
+                    )),
+              ),
+              (route) => false,
+            );
+          }
         }
       }
       // }
       return userCredential;
     } on FirebaseAuthException catch (e) {
-      mySnackBar(context, e.message!);
+      if (context.mounted) {
+        mySnackBar(context, e.message!);
+      }
     }
   }
 
@@ -110,15 +122,16 @@ class AuthMethods {
 
     _auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
-        timeout: Duration(seconds: 120),
+        timeout: const Duration(seconds: 120),
         verificationCompleted: (PhoneAuthCredential credential) async {
           await FirebaseAuth.instance.signInWithCredential(credential);
         },
         verificationFailed: (FirebaseAuthException e) {
-          mySnackBar(context, e.toString());
+          if (context.mounted) {
+            mySnackBar(context, e.toString());
+          }
         },
         codeSent: (String verificationId, int? resendToken) async {
-          print("CODE SENT.......");
           SystemChannels.textInput.invokeMethod('TextInput.hide');
           Navigator.of(context).push(
             MaterialPageRoute(
@@ -139,7 +152,9 @@ class AuthMethods {
     try {
       await _auth.signInAnonymously();
     } on FirebaseAuthException catch (e) {
-      mySnackBar(context, e.message!);
+      if (context.mounted) {
+        mySnackBar(context, e.message!);
+      }
     }
   }
 
@@ -148,7 +163,9 @@ class AuthMethods {
     try {
       await _auth.signOut();
     } on FirebaseAuthException catch (e) {
-      mySnackBar(context, e.message!);
+      if (context.mounted) {
+        mySnackBar(context, e.message!);
+      }
     }
   }
 
@@ -157,7 +174,9 @@ class AuthMethods {
     try {
       await _auth.currentUser!.delete();
     } on FirebaseAuthException catch (e) {
-      mySnackBar(context, e.message!);
+      if (context.mounted) {
+        mySnackBar(context, e.message!);
+      }
     }
   }
 }

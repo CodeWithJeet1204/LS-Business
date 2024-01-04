@@ -1,7 +1,9 @@
+// ignore_for_file: avoid_print
+
 import 'package:find_easy/first_launch_detection.dart';
 import 'package:find_easy/page/intro/intro_page_view.dart';
 import 'package:find_easy/page/register/login_page.dart';
-import 'package:find_easy/page/profile_page.dart';
+import 'package:find_easy/page/main/profile_page.dart';
 import 'package:find_easy/page/register/register_cred.dart';
 import 'package:find_easy/page/register/register_pay.dart';
 import 'package:find_easy/utils/colors.dart';
@@ -12,7 +14,7 @@ import 'package:flutter/material.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    options: FirebaseOptions(
+    options: const FirebaseOptions(
       apiKey: 'AIzaSyA-CD3MgDBzAsjmp_FlDbofynMMmW6fPsU',
       appId: '1:851488762803:android:eb89214a6ee6397b3979c6',
       messagingSenderId: '851488762803',
@@ -37,25 +39,25 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Color.fromARGB(255, 10, 217, 213),
+          seedColor: const Color.fromARGB(255, 10, 217, 213),
         ),
         useMaterial3: true,
       ),
       routes: {
-        '/profile': (context) => ProfilePage(),
-        '/login': (context) => LoginPage(),
-        '/registerPay': (context) => RegisterPayPage(),
-        '/registerCred': (context) => RegisterCredPage(),
+        '/profile': (context) => const ProfilePage(),
+        '/login': (context) => const LoginPage(),
+        '/registerPay': (context) => const RegisterPayPage(),
+        '/registerCred': (context) => const RegisterCredPage(),
       },
       debugShowCheckedModeBanner: false,
       home: isFirstLaunch
-          ? IntroPageView()
+          ? const IntroPageView()
           : StreamBuilder(
               stream: FirebaseAuth.instance.authStateChanges(),
               builder: ((context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.active) {
                   if (snapshot.hasData) {
-                    return ProfilePage();
+                    return const ProfilePage();
                   } else if (snapshot.hasError) {
                     return const Center(
                       child: Text(
@@ -66,7 +68,7 @@ class MyApp extends StatelessWidget {
                   }
                 } else if (snapshot.connectionState ==
                     ConnectionState.waiting) {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(
                       color: primaryDark,
                     ),

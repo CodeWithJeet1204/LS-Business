@@ -1,4 +1,4 @@
-import 'package:find_easy/page/profile_page.dart';
+import 'package:find_easy/page/main/profile_page.dart';
 import 'package:find_easy/page/register/firestore_info.dart';
 import 'package:find_easy/page/register/user_register_details.dart';
 import 'package:find_easy/utils/colors.dart';
@@ -27,7 +27,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
 
   @override
   Widget build(BuildContext context) {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FirebaseAuth auth = FirebaseAuth.instance;
     bool isOTPVerifying = false;
 
     return Scaffold(
@@ -36,7 +36,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
           child: Column(
             children: [
               Expanded(child: Container()),
-              Text(
+              const Text(
                 "An OTP has been sent to your Phone Number\nPls enter the OTP below",
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -44,21 +44,21 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                   fontSize: 16,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               MyTextFormField(
                 hintText: "OTP - 6 Digits",
                 controller: otpController,
                 borderRadius: 12,
                 horizontalPadding: 24,
                 keyboardType: TextInputType.number,
-                autoFillHints: [AutofillHints.oneTimeCode],
+                autoFillHints: const [AutofillHints.oneTimeCode],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               MyButton(
                 text: "Verify",
                 onTap: () async {
                   if (otpController.text.length == 6) {
-                    final credential = await PhoneAuthProvider.credential(
+                    final credential = PhoneAuthProvider.credential(
                       verificationId: widget.verificationId,
                       smsCode: otpController.text,
                     );
@@ -66,32 +66,36 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                       setState(() {
                         isOTPVerifying = true;
                       });
-                      await _auth.signInWithCredential(credential);
-                      UserFirestoreData.addAll({
-                        'Phone Number': _auth.currentUser!.phoneNumber,
+                      await auth.signInWithCredential(credential);
+                      userFirestoreData.addAll({
+                        'Phone Number': auth.currentUser!.phoneNumber,
                       });
                       setState(() {
                         isOTPVerifying = false;
                       });
                       SystemChannels.textInput.invokeMethod('TextInput.hide');
-                      Navigator.of(context).pop();
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: ((context) => widget.isLogging
-                              ? ProfilePage()
-                              : UserRegisterDetailsPage(
-                                  emailChosen: false,
-                                  numberChosen: true,
-                                  googleChosen: false,
-                                )),
-                        ),
-                      );
+                      if (context.mounted) {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: ((context) => widget.isLogging
+                                ? const ProfilePage()
+                                : const UserRegisterDetailsPage(
+                                    emailChosen: false,
+                                    numberChosen: true,
+                                    googleChosen: false,
+                                  )),
+                          ),
+                        );
+                      }
                     } catch (e) {
                       setState(() {
                         isOTPVerifying = false;
                       });
                       setState(() {
-                        mySnackBar(context, e.toString());
+                        if (context.mounted) {
+                          mySnackBar(context, e.toString());
+                        }
                       });
                     }
                   } else {

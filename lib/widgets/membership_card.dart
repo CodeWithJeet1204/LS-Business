@@ -66,7 +66,7 @@ class _MembershipCardState extends State<MembershipCard> {
             ),
             child: Row(
               children: [
-                SizedBox(width: 24),
+                const SizedBox(width: 24),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,10 +80,10 @@ class _MembershipCardState extends State<MembershipCard> {
                         fontWeight: FontWeight.w800,
                       ),
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Row(
                       children: [
-                        Text("Rs. "),
+                        const Text("Rs. "),
                         Text(
                           widget.price.toString(),
                           style: TextStyle(
@@ -97,8 +97,8 @@ class _MembershipCardState extends State<MembershipCard> {
                   ],
                 ),
                 Expanded(
-                  child: Container(),
                   flex: 4,
+                  child: Container(),
                 ),
                 Container(
                   height: double.infinity,
@@ -109,7 +109,7 @@ class _MembershipCardState extends State<MembershipCard> {
                     border: Border.all(
                       color: widget.selectedBorderColor.withOpacity(0.2),
                     ),
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(8),
                       bottomRight: Radius.circular(8),
                     ),
@@ -135,7 +135,7 @@ class _MembershipCardState extends State<MembershipCard> {
                           children: [
                             Text(
                               "• ${widget.benefit1} Posts",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: white,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -143,7 +143,7 @@ class _MembershipCardState extends State<MembershipCard> {
                             ),
                             Text(
                               "• ${widget.benefit2} Story",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: white,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -151,7 +151,7 @@ class _MembershipCardState extends State<MembershipCard> {
                             ),
                             Text(
                               "• ${widget.benefit3} Shorts",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: white,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -182,7 +182,7 @@ class _MembershipCardState extends State<MembershipCard> {
                                   color: widget.textColor,
                                 ),
                               ),
-                              SizedBox(width: 4),
+                              const SizedBox(width: 4),
                               Text(
                                 widget.storageUnit,
                                 style: TextStyle(

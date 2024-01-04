@@ -29,7 +29,7 @@ class _ImageTextContainerState extends State<ImageTextContainer> {
         child: SizedBox(
           height: double.infinity,
           child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+            margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
             width: double.infinity,
             decoration: BoxDecoration(
               border: Border.all(
@@ -46,17 +46,17 @@ class _ImageTextContainerState extends State<ImageTextContainer> {
                   widget.imageUrl,
                   height: 60,
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 Text(
                   widget.text,
                   // overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.w800,
                     color: primaryDark,
                   ),
                 ),
-                SizedBox(height: 3),
+                const SizedBox(height: 3),
               ],
             ),
           ),
@@ -68,7 +68,6 @@ class _ImageTextContainerState extends State<ImageTextContainer> {
 
 void selectCategory(text) {
   selectedCategory = text;
-  print(selectedCategory);
 }
 
 String selectedCategory = "Select Category";

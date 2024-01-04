@@ -30,11 +30,11 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
   bool isPaying = false;
   String selectedDuration = "Duration";
 
-  String? selectedPrice = null;
-  int? currentBasicPrice = null;
-  int? currentGoldPrice = null;
-  int? currentPremiumPrice = null;
-  String? currentMembership = null;
+  String? selectedPrice;
+  int? currentBasicPrice;
+  int? currentGoldPrice;
+  int? currentPremiumPrice;
+  String? currentMembership;
 
   @override
   void initState() {
@@ -74,8 +74,8 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
     showDialog(
       context: context,
       builder: ((context) => AlertDialog(
-            title: Text("Select Membership"),
-            content: Text(
+            title: const Text("Select Membership"),
+            content: const Text(
               "First select the Duration for which you want the membership\nThen the respective prices will be displayed\nand then select one of them.",
             ),
             actions: [
@@ -128,18 +128,18 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
             child: Column(
               children: [
                 Expanded(
-                  child: Container(),
                   flex: 2,
+                  child: Container(),
                 ),
-                HeadText(text: "MEMBERSHIPS"),
+                const HeadText(text: "MEMBERSHIPS"),
                 Expanded(
-                  child: Container(),
                   flex: 2,
+                  child: Container(),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(width: 12),
+                    const SizedBox(width: 12),
                     Container(
                       decoration: BoxDecoration(
                         color: primary,
@@ -155,10 +155,9 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                             DropdownButtonHideUnderline(child: Container()),
                         borderRadius: BorderRadius.circular(12),
                         hint: Text(selectedDuration),
-                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
                         elevation: 1,
                         onTap: () {
-                          print("ONTAP");
                           isBasicSelected = false;
                           isGoldSelected = false;
                           isPremiumSelected = false;
@@ -167,8 +166,8 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                         items: ["1 month", "6 months", "1 year"]
                             .map(
                               (e) => DropdownMenuItem(
-                                child: Text(e),
                                 value: e,
+                                child: Text(e),
                               ),
                             )
                             .toList(),
@@ -182,17 +181,17 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                     Expanded(child: Container()),
                     IconButton(
                       onPressed: showInfoDialog,
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.info_outline,
                         color: primaryDark,
                       ),
                     ),
-                    SizedBox(width: 12),
+                    const SizedBox(width: 12),
                   ],
                 ),
                 Expanded(
-                  child: Container(),
                   flex: 2,
+                  child: Container(),
                 ),
                 LayoutBuilder(builder: (context, constraints) {
                   return MembershipCard(
@@ -201,10 +200,10 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                     selectedBorderColor: Colors.black,
                     name: "BASIC",
                     price: showPrices("BASIC"),
-                    textColor: Color.fromARGB(255, 61, 60, 60),
+                    textColor: const Color.fromARGB(255, 61, 60, 60),
                     priceTextColor: const Color.fromARGB(255, 81, 81, 81),
                     benefitBackSelectedColor:
-                        Color.fromARGB(255, 196, 196, 196),
+                        const Color.fromARGB(255, 196, 196, 196),
                     width: constraints.maxWidth,
                     benefit1: 1,
                     benefit2: 2,
@@ -227,21 +226,21 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                   );
                 }),
                 Expanded(
-                  child: Container(),
                   flex: 1,
+                  child: Container(),
                 ),
                 LayoutBuilder(
                   builder: (context, constraints) {
                     return MembershipCard(
                       isSelected: isGoldSelected,
-                      selectedColor: Color.fromARGB(255, 253, 243, 154),
-                      selectedBorderColor: Color.fromARGB(255, 93, 76, 0),
+                      selectedColor: const Color.fromARGB(255, 253, 243, 154),
+                      selectedBorderColor: const Color.fromARGB(255, 93, 76, 0),
                       name: "GOLD",
                       price: showPrices("GOLD"),
-                      textColor: Color.fromARGB(255, 94, 86, 0),
-                      priceTextColor: Color.fromARGB(255, 102, 92, 0),
+                      textColor: const Color.fromARGB(255, 94, 86, 0),
+                      priceTextColor: const Color.fromARGB(255, 102, 92, 0),
                       benefitBackSelectedColor:
-                          Color.fromARGB(255, 200, 182, 19),
+                          const Color.fromARGB(255, 200, 182, 19),
                       width: constraints.maxWidth,
                       benefit1: 1,
                       benefit2: 2,
@@ -265,21 +264,21 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                   },
                 ),
                 Expanded(
-                  child: Container(),
                   flex: 1,
+                  child: Container(),
                 ),
                 LayoutBuilder(
                   builder: (context, constraints) {
                     return MembershipCard(
                       isSelected: isPremiumSelected,
-                      selectedColor: Color.fromARGB(255, 202, 226, 238),
+                      selectedColor: const Color.fromARGB(255, 202, 226, 238),
                       selectedBorderColor: Colors.blueGrey.shade600,
                       name: "PREMIUM",
                       price: showPrices("PREMIUM"),
-                      textColor: Color.fromARGB(255, 43, 72, 87),
-                      priceTextColor: Color.fromARGB(255, 67, 92, 106),
+                      textColor: const Color.fromARGB(255, 43, 72, 87),
+                      priceTextColor: const Color.fromARGB(255, 67, 92, 106),
                       benefitBackSelectedColor:
-                          Color.fromARGB(255, 112, 140, 157),
+                          const Color.fromARGB(255, 112, 140, 157),
                       width: constraints.maxWidth,
                       benefit1: 1,
                       benefit2: 2,
@@ -303,8 +302,8 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                   },
                 ),
                 Expanded(
-                  child: Container(),
                   flex: 2,
+                  child: Container(),
                 ),
                 MyButton(
                   text: selectPrice(isBasicSelected, isGoldSelected,
@@ -345,37 +344,39 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                             isPaying = true;
                           });
                           // Pay
-                          BusinessFirestoreData.addAll({
+                          businessFirestoreData.addAll({
                             'MembershipName': currentMembership.toString(),
                             'MembershipDuration': selectedDuration.toString(),
                             'MembershipTime': DateTime.now().toString(),
                           });
-                          print(UserFirestoreData);
-                          print(BusinessFirestoreData);
                           await store
                               .collection('Business')
                               .doc('Owners')
                               .collection('Users')
                               .doc(widget.uuid)
-                              .set(UserFirestoreData);
+                              .set(userFirestoreData);
                           await store
                               .collection('Business')
                               .doc('Owners')
                               .collection('Shops')
                               .doc(widget.uuid)
-                              .set(BusinessFirestoreData);
+                              .set(businessFirestoreData);
                           setState(() {
                             isPaying = false;
                           });
                           SystemChannels.textInput
                               .invokeMethod('TextInput.hide');
-                          Navigator.of(context).popAndPushNamed('/profile');
+                          if (context.mounted) {
+                            Navigator.of(context).popAndPushNamed('/profile');
+                          }
                         } catch (e) {
                           setState(() {
                             isPaying = false;
                           });
                           // Error
-                          mySnackBar(context, e.toString());
+                          if (context.mounted) {
+                            mySnackBar(context, e.toString());
+                          }
                         }
                       } else {
                         mySnackBar(context, "Please select a Membership");
@@ -386,8 +387,8 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                   horizontalPadding: 40,
                 ),
                 Expanded(
-                  child: Container(),
                   flex: 1,
+                  child: Container(),
                 ),
               ],
             ),

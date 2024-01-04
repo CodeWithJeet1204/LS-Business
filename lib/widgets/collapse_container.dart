@@ -54,7 +54,7 @@ class _MyCollapseContainerState extends State<MyCollapseContainer> {
                 children: [
                   Text(
                     widget.headText,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 16,
                     ),

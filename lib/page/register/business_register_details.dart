@@ -31,13 +31,14 @@ class _BusinessRegisterDetailsPageState
   final String uuid = FirebaseAuth.instance.currentUser!.uid;
   bool isImageSelected = false;
   bool isNext = false;
-  String? selectedIndustrySegment = null;
+  String? selectedIndustrySegment;
+  // ignore: prefer_typing_uninitialized_variables
   var selectedImage;
 
   void showCategoryDialog() async {
     await showDialog(
       context: context,
-      builder: ((context) => ImageContainer()),
+      builder: ((context) => const ImageContainer()),
     );
     setState(() {});
   }
@@ -52,9 +53,9 @@ class _BusinessRegisterDetailsPageState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: 100),
-                HeadText(text: "BUSINESS\nDETAILS"),
-                SizedBox(height: 40),
+                const SizedBox(height: 100),
+                const HeadText(text: "BUSINESS\nDETAILS"),
+                const SizedBox(height: 40),
                 isImageSelected
                     ? Stack(
                         alignment: Alignment.bottomRight,
@@ -76,14 +77,14 @@ class _BusinessRegisterDetailsPageState
                           ),
                         ],
                       )
-                    : CircleAvatar(
+                    : const CircleAvatar(
                         radius: 50,
                         child: Icon(
                           Icons.camera_alt_outlined,
                           size: 60,
                         ),
                       ),
-                SizedBox(height: 12),
+                const SizedBox(height: 12),
                 Form(
                   key: businessFormKey,
                   child: Column(
@@ -94,7 +95,9 @@ class _BusinessRegisterDetailsPageState
                         borderRadius: 12,
                         horizontalPadding: 20,
                         verticalPadding: 4,
-                        autoFillHints: [AutofillHints.streetAddressLevel1],
+                        autoFillHints: const [
+                          AutofillHints.streetAddressLevel1
+                        ],
                       ),
                       MyTextFormField(
                         hintText: "Address (Don't include Shop Name)",
@@ -103,36 +106,38 @@ class _BusinessRegisterDetailsPageState
                         horizontalPadding: 20,
                         verticalPadding: 12,
                         keyboardType: TextInputType.streetAddress,
-                        autoFillHints: [AutofillHints.streetAddressLevel2],
+                        autoFillHints: const [
+                          AutofillHints.streetAddressLevel2
+                        ],
                       ),
                       GestureDetector(
                         onTap: showCategoryDialog,
                         child: Container(
-                          margin: EdgeInsets.symmetric(
+                          margin: const EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 0,
                           ),
-                          padding: EdgeInsets.symmetric(vertical: 12),
+                          padding: const EdgeInsets.symmetric(vertical: 12),
                           alignment: Alignment.center,
                           width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: primary2.withOpacity(0.2),
+                          ),
                           child: Text(
                             selectedCategory,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: primaryDark,
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
                             ),
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: primary2.withOpacity(0.2),
                           ),
                         ),
                       ),
                       selectedCategory == "Other"
                           ? Column(
                               children: [
-                                SizedBox(height: 12),
+                                const SizedBox(height: 12),
                                 MyTextFormField(
                                   hintText: "Category Name",
                                   controller: categoryNameController,
@@ -143,7 +148,7 @@ class _BusinessRegisterDetailsPageState
                               ],
                             )
                           : Container(),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: DropdownButtonFormField(
@@ -160,12 +165,13 @@ class _BusinessRegisterDetailsPageState
                           isDense: false,
                           menuMaxHeight: 700,
                           itemHeight: 48,
-                          dropdownColor: Color.fromARGB(255, 189, 234, 255),
-                          hint: Text("Select Industry Segment"),
+                          dropdownColor:
+                              const Color.fromARGB(255, 189, 234, 255),
+                          hint: const Text("Select Industry Segment"),
                           items: industrySegments
                               .map((element) => DropdownMenuItem(
-                                    child: Text(element),
                                     value: element,
+                                    child: Text(element),
                                   ))
                               .toList(),
                           onChanged: (value) {
@@ -175,7 +181,7 @@ class _BusinessRegisterDetailsPageState
                           },
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       MyButton(
                         text: "Next",
                         onTap: () async {
@@ -184,7 +190,7 @@ class _BusinessRegisterDetailsPageState
                               setState(() {
                                 isNext = true;
                               });
-                              BusinessFirestoreData.addAll(
+                              businessFirestoreData.addAll(
                                 {
                                   "Name": nameController.text.toString(),
                                   "Type": selectedCategory,
@@ -193,7 +199,6 @@ class _BusinessRegisterDetailsPageState
                                   "Image": "",
                                 },
                               );
-                              print(UserFirestoreData);
                               SystemChannels.textInput
                                   .invokeMethod('TextInput.hide');
                               Navigator.of(context).pop();
@@ -211,14 +216,16 @@ class _BusinessRegisterDetailsPageState
                               setState(() {
                                 isNext = false;
                               });
-                              mySnackBar(context, e.toString());
+                              if (context.mounted) {
+                                mySnackBar(context, e.toString());
+                              }
                             }
                           }
                         },
                         isLoading: isNext,
                         horizontalPadding: 20,
                       ),
-                      SizedBox(height: 12),
+                      const SizedBox(height: 12),
                     ],
                   ),
                 ),
