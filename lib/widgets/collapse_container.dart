@@ -32,7 +32,7 @@ class _MyCollapseContainerState extends State<MyCollapseContainer> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: primary2.withOpacity(0.2),
+        color: primary2.withOpacity(0.75),
         borderRadius: BorderRadius.circular(8),
       ),
       margin: EdgeInsets.symmetric(

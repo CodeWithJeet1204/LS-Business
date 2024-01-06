@@ -1,3 +1,8 @@
+// ignore_for_file: unnecessary_null_comparison
+
+import 'dart:io';
+
+import 'package:find_easy/firebase/storage_methods.dart';
 import 'package:find_easy/models/industry_segments.dart';
 import 'package:find_easy/page/register/firestore_info.dart';
 import 'package:find_easy/page/register/membership.dart';
@@ -5,12 +10,14 @@ import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/head_text.dart';
 import 'package:find_easy/widgets/image_container.dart';
+import 'package:find_easy/widgets/image_picker.dart';
 import 'package:find_easy/widgets/image_text_container.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:find_easy/widgets/text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 
 class BusinessRegisterDetailsPage extends StatefulWidget {
   const BusinessRegisterDetailsPage({
@@ -29,11 +36,11 @@ class _BusinessRegisterDetailsPageState
   final GlobalKey<FormState> businessFormKey = GlobalKey<FormState>();
   final TextEditingController categoryNameController = TextEditingController();
   final String uuid = FirebaseAuth.instance.currentUser!.uid;
-  bool isImageSelected = false;
   bool isNext = false;
   String? selectedIndustrySegment;
-  // ignore: prefer_typing_uninitialized_variables
-  var selectedImage;
+  bool isImageSelected = false;
+  Uint8List? _image;
+  Uint8List? image2;
 
   void showCategoryDialog() async {
     await showDialog(
@@ -41,6 +48,20 @@ class _BusinessRegisterDetailsPageState
       builder: ((context) => const ImageContainer()),
     );
     setState(() {});
+  }
+
+  void selectImage() async {
+    Uint8List im = await pickImage(ImageSource.gallery);
+    if (im == null) {
+      setState(() {
+        isImageSelected = false;
+      });
+    } else {
+      setState(() {
+        _image = im;
+        isImageSelected = true;
+      });
+    }
   }
 
   @override
@@ -62,7 +83,7 @@ class _BusinessRegisterDetailsPageState
                         children: [
                           CircleAvatar(
                             radius: 50,
-                            child: selectedImage,
+                            backgroundImage: MemoryImage(_image!),
                           ),
                           Positioned(
                             bottom: 0,
@@ -71,17 +92,20 @@ class _BusinessRegisterDetailsPageState
                               icon: const Icon(Icons.camera_alt_outlined),
                               iconSize: 30,
                               tooltip: "Change Shop Picture",
-                              onPressed: () {},
+                              onPressed: selectImage,
                               color: primaryDark,
                             ),
                           ),
                         ],
                       )
-                    : const CircleAvatar(
+                    : CircleAvatar(
                         radius: 50,
-                        child: Icon(
-                          Icons.camera_alt_outlined,
-                          size: 60,
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.camera_alt_outlined,
+                            size: 60,
+                          ),
+                          onPressed: selectImage,
                         ),
                       ),
                 const SizedBox(height: 12),
@@ -122,7 +146,7 @@ class _BusinessRegisterDetailsPageState
                           width: double.infinity,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: primary2.withOpacity(0.2),
+                            color: primary2.withOpacity(0.75),
                           ),
                           child: Text(
                             selectedCategory,
@@ -156,7 +180,7 @@ class _BusinessRegisterDetailsPageState
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                               borderSide: BorderSide(
-                                color: primary2.withOpacity(0.2),
+                                color: primary2.withOpacity(0.75),
                                 width: 1,
                               ),
                             ),
@@ -186,19 +210,37 @@ class _BusinessRegisterDetailsPageState
                         text: "Next",
                         onTap: () async {
                           if (businessFormKey.currentState!.validate()) {
+                            if (_image == null) {
+                              File imageFile = File('files/shop.jpg');
+                              image2 = imageFile.readAsBytesSync();
+                            }
                             try {
                               setState(() {
                                 isNext = true;
                               });
+                              businessImage.addAll({
+                                "Image": isImageSelected
+                                    ? _image == null
+                                        ? image2!
+                                        : _image!
+                                    : image2!,
+                              });
+                              String businessPhotoUrl =
+                                  await StorageMethods().uploadImageToStorage(
+                                'Shops',
+                                businessImage["Image"]!,
+                                false,
+                              );
                               businessFirestoreData.addAll(
                                 {
                                   "Name": nameController.text.toString(),
                                   "Type": selectedCategory,
                                   "Address": addressController.text.toString(),
                                   "Industry": selectedIndustrySegment,
-                                  "Image": "",
+                                  "Image": businessPhotoUrl,
                                 },
                               );
+
                               SystemChannels.textInput
                                   .invokeMethod('TextInput.hide');
                               Navigator.of(context).pop();

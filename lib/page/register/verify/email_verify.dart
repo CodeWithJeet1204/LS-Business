@@ -45,7 +45,8 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
   Widget build(BuildContext context) {
     // ignore: no_leading_underscores_for_local_identifiers
     final FirebaseAuth _auth = FirebaseAuth.instance;
-    final AuthMethods auth = AuthMethods(_auth);
+    final AuthMethods auth = AuthMethods();
+    String sendEmailText = "Send Email";
 
     return Scaffold(
       body: SafeArea(
@@ -56,7 +57,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
               children: [
                 Expanded(child: Container()),
                 const Text(
-                  "Click on the below button to send EMAIL VERIFICATION Email\n",
+                  "Click on the below button to send EMAIL VERIFICATION link\n",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: primaryDark,
@@ -64,9 +65,12 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
                   ),
                 ),
                 MyButton(
-                  text: "Send Email",
-                  onTap: () {
-                    auth.sendEmailVerification(context);
+                  text: sendEmailText,
+                  onTap: () async {
+                    await auth.sendEmailVerification(context);
+                    setState(() {
+                      sendEmailText = "Email Sent";
+                    });
                   },
                   isLoading: false,
                   horizontalPadding: 20,

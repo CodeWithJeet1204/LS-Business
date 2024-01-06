@@ -1,4 +1,4 @@
-import 'package:find_easy/page/main/profile/profile_page.dart';
+import 'package:find_easy/page/main/main_page.dart';
 import 'package:find_easy/page/register/firestore_info.dart';
 import 'package:find_easy/page/register/user_register_details.dart';
 import 'package:find_easy/utils/colors.dart';
@@ -79,7 +79,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: ((context) => widget.isLogging
-                                ? const ProfilePage()
+                                ? const MainPage()
                                 : const UserRegisterDetailsPage(
                                     emailChosen: false,
                                     numberChosen: true,

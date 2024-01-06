@@ -47,7 +47,7 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
   Widget build(BuildContext context) {
     // ignore: no_leading_underscores_for_local_identifiers
     final FirebaseAuth _auth = FirebaseAuth.instance;
-    final AuthMethods auth = AuthMethods(_auth);
+    final AuthMethods auth = AuthMethods();
 
     return Scaffold(
       body: SafeArea(
@@ -328,8 +328,7 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                         });
                         try {
                           // Sign In With Google
-                          await AuthMethods(FirebaseAuth.instance)
-                              .signInWithGoogle(context);
+                          await AuthMethods().signInWithGoogle(context);
                           await _auth.currentUser!.reload();
                           if (FirebaseAuth.instance.currentUser != null) {
                             userFirestoreData.addAll({
@@ -376,7 +375,7 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                         width: double.infinity,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: primary2.withOpacity(0.2),
+                          color: primary2.withOpacity(0.75),
                         ),
                         child: isGoogleRegistering
                             ? const CircularProgressIndicator(

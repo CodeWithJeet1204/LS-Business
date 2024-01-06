@@ -1,5 +1,6 @@
 import 'package:find_easy/page/main/profile/tab_bar_page.dart';
 import 'package:find_easy/utils/colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -48,24 +49,24 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: primary,
-      floatingActionButton: AnimatedOpacity(
-        duration: Duration(milliseconds: 500),
-        opacity: showbtn ? 1.0 : 0.0,
-        child: FloatingActionButton.small(
-          onPressed: () {
-            scrollController.animateTo(
-              0,
-              duration: Duration(milliseconds: 500),
-              curve: Curves.fastOutSlowIn,
-            );
-          },
-          child: Icon(
-            Icons.arrow_upward,
-            color: white,
-          ),
-          backgroundColor: primaryDark,
-        ),
-      ),
+      // floatingActionButton: AnimatedOpacity(
+      //   duration: Duration(milliseconds: 500),
+      //   opacity: showbtn ? 1.0 : 0.0,
+      //   child: FloatingActionButton.small(
+      //     onPressed: () {
+      //       scrollController.animateTo(
+      //         0,
+      //         duration: Duration(milliseconds: 500),
+      //         curve: Curves.fastOutSlowIn,
+      //       );
+      //     },
+      //     child: Icon(
+      //       Icons.arrow_upward,
+      //       color: white,
+      //     ),
+      //     backgroundColor: primaryDark,
+      //   ),
+      // ),
       // appBar: AppBar(
       //   title: Text("PROFILE"),
       // ),
@@ -76,6 +77,14 @@ class _ProfilePageState extends State<ProfilePage> {
             return [
               SliverAppBar(
                 title: Text("PROFILE"),
+                actions: [
+                  IconButton(
+                    onPressed: () async {
+                      await FirebaseAuth.instance.signOut();
+                    },
+                    icon: Icon(Icons.logout),
+                  ),
+                ],
               ),
             ];
           },
@@ -86,7 +95,7 @@ class _ProfilePageState extends State<ProfilePage> {
               return ListView(
                 children: [
                   Container(
-                    height: height * 0.25,
+                    height: height * 0.28,
                     alignment: Alignment.centerLeft,
                     margin: const EdgeInsets.only(bottom: 5),
                     padding:
@@ -99,6 +108,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -106,6 +116,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ClipOval(
                               child: CircleAvatar(
                                 radius: 40,
+                                backgroundColor: primary2,
                                 child: Image.network(
                                   'https://yt3.googleusercontent.com/oSx8mAQ3_f9cvlml2wntk2_39M1DYXMDpSzLQOiK4sJOvypCMFjZ1gbiGQs62ZvRNClUN_14Ow=s900-c-k-c0x00ffffff-no-rj',
                                 ),
@@ -228,6 +239,49 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ],
                     ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: width * 0.4,
+                          height: height * 0.05,
+                          decoration: BoxDecoration(
+                            color: primary3,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text(
+                            "Owner Details",
+                            style: TextStyle(
+                              color: primaryDark,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: width * 0.4,
+                          height: height * 0.05,
+                          decoration: BoxDecoration(
+                            color: primary3,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text(
+                            "Business Details",
+                            style: TextStyle(
+                              color: primaryDark,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   TabBarPage(height: height),
                 ],

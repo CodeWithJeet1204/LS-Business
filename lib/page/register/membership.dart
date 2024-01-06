@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/models/membership_pricings.dart';
+import 'package:find_easy/page/main/main_page.dart';
 import 'package:find_easy/page/register/firestore_info.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
@@ -9,6 +10,7 @@ import 'package:find_easy/widgets/head_text.dart';
 import 'package:find_easy/widgets/membership_card.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:find_easy/widgets/text_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -142,7 +144,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                     const SizedBox(width: 12),
                     Container(
                       decoration: BoxDecoration(
-                        color: primary,
+                        color: primary2,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
                           width: 1,
@@ -162,7 +164,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                           isGoldSelected = false;
                           isPremiumSelected = false;
                         },
-                        dropdownColor: primary,
+                        dropdownColor: primary2,
                         items: ["1 month", "6 months", "1 year"]
                             .map(
                               (e) => DropdownMenuItem(
@@ -344,6 +346,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                             isPaying = true;
                           });
                           // Pay
+
                           businessFirestoreData.addAll({
                             'MembershipName': currentMembership.toString(),
                             'MembershipDuration': selectedDuration.toString(),
@@ -361,14 +364,23 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                               .collection('Shops')
                               .doc(widget.uuid)
                               .set(businessFirestoreData);
+
                           setState(() {
                             isPaying = false;
                           });
                           SystemChannels.textInput
                               .invokeMethod('TextInput.hide');
-                          if (context.mounted) {
-                            Navigator.of(context).popAndPushNamed('/profile');
+                          setState(() {});
+                          if (FirebaseAuth.instance.currentUser != null) {
+                            if (context.mounted) {
+                              Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => MainPage()),
+                                (route) => false,
+                              );
+                            }
                           }
+                          print(FirebaseAuth.instance.currentUser!.email);
                         } catch (e) {
                           setState(() {
                             isPaying = false;

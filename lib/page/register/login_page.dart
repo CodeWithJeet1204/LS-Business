@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:find_easy/firebase/auth_methods.dart';
-import 'package:find_easy/page/register/user_register_details.dart';
 import 'package:find_easy/page/register/verify/number_verify.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
@@ -37,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     // ignore: no_leading_underscores_for_local_identifiers
     final FirebaseAuth _auth = FirebaseAuth.instance;
-    final AuthMethods auth = AuthMethods(_auth);
+    final AuthMethods auth = AuthMethods();
 
     return Scaffold(
       body: SafeArea(
@@ -48,12 +47,12 @@ class _LoginPageState extends State<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
-                  flex: 1,
+                  flex: 2,
                   child: Container(),
                 ),
                 const HeadText(text: "LOGIN"),
                 Expanded(
-                  flex: 1,
+                  flex: 2,
                   child: Container(),
                 ),
                 Column(
@@ -102,10 +101,10 @@ class _LoginPageState extends State<LoginPage> {
                                           passwordController.text.toString(),
                                     );
                                     setState(() {});
-                                    if (context.mounted) {
-                                      Navigator.of(context)
-                                          .popAndPushNamed('/profile');
-                                    }
+                                    // if (context.mounted) {
+                                    //   Navigator.of(context)
+                                    //       .popAndPushNamed('/profile');
+                                    // }
                                     setState(() {
                                       isEmailLogging = false;
                                     });
@@ -264,24 +263,11 @@ class _LoginPageState extends State<LoginPage> {
                             isGoogleLogging = true;
                           });
                           // Sign In With Google
-                          await AuthMethods(FirebaseAuth.instance)
-                              .signInWithGoogle(context);
+                          await AuthMethods().signInWithGoogle(context);
                           // SystemChannels.textInput
                           //     .invokeMethod('TextInput.hide');
                           if (FirebaseAuth.instance.currentUser != null) {
-                            if (context.mounted) {
-                              Navigator.of(context).pop();
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const UserRegisterDetailsPage(
-                                    emailChosen: false,
-                                    numberChosen: false,
-                                    googleChosen: true,
-                                  ),
-                                ),
-                              );
-                            }
+                            setState(() {});
                           } else {
                             if (context.mounted) {
                               mySnackBar(context, "Some error occured!");
@@ -300,7 +286,7 @@ class _LoginPageState extends State<LoginPage> {
                         width: double.infinity,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: primary2.withOpacity(0.2),
+                          color: primary2.withOpacity(0.75),
                         ),
                         child: isGoogleLogging
                             ? const Center(
@@ -321,7 +307,7 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
                 Expanded(
-                  flex: 2,
+                  flex: 4,
                   child: Container(),
                 ),
                 Row(

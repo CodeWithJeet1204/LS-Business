@@ -2,6 +2,7 @@
 
 import 'package:find_easy/first_launch_detection.dart';
 import 'package:find_easy/page/intro/intro_page_view.dart';
+import 'package:find_easy/page/main/main_page.dart';
 import 'package:find_easy/page/register/login_page.dart';
 import 'package:find_easy/page/main/profile/profile_page.dart';
 import 'package:find_easy/page/register/register_cred.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Find Easy',
       theme: ThemeData(
         appBarTheme: AppBarTheme(
           // toolbarHeight: 50,
@@ -78,7 +79,7 @@ class MyApp extends StatelessWidget {
               builder: ((context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.active) {
                   if (snapshot.hasData) {
-                    return const ProfilePage();
+                    return const MainPage();
                   } else if (snapshot.hasError) {
                     return const Center(
                       child: Text(

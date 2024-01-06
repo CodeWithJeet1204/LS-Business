@@ -1,14 +1,21 @@
+// ignore_for_file: unnecessary_null_comparison
+
+import 'dart:io';
+
 import 'package:find_easy/firebase/auth_methods.dart';
+import 'package:find_easy/firebase/storage_methods.dart';
 import 'package:find_easy/page/register/business_register_details.dart';
 import 'package:find_easy/page/register/firestore_info.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/head_text.dart';
+import 'package:find_easy/widgets/image_picker.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:find_easy/widgets/text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 
 class UserRegisterDetailsPage extends StatefulWidget {
   const UserRegisterDetailsPage({
@@ -36,18 +43,31 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
   final TextEditingController phoneController = TextEditingController();
   final GlobalKey<FormState> userFormKey = GlobalKey<FormState>();
   bool isImageSelected = false;
+  Uint8List? _image;
+  Uint8List? image2;
   bool isNext = false;
-  // ignore: prefer_typing_uninitialized_variables
-  var selectedImage;
 
   @override
   void initState() {
     super.initState();
     if (widget.emailChosen) {
-      emailController.text == AuthMethods(FirebaseAuth.instance).user.email;
+      emailController.text == AuthMethods().user.email;
     } else if (widget.numberChosen) {
-      phoneController.text ==
-          AuthMethods(FirebaseAuth.instance).user.phoneNumber;
+      phoneController.text == AuthMethods().user.phoneNumber;
+    }
+  }
+
+  void selectImage() async {
+    Uint8List im = await pickImage(ImageSource.gallery);
+    if (im == null) {
+      setState(() {
+        isImageSelected = false;
+      });
+    } else {
+      setState(() {
+        _image = im;
+        isImageSelected = true;
+      });
     }
   }
 
@@ -56,7 +76,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
     // ignore: no_leading_underscores_for_local_identifiers
     final FirebaseAuth _auth = FirebaseAuth.instance;
     // ignore: unused_local_variable
-    final AuthMethods auth = AuthMethods(_auth);
+    final AuthMethods auth = AuthMethods();
     final String uid = _auth.currentUser!.uid;
 
     return Scaffold(
@@ -80,7 +100,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                   children: [
                                     CircleAvatar(
                                       radius: 50,
-                                      child: selectedImage,
+                                      backgroundImage: MemoryImage(_image!),
                                     ),
                                     Positioned(
                                       bottom: 0,
@@ -89,18 +109,21 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                         icon: const Icon(
                                             Icons.camera_alt_outlined),
                                         iconSize: 30,
-                                        tooltip: "Change Shop Picture",
-                                        onPressed: () {},
+                                        tooltip: "Change User Picture",
+                                        onPressed: selectImage,
                                         color: primaryDark,
                                       ),
                                     ),
                                   ],
                                 )
-                              : const CircleAvatar(
+                              : CircleAvatar(
                                   radius: 50,
-                                  child: Icon(
-                                    Icons.camera_alt_outlined,
-                                    size: 60,
+                                  child: IconButton(
+                                    icon: Icon(
+                                      Icons.camera_alt_outlined,
+                                      size: 60,
+                                    ),
+                                    onPressed: selectImage,
                                   ),
                                 ),
                           const SizedBox(height: 12),
@@ -154,9 +177,31 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                             if (confirmPasswordController.text ==
                                 passwordController.text) {
                               try {
+                                if (_image == null) {
+                                  setState(() {
+                                    File imageFile = File('files/profile.png');
+                                    image2 = imageFile.readAsBytesSync();
+                                  });
+                                }
+                                print("Started");
                                 setState(() {
                                   isNext = true;
                                 });
+                                userImage.addAll({
+                                  "Image": isImageSelected
+                                      ? _image == null
+                                          ? image2!
+                                          : _image!
+                                      : image2!,
+                                });
+                                print("Image Added");
+                                String userPhotoUrl =
+                                    await StorageMethods().uploadImageToStorage(
+                                  'Users',
+                                  userImage["Image"]!,
+                                  false,
+                                );
+                                print("Image URL DONE");
                                 !widget.numberChosen
                                     ? userFirestoreData.addAll(
                                         {
@@ -166,7 +211,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                                   .currentUser!.displayName
                                               : nameController.text.toString(),
                                           "Phone Number": phoneController.text,
-                                          "Image": "",
+                                          "Image": userPhotoUrl,
                                         },
                                       )
                                     : userFirestoreData.addAll({
@@ -174,9 +219,9 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                         "Email":
                                             emailController.text.toString(),
                                         "Name": nameController.text.toString(),
-                                        "Image": "",
+                                        "Image": userPhotoUrl,
                                       });
-
+                                print("DONE");
                                 setState(() {
                                   isNext = false;
                                 });

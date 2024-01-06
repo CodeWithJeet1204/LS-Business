@@ -41,7 +41,7 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
               children: [
                 Expanded(
                   child: TextFormField(
-                    autofocus: true,
+                    autofocus: false,
                     focusNode: FocusNode(),
                     controller: widget.controller,
                     keyboardType: widget.keyboardType,
