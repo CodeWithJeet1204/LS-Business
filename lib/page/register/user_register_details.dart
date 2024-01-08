@@ -1,5 +1,3 @@
-// ignore_for_file: unnecessary_null_comparison
-
 import 'dart:io';
 
 import 'package:find_easy/firebase/auth_methods.dart';
@@ -58,7 +56,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
   }
 
   void selectImage() async {
-    Uint8List im = await pickImage(ImageSource.gallery);
+    Uint8List? im = await pickImage(ImageSource.gallery);
     if (im == null) {
       setState(() {
         isImageSelected = false;
@@ -197,7 +195,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                 print("Image Added");
                                 String userPhotoUrl =
                                     await StorageMethods().uploadImageToStorage(
-                                  'Users',
+                                  'Profile/Users',
                                   userImage["Image"]!,
                                   false,
                                 );

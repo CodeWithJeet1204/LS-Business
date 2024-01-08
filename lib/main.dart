@@ -3,6 +3,8 @@
 import 'package:find_easy/first_launch_detection.dart';
 import 'package:find_easy/page/intro/intro_page_view.dart';
 import 'package:find_easy/page/main/main_page.dart';
+import 'package:find_easy/page/main/profile/business_details_page.dart';
+import 'package:find_easy/page/main/profile/owner_details_page.dart';
 import 'package:find_easy/page/register/login_page.dart';
 import 'package:find_easy/page/main/profile/profile_page.dart';
 import 'package:find_easy/page/register/register_cred.dart';
@@ -70,6 +72,8 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginPage(),
         '/registerPay': (context) => const RegisterPayPage(),
         '/registerCred': (context) => const RegisterCredPage(),
+        '/ownerDetails': (context) => const OwnerDetailsPage(),
+        '/businessDetails': (context) => const BusinessDetailsPage(),
       },
       debugShowCheckedModeBanner: false,
       home: isFirstLaunch

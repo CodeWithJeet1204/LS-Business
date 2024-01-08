@@ -1,9 +1,13 @@
+import 'dart:typed_data';
+
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-void showImagePickDialog(BuildContext context) {
+Uint8List? showImagePickDialog(BuildContext context) {
+  Uint8List? im;
+
   showDialog(
     context: context,
     builder: (context) {
@@ -13,7 +17,8 @@ void showImagePickDialog(BuildContext context) {
           children: [
             GestureDetector(
               onTap: () async {
-                await pickImage(ImageSource.camera);
+                Uint8List? image = await pickImage(ImageSource.camera);
+                im = image;
               },
               child: Container(
                 alignment: Alignment.centerLeft,
@@ -42,7 +47,8 @@ void showImagePickDialog(BuildContext context) {
             ),
             GestureDetector(
               onTap: () async {
-                await pickImage(ImageSource.gallery);
+                Uint8List? image = await pickImage(ImageSource.gallery);
+                im = image;
               },
               child: Container(
                 alignment: Alignment.centerLeft,
@@ -74,4 +80,5 @@ void showImagePickDialog(BuildContext context) {
       );
     },
   );
+  return im;
 }

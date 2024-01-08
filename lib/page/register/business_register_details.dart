@@ -51,7 +51,7 @@ class _BusinessRegisterDetailsPageState
   }
 
   void selectImage() async {
-    Uint8List im = await pickImage(ImageSource.gallery);
+    Uint8List? im = await pickImage(ImageSource.gallery);
     if (im == null) {
       setState(() {
         isImageSelected = false;
@@ -227,7 +227,7 @@ class _BusinessRegisterDetailsPageState
                               });
                               String businessPhotoUrl =
                                   await StorageMethods().uploadImageToStorage(
-                                'Shops',
+                                'Profile/Shops',
                                 businessImage["Image"]!,
                                 false,
                               );
