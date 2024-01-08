@@ -329,7 +329,12 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             ),
                             InkWell(
-                              onTap: () {},
+                              onTap: () async {
+                                await Navigator.of(context)
+                                    .pushNamed('/businessDetails');
+                                getData();
+                                setState(() {});
+                              },
                               child: Container(
                                 alignment: Alignment.center,
                                 width: width * 0.4,
