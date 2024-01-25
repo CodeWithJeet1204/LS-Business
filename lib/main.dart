@@ -4,9 +4,10 @@ import 'package:find_easy/first_launch_detection.dart';
 import 'package:find_easy/page/intro/intro_page_view.dart';
 import 'package:find_easy/page/main/add/add_category.dart';
 import 'package:find_easy/page/main/main_page.dart';
-import 'package:find_easy/page/main/profile/business_details_page.dart';
-import 'package:find_easy/page/main/profile/categories_page.dart';
-import 'package:find_easy/page/main/profile/owner_details_page.dart';
+import 'package:find_easy/page/main/profile/data/product_page.dart';
+import 'package:find_easy/page/main/profile/details/business_details_page.dart';
+import 'package:find_easy/page/main/profile/data/categories_page.dart';
+import 'package:find_easy/page/main/profile/details/owner_details_page.dart';
 import 'package:find_easy/page/register/login_page.dart';
 import 'package:find_easy/page/main/profile/profile_page.dart';
 import 'package:find_easy/page/register/register_cred.dart';
@@ -54,6 +55,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Find Easy',
       theme: ThemeData(
+        progressIndicatorTheme: ProgressIndicatorThemeData(
+          color: primaryDark2,
+        ),
         appBarTheme: const AppBarTheme(
           // toolbarHeight: 50,
           backgroundColor: primary,
@@ -89,6 +93,7 @@ class MyApp extends StatelessWidget {
         '/businessDetails': (context) => const BusinessDetailsPage(),
         '/addCategory': (context) => const AddCategoryPage(),
         '/categoriesPage': (context) => const CategoriesPage(),
+        '/productsPage': (context) => const ProductsPage(),
       },
       debugShowCheckedModeBanner: false,
       home: isFirstLaunch

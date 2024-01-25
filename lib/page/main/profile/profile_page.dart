@@ -137,7 +137,11 @@ class _ProfilePageState extends State<ProfilePage> {
                           onPressed: () async {
                             await FirebaseAuth.instance.signOut();
                           },
-                          icon: const Icon(Icons.logout),
+                          icon: const Icon(
+                            Icons.logout,
+                            color: primaryDark,
+                          ),
+                          tooltip: "Log Out",
                         ),
                       ],
                     ),
@@ -461,6 +465,46 @@ class _ProfilePageState extends State<ProfilePage> {
                                       SizedBox(width: width * 0.05),
                                       const Text(
                                         "CATEGORIES",
+                                        style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.w800,
+                                          color: primaryDark2,
+                                        ),
+                                      ),
+                                      SizedBox(width: width * 0.384),
+                                      const Icon(
+                                        Icons.arrow_right_sharp,
+                                        size: 40,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: height * 0.025),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.025,
+                              ),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context)
+                                      .pushNamed('/productsPage');
+                                },
+                                child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  width: width,
+                                  height: 75,
+                                  decoration: BoxDecoration(
+                                    color: primary2,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      SizedBox(width: width * 0.05),
+                                      const Text(
+                                        "PRODUCTS",
                                         style: TextStyle(
                                           fontSize: 24,
                                           fontWeight: FontWeight.w800,

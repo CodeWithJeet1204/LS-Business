@@ -1,5 +1,5 @@
-import 'package:find_easy/page/main/profile/categories_page.dart';
-import 'package:find_easy/page/main/profile/post_page.dart';
+import 'package:find_easy/page/main/profile/data/categories_page.dart';
+import 'package:find_easy/page/main/profile/data/post_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:flutter/material.dart';
 

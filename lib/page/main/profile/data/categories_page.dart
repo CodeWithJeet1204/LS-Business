@@ -25,6 +25,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
   }
 
   void getData() async {
+    // ignore: unused_local_variable
     final categorySnapshot = store
         .collection('Business')
         .doc('Data')
