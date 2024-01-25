@@ -117,7 +117,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                               : CircleAvatar(
                                   radius: 50,
                                   child: IconButton(
-                                    icon: Icon(
+                                    icon: const Icon(
                                       Icons.camera_alt_outlined,
                                       size: 60,
                                     ),
@@ -181,7 +181,6 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                     image2 = imageFile.readAsBytesSync();
                                   });
                                 }
-                                print("Started");
                                 setState(() {
                                   isNext = true;
                                 });
@@ -192,14 +191,12 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                           : _image!
                                       : image2!,
                                 });
-                                print("Image Added");
                                 String userPhotoUrl =
                                     await StorageMethods().uploadImageToStorage(
                                   'Profile/Users',
                                   userImage["Image"]!,
                                   false,
                                 );
-                                print("Image URL DONE");
                                 !widget.numberChosen
                                     ? userFirestoreData.addAll(
                                         {
@@ -219,19 +216,20 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                         "Name": nameController.text.toString(),
                                         "Image": userPhotoUrl,
                                       });
-                                print("DONE");
                                 setState(() {
                                   isNext = false;
                                 });
                                 SystemChannels.textInput
                                     .invokeMethod('TextInput.hide');
-                                Navigator.of(context).pop();
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const BusinessRegisterDetailsPage(),
-                                  ),
-                                );
+                                if (context.mounted) {
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const BusinessRegisterDetailsPage(),
+                                    ),
+                                  );
+                                }
                               } catch (e) {
                                 setState(() {
                                   isNext = false;

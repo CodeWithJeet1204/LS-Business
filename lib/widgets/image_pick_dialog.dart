@@ -29,13 +29,13 @@ Uint8List? showImagePickDialog(BuildContext context) {
                     color: primaryDark2,
                     width: 1,
                   ),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(27),
                     topRight: Radius.circular(27),
                   ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 12),
+                child: const Padding(
+                  padding: EdgeInsets.only(left: 12),
                   child: Text(
                     "Choose Camera",
                     style: TextStyle(
@@ -59,13 +59,13 @@ Uint8List? showImagePickDialog(BuildContext context) {
                     color: primaryDark2,
                     width: 1,
                   ),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(27),
                     bottomRight: Radius.circular(27),
                   ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 12),
+                child: const Padding(
+                  padding: EdgeInsets.only(left: 12),
                   child: Text(
                     "Choose from Gallery",
                     style: TextStyle(

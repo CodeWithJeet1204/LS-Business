@@ -9,9 +9,9 @@ class PostsPage extends StatelessWidget {
     return GridView.builder(
       shrinkWrap: true,
       itemCount: 21,
-      physics: ClampingScrollPhysics(),
+      physics: const ClampingScrollPhysics(),
       gridDelegate:
-          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+          const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
       itemBuilder: ((context, index) {
         return Padding(
           padding: const EdgeInsets.all(2),

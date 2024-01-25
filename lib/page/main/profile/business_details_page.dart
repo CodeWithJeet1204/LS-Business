@@ -60,7 +60,9 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
 
       setState(() {});
     } catch (e) {
-      mySnackBar(context, e.toString());
+      if (context.mounted) {
+        mySnackBar(context, e.toString());
+      }
     }
   }
 
@@ -69,31 +71,30 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
     Uint8List? image = await pickImage(ImageSource.camera);
     im = image;
     if (im != null) {
-      print("AHHAHAHHAHA");
       Map<String, dynamic> updatedUserImage = {
         "Image": im,
       };
-      print("Image updates in Map");
       String userPhotoUrl = await StorageMethods().uploadImageToStorage(
         'Profile/Shops',
         updatedUserImage["Image"]!,
         false,
       );
-      print("Image updates in Storage");
       updatedUserImage = {
         "Image": userPhotoUrl,
       };
-      print("Image updates in URL");
       await FirebaseFirestore.instance
           .collection('Business')
           .doc('Owners')
           .collection('Shops')
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .update(updatedUserImage);
-      print("Image updates in Firestore");
-      Navigator.of(context).popAndPushNamed('/businessDetails');
+      if (context.mounted) {
+        Navigator.of(context).popAndPushNamed('/businessDetails');
+      }
     } else {
-      mySnackBar(context, "Image not selected");
+      if (context.mounted) {
+        mySnackBar(context, "Image not selected");
+      }
     }
   }
 
@@ -103,7 +104,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
         isSaving = false;
       });
       if (isChangingName && !isChangingAddress) {
-        if (nameController.text.length < 1) {
+        if (nameController.text.isEmpty) {
           mySnackBar(context, "Name should be atleast 1 characters long");
           setState(() {
             isSaving = false;
@@ -124,11 +125,13 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
           isSaving = false;
           isChangingName = false;
         });
-        Navigator.of(context).popAndPushNamed('/businessDetails');
+        if (context.mounted) {
+          Navigator.of(context).popAndPushNamed('/businessDetails');
+        }
 
         return;
       } else if (isChangingAddress && !isChangingName) {
-        if (addressController.text.length < 1) {
+        if (addressController.text.isEmpty) {
           mySnackBar(context, "Address should be atleast 1 characters long");
           return;
         } else {
@@ -146,13 +149,15 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
           isSaving = false;
           isChangingName = false;
         });
-        Navigator.of(context).popAndPushNamed('/businessDetails');
+        if (context.mounted) {
+          Navigator.of(context).popAndPushNamed('/businessDetails');
+        }
         return;
       } else if (isChangingAddress && isChangingName) {
-        if (addressController.text.length < 1) {
+        if (addressController.text.isEmpty) {
           mySnackBar(context, "Address should be atleast 1 characters long");
           return;
-        } else if (nameController.text.length < 1) {
+        } else if (nameController.text.isEmpty) {
           mySnackBar(context, "Name should be atleast 1 characters long");
         } else {
           Map<String, dynamic> updatedUserAddress = {
@@ -180,7 +185,9 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
           isChangingName = false;
           isChangingAddress = false;
         });
-        Navigator.of(context).popAndPushNamed('/businessDetails');
+        if (context.mounted) {
+          Navigator.of(context).popAndPushNamed('/businessDetails');
+        }
         return;
       }
       setState(() {
@@ -196,7 +203,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text("Business Details"),
+        title: const Text("Business Details"),
       ),
       body: /*!isDataLoaded
           ? Center(
@@ -230,7 +237,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             bottom: -(width * 0.0015),
                             child: IconButton.filledTonal(
                               onPressed: changeImage,
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.camera_alt_outlined,
                                 size: 40,
                               ),
@@ -265,7 +272,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             SizedBox(width: width * 0.05),
                             Text(
                               name,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 20,
                               ),
                             ),
@@ -276,7 +283,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                   isChangingName = true;
                                 });
                               },
-                              icon: Icon(Icons.edit),
+                              icon: const Icon(Icons.edit),
                               tooltip: "Edit Name",
                             ),
                             SizedBox(width: width * 0.03),
@@ -296,7 +303,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                           autofocus: true,
                           controller: addressController,
                           decoration: InputDecoration(
-                            hintText: "Change Number",
+                            hintText: "Change Address",
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
@@ -308,7 +315,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             SizedBox(width: width * 0.05),
                             Text(
                               address,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 16,
                               ),
                             ),
@@ -319,7 +326,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                   isChangingAddress = true;
                                 });
                               },
-                              icon: Icon(Icons.edit),
+                              icon: const Icon(Icons.edit),
                               tooltip: "Edit Phone Number",
                             ),
                             SizedBox(width: width * 0.03),

@@ -21,7 +21,7 @@ class _TabBarPageState extends State<TabBarPage> with TickerProviderStateMixin {
       initialIndex: 0,
       length: 2,
       vsync: this,
-      animationDuration: Duration(milliseconds: 400),
+      animationDuration: const Duration(milliseconds: 400),
     );
     return Column(
       children: [
@@ -33,7 +33,7 @@ class _TabBarPageState extends State<TabBarPage> with TickerProviderStateMixin {
               color: primaryDark.withOpacity(0.8),
             ),
           ),
-          indicatorPadding: EdgeInsets.only(
+          indicatorPadding: const EdgeInsets.only(
             bottom: 10,
             top: 8,
             left: -16,
@@ -43,18 +43,18 @@ class _TabBarPageState extends State<TabBarPage> with TickerProviderStateMixin {
           indicatorWeight: 2,
           indicatorSize: TabBarIndicatorSize.label,
           labelColor: primaryDark,
-          labelStyle: TextStyle(
+          labelStyle: const TextStyle(
             letterSpacing: 1,
             fontWeight: FontWeight.w800,
           ),
-          unselectedLabelStyle: TextStyle(
+          unselectedLabelStyle: const TextStyle(
             letterSpacing: 0,
             fontWeight: FontWeight.w500,
           ),
           dividerColor: primary,
           indicatorColor: primaryDark,
           controller: tabController,
-          tabs: [
+          tabs: const [
             Tab(
               text: "POSTS",
             ),
@@ -67,7 +67,7 @@ class _TabBarPageState extends State<TabBarPage> with TickerProviderStateMixin {
           height: widget.height * 0.93,
           child: TabBarView(
             controller: tabController,
-            children: [
+            children: const [
               PostsPage(),
               CategoriesPage(),
             ],

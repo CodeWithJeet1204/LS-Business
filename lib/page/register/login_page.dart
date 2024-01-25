@@ -307,7 +307,7 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
                 Expanded(
-                  flex: 4,
+                  flex: 2,
                   child: Container(),
                 ),
                 Row(
@@ -329,7 +329,7 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
                 Expanded(
-                  flex: 1,
+                  flex: 2,
                   child: Container(),
                 ),
               ],

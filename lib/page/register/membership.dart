@@ -375,12 +375,11 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                             if (context.mounted) {
                               Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
-                                    builder: (context) => MainPage()),
+                                    builder: (context) => const MainPage()),
                                 (route) => false,
                               );
                             }
                           }
-                          print(FirebaseAuth.instance.currentUser!.email);
                         } catch (e) {
                           setState(() {
                             isPaying = false;

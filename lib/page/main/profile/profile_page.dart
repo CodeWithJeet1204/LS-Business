@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/page/main/profile/tab_bar_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,7 +19,8 @@ class _ProfilePageState extends State<ProfilePage> {
   String address = "";
   String type = "";
   String owner = "";
-  String photoUrl = "";
+  String businessPhotoUrl = "";
+  String userPhotoUrl = "";
   String phoneNo = "";
   bool hideNameOverflow = true;
   bool showbtn = true;
@@ -67,6 +67,7 @@ class _ProfilePageState extends State<ProfilePage> {
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .get();
       userData = userSnap.data()!;
+
       DocumentSnapshot<Map<String, dynamic>> businessSnap =
           await FirebaseFirestore.instance
               .collection('Business')
@@ -75,16 +76,20 @@ class _ProfilePageState extends State<ProfilePage> {
               .doc(FirebaseAuth.instance.currentUser!.uid)
               .get();
       businessData = businessSnap.data()!;
+
       setState(() {
         owner = userData["Name"];
+        userPhotoUrl = userData["Image"];
         phoneNo = userData["Phone Number"];
         name = businessData['Name'];
         type = businessData['Type'];
-        photoUrl = businessData["Image"];
+        businessPhotoUrl = businessData["Image"];
         address = businessData["Address"];
       });
     } catch (e) {
-      mySnackBar(context, e.toString());
+      if (context.mounted) {
+        mySnackBar(context, e.toString());
+      }
     }
   }
 
@@ -114,7 +119,7 @@ class _ProfilePageState extends State<ProfilePage> {
       //   title: Text("PROFILE"),
       // ),
       body: !isDataLoaded
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(
                 color: primaryDark,
               ),
@@ -126,13 +131,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     (BuildContext context, bool innerBoxIsScrolled) {
                   return [
                     SliverAppBar(
-                      title: Text("PROFILE"),
+                      title: const Text("PROFILE"),
                       actions: [
                         IconButton(
                           onPressed: () async {
                             await FirebaseAuth.instance.signOut();
                           },
-                          icon: Icon(Icons.logout),
+                          icon: const Icon(Icons.logout),
                         ),
                       ],
                     ),
@@ -142,7 +147,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   builder: (context, constraints) {
                     final double width = constraints.maxWidth;
                     final double height = constraints.maxHeight;
-                    return ListView(
+                    return Column(
                       children: [
                         Container(
                           height: height * 0.28,
@@ -163,13 +168,13 @@ class _ProfilePageState extends State<ProfilePage> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  photoUrl != ""
+                                  businessPhotoUrl != ""
                                       ? ClipOval(
                                           child: CircleAvatar(
                                             radius: 40,
                                             backgroundColor: primary2,
                                             backgroundImage:
-                                                NetworkImage(photoUrl),
+                                                NetworkImage(businessPhotoUrl),
                                           ),
                                         )
                                       : Container(),
@@ -185,7 +190,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           ? hideNameOverflow
                                               ? GestureDetector(
                                                   onTap: textOnTap,
-                                                  child: Container(
+                                                  child: SizedBox(
                                                     width: width * 0.53,
                                                     child: Text(
                                                       name.toUpperCase(),
@@ -218,7 +223,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                         TextOverflow.ellipsis,
                                                   ),
                                                 )
-                                          : Container(
+                                          : SizedBox(
                                               width: width * 0.6,
                                               child: Text(
                                                 name.toUpperCase(),
@@ -232,7 +237,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                             ),
-                                      Container(
+                                      SizedBox(
                                         width: width * 0.33,
                                         child: Text(
                                           type,
@@ -255,7 +260,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               Container(
                                 width: width,
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                     horizontal: 8, vertical: 8),
                                 decoration: BoxDecoration(
                                   color: primary2.withOpacity(1),
@@ -272,18 +277,37 @@ class _ProfilePageState extends State<ProfilePage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          owner,
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            color: primaryDark.withOpacity(0.9),
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                          textAlign: TextAlign.start,
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            userPhotoUrl != ""
+                                                ? ClipOval(
+                                                    child: CircleAvatar(
+                                                      radius: 10,
+                                                      backgroundColor: primary2,
+                                                      backgroundImage:
+                                                          NetworkImage(
+                                                              userPhotoUrl),
+                                                    ),
+                                                  )
+                                                : Container(),
+                                            SizedBox(width: width * 0.01),
+                                            Text(
+                                              owner,
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                color: primaryDark
+                                                    .withOpacity(0.9),
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                              textAlign: TextAlign.start,
+                                            ),
+                                          ],
                                         ),
                                         Text(
                                           address,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontWeight: FontWeight.w500,
                                             color: primaryDark2,
                                           ),
@@ -292,8 +316,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                     IconButton(
                                       onPressed: () {},
-                                      icon: Icon(Icons.call_outlined),
-                                      tooltip: "Call - ${phoneNo}",
+                                      icon: const Icon(Icons.call_outlined),
+                                      tooltip: "Call - $phoneNo",
                                     ),
                                   ],
                                 ),
@@ -313,15 +337,16 @@ class _ProfilePageState extends State<ProfilePage> {
                               },
                               child: Container(
                                 alignment: Alignment.center,
-                                width: width * 0.4,
+                                width: width * 0.45,
                                 height: height * 0.05,
                                 decoration: BoxDecoration(
                                   color: primary3,
                                   borderRadius: BorderRadius.circular(6),
                                 ),
-                                child: Text(
+                                child: const Text(
                                   "Owner Details",
                                   style: TextStyle(
+                                    fontSize: 18,
                                     color: primaryDark,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -337,15 +362,16 @@ class _ProfilePageState extends State<ProfilePage> {
                               },
                               child: Container(
                                 alignment: Alignment.center,
-                                width: width * 0.4,
+                                width: width * 0.45,
                                 height: height * 0.05,
                                 decoration: BoxDecoration(
                                   color: primary3,
                                   borderRadius: BorderRadius.circular(6),
                                 ),
-                                child: Text(
+                                child: const Text(
                                   "Business Details",
                                   style: TextStyle(
+                                    fontSize: 18,
                                     color: primaryDark,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -354,7 +380,105 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ],
                         ),
-                        TabBarPage(height: height),
+                        const Divider(),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.03,
+                                vertical: height * 0.01,
+                              ),
+                              child: const Text(
+                                "VIEW",
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.025,
+                              ),
+                              child: GestureDetector(
+                                // onTap: () {
+                                //   Navigator.of(context)
+                                //       .pushNamed('/categoriesPage');
+                                // },
+                                child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  width: width,
+                                  height: 75,
+                                  decoration: BoxDecoration(
+                                    color: primary2,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      SizedBox(width: width * 0.05),
+                                      const Text(
+                                        "POSTS",
+                                        style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.w800,
+                                          color: primaryDark2,
+                                        ),
+                                      ),
+                                      SizedBox(width: width * 0.57),
+                                      const Icon(
+                                        Icons.arrow_right_sharp,
+                                        size: 40,
+                                      ),
+                                      SizedBox(width: width * 0.0),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: height * 0.025),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.025,
+                              ),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context)
+                                      .pushNamed('/categoriesPage');
+                                },
+                                child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  width: width,
+                                  height: 75,
+                                  decoration: BoxDecoration(
+                                    color: primary2,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      SizedBox(width: width * 0.05),
+                                      const Text(
+                                        "CATEGORIES",
+                                        style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.w800,
+                                          color: primaryDark2,
+                                        ),
+                                      ),
+                                      SizedBox(width: width * 0.384),
+                                      const Icon(
+                                        Icons.arrow_right_sharp,
+                                        size: 40,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     );
                   },

@@ -1,4 +1,5 @@
 import 'package:find_easy/page/main/add/add_post_page.dart';
+import 'package:find_easy/page/main/add/add_product_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +21,7 @@ class _AddPageState extends State<AddPage> {
     return Scaffold(
       backgroundColor: primary,
       appBar: AppBar(
-        title: Text("ADD"),
+        title: const Text("ADD"),
         elevation: 1,
         shadowColor: primary2,
       ),
@@ -46,15 +47,15 @@ class _AddPageState extends State<AddPage> {
                       });
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: ((context) => AddPostPage()),
+                          builder: ((context) => const AddPostPage()),
                         ),
                       );
                     },
                     child: AnimatedSize(
-                      duration: Duration(milliseconds: 100),
-                      reverseDuration: Duration(milliseconds: 100),
+                      duration: const Duration(milliseconds: 100),
+                      reverseDuration: const Duration(milliseconds: 100),
                       child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 12),
+                        margin: const EdgeInsets.symmetric(horizontal: 12),
                         width: isPressed1 ? width * 0.9 : width,
                         height: isPressed1 ? height * 0.19 : height * 0.2,
                         decoration: BoxDecoration(
@@ -65,7 +66,7 @@ class _AddPageState extends State<AddPage> {
                           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SizedBox(width: width * 0.1),
-                            Text(
+                            const Text(
                               "POST",
                               style: TextStyle(
                                 color: primaryDark,
@@ -74,7 +75,7 @@ class _AddPageState extends State<AddPage> {
                               ),
                             ),
                             Expanded(child: Container()),
-                            Icon(
+                            const Icon(
                               Icons.arrow_circle_up_outlined,
                               size: 60,
                               color: primaryDark2,
@@ -98,12 +99,13 @@ class _AddPageState extends State<AddPage> {
                       setState(() {
                         isPressed2 = false;
                       });
+                      Navigator.of(context).pushNamed('/addCategory');
                     },
                     child: AnimatedSize(
-                      duration: Duration(milliseconds: 100),
-                      reverseDuration: Duration(milliseconds: 100),
+                      duration: const Duration(milliseconds: 100),
+                      reverseDuration: const Duration(milliseconds: 100),
                       child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 12),
+                        margin: const EdgeInsets.symmetric(horizontal: 12),
                         width: isPressed2 ? width * 0.9 : width,
                         height: isPressed2 ? height * 0.19 : height * 0.2,
                         decoration: BoxDecoration(
@@ -113,7 +115,7 @@ class _AddPageState extends State<AddPage> {
                         child: Row(
                           children: [
                             SizedBox(width: width * 0.1),
-                            Text(
+                            const Text(
                               "CATEGORY",
                               style: TextStyle(
                                 color: primaryDark,
@@ -122,7 +124,7 @@ class _AddPageState extends State<AddPage> {
                               ),
                             ),
                             Expanded(child: Container()),
-                            Icon(
+                            const Icon(
                               Icons.apps_outlined,
                               size: 60,
                               color: primaryDark2,
@@ -146,12 +148,17 @@ class _AddPageState extends State<AddPage> {
                       setState(() {
                         isPressed3 = false;
                       });
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: ((context) => const AddProductPage()),
+                        ),
+                      );
                     },
                     child: AnimatedSize(
-                      duration: Duration(milliseconds: 100),
-                      reverseDuration: Duration(milliseconds: 100),
+                      duration: const Duration(milliseconds: 100),
+                      reverseDuration: const Duration(milliseconds: 100),
                       child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 12),
+                        margin: const EdgeInsets.symmetric(horizontal: 12),
                         width: isPressed3 ? width * 0.9 : width,
                         height: isPressed3 ? height * 0.19 : height * 0.2,
                         decoration: BoxDecoration(
@@ -162,7 +169,7 @@ class _AddPageState extends State<AddPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SizedBox(width: width * 0.1),
-                            Text(
+                            const Text(
                               "PRODUCTS",
                               style: TextStyle(
                                 color: primaryDark,
@@ -171,7 +178,7 @@ class _AddPageState extends State<AddPage> {
                               ),
                             ),
                             Expanded(child: Container()),
-                            Icon(
+                            const Icon(
                               Icons.shopping_bag_outlined,
                               size: 60,
                               color: primaryDark2,

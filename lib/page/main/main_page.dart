@@ -13,8 +13,8 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int current = 1;
   List<Widget> currentPage = [
-    AddPage(),
-    ProfilePage(),
+    const AddPage(),
+    const ProfilePage(),
   ];
 
   void changePage(value) {
@@ -28,11 +28,11 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: primary2,
-        selectedLabelStyle: TextStyle(
+        selectedLabelStyle: const TextStyle(
           fontWeight: FontWeight.w600,
           color: primaryDark,
         ),
-        selectedIconTheme: IconThemeData(
+        selectedIconTheme: const IconThemeData(
           size: 28,
           color: primaryDark2,
         ),
@@ -40,7 +40,7 @@ class _MainPageState extends State<MainPage> {
         onTap: (value) {
           changePage(value);
         },
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(
               Icons.add_circle_outline,

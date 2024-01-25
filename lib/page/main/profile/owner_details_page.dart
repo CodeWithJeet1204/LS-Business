@@ -56,7 +56,9 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
 
       setState(() {});
     } catch (e) {
-      mySnackBar(context, e.toString());
+      if (context.mounted) {
+        mySnackBar(context, e.toString());
+      }
     }
   }
 
@@ -65,31 +67,30 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
     Uint8List? image = await pickImage(ImageSource.camera);
     im = image;
     if (im != null) {
-      print("AHHAHAHHAHA");
       Map<String, dynamic> updatedUserImage = {
         "Image": im,
       };
-      print("Image updates in Map");
       String userPhotoUrl = await StorageMethods().uploadImageToStorage(
         'Profile/Users',
         updatedUserImage["Image"]!,
         false,
       );
-      print("Image updates in Storage");
       updatedUserImage = {
         "Image": userPhotoUrl,
       };
-      print("Image updates in URL");
       await FirebaseFirestore.instance
           .collection('Business')
           .doc('Owners')
           .collection('Users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .update(updatedUserImage);
-      print("Image updates in Firestore");
-      Navigator.of(context).popAndPushNamed('/ownerDetails');
+      if (context.mounted) {
+        Navigator.of(context).popAndPushNamed('/ownerDetails');
+      }
     } else {
-      mySnackBar(context, "Image not selected");
+      if (context.mounted) {
+        mySnackBar(context, "Image not selected");
+      }
     }
   }
 
@@ -99,7 +100,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
         isSaving = false;
       });
       if (isChangingName && !isChangingNumber) {
-        if (nameController.text.length < 1) {
+        if (nameController.text.isEmpty) {
           mySnackBar(context, "Name should be atleast 1 characters long");
           setState(() {
             isSaving = false;
@@ -121,7 +122,9 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
           isChangingName = false;
           isChangingNumber = false;
         });
-        Navigator.of(context).popAndPushNamed('/ownerDetails');
+        if (context.mounted) {
+          Navigator.of(context).popAndPushNamed('/ownerDetails');
+        }
 
         return;
       } else if (!isChangingName && isChangingNumber) {
@@ -146,12 +149,14 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
             isChangingName = false;
             isChangingNumber = false;
           });
-          Navigator.of(context).popAndPushNamed('/ownerDetails');
+          if (context.mounted) {
+            Navigator.of(context).popAndPushNamed('/ownerDetails');
+          }
 
           return;
         }
       } else if (isChangingName && isChangingNumber) {
-        if (nameController.text.length < 1) {
+        if (nameController.text.isEmpty) {
           mySnackBar(context, "Name should be atleast 1 characters long");
           setState(() {
             isSaving = false;
@@ -191,14 +196,18 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
             isChangingName = false;
             isChangingNumber = false;
           });
-          Navigator.of(context).popAndPushNamed('/ownerDetails');
+          if (context.mounted) {
+            Navigator.of(context).popAndPushNamed('/ownerDetails');
+          }
         }
       }
       setState(() {
         isSaving = false;
       });
     } catch (e) {
-      mySnackBar(context, e.toString());
+      if (context.mounted) {
+        mySnackBar(context, e.toString());
+      }
     }
   }
 
@@ -207,7 +216,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text("Owner Details"),
+        title: const Text("Owner Details"),
       ),
       body: /*!isDataLoaded
           ? Center(
@@ -241,7 +250,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                             bottom: -(width * 0.0015),
                             child: IconButton.filledTonal(
                               onPressed: changeImage,
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.camera_alt_outlined,
                                 size: 40,
                               ),
@@ -276,7 +285,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                             SizedBox(width: width * 0.05),
                             Text(
                               name,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 20,
                               ),
                             ),
@@ -287,7 +296,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                   isChangingName = true;
                                 });
                               },
-                              icon: Icon(Icons.edit),
+                              icon: const Icon(Icons.edit),
                               tooltip: "Edit Name",
                             ),
                             SizedBox(width: width * 0.03),
@@ -319,7 +328,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                             SizedBox(width: width * 0.05),
                             Text(
                               phoneNo,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 16,
                               ),
                             ),
@@ -330,7 +339,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                   isChangingNumber = true;
                                 });
                               },
-                              icon: Icon(Icons.edit),
+                              icon: const Icon(Icons.edit),
                               tooltip: "Edit Phone Number",
                             ),
                             SizedBox(width: width * 0.03),

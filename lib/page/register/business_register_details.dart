@@ -101,7 +101,7 @@ class _BusinessRegisterDetailsPageState
                     : CircleAvatar(
                         radius: 50,
                         child: IconButton(
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.camera_alt_outlined,
                             size: 60,
                           ),
@@ -243,14 +243,16 @@ class _BusinessRegisterDetailsPageState
 
                               SystemChannels.textInput
                                   .invokeMethod('TextInput.hide');
-                              Navigator.of(context).pop();
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: ((context) => SelectMembershipPage(
-                                        uuid: uuid,
-                                      )),
-                                ),
-                              );
+                              if (context.mounted) {
+                                Navigator.of(context).pop();
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: ((context) => SelectMembershipPage(
+                                          uuid: uuid,
+                                        )),
+                                  ),
+                                );
+                              }
                               setState(() {
                                 isNext = false;
                               });

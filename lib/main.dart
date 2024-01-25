@@ -2,17 +2,21 @@
 
 import 'package:find_easy/first_launch_detection.dart';
 import 'package:find_easy/page/intro/intro_page_view.dart';
+import 'package:find_easy/page/main/add/add_category.dart';
 import 'package:find_easy/page/main/main_page.dart';
 import 'package:find_easy/page/main/profile/business_details_page.dart';
+import 'package:find_easy/page/main/profile/categories_page.dart';
 import 'package:find_easy/page/main/profile/owner_details_page.dart';
 import 'package:find_easy/page/register/login_page.dart';
 import 'package:find_easy/page/main/profile/profile_page.dart';
 import 'package:find_easy/page/register/register_cred.dart';
 import 'package:find_easy/page/register/register_pay.dart';
+import 'package:find_easy/provider/category_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +29,16 @@ void main() async {
       storageBucket: 'find-easy-1204.appspot.com',
     ),
   );
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => CategoryProvider(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
   if (FirebaseAuth.instance.currentUser == null) {
     print("Not signed in");
   } else {
@@ -41,7 +54,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Find Easy',
       theme: ThemeData(
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           // toolbarHeight: 50,
           backgroundColor: primary,
           foregroundColor: primaryDark,
@@ -55,7 +68,7 @@ class MyApp extends StatelessWidget {
             color: primaryDark,
           ),
         ),
-        iconButtonTheme: IconButtonThemeData(
+        iconButtonTheme: const IconButtonThemeData(
           style: ButtonStyle(
             iconColor: MaterialStatePropertyAll(
               primaryDark,
@@ -74,6 +87,8 @@ class MyApp extends StatelessWidget {
         '/registerCred': (context) => const RegisterCredPage(),
         '/ownerDetails': (context) => const OwnerDetailsPage(),
         '/businessDetails': (context) => const BusinessDetailsPage(),
+        '/addCategory': (context) => const AddCategoryPage(),
+        '/categoriesPage': (context) => const CategoriesPage(),
       },
       debugShowCheckedModeBanner: false,
       home: isFirstLaunch
