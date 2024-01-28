@@ -1,5 +1,5 @@
 import 'package:find_easy/page/main/add/add_post_page.dart';
-import 'package:find_easy/page/main/add/add_product_page.dart';
+import 'package:find_easy/page/main/add/add_product_page_1.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -150,7 +150,7 @@ class _AddPageState extends State<AddPage> {
                       });
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: ((context) => const AddProductPage()),
+                          builder: ((context) => const AddProductPage1()),
                         ),
                       );
                     },

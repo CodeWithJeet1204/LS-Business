@@ -1,7 +1,7 @@
-import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/firebase/storage_methods.dart';
+import 'package:find_easy/page/main/add/add_product_page_2.dart';
 import 'package:find_easy/provider/category_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
@@ -13,14 +13,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
-class AddProductPage extends StatefulWidget {
-  const AddProductPage({super.key});
+class AddProductPage1 extends StatefulWidget {
+  const AddProductPage1({super.key});
 
   @override
-  State<AddProductPage> createState() => _AddProductPageState();
+  State<AddProductPage1> createState() => _AddProductPage1State();
 }
 
-class _AddProductPageState extends State<AddProductPage> {
+class _AddProductPage1State extends State<AddProductPage1> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   final storage = StorageMethods();
@@ -28,14 +28,18 @@ class _AddProductPageState extends State<AddProductPage> {
   final productKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
-  final TextEditingController tagController = TextEditingController();
+  final TextEditingController brandController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController otherInfoController = TextEditingController();
+  final TextEditingController otherInfoValueController =
+      TextEditingController();
   bool isAddingProduct = false;
   final List<File> _image = [];
   int currentImageIndex = 0;
   String? selectedCategory;
   final List<String> _imageDownloadUrl = [];
   final ImagePicker picker = ImagePicker();
-  List<String> tagList = [];
+  List<String> otherInfoList = [];
   bool isFit = true;
 
   void addProductImages() async {
@@ -68,6 +72,13 @@ class _AddProductPageState extends State<AddProductPage> {
       if (priceController.text.toString().length > 10) {
         return mySnackBar(context, "Max Price is 100 Cr.");
       }
+      if (priceController.text.toString().isNotEmpty &&
+          // ignore: unnecessary_null_comparison
+          priceController.text.toString() != null) {
+        if (double.parse(priceController.text.toString()) <= 0.999) {
+          return mySnackBar(context, "Min Price is 1 Rs.");
+        }
+      }
       try {
         setState(() {
           isAddingProduct = true;
@@ -91,15 +102,6 @@ class _AddProductPageState extends State<AddProductPage> {
             }
           }
         }
-        // ignore: avoid_function_literals_in_foreach_calls
-        // _image.forEach((element) async {
-        //   String url = await storage.uploadImageToStorage(
-        //     'Data/Products',
-        //     element!,
-        //     false,
-        //   );
-        //   _imageDownloadUrl.add(url);
-        // });
         final String productId = const Uuid().v4();
         await store
             .collection('Business')
@@ -109,9 +111,10 @@ class _AddProductPageState extends State<AddProductPage> {
             .set({
           'productName': nameController.text,
           'productPrice': priceController.text,
+          'productDescription': descriptionController.text,
+          'productBrand': brandController.text,
           'productId': productId,
           'images': _imageDownloadUrl,
-          'tags': tagList,
           'datetime': Timestamp.fromMillisecondsSinceEpoch(
             DateTime.now().millisecondsSinceEpoch,
           ),
@@ -120,10 +123,13 @@ class _AddProductPageState extends State<AddProductPage> {
         setState(() {
           isAddingProduct = false;
         });
-        Timer(const Duration(seconds: 1), () {
-          mySnackBar(context, "Product Added");
-          Navigator.of(context).pop();
-        });
+        mySnackBar(context, "Basic Info Added");
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: ((context) => AddProductPage2(productId: productId)),
+          ),
+          (route) => false,
+        );
       } catch (e) {
         setState(() {
           isAddingProduct = false;
@@ -135,20 +141,19 @@ class _AddProductPageState extends State<AddProductPage> {
     }
   }
 
-  void addTag(String tag) {
+  void addOtherInfo(String tag) {
     if (tag.length > 1) {
       setState(() {
-        tagList.add(tag);
-        tagController.clear();
+        otherInfoList.add(tag);
       });
     } else {
       mySnackBar(context, "Tag should be atleast 2 chars long");
     }
   }
 
-  void removeTag(int index) {
+  void removeOtherInfo(int index) {
     setState(() {
-      tagList.removeAt(index);
+      otherInfoList.removeAt(index);
     });
   }
 
@@ -168,17 +173,14 @@ class _AddProductPageState extends State<AddProductPage> {
       resizeToAvoidBottomInset: false,
       backgroundColor: primary,
       appBar: AppBar(
-        title: const Text("Add Product"),
+        title: const Text("Basic Info"),
         actions: [
-          IconButton(
+          MyTextButton(
             onPressed: () {
               addProduct();
             },
-            icon: const Icon(
-              Icons.ios_share_rounded,
-              size: 24,
-            ),
-            tooltip: "Add Product",
+            text: "NEXT",
+            textColor: primaryDark2,
           ),
         ],
         bottom: PreferredSize(
@@ -198,9 +200,6 @@ class _AddProductPageState extends State<AddProductPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // isAddingProduct
-                  //     ? const LinearProgressIndicator()
-                  //     : Container(),
                   _image.isNotEmpty
                       ? Column(
                           children: [
@@ -214,6 +213,10 @@ class _AddProductPageState extends State<AddProductPage> {
                                       height: 300,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(
+                                          color: primaryDark,
+                                          width: 3,
+                                        ),
                                         image: DecorationImage(
                                           fit: isFit ? BoxFit.cover : null,
                                           image: FileImage(
@@ -223,10 +226,6 @@ class _AddProductPageState extends State<AddProductPage> {
                                       ),
                                     ),
                                   ),
-                                  // Image.memory(
-                                  //   _image[currentImageIndex]!,
-                                  //   height: 300,
-                                  // ),
                                   Positioned(
                                     top: 0,
                                     right: 0,
@@ -297,14 +296,6 @@ class _AddProductPageState extends State<AddProductPage> {
                                             ),
                                           ),
                                         ),
-                                        // child: Padding(
-                                        //   padding: const EdgeInsets.all(2),
-                                        //   child: Image.asset(
-                                        //     _image[index],
-                                        //     height: height * 0.125,
-                                        //     width: height * 0.125 / 2,
-                                        //   ),
-                                        // ),
                                       );
                                     }),
                                   ),
@@ -395,7 +386,59 @@ class _AddProductPageState extends State<AddProductPage> {
                             }
                           },
                         ),
-                        SizedBox(height: height * 0.025),
+                        SizedBox(height: height * 0.0125),
+                        TextFormField(
+                          controller: descriptionController,
+                          keyboardType: TextInputType.text,
+                          minLines: 1,
+                          maxLines: 10,
+                          maxLength: 500,
+                          decoration: const InputDecoration(
+                            hintText: "Description",
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: primaryDark2,
+                                width: 2,
+                              ),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value != null && value.isNotEmpty) {
+                              if (value.length > 0) {
+                                return null;
+                              } else {
+                                return "Description should be atleast 1 chars long";
+                              }
+                            } else {
+                              return "Enter Description";
+                            }
+                          },
+                        ),
+                        TextFormField(
+                          controller: brandController,
+                          decoration: const InputDecoration(
+                            hintText: "Brand Name",
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: primaryDark2,
+                                width: 2,
+                              ),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value != null) {
+                              if (value.length < 20 && value.isNotEmpty) {
+                                return null;
+                              } else {
+                                return "20 characters max.";
+                              }
+                            } else {
+                              return "Enter Brand Name";
+                            }
+                          },
+                        ),
+                        SizedBox(height: height * 0.0125),
+                        SizedBox(height: height * 0.005),
                         TextFormField(
                           controller: priceController,
                           keyboardType: TextInputType.number,
@@ -410,141 +453,61 @@ class _AddProductPageState extends State<AddProductPage> {
                           ),
                         ),
                         SizedBox(height: height * 0.0125),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: TextFormField(
-                                controller: tagController,
-                                maxLength: 16,
-                                maxLines: 1,
-                                decoration: const InputDecoration(
-                                  hintText: "Product Tags (Optional)",
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: primaryDark2,
-                                      width: 2,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            MyTextButton(
-                              onPressed: () {
-                                addTag(tagController.text.toString());
-                              },
-                              text: "Add",
-                              textColor: primaryDark2,
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: height * 0.01),
-                        tagList.isNotEmpty
-                            ? Container(
-                                width: width,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  color: primary3.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  shrinkWrap: true,
-                                  itemCount: tagList.length,
-                                  itemBuilder: ((context, index) {
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 4,
-                                        vertical: 2,
-                                      ),
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          color: primaryDark2.withOpacity(0.75),
-                                          borderRadius:
-                                              BorderRadius.circular(16),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 12),
-                                              child: Text(
-                                                tagList[index],
-                                                style: TextStyle(
-                                                  color: white,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 2),
-                                              child: IconButton(
-                                                onPressed: () {
-                                                  removeTag(index);
-                                                },
-                                                icon: Icon(
-                                                  Icons
-                                                      .highlight_remove_outlined,
-                                                  color: white,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  }),
-                                ),
-                              )
-                            : Container(),
                         SizedBox(height: height * 0.0125),
                         const Divider(),
                         SizedBox(height: height * 0.0125),
-                        Container(
-                          width: width * 0.6,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: primary3,
-                            borderRadius: BorderRadius.circular(12),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom,
                           ),
-                          child: DropdownButton(
-                            hint: const Text("Select Category"),
-                            style: const TextStyle(
-                              fontSize: 22,
-                              color: primaryDark2,
-                              fontWeight: FontWeight.w600,
+                          child: Container(
+                            width: width * 0.6,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: primary3,
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                            icon: const Icon(
-                              Icons.arrow_drop_down_outlined,
-                              color: Colors.black,
+                            child: DropdownButton(
+                              hint: const Text(
+                                "Select Category",
+                                style: TextStyle(
+                                  color: primaryDark2,
+                                ),
+                              ),
+                              style: const TextStyle(
+                                fontSize: 22,
+                                color: primaryDark2,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              icon: const Icon(
+                                Icons.arrow_drop_down_outlined,
+                                color: Colors.black,
+                              ),
+                              value: selectedCategory,
+                              dropdownColor: primary2,
+                              borderRadius: BorderRadius.circular(12),
+                              underline: const SizedBox(),
+                              items: categories.isNotEmpty
+                                  ? categories
+                                      .map((e) => DropdownMenuItem(
+                                            value: e,
+                                            child: Text(e),
+                                          ))
+                                      .toList()
+                                  : ['None']
+                                      .map((e) => DropdownMenuItem(
+                                            value: e,
+                                            child: Text(e),
+                                          ))
+                                      .toList(),
+                              onChanged: (value) {
+                                if (value != null) {
+                                  setState(() {
+                                    selectedCategory = value;
+                                  });
+                                }
+                              },
                             ),
-                            value: selectedCategory,
-                            dropdownColor: primary2,
-                            borderRadius: BorderRadius.circular(12),
-                            underline: const SizedBox(),
-                            items: categories.isNotEmpty
-                                ? categories
-                                    .map((e) => DropdownMenuItem(
-                                          value: e,
-                                          child: Text(e),
-                                        ))
-                                    .toList()
-                                : ['None']
-                                    .map((e) => DropdownMenuItem(
-                                          value: e,
-                                          child: Text(e),
-                                        ))
-                                    .toList(),
-                            onChanged: (value) {
-                              if (value != null) {
-                                setState(() {
-                                  selectedCategory = value;
-                                });
-                              }
-                            },
                           ),
                         ),
                       ],

@@ -13,6 +13,7 @@ import 'package:find_easy/page/main/profile/profile_page.dart';
 import 'package:find_easy/page/register/register_cred.dart';
 import 'package:find_easy/page/register/register_pay.dart';
 import 'package:find_easy/provider/category_provider.dart';
+import 'package:find_easy/provider/shop_type_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -35,6 +36,9 @@ void main() async {
       providers: [
         ChangeNotifierProvider(
           create: (_) => CategoryProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ShopTypeProvider(),
         ),
       ],
       child: const MyApp(),

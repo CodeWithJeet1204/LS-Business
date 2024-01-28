@@ -1,0 +1,53 @@
+import 'package:find_easy/utils/colors.dart';
+import 'package:flutter/material.dart';
+
+class InfoBox extends StatelessWidget {
+  const InfoBox({
+    super.key,
+    required this.headText,
+    required this.widget1,
+    required this.widget2,
+  });
+
+  final String headText;
+  final Widget widget1;
+  final Widget widget2;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+      child: Container(
+        padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: primary3.withOpacity(0.5),
+          border: Border.all(
+            color: primary3,
+            width: 3,
+          ),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              child: Text(
+                headText,
+                style: TextStyle(
+                  color: primaryDark,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            SizedBox(height: 4),
+            widget1,
+            SizedBox(height: 4),
+            widget2,
+          ],
+        ),
+      ),
+    );
+  }
+}
