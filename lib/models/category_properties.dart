@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 final Map<String, List<List<dynamic>>> categoryProperties = {
   'Grocery': [
-    // 1. Name, Values, one item
+    // 1. Name, Price, Hint Text, No of Answers, DropDown Items, TextInputType, Max Lines
     [
       'Category',
       'N/A',
@@ -739,6 +739,7 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
       ['Yes', 'No'],
       TextInputType.text,
       1,
+      true,
     ],
     [
       'Material',
@@ -748,15 +749,17 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
       [''],
       TextInputType.text,
       1,
+      true,
     ],
     [
-      'Weight',
+      'Weight (in grams)',
       'N/A',
-      'in Grams',
+      'Grams',
       1,
       ['Yes', 'No'],
       TextInputType.number,
       1,
+      true,
     ],
     [
       'Battery Powered',
@@ -765,6 +768,7 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
       2,
       ['Yes', 'No'], // 2 --> Required For DropDownMenu
       TextInputType.text, 1,
+      false,
     ],
     [
       'Age Preference',
@@ -774,6 +778,7 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
       ['3 - 5', '6 - 10', '10 - 18'],
       TextInputType.text,
       1,
+      false,
     ],
     [
       'Whats in the Box?',
@@ -783,6 +788,7 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
       [''],
       TextInputType.text,
       100,
+      true,
     ],
   ],
   'Sports Goods': [

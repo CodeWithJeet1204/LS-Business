@@ -392,7 +392,6 @@ class _AddProductPage1State extends State<AddProductPage1> {
                         SizedBox(height: height * 0.0125),
                         TextFormField(
                           controller: descriptionController,
-                          keyboardType: TextInputType.text,
                           minLines: 1,
                           maxLines: 10,
                           maxLength: 500,

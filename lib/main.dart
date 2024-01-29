@@ -4,9 +4,9 @@ import 'package:find_easy/first_launch_detection.dart';
 import 'package:find_easy/page/intro/intro_page_view.dart';
 import 'package:find_easy/page/main/add/add_category.dart';
 import 'package:find_easy/page/main/main_page.dart';
-import 'package:find_easy/page/main/profile/data/product_page.dart';
+import 'package:find_easy/page/main/profile/data/all_product_page.dart';
 import 'package:find_easy/page/main/profile/details/business_details_page.dart';
-import 'package:find_easy/page/main/profile/data/categories_page.dart';
+import 'package:find_easy/page/main/profile/data/all_categories_page.dart';
 import 'package:find_easy/page/main/profile/details/owner_details_page.dart';
 import 'package:find_easy/page/register/login_page.dart';
 import 'package:find_easy/page/main/profile/profile_page.dart';
@@ -96,8 +96,8 @@ class MyApp extends StatelessWidget {
         '/ownerDetails': (context) => const OwnerDetailsPage(),
         '/businessDetails': (context) => const BusinessDetailsPage(),
         '/addCategory': (context) => const AddCategoryPage(),
-        '/categoriesPage': (context) => const CategoriesPage(),
-        '/productsPage': (context) => const ProductsPage(),
+        '/categoriesPage': (context) => const AllCategoriesPage(),
+        '/productsPage': (context) => const AllProductsPage(),
       },
       debugShowCheckedModeBanner: false,
       home: isFirstLaunch

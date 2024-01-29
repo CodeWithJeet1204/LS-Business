@@ -166,6 +166,18 @@ class _AddProductPage2State extends State<AddProductPage2> {
           'propertyValue3': property3,
           'propertyValue4': property4,
           'propertyValue5': property5,
+          'propertyNoOfAnswers0': getNoOfAnswers(0),
+          'propertyNoOfAnswers1': getNoOfAnswers(1),
+          'propertyNoOfAnswers2': getNoOfAnswers(2),
+          'propertyNoOfAnswers3': getNoOfAnswers(3),
+          'propertyNoOfAnswers4': getNoOfAnswers(4),
+          'propertyNoOfAnswers5': getNoOfAnswers(5),
+          'propertyChangable0': getChangeBool(0),
+          'propertyChangable1': getChangeBool(1),
+          'propertyChangable2': getChangeBool(2),
+          'propertyChangable3': getChangeBool(3),
+          'propertyChangable4': getChangeBool(4),
+          'propertyChangable5': getChangeBool(5),
         });
         await store
             .collection('Business')
@@ -174,6 +186,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
             .doc(widget.productId)
             .update({
           'Properties': properties,
+          'Tags': tagList,
         });
         setState(() {
           isAddingProduct = false;
@@ -250,6 +263,10 @@ class _AddProductPage2State extends State<AddProductPage2> {
     return categoryProperties[shopTypes]![index][6];
   }
 
+  bool getChangeBool(int index) {
+    return categoryProperties[shopTypes]![index][7];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -285,7 +302,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                 child: Column(
                   children: [
                     // TAGS
-                    InfoBox(
+                    PropertyBox(
                       headText: "Tags",
                       widget1: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -381,7 +398,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                     ),
 
                     // PROPERTY 0
-                    InfoBox(
+                    PropertyBox(
                       headText: getPropertiesKeys(0),
                       widget1: getNoOfAnswers(0) == 1
                           ? TextFormField(
@@ -545,7 +562,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                     ),
 
                     // PROPERTY 1
-                    InfoBox(
+                    PropertyBox(
                       headText: getPropertiesKeys(1),
                       widget1: getNoOfAnswers(1) == 1
                           ? TextFormField(
@@ -709,7 +726,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                     ),
 
                     // PROPERTY 2
-                    InfoBox(
+                    PropertyBox(
                       headText: getPropertiesKeys(2),
                       widget1: getNoOfAnswers(2) == 1
                           ? TextFormField(
@@ -870,7 +887,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                               : Container(),
                     ),
                     // PROPERTY 3
-                    InfoBox(
+                    PropertyBox(
                       headText: getPropertiesKeys(3),
                       widget1: getNoOfAnswers(3) == 1
                           ? TextFormField(
@@ -1034,7 +1051,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                     ),
 
                     // PROPERTY 4
-                    InfoBox(
+                    PropertyBox(
                       headText: getPropertiesKeys(4),
                       widget1: getNoOfAnswers(4) == 1
                           ? TextFormField(
@@ -1198,7 +1215,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                     ),
 
                     // PROPERTY 5
-                    InfoBox(
+                    PropertyBox(
                       headText: getPropertiesKeys(5),
                       widget1: getNoOfAnswers(5) == 1
                           ? TextFormField(
@@ -1366,7 +1383,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                       padding: EdgeInsets.only(
                         bottom: MediaQuery.of(context).viewInsets.bottom,
                       ),
-                      child: InfoBox(
+                      child: PropertyBox(
                         headText: "Additional Info ?",
                         widget1: Column(
                           mainAxisAlignment: MainAxisAlignment.start,

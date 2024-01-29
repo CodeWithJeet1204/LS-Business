@@ -1,8 +1,8 @@
 import 'package:find_easy/utils/colors.dart';
 import 'package:flutter/material.dart';
 
-class InfoBox extends StatelessWidget {
-  const InfoBox({
+class PropertyBox extends StatelessWidget {
+  const PropertyBox({
     super.key,
     required this.headText,
     required this.widget1,

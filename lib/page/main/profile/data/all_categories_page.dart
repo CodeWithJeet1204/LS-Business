@@ -3,14 +3,14 @@ import 'package:find_easy/utils/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class CategoriesPage extends StatefulWidget {
-  const CategoriesPage({super.key});
+class AllCategoriesPage extends StatefulWidget {
+  const AllCategoriesPage({super.key});
 
   @override
-  State<CategoriesPage> createState() => _CategoriesPageState();
+  State<AllCategoriesPage> createState() => _AllCategoriesPageState();
 }
 
-class _CategoriesPageState extends State<CategoriesPage> {
+class _AllCategoriesPageState extends State<AllCategoriesPage> {
   final String categoryName = "Pens";
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore store = FirebaseFirestore.instance;

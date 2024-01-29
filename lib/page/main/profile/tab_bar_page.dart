@@ -1,5 +1,5 @@
-import 'package:find_easy/page/main/profile/data/categories_page.dart';
-import 'package:find_easy/page/main/profile/data/post_page.dart';
+import 'package:find_easy/page/main/profile/data/all_categories_page.dart';
+import 'package:find_easy/page/main/profile/data/all_post_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -68,8 +68,8 @@ class _TabBarPageState extends State<TabBarPage> with TickerProviderStateMixin {
           child: TabBarView(
             controller: tabController,
             children: const [
-              PostsPage(),
-              CategoriesPage(),
+              AllPostsPage(),
+              AllCategoriesPage(),
             ],
           ),
         ),

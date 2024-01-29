@@ -1,8 +1,8 @@
 import 'package:find_easy/utils/colors.dart';
 import 'package:flutter/material.dart';
 
-class PostsPage extends StatelessWidget {
-  const PostsPage({super.key});
+class AllPostsPage extends StatelessWidget {
+  const AllPostsPage({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/utils/colors.dart';
+import 'package:find_easy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -20,6 +21,34 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {
       hideNameOverflow = !hideNameOverflow;
     });
+  }
+
+  void signOut() async {
+    showDialog(
+      context: context,
+      builder: ((context) {
+        return AlertDialog(
+          title: Text('Sign Out?'),
+          content: Text('Are you sure\nYou want to Sign Out?'),
+          actions: [
+            MyTextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              text: 'No',
+              textColor: Colors.green,
+            ),
+            MyTextButton(
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+              },
+              text: 'Yes',
+              textColor: Colors.red,
+            ),
+          ],
+        );
+      }),
+    );
   }
 
   @override
@@ -47,9 +76,7 @@ class _ProfilePageState extends State<ProfilePage> {
         title: const Text("PROFILE"),
         actions: [
           IconButton(
-            onPressed: () async {
-              await FirebaseAuth.instance.signOut();
-            },
+            onPressed: signOut,
             icon: const Icon(
               Icons.logout,
               color: primaryDark,
@@ -342,23 +369,26 @@ class _ProfilePageState extends State<ProfilePage> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            SizedBox(width: width * 0.05),
-                            const Text(
-                              "POSTS",
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w800,
-                                color: primaryDark2,
+                            Padding(
+                              padding: const EdgeInsets.only(left: 16),
+                              child: const Text(
+                                "POSTS",
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w800,
+                                  color: primaryDark2,
+                                ),
                               ),
                             ),
-                            SizedBox(width: width * 0.57),
-                            const Icon(
-                              Icons.arrow_right_sharp,
-                              size: 40,
+                            Padding(
+                              padding: const EdgeInsets.only(right: 4),
+                              child: const Icon(
+                                Icons.arrow_right_sharp,
+                                size: 40,
+                              ),
                             ),
-                            SizedBox(width: width * 0.0),
                           ],
                         ),
                       ),
@@ -382,21 +412,25 @@ class _ProfilePageState extends State<ProfilePage> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            SizedBox(width: width * 0.05),
-                            const Text(
-                              "CATEGORIES",
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w800,
-                                color: primaryDark2,
+                            Padding(
+                              padding: const EdgeInsets.only(left: 16),
+                              child: const Text(
+                                "CATEGORIES",
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w800,
+                                  color: primaryDark2,
+                                ),
                               ),
                             ),
-                            SizedBox(width: width * 0.384),
-                            const Icon(
-                              Icons.arrow_right_sharp,
-                              size: 40,
+                            Padding(
+                              padding: const EdgeInsets.only(right: 4),
+                              child: const Icon(
+                                Icons.arrow_right_sharp,
+                                size: 40,
+                              ),
                             ),
                           ],
                         ),
@@ -421,21 +455,25 @@ class _ProfilePageState extends State<ProfilePage> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            SizedBox(width: width * 0.05),
-                            const Text(
-                              "PRODUCTS",
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w800,
-                                color: primaryDark2,
+                            Padding(
+                              padding: const EdgeInsets.only(left: 16),
+                              child: const Text(
+                                "PRODUCTS",
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w800,
+                                  color: primaryDark2,
+                                ),
                               ),
                             ),
-                            SizedBox(width: width * 0.384),
-                            const Icon(
-                              Icons.arrow_right_sharp,
-                              size: 40,
+                            Padding(
+                              padding: const EdgeInsets.only(right: 4),
+                              child: const Icon(
+                                Icons.arrow_right_sharp,
+                                size: 40,
+                              ),
                             ),
                           ],
                         ),
