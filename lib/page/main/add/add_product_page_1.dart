@@ -123,13 +123,15 @@ class _AddProductPage1State extends State<AddProductPage1> {
         setState(() {
           isAddingProduct = false;
         });
-        mySnackBar(context, "Basic Info Added");
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: ((context) => AddProductPage2(productId: productId)),
-          ),
-          (route) => false,
-        );
+        if (context.mounted) {
+          mySnackBar(context, "Basic Info Added");
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: ((context) => AddProductPage2(productId: productId)),
+            ),
+            (route) => false,
+          );
+        }
       } catch (e) {
         setState(() {
           isAddingProduct = false;
@@ -184,8 +186,9 @@ class _AddProductPage1State extends State<AddProductPage1> {
           ),
         ],
         bottom: PreferredSize(
-          preferredSize:
-              isAddingProduct ? Size(double.infinity, 10) : Size(0, 0),
+          preferredSize: isAddingProduct
+              ? const Size(double.infinity, 10)
+              : const Size(0, 0),
           child:
               isAddingProduct ? const LinearProgressIndicator() : Container(),
         ),
@@ -404,7 +407,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                           ),
                           validator: (value) {
                             if (value != null && value.isNotEmpty) {
-                              if (value.length > 0) {
+                              if (value.isNotEmpty) {
                                 return null;
                               } else {
                                 return "Description should be atleast 1 chars long";

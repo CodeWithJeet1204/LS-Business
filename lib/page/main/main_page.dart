@@ -4,7 +4,12 @@ import 'package:find_easy/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+  const MainPage({
+    super.key,
+    this.index,
+  });
+
+  final int? index;
 
   @override
   State<MainPage> createState() => _MainPageState();

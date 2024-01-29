@@ -18,7 +18,7 @@ class InfoBox extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
       child: Container(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: primary3.withOpacity(0.5),
           border: Border.all(
@@ -34,16 +34,16 @@ class InfoBox extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 6),
               child: Text(
                 headText,
-                style: TextStyle(
+                style: const TextStyle(
                   color: primaryDark,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             widget1,
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             widget2,
           ],
         ),

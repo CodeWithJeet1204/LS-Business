@@ -2,7 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/models/category_properties.dart';
-import 'package:find_easy/page/main/add/add_page.dart';
+import 'package:find_easy/page/main/main_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/additional_info_box.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
@@ -90,7 +90,6 @@ class _AddProductPage2State extends State<AddProductPage2> {
     if (productKey.currentState!.validate()) {
       if (property0.isEmpty) {
         if (getNoOfAnswers(0) == 1) {
-          print(property0Controller.text.toString().toUpperCase());
           property0.add(property0Controller.text.toString().toUpperCase());
         } else if (getNoOfAnswers(0) == 2) {
           return mySnackBar(context, "Select ${getPropertiesKeys(0)}");
@@ -101,7 +100,6 @@ class _AddProductPage2State extends State<AddProductPage2> {
       }
       if (property1.isEmpty) {
         if (getNoOfAnswers(1) == 1) {
-          print(property1Controller.text.toString().toUpperCase());
           property1.add(property1Controller.text.toString().toUpperCase());
         } else if (getNoOfAnswers(1) == 2) {
           return mySnackBar(context, "Select ${getPropertiesKeys(1)}");
@@ -112,7 +110,6 @@ class _AddProductPage2State extends State<AddProductPage2> {
       }
       if (property2.isEmpty) {
         if (getNoOfAnswers(2) == 1) {
-          print(property2Controller.text.toString().toUpperCase());
           property2.add(property2Controller.text.toString().toUpperCase());
         } else if (getNoOfAnswers(2) == 2) {
           return mySnackBar(context, "Select ${getPropertiesKeys(2)}");
@@ -123,7 +120,6 @@ class _AddProductPage2State extends State<AddProductPage2> {
       }
       if (property3.isEmpty) {
         if (getNoOfAnswers(3) == 1) {
-          print(property3Controller.text.toString().toUpperCase());
           property3.add(property3Controller.text.toString().toUpperCase());
         } else if (getNoOfAnswers(3) == 2) {
           return mySnackBar(context, "Select ${getPropertiesKeys(3)}");
@@ -134,7 +130,6 @@ class _AddProductPage2State extends State<AddProductPage2> {
       }
       if (property4.isEmpty) {
         if (getNoOfAnswers(4) == 1) {
-          print(property4Controller.text.toString().toUpperCase());
           property4.add(property4Controller.text.toString().toUpperCase());
         } else if (getNoOfAnswers(4) == 2) {
           return mySnackBar(context, "Select ${getPropertiesKeys(4)}");
@@ -145,7 +140,6 @@ class _AddProductPage2State extends State<AddProductPage2> {
       }
       if (property5.isEmpty) {
         if (getNoOfAnswers(5) == 1) {
-          print(property5Controller.text.toString().toUpperCase());
           property5.add(property5Controller.text.toString().toUpperCase());
         } else if (getNoOfAnswers(5) == 2) {
           return mySnackBar(context, "Select ${getPropertiesKeys(5)}");
@@ -184,13 +178,15 @@ class _AddProductPage2State extends State<AddProductPage2> {
         setState(() {
           isAddingProduct = false;
         });
-        mySnackBar(context, "Product Added Added");
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: ((context) => AddPage()),
-          ),
-          (route) => false,
-        );
+        if (context.mounted) {
+          mySnackBar(context, "Product Added Added");
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: ((context) => const MainPage(index: 0)),
+            ),
+            (route) => false,
+          );
+        }
       } catch (e) {
         setState(() {
           isAddingProduct = false;
@@ -214,7 +210,6 @@ class _AddProductPage2State extends State<AddProductPage2> {
   }
 
   Future<void> getShopType() async {
-    print(FirebaseAuth.instance.currentUser!.uid);
     final Future<String> shopType = FirebaseFirestore.instance
         .collection('Business')
         .doc('Owners')
@@ -229,7 +224,6 @@ class _AddProductPage2State extends State<AddProductPage2> {
     setState(() {
       shopTypes = shopTypes;
     });
-    print(shopTypes);
   }
 
   String getPropertiesKeys(int index) {
@@ -261,19 +255,20 @@ class _AddProductPage2State extends State<AddProductPage2> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Additional Info'),
+        title: const Text('Additional Info'),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
             onPressed: () {
               addProduct();
             },
-            icon: Icon(Icons.ios_share),
+            icon: const Icon(Icons.ios_share),
           ),
         ],
         bottom: PreferredSize(
-          preferredSize:
-              isAddingProduct ? Size(double.infinity, 10) : Size(0, 0),
+          preferredSize: isAddingProduct
+              ? const Size(double.infinity, 10)
+              : const Size(0, 0),
           child:
               isAddingProduct ? const LinearProgressIndicator() : Container(),
         ),
@@ -356,7 +351,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                             ),
                                             child: Text(
                                               tagList[index],
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 color: white,
                                                 fontWeight: FontWeight.bold,
                                               ),
@@ -369,7 +364,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                               onPressed: () {
                                                 removeTag(index);
                                               },
-                                              icon: Icon(
+                                              icon: const Icon(
                                                 Icons.highlight_remove_outlined,
                                                 color: white,
                                               ),
@@ -396,7 +391,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                               keyboardType: getPropertiesInputType(0),
                               decoration: InputDecoration(
                                 hintText: getPropertiesHintText(0),
-                                border: OutlineInputBorder(),
+                                border: const OutlineInputBorder(),
                               ),
                               validator: (value) {
                                 if (value != null && value.isNotEmpty) {
@@ -408,7 +403,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                             )
                           : getNoOfAnswers(0) == 2
                               ? Container(
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                     horizontal: 8,
                                     vertical: 4,
                                   ),
@@ -418,14 +413,14 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                   ),
                                   child: DropdownButton(
                                     dropdownColor: primary,
-                                    hint: Text("Select"),
+                                    hint: const Text("Select"),
                                     value: propertyValue0,
                                     underline: Container(),
                                     items: getDropDownItems(0)
                                         .map(
                                           (e) => DropdownMenuItem(
-                                            child: Text(e.toUpperCase()),
                                             value: e.toUpperCase(),
+                                            child: Text(e.toUpperCase()),
                                           ),
                                         )
                                         .toList(),
@@ -435,7 +430,6 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                           propertyValue0 = value;
                                           property0.clear();
                                           property0.add(propertyValue0!);
-                                          print(property0);
                                         }
                                       });
                                     },
@@ -449,7 +443,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                         keyboardType: getPropertiesInputType(0),
                                         decoration: InputDecoration(
                                           hintText: getPropertiesHintText(0),
-                                          border: OutlineInputBorder(),
+                                          border: const OutlineInputBorder(),
                                         ),
                                       ),
                                     ),
@@ -517,7 +511,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                 ),
                                                 child: Text(
                                                   property0[index],
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     color: white,
                                                     fontWeight: FontWeight.bold,
                                                   ),
@@ -533,7 +527,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                       property0.removeAt(index);
                                                     });
                                                   },
-                                                  icon: Icon(
+                                                  icon: const Icon(
                                                     Icons
                                                         .highlight_remove_outlined,
                                                     color: white,
@@ -561,7 +555,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                               keyboardType: getPropertiesInputType(1),
                               decoration: InputDecoration(
                                 hintText: getPropertiesHintText(1),
-                                border: OutlineInputBorder(),
+                                border: const OutlineInputBorder(),
                               ),
                               validator: (value) {
                                 if (value != null && value.isNotEmpty) {
@@ -573,7 +567,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                             )
                           : getNoOfAnswers(1) == 2
                               ? Container(
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                     horizontal: 8,
                                     vertical: 4,
                                   ),
@@ -583,14 +577,14 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                   ),
                                   child: DropdownButton(
                                     dropdownColor: primary,
-                                    hint: Text("Select"),
+                                    hint: const Text("Select"),
                                     value: propertyValue1,
                                     underline: Container(),
                                     items: getDropDownItems(1)
                                         .map(
                                           (e) => DropdownMenuItem(
-                                            child: Text(e.toUpperCase()),
                                             value: e.toUpperCase(),
+                                            child: Text(e.toUpperCase()),
                                           ),
                                         )
                                         .toList(),
@@ -600,7 +594,6 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                           propertyValue1 = value;
                                           property1.clear();
                                           property1.add(propertyValue1!);
-                                          print(property1);
                                         }
                                       });
                                     },
@@ -614,7 +607,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                         keyboardType: getPropertiesInputType(1),
                                         decoration: InputDecoration(
                                           hintText: getPropertiesHintText(1),
-                                          border: OutlineInputBorder(),
+                                          border: const OutlineInputBorder(),
                                         ),
                                       ),
                                     ),
@@ -682,7 +675,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                 ),
                                                 child: Text(
                                                   property1[index],
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     color: white,
                                                     fontWeight: FontWeight.bold,
                                                   ),
@@ -698,7 +691,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                       property1.removeAt(index);
                                                     });
                                                   },
-                                                  icon: Icon(
+                                                  icon: const Icon(
                                                     Icons
                                                         .highlight_remove_outlined,
                                                     color: white,
@@ -726,7 +719,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                               keyboardType: getPropertiesInputType(2),
                               decoration: InputDecoration(
                                 hintText: getPropertiesHintText(2),
-                                border: OutlineInputBorder(),
+                                border: const OutlineInputBorder(),
                               ),
                               validator: (value) {
                                 if (value != null && value.isNotEmpty) {
@@ -738,7 +731,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                             )
                           : getNoOfAnswers(2) == 2
                               ? Container(
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 4),
                                   decoration: BoxDecoration(
                                     color: primary3,
@@ -746,14 +739,14 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                   ),
                                   child: DropdownButton(
                                     dropdownColor: primary,
-                                    hint: Text("Select"),
+                                    hint: const Text("Select"),
                                     value: propertyValue2,
                                     underline: Container(),
                                     items: getDropDownItems(2)
                                         .map(
                                           (e) => DropdownMenuItem(
-                                            child: Text(e.toUpperCase()),
                                             value: e.toUpperCase(),
+                                            child: Text(e.toUpperCase()),
                                           ),
                                         )
                                         .toList(),
@@ -763,7 +756,6 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                           propertyValue2 = value;
                                           property2.clear();
                                           property2.add(propertyValue2!);
-                                          print(property2);
                                         }
                                       });
                                     },
@@ -777,7 +769,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                         keyboardType: getPropertiesInputType(2),
                                         decoration: InputDecoration(
                                           hintText: getPropertiesHintText(2),
-                                          border: OutlineInputBorder(),
+                                          border: const OutlineInputBorder(),
                                         ),
                                       ),
                                     ),
@@ -845,7 +837,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                 ),
                                                 child: Text(
                                                   property2[index],
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     color: white,
                                                     fontWeight: FontWeight.bold,
                                                   ),
@@ -861,7 +853,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                       property2.removeAt(index);
                                                     });
                                                   },
-                                                  icon: Icon(
+                                                  icon: const Icon(
                                                     Icons
                                                         .highlight_remove_outlined,
                                                     color: white,
@@ -888,7 +880,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                               keyboardType: getPropertiesInputType(3),
                               decoration: InputDecoration(
                                 hintText: getPropertiesHintText(3),
-                                border: OutlineInputBorder(),
+                                border: const OutlineInputBorder(),
                               ),
                               validator: (value) {
                                 if (value != null && value.isNotEmpty) {
@@ -900,7 +892,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                             )
                           : getNoOfAnswers(3) == 2
                               ? Container(
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                     horizontal: 8,
                                     vertical: 4,
                                   ),
@@ -910,14 +902,14 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                   ),
                                   child: DropdownButton(
                                     dropdownColor: primary,
-                                    hint: Text("Select"),
+                                    hint: const Text("Select"),
                                     value: propertyValue3,
                                     underline: Container(),
                                     items: getDropDownItems(3)
                                         .map(
                                           (e) => DropdownMenuItem(
-                                            child: Text(e.toUpperCase()),
                                             value: e.toUpperCase(),
+                                            child: Text(e.toUpperCase()),
                                           ),
                                         )
                                         .toList(),
@@ -927,7 +919,6 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                           propertyValue3 = value;
                                           property3.clear();
                                           property3.add(propertyValue3!);
-                                          print(property3);
                                         }
                                       });
                                     },
@@ -941,7 +932,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                         keyboardType: getPropertiesInputType(3),
                                         decoration: InputDecoration(
                                           hintText: getPropertiesHintText(3),
-                                          border: OutlineInputBorder(),
+                                          border: const OutlineInputBorder(),
                                         ),
                                       ),
                                     ),
@@ -1009,7 +1000,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                 ),
                                                 child: Text(
                                                   property3[index],
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     color: white,
                                                     fontWeight: FontWeight.bold,
                                                   ),
@@ -1025,7 +1016,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                       property3.removeAt(index);
                                                     });
                                                   },
-                                                  icon: Icon(
+                                                  icon: const Icon(
                                                     Icons
                                                         .highlight_remove_outlined,
                                                     color: white,
@@ -1053,7 +1044,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                               keyboardType: getPropertiesInputType(4),
                               decoration: InputDecoration(
                                 hintText: getPropertiesHintText(4),
-                                border: OutlineInputBorder(),
+                                border: const OutlineInputBorder(),
                               ),
                               validator: (value) {
                                 if (value != null && value.isNotEmpty) {
@@ -1065,7 +1056,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                             )
                           : getNoOfAnswers(4) == 2
                               ? Container(
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                     horizontal: 8,
                                     vertical: 4,
                                   ),
@@ -1075,14 +1066,14 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                   ),
                                   child: DropdownButton(
                                     dropdownColor: primary,
-                                    hint: Text("Select"),
+                                    hint: const Text("Select"),
                                     value: propertyValue4,
                                     underline: Container(),
                                     items: getDropDownItems(4)
                                         .map(
                                           (e) => DropdownMenuItem(
-                                            child: Text(e.toUpperCase()),
                                             value: e.toUpperCase(),
+                                            child: Text(e.toUpperCase()),
                                           ),
                                         )
                                         .toList(),
@@ -1092,7 +1083,6 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                           propertyValue4 = value;
                                           property4.clear();
                                           property4.add(propertyValue4!);
-                                          print(property4);
                                         }
                                       });
                                     },
@@ -1106,7 +1096,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                         keyboardType: getPropertiesInputType(4),
                                         decoration: InputDecoration(
                                           hintText: getPropertiesHintText(4),
-                                          border: OutlineInputBorder(),
+                                          border: const OutlineInputBorder(),
                                         ),
                                       ),
                                     ),
@@ -1174,7 +1164,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                 ),
                                                 child: Text(
                                                   property4[index],
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     color: white,
                                                     fontWeight: FontWeight.bold,
                                                   ),
@@ -1190,7 +1180,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                       property4.removeAt(index);
                                                     });
                                                   },
-                                                  icon: Icon(
+                                                  icon: const Icon(
                                                     Icons
                                                         .highlight_remove_outlined,
                                                     color: white,
@@ -1218,7 +1208,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                               keyboardType: getPropertiesInputType(5),
                               decoration: InputDecoration(
                                 hintText: getPropertiesHintText(5),
-                                border: OutlineInputBorder(),
+                                border: const OutlineInputBorder(),
                               ),
                               validator: (value) {
                                 if (value != null && value.isNotEmpty) {
@@ -1230,7 +1220,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                             )
                           : getNoOfAnswers(5) == 2
                               ? Container(
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                     horizontal: 8,
                                     vertical: 4,
                                   ),
@@ -1240,14 +1230,14 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                   ),
                                   child: DropdownButton(
                                     dropdownColor: primary,
-                                    hint: Text("Select"),
+                                    hint: const Text("Select"),
                                     value: propertyValue5,
                                     underline: Container(),
                                     items: getDropDownItems(5)
                                         .map(
                                           (e) => DropdownMenuItem(
-                                            child: Text(e.toUpperCase()),
                                             value: e.toUpperCase(),
+                                            child: Text(e.toUpperCase()),
                                           ),
                                         )
                                         .toList(),
@@ -1257,7 +1247,6 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                           propertyValue5 = value;
                                           property5.clear();
                                           property5.add(propertyValue5!);
-                                          print(property5);
                                         }
                                       });
                                     },
@@ -1271,7 +1260,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                         keyboardType: getPropertiesInputType(5),
                                         decoration: InputDecoration(
                                           hintText: getPropertiesHintText(5),
-                                          border: OutlineInputBorder(),
+                                          border: const OutlineInputBorder(),
                                         ),
                                       ),
                                     ),
@@ -1339,7 +1328,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                 ),
                                                 child: Text(
                                                   property5[index],
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     color: white,
                                                     fontWeight: FontWeight.bold,
                                                   ),
@@ -1355,7 +1344,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                       property5.removeAt(index);
                                                     });
                                                   },
-                                                  icon: Icon(
+                                                  icon: const Icon(
                                                     Icons
                                                         .highlight_remove_outlined,
                                                     color: white,
@@ -1461,7 +1450,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                               ),
                                               child: Text(
                                                 otherInfoList[index],
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   color: white,
                                                   fontWeight: FontWeight.bold,
                                                 ),
@@ -1475,7 +1464,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                 onPressed: () {
                                                   removeOtherInfo(index);
                                                 },
-                                                icon: Icon(
+                                                icon: const Icon(
                                                   Icons
                                                       .highlight_remove_outlined,
                                                   color: white,

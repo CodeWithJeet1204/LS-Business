@@ -27,7 +27,7 @@ class _ProductsPageState extends State<ProductsPage> {
         .snapshots();
     return Scaffold(
       appBar: AppBar(
-        title: Text("YOUR PRODUCTS"),
+        title: const Text("YOUR PRODUCTS"),
         actions: [
           IconButton(
             onPressed: () {
@@ -35,7 +35,9 @@ class _ProductsPageState extends State<ProductsPage> {
                 isGridView = !isGridView;
               });
             },
-            icon: isGridView ? Icon(Icons.list) : Icon(Icons.grid_view_rounded),
+            icon: isGridView
+                ? const Icon(Icons.list)
+                : const Icon(Icons.grid_view_rounded),
             tooltip: isGridView ? "List View" : "Grid View",
           ),
         ],
@@ -48,13 +50,13 @@ class _ProductsPageState extends State<ProductsPage> {
             stream: products,
             builder: ((context, snapshot) {
               if (snapshot.hasError) {
-                return Center(
+                return const Center(
                   child: Text("Something went wrong"),
                 );
               }
 
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
+                return const Center(
                   child: CircularProgressIndicator(
                     color: primaryDark,
                   ),
@@ -88,7 +90,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(height: 2),
+                                    const SizedBox(height: 2),
                                     Center(
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(12),
@@ -107,7 +109,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                         productData['productName'],
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
                                         ),
@@ -124,7 +126,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                             : "N/A",
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,
                                         ),
@@ -166,7 +168,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                 ),
                                 title: Text(
                                   productData['productName'],
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -176,7 +178,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                           productData['productPrice'] != null
                                       ? productData['productPrice']
                                       : "N/A",
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                   ),

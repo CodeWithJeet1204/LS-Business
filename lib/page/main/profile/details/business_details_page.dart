@@ -21,75 +21,46 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final TextEditingController nameController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
-  String name = "";
-  String address = "";
-  String industry = "";
-  String type = "";
-  String membership = "";
-  String photoUrl = "";
-  Map<String, dynamic> businessData = {};
   bool isChangingName = false;
   bool isChangingAddress = false;
+  bool isChangingImage = false;
   bool isSaving = false;
   bool isDataLoaded = false;
 
-  @override
-  void initState() {
-    getData();
-    super.initState();
-  }
-
-  getData() async {
-    try {
-      DocumentSnapshot<Map<String, dynamic>> businessSnap =
-          await FirebaseFirestore.instance
-              .collection('Business')
-              .doc('Owners')
-              .collection('Shops')
-              .doc(FirebaseAuth.instance.currentUser!.uid)
-              .get();
-      businessData = businessSnap.data()!;
-      setState(() {
-        name = businessData["Name"];
-        address = businessData["Address"];
-        industry = businessData["Industry"];
-        type = businessData["Type"];
-        membership = businessData["MembershipName"];
-        photoUrl = businessData["Image"];
-      });
-
-      setState(() {});
-    } catch (e) {
-      if (context.mounted) {
-        mySnackBar(context, e.toString());
-      }
-    }
-  }
-
   void changeImage() async {
     Uint8List? im;
-    Uint8List? image = await pickImage(ImageSource.camera);
+    Uint8List? image = await pickImage(ImageSource.gallery);
     im = image;
     if (im != null) {
-      Map<String, dynamic> updatedUserImage = {
-        "Image": im,
-      };
-      String userPhotoUrl = await StorageMethods().uploadImageToStorage(
-        'Profile/Shops',
-        updatedUserImage["Image"]!,
-        false,
-      );
-      updatedUserImage = {
-        "Image": userPhotoUrl,
-      };
-      await FirebaseFirestore.instance
-          .collection('Business')
-          .doc('Owners')
-          .collection('Shops')
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .update(updatedUserImage);
-      if (context.mounted) {
-        Navigator.of(context).popAndPushNamed('/businessDetails');
+      try {
+        setState(() {
+          isChangingImage = true;
+        });
+        Map<String, dynamic> updatedUserImage = {
+          "Image": im,
+        };
+        String userPhotoUrl = await StorageMethods().uploadImageToStorage(
+          'Profile/Shops',
+          updatedUserImage["Image"]!,
+          false,
+        );
+        updatedUserImage = {
+          "Image": userPhotoUrl,
+        };
+        await FirebaseFirestore.instance
+            .collection('Business')
+            .doc('Owners')
+            .collection('Shops')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .update(updatedUserImage);
+        setState(() {
+          isChangingImage = false;
+        });
+      } catch (e) {
+        setState(() {
+          isChangingImage = false;
+          mySnackBar(context, e.toString());
+        });
       }
     } else {
       if (context.mounted) {
@@ -101,7 +72,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
   void save() async {
     try {
       setState(() {
-        isSaving = false;
+        isSaving = true;
       });
       if (isChangingName && !isChangingAddress) {
         if (nameController.text.isEmpty) {
@@ -109,7 +80,6 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
           setState(() {
             isSaving = false;
           });
-          return;
         } else {
           Map<String, dynamic> updatedUserName = {
             "Name": nameController.text.toString(),
@@ -125,15 +95,9 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
           isSaving = false;
           isChangingName = false;
         });
-        if (context.mounted) {
-          Navigator.of(context).popAndPushNamed('/businessDetails');
-        }
-
-        return;
       } else if (isChangingAddress && !isChangingName) {
         if (addressController.text.isEmpty) {
           mySnackBar(context, "Address should be atleast 1 characters long");
-          return;
         } else {
           Map<String, dynamic> updatedUserAddress = {
             "Address": addressController.text.toString(),
@@ -147,16 +111,11 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
         }
         setState(() {
           isSaving = false;
-          isChangingName = false;
+          isChangingAddress = false;
         });
-        if (context.mounted) {
-          Navigator.of(context).popAndPushNamed('/businessDetails');
-        }
-        return;
       } else if (isChangingAddress && isChangingName) {
         if (addressController.text.isEmpty) {
           mySnackBar(context, "Address should be atleast 1 characters long");
-          return;
         } else if (nameController.text.isEmpty) {
           mySnackBar(context, "Name should be atleast 1 characters long");
         } else {
@@ -185,10 +144,6 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
           isChangingName = false;
           isChangingAddress = false;
         });
-        if (context.mounted) {
-          Navigator.of(context).popAndPushNamed('/businessDetails');
-        }
-        return;
       }
       setState(() {
         isSaving = false;
@@ -198,236 +153,356 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
     }
   }
 
+  void showImage() {
+    final imageStream = FirebaseFirestore.instance
+        .collection('Business')
+        .doc('Owners')
+        .collection('Shops')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .snapshots();
+
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: ((context) {
+        return StreamBuilder(
+            stream: imageStream,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text('Something went wrong'),
+                );
+              }
+
+              if (snapshot.hasData) {
+                final userData = snapshot.data!;
+                return Dialog(
+                  elevation: 20,
+                  child: InteractiveViewer(
+                    child: Image.network(
+                      userData['Image'],
+                    ),
+                  ),
+                );
+              }
+              return Center(
+                child: CircularProgressIndicator(
+                  color: primaryDark,
+                ),
+              );
+            });
+      }),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final shopStream = FirebaseFirestore.instance
+        .collection('Business')
+        .doc('Owners')
+        .collection('Shops')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .snapshots();
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text("Business Details"),
       ),
-      body: /*!isDataLoaded
-          ? Center(
-              child: CircularProgressIndicator(
-                color: primaryDark,
-              ),
-            )
-          :*/
-          LayoutBuilder(
+      body: LayoutBuilder(
         builder: ((context, constraints) {
           double width = constraints.maxWidth;
           double height = constraints.maxHeight;
 
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: width * 0.08),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(child: Container()),
-                photoUrl != ""
-                    ? Stack(
-                        alignment: Alignment.bottomRight,
+            child: SizedBox(
+              width: width,
+              height: height,
+              child: StreamBuilder(
+                  stream: shopStream,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text('Something Went Wrong'),
+                      );
+                    }
+
+                    if (snapshot.hasData) {
+                      final shopData = snapshot.data!;
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          CircleAvatar(
-                            radius: width * 0.15,
-                            backgroundImage: NetworkImage(photoUrl),
-                            backgroundColor: primary2,
-                          ),
-                          Positioned(
-                            right: -(width * 0.0015),
-                            bottom: -(width * 0.0015),
-                            child: IconButton.filledTonal(
-                              onPressed: changeImage,
-                              icon: const Icon(
-                                Icons.camera_alt_outlined,
-                                size: 40,
-                              ),
-                              tooltip: "Change Photo",
-                            ),
-                          ),
-                        ],
-                      )
-                    : Container(),
-                SizedBox(height: height * 0.05),
-                Container(
-                  width: width,
-                  height: height * 0.075,
-                  decoration: BoxDecoration(
-                    color: primary2.withOpacity(0.9),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: isChangingName
-                      ? TextField(
-                          autofocus: true,
-                          controller: nameController,
-                          decoration: InputDecoration(
-                            hintText: "Change Name",
-                            border: OutlineInputBorder(
+                          Expanded(child: Container()),
+                          isChangingImage
+                              ? Container(
+                                  width: width * 0.3,
+                                  height: width * 0.3,
+                                  decoration: BoxDecoration(
+                                    color: primary,
+                                    borderRadius: BorderRadius.circular(100),
+                                  ),
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      color: primaryDark,
+                                    ),
+                                  ),
+                                )
+                              : Stack(
+                                  alignment: Alignment.bottomRight,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: isSaving ? null : showImage,
+                                      child: CircleAvatar(
+                                        radius: width * 0.15,
+                                        backgroundImage: NetworkImage(
+                                          shopData['Image'],
+                                        ),
+                                        backgroundColor: primary2,
+                                      ),
+                                    ),
+                                    Positioned(
+                                      right: -(width * 0.0015),
+                                      bottom: -(width * 0.0015),
+                                      child: IconButton.filledTonal(
+                                        onPressed: changeImage,
+                                        icon: const Icon(
+                                          Icons.camera_alt_outlined,
+                                          size: 40,
+                                        ),
+                                        tooltip: "Change Photo",
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                          SizedBox(height: height * 0.05),
+                          Container(
+                            width: width,
+                            height:
+                                isChangingName ? height * 0.125 : height * 0.08,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: primary2.withOpacity(0.9),
                               borderRadius: BorderRadius.circular(12),
                             ),
+                            child: isChangingName
+                                ? TextField(
+                                    maxLength: 24,
+                                    autofocus: true,
+                                    controller: nameController,
+                                    decoration: InputDecoration(
+                                      hintText: "Change Name",
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                  )
+                                : Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SizedBox(width: width * 0.05),
+                                      Text(
+                                        shopData['Name'],
+                                        style: TextStyle(
+                                          fontSize: shopData['Name'].length > 20
+                                              ? 16
+                                              : 20,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      Expanded(child: Container()),
+                                      IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            isChangingName = true;
+                                          });
+                                        },
+                                        icon: const Icon(Icons.edit),
+                                        tooltip: "Edit Name",
+                                      ),
+                                      SizedBox(width: width * 0.03),
+                                    ],
+                                  ),
                           ),
-                        )
-                      : Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(width: width * 0.05),
-                            Text(
-                              name,
-                              style: const TextStyle(
-                                fontSize: 20,
-                              ),
-                            ),
-                            Expanded(child: Container()),
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  isChangingName = true;
-                                });
-                              },
-                              icon: const Icon(Icons.edit),
-                              tooltip: "Edit Name",
-                            ),
-                            SizedBox(width: width * 0.03),
-                          ],
-                        ),
-                ),
-                SizedBox(height: height * 0.02),
-                Container(
-                  width: width,
-                  height: height * 0.075,
-                  decoration: BoxDecoration(
-                    color: primary2.withOpacity(0.9),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: isChangingAddress
-                      ? TextField(
-                          autofocus: true,
-                          controller: addressController,
-                          decoration: InputDecoration(
-                            hintText: "Change Address",
-                            border: OutlineInputBorder(
+                          SizedBox(height: height * 0.02),
+                          Container(
+                            width: width,
+                            height: isChangingAddress
+                                ? height * 0.125
+                                : height * 0.08,
+                            decoration: BoxDecoration(
+                              color: primary2.withOpacity(0.9),
                               borderRadius: BorderRadius.circular(12),
                             ),
+                            child: isChangingAddress
+                                ? TextField(
+                                    maxLength: 32,
+                                    autofocus: true,
+                                    controller: addressController,
+                                    decoration: InputDecoration(
+                                      hintText: "Change Address",
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                  )
+                                : Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      SizedBox(width: width * 0.05),
+                                      Text(
+                                        shopData['Address'],
+                                        style: TextStyle(
+                                          fontSize:
+                                              shopData['Address'].length > 20
+                                                  ? 16
+                                                  : 18,
+                                        ),
+                                      ),
+                                      Expanded(child: Container()),
+                                      IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            isChangingAddress = true;
+                                          });
+                                        },
+                                        icon: const Icon(Icons.edit),
+                                        tooltip: "Edit Phone Number",
+                                      ),
+                                      SizedBox(width: width * 0.03),
+                                    ],
+                                  ),
                           ),
-                        )
-                      : Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SizedBox(width: width * 0.05),
-                            Text(
-                              address,
-                              style: const TextStyle(
-                                fontSize: 16,
-                              ),
+                          SizedBox(height: height * 0.02),
+                          Container(
+                            width: width,
+                            height: height * 0.075,
+                            decoration: BoxDecoration(
+                              color: primary2.withOpacity(0.9),
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                            Expanded(child: Container()),
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  isChangingAddress = true;
-                                });
-                              },
-                              icon: const Icon(Icons.edit),
-                              tooltip: "Edit Phone Number",
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                SizedBox(width: width * 0.05),
+                                Text(
+                                  shopData['Industry'],
+                                  style: TextStyle(
+                                    fontSize: shopData['Industry'].length > 22
+                                        ? 16
+                                        : 18,
+                                  ),
+                                ),
+                              ],
                             ),
-                            SizedBox(width: width * 0.03),
-                          ],
-                        ),
-                ),
-                SizedBox(height: height * 0.02),
-                Container(
-                  width: width,
-                  height: height * 0.075,
-                  decoration: BoxDecoration(
-                    color: primary2.withOpacity(0.9),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(width: width * 0.05),
-                      Text(
-                        industry,
-                        style: TextStyle(
-                          fontSize: industry.length > 22 ? 16 : 18,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: height * 0.02),
-                Container(
-                  width: width,
-                  height: height * 0.075,
-                  decoration: BoxDecoration(
-                    color: primary2.withOpacity(0.9),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(width: width * 0.05),
-                      Text(
-                        type,
-                        style: TextStyle(
-                          fontSize: industry.length > 22 ? 16 : 18,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: height * 0.02),
-                Container(
-                  width: width,
-                  height: height * 0.075,
-                  decoration: BoxDecoration(
-                    color: membership == "PREMIUM"
-                        ? const Color.fromARGB(255, 202, 226, 238)
-                        : membership == "GOLD"
-                            ? const Color.fromARGB(255, 253, 243, 154)
-                            : white,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(width: width * 0.05),
-                      Text(
-                        membership,
-                        style: TextStyle(
-                          fontSize: industry.length > 22 ? 16 : 18,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: height * 0.05),
-                isChangingName || isChangingAddress
-                    ? Column(
-                        children: [
-                          MyButton(
-                            text: "SAVE",
-                            onTap: save,
-                            isLoading: false,
-                            horizontalPadding: 0,
                           ),
-                          SizedBox(height: height * 0.015),
-                          MyButton(
-                            text: "CANCEL",
-                            onTap: () {
-                              setState(() {
-                                isChangingName = false;
-                                isChangingAddress = false;
-                              });
-                            },
-                            isLoading: false,
-                            horizontalPadding: 0,
+                          SizedBox(height: height * 0.02),
+                          Container(
+                            width: width,
+                            height: height * 0.075,
+                            decoration: BoxDecoration(
+                              color: primary2.withOpacity(0.9),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                SizedBox(width: width * 0.05),
+                                Text(
+                                  shopData['Type'],
+                                  style: TextStyle(
+                                    fontSize:
+                                        shopData['Type'].length > 22 ? 16 : 18,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
+                          SizedBox(height: height * 0.02),
+                          Container(
+                            width: width,
+                            height: height * 0.075,
+                            decoration: BoxDecoration(
+                              color: shopData['MembershipName'] == "PREMIUM"
+                                  ? const Color.fromARGB(255, 202, 226, 238)
+                                  : shopData['MembershipName'] == "GOLD"
+                                      ? const Color.fromARGB(255, 253, 243, 154)
+                                      : white,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                SizedBox(width: width * 0.05),
+                                Text(
+                                  shopData['MembershipName'],
+                                  style: TextStyle(
+                                    fontSize:
+                                        shopData['MembershipName'].length > 22
+                                            ? 16
+                                            : 18,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: height * 0.05),
+                          isChangingName || isChangingAddress
+                              ? Column(
+                                  children: [
+                                    isSaving
+                                        ? Container(
+                                            margin: EdgeInsets.symmetric(
+                                              horizontal: 0,
+                                            ),
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 12),
+                                            alignment: Alignment.center,
+                                            width: double.infinity,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              color: buttonColor,
+                                            ),
+                                            child: const Center(
+                                              child: CircularProgressIndicator(
+                                                color: white,
+                                              ),
+                                            ))
+                                        : MyButton(
+                                            text: "SAVE",
+                                            onTap: save,
+                                            isLoading: false,
+                                            horizontalPadding: 0,
+                                          ),
+                                    SizedBox(height: height * 0.015),
+                                    MyButton(
+                                      text: "CANCEL",
+                                      onTap: () {
+                                        setState(() {
+                                          isChangingName = false;
+                                          isChangingAddress = false;
+                                        });
+                                      },
+                                      isLoading: false,
+                                      horizontalPadding: 0,
+                                    ),
+                                  ],
+                                )
+                              : Container(),
+                          Expanded(child: Container()),
                         ],
-                      )
-                    : Container(),
-                Expanded(child: Container()),
-              ],
+                      );
+                    }
+
+                    return Center(
+                      child: CircularProgressIndicator(
+                        color: primaryDark,
+                      ),
+                    );
+                  }),
             ),
           );
         }),
