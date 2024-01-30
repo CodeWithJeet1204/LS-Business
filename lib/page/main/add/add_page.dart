@@ -22,7 +22,7 @@ class _AddPageState extends State<AddPage> {
       backgroundColor: primary,
       appBar: AppBar(
         title: const Text("ADD"),
-        elevation: 1,
+        elevation: 0,
         shadowColor: primary2,
       ),
       body: SafeArea(
@@ -34,7 +34,7 @@ class _AddPageState extends State<AddPage> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 SizedOverflowBox(
-                  size: Size(width, height * 0.275),
+                  size: Size(width, height * 0.266),
                   child: GestureDetector(
                     onTapDown: (details) {
                       setState(() {

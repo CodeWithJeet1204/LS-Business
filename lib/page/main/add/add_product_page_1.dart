@@ -1,8 +1,9 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/firebase/storage_methods.dart';
 import 'package:find_easy/page/main/add/add_product_page_2.dart';
-import 'package:find_easy/provider/category_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:find_easy/widgets/text_button.dart';
@@ -10,7 +11,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class AddProductPage1 extends StatefulWidget {
@@ -37,10 +37,12 @@ class _AddProductPage1State extends State<AddProductPage1> {
   final List<File> _image = [];
   int currentImageIndex = 0;
   String? selectedCategory;
+  String? selectedCategoryId;
   final List<String> _imageDownloadUrl = [];
   final ImagePicker picker = ImagePicker();
   List<String> otherInfoList = [];
   bool isFit = true;
+  final Map<String, String> categoryNamesAndIds = {};
 
   void addProductImages() async {
     final XFile? im = await picker.pickImage(source: ImageSource.gallery);
@@ -73,7 +75,6 @@ class _AddProductPage1State extends State<AddProductPage1> {
         return mySnackBar(context, "Max Price is 100 Cr.");
       }
       if (priceController.text.toString().isNotEmpty &&
-          // ignore: unnecessary_null_comparison
           priceController.text.toString() != null) {
         if (double.parse(priceController.text.toString()) <= 0.999) {
           return mySnackBar(context, "Min Price is 1 Rs.");
@@ -118,6 +119,8 @@ class _AddProductPage1State extends State<AddProductPage1> {
           'datetime': Timestamp.fromMillisecondsSinceEpoch(
             DateTime.now().millisecondsSinceEpoch,
           ),
+          'categoryName': selectedCategory,
+          'categoryId': selectedCategoryId,
           'vendorId': FirebaseAuth.instance.currentUser!.uid,
         });
         setState(() {
@@ -165,12 +168,36 @@ class _AddProductPage1State extends State<AddProductPage1> {
     });
   }
 
+  Future<void> getAllCategoryNamesAndIds() async {
+    final categorySnapshot = await FirebaseFirestore.instance
+        .collection('Business')
+        .doc('Data')
+        .collection('Category')
+        .get();
+
+    if (categorySnapshot.docs.isNotEmpty) {
+      for (final doc in categorySnapshot.docs) {
+        final categoryId = doc.get('categoryId');
+        final categoryName = doc.get('categoryName');
+
+        if (categoryId != null && categoryName != null) {
+          setState(() {
+            categoryNamesAndIds[categoryId] = categoryName;
+          });
+        }
+      }
+    }
+    print(categoryNamesAndIds);
+  }
+
+  @override
+  void initState() {
+    getAllCategoryNamesAndIds();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final CategoryProvider categoryProvider =
-        Provider.of<CategoryProvider>(context);
-    List<String> categories = categoryProvider.getCategory.keys.toList();
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: primary,
@@ -489,24 +516,36 @@ class _AddProductPage1State extends State<AddProductPage1> {
                               dropdownColor: primary2,
                               borderRadius: BorderRadius.circular(12),
                               underline: const SizedBox(),
-                              items: categories.isNotEmpty
-                                  ? categories
-                                      .map((e) => DropdownMenuItem(
-                                            value: e,
-                                            child: Text(e),
-                                          ))
-                                      .toList()
-                                  : ['None']
-                                      .map((e) => DropdownMenuItem(
-                                            value: e,
-                                            child: Text(e),
+                              items: categoryNamesAndIds.isEmpty
+                                  ? [
+                                      DropdownMenuItem(
+                                        value: '0',
+                                        child: Text('None'),
+                                      ),
+                                    ]
+                                  : categoryNamesAndIds.entries
+                                      .map((entry) => DropdownMenuItem(
+                                            value: entry.value,
+                                            child: Text(entry.value),
                                           ))
                                       .toList(),
                               onChanged: (value) {
                                 if (value != null) {
                                   setState(() {
-                                    selectedCategory = value;
+                                    if (value == '0') {
+                                      selectedCategory = 'None';
+                                      selectedCategoryId = '0';
+                                    } else {
+                                      final reveredIdAndNames =
+                                          categoryNamesAndIds.map(
+                                        (key, value) => MapEntry(value, key),
+                                      );
+                                      selectedCategoryId =
+                                          reveredIdAndNames[value];
+                                      selectedCategory = value;
+                                    }
                                   });
+                                  print(selectedCategory);
                                 }
                               },
                             ),

@@ -11,10 +11,12 @@ class MyTextFormField extends StatefulWidget {
     this.verticalPadding = 0,
     this.isPassword = false,
     this.keyboardType = TextInputType.text,
+    this.autoFocus = true,
   });
 
   final String hintText;
   final bool isPassword;
+  final bool autoFocus;
   final Iterable<String>? autoFillHints;
   final double borderRadius;
   final double horizontalPadding;
@@ -85,7 +87,7 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
           : TextFormField(
               focusNode: FocusNode(),
               autofillHints: widget.autoFillHints,
-              autofocus: true,
+              autofocus: widget.autoFocus,
               controller: widget.controller,
               keyboardType: widget.keyboardType,
               decoration: InputDecoration(

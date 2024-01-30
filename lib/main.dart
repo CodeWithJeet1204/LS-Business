@@ -12,7 +12,7 @@ import 'package:find_easy/page/register/login_page.dart';
 import 'package:find_easy/page/main/profile/profile_page.dart';
 import 'package:find_easy/page/register/register_cred.dart';
 import 'package:find_easy/page/register/register_pay.dart';
-import 'package:find_easy/provider/category_provider.dart';
+import 'package:find_easy/provider/products_added_to_category_provider.dart';
 import 'package:find_easy/provider/shop_type_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -35,10 +35,10 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => CategoryProvider(),
+          create: (_) => ShopTypeProvider(),
         ),
         ChangeNotifierProvider(
-          create: (_) => ShopTypeProvider(),
+          create: (_) => ProductAddedToCategory(),
         ),
       ],
       child: const MyApp(),
