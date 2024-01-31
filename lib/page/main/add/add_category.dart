@@ -60,10 +60,24 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
               .doc(categoryId)
               .set({
             'categoryName': categoryName,
-            'productIdList': categoryProvider.selectedProducts,
             'categoryId': categoryId,
             'imageUrl': imageUrl,
+            'datetime': Timestamp.fromMillisecondsSinceEpoch(
+              DateTime.now().millisecondsSinceEpoch,
+            ),
             'vendorId': auth.currentUser!.uid,
+          });
+
+          categoryProvider.selectedProducts.forEach((element) {
+            store
+                .collection('Business')
+                .doc('Data')
+                .collection('Products')
+                .doc(element)
+                .update({
+              'categoryName': categoryName,
+              'categoryId': categoryId,
+            });
           });
           categoryProvider.clearProducts();
           if (context.mounted) {
@@ -227,32 +241,42 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                   const SizedBox(height: 20),
                   Form(
                     key: categoryKey,
-                    child: TextFormField(
-                      controller: categoryController,
-                      autofillHints: null,
-                      autofocus: false,
-                      decoration: InputDecoration(
-                        hintText: "Category Name",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom,
                       ),
-                      validator: (value) {
-                        if (value != null && value.isNotEmpty) {
-                          return null;
-                        } else {
-                          return "Enter Category Name";
-                        }
-                      },
+                      child: TextFormField(
+                        controller: categoryController,
+                        autofillHints: null,
+                        autofocus: false,
+                        decoration: InputDecoration(
+                          hintText: "Category Name",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value != null && value.isNotEmpty) {
+                            return null;
+                          } else {
+                            return "Enter Category Name";
+                          }
+                        },
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
-                  MyButton(
-                    text:
-                        "Add Products (${productsAddedToCategoryProvider.selectedProducts.length})",
-                    onTap: addProduct,
-                    isLoading: false,
-                    horizontalPadding: 0,
+                  Padding(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom,
+                    ),
+                    child: MyButton(
+                      text:
+                          "Add Products (${productsAddedToCategoryProvider.selectedProducts.length})",
+                      onTap: addProduct,
+                      isLoading: false,
+                      horizontalPadding: 0,
+                    ),
                   ),
                 ],
               );

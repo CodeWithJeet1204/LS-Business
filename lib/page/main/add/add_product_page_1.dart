@@ -36,8 +36,8 @@ class _AddProductPage1State extends State<AddProductPage1> {
   bool isAddingProduct = false;
   final List<File> _image = [];
   int currentImageIndex = 0;
-  String? selectedCategory;
-  String? selectedCategoryId;
+  String? selectedCategory = 'None';
+  String? selectedCategoryId = '0';
   final List<String> _imageDownloadUrl = [];
   final ImagePicker picker = ImagePicker();
   List<String> otherInfoList = [];
@@ -67,9 +67,6 @@ class _AddProductPage1State extends State<AddProductPage1> {
     if (productKey.currentState!.validate()) {
       if (_image.isEmpty) {
         return mySnackBar(context, "Select atleast 1 image");
-      }
-      if (selectedCategory == null) {
-        return mySnackBar(context, "Select Category");
       }
       if (priceController.text.toString().length > 10) {
         return mySnackBar(context, "Max Price is 100 Cr.");
@@ -422,6 +419,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                           minLines: 1,
                           maxLines: 10,
                           maxLength: 500,
+                          keyboardType: TextInputType.multiline,
                           decoration: const InputDecoration(
                             hintText: "Description",
                             border: OutlineInputBorder(

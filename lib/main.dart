@@ -12,9 +12,11 @@ import 'package:find_easy/page/register/login_page.dart';
 import 'package:find_easy/page/main/profile/profile_page.dart';
 import 'package:find_easy/page/register/register_cred.dart';
 import 'package:find_easy/page/register/register_pay.dart';
+import 'package:find_easy/provider/change_category_provider.dart';
 import 'package:find_easy/provider/products_added_to_category_provider.dart';
 import 'package:find_easy/provider/shop_type_provider.dart';
 import 'package:find_easy/utils/colors.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +33,9 @@ void main() async {
       storageBucket: 'find-easy-1204.appspot.com',
     ),
   );
+  await FirebaseAppCheck.instance.activate(
+    androidProvider: AndroidProvider.debug,
+  );
   runApp(
     MultiProvider(
       providers: [
@@ -39,6 +44,9 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (_) => ProductAddedToCategory(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ChangeCategoryProvider(),
         ),
       ],
       child: const MyApp(),
@@ -83,6 +91,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
+        indicatorColor: primaryDark,
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color.fromARGB(255, 10, 217, 213),
         ),

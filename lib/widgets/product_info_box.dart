@@ -67,61 +67,67 @@ class ProductInfoBox extends StatelessWidget {
                             ),
                           )
                         : noOfAnswers == 3
-                            ? SizedBox(
-                                width: width * 0.725,
-                                height: 50,
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  shrinkWrap: true,
-                                  itemCount: 1,
-                                  itemBuilder: (context, index) {
-                                    return Row(
-                                      children: propertyValue
-                                          .map(
-                                            (e) => Container(
-                                              height: 40,
-                                              margin: EdgeInsets.only(
-                                                right: 4,
-                                                top: 4,
-                                                bottom: 4,
-                                              ),
-                                              padding: EdgeInsets.symmetric(
-                                                horizontal: 6,
-                                                vertical: 4,
-                                              ),
-                                              alignment: Alignment.center,
-                                              decoration: BoxDecoration(
-                                                color:
-                                                    primary2.withOpacity(0.8),
-                                                borderRadius:
-                                                    BorderRadius.circular(4),
-                                              ),
-                                              child: Text(
-                                                e,
-                                                style: TextStyle(
-                                                  fontSize: 18,
-                                                  color: primaryDark2,
-                                                  fontWeight: FontWeight.w500,
+                            ? propertyValue.isNotEmpty
+                                ? SizedBox(
+                                    width: width * 0.725,
+                                    height: 50,
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      shrinkWrap: true,
+                                      itemCount: 1,
+                                      itemBuilder: (context, index) {
+                                        return Row(
+                                          children: propertyValue
+                                              .map(
+                                                (e) => Container(
+                                                  height: 40,
+                                                  margin: EdgeInsets.only(
+                                                    right: 4,
+                                                    top: 4,
+                                                    bottom: 4,
+                                                  ),
+                                                  padding: EdgeInsets.symmetric(
+                                                    horizontal: 6,
+                                                    vertical: 4,
+                                                  ),
+                                                  alignment: Alignment.center,
+                                                  decoration: BoxDecoration(
+                                                    color: primary2
+                                                        .withOpacity(0.8),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            4),
+                                                  ),
+                                                  child: Text(
+                                                    e,
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                      color: primaryDark2,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
-                                          )
-                                          .toList(),
-                                    );
-                                  },
-                                ),
-                              )
+                                              )
+                                              .toList(),
+                                        );
+                                      },
+                                    ),
+                                  )
+                                : Text("N/A")
                             : Container(),
               ],
             ),
-            IconButton(
-              onPressed: onPressed,
-              icon: Icon(
-                Icons.edit,
-                color: primaryDark,
-              ),
-              tooltip: "Edit ${head}",
-            ),
+            noOfAnswers != 2
+                ? IconButton(
+                    onPressed: onPressed,
+                    icon: Icon(
+                      Icons.edit,
+                      color: primaryDark,
+                    ),
+                    tooltip: "Edit ${head}",
+                  )
+                : Container(),
           ],
         ),
       ),
