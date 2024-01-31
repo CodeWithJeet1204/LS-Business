@@ -68,6 +68,7 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                 ),
                 Column(
                   children: [
+                    // EMAIL
                     MyCollapseContainer(
                       headText: "Email",
                       isShow: isShowEmail,
@@ -98,8 +99,8 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                             MyTextFormField(
                               hintText: "Confirm Password",
                               controller: confirmPasswordController,
-                              borderRadius: 12,
-                              horizontalPadding: 20,
+                              borderRadius: 16,
+                              horizontalPadding: 24,
                               verticalPadding: 8,
                               isPassword: true,
                               autoFillHints: const [AutofillHints.newPassword],
@@ -196,6 +197,8 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                         });
                       },
                     ),
+
+                    // PHONE NUMBER
                     const SizedBox(height: 12),
                     MyCollapseContainer(
                       headText: "Phone Number",
@@ -317,6 +320,8 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                         });
                       },
                     ),
+
+                    // GOOGLE
                     const SizedBox(height: 16),
                     GestureDetector(
                       onTap: () async {

@@ -19,4 +19,14 @@ class SelectProductForPostProvider with ChangeNotifier {
   void clear() {
     _selectedProduct = [];
   }
+
+  // ---
+
+  bool? isTextPost;
+
+  void changePostType(bool isText) {
+    isTextPost = isText;
+
+    notifyListeners();
+  }
 }

@@ -3,7 +3,9 @@
 import 'package:find_easy/first_launch_detection.dart';
 import 'package:find_easy/page/intro/intro_page_view.dart';
 import 'package:find_easy/page/main/add/category/add_category.dart';
+import 'package:find_easy/page/main/analytics/analaytics_page.dart';
 import 'package:find_easy/page/main/main_page.dart';
+import 'package:find_easy/page/main/profile/data/all_post_page.dart';
 import 'package:find_easy/page/main/profile/data/all_product_page.dart';
 import 'package:find_easy/page/main/profile/details/business_details_page.dart';
 import 'package:find_easy/page/main/profile/data/all_categories_page.dart';
@@ -109,8 +111,10 @@ class MyApp extends StatelessWidget {
         '/ownerDetails': (context) => const OwnerDetailsPage(),
         '/businessDetails': (context) => const BusinessDetailsPage(),
         '/addCategory': (context) => const AddCategoryPage(),
+        '/postsPage': (context) => const AllPostsPage(),
         '/categoriesPage': (context) => const AllCategoriesPage(),
         '/productsPage': (context) => const AllProductsPage(),
+        '/analyticsPage': (context) => const AnalyticsPage(),
       },
       debugShowCheckedModeBanner: false,
       home: isFirstLaunch
@@ -144,3 +148,10 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
+// TODO: No of Text Posts and Images Post
+// TODO: Shorts
+// TODO: Analytics
+// TODO: Comments
+// TODO: Login Photo Problem

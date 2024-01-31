@@ -21,7 +21,8 @@ class _AddPostPageState extends State<AddPostPage> {
   int currentImageIndex = 0;
   bool isPosting = false;
 
-  Future<String> post(SelectProductForPostProvider postPprovider) async {
+  Future<String> post(
+      SelectProductForPostProvider postprovider, bool isTextPost) async {
     setState(() {
       isPosting = true;
     });
@@ -31,10 +32,10 @@ class _AddPostPageState extends State<AddPostPage> {
           .collection('Business')
           .doc('Data')
           .collection('Products')
-          .doc(postPprovider.selectedProduct[0])
+          .doc(postprovider.selectedProduct[0])
           .get();
 
-      final String postId = Uuid().v6();
+      final String postId = Uuid().v4();
 
       Map<String, dynamic> postInfo = {
         'postId': postId,
@@ -43,7 +44,7 @@ class _AddPostPageState extends State<AddPostPage> {
         'postPrice': productDocSnap['productPrice'],
         'postDescription': productDocSnap['productDescription'],
         'postBrand': productDocSnap['productBrand'],
-        'postImages': productDocSnap['images'],
+        'postImages': isTextPost ? null : productDocSnap['images'],
         'postVendorId': productDocSnap['vendorId'],
         'postViews': 0,
         'postLikes': 0,
@@ -51,6 +52,7 @@ class _AddPostPageState extends State<AddPostPage> {
         'postDateTime': Timestamp.fromMillisecondsSinceEpoch(
           DateTime.now().millisecondsSinceEpoch,
         ),
+        'isTextPost': isTextPost,
       };
 
       await firestore
@@ -91,10 +93,12 @@ class _AddPostPageState extends State<AddPostPage> {
         actions: [
           IconButton(
             onPressed: () async {
-              if (selectedProduct.isEmpty) {
-                return mySnackBar(context, "Select a Product");
+              if (selectedProduct.isEmpty ||
+                  selectedProductProvider.isTextPost == null) {
+                return mySnackBar(context, "Select a Post Type");
               } else {
-                String res = await post(selectedProductProvider);
+                String res = await post(selectedProductProvider,
+                    selectedProductProvider.isTextPost!);
                 if (res == "") {
                   selectedProductProvider.clear();
                 }
@@ -113,6 +117,15 @@ class _AddPostPageState extends State<AddPostPage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Text(
+            "Select the type of post you want to create",
+            style: TextStyle(
+              color: primaryDark,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
+          ),
           Text(
             "Just select the product you want the post",
             style: TextStyle(
@@ -134,10 +147,30 @@ class _AddPostPageState extends State<AddPostPage> {
           SizedBox(height: 20),
           MyButton(
             text: selectedProduct.length < 2
-                ? "LINK PRODUCT"
-                : "PRODUCT: ${selectedProduct[1]}",
+                ? "TEXT POST"
+                : selectedProductProvider.isTextPost == true
+                    ? "TEXT POST: ${selectedProduct[1]}"
+                    : "TEXT POST",
             onTap: () {
-              print("ABC");
+              selectedProductProvider.changePostType(true);
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: ((context) => SelectProductForPostPage()),
+                ),
+              );
+            },
+            isLoading: false,
+            horizontalPadding: 20,
+          ),
+          SizedBox(height: 20),
+          MyButton(
+            text: selectedProduct.length < 2
+                ? "IMAGE POST"
+                : selectedProductProvider.isTextPost == false
+                    ? "IMAGE POST: ${selectedProduct[1]}"
+                    : "IMAGE POST",
+            onTap: () {
+              selectedProductProvider.changePostType(false);
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: ((context) => SelectProductForPostPage()),

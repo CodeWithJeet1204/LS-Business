@@ -1,7 +1,3 @@
-// ignore_for_file: unnecessary_null_comparison
-
-import 'dart:io';
-
 import 'package:find_easy/firebase/storage_methods.dart';
 import 'package:find_easy/models/industry_segments.dart';
 import 'package:find_easy/page/register/firestore_info.dart';
@@ -40,7 +36,6 @@ class _BusinessRegisterDetailsPageState
   String? selectedIndustrySegment;
   bool isImageSelected = false;
   Uint8List? _image;
-  Uint8List? image2;
 
   void showCategoryDialog() async {
     await showDialog(
@@ -210,59 +205,57 @@ class _BusinessRegisterDetailsPageState
                         text: "Next",
                         onTap: () async {
                           if (businessFormKey.currentState!.validate()) {
-                            if (_image == null) {
-                              File imageFile = File('files/shop.jpg');
-                              image2 = imageFile.readAsBytesSync();
-                            }
-                            try {
-                              setState(() {
-                                isNext = true;
-                              });
-                              businessImage.addAll({
-                                "Image": isImageSelected
-                                    ? _image == null
-                                        ? image2!
-                                        : _image!
-                                    : image2!,
-                              });
-                              String businessPhotoUrl =
-                                  await StorageMethods().uploadImageToStorage(
-                                'Profile/Shops',
-                                businessImage["Image"]!,
-                                false,
-                              );
-                              businessFirestoreData.addAll(
-                                {
-                                  "Name": nameController.text.toString(),
-                                  "Type": selectedCategory,
-                                  "Address": addressController.text.toString(),
-                                  "Industry": selectedIndustrySegment,
-                                  "Image": businessPhotoUrl,
-                                },
-                              );
-
-                              SystemChannels.textInput
-                                  .invokeMethod('TextInput.hide');
-                              if (context.mounted) {
-                                Navigator.of(context).pop();
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: ((context) => SelectMembershipPage(
-                                          uuid: uuid,
-                                        )),
-                                  ),
+                            if (_image != null) {
+                              try {
+                                setState(() {
+                                  isNext = true;
+                                });
+                                businessImage.addAll({
+                                  "Image": _image!,
+                                });
+                                String businessPhotoUrl =
+                                    await StorageMethods().uploadImageToStorage(
+                                  'Profile/Shops',
+                                  businessImage["Image"]!,
+                                  false,
                                 );
+                                businessFirestoreData.addAll(
+                                  {
+                                    "Name": nameController.text.toString(),
+                                    "Type": selectedCategory,
+                                    "Address":
+                                        addressController.text.toString(),
+                                    "Industry": selectedIndustrySegment,
+                                    "Image": businessPhotoUrl,
+                                  },
+                                );
+
+                                SystemChannels.textInput
+                                    .invokeMethod('TextInput.hide');
+                                if (context.mounted) {
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: ((context) =>
+                                          SelectMembershipPage(
+                                            uuid: uuid,
+                                          )),
+                                    ),
+                                  );
+                                }
+                                setState(() {
+                                  isNext = false;
+                                });
+                              } catch (e) {
+                                setState(() {
+                                  isNext = false;
+                                });
+                                if (context.mounted) {
+                                  mySnackBar(context, e.toString());
+                                }
                               }
-                              setState(() {
-                                isNext = false;
-                              });
-                            } catch (e) {
-                              setState(() {
-                                isNext = false;
-                              });
-                              if (context.mounted) {
-                                mySnackBar(context, e.toString());
-                              }
+                            } else {
+                              mySnackBar(context, "Select an Image");
                             }
                           }
                         },

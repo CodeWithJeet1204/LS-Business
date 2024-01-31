@@ -1,4 +1,5 @@
 import 'package:find_easy/page/main/add/add_page.dart';
+import 'package:find_easy/page/main/comments/all_comments_screen.dart';
 import 'package:find_easy/page/main/profile/profile_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:flutter/material.dart';
@@ -16,9 +17,10 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  int current = 1;
-  List<Widget> currentPage = [
+  int current = 2;
+  List<Widget> allPages = [
     const AddPage(),
+    const AllCommentPage(),
     const ProfilePage(),
   ];
 
@@ -39,7 +41,7 @@ class _MainPageState extends State<MainPage> {
         ),
         selectedIconTheme: const IconThemeData(
           size: 28,
-          color: primaryDark2,
+          color: primaryDark,
         ),
         currentIndex: current,
         onTap: (value) {
@@ -54,13 +56,19 @@ class _MainPageState extends State<MainPage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
+              Icons.comment_outlined,
+            ),
+            label: "Comments",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
               Icons.person_outline,
             ),
             label: "Profile",
           ),
         ],
       ),
-      body: currentPage[current],
+      body: allPages[current],
     );
   }
 }

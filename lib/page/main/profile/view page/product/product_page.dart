@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/page/main/profile/view%20page/product_category_change_page.dart';
-import 'package:find_easy/page/main/profile/view%20page/product_image_page.dart';
+import 'package:find_easy/page/main/profile/view%20page/product/product_category_change_page.dart';
+import 'package:find_easy/page/main/profile/view%20page/product/product_image_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/product_info_box.dart';

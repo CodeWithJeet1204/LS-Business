@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/page/main/profile/view%20page/product_page.dart';
+import 'package:find_easy/page/main/profile/view%20page/product/product_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -73,84 +73,95 @@ class _AllProductsPageState extends State<AllProductsPage> {
                             final productData = snapshot.data!.docs[index];
                             final productDataMap =
                                 productData.data() as Map<String, dynamic>;
-                            return Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: ((context) => ProductPage(
-                                            productId:
-                                                productDataMap['productId'],
-                                            productName:
-                                                productDataMap['productName'],
-                                          )),
+                            return snapshot.data!.docs.length == 0
+                                ? Center(
+                                    child: Text('No Products Added'),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: ((context) => ProductPage(
+                                                  productId: productDataMap[
+                                                      'productId'],
+                                                  productName: productDataMap[
+                                                      'productName'],
+                                                )),
+                                          ),
+                                        );
+                                      },
+                                      // doubleTap: Options such as delete
+                                      child: Container(
+                                        width: width * 0.5,
+                                        decoration: BoxDecoration(
+                                          color: primary2.withOpacity(0.5),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(4),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              const SizedBox(height: 2),
+                                              Center(
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                  child: Image.network(
+                                                    productData['images'][0],
+                                                    height: 140,
+                                                    width: 140,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        8, 4, 4, 0),
+                                                child: Text(
+                                                  productData['productName'],
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        8, 0, 4, 0),
+                                                child: Text(
+                                                  productData['productPrice'] !=
+                                                              "" &&
+                                                          productData[
+                                                                  'productPrice'] !=
+                                                              null
+                                                      ? productData[
+                                                          'productPrice']
+                                                      : "N/A",
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   );
-                                },
-                                // doubleTap: Options such as delete
-                                child: Container(
-                                  width: width * 0.5,
-                                  decoration: BoxDecoration(
-                                    color: primary2.withOpacity(0.5),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const SizedBox(height: 2),
-                                        Center(
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            child: Image.network(
-                                              productData['images'][0],
-                                              height: 140,
-                                              width: 140,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              8, 4, 4, 0),
-                                          child: Text(
-                                            productData['productName'],
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              8, 0, 4, 0),
-                                          child: Text(
-                                            productData['productPrice'] != "" &&
-                                                    productData[
-                                                            'productPrice'] !=
-                                                        null
-                                                ? productData['productPrice']
-                                                : "N/A",
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
                           })
                       : ListView.builder(
                           itemCount: snapshot.data!.docs.length,

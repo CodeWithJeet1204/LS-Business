@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:find_easy/firebase/auth_methods.dart';
 import 'package:find_easy/firebase/storage_methods.dart';
 import 'package:find_easy/page/register/business_register_details.dart';
@@ -42,7 +40,6 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
   final GlobalKey<FormState> userFormKey = GlobalKey<FormState>();
   bool isImageSelected = false;
   Uint8List? _image;
-  Uint8List? image2;
   bool isNext = false;
 
   @override
@@ -174,69 +171,66 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                           if (userFormKey.currentState!.validate()) {
                             if (confirmPasswordController.text ==
                                 passwordController.text) {
-                              try {
-                                if (_image == null) {
+                              if (_image != null) {
+                                try {
                                   setState(() {
-                                    File imageFile = File('files/profile.png');
-                                    image2 = imageFile.readAsBytesSync();
+                                    isNext = true;
                                   });
-                                }
-                                setState(() {
-                                  isNext = true;
-                                });
-                                userImage.addAll({
-                                  "Image": isImageSelected
-                                      ? _image == null
-                                          ? image2!
-                                          : _image!
-                                      : image2!,
-                                });
-                                String userPhotoUrl =
-                                    await StorageMethods().uploadImageToStorage(
-                                  'Profile/Users',
-                                  userImage["Image"]!,
-                                  false,
-                                );
-                                !widget.numberChosen
-                                    ? userFirestoreData.addAll(
-                                        {
-                                          "uid": uid,
-                                          "Name": widget.googleChosen
-                                              ? FirebaseAuth.instance
-                                                  .currentUser!.displayName
-                                              : nameController.text.toString(),
-                                          "Phone Number": phoneController.text,
-                                          "Image": userPhotoUrl,
-                                        },
-                                      )
-                                    : userFirestoreData.addAll({
-                                        "uid": uid,
-                                        "Email":
-                                            emailController.text.toString(),
-                                        "Name": nameController.text.toString(),
-                                        "Image": userPhotoUrl,
-                                      });
-                                setState(() {
-                                  isNext = false;
-                                });
-                                SystemChannels.textInput
-                                    .invokeMethod('TextInput.hide');
-                                if (context.mounted) {
-                                  Navigator.of(context).pop();
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const BusinessRegisterDetailsPage(),
-                                    ),
+                                  userImage.addAll({
+                                    "Image": _image!,
+                                  });
+                                  String userPhotoUrl = await StorageMethods()
+                                      .uploadImageToStorage(
+                                    'Profile/Users',
+                                    userImage["Image"]!,
+                                    false,
                                   );
+                                  !widget.numberChosen
+                                      ? userFirestoreData.addAll(
+                                          {
+                                            "uid": uid,
+                                            "Name": widget.googleChosen
+                                                ? FirebaseAuth.instance
+                                                    .currentUser!.displayName
+                                                : nameController.text
+                                                    .toString(),
+                                            "Phone Number":
+                                                phoneController.text,
+                                            "Image": userPhotoUrl,
+                                          },
+                                        )
+                                      : userFirestoreData.addAll({
+                                          "uid": uid,
+                                          "Email":
+                                              emailController.text.toString(),
+                                          "Name":
+                                              nameController.text.toString(),
+                                          "Image": userPhotoUrl,
+                                        });
+                                  setState(() {
+                                    isNext = false;
+                                  });
+                                  SystemChannels.textInput
+                                      .invokeMethod('TextInput.hide');
+                                  if (context.mounted) {
+                                    Navigator.of(context).pop();
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const BusinessRegisterDetailsPage(),
+                                      ),
+                                    );
+                                  }
+                                } catch (e) {
+                                  setState(() {
+                                    isNext = false;
+                                  });
+                                  if (context.mounted) {
+                                    mySnackBar(context, e.toString());
+                                  }
                                 }
-                              } catch (e) {
-                                setState(() {
-                                  isNext = false;
-                                });
-                                if (context.mounted) {
-                                  mySnackBar(context, e.toString());
-                                }
+                              } else {
+                                mySnackBar(context, "Select Profile Image");
                               }
                             } else {
                               mySnackBar(
