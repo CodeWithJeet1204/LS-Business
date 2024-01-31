@@ -1,0 +1,17 @@
+Post
+
+product name
+product price
+product description
+product brand
+product images
+product id
+product tags
+
+vendor id
+
+post datetime
+post comments
+likes
+views
+

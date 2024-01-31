@@ -361,7 +361,10 @@ class _ProductPageState extends State<ProductPage> {
             .child(const Uuid().v4());
         await ref.putFile(File(im.path)).whenComplete(() async {
           await ref.getDownloadURL().then((value) {
-            images.add(value);
+            print("Jeet");
+            setState(() {
+              images.add(value);
+            });
             FirebaseFirestore.instance
                 .collection('Business')
                 .doc('Data')
@@ -372,6 +375,9 @@ class _ProductPageState extends State<ProductPage> {
             });
           });
         });
+        print("ALLALLA");
+        Navigator.of(context).pop();
+        // Navigator.of(context).push(MaterialPageRoute(builder: ((context) => ProductPage(productId: productId, productName: productName))),);
         setState(() {
           isImageChanging = true;
         });
@@ -403,7 +409,6 @@ class _ProductPageState extends State<ProductPage> {
             .child(const Uuid().v4());
         await ref.putFile(File(im.path)).whenComplete(() async {
           await ref.getDownloadURL().then((value) async {
-            print("Jeet");
             setState(() {
               images.insert(index, value);
             });

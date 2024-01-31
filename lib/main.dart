@@ -2,7 +2,7 @@
 
 import 'package:find_easy/first_launch_detection.dart';
 import 'package:find_easy/page/intro/intro_page_view.dart';
-import 'package:find_easy/page/main/add/add_category.dart';
+import 'package:find_easy/page/main/add/category/add_category.dart';
 import 'package:find_easy/page/main/main_page.dart';
 import 'package:find_easy/page/main/profile/data/all_product_page.dart';
 import 'package:find_easy/page/main/profile/details/business_details_page.dart';
@@ -14,6 +14,7 @@ import 'package:find_easy/page/register/register_cred.dart';
 import 'package:find_easy/page/register/register_pay.dart';
 import 'package:find_easy/provider/change_category_provider.dart';
 import 'package:find_easy/provider/products_added_to_category_provider.dart';
+import 'package:find_easy/provider/select_product_for_post_provider.dart';
 import 'package:find_easy/provider/shop_type_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
@@ -47,6 +48,9 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (_) => ChangeCategoryProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => SelectProductForPostProvider(),
         ),
       ],
       child: const MyApp(),
