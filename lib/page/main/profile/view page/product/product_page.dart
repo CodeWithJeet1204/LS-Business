@@ -19,16 +19,19 @@ class ProductPage extends StatefulWidget {
     super.key,
     required this.productId,
     required this.productName,
+    this.fromPost = false,
   });
 
   final String productId;
   final String productName;
+  final bool fromPost;
 
   @override
   State<ProductPage> createState() => _ProductPageState();
 }
 
 class _ProductPageState extends State<ProductPage> {
+  final store = FirebaseFirestore.instance;
   final TextEditingController editController = TextEditingController();
   final GlobalKey<FormState> editKey = GlobalKey<FormState>();
   int _currentIndex = 0;
@@ -36,6 +39,7 @@ class _ProductPageState extends State<ProductPage> {
   bool categoryExists = true;
   bool isImageChanging = false;
 
+  // EDIT INFO
   void edit(
     String propertyValue,
     int noOfAnswers,
@@ -347,6 +351,7 @@ class _ProductPageState extends State<ProductPage> {
         });
   }
 
+  // ADD IMAGES
   void addProductImages(List images) async {
     final XFile? im =
         await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -397,6 +402,7 @@ class _ProductPageState extends State<ProductPage> {
     }
   }
 
+  // CHANGE IMAGES
   void changeProductImage(String e, int index, List images) async {
     final XFile? im =
         await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -409,7 +415,6 @@ class _ProductPageState extends State<ProductPage> {
             await FirebaseStorage.instance.refFromURL(images[index]);
         await images.removeAt(index);
         await ref.putFile(File(im.path));
-        Navigator.of(context).pop();
         setState(() {
           isImageChanging = false;
         });
@@ -426,6 +431,7 @@ class _ProductPageState extends State<ProductPage> {
     }
   }
 
+  // REMOVE IMAGES
   void removeProductImages(String e, List images) async {
     await FirebaseStorage.instance
         .refFromURL(images[images.indexOf(e)])
@@ -441,6 +447,84 @@ class _ProductPageState extends State<ProductPage> {
     });
   }
 
+  // DELETE PRODUCT
+  // When deleting product, also delete all posts related to it.
+  void delete() async {
+    setState(() {
+      isEditing = true;
+    });
+    try {
+      await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Products')
+          .doc(widget.productId)
+          .delete();
+
+      final postSnap = await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Posts')
+          .where('postProductId', isEqualTo: widget.productId)
+          .get();
+
+      for (QueryDocumentSnapshot doc in postSnap.docs) {
+        await doc.reference.delete();
+        ;
+      }
+      setState(() {
+        isEditing = false;
+      });
+      Navigator.of(context).pop();
+    } catch (e) {
+      setState(() {
+        isEditing = false;
+      });
+      mySnackBar(context, e.toString());
+    }
+  }
+
+  // CONFIRM DELETE
+  confirmDelete() {
+    showDialog(
+      context: context,
+      builder: ((context) {
+        return AlertDialog(
+          title: Text("Confirm DELETE"),
+          content: Text(
+              "Are you sure you want to delete this product & all its posts"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'NO',
+                style: TextStyle(
+                  color: Colors.green,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.of(context).pop();
+                delete();
+              },
+              child: Text(
+                'YES',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
+        );
+      }),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final productStream = FirebaseFirestore.instance
@@ -452,7 +536,16 @@ class _ProductPageState extends State<ProductPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.productName),
+        actions: [
+          IconButton(
+            onPressed: confirmDelete,
+            icon: Icon(
+              Icons.delete_forever,
+              color: Colors.red,
+            ),
+            tooltip: "DELETE",
+          ),
+        ],
       ),
       body: LayoutBuilder(
         builder: ((context, constraints) {

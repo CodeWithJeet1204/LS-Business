@@ -1,14 +1,15 @@
 // ignore_for_file: unnecessary_null_comparison
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/models/category_properties.dart';
 import 'package:find_easy/page/main/main_page.dart';
+import 'package:find_easy/provider/add_product_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/additional_info_box.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:find_easy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AddProductPage2 extends StatefulWidget {
   const AddProductPage2({
@@ -88,7 +89,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
     });
   }
 
-  void addProduct() async {
+  void addProduct(AddProductProvider Provider) async {
     if (productKey.currentState!.validate()) {
       if (property0.isEmpty) {
         if (getNoOfAnswers(0) == 1) {
@@ -192,15 +193,23 @@ class _AddProductPage2State extends State<AddProductPage2> {
             .doc('Data')
             .collection('Products')
             .doc(widget.productId)
+            .set(Provider.productInfo);
+
+        await store
+            .collection('Business')
+            .doc('Data')
+            .collection('Products')
+            .doc(widget.productId)
             .update({
           'Properties': properties,
           'Tags': tagList,
         });
+
         setState(() {
           isAddingProduct = false;
         });
         if (context.mounted) {
-          mySnackBar(context, "Product Added Added");
+          mySnackBar(context, "Product Added");
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder: ((context) => const MainPage(index: 0)),
@@ -277,6 +286,8 @@ class _AddProductPage2State extends State<AddProductPage2> {
 
   @override
   Widget build(BuildContext context) {
+    final addProductProvider = Provider.of<AddProductProvider>(context);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -285,7 +296,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
         actions: [
           IconButton(
             onPressed: () {
-              addProduct();
+              addProduct(addProductProvider);
             },
             icon: const Icon(Icons.ios_share),
           ),

@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:find_easy/first_launch_detection.dart';
 import 'package:find_easy/page/intro/intro_page_view.dart';
 import 'package:find_easy/page/main/add/category/add_category.dart';
@@ -14,6 +12,7 @@ import 'package:find_easy/page/register/login_page.dart';
 import 'package:find_easy/page/main/profile/profile_page.dart';
 import 'package:find_easy/page/register/register_cred.dart';
 import 'package:find_easy/page/register/register_pay.dart';
+import 'package:find_easy/provider/add_product_provider.dart';
 import 'package:find_easy/provider/change_category_provider.dart';
 import 'package:find_easy/provider/products_added_to_category_provider.dart';
 import 'package:find_easy/provider/select_product_for_post_provider.dart';
@@ -42,6 +41,9 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (_) => AddProductProvider(),
+        ),
         ChangeNotifierProvider(
           create: (_) => ShopTypeProvider(),
         ),

@@ -4,6 +4,7 @@ import 'package:find_easy/provider/select_product_for_post_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -23,52 +24,77 @@ class _AddPostPageState extends State<AddPostPage> {
 
   Future<String> post(
       SelectProductForPostProvider postprovider, bool isTextPost) async {
-    setState(() {
-      isPosting = true;
-    });
     String res = "Some error occured";
     try {
-      final productDocSnap = await firestore
-          .collection('Business')
-          .doc('Data')
-          .collection('Products')
-          .doc(postprovider.selectedProduct[0])
-          .get();
-
-      final String postId = Uuid().v4();
-
-      Map<String, dynamic> postInfo = {
-        'postId': postId,
-        'postProductId': productDocSnap['productId'],
-        'postName': productDocSnap['productName'],
-        'postPrice': productDocSnap['productPrice'],
-        'postDescription': productDocSnap['productDescription'],
-        'postBrand': productDocSnap['productBrand'],
-        'postImages': isTextPost ? null : productDocSnap['images'],
-        'postVendorId': productDocSnap['vendorId'],
-        'postViews': 0,
-        'postLikes': 0,
-        'postComments': {},
-        'postDateTime': Timestamp.fromMillisecondsSinceEpoch(
-          DateTime.now().millisecondsSinceEpoch,
-        ),
-        'isTextPost': isTextPost,
-      };
-
-      await firestore
+      bool postDoesntExists = true;
+      final previousPosts = await firestore
           .collection('Business')
           .doc('Data')
           .collection('Posts')
-          .doc(postId)
-          .set(postInfo);
+          .where('postVendorId',
+              isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .get();
+
+      for (QueryDocumentSnapshot doc in previousPosts.docs) {
+        if (doc['postProductId'] == postprovider.selectedProduct[0] &&
+            isTextPost == doc['isTextPost']) {
+          mySnackBar(
+            context,
+            isTextPost
+                ? "Text Post Already Exists for this product"
+                : "Image Post Already Exists for this product",
+          );
+          postDoesntExists = false;
+        }
+      }
+
+      if (postDoesntExists) {
+        setState(() {
+          isPosting = true;
+        });
+
+        final productDocSnap = await firestore
+            .collection('Business')
+            .doc('Data')
+            .collection('Products')
+            .doc(postprovider.selectedProduct[0])
+            .get();
+
+        final String postId = Uuid().v4();
+
+        Map<String, dynamic> postInfo = {
+          'postId': postId,
+          'postProductId': productDocSnap['productId'],
+          'postName': productDocSnap['productName'],
+          'postPrice': productDocSnap['productPrice'],
+          'postDescription': productDocSnap['productDescription'],
+          'postBrand': productDocSnap['productBrand'],
+          'postImages': isTextPost ? null : productDocSnap['images'],
+          'postVendorId': productDocSnap['vendorId'],
+          'postViews': 0,
+          'postLikes': 0,
+          'postComments': {},
+          'postDateTime': Timestamp.fromMillisecondsSinceEpoch(
+            DateTime.now().millisecondsSinceEpoch,
+          ),
+          'isTextPost': isTextPost,
+        };
+
+        await firestore
+            .collection('Business')
+            .doc('Data')
+            .collection('Posts')
+            .doc(postId)
+            .set(postInfo);
+
+        mySnackBar(context, "Posted");
+        Navigator.of(context).pop();
+      }
 
       setState(() {
         isPosting = false;
       });
       res = "";
-
-      mySnackBar(context, "Posted");
-      Navigator.of(context).pop();
     } catch (e) {
       res = e.toString();
       setState(() {

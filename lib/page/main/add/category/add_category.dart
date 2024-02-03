@@ -23,10 +23,10 @@ class AddCategoryPage extends StatefulWidget {
 }
 
 class _AddCategoryPageState extends State<AddCategoryPage> {
-  final TextEditingController categoryController = TextEditingController();
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore store = FirebaseFirestore.instance;
   final GlobalKey<FormState> categoryKey = GlobalKey<FormState>();
+  final TextEditingController categoryController = TextEditingController();
   bool isSaving = false;
   File? _image;
   bool isFit = true;
@@ -35,66 +35,86 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
   void addCategory(
       String categoryName, ProductAddedToCategory categoryProvider) async {
     if (categoryKey.currentState!.validate()) {
-      if (_image != null) {
-        setState(() {
-          isSaving = true;
-        });
-        try {
-          final String categoryId = Uuid().v4();
+      bool categoryDoesntExists = true;
+      final previousProducts = await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Category')
+          .where('vendorId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .get();
 
-          Reference ref = await FirebaseStorage.instance
-              .ref()
-              .child('Data/Categories')
-              .child(categoryId);
-          await ref.putFile(_image!).whenComplete(() async {
-            await ref.getDownloadURL().then((value) {
-              setState(() {
-                imageUrl = value;
+      for (QueryDocumentSnapshot doc in previousProducts.docs) {
+        if (doc['categoryName'] == categoryController.text.toString()) {
+          mySnackBar(
+            context,
+            "Category with same name already exists",
+          );
+          categoryDoesntExists = false;
+        }
+      }
+
+      if (categoryDoesntExists) {
+        if (_image != null) {
+          setState(() {
+            isSaving = true;
+          });
+          try {
+            final String categoryId = Uuid().v4();
+
+            Reference ref = await FirebaseStorage.instance
+                .ref()
+                .child('Data/Categories')
+                .child(categoryId);
+            await ref.putFile(_image!).whenComplete(() async {
+              await ref.getDownloadURL().then((value) {
+                setState(() {
+                  imageUrl = value;
+                });
               });
             });
-          });
 
-          await store
-              .collection('Business')
-              .doc('Data')
-              .collection('Category')
-              .doc(categoryId)
-              .set({
-            'categoryName': categoryName,
-            'categoryId': categoryId,
-            'imageUrl': imageUrl,
-            'datetime': Timestamp.fromMillisecondsSinceEpoch(
-              DateTime.now().millisecondsSinceEpoch,
-            ),
-            'vendorId': auth.currentUser!.uid,
-          });
-
-          categoryProvider.selectedProducts.forEach((element) {
-            store
+            await store
                 .collection('Business')
                 .doc('Data')
-                .collection('Products')
-                .doc(element)
-                .update({
+                .collection('Category')
+                .doc(categoryId)
+                .set({
               'categoryName': categoryName,
               'categoryId': categoryId,
+              'imageUrl': imageUrl,
+              'datetime': Timestamp.fromMillisecondsSinceEpoch(
+                DateTime.now().millisecondsSinceEpoch,
+              ),
+              'vendorId': auth.currentUser!.uid,
             });
+
+            categoryProvider.selectedProducts.forEach((element) {
+              store
+                  .collection('Business')
+                  .doc('Data')
+                  .collection('Products')
+                  .doc(element)
+                  .update({
+                'categoryName': categoryName,
+                'categoryId': categoryId,
+              });
+            });
+            categoryProvider.clearProducts();
+            if (context.mounted) {
+              mySnackBar(context, "Added");
+              Navigator.of(context).pop();
+            }
+          } catch (e) {
+            if (context.mounted) {
+              mySnackBar(context, e.toString());
+            }
+          }
+          setState(() {
+            isSaving = false;
           });
-          categoryProvider.clearProducts();
-          if (context.mounted) {
-            mySnackBar(context, "Added");
-            Navigator.of(context).pop();
-          }
-        } catch (e) {
-          if (context.mounted) {
-            mySnackBar(context, e.toString());
-          }
+        } else {
+          mySnackBar(context, "Select an Image");
         }
-        setState(() {
-          isSaving = false;
-        });
-      } else {
-        mySnackBar(context, "Select an Image");
       }
     }
   }
@@ -122,7 +142,9 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
   void addProduct() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: ((context) => AddProductsToCategoryPage()),
+        builder: ((context) => AddProductsToCategoryPage(
+              fromAddCategoryPage: true,
+            )),
       ),
     );
   }

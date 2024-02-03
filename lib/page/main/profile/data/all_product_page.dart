@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/page/main/profile/view%20page/product/product_page.dart';
 import 'package:find_easy/utils/colors.dart';
+import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -12,12 +13,81 @@ class AllProductsPage extends StatefulWidget {
 }
 
 class _AllProductsPageState extends State<AllProductsPage> {
+  final store = FirebaseFirestore.instance;
+  final searchController = TextEditingController();
   bool isGridView = true;
-  String? searchedProduct;
+
+  // DELETE PRODUCT
+  // When deleting product, also delete all posts related to it.
+  void delete(String productId) async {
+    try {
+      await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Products')
+          .doc(productId)
+          .delete();
+
+      final postSnap = await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Posts')
+          .where('postProductId', isEqualTo: productId)
+          .get();
+
+      for (QueryDocumentSnapshot doc in postSnap.docs) {
+        await doc.reference.delete();
+        ;
+      }
+    } catch (e) {
+      mySnackBar(context, e.toString());
+    }
+  }
+
+  // CONFIRM DELETE
+  confirmDelete(String productId) {
+    showDialog(
+      context: context,
+      builder: ((context) {
+        return AlertDialog(
+          title: Text("Confirm DELETE"),
+          content: Text(
+              "Are you sure you want to delete this product & all its posts"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'NO',
+                style: TextStyle(
+                  color: Colors.green,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.of(context).pop();
+                delete(productId);
+              },
+              child: Text(
+                'YES',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
+        );
+      }),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    final Stream<QuerySnapshot> allProductStream = FirebaseFirestore.instance
+    Stream<QuerySnapshot> allProductStream = FirebaseFirestore.instance
         .collection('Business')
         .doc('Data')
         .collection('Products')
@@ -25,6 +95,11 @@ class _AllProductsPageState extends State<AllProductsPage> {
           'vendorId',
           isEqualTo: FirebaseAuth.instance.currentUser!.uid,
         )
+        .orderBy('productName')
+        .where('productName',
+            isGreaterThanOrEqualTo: searchController.text.toString())
+        .where('productName',
+            isLessThan: searchController.text.toString() + '\uf8ff')
         .orderBy('datetime', descending: true)
         .snapshots();
 
@@ -59,13 +134,15 @@ class _AllProductsPageState extends State<AllProductsPage> {
                           children: [
                             Expanded(
                               child: TextField(
+                                controller: searchController,
                                 autocorrect: false,
                                 decoration: InputDecoration(
+                                  labelText: "Case - Sensitive",
                                   hintText: "Search ...",
                                   border: OutlineInputBorder(),
                                 ),
                                 onChanged: (value) {
-                                  searchedProduct = value;
+                                  setState(() {});
                                 },
                               ),
                             ),
@@ -100,100 +177,121 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                 final productData = snapshot.data!.docs[index];
                                 final productDataMap =
                                     productData.data() as Map<String, dynamic>;
-                                return snapshot.data!.docs.length == 0
-                                    ? Center(
-                                        child: Text('No Products Added'),
-                                      )
-                                    : Padding(
-                                        padding: const EdgeInsets.all(8),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder: ((context) =>
-                                                    ProductPage(
-                                                      productId: productDataMap[
-                                                          'productId'],
-                                                      productName:
-                                                          productDataMap[
-                                                              'productName'],
-                                                    )),
-                                              ),
-                                            );
-                                          },
-                                          // doubleTap: Options such as delete
-                                          child: Container(
-                                            width: width * 0.5,
-                                            decoration: BoxDecoration(
-                                              color: primary2.withOpacity(0.5),
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                            ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(4),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  const SizedBox(height: 2),
-                                                  Center(
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12),
-                                                      child: Image.network(
-                                                        productData['images']
-                                                            [0],
-                                                        height: width * 0.4,
-                                                        width: width * 0.4,
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding: const EdgeInsets
-                                                        .fromLTRB(8, 4, 4, 0),
-                                                    child: Text(
-                                                      productData[
-                                                          'productName'],
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: const TextStyle(
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding: const EdgeInsets
-                                                        .fromLTRB(8, 0, 4, 0),
-                                                    child: Text(
-                                                      productData['productPrice'] !=
-                                                                  "" &&
-                                                              productData[
-                                                                      'productPrice'] !=
-                                                                  null
-                                                          ? productData[
-                                                              'productPrice']
-                                                          : "N/A",
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: const TextStyle(
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
+
+                                return Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: ((context) => ProductPage(
+                                                productId:
+                                                    productDataMap['productId'],
+                                                productName: productDataMap[
+                                                    'productName'],
+                                              )),
                                         ),
                                       );
+                                    },
+                                    // doubleTap: Options such as delete
+                                    child: Container(
+                                      width: width * 0.5,
+                                      decoration: BoxDecoration(
+                                        color: primary2.withOpacity(0.5),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(4),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const SizedBox(height: 2),
+                                            Center(
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                child: Image.network(
+                                                  productData['images'][0],
+                                                  height: width * 0.4,
+                                                  width: width * 0.4,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                          .fromLTRB(8, 4, 4, 0),
+                                                      child: Text(
+                                                        productData[
+                                                            'productName'],
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: const TextStyle(
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                          .fromLTRB(8, 0, 4, 0),
+                                                      child: Text(
+                                                        productData['productPrice'] !=
+                                                                    "" &&
+                                                                productData[
+                                                                        'productPrice'] !=
+                                                                    null
+                                                            ? productData[
+                                                                'productPrice']
+                                                            : "N/A",
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: const TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                IconButton(
+                                                  onPressed: () {
+                                                    confirmDelete(
+                                                      productData['productId'],
+                                                    );
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.delete_forever,
+                                                    color: Colors.red,
+                                                    size: 32,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
                               })
                           : SizedBox(
                               width: width,

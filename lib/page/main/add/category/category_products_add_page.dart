@@ -9,12 +9,14 @@ import 'package:provider/provider.dart';
 class AddProductsToCategoryPage extends StatefulWidget {
   const AddProductsToCategoryPage({
     super.key,
+    required this.fromAddCategoryPage,
     this.categoryId,
     this.categoryName,
   });
 
   final String? categoryId;
   final String? categoryName;
+  final bool fromAddCategoryPage;
 
   @override
   State<AddProductsToCategoryPage> createState() =>
@@ -22,6 +24,7 @@ class AddProductsToCategoryPage extends StatefulWidget {
 }
 
 class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
+  final searchController = TextEditingController();
   bool isGridView = true;
   bool isAdding = false;
   String? searchedProduct;
@@ -30,6 +33,7 @@ class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
   Widget build(BuildContext context) {
     final productsAddedToCategoryProvider =
         Provider.of<ProductAddedToCategory>(context);
+
     final Stream<QuerySnapshot> allProductStream = FirebaseFirestore.instance
         .collection('Business')
         .doc('Data')
@@ -38,6 +42,11 @@ class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
           'vendorId',
           isEqualTo: FirebaseAuth.instance.currentUser!.uid,
         )
+        .orderBy('productName')
+        .where('productName',
+            isGreaterThanOrEqualTo: searchController.text.toString())
+        .where('productName',
+            isLessThan: searchController.text.toString() + '\uf8ff')
         .orderBy('datetime', descending: true)
         .snapshots();
 
@@ -67,12 +76,16 @@ class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
         title: const Text("SELECT PRODUCTS"),
         actions: [
           MyTextButton(
-            onPressed: () {
-              addProductToCategory(
-                productsAddedToCategoryProvider.selectedProducts,
-              );
-              productsAddedToCategoryProvider.clearProducts();
-            },
+            onPressed: widget.fromAddCategoryPage
+                ? () {
+                    Navigator.of(context).pop();
+                  }
+                : () {
+                    addProductToCategory(
+                      productsAddedToCategoryProvider.selectedProducts,
+                    );
+                    productsAddedToCategoryProvider.clearProducts();
+                  },
             text: "NEXT",
             textColor: primaryDark,
           ),
@@ -109,13 +122,15 @@ class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
                           children: [
                             Expanded(
                               child: TextField(
+                                controller: searchController,
                                 autocorrect: false,
                                 decoration: InputDecoration(
+                                  labelText: "Case - Sensitive",
                                   hintText: "Search ...",
                                   border: OutlineInputBorder(),
                                 ),
                                 onChanged: (value) {
-                                  searchedProduct = value;
+                                  setState(() {});
                                 },
                               ),
                             ),
@@ -156,7 +171,8 @@ class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
                                       onTap: () {
                                         productsAddedToCategoryProvider
                                             .addProduct(
-                                                productData['productId']);
+                                          productData['productId'],
+                                        );
                                       },
                                       child: Stack(
                                         alignment: Alignment.topRight,

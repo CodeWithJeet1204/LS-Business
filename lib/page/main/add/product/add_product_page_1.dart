@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/firebase/storage_methods.dart';
 import 'package:find_easy/page/main/add/product/add_product_page_2.dart';
+import 'package:find_easy/provider/add_product_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:find_easy/widgets/text_button.dart';
@@ -11,6 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class AddProductPage1 extends StatefulWidget {
@@ -26,13 +28,14 @@ class _AddProductPage1State extends State<AddProductPage1> {
   final storage = StorageMethods();
   final fireStorage = FirebaseStorage.instance;
   final productKey = GlobalKey<FormState>();
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController priceController = TextEditingController();
-  final TextEditingController brandController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
-  final TextEditingController otherInfoController = TextEditingController();
-  final TextEditingController otherInfoValueController =
-      TextEditingController();
+  final nameController = TextEditingController();
+  final priceController = TextEditingController();
+  final brandController = TextEditingController();
+  final descriptionController = TextEditingController();
+  final otherInfoController = TextEditingController();
+  final otherInfoValueController = TextEditingController();
+  final searchController = TextEditingController();
+
   bool isAddingProduct = false;
   final List<File> _image = [];
   int currentImageIndex = 0;
@@ -65,7 +68,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
     });
   }
 
-  void addProduct() async {
+  void addProduct(AddProductProvider Provider) async {
     if (productKey.currentState!.validate()) {
       if (_image.isEmpty) {
         return mySnackBar(context, "Select atleast 1 image");
@@ -80,59 +83,79 @@ class _AddProductPage1State extends State<AddProductPage1> {
         }
       }
       try {
-        setState(() {
-          isAddingProduct = true;
-        });
-        for (File img in _image) {
-          try {
-            Reference ref = fireStorage
-                .ref()
-                .child('Data/Products')
-                .child(const Uuid().v4());
-            await ref.putFile(img).whenComplete(() async {
-              await ref.getDownloadURL().then((value) {
-                setState(() {
-                  _imageDownloadUrl.add(value);
-                });
-              });
-            });
-          } catch (e) {
-            if (context.mounted) {
-              mySnackBar(context, e.toString());
-            }
-          }
-        }
-        final String productId = const Uuid().v4();
-        await store
+        bool productDoesntExists = true;
+        final previousProducts = await store
             .collection('Business')
             .doc('Data')
             .collection('Products')
-            .doc(productId)
-            .set({
-          'productName': nameController.text,
-          'productPrice': priceController.text,
-          'productDescription': descriptionController.text,
-          'productBrand': brandController.text,
-          'productId': productId,
-          'images': _imageDownloadUrl,
-          'datetime': Timestamp.fromMillisecondsSinceEpoch(
-            DateTime.now().millisecondsSinceEpoch,
-          ),
-          'categoryName': selectedCategory,
-          'categoryId': selectedCategoryId,
-          'vendorId': FirebaseAuth.instance.currentUser!.uid,
-        });
-        setState(() {
-          isAddingProduct = false;
-        });
-        if (context.mounted) {
-          mySnackBar(context, "Basic Info Added");
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-              builder: ((context) => AddProductPage2(productId: productId)),
-            ),
-            (route) => false,
+            .where('vendorId',
+                isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+            .get();
+
+        for (QueryDocumentSnapshot doc in previousProducts.docs) {
+          if (doc['productName'] == nameController.text.toString()) {
+            mySnackBar(
+              context,
+              "Product with same name already exists",
+            );
+            productDoesntExists = false;
+          }
+        }
+
+        if (productDoesntExists) {
+          setState(() {
+            isAddingProduct = true;
+          });
+          for (File img in _image) {
+            try {
+              Reference ref = fireStorage
+                  .ref()
+                  .child('Data/Products')
+                  .child(const Uuid().v4());
+              await ref.putFile(img).whenComplete(() async {
+                await ref.getDownloadURL().then((value) {
+                  setState(() {
+                    _imageDownloadUrl.add(value);
+                  });
+                });
+              });
+            } catch (e) {
+              if (context.mounted) {
+                mySnackBar(context, e.toString());
+              }
+            }
+          }
+
+          final String productId = const Uuid().v4();
+          Provider.add(
+            {
+              'productName': nameController.text,
+              'productPrice': priceController.text,
+              'productDescription': descriptionController.text,
+              'productBrand': brandController.text,
+              'productId': productId,
+              'images': _imageDownloadUrl,
+              'datetime': Timestamp.fromMillisecondsSinceEpoch(
+                DateTime.now().millisecondsSinceEpoch,
+              ),
+              'categoryName': selectedCategory,
+              'categoryId': selectedCategoryId,
+              'vendorId': FirebaseAuth.instance.currentUser!.uid,
+            },
+            false,
           );
+          setState(() {
+            isAddingProduct = false;
+          });
+          if (context.mounted) {
+            mySnackBar(context, "Basic Info Added");
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: ((context) => AddProductPage2(productId: productId)),
+              ),
+              (route) => false,
+            );
+          }
         }
       } catch (e) {
         setState(() {
@@ -145,22 +168,6 @@ class _AddProductPage1State extends State<AddProductPage1> {
     }
   }
 
-  void addOtherInfo(String tag) {
-    if (tag.length > 1) {
-      setState(() {
-        otherInfoList.add(tag);
-      });
-    } else {
-      mySnackBar(context, "Tag should be atleast 2 chars long");
-    }
-  }
-
-  void removeOtherInfo(int index) {
-    setState(() {
-      otherInfoList.removeAt(index);
-    });
-  }
-
   void changeFit() {
     setState(() {
       isFit = !isFit;
@@ -169,11 +176,19 @@ class _AddProductPage1State extends State<AddProductPage1> {
 
   @override
   Widget build(BuildContext context) {
-    final categoryStream = store
+    final addProductProvider = Provider.of<AddProductProvider>(context);
+
+    final Stream<QuerySnapshot<Map<String, dynamic>>> categoryStream = store
         .collection('Business')
         .doc("Data")
         .collection("Category")
         .where('vendorId', isEqualTo: auth.currentUser!.uid)
+        .orderBy('categoryName')
+        .where('categoryName',
+            isGreaterThanOrEqualTo: searchController.text.toString())
+        .where('categoryName',
+            isLessThan: searchController.text.toString() + '\uf8ff')
+        .orderBy('datetime', descending: true)
         .snapshots();
 
     return Scaffold(
@@ -184,7 +199,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
         actions: [
           MyTextButton(
             onPressed: () {
-              addProduct();
+              addProduct(addProductProvider);
             },
             text: "NEXT",
             textColor: primaryDark2,
@@ -489,13 +504,15 @@ class _AddProductPage1State extends State<AddProductPage1> {
                             children: [
                               Expanded(
                                 child: TextField(
+                                  controller: searchController,
                                   autocorrect: false,
                                   decoration: InputDecoration(
+                                    labelText: "Case - Sensitive",
                                     hintText: "Search ...",
                                     border: OutlineInputBorder(),
                                   ),
                                   onChanged: (value) {
-                                    searchedCategory = value;
+                                    setState(() {});
                                   },
                                 ),
                               ),

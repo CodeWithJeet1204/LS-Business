@@ -29,6 +29,7 @@ class CategoryPage extends StatefulWidget {
 class _CategoryPageState extends State<CategoryPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
+  final searchController = TextEditingController();
   final categoryNameKey = GlobalKey<FormState>();
   bool isImageChanging = false;
   bool isFit = false;
@@ -228,6 +229,12 @@ class _CategoryPageState extends State<CategoryPage> {
         .doc('Data')
         .collection('Products')
         .where('categoryId', isEqualTo: widget.categoryId)
+        .orderBy('productName')
+        .where('productName',
+            isGreaterThanOrEqualTo: searchController.text.toString())
+        .where('productName',
+            isLessThan: searchController.text.toString() + '\uf8ff')
+        .orderBy('datetime', descending: true)
         .snapshots();
 
     return Scaffold(
@@ -346,6 +353,7 @@ class _CategoryPageState extends State<CategoryPage> {
                               builder: ((context) => AddProductsToCategoryPage(
                                     categoryId: widget.categoryId,
                                     categoryName: widget.categoryName,
+                                    fromAddCategoryPage: false,
                                   )),
                             ),
                           );
@@ -397,11 +405,16 @@ class _CategoryPageState extends State<CategoryPage> {
                                   children: [
                                     Expanded(
                                       child: TextField(
+                                        controller: searchController,
                                         autocorrect: false,
                                         decoration: InputDecoration(
+                                          labelText: "Case - Sensitive",
                                           hintText: "Search ...",
                                           border: OutlineInputBorder(),
                                         ),
+                                        onChanged: (value) {
+                                          setState(() {});
+                                        },
                                       ),
                                     ),
                                     IconButton(
