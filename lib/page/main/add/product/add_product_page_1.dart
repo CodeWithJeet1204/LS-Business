@@ -36,13 +36,15 @@ class _AddProductPage1State extends State<AddProductPage1> {
   bool isAddingProduct = false;
   final List<File> _image = [];
   int currentImageIndex = 0;
-  String? selectedCategory = 'None';
+  String? selectedCategory = 'No Category Selected';
   String? selectedCategoryId = '0';
   final List<String> _imageDownloadUrl = [];
   final ImagePicker picker = ImagePicker();
   List<String> otherInfoList = [];
   bool isFit = true;
   final Map<String, String> categoryNamesAndIds = {};
+  bool isGridView = false;
+  String? searchedCategory;
 
   void addProductImages() async {
     final XFile? im = await picker.pickImage(source: ImageSource.gallery);
@@ -165,36 +167,15 @@ class _AddProductPage1State extends State<AddProductPage1> {
     });
   }
 
-  Future<void> getAllCategoryNamesAndIds() async {
-    final categorySnapshot = await FirebaseFirestore.instance
-        .collection('Business')
-        .doc('Data')
-        .collection('Category')
-        .get();
-
-    if (categorySnapshot.docs.isNotEmpty) {
-      for (final doc in categorySnapshot.docs) {
-        final categoryId = doc.get('categoryId');
-        final categoryName = doc.get('categoryName');
-
-        if (categoryId != null && categoryName != null) {
-          setState(() {
-            categoryNamesAndIds[categoryId] = categoryName;
-          });
-        }
-      }
-    }
-    print(categoryNamesAndIds);
-  }
-
-  @override
-  void initState() {
-    getAllCategoryNamesAndIds();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final categoryStream = store
+        .collection('Business')
+        .doc("Data")
+        .collection("Category")
+        .where('vendorId', isEqualTo: auth.currentUser!.uid)
+        .snapshots();
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: primary,
@@ -390,6 +371,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                     key: productKey,
                     child: Column(
                       children: [
+                        // NAME
                         TextFormField(
                           controller: nameController,
                           decoration: const InputDecoration(
@@ -414,6 +396,8 @@ class _AddProductPage1State extends State<AddProductPage1> {
                           },
                         ),
                         SizedBox(height: height * 0.0125),
+
+                        // DESCRIPTION
                         TextFormField(
                           controller: descriptionController,
                           minLines: 1,
@@ -441,6 +425,9 @@ class _AddProductPage1State extends State<AddProductPage1> {
                             }
                           },
                         ),
+                        SizedBox(height: height * 0.0125),
+
+                        // BRAND
                         TextFormField(
                           controller: brandController,
                           decoration: const InputDecoration(
@@ -465,7 +452,8 @@ class _AddProductPage1State extends State<AddProductPage1> {
                           },
                         ),
                         SizedBox(height: height * 0.0125),
-                        SizedBox(height: height * 0.005),
+
+                        // PRICE
                         TextFormField(
                           controller: priceController,
                           keyboardType: TextInputType.number,
@@ -479,80 +467,360 @@ class _AddProductPage1State extends State<AddProductPage1> {
                             ),
                           ),
                         ),
-                        SizedBox(height: height * 0.0125),
-                        SizedBox(height: height * 0.0125),
-                        const Divider(),
-                        SizedBox(height: height * 0.0125),
+                        SizedBox(height: height * 0.00625),
+
+                        Divider(),
+
+                        SizedBox(height: height * 0.00625),
+
+                        Text(
+                          "Select Category",
+                          style: TextStyle(
+                            color: primaryDark,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 6),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  autocorrect: false,
+                                  decoration: InputDecoration(
+                                    hintText: "Search ...",
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  onChanged: (value) {
+                                    searchedCategory = value;
+                                  },
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    isGridView = !isGridView;
+                                  });
+                                },
+                                icon: Icon(
+                                  isGridView
+                                      ? Icons.list
+                                      : Icons.grid_view_rounded,
+                                ),
+                                tooltip: isGridView ? "List View" : "Grid View",
+                              ),
+                            ],
+                          ),
+                        ),
+
                         Padding(
                           padding: EdgeInsets.only(
                             bottom: MediaQuery.of(context).viewInsets.bottom,
                           ),
-                          child: Container(
-                            width: width * 0.6,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: primary3,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: DropdownButton(
-                              hint: const Text(
-                                "Select Category",
-                                style: TextStyle(
-                                  color: primaryDark2,
-                                ),
-                              ),
-                              style: const TextStyle(
-                                fontSize: 22,
-                                color: primaryDark2,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              icon: const Icon(
-                                Icons.arrow_drop_down_outlined,
-                                color: Colors.black,
-                              ),
-                              value: selectedCategory,
-                              dropdownColor: primary2,
-                              borderRadius: BorderRadius.circular(12),
-                              underline: const SizedBox(),
-                              items: categoryNamesAndIds.isEmpty
-                                  ? [
-                                      DropdownMenuItem(
-                                        value: '0',
-                                        child: Text('None'),
-                                      ),
-                                    ]
-                                  : categoryNamesAndIds.entries
-                                      .map((entry) => DropdownMenuItem(
-                                            value: entry.value,
-                                            child: Text(entry.value),
-                                          ))
-                                      .toList(),
-                              onChanged: (value) {
-                                if (value != null) {
-                                  setState(() {
-                                    if (value == '0') {
-                                      selectedCategory = 'None';
-                                      selectedCategoryId = '0';
-                                    } else {
-                                      final reveredIdAndNames =
-                                          categoryNamesAndIds.map(
-                                        (key, value) => MapEntry(value, key),
-                                      );
-                                      selectedCategoryId =
-                                          reveredIdAndNames[value];
-                                      selectedCategory = value;
-                                    }
-                                  });
-                                  print(selectedCategory);
-                                }
-                              },
-                            ),
+                          child: SizedBox(
+                            width: width,
+                            child: StreamBuilder(
+                                stream: categoryStream,
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasError) {
+                                    return Center(
+                                      child: Text('Something went wrong'),
+                                    );
+                                  }
+
+                                  if (snapshot.hasData) {
+                                    return isGridView
+                                        ? GridView.builder(
+                                            shrinkWrap: true,
+                                            gridDelegate:
+                                                SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 2,
+                                              childAspectRatio: 0.8,
+                                            ),
+                                            itemCount:
+                                                snapshot.data!.docs.length,
+                                            itemBuilder: ((context, index) {
+                                              final categorySnap =
+                                                  snapshot.data!.docs[index];
+                                              final categoryData =
+                                                  categorySnap.data();
+
+                                              return snapshot
+                                                          .data!.docs.length ==
+                                                      0
+                                                  ? Center(
+                                                      child: Text(
+                                                          'No Categories Created'),
+                                                    )
+                                                  : Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                        horizontal: 4,
+                                                        vertical: 6,
+                                                      ),
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          if (selectedCategoryId !=
+                                                              categoryData[
+                                                                  'categoryId']) {
+                                                            setState(() {
+                                                              selectedCategory =
+                                                                  categoryData[
+                                                                      'categoryName'];
+                                                              selectedCategoryId =
+                                                                  categoryData[
+                                                                      'categoryId'];
+                                                            });
+                                                          } else {
+                                                            setState(() {
+                                                              selectedCategory =
+                                                                  "No Category Selected";
+                                                              selectedCategoryId =
+                                                                  '0';
+                                                            });
+                                                          }
+                                                        },
+                                                        child: Stack(
+                                                          alignment: Alignment
+                                                              .topRight,
+                                                          children: [
+                                                            Container(
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: primary2
+                                                                    .withOpacity(
+                                                                        0.5),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            12),
+                                                              ),
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .symmetric(
+                                                                  horizontal: 4,
+                                                                ),
+                                                                child: Column(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    Expanded(
+                                                                      flex: 4,
+                                                                      child:
+                                                                          Container(),
+                                                                    ),
+                                                                    ClipRRect(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              9),
+                                                                      child: Image
+                                                                          .network(
+                                                                        categoryData[
+                                                                            'imageUrl'],
+                                                                        height: width *
+                                                                            0.4,
+                                                                        width: width *
+                                                                            0.4,
+                                                                        fit: BoxFit
+                                                                            .cover,
+                                                                      ),
+                                                                    ),
+                                                                    Expanded(
+                                                                      flex: 5,
+                                                                      child:
+                                                                          Container(),
+                                                                    ),
+                                                                    Text(
+                                                                      categoryData[
+                                                                          'categoryName'],
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        color:
+                                                                            primaryDark,
+                                                                        fontWeight:
+                                                                            FontWeight.w600,
+                                                                        fontSize:
+                                                                            20,
+                                                                      ),
+                                                                    ),
+                                                                    Expanded(
+                                                                      flex: 4,
+                                                                      child:
+                                                                          Container(),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            selectedCategoryId ==
+                                                                    categoryData[
+                                                                        'categoryId']
+                                                                ? Padding(
+                                                                    padding:
+                                                                        const EdgeInsets
+                                                                            .only(
+                                                                      right: 4,
+                                                                      top: 4,
+                                                                    ),
+                                                                    child:
+                                                                        Container(
+                                                                      width: 40,
+                                                                      height:
+                                                                          40,
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        color:
+                                                                            primaryDark,
+                                                                        shape: BoxShape
+                                                                            .circle,
+                                                                      ),
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .check,
+                                                                        size:
+                                                                            32,
+                                                                        color: Colors
+                                                                            .white,
+                                                                      ),
+                                                                    ),
+                                                                  )
+                                                                : Container()
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    );
+                                            }),
+                                          )
+                                        : ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount:
+                                                snapshot.data!.docs.length,
+                                            itemBuilder: ((context, index) {
+                                              final categoryData =
+                                                  snapshot.data!.docs[index];
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal: 2,
+                                                  vertical: 8,
+                                                ),
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    if (selectedCategoryId !=
+                                                        categoryData[
+                                                            'categoryId']) {
+                                                      setState(() {
+                                                        selectedCategory =
+                                                            categoryData[
+                                                                'categoryName'];
+                                                        selectedCategoryId =
+                                                            categoryData[
+                                                                'categoryId'];
+                                                      });
+                                                    } else {
+                                                      setState(() {
+                                                        selectedCategory =
+                                                            "No Category Selected";
+                                                        selectedCategoryId =
+                                                            '0';
+                                                      });
+                                                    }
+                                                  },
+                                                  child: Stack(
+                                                    alignment:
+                                                        Alignment.centerRight,
+                                                    children: [
+                                                      Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: primary2
+                                                              .withOpacity(0.5),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8),
+                                                        ),
+                                                        child: ListTile(
+                                                          leading: ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        4),
+                                                            child:
+                                                                Image.network(
+                                                              categoryData[
+                                                                  'imageUrl'],
+                                                              width: 45,
+                                                              height: 45,
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                          ),
+                                                          title: Text(
+                                                            categoryData[
+                                                                'categoryName'],
+                                                            style:
+                                                                const TextStyle(
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      selectedCategoryId ==
+                                                              categoryData[
+                                                                  'categoryId']
+                                                          ? Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .only(
+                                                                right: 4,
+                                                                top: 4,
+                                                              ),
+                                                              child: Container(
+                                                                width: 40,
+                                                                height: 40,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color:
+                                                                      primaryDark,
+                                                                  shape: BoxShape
+                                                                      .circle,
+                                                                ),
+                                                                child: Icon(
+                                                                  Icons.check,
+                                                                  size: 32,
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                              ),
+                                                            )
+                                                          : Container()
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            }),
+                                          );
+                                  }
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(height: height * 0.04),
                 ],
               ),
             );

@@ -19,6 +19,7 @@ class ChangeCategory extends StatefulWidget {
 
 class _ChangeCategoryState extends State<ChangeCategory> {
   bool isGridView = true;
+  bool isAdding = false;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +52,9 @@ class _ChangeCategoryState extends State<ChangeCategory> {
           ),
           IconButton(
             onPressed: () async {
+              setState(() {
+                isAdding = true;
+              });
               if (changeCategoryProvider.selectedCategory.isEmpty) {
                 await FirebaseFirestore.instance
                     .collection('Business')
@@ -73,6 +77,9 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                 });
                 changeCategoryProvider.selectedCategory.clear();
               }
+              setState(() {
+                isAdding = true;
+              });
 
               Navigator.of(context).pop();
             },
@@ -80,6 +87,11 @@ class _ChangeCategoryState extends State<ChangeCategory> {
             tooltip: "Continue",
           ),
         ],
+        bottom: PreferredSize(
+          preferredSize:
+              Size(isAdding ? double.infinity : 0, isAdding ? 10 : 0),
+          child: isAdding ? LinearProgressIndicator() : Container(),
+        ),
       ),
       body: LayoutBuilder(
         builder: ((context, constraints) {

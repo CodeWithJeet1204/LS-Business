@@ -1,20 +1,30 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/provider/products_added_to_category_provider.dart';
 import 'package:find_easy/utils/colors.dart';
+import 'package:find_easy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AddcategoryToProductPage extends StatefulWidget {
-  const AddcategoryToProductPage({super.key});
+class AddProductsToCategoryPage extends StatefulWidget {
+  const AddProductsToCategoryPage({
+    super.key,
+    this.categoryId,
+    this.categoryName,
+  });
+
+  final String? categoryId;
+  final String? categoryName;
 
   @override
-  State<AddcategoryToProductPage> createState() =>
-      _AddcategoryToProductPageState();
+  State<AddProductsToCategoryPage> createState() =>
+      _AddProductsToCategoryPageState();
 }
 
-class _AddcategoryToProductPageState extends State<AddcategoryToProductPage> {
+class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
   bool isGridView = true;
+  bool isAdding = false;
+  String? searchedProduct;
 
   @override
   Widget build(BuildContext context) {
@@ -31,29 +41,47 @@ class _AddcategoryToProductPageState extends State<AddcategoryToProductPage> {
         .orderBy('datetime', descending: true)
         .snapshots();
 
+    void addProductToCategory(List<String> products) async {
+      for (int i = 0; i < products.length; i++) {
+        setState(() {
+          isAdding = true;
+        });
+        await FirebaseFirestore.instance
+            .collection('Business')
+            .doc('Data')
+            .collection('Products')
+            .doc(products[i])
+            .update({
+          'categoryId': widget.categoryId,
+          'categoryName': widget.categoryName,
+        });
+        setState(() {
+          isAdding = false;
+        });
+      }
+      Navigator.of(context).pop();
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("SELECT PRODUCTS"),
         actions: [
-          IconButton(
+          MyTextButton(
             onPressed: () {
-              setState(() {
-                isGridView = !isGridView;
-              });
+              addProductToCategory(
+                productsAddedToCategoryProvider.selectedProducts,
+              );
+              productsAddedToCategoryProvider.clearProducts();
             },
-            icon: isGridView
-                ? const Icon(Icons.list)
-                : const Icon(Icons.grid_view_rounded),
-            tooltip: isGridView ? "List View" : "Grid View",
-          ),
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: Icon(Icons.navigate_next),
-            tooltip: "Continue",
+            text: "NEXT",
+            textColor: primaryDark,
           ),
         ],
+        bottom: PreferredSize(
+          preferredSize:
+              Size(isAdding ? double.infinity : 0, isAdding ? 10 : 0),
+          child: isAdding ? LinearProgressIndicator() : Container(),
+        ),
       ),
       body: LayoutBuilder(
         builder: ((context, constraints) {
@@ -69,139 +97,225 @@ class _AddcategoryToProductPageState extends State<AddcategoryToProductPage> {
 
               if (snapshot.hasData) {
                 return SafeArea(
-                  child: isGridView
-                      ? GridView.builder(
-                          shrinkWrap: true,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 0,
-                            mainAxisSpacing: 0,
-                            childAspectRatio: width * 0.5 / 210,
-                          ),
-                          itemCount: snapshot.data!.docs.length,
-                          itemBuilder: (context, index) {
-                            final productData = snapshot.data!.docs[index];
-                            return Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: SizedOverflowBox(
-                                size: Size(width * 0.5, 210),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    productsAddedToCategoryProvider
-                                        .addProduct(productData['productId']);
-                                  },
-                                  child: Stack(
-                                    alignment: Alignment.topRight,
-                                    children: [
-                                      Container(
-                                        width: width * 0.5,
-                                        decoration: BoxDecoration(
-                                          color: primary2.withOpacity(0.5),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(4),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              const SizedBox(height: 2),
-                                              Center(
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                  child: Image.network(
-                                                    productData['images'][0],
-                                                    height: 140,
-                                                    width: 140,
-                                                    fit: BoxFit.cover,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 8,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                autocorrect: false,
+                                decoration: InputDecoration(
+                                  hintText: "Search ...",
+                                  border: OutlineInputBorder(),
+                                ),
+                                onChanged: (value) {
+                                  searchedProduct = value;
+                                },
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  isGridView = !isGridView;
+                                });
+                              },
+                              icon: Icon(
+                                isGridView
+                                    ? Icons.list
+                                    : Icons.grid_view_rounded,
+                              ),
+                              tooltip: isGridView ? "List View" : "Grid View",
+                            ),
+                          ],
+                        ),
+                      ),
+                      isGridView
+                          ? GridView.builder(
+                              shrinkWrap: true,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 0,
+                                mainAxisSpacing: 0,
+                                childAspectRatio: width * 0.5 / 210,
+                              ),
+                              itemCount: snapshot.data!.docs.length,
+                              itemBuilder: (context, index) {
+                                final productData = snapshot.data!.docs[index];
+                                return Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: SizedOverflowBox(
+                                    size: Size(width * 0.5, 210),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        productsAddedToCategoryProvider
+                                            .addProduct(
+                                                productData['productId']);
+                                      },
+                                      child: Stack(
+                                        alignment: Alignment.topRight,
+                                        children: [
+                                          Container(
+                                            width: width * 0.5,
+                                            decoration: BoxDecoration(
+                                              color: primary2.withOpacity(0.5),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(4),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  const SizedBox(height: 2),
+                                                  Center(
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12),
+                                                      child: Image.network(
+                                                        productData['images']
+                                                            [0],
+                                                        height: 140,
+                                                        width: 140,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
                                                   ),
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                        .fromLTRB(8, 4, 4, 0),
+                                                    child: Text(
+                                                      productData[
+                                                          'productName'],
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          productsAddedToCategoryProvider
+                                                  .selectedProducts
+                                                  .contains(
+                                                      productData['productId'])
+                                              ? Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                    right: 4,
+                                                    top: 4,
+                                                  ),
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(2),
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: primaryDark2,
+                                                    ),
+                                                    child: Icon(
+                                                      Icons.check,
+                                                      color: Colors.white,
+                                                      size: 32,
+                                                    ),
+                                                  ),
+                                                )
+                                              : Container()
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              })
+                          : SizedBox(
+                              width: width,
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: snapshot.data!.docs.length,
+                                itemBuilder: ((context, index) {
+                                  final productData =
+                                      snapshot.data!.docs[index];
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 6,
+                                      vertical: 8,
+                                    ),
+                                    child: Stack(
+                                      alignment: Alignment.centerRight,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: primary2.withOpacity(0.5),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          child: ListTile(
+                                            leading: CircleAvatar(
+                                              radius: 30,
+                                              backgroundColor: primaryDark,
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(4),
+                                                child: Image.network(
+                                                  productData['images'][0],
+                                                  width: 60,
+                                                  height: 60,
+                                                  fit: BoxFit.cover,
                                                 ),
                                               ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        8, 4, 4, 0),
-                                                child: Text(
-                                                  productData['productName'],
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: const TextStyle(
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
+                                            ),
+                                            title: Text(
+                                              productData['productName'],
+                                              style: const TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600,
                                               ),
-                                            ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      productsAddedToCategoryProvider
-                                              .selectedProducts
-                                              .contains(
-                                                  productData['productId'])
-                                          ? Container(
-                                              padding: EdgeInsets.all(2),
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: primaryDark2,
-                                              ),
-                                              child: Icon(
-                                                Icons.check,
-                                                color: Colors.white,
-                                                size: 32,
-                                              ),
-                                            )
-                                          : Container()
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          })
-                      : ListView.builder(
-                          itemCount: snapshot.data!.docs.length,
-                          itemBuilder: ((context, index) {
-                            final productData = snapshot.data!.docs[index];
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 6,
-                                vertical: 8,
-                              ),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: primary2.withOpacity(0.5),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: ListTile(
-                                  leading: CircleAvatar(
-                                    radius: 30,
-                                    backgroundColor: primaryDark,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(4),
-                                      child: Image.network(
-                                        productData['images'][0],
-                                        width: 60,
-                                        height: 60,
-                                        fit: BoxFit.cover,
-                                      ),
+                                        productsAddedToCategoryProvider
+                                                .selectedProducts
+                                                .contains(
+                                                    productData['productId'])
+                                            ? Padding(
+                                                padding: const EdgeInsets.only(
+                                                  right: 4,
+                                                  top: 4,
+                                                ),
+                                                child: Container(
+                                                  padding: EdgeInsets.all(2),
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: primaryDark2,
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.check,
+                                                    color: Colors.white,
+                                                    size: 32,
+                                                  ),
+                                                ),
+                                              )
+                                            : Container()
+                                      ],
                                     ),
-                                  ),
-                                  title: Text(
-                                    productData['productName'],
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
+                                  );
+                                }),
                               ),
-                            );
-                          }),
-                        ),
+                            ),
+                    ],
+                  ),
                 );
               }
 

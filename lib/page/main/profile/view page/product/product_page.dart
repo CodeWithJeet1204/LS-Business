@@ -362,9 +362,7 @@ class _ProductPageState extends State<ProductPage> {
         await ref.putFile(File(im.path)).whenComplete(() async {
           await ref.getDownloadURL().then((value) {
             print("Jeet");
-            setState(() {
-              images.add(value);
-            });
+            images.add(value);
             FirebaseFirestore.instance
                 .collection('Business')
                 .doc('Data')
@@ -375,9 +373,14 @@ class _ProductPageState extends State<ProductPage> {
             });
           });
         });
-        print("ALLALLA");
+        // TODO: Wrong method to setstate
         Navigator.of(context).pop();
-        // Navigator.of(context).push(MaterialPageRoute(builder: ((context) => ProductPage(productId: productId, productName: productName))),);
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: ((context) => ProductPage(
+                productId: widget.productId, productName: widget.productName)),
+          ),
+        );
         setState(() {
           isImageChanging = true;
         });
@@ -402,28 +405,10 @@ class _ProductPageState extends State<ProductPage> {
         setState(() {
           isImageChanging = true;
         });
-        images.removeAt(index);
-        Reference ref = FirebaseStorage.instance
-            .ref()
-            .child('Data/Products')
-            .child(const Uuid().v4());
-        await ref.putFile(File(im.path)).whenComplete(() async {
-          await ref.getDownloadURL().then((value) async {
-            setState(() {
-              images.insert(index, value);
-            });
-            print("ABCDEF");
-            await FirebaseFirestore.instance
-                .collection('Business')
-                .doc('Data')
-                .collection('Products')
-                .doc(widget.productId)
-                .update({
-              'images': images,
-            });
-            print("lallalal");
-          });
-        });
+        Reference ref =
+            await FirebaseStorage.instance.refFromURL(images[index]);
+        await images.removeAt(index);
+        await ref.putFile(File(im.path));
         Navigator.of(context).pop();
         setState(() {
           isImageChanging = false;
@@ -442,6 +427,9 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   void removeProductImages(String e, List images) async {
+    await FirebaseStorage.instance
+        .refFromURL(images[images.indexOf(e)])
+        .delete();
     images.remove(e);
     await FirebaseFirestore.instance
         .collection('Business')

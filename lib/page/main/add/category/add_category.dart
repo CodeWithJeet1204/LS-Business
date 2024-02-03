@@ -40,10 +40,12 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
           isSaving = true;
         });
         try {
-          Reference ref = FirebaseStorage.instance
+          final String categoryId = Uuid().v4();
+
+          Reference ref = await FirebaseStorage.instance
               .ref()
-              .child('Data/Products')
-              .child(const Uuid().v4());
+              .child('Data/Categories')
+              .child(categoryId);
           await ref.putFile(_image!).whenComplete(() async {
             await ref.getDownloadURL().then((value) {
               setState(() {
@@ -52,8 +54,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
             });
           });
 
-          final String categoryId = Uuid().v4();
-          store
+          await store
               .collection('Business')
               .doc('Data')
               .collection('Category')
@@ -121,7 +122,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
   void addProduct() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: ((context) => AddcategoryToProductPage()),
+        builder: ((context) => AddProductsToCategoryPage()),
       ),
     );
   }
