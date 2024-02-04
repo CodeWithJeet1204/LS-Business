@@ -347,6 +347,15 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                           });
                           // Pay
 
+                          await store
+                              .collection('Business')
+                              .doc('Owners')
+                              .collection('Users')
+                              .doc(widget.uuid)
+                              .set({
+                            'detailsAdded': true,
+                          });
+
                           businessFirestoreData.addAll({
                             'MembershipName': currentMembership.toString(),
                             'MembershipDuration': selectedDuration.toString(),
@@ -357,7 +366,8 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                               .doc('Owners')
                               .collection('Users')
                               .doc(widget.uuid)
-                              .set(userFirestoreData);
+                              .update(userFirestoreData);
+
                           await store
                               .collection('Business')
                               .doc('Owners')

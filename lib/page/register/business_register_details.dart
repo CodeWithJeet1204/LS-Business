@@ -28,6 +28,7 @@ class BusinessRegisterDetailsPage extends StatefulWidget {
 class _BusinessRegisterDetailsPageState
     extends State<BusinessRegisterDetailsPage> {
   final TextEditingController nameController = TextEditingController();
+  final TextEditingController gstController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final GlobalKey<FormState> businessFormKey = GlobalKey<FormState>();
   final TextEditingController categoryNameController = TextEditingController();
@@ -117,6 +118,14 @@ class _BusinessRegisterDetailsPageState
                         autoFillHints: const [
                           AutofillHints.streetAddressLevel1
                         ],
+                      ),
+                      MyTextFormField(
+                        hintText: "GST Number",
+                        controller: gstController,
+                        borderRadius: 12,
+                        horizontalPadding: 20,
+                        verticalPadding: 4,
+                        autoFillHints: null,
                       ),
                       MyTextFormField(
                         hintText: "Address (Don't include Shop Name)",
@@ -223,6 +232,7 @@ class _BusinessRegisterDetailsPageState
                                   {
                                     "Name": nameController.text.toString(),
                                     "Type": selectedCategory,
+                                    "GSTNumber": gstController.text.toString(),
                                     "Address":
                                         addressController.text.toString(),
                                     "Industry": selectedIndustrySegment,

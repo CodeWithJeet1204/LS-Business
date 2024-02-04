@@ -1,5 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/page/main/main_page.dart';
-import 'package:find_easy/page/register/firestore_info.dart';
 import 'package:find_easy/page/register/user_register_details.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
@@ -66,10 +66,18 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                       setState(() {
                         isOTPVerifying = true;
                       });
+
                       await auth.signInWithCredential(credential);
-                      userFirestoreData.addAll({
-                        'Phone Number': auth.currentUser!.phoneNumber,
+                      await FirebaseFirestore.instance
+                          .collection('Business')
+                          .doc('Owners')
+                          .collection('Users')
+                          .doc(FirebaseAuth.instance.currentUser!.uid)
+                          .set({
+                        'detailsAdded': false,
                       });
+
+                      // TODO Verify number provider
                       setState(() {
                         isOTPVerifying = false;
                       });
@@ -80,11 +88,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                           MaterialPageRoute(
                             builder: ((context) => widget.isLogging
                                 ? const MainPage()
-                                : const UserRegisterDetailsPage(
-                                    emailChosen: false,
-                                    numberChosen: true,
-                                    googleChosen: false,
-                                  )),
+                                : const UserRegisterDetailsPage()),
                           ),
                         );
                       }

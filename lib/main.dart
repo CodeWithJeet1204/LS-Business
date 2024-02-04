@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/first_launch_detection.dart';
 import 'package:find_easy/page/intro/intro_page_view.dart';
 import 'package:find_easy/page/main/add/category/add_category.dart';
@@ -17,6 +18,7 @@ import 'package:find_easy/provider/change_category_provider.dart';
 import 'package:find_easy/provider/products_added_to_category_provider.dart';
 import 'package:find_easy/provider/select_product_for_post_provider.dart';
 import 'package:find_easy/provider/shop_type_provider.dart';
+import 'package:find_easy/provider/sign_in_method_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -41,6 +43,9 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (_) => SignInMethodProvider(),
+        ),
         ChangeNotifierProvider(
           create: (_) => AddProductProvider(),
         ),
@@ -69,6 +74,18 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
+  Future<bool> isDetailsAdded() async {
+    final userDocSnap = await FirebaseFirestore.instance
+        .collection('Business')
+        .doc("Owners")
+        .collection("Users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    bool isAdded = userDocSnap['detailsAdded'];
+    return isAdded;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,12 +142,13 @@ class MyApp extends StatelessWidget {
               stream: FirebaseAuth.instance.authStateChanges(),
               builder: ((context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.active) {
-                  if (snapshot.hasData) {
+                  if (snapshot.hasData && (isDetailsAdded() as bool)) {
                     return const MainPage();
                   } else if (snapshot.hasError) {
                     return const Center(
                       child: Text(
-                          "Some error occured\nClose & Open the app again"),
+                        "Some error occured\nClose & Open the app again",
+                      ),
                     );
                   } else {
                     return const LoginPage();
@@ -156,4 +174,3 @@ class MyApp extends StatelessWidget {
 // TODO: Shorts
 // TODO: Analytics
 // TODO: Comments
-// TODO: Login Photo Problem

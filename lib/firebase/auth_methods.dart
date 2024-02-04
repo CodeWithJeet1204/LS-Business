@@ -105,16 +105,11 @@ class AuthMethods {
             "uid": FirebaseAuth.instance.currentUser!.uid,
             "Name": FirebaseAuth.instance.currentUser!.displayName,
             "Email": FirebaseAuth.instance.currentUser!.email,
-            "Image": FirebaseAuth.instance.currentUser!.photoURL,
           });
           if (context.mounted) {
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: ((context) => const UserRegisterDetailsPage(
-                      emailChosen: false,
-                      numberChosen: false,
-                      googleChosen: true,
-                    )),
+                builder: ((context) => const UserRegisterDetailsPage()),
               ),
               (route) => false,
             );

@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/firebase/auth_methods.dart';
 import 'package:find_easy/page/register/firestore_info.dart';
 import 'package:find_easy/page/register/user_register_details.dart';
 import 'package:find_easy/page/register/verify/email_verify.dart';
 import 'package:find_easy/page/register/verify/number_verify.dart';
+import 'package:find_easy/provider/sign_in_method_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/collapse_container.dart';
@@ -12,6 +14,7 @@ import 'package:find_easy/widgets/text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class RegisterCredPage extends StatefulWidget {
   const RegisterCredPage({super.key});
@@ -34,9 +37,6 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
   bool isShowNumber = false;
   bool isEmailRegistering = false;
   bool isPhoneRegistering = false;
-  bool isEmailChosen = false;
-  bool isNumberChosen = false;
-  bool isGoogleChosen = false;
 
   void navigateToEmailVerify() {
     SystemChannels.textInput.invokeMethod('TextInput.hide');
@@ -45,9 +45,9 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: no_leading_underscores_for_local_identifiers
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final AuthMethods auth = AuthMethods();
+    final signInMethodProvider = Provider.of<SignInMethodProvider>(context);
 
     return Scaffold(
       body: SafeArea(
@@ -124,13 +124,23 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                                         context: context,
                                       );
 
+                                      await FirebaseFirestore.instance
+                                          .collection('Business')
+                                          .doc('Owners')
+                                          .collection('Users')
+                                          .doc(_auth.currentUser!.uid)
+                                          .set({
+                                        'detailsAdded': false,
+                                      });
+
                                       // Registration successful
                                       userFirestoreData.addAll({
                                         'Email':
                                             emailController.text.toString(),
                                       });
 
-                                      isEmailChosen = true;
+                                      signInMethodProvider.chooseEmail();
+
                                       setState(() {
                                         isEmailRegistering = false;
                                       });
@@ -230,8 +240,8 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                                       isPhoneRegistering = true;
                                       phoneButtonText = "Please Wait";
                                     });
-                                    isNumberChosen = true;
                                     // Register with Phone
+                                    signInMethodProvider.chooseNumber();
                                     if (phoneController.text.contains("+91")) {
                                       await auth.phoneSignIn(
                                           context, " ${phoneController.text}");
@@ -243,6 +253,12 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                                       setState(() {
                                         isPhoneRegistering = true;
                                       });
+
+                                      userFirestoreData.addAll({
+                                        'Phone Number':
+                                            phoneController.text.toString(),
+                                      });
+
                                       await _auth.verifyPhoneNumber(
                                           phoneNumber:
                                               "+91 ${phoneController.text}",
@@ -333,6 +349,7 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                         });
                         try {
                           // Sign In With Google
+                          signInMethodProvider.chooseGoogle();
                           await AuthMethods().signInWithGoogle(context);
                           await _auth.currentUser!.reload();
                           if (FirebaseAuth.instance.currentUser != null) {
@@ -341,24 +358,32 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                               "Name": FirebaseAuth
                                   .instance.currentUser!.displayName,
                               "uid": FirebaseAuth.instance.currentUser!.uid,
-                              "Image":
-                                  FirebaseAuth.instance.currentUser!.photoURL,
                             });
+                            await FirebaseFirestore.instance
+                                .collection('Business')
+                                .doc('Owners')
+                                .collection('Users')
+                                .doc(_auth.currentUser!.uid)
+                                .set({
+                              'detailsAdded': false,
+                            });
+
                             // SystemChannels.textInput.invokeMethod('TextInput.hide');
                             if (context.mounted) {
                               Navigator.of(context).pop();
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: ((context) =>
-                                      const UserRegisterDetailsPage(
-                                        emailChosen: false,
-                                        numberChosen: false,
-                                        googleChosen: true,
-                                      )),
+                                      const UserRegisterDetailsPage()),
                                 ),
                               );
                             }
-                          } else {}
+                          } else {
+                            mySnackBar(
+                              context,
+                              "Some error occured\nTry signing with email / phone number",
+                            );
+                          }
                           setState(() {
                             isGoogleRegistering = false;
                           });

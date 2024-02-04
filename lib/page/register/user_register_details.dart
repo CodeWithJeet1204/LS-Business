@@ -1,7 +1,7 @@
-import 'package:find_easy/firebase/auth_methods.dart';
 import 'package:find_easy/firebase/storage_methods.dart';
 import 'package:find_easy/page/register/business_register_details.dart';
 import 'package:find_easy/page/register/firestore_info.dart';
+import 'package:find_easy/provider/sign_in_method_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/head_text.dart';
@@ -12,18 +12,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class UserRegisterDetailsPage extends StatefulWidget {
   const UserRegisterDetailsPage({
     super.key,
-    required this.emailChosen,
-    required this.numberChosen,
-    required this.googleChosen,
   });
-
-  final bool emailChosen;
-  final bool numberChosen;
-  final bool googleChosen;
 
   @override
   State<UserRegisterDetailsPage> createState() =>
@@ -42,16 +36,6 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
   Uint8List? _image;
   bool isNext = false;
 
-  @override
-  void initState() {
-    super.initState();
-    if (widget.emailChosen) {
-      emailController.text == AuthMethods().user.email;
-    } else if (widget.numberChosen) {
-      phoneController.text == AuthMethods().user.phoneNumber;
-    }
-  }
-
   void selectImage() async {
     Uint8List? im = await pickImage(ImageSource.gallery);
     if (im == null) {
@@ -68,11 +52,9 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: no_leading_underscores_for_local_identifiers
     final FirebaseAuth _auth = FirebaseAuth.instance;
-    // ignore: unused_local_variable
-    final AuthMethods auth = AuthMethods();
     final String uid = _auth.currentUser!.uid;
+    final signInMethodProvider = Provider.of<SignInMethodProvider>(context);
 
     return Scaffold(
       body: SafeArea(
@@ -85,64 +67,58 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                 const SizedBox(height: 100),
                 const HeadText(text: "USER\nDETAILS"),
                 const SizedBox(height: 40),
-                widget.googleChosen
-                    ? Container()
-                    : Column(
-                        children: [
-                          isImageSelected
-                              ? Stack(
-                                  alignment: Alignment.bottomRight,
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 50,
-                                      backgroundImage: MemoryImage(_image!),
-                                    ),
-                                    Positioned(
-                                      bottom: 0,
-                                      right: 0,
-                                      child: IconButton.filledTonal(
-                                        icon: const Icon(
-                                            Icons.camera_alt_outlined),
-                                        iconSize: 30,
-                                        tooltip: "Change User Picture",
-                                        onPressed: selectImage,
-                                        color: primaryDark,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              : CircleAvatar(
-                                  radius: 50,
-                                  child: IconButton(
-                                    icon: const Icon(
-                                      Icons.camera_alt_outlined,
-                                      size: 60,
-                                    ),
-                                    onPressed: selectImage,
-                                  ),
+                Column(
+                  children: [
+                    isImageSelected
+                        ? Stack(
+                            alignment: Alignment.bottomRight,
+                            children: [
+                              CircleAvatar(
+                                radius: 50,
+                                backgroundImage: MemoryImage(_image!),
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: IconButton.filledTonal(
+                                  icon: const Icon(Icons.camera_alt_outlined),
+                                  iconSize: 30,
+                                  tooltip: "Change User Picture",
+                                  onPressed: selectImage,
+                                  color: primaryDark,
                                 ),
-                          const SizedBox(height: 12),
-                        ],
-                      ),
+                              ),
+                            ],
+                          )
+                        : CircleAvatar(
+                            radius: 50,
+                            child: IconButton(
+                              icon: const Icon(
+                                Icons.camera_alt_outlined,
+                                size: 60,
+                              ),
+                              onPressed: selectImage,
+                            ),
+                          ),
+                    const SizedBox(height: 12),
+                  ],
+                ),
                 Form(
                   key: userFormKey,
                   child: Column(
                     children: [
-                      widget.googleChosen
+                      MyTextFormField(
+                        hintText: "Your Name",
+                        controller: nameController,
+                        borderRadius: 12,
+                        horizontalPadding: 20,
+                        verticalPadding: 12,
+                        autoFillHints: const [AutofillHints.name],
+                      ),
+                      !signInMethodProvider.isNumberChosen
                           ? Container()
                           : MyTextFormField(
-                              hintText: "Your Name",
-                              controller: nameController,
-                              borderRadius: 12,
-                              horizontalPadding: 20,
-                              verticalPadding: 12,
-                              autoFillHints: const [AutofillHints.name],
-                            ),
-                      widget.emailChosen || widget.googleChosen
-                          ? Container()
-                          : MyTextFormField(
-                              hintText:
-                                  widget.emailChosen ? "Same Email" : "Email",
+                              hintText: "Email",
                               controller: emailController,
                               borderRadius: 12,
                               horizontalPadding: 20,
@@ -150,21 +126,19 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                               keyboardType: TextInputType.emailAddress,
                               autoFillHints: const [AutofillHints.email],
                             ),
-                      widget.numberChosen
+                      signInMethodProvider.isNumberChosen
                           ? Container()
-                          : widget.googleChosen || widget.emailChosen
-                              ? MyTextFormField(
-                                  hintText: "Your Phone Number (Personal)",
-                                  controller: phoneController,
-                                  borderRadius: 12,
-                                  horizontalPadding: 20,
-                                  verticalPadding: 12,
-                                  keyboardType: TextInputType.number,
-                                  autoFillHints: const [
-                                    AutofillHints.telephoneNumber
-                                  ],
-                                )
-                              : Container(),
+                          : MyTextFormField(
+                              hintText: "Your Phone Number (Personal)",
+                              controller: phoneController,
+                              borderRadius: 12,
+                              horizontalPadding: 20,
+                              verticalPadding: 12,
+                              keyboardType: TextInputType.number,
+                              autoFillHints: const [
+                                AutofillHints.telephoneNumber
+                              ],
+                            ),
                       MyButton(
                         text: "Next",
                         onTap: () async {
@@ -185,28 +159,33 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                     userImage["Image"]!,
                                     false,
                                   );
-                                  !widget.numberChosen
+                                  signInMethodProvider.isGoogleChosen
                                       ? userFirestoreData.addAll(
                                           {
-                                            "uid": uid,
-                                            "Name": widget.googleChosen
-                                                ? FirebaseAuth.instance
-                                                    .currentUser!.displayName
-                                                : nameController.text
-                                                    .toString(),
                                             "Phone Number":
                                                 phoneController.text,
                                             "Image": userPhotoUrl,
                                           },
                                         )
-                                      : userFirestoreData.addAll({
-                                          "uid": uid,
-                                          "Email":
-                                              emailController.text.toString(),
-                                          "Name":
-                                              nameController.text.toString(),
-                                          "Image": userPhotoUrl,
-                                        });
+                                      : signInMethodProvider.isNumberChosen
+                                          ? userFirestoreData.addAll({
+                                              "uid": uid,
+                                              "Email": emailController.text
+                                                  .toString(),
+                                              "Name": nameController.text
+                                                  .toString(),
+                                              "Image": userPhotoUrl,
+                                            })
+                                          : signInMethodProvider.isEmailChosen
+                                              ? userFirestoreData.addAll({
+                                                  "uid": uid,
+                                                  "Phone Number":
+                                                      phoneController.text
+                                                          .toString(),
+                                                  "Image": userPhotoUrl,
+                                                })
+                                              : mySnackBar(context,
+                                                  "Some error occured");
                                   setState(() {
                                     isNext = false;
                                   });
