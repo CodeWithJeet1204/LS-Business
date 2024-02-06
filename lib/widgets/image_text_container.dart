@@ -16,6 +16,12 @@ class ImageTextContainer extends StatefulWidget {
   State<ImageTextContainer> createState() => _ImageTextContainerState();
 }
 
+void selectCategory(text) {
+  selectedCategory = text;
+}
+
+String selectedCategory = "Select Category";
+
 class _ImageTextContainerState extends State<ImageTextContainer> {
   @override
   Widget build(BuildContext context) {
@@ -65,9 +71,3 @@ class _ImageTextContainerState extends State<ImageTextContainer> {
     );
   }
 }
-
-void selectCategory(text) {
-  selectedCategory = text;
-}
-
-String selectedCategory = "Select Category";

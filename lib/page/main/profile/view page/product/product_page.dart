@@ -6,7 +6,7 @@ import 'package:find_easy/page/main/profile/view%20page/product/product_category
 import 'package:find_easy/page/main/profile/view%20page/product/product_image_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
-import 'package:find_easy/widgets/product_info_box.dart';
+import 'package:find_easy/widgets/info_edit_box.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:find_easy/widgets/text_button.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -378,7 +378,9 @@ class _ProductPageState extends State<ProductPage> {
             });
           });
         });
-        // TODO: Wrong method to setstate
+        setState(() {
+          isImageChanging = true;
+        });
         Navigator.of(context).pop();
         Navigator.of(context).push(
           MaterialPageRoute(
@@ -386,9 +388,6 @@ class _ProductPageState extends State<ProductPage> {
                 productId: widget.productId, productName: widget.productName)),
           ),
         );
-        setState(() {
-          isImageChanging = true;
-        });
       } catch (e) {
         setState(() {
           isImageChanging = true;
@@ -882,7 +881,7 @@ class _ProductPageState extends State<ProductPage> {
                             ),
 
                             // DESCRIPTION
-                            ProductInfoBox(
+                            InfoEditBox(
                               head: "Description",
                               content: description,
                               noOfAnswers: 1,
@@ -1026,7 +1025,7 @@ class _ProductPageState extends State<ProductPage> {
                                 }),
 
                             // BRAND
-                            ProductInfoBox(
+                            InfoEditBox(
                               head: "Brand",
                               content: brand,
                               noOfAnswers: 1,
@@ -1043,7 +1042,7 @@ class _ProductPageState extends State<ProductPage> {
                             ),
 
                             // PROPERTY 0
-                            ProductInfoBox(
+                            InfoEditBox(
                               head: propertyName0,
                               content: propertyValue0,
                               noOfAnswers: propertyNoOfAnswers0,
@@ -1060,7 +1059,7 @@ class _ProductPageState extends State<ProductPage> {
                             ),
 
                             // PROPERTY 1
-                            ProductInfoBox(
+                            InfoEditBox(
                               head: propertyName1,
                               content: propertyValue1[0],
                               noOfAnswers: propertyNoOfAnswers1,
@@ -1077,7 +1076,7 @@ class _ProductPageState extends State<ProductPage> {
                             ),
 
                             // PROPERTY 2
-                            ProductInfoBox(
+                            InfoEditBox(
                               head: propertyName2,
                               content: propertyValue2[0],
                               noOfAnswers: propertyNoOfAnswers2,
@@ -1094,7 +1093,7 @@ class _ProductPageState extends State<ProductPage> {
                             ),
 
                             // PROPERTY 3
-                            ProductInfoBox(
+                            InfoEditBox(
                               head: propertyName3,
                               content: propertyValue3[0],
                               propertyValue: propertyValue3,
@@ -1111,7 +1110,7 @@ class _ProductPageState extends State<ProductPage> {
                             ),
 
                             // PROPERTY 4
-                            ProductInfoBox(
+                            InfoEditBox(
                               head: propertyName4,
                               content: propertyValue4.length == 1
                                   ? propertyValue4[0]
@@ -1130,7 +1129,7 @@ class _ProductPageState extends State<ProductPage> {
                             ),
 
                             // PROPERTY 5
-                            ProductInfoBox(
+                            InfoEditBox(
                               head: propertyName5,
                               content: propertyValue5.length == 1
                                   ? propertyValue5[0]
@@ -1149,7 +1148,7 @@ class _ProductPageState extends State<ProductPage> {
                             ),
 
                             // TAGS
-                            ProductInfoBox(
+                            InfoEditBox(
                               head: "Tags",
                               content: tags,
                               propertyValue: tags,

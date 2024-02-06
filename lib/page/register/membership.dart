@@ -17,9 +17,7 @@ import 'package:flutter/services.dart';
 class SelectMembershipPage extends StatefulWidget {
   const SelectMembershipPage({
     super.key,
-    required this.uuid,
   });
-  final String uuid;
 
   @override
   State<SelectMembershipPage> createState() => _SelectMembershipPageState();
@@ -351,7 +349,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                               .collection('Business')
                               .doc('Owners')
                               .collection('Users')
-                              .doc(widget.uuid)
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
                               .set({
                             'detailsAdded': true,
                           });
@@ -365,14 +363,14 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                               .collection('Business')
                               .doc('Owners')
                               .collection('Users')
-                              .doc(widget.uuid)
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
                               .update(userFirestoreData);
 
                           await store
                               .collection('Business')
                               .doc('Owners')
                               .collection('Shops')
-                              .doc(widget.uuid)
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
                               .set(businessFirestoreData);
 
                           setState(() {

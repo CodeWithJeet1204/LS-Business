@@ -1,8 +1,8 @@
 import 'package:find_easy/utils/colors.dart';
 import 'package:flutter/material.dart';
 
-class ProductInfoBox extends StatelessWidget {
-  const ProductInfoBox({
+class InfoEditBox extends StatelessWidget {
+  const InfoEditBox({
     super.key,
     required this.head,
     required this.noOfAnswers,

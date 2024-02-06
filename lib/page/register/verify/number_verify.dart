@@ -24,11 +24,11 @@ class NumberVerifyPage extends StatefulWidget {
 
 class _NumberVerifyPageState extends State<NumberVerifyPage> {
   final TextEditingController otpController = TextEditingController();
+  bool isOTPVerifying = false;
 
   @override
   Widget build(BuildContext context) {
     final FirebaseAuth auth = FirebaseAuth.instance;
-    bool isOTPVerifying = false;
 
     return Scaffold(
       body: SafeArea(
@@ -54,62 +54,81 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                 autoFillHints: const [AutofillHints.oneTimeCode],
               ),
               const SizedBox(height: 20),
-              MyButton(
-                text: "Verify",
-                onTap: () async {
-                  if (otpController.text.length == 6) {
-                    final credential = PhoneAuthProvider.credential(
-                      verificationId: widget.verificationId,
-                      smsCode: otpController.text,
-                    );
-                    try {
-                      setState(() {
-                        isOTPVerifying = true;
-                      });
+              isOTPVerifying
+                  ? Container(
+                      margin: EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 0,
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      alignment: Alignment.center,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: buttonColor,
+                      ),
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    )
+                  : MyButton(
+                      text: "Verify",
+                      onTap: () async {
+                        if (otpController.text.length == 6) {
+                          final credential = PhoneAuthProvider.credential(
+                            verificationId: widget.verificationId,
+                            smsCode: otpController.text,
+                          );
+                          try {
+                            setState(() {
+                              isOTPVerifying = true;
+                            });
 
-                      await auth.signInWithCredential(credential);
-                      await FirebaseFirestore.instance
-                          .collection('Business')
-                          .doc('Owners')
-                          .collection('Users')
-                          .doc(FirebaseAuth.instance.currentUser!.uid)
-                          .set({
-                        'detailsAdded': false,
-                      });
+                            await auth.signInWithCredential(credential);
+                            await FirebaseFirestore.instance
+                                .collection('Business')
+                                .doc('Owners')
+                                .collection('Users')
+                                .doc(FirebaseAuth.instance.currentUser!.uid)
+                                .set({
+                              'detailsAdded': false,
+                            });
 
-                      // TODO Verify number provider
-                      setState(() {
-                        isOTPVerifying = false;
-                      });
-                      SystemChannels.textInput.invokeMethod('TextInput.hide');
-                      if (context.mounted) {
-                        Navigator.of(context).pop();
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: ((context) => widget.isLogging
-                                ? const MainPage()
-                                : const UserRegisterDetailsPage()),
-                          ),
-                        );
-                      }
-                    } catch (e) {
-                      setState(() {
-                        isOTPVerifying = false;
-                      });
-                      setState(() {
-                        if (context.mounted) {
-                          mySnackBar(context, e.toString());
+                            // TODO Verify number provider
+                            setState(() {
+                              isOTPVerifying = false;
+                            });
+                            SystemChannels.textInput
+                                .invokeMethod('TextInput.hide');
+                            if (context.mounted) {
+                              Navigator.of(context).pop();
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: ((context) => widget.isLogging
+                                      ? const MainPage()
+                                      : const UserRegisterDetailsPage()),
+                                ),
+                              );
+                            }
+                          } catch (e) {
+                            setState(() {
+                              isOTPVerifying = false;
+                            });
+                            setState(() {
+                              if (context.mounted) {
+                                mySnackBar(context, e.toString());
+                              }
+                            });
+                          }
+                        } else {
+                          mySnackBar(
+                              context, "OTP should be 6 characters long");
                         }
-                      });
-                    }
-                  } else {
-                    mySnackBar(context, "OTP should be 6 characters long");
-                  }
-                  return;
-                },
-                isLoading: isOTPVerifying,
-                horizontalPadding: 24,
-              ),
+                        return;
+                      },
+                      isLoading: isOTPVerifying,
+                      horizontalPadding: 24,
+                    ),
               Expanded(child: Container()),
             ],
           ),

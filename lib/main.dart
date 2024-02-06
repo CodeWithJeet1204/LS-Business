@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/first_launch_detection.dart';
 import 'package:find_easy/page/intro/intro_page_view.dart';
 import 'package:find_easy/page/main/add/category/add_category.dart';
-import 'package:find_easy/page/main/analytics/analaytics_page.dart';
+import 'package:find_easy/page/main/profile/view%20page/analytics/analaytics_page.dart';
 import 'package:find_easy/page/main/main_page.dart';
 import 'package:find_easy/page/main/profile/data/all_post_page.dart';
 import 'package:find_easy/page/main/profile/data/all_product_page.dart';
@@ -142,7 +142,7 @@ class MyApp extends StatelessWidget {
               stream: FirebaseAuth.instance.authStateChanges(),
               builder: ((context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.active) {
-                  if (snapshot.hasData && (isDetailsAdded() as bool)) {
+                  if (snapshot.hasData) {
                     return const MainPage();
                   } else if (snapshot.hasError) {
                     return const Center(

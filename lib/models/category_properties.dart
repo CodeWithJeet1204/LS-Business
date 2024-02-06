@@ -1,29 +1,27 @@
 import 'package:flutter/material.dart';
 
 final Map<String, List<List<dynamic>>> categoryProperties = {
+  // 1. Name, Price, Hint Text, No of Answers, DropDown Items, TextInputType, Max Lines, Mandatory Info
+
   'Grocery': [
-    // 1. Name, Price, Hint Text, No of Answers, DropDown Items, TextInputType, Max Lines
     [
-      'Category',
-      'N/A',
-      '',
-      2,
+      'Form',
+      'eg. Liquid, Flaked, Syrup...',
+      1,
       [''],
       TextInputType.text,
       1,
     ],
     [
-      'Processing',
-      'N/A',
-      '',
-      2,
+      'Weight (gm)',
+      'in grams',
+      1,
       [''],
-      TextInputType.text,
+      TextInputType.number,
       1,
     ],
     [
       'Local/Imported',
-      'N/A',
       '',
       2,
       [''],
@@ -31,37 +29,33 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
       1,
     ],
     [
-      'Shelf Life',
-      'N/A',
+      'Shelf Life (months)',
+      'in Months',
+      1,
+      [''],
+      TextInputType.number,
+      1,
+    ],
+    [
+      'Diet Type',
       '',
       2,
-      [''],
+      ['Vegetarian', 'Vegan'],
       TextInputType.text,
       1,
     ],
     [
-      'Brand Preference',
-      'N/A',
-      '',
-      2,
+      'Not Suitable For',
+      'eg. Diabetis, Asthma',
+      1,
       [''],
       TextInputType.text,
-      1,
-    ],
-    [
-      'Dietary Restrictions',
-      'N/A',
-      '',
-      2,
-      [''],
-      TextInputType.text,
-      1,
+      10,
     ],
   ],
   'Pharmacies': [
     [
       'Side Effects',
-      'N/A',
       '',
       2,
       [''],
@@ -70,7 +64,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Drug Interactions',
-      'N/A',
       '',
       2,
       [''],
@@ -79,7 +72,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Over-the-Counter/Prescription',
-      'N/A',
       '',
       2,
       [''],
@@ -88,7 +80,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Medical Condition Targeted',
-      'N/A',
       '',
       2,
       [''],
@@ -97,7 +88,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Dosage Form Preference',
-      'N/A',
       '',
       2,
       [''],
@@ -106,7 +96,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Active Ingredient Preference',
-      'N/A',
       '',
       2,
       [''],
@@ -117,7 +106,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
   'Electronics': [
     [
       'Type',
-      'N/A',
       '',
       2,
       [''],
@@ -126,7 +114,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Operating System',
-      'N/A',
       '',
       2,
       [''],
@@ -135,7 +122,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Connectivity Features',
-      'N/A',
       '',
       2,
       [''],
@@ -144,7 +130,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Color',
-      'N/A',
       '',
       2,
       [''],
@@ -153,7 +138,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Target Audience',
-      'N/A',
       '',
       2,
       [''],
@@ -162,7 +146,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Additional Feature Preference',
-      'N/A',
       '',
       2,
       [''],
@@ -173,7 +156,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
   'Clothing and Apparel': [
     [
       'Gender',
-      'N/A',
       '',
       2,
       [''],
@@ -182,7 +164,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Fit',
-      'N/A',
       '',
       2,
       [''],
@@ -191,7 +172,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Occasion',
-      'N/A',
       '',
       2,
       [''],
@@ -200,7 +180,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Specific Garment Details',
-      'N/A',
       '',
       2,
       [''],
@@ -209,7 +188,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Style Preference',
-      'N/A',
       '',
       2,
       [''],
@@ -218,7 +196,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Fabric Preference',
-      'N/A',
       '',
       2,
       [''],
@@ -229,7 +206,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
   'Restaurant & Cafes': [
     [
       'Cuisine Type',
-      'N/A',
       '',
       2,
       [''],
@@ -238,7 +214,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Spice Level',
-      'N/A',
       '',
       2,
       [''],
@@ -247,7 +222,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Serving Size',
-      'N/A',
       '',
       2,
       [''],
@@ -256,7 +230,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Ingredients',
-      'N/A',
       '',
       2,
       [''],
@@ -265,7 +238,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Cooking Method',
-      'N/A',
       '',
       2,
       [''],
@@ -274,7 +246,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Dietary Preference',
-      'N/A',
       '',
       2,
       [''],
@@ -285,7 +256,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
   'Beauty and Cosmetics': [
     [
       'Skin Type',
-      'N/A',
       '',
       2,
       [''],
@@ -294,7 +264,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Benefits',
-      'N/A',
       '',
       2,
       [''],
@@ -303,7 +272,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Ingredients',
-      'N/A',
       '',
       2,
       [''],
@@ -312,7 +280,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Color',
-      'N/A',
       '',
       2,
       [''],
@@ -321,7 +288,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Brand Preference',
-      'N/A',
       '',
       2,
       [''],
@@ -330,7 +296,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Packaging Preference',
-      'N/A',
       '',
       2,
       [''],
@@ -341,7 +306,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
   'Furniture': [
     [
       'Room',
-      'N/A',
       '',
       2,
       [''],
@@ -350,7 +314,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Piece Type',
-      'N/A',
       '',
       2,
       [''],
@@ -359,7 +322,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Size and Dimensions',
-      'N/A',
       '',
       2,
       [''],
@@ -368,7 +330,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Assembly Required',
-      'N/A',
       '',
       2,
       [''],
@@ -377,7 +338,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Material Preference',
-      'N/A',
       '',
       2,
       [''],
@@ -386,7 +346,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Style Preference',
-      'N/A',
       '',
       2,
       [''],
@@ -397,7 +356,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
   'Jewelry': [
     [
       'Type',
-      'N/A',
       '',
       2,
       [''],
@@ -406,7 +364,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Carat Weight',
-      'N/A',
       '',
       2,
       [''],
@@ -415,7 +372,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Gemstone Cut and Color',
-      'N/A',
       '',
       2,
       [''],
@@ -424,7 +380,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Occasion',
-      'N/A',
       '',
       2,
       [''],
@@ -433,7 +388,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Metal Preference',
-      'N/A',
       '',
       2,
       [''],
@@ -442,7 +396,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Design Preference',
-      'N/A',
       '',
       2,
       [''],
@@ -453,7 +406,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
   'Decorations': [
     [
       'Room',
-      'N/A',
       '',
       2,
       [''],
@@ -462,7 +414,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Type',
-      'N/A',
       '',
       2,
       [''],
@@ -471,7 +422,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Color',
-      'N/A',
       '',
       2,
       [''],
@@ -480,7 +430,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Occasion',
-      'N/A',
       '',
       2,
       [''],
@@ -489,7 +438,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Material Preference',
-      'N/A',
       '',
       2,
       [''],
@@ -498,7 +446,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Style Preference',
-      'N/A',
       '',
       2,
       [''],
@@ -509,7 +456,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
   'Bookstores and Stationery': [
     [
       'Age Group',
-      'N/A',
       '',
       2,
       [''],
@@ -518,7 +464,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Language',
-      'N/A',
       '',
       2,
       [''],
@@ -527,7 +472,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Theme',
-      'N/A',
       '',
       2,
       [''],
@@ -536,7 +480,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'ISBN Number',
-      'N/A',
       '',
       2,
       [''],
@@ -545,7 +488,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'School Supplies',
-      'N/A',
       '',
       2,
       [''],
@@ -554,7 +496,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Genre Preference',
-      'N/A',
       '',
       2,
       [''],
@@ -565,7 +506,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
   'Building Materials and Hardware': [
     [
       'Project Type',
-      'N/A',
       '',
       2,
       [''],
@@ -574,7 +514,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Specific Use',
-      'N/A',
       '',
       2,
       [''],
@@ -583,7 +522,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Safety Ratings',
-      'N/A',
       '',
       2,
       [''],
@@ -592,7 +530,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Brand Popularity',
-      'N/A',
       '',
       2,
       [''],
@@ -601,7 +538,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Tool Preference',
-      'N/A',
       '',
       2,
       [''],
@@ -610,7 +546,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Material Preference',
-      'N/A',
       '',
       2,
       [''],
@@ -621,7 +556,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
   'Automobile Parts and Accessories': [
     [
       'Performance Enhancements',
-      'N/A',
       '',
       2,
       [''],
@@ -630,7 +564,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'OEM/Aftermarket',
-      'N/A',
       '',
       2,
       [''],
@@ -639,7 +572,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Installation Difficulty',
-      'N/A',
       '',
       2,
       [''],
@@ -648,7 +580,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Warranty',
-      'N/A',
       '',
       2,
       [''],
@@ -657,7 +588,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Brand Preference',
-      'N/A',
       '',
       2,
       [''],
@@ -666,7 +596,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Price Range Preference',
-      'N/A',
       '',
       2,
       [''],
@@ -677,7 +606,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
   'Gifts and Novelty': [
     [
       'Personalization Options',
-      'N/A',
       '',
       2,
       [''],
@@ -686,7 +614,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Humor Level',
-      'N/A',
       '',
       2,
       [''],
@@ -695,7 +622,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Sentiment',
-      'N/A',
       '',
       2,
       [''],
@@ -704,7 +630,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Price Range',
-      'N/A',
       '',
       2,
       [''],
@@ -713,7 +638,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Occasion Preference',
-      'N/A',
       '',
       2,
       [''],
@@ -722,7 +646,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Recipient Preference',
-      'N/A',
       '',
       2,
       [''],
@@ -733,17 +656,15 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
   'Toys': [
     [
       'Colors Available',
-      'N/A',
       'eg. Blue, Green...',
       3,
       ['Yes', 'No'],
       TextInputType.text,
       1,
-      true,
+      false,
     ],
     [
       'Material',
-      'N/A',
       'eg. Plastic, Cotton...',
       1,
       [''],
@@ -753,48 +674,44 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Weight (in grams)',
-      'N/A',
       'Grams',
       1,
       ['Yes', 'No'],
       TextInputType.number,
       1,
-      true,
+      false,
     ],
     [
       'Battery Powered',
-      'N/A',
+
       '', // 1 & 3/3+ --> Required for Hint Text
       2,
       ['Yes', 'No'], // 2 --> Required For DropDownMenu
       TextInputType.text, 1,
-      false,
+      true,
     ],
     [
       'Age Preference',
-      'N/A',
       '',
       2,
       ['3 - 5', '6 - 10', '10 - 18'],
       TextInputType.text,
       1,
-      false,
+      true,
     ],
     [
       'Whats in the Box?',
-      'N/A',
       'Enter Items',
       3,
       [''],
       TextInputType.text,
       100,
-      true,
+      false,
     ],
   ],
   'Sports Goods': [
     [
       'Skill Level',
-      'N/A',
       '',
       2,
       [''],
@@ -803,7 +720,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Material',
-      'N/A',
       '',
       2,
       [''],
@@ -812,7 +728,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Popular Brands',
-      'N/A',
       '',
       2,
       [''],
@@ -821,7 +736,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Warranty',
-      'N/A',
       '',
       2,
       [''],
@@ -830,7 +744,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Sport Preference',
-      'N/A',
       '',
       2,
       [''],
@@ -839,7 +752,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Training Needs Preference',
-      'N/A',
       '',
       2,
       [''],
@@ -850,7 +762,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
   'Agriculture and Farm Supply': [
     [
       'Specific Crops/Livestock',
-      'N/A',
       '',
       2,
       [''],
@@ -859,7 +770,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Pest Control Methods',
-      'N/A',
       '',
       2,
       [''],
@@ -868,7 +778,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Soil Type Compatibility',
-      'N/A',
       '',
       2,
       [''],
@@ -877,7 +786,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Farm Size',
-      'N/A',
       '',
       2,
       [''],
@@ -886,7 +794,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Livestock Breed Preference',
-      'N/A',
       '',
       2,
       [''],
@@ -895,7 +802,6 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
     ],
     [
       'Sustainable Practices Preference',
-      'N/A',
       '',
       2,
       [''],

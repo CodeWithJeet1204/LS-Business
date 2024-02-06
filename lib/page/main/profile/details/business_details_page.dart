@@ -19,13 +19,14 @@ class BusinessDetailsPage extends StatefulWidget {
 
 class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
   final FirebaseAuth auth = FirebaseAuth.instance;
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController addressController = TextEditingController();
+  final nameController = TextEditingController();
+  final addressController = TextEditingController();
+  final specialNoteController = TextEditingController();
   bool isChangingName = false;
   bool isChangingAddress = false;
+  bool isChangingSpecialNote = false;
   bool isChangingImage = false;
   bool isSaving = false;
-  bool isDataLoaded = false;
 
   void changeImage() async {
     Uint8List? im;
@@ -69,86 +70,41 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
     }
   }
 
-  void save() async {
+  void save(
+    TextEditingController controller,
+    String propertyName,
+    bool isChanging,
+  ) async {
+    setState(() {
+      isSaving = true;
+      isChanging = true;
+    });
     try {
-      setState(() {
-        isSaving = true;
-      });
-      if (isChangingName && !isChangingAddress) {
-        if (nameController.text.isEmpty) {
-          mySnackBar(context, "Name should be atleast 1 characters long");
-          setState(() {
-            isSaving = false;
-          });
-        } else {
-          Map<String, dynamic> updatedUserName = {
-            "Name": nameController.text.toString(),
-          };
-          await FirebaseFirestore.instance
-              .collection('Business')
-              .doc('Owners')
-              .collection('Shops')
-              .doc(FirebaseAuth.instance.currentUser!.uid)
-              .update(updatedUserName);
-        }
+      if (controller.text.isEmpty) {
         setState(() {
           isSaving = false;
-          isChangingName = false;
         });
-      } else if (isChangingAddress && !isChangingName) {
-        if (addressController.text.isEmpty) {
-          mySnackBar(context, "Address should be atleast 1 characters long");
-        } else {
-          Map<String, dynamic> updatedUserAddress = {
-            "Address": addressController.text.toString(),
-          };
-          await FirebaseFirestore.instance
-              .collection('Business')
-              .doc('Owners')
-              .collection('Shops')
-              .doc(FirebaseAuth.instance.currentUser!.uid)
-              .update(updatedUserAddress);
-        }
-        setState(() {
-          isSaving = false;
-          isChangingAddress = false;
-        });
-      } else if (isChangingAddress && isChangingName) {
-        if (addressController.text.isEmpty) {
-          mySnackBar(context, "Address should be atleast 1 characters long");
-        } else if (nameController.text.isEmpty) {
-          mySnackBar(context, "Name should be atleast 1 characters long");
-        } else {
-          Map<String, dynamic> updatedUserAddress = {
-            "Address": addressController.text.toString(),
-          };
-          await FirebaseFirestore.instance
-              .collection('Business')
-              .doc('Owners')
-              .collection('Shops')
-              .doc(FirebaseAuth.instance.currentUser!.uid)
-              .update(updatedUserAddress);
-        }
-        Map<String, dynamic> updatedUserName = {
-          "Name": nameController.text.toString(),
-        };
+        return mySnackBar(context, "Enter ${propertyName}");
+      } else {
         await FirebaseFirestore.instance
             .collection('Business')
             .doc('Owners')
             .collection('Shops')
             .doc(FirebaseAuth.instance.currentUser!.uid)
-            .update(updatedUserName);
+            .update({
+          propertyName: controller.text.toString(),
+        });
 
         setState(() {
           isSaving = false;
-          isChangingName = false;
-          isChangingAddress = false;
+          isChanging = false;
         });
       }
+    } catch (e) {
       setState(() {
         isSaving = false;
+        isChanging = false;
       });
-    } catch (e) {
       mySnackBar(context, e.toString());
     }
   }
@@ -209,32 +165,30 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
       appBar: AppBar(
         title: const Text("Business Details"),
       ),
-      body: LayoutBuilder(
-        builder: ((context, constraints) {
-          double width = constraints.maxWidth;
-          double height = constraints.maxHeight;
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: LayoutBuilder(
+          builder: ((context, constraints) {
+            double width = constraints.maxWidth;
+            double height = constraints.maxHeight;
 
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: width * 0.08),
-            child: SizedBox(
-              width: width,
-              height: height,
-              child: StreamBuilder(
-                  stream: shopStream,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Center(
-                        child: Text('Something Went Wrong'),
-                      );
-                    }
+            return StreamBuilder(
+                stream: shopStream,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Something Went Wrong'),
+                    );
+                  }
 
-                    if (snapshot.hasData) {
-                      final shopData = snapshot.data!;
+                  if (snapshot.hasData) {
+                    final shopData = snapshot.data!;
 
-                      return Column(
+                    return SingleChildScrollView(
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Expanded(child: Container()),
+                          SizedBox(height: 40),
                           isChangingImage
                               ? Container(
                                   width: width * 0.3,
@@ -277,6 +231,8 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                   ],
                                 ),
                           SizedBox(height: height * 0.05),
+
+                          // NAME
                           Container(
                             width: width,
                             height:
@@ -316,6 +272,8 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                         onPressed: () {
                                           setState(() {
                                             isChangingName = true;
+                                            isChangingAddress = false;
+                                            isChangingSpecialNote = false;
                                           });
                                         },
                                         icon: const Icon(Icons.edit),
@@ -326,6 +284,8 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                   ),
                           ),
                           SizedBox(height: height * 0.02),
+
+                          // ADDRESS
                           Container(
                             width: width,
                             height: isChangingAddress
@@ -364,17 +324,75 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                       IconButton(
                                         onPressed: () {
                                           setState(() {
+                                            isChangingName = false;
                                             isChangingAddress = true;
+                                            isChangingSpecialNote = false;
                                           });
                                         },
                                         icon: const Icon(Icons.edit),
-                                        tooltip: "Edit Phone Number",
+                                        tooltip: "Edit Addess",
                                       ),
                                       SizedBox(width: width * 0.03),
                                     ],
                                   ),
                           ),
                           SizedBox(height: height * 0.02),
+
+                          // SPECIAL NOTE
+                          Container(
+                            width: width,
+                            height: isChangingSpecialNote
+                                ? height * 0.125
+                                : height * 0.08,
+                            decoration: BoxDecoration(
+                              color: primary2.withOpacity(0.9),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: isChangingSpecialNote
+                                ? TextField(
+                                    maxLength: 32,
+                                    autofocus: true,
+                                    controller: specialNoteController,
+                                    decoration: InputDecoration(
+                                      hintText: "Change Special Note",
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                  )
+                                : Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      SizedBox(width: width * 0.05),
+                                      Text(
+                                        shopData['Special Note'],
+                                        style: TextStyle(
+                                          fontSize:
+                                              shopData['Special Note'].length >
+                                                      20
+                                                  ? 16
+                                                  : 18,
+                                        ),
+                                      ),
+                                      Expanded(child: Container()),
+                                      IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            isChangingName = false;
+                                            isChangingAddress = false;
+                                            isChangingSpecialNote = true;
+                                          });
+                                        },
+                                        icon: const Icon(Icons.edit),
+                                        tooltip: "Edit Special Note",
+                                      ),
+                                      SizedBox(width: width * 0.03),
+                                    ],
+                                  ),
+                          ),
+                          SizedBox(height: height * 0.02),
+
+                          // INDUSTRY
                           Container(
                             width: width,
                             height: height * 0.075,
@@ -398,6 +416,8 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             ),
                           ),
                           SizedBox(height: height * 0.02),
+
+                          // TYPE
                           Container(
                             width: width,
                             height: height * 0.075,
@@ -420,6 +440,33 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             ),
                           ),
                           SizedBox(height: height * 0.02),
+
+                          // GST
+                          Container(
+                            width: width,
+                            height: height * 0.075,
+                            decoration: BoxDecoration(
+                              color: primary2.withOpacity(0.9),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                SizedBox(width: width * 0.05),
+                                FittedBox(
+                                  child: Text(
+                                    shopData['GSTNumber'],
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: height * 0.02),
+
+                          // MEMBERSHIP
                           Container(
                             width: width,
                             height: height * 0.075,
@@ -449,7 +496,9 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             ),
                           ),
                           SizedBox(height: height * 0.05),
-                          isChangingName || isChangingAddress
+                          isChangingName ||
+                                  isChangingAddress ||
+                                  isChangingSpecialNote
                               ? Column(
                                   children: [
                                     isSaving
@@ -473,39 +522,67 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                             ))
                                         : MyButton(
                                             text: "SAVE",
-                                            onTap: save,
+                                            onTap: () {
+                                              if (isChangingName) {
+                                                save(
+                                                  nameController,
+                                                  "Name",
+                                                  isChangingName,
+                                                );
+                                              } else if (isChangingAddress) {
+                                                save(
+                                                  addressController,
+                                                  "Address",
+                                                  isChangingAddress,
+                                                );
+                                              } else if (isChangingSpecialNote) {
+                                                save(
+                                                  specialNoteController,
+                                                  "Special Note",
+                                                  isChangingSpecialNote,
+                                                );
+                                              }
+                                            },
                                             isLoading: false,
                                             horizontalPadding: 0,
                                           ),
                                     SizedBox(height: height * 0.015),
-                                    MyButton(
-                                      text: "CANCEL",
-                                      onTap: () {
-                                        setState(() {
-                                          isChangingName = false;
-                                          isChangingAddress = false;
-                                        });
-                                      },
-                                      isLoading: false,
-                                      horizontalPadding: 0,
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        bottom: MediaQuery.of(context)
+                                            .viewInsets
+                                            .bottom,
+                                      ),
+                                      child: MyButton(
+                                        text: "CANCEL",
+                                        onTap: () {
+                                          setState(() {
+                                            isChangingName = false;
+                                            isChangingAddress = false;
+                                            isChangingAddress = false;
+                                          });
+                                        },
+                                        isLoading: false,
+                                        horizontalPadding: 0,
+                                      ),
                                     ),
                                   ],
                                 )
                               : Container(),
-                          Expanded(child: Container()),
+                          SizedBox(height: 40),
                         ],
-                      );
-                    }
-
-                    return Center(
-                      child: CircularProgressIndicator(
-                        color: primaryDark,
                       ),
                     );
-                  }),
-            ),
-          );
-        }),
+                  }
+
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: primaryDark,
+                    ),
+                  );
+                });
+          }),
+        ),
       ),
     );
   }

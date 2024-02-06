@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:find_easy/page/main/profile/view%20page/posts/post_page.dart';
 import 'package:find_easy/page/main/profile/view%20page/product/product_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
@@ -129,14 +130,10 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                     padding: const EdgeInsets.all(8),
                                     child: GestureDetector(
                                       onTap: () {
-                                        // TODO: In future we will create a different screen for post with all its info
                                         Navigator.of(context).push(
                                           MaterialPageRoute(
-                                            builder: ((context) => ProductPage(
-                                                  productId:
-                                                      postData['postProductId'],
-                                                  productName:
-                                                      postData['postName'],
+                                            builder: ((context) => PostPage(
+                                                  postId: postData['postId'],
                                                 )),
                                           ),
                                         );
