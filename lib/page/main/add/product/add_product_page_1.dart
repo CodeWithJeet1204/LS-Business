@@ -48,6 +48,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
   final Map<String, String> categoryNamesAndIds = {};
   bool isGridView = false;
   String? searchedCategory;
+  bool isAvailable = true;
 
   void addProductImages() async {
     final XFile? im = await picker.pickImage(source: ImageSource.gallery);
@@ -139,7 +140,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
               'datetime': Timestamp.fromMillisecondsSinceEpoch(
                 DateTime.now().millisecondsSinceEpoch,
               ),
-              'isAvailable': true,
+              'isAvailable': isAvailable,
               'categoryName': selectedCategory,
               'categoryId': selectedCategoryId,
               'vendorId': FirebaseAuth.instance.currentUser!.uid,
@@ -485,6 +486,91 @@ class _AddProductPage1State extends State<AddProductPage1> {
                             ),
                           ),
                         ),
+                        SizedBox(height: height * 0.00625),
+
+                        // AVAILABLE / OUT OF STOCK
+                        Container(
+                          width: width,
+                          height: 130,
+                          decoration: BoxDecoration(
+                            color: primary2.withOpacity(0.75),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                width: width,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Available",
+                                        style: TextStyle(
+                                          color: primaryDark,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      Checkbox(
+                                        activeColor: primaryDark,
+                                        checkColor: white,
+                                        value: isAvailable,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            isAvailable = value!;
+                                          });
+                                          print(isAvailable);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Divider(),
+                              SizedBox(
+                                width: width,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Out Of Stock",
+                                        style: TextStyle(
+                                          color: primaryDark,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      Checkbox(
+                                        activeColor: primaryDark,
+                                        checkColor: white,
+                                        value: !isAvailable,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            isAvailable = !value!;
+                                          });
+                                          print(isAvailable);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
                         SizedBox(height: height * 0.00625),
 
                         Divider(),

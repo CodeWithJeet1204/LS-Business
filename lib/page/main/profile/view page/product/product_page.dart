@@ -572,6 +572,7 @@ class _ProductPageState extends State<ProductPage> {
                         final String brand = productData['productBrand'];
                         final List images = productData['images'];
                         final List tags = productData['Tags'];
+                        bool isAvailable = productData['isAvailable'];
 
                         final Map<String, dynamic> properties =
                             productData['Properties'];
@@ -878,6 +879,104 @@ class _ProductPageState extends State<ProductPage> {
                                   tooltip: "Edit Price",
                                 ),
                               ],
+                            ),
+
+                            // AVAILABLE / OUT OF STOCK
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              child: Container(
+                                width: width,
+                                height: 130,
+                                decoration: BoxDecoration(
+                                  color: primary.withOpacity(0.4),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      width: width,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                          vertical: 4,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Available",
+                                              style: TextStyle(
+                                                color: primaryDark,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            Checkbox(
+                                              activeColor: primaryDark,
+                                              checkColor: white,
+                                              value: isAvailable,
+                                              onChanged: (value) async {
+                                                await store
+                                                    .collection('Business')
+                                                    .doc('Data')
+                                                    .collection('Products')
+                                                    .doc(widget.productId)
+                                                    .update({
+                                                  'isAvailable': value,
+                                                });
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Divider(
+                                      color: primaryDark.withOpacity(0.2),
+                                      indent: 8,
+                                      endIndent: 8,
+                                    ),
+                                    SizedBox(
+                                      width: width,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                          vertical: 4,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Out Of Stock",
+                                              style: TextStyle(
+                                                color: primaryDark,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            Checkbox(
+                                              activeColor: primaryDark,
+                                              checkColor: white,
+                                              value: !isAvailable,
+                                              onChanged: (value) async {
+                                                await store
+                                                    .collection('Business')
+                                                    .doc('Data')
+                                                    .collection('Products')
+                                                    .doc(widget.productId)
+                                                    .update({
+                                                  'isAvailable': !value!,
+                                                });
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
 
                             // DESCRIPTION
