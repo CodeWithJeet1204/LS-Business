@@ -13,6 +13,7 @@ import 'package:find_easy/page/register/login_page.dart';
 import 'package:find_easy/page/main/profile/profile_page.dart';
 import 'package:find_easy/page/register/register_cred.dart';
 import 'package:find_easy/page/register/register_pay.dart';
+import 'package:find_easy/page/register/verify/email_verify.dart';
 import 'package:find_easy/provider/add_product_provider.dart';
 import 'package:find_easy/provider/change_category_provider.dart';
 import 'package:find_easy/provider/products_added_to_category_provider.dart';
@@ -144,6 +145,10 @@ class MyApp extends StatelessWidget {
                 if (snapshot.connectionState == ConnectionState.active) {
                   if (snapshot.hasData) {
                     return const MainPage();
+                  } else if (snapshot.hasData &&
+                      FirebaseAuth.instance.currentUser!.email != null &&
+                      !FirebaseAuth.instance.currentUser!.emailVerified) {
+                    return EmailVerifyPage();
                   } else if (snapshot.hasError) {
                     return const Center(
                       child: Text(

@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:find_easy/firebase/auth_methods.dart';
 import 'package:find_easy/page/register/user_register_details.dart';
+import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,25 +17,14 @@ class EmailVerifyPage extends StatefulWidget {
 }
 
 class _EmailVerifyPageState extends State<EmailVerifyPage> {
-  String sendEmailText = "Send Email";
-  bool isEmailVerified = false;
+  bool checkingEmailVerified = false;
   bool canResendEmail = false;
   Timer? timer;
 
   @override
   void initState() {
+    sendEmailVerification();
     super.initState();
-
-    isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
-
-    if (!isEmailVerified) {
-      sendEmailVerification();
-
-      timer = Timer.periodic(
-        Duration(seconds: 1),
-        (timer) => checkEmailVerified(),
-      );
-    }
   }
 
   @override
@@ -56,43 +47,53 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
     }
   }
 
-  Future checkEmailVerified() async {
-    await FirebaseAuth.instance.currentUser!.reload();
-
-    setState(() {
-      isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
-    });
-
-    if (isEmailVerified) {
-      // TODO Provider updates email verified
-
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: ((context) => UserRegisterDetailsPage()),
-        ),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final AuthMethods auth = AuthMethods();
+
     return Scaffold(
       body: SafeArea(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Center(
-              child: Text(
-                  "Verification Email has been sent\nClick on it to verify your email"),
+            const Text(
+              "An email has been sent to your account, pls click on it\nTo verify your account\n\nClick on the button after verifying the email\n\n(It may take some time for email to arrive)",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: primaryDark,
+                fontSize: 16,
+              ),
             ),
+            const SizedBox(height: 20),
             MyButton(
-              onTap: canResendEmail
-                  ? () {
-                      sendEmailVerification();
-                    }
-                  : null,
-              text: "Resend Email",
-              isLoading: false,
-              horizontalPadding: 20,
+              text: "I have verified my email",
+              onTap: () async {
+                setState(() {
+                  checkingEmailVerified = true;
+                });
+                await auth.user.reload();
+                if (_auth.currentUser!.emailVerified) {
+                  setState(() {
+                    checkingEmailVerified = false;
+                  });
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: ((context) => const UserRegisterDetailsPage()),
+                    ),
+                  );
+                } else {
+                  setState(() {
+                    checkingEmailVerified = false;
+                  });
+                  if (context.mounted) {
+                    mySnackBar(context, "Email not verified");
+                  }
+                }
+              },
+              isLoading: checkingEmailVerified,
+              horizontalPadding: 24,
             ),
           ],
         ),

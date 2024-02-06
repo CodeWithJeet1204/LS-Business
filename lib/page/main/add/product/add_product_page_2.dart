@@ -364,6 +364,19 @@ class _AddProductPage2State extends State<AddProductPage2> {
                       key: productKey,
                       child: Column(
                         children: [
+                          Text(
+                            "Properties marked with '*' are compulsory to fill",
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: primaryDark2,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          SizedBox(height: 4),
+
                           // TAGS
                           PropertyBox(
                             headText: "Tags",
@@ -468,7 +481,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                           ),
 
                           // PROPERTY 0
-                          getPropertiesKeys(0) == ''
+                          getPropertiesKeys(0) != ''
                               ? PropertyBox(
                                   headText: getCompulsory(0)
                                       ? "${getPropertiesKeys(0)}*"
@@ -657,7 +670,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                               : Container(),
 
                           // PROPERTY 1
-                          getPropertiesKeys(1) == ''
+                          getPropertiesKeys(1) != ''
                               ? PropertyBox(
                                   headText: getCompulsory(1)
                                       ? "${getPropertiesKeys(1)}*"
@@ -846,7 +859,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                               : Container(),
 
                           // PROPERTY 2
-                          getPropertiesKeys(2) == ''
+                          getPropertiesKeys(2) != ''
                               ? PropertyBox(
                                   headText: getCompulsory(2)
                                       ? "${getPropertiesKeys(2)}*"
@@ -1034,7 +1047,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                               : Container(),
 
                           // PROPERTY 3
-                          getPropertiesKeys(3) == ''
+                          getPropertiesKeys(3) != ''
                               ? PropertyBox(
                                   headText: getCompulsory(3)
                                       ? "${getPropertiesKeys(3)}*"
@@ -1223,7 +1236,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                               : Container(),
 
                           // PROPERTY 4
-                          getPropertiesKeys(4) == ''
+                          getPropertiesKeys(4) != ''
                               ? PropertyBox(
                                   headText: getCompulsory(4)
                                       ? "${getPropertiesKeys(4)}*"
@@ -1412,7 +1425,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                               : Container(),
 
                           // PROPERTY 5
-                          getPropertiesKeys(5) == ''
+                          getPropertiesKeys(5) != ''
                               ? PropertyBox(
                                   headText: getCompulsory(5)
                                       ? "${getPropertiesKeys(5)}*"

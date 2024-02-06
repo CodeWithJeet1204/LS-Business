@@ -94,7 +94,6 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                               'detailsAdded': false,
                             });
 
-                            // TODO Verify number provider
                             setState(() {
                               isOTPVerifying = false;
                             });

@@ -11,6 +11,7 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
       [''],
       TextInputType.text,
       1,
+      false,
     ],
     [
       'Weight (gm)',
@@ -19,6 +20,7 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
       [''],
       TextInputType.number,
       1,
+      true,
     ],
     [
       'Local/Imported',
@@ -27,6 +29,7 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
       [''],
       TextInputType.text,
       1,
+      false,
     ],
     [
       'Shelf Life (months)',
@@ -35,6 +38,7 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
       [''],
       TextInputType.number,
       1,
+      true,
     ],
     [
       'Diet Type',
@@ -43,6 +47,7 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
       ['Vegetarian', 'Vegan'],
       TextInputType.text,
       1,
+      false,
     ],
     [
       'Not Suitable For',
@@ -51,6 +56,7 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
       [''],
       TextInputType.text,
       10,
+      false,
     ],
   ],
   'Pharmacies': [

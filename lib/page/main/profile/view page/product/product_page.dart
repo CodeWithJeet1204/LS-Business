@@ -1042,110 +1042,130 @@ class _ProductPageState extends State<ProductPage> {
                             ),
 
                             // PROPERTY 0
-                            InfoEditBox(
-                              head: propertyName0,
-                              content: propertyValue0,
-                              noOfAnswers: propertyNoOfAnswers0,
-                              propertyValue: propertyValue0,
-                              width: width,
-                              onPressed: () {
-                                edit(
-                                  'propertyValue0',
-                                  propertyNoOfAnswers0,
-                                  true,
-                                  propertyInputType0,
-                                );
-                              },
-                            ),
+                            propertyName0 != ''
+                                ? InfoEditBox(
+                                    head: propertyName0,
+                                    content: propertyValue0.isNotEmpty
+                                        ? propertyValue0[0]
+                                        : 'N/A',
+                                    noOfAnswers: propertyNoOfAnswers0,
+                                    propertyValue: propertyValue0,
+                                    width: width,
+                                    onPressed: () {
+                                      edit(
+                                        'propertyValue0',
+                                        propertyNoOfAnswers0,
+                                        true,
+                                        propertyInputType0,
+                                      );
+                                    },
+                                  )
+                                : Container(),
 
                             // PROPERTY 1
-                            InfoEditBox(
-                              head: propertyName1,
-                              content: propertyValue1[0],
-                              noOfAnswers: propertyNoOfAnswers1,
-                              propertyValue: propertyValue1,
-                              width: width,
-                              onPressed: () {
-                                edit(
-                                  'propertyValue1',
-                                  propertyNoOfAnswers1,
-                                  true,
-                                  propertyInputType1,
-                                );
-                              },
-                            ),
+                            propertyName1 != ''
+                                ? InfoEditBox(
+                                    head: propertyName1,
+                                    content: propertyValue1.isNotEmpty
+                                        ? propertyValue1[0]
+                                        : 'N/A',
+                                    noOfAnswers: propertyNoOfAnswers1,
+                                    propertyValue: propertyValue1,
+                                    width: width,
+                                    onPressed: () {
+                                      edit(
+                                        'propertyValue1',
+                                        propertyNoOfAnswers1,
+                                        true,
+                                        propertyInputType1,
+                                      );
+                                    },
+                                  )
+                                : Container(),
 
                             // PROPERTY 2
-                            InfoEditBox(
-                              head: propertyName2,
-                              content: propertyValue2[0],
-                              noOfAnswers: propertyNoOfAnswers2,
-                              propertyValue: propertyValue2,
-                              width: width,
-                              onPressed: () {
-                                edit(
-                                  'propertyValue2',
-                                  propertyNoOfAnswers2,
-                                  true,
-                                  propertyInputType2,
-                                );
-                              },
-                            ),
+                            propertyName2 != ''
+                                ? InfoEditBox(
+                                    head: propertyName2,
+                                    content: propertyValue2.isNotEmpty
+                                        ? propertyValue2[0]
+                                        : 'N/A',
+                                    noOfAnswers: propertyNoOfAnswers2,
+                                    propertyValue: propertyValue2,
+                                    width: width,
+                                    onPressed: () {
+                                      edit(
+                                        'propertyValue2',
+                                        propertyNoOfAnswers2,
+                                        true,
+                                        propertyInputType2,
+                                      );
+                                    },
+                                  )
+                                : Container(),
 
                             // PROPERTY 3
-                            InfoEditBox(
-                              head: propertyName3,
-                              content: propertyValue3[0],
-                              propertyValue: propertyValue3,
-                              noOfAnswers: propertyNoOfAnswers3,
-                              width: width,
-                              onPressed: () {
-                                edit(
-                                  'propertyValue3',
-                                  propertyNoOfAnswers3,
-                                  true,
-                                  propertyInputType3,
-                                );
-                              },
-                            ),
+                            propertyName3 != ''
+                                ? InfoEditBox(
+                                    head: propertyName3,
+                                    content: propertyValue3.isNotEmpty
+                                        ? propertyValue3[0]
+                                        : 'N/A',
+                                    propertyValue: propertyValue3,
+                                    noOfAnswers: propertyNoOfAnswers3,
+                                    width: width,
+                                    onPressed: () {
+                                      edit(
+                                        'propertyValue3',
+                                        propertyNoOfAnswers3,
+                                        true,
+                                        propertyInputType3,
+                                      );
+                                    },
+                                  )
+                                : Container(),
 
                             // PROPERTY 4
-                            InfoEditBox(
-                              head: propertyName4,
-                              content: propertyValue4.length == 1
-                                  ? propertyValue4[0]
-                                  : null,
-                              propertyValue: propertyValue4,
-                              noOfAnswers: propertyNoOfAnswers4,
-                              width: width,
-                              onPressed: () {
-                                edit(
-                                  'propertyValue4',
-                                  propertyNoOfAnswers4,
-                                  true,
-                                  propertyInputType4,
-                                );
-                              },
-                            ),
+                            propertyName4 != ''
+                                ? InfoEditBox(
+                                    head: propertyName4,
+                                    content: propertyValue4.isNotEmpty
+                                        ? propertyValue4[0]
+                                        : 'N/A',
+                                    propertyValue: propertyValue4,
+                                    noOfAnswers: propertyNoOfAnswers4,
+                                    width: width,
+                                    onPressed: () {
+                                      edit(
+                                        'propertyValue4',
+                                        propertyNoOfAnswers4,
+                                        true,
+                                        propertyInputType4,
+                                      );
+                                    },
+                                  )
+                                : Container(),
 
                             // PROPERTY 5
-                            InfoEditBox(
-                              head: propertyName5,
-                              content: propertyValue5.length == 1
-                                  ? propertyValue5[0]
-                                  : null,
-                              propertyValue: propertyValue5,
-                              noOfAnswers: propertyNoOfAnswers5,
-                              width: width,
-                              onPressed: () {
-                                edit(
-                                  'propertyValue5',
-                                  propertyNoOfAnswers5,
-                                  true,
-                                  propertyInputType5,
-                                );
-                              },
-                            ),
+                            propertyName5 != ''
+                                ? InfoEditBox(
+                                    head: propertyName5,
+                                    content: propertyValue5.isNotEmpty
+                                        ? propertyValue5[0]
+                                        : 'N/A',
+                                    propertyValue: propertyValue5,
+                                    noOfAnswers: propertyNoOfAnswers5,
+                                    width: width,
+                                    onPressed: () {
+                                      edit(
+                                        'propertyValue5',
+                                        propertyNoOfAnswers5,
+                                        true,
+                                        propertyInputType5,
+                                      );
+                                    },
+                                  )
+                                : Container(),
 
                             // TAGS
                             InfoEditBox(

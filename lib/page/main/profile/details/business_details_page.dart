@@ -83,6 +83,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
       if (controller.text.isEmpty) {
         setState(() {
           isSaving = false;
+          isChanging = false;
         });
         return mySnackBar(context, "Enter ${propertyName}");
       } else {
@@ -99,6 +100,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
           isSaving = false;
           isChanging = false;
         });
+        Navigator.of(context).popAndPushNamed('/businessDetails');
       }
     } catch (e) {
       setState(() {

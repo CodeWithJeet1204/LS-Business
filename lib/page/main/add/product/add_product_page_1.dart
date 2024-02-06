@@ -54,6 +54,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
     if (im != null) {
       setState(() {
         _image.add(File(im.path));
+        currentImageIndex = _image.length - 1;
       });
     } else {
       if (context.mounted) {
@@ -138,6 +139,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
               'datetime': Timestamp.fromMillisecondsSinceEpoch(
                 DateTime.now().millisecondsSinceEpoch,
               ),
+              'isAvailable': true,
               'categoryName': selectedCategory,
               'categoryId': selectedCategoryId,
               'vendorId': FirebaseAuth.instance.currentUser!.uid,
@@ -333,6 +335,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: IconButton(
+                                    splashRadius: 4,
                                     onPressed: () {
                                       addProductImages();
                                     },
