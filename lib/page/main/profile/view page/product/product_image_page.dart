@@ -27,7 +27,7 @@ class _ProductImageViewState extends State<ProductImageView> {
 
           return Column(
             children: [
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.86,
                 child: InteractiveViewer(
@@ -53,7 +53,6 @@ class _ProductImageViewState extends State<ProductImageView> {
                           setState(() {
                             currentIndex = index;
                           });
-                          print(currentIndex);
                         },
                         child: Container(
                           decoration: BoxDecoration(

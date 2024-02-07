@@ -38,17 +38,20 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
       final user = FirebaseAuth.instance.currentUser!;
       await user.sendEmailVerification();
 
-      await Future.delayed(Duration(seconds: 5));
+      await Future.delayed(const Duration(seconds: 5));
       setState(() {
         canResendEmail = true;
       });
     } catch (e) {
-      mySnackBar(context, e.toString());
+      if (context.mounted) {
+        mySnackBar(context, e.toString());
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    // ignore: no_leading_underscores_for_local_identifiers
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final AuthMethods auth = AuthMethods();
 
@@ -77,12 +80,14 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
                   setState(() {
                     checkingEmailVerified = false;
                   });
-                  Navigator.of(context).pop();
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: ((context) => const UserRegisterDetailsPage()),
-                    ),
-                  );
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: ((context) => const UserRegisterDetailsPage()),
+                      ),
+                    );
+                  }
                 } else {
                   setState(() {
                     checkingEmailVerified = false;

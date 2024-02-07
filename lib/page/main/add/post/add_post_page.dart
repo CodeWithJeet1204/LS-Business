@@ -38,12 +38,14 @@ class _AddPostPageState extends State<AddPostPage> {
       for (QueryDocumentSnapshot doc in previousPosts.docs) {
         if (doc['postProductId'] == postprovider.selectedProduct[0] &&
             isTextPost == doc['isTextPost']) {
-          mySnackBar(
-            context,
-            isTextPost
-                ? "Text Post Already Exists for this product"
-                : "Image Post Already Exists for this product",
-          );
+          if (context.mounted) {
+            mySnackBar(
+              context,
+              isTextPost
+                  ? "Text Post Already Exists for this product"
+                  : "Image Post Already Exists for this product",
+            );
+          }
           postDoesntExists = false;
         }
       }
@@ -60,7 +62,7 @@ class _AddPostPageState extends State<AddPostPage> {
             .doc(postprovider.selectedProduct[0])
             .get();
 
-        final String postId = Uuid().v4();
+        final String postId = const Uuid().v4();
 
         Map<String, dynamic> postInfo = {
           'postId': postId,
@@ -86,9 +88,10 @@ class _AddPostPageState extends State<AddPostPage> {
             .collection('Posts')
             .doc(postId)
             .set(postInfo);
-
-        mySnackBar(context, "Posted");
-        Navigator.of(context).pop();
+        if (context.mounted) {
+          mySnackBar(context, "Posted");
+          Navigator.of(context).pop();
+        }
       }
 
       setState(() {
@@ -100,7 +103,9 @@ class _AddPostPageState extends State<AddPostPage> {
       setState(() {
         isPosting = false;
       });
-      mySnackBar(context, e.toString());
+      if (context.mounted) {
+        mySnackBar(context, e.toString());
+      }
     }
 
     return res;
@@ -115,7 +120,7 @@ class _AddPostPageState extends State<AddPostPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("CREATE POST"),
+        title: const Text("CREATE POST"),
         actions: [
           IconButton(
             onPressed: () async {
@@ -130,7 +135,7 @@ class _AddPostPageState extends State<AddPostPage> {
                 }
               }
             },
-            icon: Icon(Icons.ios_share),
+            icon: const Icon(Icons.ios_share),
             tooltip: "Post",
           ),
         ],
@@ -143,7 +148,7 @@ class _AddPostPageState extends State<AddPostPage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
+          const Text(
             "Select the type of post you want to create",
             style: TextStyle(
               color: primaryDark,
@@ -152,7 +157,7 @@ class _AddPostPageState extends State<AddPostPage> {
             ),
             textAlign: TextAlign.center,
           ),
-          Text(
+          const Text(
             "Just select the product you want the post",
             style: TextStyle(
               color: primaryDark,
@@ -161,7 +166,7 @@ class _AddPostPageState extends State<AddPostPage> {
             ),
             textAlign: TextAlign.center,
           ),
-          Text(
+          const Text(
             "Then the product details will automatically be added",
             style: TextStyle(
               color: primaryDark,
@@ -170,7 +175,7 @@ class _AddPostPageState extends State<AddPostPage> {
             ),
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           MyButton(
             text: selectedProduct.length < 2
                 ? "TEXT POST"
@@ -181,14 +186,14 @@ class _AddPostPageState extends State<AddPostPage> {
               selectedProductProvider.changePostType(true);
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: ((context) => SelectProductForPostPage()),
+                  builder: ((context) => const SelectProductForPostPage()),
                 ),
               );
             },
             isLoading: false,
             horizontalPadding: 20,
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           MyButton(
             text: selectedProduct.length < 2
                 ? "IMAGE POST"
@@ -199,7 +204,7 @@ class _AddPostPageState extends State<AddPostPage> {
               selectedProductProvider.changePostType(false);
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: ((context) => SelectProductForPostPage()),
+                  builder: ((context) => const SelectProductForPostPage()),
                 ),
               );
             },

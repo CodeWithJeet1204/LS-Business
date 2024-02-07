@@ -56,7 +56,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
               const SizedBox(height: 20),
               isOTPVerifying
                   ? Container(
-                      margin: EdgeInsets.symmetric(
+                      margin: const EdgeInsets.symmetric(
                         horizontal: 20,
                         vertical: 0,
                       ),
@@ -67,7 +67,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                         borderRadius: BorderRadius.circular(10),
                         color: buttonColor,
                       ),
-                      child: Center(
+                      child: const Center(
                         child: CircularProgressIndicator(),
                       ),
                     )

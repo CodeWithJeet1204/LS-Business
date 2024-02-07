@@ -52,6 +52,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: no_leading_underscores_for_local_identifiers
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final String uid = _auth.currentUser!.uid;
     final signInMethodProvider = Provider.of<SignInMethodProvider>(context);
@@ -184,8 +185,12 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                                           .toString(),
                                                   "Image": userPhotoUrl,
                                                 })
-                                              : mySnackBar(context,
-                                                  "Some error occured");
+                                              : context.mounted
+                                                  ? {
+                                                      mySnackBar(context,
+                                                          "Some error occured")
+                                                    }
+                                                  : null;
                                   setState(() {
                                     isNext = false;
                                   });

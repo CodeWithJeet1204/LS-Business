@@ -35,7 +35,7 @@ class _PostPageState extends State<PostPage> {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(
+            icon: const Icon(
               Icons.delete_forever,
               color: Colors.red,
             ),
@@ -48,14 +48,14 @@ class _PostPageState extends State<PostPage> {
 
           return SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+              padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
               child: SizedBox(
                 width: width,
                 child: StreamBuilder(
                   stream: postStream,
                   builder: ((context, snapshot) {
                     if (snapshot.hasError) {
-                      return Center(
+                      return const Center(
                         child: Text("Something went wrong"),
                       );
                     }
@@ -123,7 +123,7 @@ class _PostPageState extends State<PostPage> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    SizedBox(),
+                                    const SizedBox(),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
                                         vertical: 12,
@@ -141,7 +141,7 @@ class _PostPageState extends State<PostPage> {
                                                 _currentIndex == index ? 12 : 8,
                                             height:
                                                 _currentIndex == index ? 12 : 8,
-                                            margin: EdgeInsets.all(4),
+                                            margin: const EdgeInsets.all(4),
                                             decoration: BoxDecoration(
                                               shape: BoxShape.circle,
                                               color: _currentIndex == index
@@ -179,10 +179,10 @@ class _PostPageState extends State<PostPage> {
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 8),
                             child: Text(
-                              price == "" ? 'N/A (price)' : 'Rs. ${price}',
+                              price == "" ? 'N/A (price)' : 'Rs. $price',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: primaryDark,
                                 fontSize: 22,
                                 fontWeight: FontWeight.w500,
@@ -228,7 +228,8 @@ class _PostPageState extends State<PostPage> {
                                   onPressed: () {
                                     // TODO Directly navigate to post's comments
                                   },
-                                  icon: Icon(Icons.navigate_next_outlined),
+                                  icon:
+                                      const Icon(Icons.navigate_next_outlined),
                                   tooltip: "See Comments",
                                 ),
                               ),
@@ -238,7 +239,7 @@ class _PostPageState extends State<PostPage> {
                       );
                     }
 
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }),

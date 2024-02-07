@@ -70,7 +70,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
     });
   }
 
-  void addProduct(AddProductProvider Provider) async {
+  void addProduct(AddProductProvider provider) async {
     if (productKey.currentState!.validate()) {
       if (_image.isEmpty) {
         return mySnackBar(context, "Select atleast 1 image");
@@ -96,10 +96,12 @@ class _AddProductPage1State extends State<AddProductPage1> {
 
         for (QueryDocumentSnapshot doc in previousProducts.docs) {
           if (doc['productName'] == nameController.text.toString()) {
-            mySnackBar(
-              context,
-              "Product with same name already exists",
-            );
+            if (context.mounted) {
+              mySnackBar(
+                context,
+                "Product with same name already exists",
+              );
+            }
             productDoesntExists = false;
           }
         }
@@ -129,7 +131,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
           }
 
           final String productId = const Uuid().v4();
-          Provider.add(
+          provider.add(
             {
               'productName': nameController.text,
               'productPrice': priceController.text,
@@ -194,8 +196,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
         .orderBy('categoryName')
         .where('categoryName',
             isGreaterThanOrEqualTo: searchController.text.toString())
-        .where('categoryName',
-            isLessThan: searchController.text.toString() + '\uf8ff')
+        .where('categoryName', isLessThan: '${searchController.text}\uf8ff')
         .orderBy('datetime', descending: true)
         .snapshots();
 
@@ -514,7 +515,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
+                                      const Text(
                                         "Available",
                                         style: TextStyle(
                                           color: primaryDark,
@@ -530,14 +531,13 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                           setState(() {
                                             isAvailable = value!;
                                           });
-                                          print(isAvailable);
                                         },
                                       ),
                                     ],
                                   ),
                                 ),
                               ),
-                              Divider(),
+                              const Divider(),
                               SizedBox(
                                 width: width,
                                 child: Padding(
@@ -549,7 +549,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
+                                      const Text(
                                         "Out Of Stock",
                                         style: TextStyle(
                                           color: primaryDark,
@@ -565,7 +565,6 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                           setState(() {
                                             isAvailable = !value!;
                                           });
-                                          print(isAvailable);
                                         },
                                       ),
                                     ],
@@ -578,11 +577,11 @@ class _AddProductPage1State extends State<AddProductPage1> {
 
                         SizedBox(height: height * 0.00625),
 
-                        Divider(),
+                        const Divider(),
 
                         SizedBox(height: height * 0.00625),
 
-                        Text(
+                        const Text(
                           "Select Category",
                           style: TextStyle(
                             color: primaryDark,
@@ -600,7 +599,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                 child: TextField(
                                   controller: searchController,
                                   autocorrect: false,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     labelText: "Case - Sensitive",
                                     hintText: "Search ...",
                                     border: OutlineInputBorder(),
@@ -637,7 +636,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                 stream: categoryStream,
                                 builder: (context, snapshot) {
                                   if (snapshot.hasError) {
-                                    return Center(
+                                    return const Center(
                                       child: Text('Something went wrong'),
                                     );
                                   }
@@ -647,7 +646,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                         ? GridView.builder(
                                             shrinkWrap: true,
                                             gridDelegate:
-                                                SliverGridDelegateWithFixedCrossAxisCount(
+                                                const SliverGridDelegateWithFixedCrossAxisCount(
                                               crossAxisCount: 2,
                                               childAspectRatio: 0.8,
                                             ),
@@ -659,10 +658,8 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                               final categoryData =
                                                   categorySnap.data();
 
-                                              return snapshot
-                                                          .data!.docs.length ==
-                                                      0
-                                                  ? Center(
+                                              return snapshot.data!.docs.isEmpty
+                                                  ? const Center(
                                                       child: Text(
                                                           'No Categories Created'),
                                                     )
@@ -787,14 +784,14 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                                                       height:
                                                                           40,
                                                                       decoration:
-                                                                          BoxDecoration(
+                                                                          const BoxDecoration(
                                                                         color:
                                                                             primaryDark,
                                                                         shape: BoxShape
                                                                             .circle,
                                                                       ),
                                                                       child:
-                                                                          Icon(
+                                                                          const Icon(
                                                                         Icons
                                                                             .check,
                                                                         size:
@@ -901,13 +898,14 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                                                 width: 40,
                                                                 height: 40,
                                                                 decoration:
-                                                                    BoxDecoration(
+                                                                    const BoxDecoration(
                                                                   color:
                                                                       primaryDark,
                                                                   shape: BoxShape
                                                                       .circle,
                                                                 ),
-                                                                child: Icon(
+                                                                child:
+                                                                    const Icon(
                                                                   Icons.check,
                                                                   size: 32,
                                                                   color: Colors
@@ -923,7 +921,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                             }),
                                           );
                                   }
-                                  return Center(
+                                  return const Center(
                                     child: CircularProgressIndicator(),
                                   );
                                 }),

@@ -19,10 +19,10 @@ class _DiscountPageState extends State<DiscountPage> {
     return Scaffold(
       backgroundColor: primary,
       appBar: AppBar(
-        title: Text("DISCOUNTS"),
+        title: const Text("DISCOUNTS"),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 8),
+        padding: const EdgeInsets.symmetric(vertical: 8),
         child: LayoutBuilder(
           builder: ((context, constraints) {
             double width = constraints.maxWidth;

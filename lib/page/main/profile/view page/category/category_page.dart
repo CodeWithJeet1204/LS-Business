@@ -54,7 +54,9 @@ class _CategoryPageState extends State<CategoryPage> {
         setState(() {
           isImageChanging = false;
         });
-        mySnackBar(context, e.toString());
+        if (context.mounted) {
+          mySnackBar(context, e.toString());
+        }
       }
     } else {
       if (context.mounted) {
@@ -80,9 +82,13 @@ class _CategoryPageState extends State<CategoryPage> {
         setState(() {
           isChangingName = false;
         });
-        Navigator.of(context).pop();
+        if (context.mounted) {
+          Navigator.of(context).pop();
+        }
       } catch (e) {
-        mySnackBar(context, e.toString());
+        if (context.mounted) {
+          mySnackBar(context, e.toString());
+        }
       }
     }
   }
@@ -109,7 +115,7 @@ class _CategoryPageState extends State<CategoryPage> {
               stream: propertyStream,
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
-                  return Center(
+                  return const Center(
                     child: Text('Something went wrong'),
                   );
                 }
@@ -127,7 +133,7 @@ class _CategoryPageState extends State<CategoryPage> {
                         children: [
                           TextFormField(
                             initialValue: categoryName,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               hintText: "Category Name",
                               border: OutlineInputBorder(),
                             ),
@@ -156,7 +162,7 @@ class _CategoryPageState extends State<CategoryPage> {
                   );
                 }
 
-                return Center(
+                return const Center(
                   child: CircularProgressIndicator(),
                 );
               },
@@ -178,9 +184,9 @@ class _CategoryPageState extends State<CategoryPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Remove ${productName}"),
+          title: Text("Remove $productName"),
           content: Text(
-              'Are you sure you want to remove ${productName} from ${categoryName}'),
+              'Are you sure you want to remove $productName from $categoryName'),
           actions: [
             MyTextButton(
               onPressed: () {
@@ -201,9 +207,13 @@ class _CategoryPageState extends State<CategoryPage> {
                     'categoryId': '0',
                     'categoryName': 'No Category Selected',
                   });
-                  Navigator.of(context).pop();
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                  }
                 } catch (e) {
-                  mySnackBar(context, e.toString());
+                  if (context.mounted) {
+                    mySnackBar(context, e.toString());
+                  }
                 }
               },
               text: "YES",
@@ -232,8 +242,7 @@ class _CategoryPageState extends State<CategoryPage> {
         .orderBy('productName')
         .where('productName',
             isGreaterThanOrEqualTo: searchController.text.toString())
-        .where('productName',
-            isLessThan: searchController.text.toString() + '\uf8ff')
+        .where('productName', isLessThan: '${searchController.text}\uf8ff')
         .orderBy('datetime', descending: true)
         .snapshots();
 
@@ -247,7 +256,7 @@ class _CategoryPageState extends State<CategoryPage> {
             stream: categoryStream,
             builder: ((context, snapshot) {
               if (snapshot.hasError) {
-                return Center(
+                return const Center(
                   child: Text('Something went wrong'),
                 );
               }
@@ -256,7 +265,8 @@ class _CategoryPageState extends State<CategoryPage> {
                 final categoryData = snapshot.data!;
 
                 return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -275,7 +285,7 @@ class _CategoryPageState extends State<CategoryPage> {
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: isImageChanging
-                                ? CircularProgressIndicator()
+                                ? const CircularProgressIndicator()
                                 : GestureDetector(
                                     onTap: changeFit,
                                     child: Image.network(
@@ -297,7 +307,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                         categoryData['imageUrl'],
                                       );
                                     },
-                                    icon: Icon(
+                                    icon: const Icon(
                                       Icons.camera_alt_outlined,
                                       size: 36,
                                     ),
@@ -306,10 +316,10 @@ class _CategoryPageState extends State<CategoryPage> {
                                 ),
                         ],
                       ),
-                      SizedBox(height: 40),
+                      const SizedBox(height: 40),
                       Container(
                         width: width,
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           vertical: 8,
                           horizontal: 8,
                         ),
@@ -325,7 +335,7 @@ class _CategoryPageState extends State<CategoryPage> {
                               categoryData['categoryName'],
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: primaryDark,
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
@@ -335,7 +345,7 @@ class _CategoryPageState extends State<CategoryPage> {
                               onPressed: () {
                                 changeName();
                               },
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.edit,
                                 size: 24,
                                 color: primaryDark,
@@ -345,7 +355,7 @@ class _CategoryPageState extends State<CategoryPage> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 28),
+                      const SizedBox(height: 28),
                       MyButton(
                         onTap: () {
                           Navigator.of(context).push(
@@ -362,10 +372,10 @@ class _CategoryPageState extends State<CategoryPage> {
                         isLoading: false,
                         horizontalPadding: 0,
                       ),
-                      SizedBox(height: 28),
+                      const SizedBox(height: 28),
                       ExpansionTile(
                         initiallyExpanded: true,
-                        tilePadding: EdgeInsets.symmetric(horizontal: 8),
+                        tilePadding: const EdgeInsets.symmetric(horizontal: 8),
                         backgroundColor: primary2.withOpacity(0.25),
                         collapsedBackgroundColor: primary2.withOpacity(0.33),
                         textColor: primaryDark.withOpacity(0.9),
@@ -384,7 +394,7 @@ class _CategoryPageState extends State<CategoryPage> {
                             color: primaryDark.withOpacity(0.33),
                           ),
                         ),
-                        title: Text(
+                        title: const Text(
                           'Products',
                           style: TextStyle(
                             fontSize: 20,
@@ -407,7 +417,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                       child: TextField(
                                         controller: searchController,
                                         autocorrect: false,
-                                        decoration: InputDecoration(
+                                        decoration: const InputDecoration(
                                           labelText: "Case - Sensitive",
                                           hintText: "Search ...",
                                           border: OutlineInputBorder(),
@@ -449,7 +459,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                             ? GridView.builder(
                                                 shrinkWrap: true,
                                                 gridDelegate:
-                                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                                    const SliverGridDelegateWithFixedCrossAxisCount(
                                                   crossAxisCount: 2,
                                                   crossAxisSpacing: 0,
                                                   mainAxisSpacing: 0,
@@ -460,10 +470,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                                 itemBuilder: (context, index) {
                                                   final productData = snapshot
                                                       .data!.docs[index];
-                                                  return snapshot.data!.docs
-                                                              .length ==
-                                                          0
-                                                      ? Center(
+                                                  return snapshot
+                                                          .data!.docs.isEmpty
+                                                      ? const Center(
                                                           child: Text(
                                                               'No Products Added'),
                                                         )
@@ -586,7 +595,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                             );
                                                                           },
                                                                           icon:
-                                                                              Icon(
+                                                                              const Icon(
                                                                             Icons.delete_forever,
                                                                             color:
                                                                                 Color.fromARGB(
@@ -704,7 +713,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                     .categoryName,
                                                               );
                                                             },
-                                                            icon: Icon(
+                                                            icon: const Icon(
                                                               Icons
                                                                   .delete_forever,
                                                               color: Color
@@ -745,7 +754,7 @@ class _CategoryPageState extends State<CategoryPage> {
                 );
               }
 
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }),

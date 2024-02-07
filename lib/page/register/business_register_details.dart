@@ -93,7 +93,7 @@ class _BusinessRegisterDetailsPageState
             Navigator.of(context).pop();
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: ((context) => SelectMembershipPage()),
+                builder: ((context) => const SelectMembershipPage()),
               ),
             );
           }

@@ -29,8 +29,6 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
           .where('categoryId', isEqualTo: categoryId)
           .get();
 
-      print("DONE 1");
-
       for (final doc in postSnap.docs) {
         await doc.reference.update(
           {
@@ -40,11 +38,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
         );
       }
 
-      print("DONE 2");
-
       await storage.refFromURL(imageUrl).delete();
-
-      print("DONE 3");
 
       await store
           .collection('Business')
@@ -52,12 +46,13 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
           .collection('Category')
           .doc(categoryId)
           .delete();
-
-      Navigator.of(context).pop();
-
-      print("DONE 4");
+      if (context.mounted) {
+        Navigator.of(context).pop();
+      }
     } catch (e) {
-      mySnackBar(context, e.toString());
+      if (context.mounted) {
+        mySnackBar(context, e.toString());
+      }
     }
   }
 
@@ -67,8 +62,8 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
       context: context,
       builder: ((context) {
         return AlertDialog(
-          title: Text("Confirm DELETE"),
-          content: Text(
+          title: const Text("Confirm DELETE"),
+          content: const Text(
             "Are you sure you want to delete this Category\nProducts will not be deleted",
           ),
           actions: [
@@ -76,7 +71,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text(
+              child: const Text(
                 'NO',
                 style: TextStyle(
                   color: Colors.green,
@@ -88,7 +83,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
               onPressed: () async {
                 delete(categoryId, imageUrl);
               },
-              child: Text(
+              child: const Text(
                 'YES',
                 style: TextStyle(
                   color: Colors.red,
@@ -112,14 +107,13 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
         .orderBy('categoryName')
         .where('categoryName',
             isGreaterThanOrEqualTo: searchController.text.toString())
-        .where('categoryName',
-            isLessThan: searchController.text.toString() + '\uf8ff')
+        .where('categoryName', isLessThan: '${searchController.text}\uf8ff')
         .orderBy('datetime', descending: true)
         .snapshots();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("ALL CATEGORIES"),
+        title: const Text("ALL CATEGORIES"),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -142,7 +136,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                           child: TextField(
                             controller: searchController,
                             autocorrect: false,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               labelText: "Case - Sensitive",
                               hintText: "Search ...",
                               border: OutlineInputBorder(),
@@ -171,7 +165,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                     builder: (BuildContext context,
                         AsyncSnapshot<dynamic> snapshot) {
                       if (snapshot.hasError) {
-                        return Center(
+                        return const Center(
                           child: Text('Something went wrong'),
                         );
                       }
@@ -276,7 +270,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                                                             'imageUrl'],
                                                       );
                                                     },
-                                                    icon: Icon(
+                                                    icon: const Icon(
                                                       Icons.delete_forever,
                                                       color: Colors.red,
                                                       size: 32,
@@ -357,7 +351,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                               );
                       }
 
-                      return Center(
+                      return const Center(
                         child: CircularProgressIndicator(),
                       );
                     },

@@ -36,8 +36,7 @@ class _ChangeCategoryState extends State<ChangeCategory> {
         .orderBy('categoryName')
         .where('categoryName',
             isGreaterThanOrEqualTo: searchController.text.toString())
-        .where('categoryName',
-            isLessThan: searchController.text.toString() + '\uf8ff')
+        .where('categoryName', isLessThan: '${searchController.text}\uf8ff')
         .orderBy('datetime', descending: true)
         .snapshots();
 
@@ -86,17 +85,18 @@ class _ChangeCategoryState extends State<ChangeCategory> {
               setState(() {
                 isAdding = true;
               });
-
-              Navigator.of(context).pop();
+              if (context.mounted) {
+                Navigator.of(context).pop();
+              }
             },
-            icon: Icon(Icons.navigate_next),
+            icon: const Icon(Icons.navigate_next),
             tooltip: "Continue",
           ),
         ],
         bottom: PreferredSize(
           preferredSize:
               Size(isAdding ? double.infinity : 0, isAdding ? 10 : 0),
-          child: isAdding ? LinearProgressIndicator() : Container(),
+          child: isAdding ? const LinearProgressIndicator() : Container(),
         ),
       ),
       body: LayoutBuilder(
@@ -127,7 +127,7 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                               child: TextField(
                                 controller: searchController,
                                 autocorrect: false,
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   labelText: "Case - Sensitive",
                                   hintText: "Search ...",
                                   border: OutlineInputBorder(),
@@ -176,8 +176,6 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                                           categoryData['categoryId'],
                                           categoryData['categoryName'],
                                         );
-                                        print(changeCategoryProvider
-                                            .selectedCategory);
                                       },
                                       child: Stack(
                                         alignment: Alignment.topRight,
@@ -235,12 +233,14 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                                                   .contains(categoryData[
                                                       'categoryId'])
                                               ? Container(
-                                                  padding: EdgeInsets.all(2),
-                                                  decoration: BoxDecoration(
+                                                  padding:
+                                                      const EdgeInsets.all(2),
+                                                  decoration:
+                                                      const BoxDecoration(
                                                     shape: BoxShape.circle,
                                                     color: primaryDark2,
                                                   ),
-                                                  child: Icon(
+                                                  child: const Icon(
                                                     Icons.check,
                                                     color: Colors.white,
                                                     size: 32,

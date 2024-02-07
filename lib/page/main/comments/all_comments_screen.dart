@@ -9,9 +9,9 @@ class AllCommentPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: primary,
       appBar: AppBar(
-        title: Text('COMMENTS'),
+        title: const Text('COMMENTS'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('All Comments'),
       ),
     );

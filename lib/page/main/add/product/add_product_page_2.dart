@@ -89,7 +89,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
     });
   }
 
-  void addProduct(AddProductProvider Provider) async {
+  void addProduct(AddProductProvider provider) async {
     if (productKey.currentState!.validate()) {
       if (property0.isEmpty && getCompulsory(0)) {
         if (getNoOfAnswers(0) == 1) {
@@ -223,7 +223,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
             .doc('Data')
             .collection('Products')
             .doc(widget.productId)
-            .set(Provider.productInfo);
+            .set(provider.productInfo);
 
         await store
             .collection('Business')
@@ -348,7 +348,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
         ),
       ),
       body: shopTypes == ''
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(
                 color: primaryDark,
               ),
@@ -364,7 +364,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                       key: productKey,
                       child: Column(
                         children: [
-                          Text(
+                          const Text(
                             "Properties marked with '*' are compulsory to fill",
                             textAlign: TextAlign.center,
                             maxLines: 1,
@@ -375,7 +375,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          SizedBox(height: 4),
+                          const SizedBox(height: 4),
 
                           // TAGS
                           PropertyBox(

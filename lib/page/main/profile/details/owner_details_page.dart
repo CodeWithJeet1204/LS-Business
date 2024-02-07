@@ -192,7 +192,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
             stream: imageStream,
             builder: (context, snapshot) {
               if (snapshot.hasError) {
-                return Center(
+                return const Center(
                   child: Text('Something went wrong'),
                 );
               }
@@ -208,7 +208,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                   ),
                 );
               }
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(
                   color: primaryDark,
                 ),
@@ -246,7 +246,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                   stream: userStream,
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
-                      return Center(
+                      return const Center(
                         child: Text("Something went wrong"),
                       );
                     }
@@ -266,7 +266,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                     color: primary,
                                     borderRadius: BorderRadius.circular(100),
                                   ),
-                                  child: Center(
+                                  child: const Center(
                                     child: CircularProgressIndicator(
                                       color: primaryDark,
                                     ),
@@ -414,7 +414,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                   children: [
                                     isSaving
                                         ? Container(
-                                            margin: EdgeInsets.symmetric(
+                                            margin: const EdgeInsets.symmetric(
                                               horizontal: 0,
                                             ),
                                             padding: const EdgeInsets.symmetric(
@@ -457,7 +457,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                       );
                     }
 
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }),

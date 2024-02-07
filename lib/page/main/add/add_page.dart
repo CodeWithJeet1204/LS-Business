@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:find_easy/page/main/add/post/add_post_page.dart';
 import 'package:find_easy/page/main/add/product/add_product_page_1.dart';
 import 'package:find_easy/utils/colors.dart';
@@ -70,67 +71,21 @@ class _AddPageState extends State<AddPage> {
                               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 SizedBox(width: width * 0.1),
-                                const Text(
-                                  "POST",
-                                  style: TextStyle(
-                                    color: primaryDark,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 28,
+                                SizedBox(
+                                  width: width * 0.5,
+                                  child: const AutoSizeText(
+                                    "POST",
+                                    style: TextStyle(
+                                      color: primaryDark,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 28,
+                                    ),
                                   ),
                                 ),
                                 Expanded(child: Container()),
-                                const Icon(
+                                Icon(
                                   Icons.arrow_circle_up_outlined,
-                                  size: 60,
-                                  color: primaryDark2,
-                                ),
-                                SizedBox(width: width * 0.075),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedOverflowBox(
-                      size: Size(width, height * 0.275),
-                      child: GestureDetector(
-                        onTapDown: (details) {
-                          setState(() {
-                            isPressed2 = true;
-                          });
-                        },
-                        onTapUp: (details) {
-                          setState(() {
-                            isPressed2 = false;
-                          });
-                          Navigator.of(context).pushNamed('/addCategory');
-                        },
-                        child: AnimatedSize(
-                          duration: const Duration(milliseconds: 100),
-                          reverseDuration: const Duration(milliseconds: 100),
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 12),
-                            width: isPressed2 ? width * 0.9 : width,
-                            height: isPressed2 ? height * 0.19 : height * 0.2,
-                            decoration: BoxDecoration(
-                              color: primary2.withOpacity(0.67),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Row(
-                              children: [
-                                SizedBox(width: width * 0.1),
-                                const Text(
-                                  "CATEGORY",
-                                  style: TextStyle(
-                                    color: primaryDark,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 28,
-                                  ),
-                                ),
-                                Expanded(child: Container()),
-                                const Icon(
-                                  Icons.apps_outlined,
-                                  size: 60,
+                                  size: width * 0.2,
                                   color: primaryDark2,
                                 ),
                                 SizedBox(width: width * 0.075),
@@ -173,18 +128,73 @@ class _AddPageState extends State<AddPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 SizedBox(width: width * 0.1),
-                                const Text(
-                                  "PRODUCTS",
-                                  style: TextStyle(
-                                    color: primaryDark,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 28,
+                                SizedBox(
+                                  width: width * 0.5,
+                                  child: const AutoSizeText(
+                                    "PRODUCTS",
+                                    style: TextStyle(
+                                      color: primaryDark,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 28,
+                                    ),
                                   ),
                                 ),
                                 Expanded(child: Container()),
-                                const Icon(
+                                Icon(
                                   Icons.shopping_bag_outlined,
-                                  size: 60,
+                                  size: width * 0.2,
+                                  color: primaryDark2,
+                                ),
+                                SizedBox(width: width * 0.075),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedOverflowBox(
+                      size: Size(width, height * 0.275),
+                      child: GestureDetector(
+                        onTapDown: (details) {
+                          setState(() {
+                            isPressed2 = true;
+                          });
+                        },
+                        onTapUp: (details) {
+                          setState(() {
+                            isPressed2 = false;
+                          });
+                          Navigator.of(context).pushNamed('/addCategory');
+                        },
+                        child: AnimatedSize(
+                          duration: const Duration(milliseconds: 100),
+                          reverseDuration: const Duration(milliseconds: 100),
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 12),
+                            width: isPressed2 ? width * 0.9 : width,
+                            height: isPressed2 ? height * 0.19 : height * 0.2,
+                            decoration: BoxDecoration(
+                              color: primary2.withOpacity(0.67),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              children: [
+                                SizedBox(width: width * 0.1),
+                                SizedBox(
+                                  width: width * 0.5,
+                                  child: const AutoSizeText(
+                                    "CATEGORY",
+                                    style: TextStyle(
+                                      color: primaryDark,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 28,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(child: Container()),
+                                Icon(
+                                  Icons.apps_outlined,
+                                  size: width * 0.2,
                                   color: primaryDark2,
                                 ),
                                 SizedBox(width: width * 0.075),

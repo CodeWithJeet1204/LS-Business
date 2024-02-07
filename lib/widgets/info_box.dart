@@ -16,7 +16,7 @@ class InfoBox extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 6),
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
         decoration: BoxDecoration(
           color: primary.withOpacity(0.3),
           borderRadius: BorderRadius.circular(8),
@@ -29,7 +29,7 @@ class InfoBox extends StatelessWidget {
               children: [
                 Text(
                   text,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: primaryDark2,
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
@@ -38,7 +38,7 @@ class InfoBox extends StatelessWidget {
                 ),
                 Text(
                   value,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: primaryDark,
                     fontSize: 20,
                     fontWeight: FontWeight.w600,

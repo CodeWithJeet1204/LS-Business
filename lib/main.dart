@@ -67,10 +67,7 @@ void main() async {
     ),
   );
   if (FirebaseAuth.instance.currentUser == null) {
-    print("Not signed in");
-  } else {
-    print(FirebaseAuth.instance.currentUser!.email);
-  }
+  } else {}
 }
 
 class MyApp extends StatelessWidget {
@@ -148,7 +145,7 @@ class MyApp extends StatelessWidget {
                   } else if (snapshot.hasData &&
                       FirebaseAuth.instance.currentUser!.email != null &&
                       !FirebaseAuth.instance.currentUser!.emailVerified) {
-                    return EmailVerifyPage();
+                    return const EmailVerifyPage();
                   } else if (snapshot.hasError) {
                     return const Center(
                       child: Text(

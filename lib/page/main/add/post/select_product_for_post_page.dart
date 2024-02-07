@@ -64,7 +64,7 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                     Expanded(
                       child: TextField(
                         autocorrect: false,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: "Search ...",
                           border: OutlineInputBorder(),
                         ),
@@ -201,12 +201,13 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                                           productDataMap['productId'],
                                         )
                                             ? Container(
-                                                padding: EdgeInsets.all(2),
-                                                decoration: BoxDecoration(
+                                                padding:
+                                                    const EdgeInsets.all(2),
+                                                decoration: const BoxDecoration(
                                                   shape: BoxShape.circle,
                                                   color: primaryDark2,
                                                 ),
-                                                child: Icon(
+                                                child: const Icon(
                                                   Icons.check,
                                                   color: Colors.white,
                                                   size: 32,
@@ -244,7 +245,6 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                                           ),
                                           child: ListTile(
                                             onTap: () {
-                                              print("LALLALA");
                                               selectedProductProvider
                                                   .changeSelectedProduct(
                                                 productDataMap['productId'],
@@ -295,12 +295,14 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                                                 padding: const EdgeInsets.only(
                                                     right: 8),
                                                 child: Container(
-                                                  padding: EdgeInsets.all(2),
-                                                  decoration: BoxDecoration(
+                                                  padding:
+                                                      const EdgeInsets.all(2),
+                                                  decoration:
+                                                      const BoxDecoration(
                                                     shape: BoxShape.circle,
                                                     color: primaryDark2,
                                                   ),
-                                                  child: Icon(
+                                                  child: const Icon(
                                                     Icons.check,
                                                     color: Colors.white,
                                                     size: 32,

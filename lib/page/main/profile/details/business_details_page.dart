@@ -85,7 +85,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
           isSaving = false;
           isChanging = false;
         });
-        return mySnackBar(context, "Enter ${propertyName}");
+        return mySnackBar(context, "Enter $propertyName");
       } else {
         await FirebaseFirestore.instance
             .collection('Business')
@@ -100,14 +100,18 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
           isSaving = false;
           isChanging = false;
         });
-        Navigator.of(context).popAndPushNamed('/businessDetails');
+        if (context.mounted) {
+          Navigator.of(context).popAndPushNamed('/businessDetails');
+        }
       }
     } catch (e) {
       setState(() {
         isSaving = false;
         isChanging = false;
       });
-      mySnackBar(context, e.toString());
+      if (context.mounted) {
+        mySnackBar(context, e.toString());
+      }
     }
   }
 
@@ -127,7 +131,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
             stream: imageStream,
             builder: (context, snapshot) {
               if (snapshot.hasError) {
-                return Center(
+                return const Center(
                   child: Text('Something went wrong'),
                 );
               }
@@ -143,7 +147,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                   ),
                 );
               }
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(
                   color: primaryDark,
                 ),
@@ -178,7 +182,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                 stream: shopStream,
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
-                    return Center(
+                    return const Center(
                       child: Text('Something Went Wrong'),
                     );
                   }
@@ -190,7 +194,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SizedBox(height: 40),
+                          const SizedBox(height: 40),
                           isChangingImage
                               ? Container(
                                   width: width * 0.3,
@@ -199,7 +203,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                     color: primary,
                                     borderRadius: BorderRadius.circular(100),
                                   ),
-                                  child: Center(
+                                  child: const Center(
                                     child: CircularProgressIndicator(
                                       color: primaryDark,
                                     ),
@@ -458,7 +462,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                 FittedBox(
                                   child: Text(
                                     shopData['GSTNumber'],
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 18,
                                     ),
                                   ),
@@ -505,7 +509,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                   children: [
                                     isSaving
                                         ? Container(
-                                            margin: EdgeInsets.symmetric(
+                                            margin: const EdgeInsets.symmetric(
                                               horizontal: 0,
                                             ),
                                             padding: const EdgeInsets.symmetric(
@@ -571,13 +575,13 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                   ],
                                 )
                               : Container(),
-                          SizedBox(height: 40),
+                          const SizedBox(height: 40),
                         ],
                       ),
                     );
                   }
 
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(
                       color: primaryDark,
                     ),

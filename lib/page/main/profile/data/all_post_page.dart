@@ -30,9 +30,13 @@ class _AllPostsPageState extends State<AllPostsPage> {
           .collection('Posts')
           .doc(postId)
           .delete();
-      mySnackBar(context, "Post Deleted");
+      if (context.mounted) {
+        mySnackBar(context, "Post Deleted");
+      }
     } catch (e) {
-      mySnackBar(context, e.toString());
+      if (context.mounted) {
+        mySnackBar(context, e.toString());
+      }
     }
   }
 
@@ -46,14 +50,13 @@ class _AllPostsPageState extends State<AllPostsPage> {
         .orderBy('postName')
         .where('postName',
             isGreaterThanOrEqualTo: searchController.text.toString())
-        .where('postName',
-            isLessThan: searchController.text.toString() + '\uf8ff')
+        .where('postName', isLessThan: '${searchController.text}\uf8ff')
         .orderBy('postDateTime', descending: true)
         .snapshots();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('ALL POSTS'),
+        title: const Text('ALL POSTS'),
       ),
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
@@ -75,7 +78,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
                         child: TextField(
                           controller: searchController,
                           autocorrect: false,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: "Case - Sensitive",
                             hintText: "Search ...",
                             border: OutlineInputBorder(),
@@ -103,19 +106,17 @@ class _AllPostsPageState extends State<AllPostsPage> {
                     stream: postStream,
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
-                        print(snapshot.error);
-                        return Center(
+                        return const Center(
                           child: Text('Something went wrong'),
                         );
                       }
 
                       if (snapshot.hasData) {
-                        print("YES");
                         return isGridView
                             ? GridView.builder(
                                 shrinkWrap: true,
                                 gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
                                   childAspectRatio: 3 / 4,
                                 ),
@@ -124,7 +125,6 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                   final postSnap = snapshot.data!.docs[index];
                                   final Map<String, dynamic> postData =
                                       postSnap.data();
-                                  print(postData);
 
                                   return Padding(
                                     padding: const EdgeInsets.all(8),
@@ -242,7 +242,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                         postData['postId'],
                                                       );
                                                     },
-                                                    icon: Icon(
+                                                    icon: const Icon(
                                                       Icons.delete_forever,
                                                       color: Colors.red,
                                                       size: 32,
@@ -331,7 +331,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
                               );
                       }
 
-                      return Center(
+                      return const Center(
                         child: CircularProgressIndicator(),
                       );
                     }),

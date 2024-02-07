@@ -45,8 +45,7 @@ class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
         .orderBy('productName')
         .where('productName',
             isGreaterThanOrEqualTo: searchController.text.toString())
-        .where('productName',
-            isLessThan: searchController.text.toString() + '\uf8ff')
+        .where('productName', isLessThan: '${searchController.text}\uf8ff')
         .orderBy('datetime', descending: true)
         .snapshots();
 
@@ -68,7 +67,9 @@ class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
           isAdding = false;
         });
       }
-      Navigator.of(context).pop();
+      if (context.mounted) {
+        Navigator.of(context).pop();
+      }
     }
 
     return Scaffold(
@@ -93,7 +94,7 @@ class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
         bottom: PreferredSize(
           preferredSize:
               Size(isAdding ? double.infinity : 0, isAdding ? 10 : 0),
-          child: isAdding ? LinearProgressIndicator() : Container(),
+          child: isAdding ? const LinearProgressIndicator() : Container(),
         ),
       ),
       body: LayoutBuilder(
@@ -124,7 +125,7 @@ class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
                               child: TextField(
                                 controller: searchController,
                                 autocorrect: false,
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   labelText: "Case - Sensitive",
                                   hintText: "Search ...",
                                   border: OutlineInputBorder(),
@@ -236,12 +237,14 @@ class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
                                                     top: 4,
                                                   ),
                                                   child: Container(
-                                                    padding: EdgeInsets.all(2),
-                                                    decoration: BoxDecoration(
+                                                    padding:
+                                                        const EdgeInsets.all(2),
+                                                    decoration:
+                                                        const BoxDecoration(
                                                       shape: BoxShape.circle,
                                                       color: primaryDark2,
                                                     ),
-                                                    child: Icon(
+                                                    child: const Icon(
                                                       Icons.check,
                                                       color: Colors.white,
                                                       size: 32,
@@ -311,12 +314,14 @@ class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
                                                   top: 4,
                                                 ),
                                                 child: Container(
-                                                  padding: EdgeInsets.all(2),
-                                                  decoration: BoxDecoration(
+                                                  padding:
+                                                      const EdgeInsets.all(2),
+                                                  decoration:
+                                                      const BoxDecoration(
                                                     shape: BoxShape.circle,
                                                     color: primaryDark2,
                                                   ),
-                                                  child: Icon(
+                                                  child: const Icon(
                                                     Icons.check,
                                                     color: Colors.white,
                                                     size: 32,

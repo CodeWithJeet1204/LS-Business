@@ -26,7 +26,7 @@ class InfoEditBox extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 6),
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
         decoration: BoxDecoration(
           color: primary.withOpacity(0.3),
           borderRadius: BorderRadius.circular(8),
@@ -39,7 +39,7 @@ class InfoEditBox extends StatelessWidget {
               children: [
                 Text(
                   head,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     color: primaryDark2,
                   ),
@@ -51,7 +51,7 @@ class InfoEditBox extends StatelessWidget {
                         softWrap: true,
                         overflow: TextOverflow.clip,
                         maxLines: 1,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 21,
                           fontWeight: FontWeight.w600,
                           color: primaryDark,
@@ -60,7 +60,7 @@ class InfoEditBox extends StatelessWidget {
                     : noOfAnswers == 2
                         ? Text(
                             content,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 21,
                               fontWeight: FontWeight.w600,
                               color: primaryDark,
@@ -81,12 +81,13 @@ class InfoEditBox extends StatelessWidget {
                                               .map(
                                                 (e) => Container(
                                                   height: 40,
-                                                  margin: EdgeInsets.only(
+                                                  margin: const EdgeInsets.only(
                                                     right: 4,
                                                     top: 4,
                                                     bottom: 4,
                                                   ),
-                                                  padding: EdgeInsets.symmetric(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
                                                     horizontal: 6,
                                                     vertical: 4,
                                                   ),
@@ -100,7 +101,7 @@ class InfoEditBox extends StatelessWidget {
                                                   ),
                                                   child: Text(
                                                     e,
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                       fontSize: 18,
                                                       color: primaryDark2,
                                                       fontWeight:
@@ -114,18 +115,18 @@ class InfoEditBox extends StatelessWidget {
                                       },
                                     ),
                                   )
-                                : Text("N/A")
+                                : const Text("N/A")
                             : Container(),
               ],
             ),
             noOfAnswers != 2
                 ? IconButton(
                     onPressed: onPressed,
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.edit,
                       color: primaryDark,
                     ),
-                    tooltip: "Edit ${head}",
+                    tooltip: "Edit $head",
                   )
                 : Container(),
           ],

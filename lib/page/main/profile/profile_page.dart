@@ -28,14 +28,14 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: ((context) {
         return AlertDialog(
-          title: Text('Sign Out?'),
-          content: Text('Are you sure\nYou want to Sign Out?'),
+          title: const Text('Sign Out?'),
+          content: const Text('Are you sure\nYou want to Sign Out?'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text(
+              child: const Text(
                 'NO',
                 style: TextStyle(
                   color: Colors.green,
@@ -46,9 +46,11 @@ class _ProfilePageState extends State<ProfilePage> {
             TextButton(
               onPressed: () async {
                 await auth.signOut();
-                Navigator.of(context).pop();
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                }
               },
-              child: Text(
+              child: const Text(
                 'YES',
                 style: TextStyle(
                   color: Colors.red,
@@ -278,14 +280,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   fontWeight: FontWeight.w500,
                                                 ),
                                               ),
-                                              Divider(
+                                              const Divider(
                                                 color: primaryDark2,
                                                 thickness: 0,
                                                 height: 8,
                                               ),
                                               Text(
                                                 shopData['Special Note'],
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   color: primaryDark,
                                                   fontWeight: FontWeight.w600,
                                                 ),
@@ -402,12 +404,12 @@ class _ProfilePageState extends State<ProfilePage> {
                               color: primary2,
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Row(
+                            child: const Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 16),
-                                  child: const Text(
+                                  padding: EdgeInsets.only(left: 16),
+                                  child: Text(
                                     "POSTS",
                                     style: TextStyle(
                                       fontSize: 24,
@@ -417,8 +419,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(right: 4),
-                                  child: const Icon(
+                                  padding: EdgeInsets.only(right: 4),
+                                  child: Icon(
                                     Icons.arrow_right_sharp,
                                     size: 40,
                                   ),
@@ -445,12 +447,12 @@ class _ProfilePageState extends State<ProfilePage> {
                               color: primary2,
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Row(
+                            child: const Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 16),
-                                  child: const Text(
+                                  padding: EdgeInsets.only(left: 16),
+                                  child: Text(
                                     "CATEGORIES",
                                     style: TextStyle(
                                       fontSize: 24,
@@ -460,8 +462,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(right: 4),
-                                  child: const Icon(
+                                  padding: EdgeInsets.only(right: 4),
+                                  child: Icon(
                                     Icons.arrow_right_sharp,
                                     size: 40,
                                   ),
@@ -488,12 +490,12 @@ class _ProfilePageState extends State<ProfilePage> {
                               color: primary2,
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Row(
+                            child: const Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 16),
-                                  child: const Text(
+                                  padding: EdgeInsets.only(left: 16),
+                                  child: Text(
                                     "PRODUCTS",
                                     style: TextStyle(
                                       fontSize: 24,
@@ -503,8 +505,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(right: 4),
-                                  child: const Icon(
+                                  padding: EdgeInsets.only(right: 4),
+                                  child: Icon(
                                     Icons.arrow_right_sharp,
                                     size: 40,
                                   ),
@@ -531,12 +533,12 @@ class _ProfilePageState extends State<ProfilePage> {
                               color: primary2,
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Row(
+                            child: const Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 16),
-                                  child: const Text(
+                                  padding: EdgeInsets.only(left: 16),
+                                  child: Text(
                                     "ANALYTICS",
                                     style: TextStyle(
                                       fontSize: 24,
@@ -546,8 +548,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(right: 4),
-                                  child: const Icon(
+                                  padding: EdgeInsets.only(right: 4),
+                                  child: Icon(
                                     Icons.arrow_right_sharp,
                                     size: 40,
                                   ),

@@ -45,10 +45,12 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
 
       for (QueryDocumentSnapshot doc in previousProducts.docs) {
         if (doc['categoryName'] == categoryController.text.toString()) {
-          mySnackBar(
-            context,
-            "Category with same name already exists",
-          );
+          if (context.mounted) {
+            mySnackBar(
+              context,
+              "Category with same name already exists",
+            );
+          }
           categoryDoesntExists = false;
         }
       }
@@ -59,9 +61,9 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
             isSaving = true;
           });
           try {
-            final String categoryId = Uuid().v4();
+            final String categoryId = const Uuid().v4();
 
-            Reference ref = await FirebaseStorage.instance
+            Reference ref = FirebaseStorage.instance
                 .ref()
                 .child('Data/Categories')
                 .child(categoryId);
@@ -88,7 +90,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
               'vendorId': auth.currentUser!.uid,
             });
 
-            categoryProvider.selectedProducts.forEach((element) {
+            for (var element in categoryProvider.selectedProducts) {
               store
                   .collection('Business')
                   .doc('Data')
@@ -98,7 +100,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                 'categoryName': categoryName,
                 'categoryId': categoryId,
               });
-            });
+            }
             categoryProvider.clearProducts();
             if (context.mounted) {
               mySnackBar(context, "Added");
@@ -113,7 +115,9 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
             isSaving = false;
           });
         } else {
-          mySnackBar(context, "Select an Image");
+          if (context.mounted) {
+            mySnackBar(context, "Select an Image");
+          }
         }
       }
     }
@@ -142,7 +146,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
   void addProduct() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: ((context) => AddProductsToCategoryPage(
+        builder: ((context) => const AddProductsToCategoryPage(
               fromAddCategoryPage: true,
             )),
       ),
@@ -166,7 +170,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                 productsAddedToCategoryProvider,
               );
             },
-            icon: Icon(Icons.ios_share),
+            icon: const Icon(Icons.ios_share),
             tooltip: "Add Category",
           ),
         ],
@@ -175,7 +179,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
             MediaQuery.of(context).size.width,
             isSaving ? 10 : 0,
           ),
-          child: isSaving ? LinearProgressIndicator() : Container(),
+          child: isSaving ? const LinearProgressIndicator() : Container(),
         ),
       ),
       body: SafeArea(

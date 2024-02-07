@@ -68,7 +68,7 @@ class _ProductPageState extends State<ProductPage> {
                   stream: propertyStream,
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
-                      return Center(
+                      return const Center(
                         child: Text('Something went wrong'),
                       );
                     }
@@ -325,9 +325,13 @@ class _ProductPageState extends State<ProductPage> {
                                             editController.clear();
                                           }
                                           editController.clear();
-                                          Navigator.of(context).pop();
+                                          if (context.mounted) {
+                                            Navigator.of(context).pop();
+                                          }
                                         } catch (e) {
-                                          mySnackBar(context, e.toString());
+                                          if (context.mounted) {
+                                            mySnackBar(context, e.toString());
+                                          }
                                         }
                                         setState(() {
                                           isEditing = false;
@@ -343,7 +347,7 @@ class _ProductPageState extends State<ProductPage> {
                       );
                     }
 
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }),
@@ -367,7 +371,6 @@ class _ProductPageState extends State<ProductPage> {
             .child(const Uuid().v4());
         await ref.putFile(File(im.path)).whenComplete(() async {
           await ref.getDownloadURL().then((value) {
-            print("Jeet");
             images.add(value);
             FirebaseFirestore.instance
                 .collection('Business')
@@ -382,18 +385,23 @@ class _ProductPageState extends State<ProductPage> {
         setState(() {
           isImageChanging = true;
         });
-        Navigator.of(context).pop();
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: ((context) => ProductPage(
-                productId: widget.productId, productName: widget.productName)),
-          ),
-        );
+        if (context.mounted) {
+          Navigator.of(context).pop();
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: ((context) => ProductPage(
+                  productId: widget.productId,
+                  productName: widget.productName)),
+            ),
+          );
+        }
       } catch (e) {
         setState(() {
           isImageChanging = true;
         });
-        mySnackBar(context, e.toString());
+        if (context.mounted) {
+          mySnackBar(context, e.toString());
+        }
       }
     } else {
       if (context.mounted) {
@@ -411,8 +419,7 @@ class _ProductPageState extends State<ProductPage> {
         setState(() {
           isImageChanging = true;
         });
-        Reference ref =
-            await FirebaseStorage.instance.refFromURL(images[index]);
+        Reference ref = FirebaseStorage.instance.refFromURL(images[index]);
         await images.removeAt(index);
         await ref.putFile(File(im.path));
         setState(() {
@@ -422,7 +429,9 @@ class _ProductPageState extends State<ProductPage> {
         setState(() {
           isImageChanging = false;
         });
-        mySnackBar(context, e.toString());
+        if (context.mounted) {
+          mySnackBar(context, e.toString());
+        }
       }
     } else {
       if (context.mounted) {
@@ -469,17 +478,20 @@ class _ProductPageState extends State<ProductPage> {
 
       for (QueryDocumentSnapshot doc in postSnap.docs) {
         await doc.reference.delete();
-        ;
       }
       setState(() {
         isEditing = false;
       });
-      Navigator.of(context).pop();
+      if (context.mounted) {
+        Navigator.of(context).pop();
+      }
     } catch (e) {
       setState(() {
         isEditing = false;
       });
-      mySnackBar(context, e.toString());
+      if (context.mounted) {
+        mySnackBar(context, e.toString());
+      }
     }
   }
 
@@ -489,15 +501,15 @@ class _ProductPageState extends State<ProductPage> {
       context: context,
       builder: ((context) {
         return AlertDialog(
-          title: Text("Confirm DELETE"),
-          content: Text(
+          title: const Text("Confirm DELETE"),
+          content: const Text(
               "Are you sure you want to delete this product & all its posts"),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text(
+              child: const Text(
                 'NO',
                 style: TextStyle(
                   color: Colors.green,
@@ -510,7 +522,7 @@ class _ProductPageState extends State<ProductPage> {
                 Navigator.of(context).pop();
                 delete();
               },
-              child: Text(
+              child: const Text(
                 'YES',
                 style: TextStyle(
                   color: Colors.red,
@@ -538,7 +550,7 @@ class _ProductPageState extends State<ProductPage> {
         actions: [
           IconButton(
             onPressed: confirmDelete,
-            icon: Icon(
+            icon: const Icon(
               Icons.delete_forever,
               color: Colors.red,
             ),
@@ -558,7 +570,7 @@ class _ProductPageState extends State<ProductPage> {
                     stream: productStream,
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
-                        return Center(
+                        return const Center(
                           child: Text('Something Went Wrong'),
                         );
                       }
@@ -664,7 +676,7 @@ class _ProductPageState extends State<ProductPage> {
                                                 BorderRadius.circular(12),
                                           ),
                                           child: isImageChanging
-                                              ? CircularProgressIndicator()
+                                              ? const CircularProgressIndicator()
                                               : GestureDetector(
                                                   onTap: () {
                                                     Navigator.of(context).push(
@@ -701,7 +713,7 @@ class _ProductPageState extends State<ProductPage> {
                                                           images,
                                                         );
                                                       },
-                                                      icon: Icon(
+                                                      icon: const Icon(
                                                         Icons
                                                             .camera_alt_outlined,
                                                         size: 36,
@@ -724,7 +736,7 @@ class _ProductPageState extends State<ProductPage> {
                                                                   e, images);
                                                             }
                                                           : null,
-                                                      icon: Icon(
+                                                      icon: const Icon(
                                                         Icons.highlight_remove,
                                                         size: 36,
                                                       ),
@@ -754,7 +766,7 @@ class _ProductPageState extends State<ProductPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                SizedBox(),
+                                const SizedBox(),
                                 images.length > 1
                                     ? Padding(
                                         padding: const EdgeInsets.symmetric(
@@ -775,7 +787,7 @@ class _ProductPageState extends State<ProductPage> {
                                               height: _currentIndex == index
                                                   ? 12
                                                   : 8,
-                                              margin: EdgeInsets.all(4),
+                                              margin: const EdgeInsets.all(4),
                                               decoration: BoxDecoration(
                                                 shape: BoxShape.circle,
                                                 color: _currentIndex == index
@@ -786,7 +798,7 @@ class _ProductPageState extends State<ProductPage> {
                                           }).toList(),
                                         ),
                                       )
-                                    : SizedBox(height: 40),
+                                    : const SizedBox(height: 40),
                                 GestureDetector(
                                   onTap: () {
                                     addProductImages(images);
@@ -798,7 +810,7 @@ class _ProductPageState extends State<ProductPage> {
                                       color: primary,
                                       borderRadius: BorderRadius.circular(12),
                                     ),
-                                    child: Row(
+                                    child: const Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
@@ -842,7 +854,7 @@ class _ProductPageState extends State<ProductPage> {
                                       true,
                                     );
                                   },
-                                  icon: Icon(
+                                  icon: const Icon(
                                     Icons.edit,
                                     size: 24,
                                   ),
@@ -859,12 +871,10 @@ class _ProductPageState extends State<ProductPage> {
                                   padding:
                                       const EdgeInsets.symmetric(horizontal: 8),
                                   child: Text(
-                                    price == ""
-                                        ? 'N/A (price)'
-                                        : 'Rs. ${price}',
+                                    price == "" ? 'N/A (price)' : 'Rs. $price',
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: primaryDark,
                                       fontSize: 22,
                                       fontWeight: FontWeight.w500,
@@ -880,7 +890,7 @@ class _ProductPageState extends State<ProductPage> {
                                       true,
                                     );
                                   },
-                                  icon: Icon(
+                                  icon: const Icon(
                                     Icons.edit,
                                     size: 22,
                                   ),
@@ -912,7 +922,7 @@ class _ProductPageState extends State<ProductPage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(
+                                            const Text(
                                               "Available",
                                               style: TextStyle(
                                                 color: primaryDark,
@@ -955,7 +965,7 @@ class _ProductPageState extends State<ProductPage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(
+                                            const Text(
                                               "Out Of Stock",
                                               style: TextStyle(
                                                 color: primaryDark,
@@ -992,7 +1002,7 @@ class _ProductPageState extends State<ProductPage> {
                               head: "Description",
                               content: description,
                               noOfAnswers: 1,
-                              propertyValue: [],
+                              propertyValue: const [],
                               maxLines: 20,
                               width: width,
                               onPressed: () {
@@ -1010,7 +1020,7 @@ class _ProductPageState extends State<ProductPage> {
                                 stream: categoryStream,
                                 builder: (context, snapshot) {
                                   if (snapshot.hasError) {
-                                    return Center(
+                                    return const Center(
                                       child: Text('Something went wrong'),
                                     );
                                   }
@@ -1029,7 +1039,7 @@ class _ProductPageState extends State<ProductPage> {
                                         horizontal: 6,
                                       ),
                                       child: Container(
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                           vertical: 8,
                                           horizontal: 8,
                                         ),
@@ -1115,7 +1125,7 @@ class _ProductPageState extends State<ProductPage> {
                                                   ),
                                                 );
                                               },
-                                              icon: Icon(Icons.edit),
+                                              icon: const Icon(Icons.edit),
                                               tooltip: "Change Category",
                                             ),
                                           ],
@@ -1124,7 +1134,7 @@ class _ProductPageState extends State<ProductPage> {
                                     );
                                   }
 
-                                  return Center(
+                                  return const Center(
                                     child: CircularProgressIndicator(
                                       color: primaryDark,
                                     ),
@@ -1136,7 +1146,7 @@ class _ProductPageState extends State<ProductPage> {
                               head: "Brand",
                               content: brand,
                               noOfAnswers: 1,
-                              propertyValue: [],
+                              propertyValue: const [],
                               width: width,
                               onPressed: () {
                                 edit(
@@ -1304,7 +1314,8 @@ class _ProductPageState extends State<ProductPage> {
                                     width: width * 0.45,
                                     height: 100,
                                     decoration: BoxDecoration(
-                                      color: Color.fromRGBO(189, 225, 255, 1),
+                                      color: const Color.fromRGBO(
+                                          189, 225, 255, 1),
                                       borderRadius: BorderRadius.circular(16),
                                     ),
                                     child: Padding(
@@ -1343,7 +1354,8 @@ class _ProductPageState extends State<ProductPage> {
                                     width: width * 0.45,
                                     height: 100,
                                     decoration: BoxDecoration(
-                                      color: Color.fromRGBO(206, 206, 206, 1),
+                                      color: const Color.fromRGBO(
+                                          206, 206, 206, 1),
                                       borderRadius: BorderRadius.circular(16),
                                     ),
                                     child: Padding(
@@ -1394,7 +1406,8 @@ class _ProductPageState extends State<ProductPage> {
                                     width: width * 0.45,
                                     height: 100,
                                     decoration: BoxDecoration(
-                                      color: Color.fromRGBO(255, 248, 184, 1),
+                                      color: const Color.fromRGBO(
+                                          255, 248, 184, 1),
                                       borderRadius: BorderRadius.circular(16),
                                     ),
                                     child: Padding(
@@ -1433,7 +1446,8 @@ class _ProductPageState extends State<ProductPage> {
                                     width: width * 0.45,
                                     height: 100,
                                     decoration: BoxDecoration(
-                                      color: Color.fromRGBO(193, 255, 195, 1),
+                                      color: const Color.fromRGBO(
+                                          193, 255, 195, 1),
                                       borderRadius: BorderRadius.circular(16),
                                     ),
                                     child: Padding(
@@ -1483,7 +1497,8 @@ class _ProductPageState extends State<ProductPage> {
                                     width: width * 0.45,
                                     height: 100,
                                     decoration: BoxDecoration(
-                                      color: Color.fromRGBO(255, 176, 170, 1),
+                                      color: const Color.fromRGBO(
+                                          255, 176, 170, 1),
                                       borderRadius: BorderRadius.circular(16),
                                     ),
                                     child: Padding(
@@ -1545,7 +1560,7 @@ class _ProductPageState extends State<ProductPage> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           children: [
-                                            Container(
+                                            SizedBox(
                                               width: width * 0.225,
                                               child: Text(
                                                 "View All Products Insights",
@@ -1572,7 +1587,7 @@ class _ProductPageState extends State<ProductPage> {
                         );
                       }
 
-                      return Center(
+                      return const Center(
                         child: CircularProgressIndicator(
                           color: primaryDark,
                         ),

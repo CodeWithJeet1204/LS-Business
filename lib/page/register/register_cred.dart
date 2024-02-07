@@ -45,6 +45,7 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: no_leading_underscores_for_local_identifiers
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final AuthMethods auth = AuthMethods();
     final signInMethodProvider = Provider.of<SignInMethodProvider>(context);
@@ -379,10 +380,12 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                               );
                             }
                           } else {
-                            mySnackBar(
-                              context,
-                              "Some error occured\nTry signing with email / phone number",
-                            );
+                            if (context.mounted) {
+                              mySnackBar(
+                                context,
+                                "Some error occured\nTry signing with email / phone number",
+                              );
+                            }
                           }
                           setState(() {
                             isGoogleRegistering = false;

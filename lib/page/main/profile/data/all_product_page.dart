@@ -37,10 +37,11 @@ class _AllProductsPageState extends State<AllProductsPage> {
 
       for (QueryDocumentSnapshot doc in postSnap.docs) {
         await doc.reference.delete();
-        ;
       }
     } catch (e) {
-      mySnackBar(context, e.toString());
+      if (context.mounted) {
+        mySnackBar(context, e.toString());
+      }
     }
   }
 
@@ -50,15 +51,15 @@ class _AllProductsPageState extends State<AllProductsPage> {
       context: context,
       builder: ((context) {
         return AlertDialog(
-          title: Text("Confirm DELETE"),
-          content: Text(
+          title: const Text("Confirm DELETE"),
+          content: const Text(
               "Are you sure you want to delete this product & all its posts"),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text(
+              child: const Text(
                 'NO',
                 style: TextStyle(
                   color: Colors.green,
@@ -71,7 +72,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                 Navigator.of(context).pop();
                 delete(productId);
               },
-              child: Text(
+              child: const Text(
                 'YES',
                 style: TextStyle(
                   color: Colors.red,
@@ -98,8 +99,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
         .orderBy('productName')
         .where('productName',
             isGreaterThanOrEqualTo: searchController.text.toString())
-        .where('productName',
-            isLessThan: searchController.text.toString() + '\uf8ff')
+        .where('productName', isLessThan: '${searchController.text}\uf8ff')
         .orderBy('datetime', descending: true)
         .snapshots();
 
@@ -136,7 +136,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                               child: TextField(
                                 controller: searchController,
                                 autocorrect: false,
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   labelText: "Case - Sensitive",
                                   hintText: "Search ...",
                                   border: OutlineInputBorder(),
@@ -278,7 +278,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                                       productData['productId'],
                                                     );
                                                   },
-                                                  icon: Icon(
+                                                  icon: const Icon(
                                                     Icons.delete_forever,
                                                     color: Colors.red,
                                                     size: 32,
