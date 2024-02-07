@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/page/main/profile/view%20page/product/product_category_change_page.dart';
@@ -447,7 +448,6 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   // DELETE PRODUCT
-  // When deleting product, also delete all posts related to it.
   void delete() async {
     setState(() {
       isEditing = true;
@@ -572,6 +572,13 @@ class _ProductPageState extends State<ProductPage> {
                         final String brand = productData['productBrand'];
                         final List images = productData['images'];
                         final List tags = productData['Tags'];
+
+                        final int likes = productData['productLikes'];
+                        final int dislikes = productData['productDislikes'];
+                        final int shares = productData['productShares'];
+                        final int views = productData['productViews'];
+                        final int wishList = productData['productWishList'];
+
                         bool isAvailable = productData['isAvailable'];
 
                         final Map<String, dynamic> properties =
@@ -742,6 +749,7 @@ class _ProductPageState extends State<ProductPage> {
                                 },
                               ),
                             ),
+
                             // DOTS
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1281,6 +1289,284 @@ class _ProductPageState extends State<ProductPage> {
                                   true,
                                 );
                               },
+                            ),
+
+                            // LIKES & DISLIKES
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 4),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  // LIKES
+                                  Container(
+                                    width: width * 0.45,
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                      color: Color.fromRGBO(189, 225, 255, 1),
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 12,
+                                        top: 12,
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "LIKES",
+                                            style: TextStyle(
+                                              color: primaryDark2,
+                                              fontSize: width * 0.04,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          Text(
+                                            likes > 1000
+                                                ? "${(likes / 1000).toStringAsFixed(2)}k"
+                                                : likes.toString(),
+                                            style: TextStyle(
+                                              color: primaryDark,
+                                              fontSize: width * 0.12,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  // DISLIKES
+                                  Container(
+                                    width: width * 0.45,
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                      color: Color.fromRGBO(206, 206, 206, 1),
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 12,
+                                        top: 12,
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "DISLIKES",
+                                            style: TextStyle(
+                                              color: primaryDark2,
+                                              fontSize: width * 0.04,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          Text(
+                                            dislikes > 1000
+                                                ? "${(dislikes / 1000).toStringAsFixed(2)}k"
+                                                : dislikes.toString(),
+                                            style: TextStyle(
+                                              color: primaryDark,
+                                              fontSize: width * 0.12,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            // VIEWS & SHARES
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 4),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  // VIEWS
+                                  Container(
+                                    width: width * 0.45,
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                      color: Color.fromRGBO(255, 248, 184, 1),
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 12,
+                                        top: 12,
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "VIEWS",
+                                            style: TextStyle(
+                                              color: primaryDark2,
+                                              fontSize: width * 0.04,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          AutoSizeText(
+                                            views > 1000
+                                                ? "${(views / 1000).toStringAsFixed(2)}k"
+                                                : views.toString(),
+                                            style: TextStyle(
+                                              color: primaryDark,
+                                              fontSize: width * 0.12,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  // SHARES
+                                  Container(
+                                    width: width * 0.45,
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                      color: Color.fromRGBO(193, 255, 195, 1),
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 12,
+                                        top: 12,
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "SHARES",
+                                            style: TextStyle(
+                                              color: primaryDark2,
+                                              fontSize: width * 0.04,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          Text(
+                                            shares > 1000
+                                                ? "${(shares / 1000).toStringAsFixed(2)}k"
+                                                : shares.toString(),
+                                            style: TextStyle(
+                                              color: primaryDark,
+                                              fontSize: width * 0.12,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            // WISHLIST & VIEW ALL INSIGHTS
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 4),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  // WISHLIST
+                                  Container(
+                                    width: width * 0.45,
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                      color: Color.fromRGBO(255, 176, 170, 1),
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 12,
+                                        top: 12,
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "WISHLIST",
+                                            style: TextStyle(
+                                              color: primaryDark2,
+                                              fontSize: width * 0.04,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          Text(
+                                            wishList > 1000
+                                                ? "${(wishList / 1000).toStringAsFixed(2)}k"
+                                                : wishList.toString(),
+                                            style: TextStyle(
+                                              color: primaryDark,
+                                              fontSize: width * 0.12,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  // VIEW ALL INSIGHTS
+                                  InkWell(
+                                    customBorder: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(14),
+                                    ),
+                                    radius: width * 0.2,
+                                    splashColor: primary2,
+                                    onTap: () {
+                                      // Navigate to all products insight page
+                                    },
+                                    child: Container(
+                                      width: width * 0.45,
+                                      height: 100,
+                                      decoration: BoxDecoration(
+                                        color: primary2.withOpacity(0.4),
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 12,
+                                          top: 12,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: width * 0.225,
+                                              child: Text(
+                                                "View All Products Insights",
+                                                style: TextStyle(
+                                                  color: primaryDark2,
+                                                  fontSize: width * 0.04,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ),
+                                            Icon(
+                                              Icons.navigate_next_rounded,
+                                              size: width * 0.095,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         );

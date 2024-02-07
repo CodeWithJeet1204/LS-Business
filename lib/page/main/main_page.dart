@@ -1,5 +1,6 @@
 import 'package:find_easy/page/main/add/add_page.dart';
 import 'package:find_easy/page/main/comments/all_comments_screen.dart';
+import 'package:find_easy/page/main/discount/discount_page.dart';
 import 'package:find_easy/page/main/profile/profile_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ class _MainPageState extends State<MainPage> {
   List<Widget> allPages = [
     const AddPage(),
     const AllCommentPage(),
+    const DiscountPage(),
     const ProfilePage(),
   ];
 
@@ -39,6 +41,7 @@ class _MainPageState extends State<MainPage> {
           fontWeight: FontWeight.w600,
           color: primaryDark,
         ),
+        type: BottomNavigationBarType.fixed,
         selectedIconTheme: const IconThemeData(
           size: 28,
           color: primaryDark,
@@ -59,6 +62,12 @@ class _MainPageState extends State<MainPage> {
               Icons.comment_outlined,
             ),
             label: "Comments",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.percent,
+            ),
+            label: "Discount",
           ),
           BottomNavigationBarItem(
             icon: Icon(

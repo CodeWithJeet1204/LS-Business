@@ -135,6 +135,11 @@ class _AddProductPage1State extends State<AddProductPage1> {
               'productPrice': priceController.text,
               'productDescription': descriptionController.text,
               'productBrand': brandController.text,
+              'productLikes': 0,
+              'productDislikes': 0,
+              'productShares': 0,
+              'productViews': 0,
+              'productWishList': 0,
               'productId': productId,
               'images': _imageDownloadUrl,
               'datetime': Timestamp.fromMillisecondsSinceEpoch(
