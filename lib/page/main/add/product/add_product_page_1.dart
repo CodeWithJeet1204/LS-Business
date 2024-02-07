@@ -1,5 +1,4 @@
 // ignore_for_file: unnecessary_null_comparison
-
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/firebase/storage_methods.dart';

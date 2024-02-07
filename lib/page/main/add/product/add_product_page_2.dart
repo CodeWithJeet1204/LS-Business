@@ -330,7 +330,6 @@ class _AddProductPage2State extends State<AddProductPage2> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('Additional Info'),
-        automaticallyImplyLeading: false,
         actions: [
           IconButton(
             onPressed: () {

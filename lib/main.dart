@@ -16,6 +16,7 @@ import 'package:find_easy/page/register/register_pay.dart';
 import 'package:find_easy/page/register/verify/email_verify.dart';
 import 'package:find_easy/provider/add_product_provider.dart';
 import 'package:find_easy/provider/change_category_provider.dart';
+import 'package:find_easy/provider/discount_products_provider.dart';
 import 'package:find_easy/provider/products_added_to_category_provider.dart';
 import 'package:find_easy/provider/select_product_for_post_provider.dart';
 import 'package:find_easy/provider/shop_type_provider.dart';
@@ -61,6 +62,9 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (_) => SelectProductForPostProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => SelectProductForDiscountProvider(),
         ),
       ],
       child: const MyApp(),
