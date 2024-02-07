@@ -19,7 +19,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  int current = 3;
+  int current = 4;
 
   List<Widget> allPages = [
     const AnalyticsPage(),

@@ -99,7 +99,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
+        padding: const EdgeInsets.symmetric(vertical: 4),
         child: LayoutBuilder(
           builder: (context, constraints) {
             final double width = constraints.maxWidth;
@@ -108,6 +108,8 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Column(
                 children: [
                   Container(
+                    width: width,
+                    height: height * 0.3625,
                     alignment: Alignment.centerLeft,
                     margin: const EdgeInsets.only(bottom: 5),
                     padding:
@@ -132,14 +134,14 @@ class _ProfilePageState extends State<ProfilePage> {
                             final shopData = snapshot.data!;
 
                             return Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     ClipOval(
                                       child: CircleAvatar(
-                                        radius: 40,
+                                        radius: height * 0.066,
                                         backgroundColor: primary2,
                                         backgroundImage:
                                             NetworkImage(shopData['Image']),
@@ -163,7 +165,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     shopData['Name']
                                                         .toUpperCase(),
                                                     style: TextStyle(
-                                                      fontSize: 24,
+                                                      fontSize: height * 0.035,
                                                       fontWeight:
                                                           FontWeight.w700,
                                                       color: primaryDark
@@ -181,7 +183,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   shopData['Name']
                                                       .toUpperCase(),
                                                   style: TextStyle(
-                                                    fontSize: 24,
+                                                    fontSize: height * 0.045,
                                                     fontWeight: FontWeight.w700,
                                                     color:
                                                         primaryDark.withBlue(5),
@@ -214,6 +216,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                                 Container(
                                   width: width,
+                                  height: height * 0.185,
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 8,
                                     vertical: 8,
@@ -244,24 +247,24 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.center,
                                                 children: [
-                                                  ClipOval(
-                                                    child: CircleAvatar(
-                                                      radius: 10,
-                                                      backgroundColor: primary2,
-                                                      backgroundImage:
-                                                          NetworkImage(
-                                                        userData['Image'],
-                                                      ),
+                                                  // USER IMAGE
+                                                  CircleAvatar(
+                                                    radius: height * 0.0175,
+                                                    backgroundColor: primary2,
+                                                    backgroundImage:
+                                                        NetworkImage(
+                                                      userData['Image'],
                                                     ),
                                                   ),
                                                   SizedBox(width: width * 0.01),
+                                                  // OWNER NAME
                                                   Text(
                                                     userData['Name'],
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                     style: TextStyle(
-                                                      fontSize: 18,
+                                                      fontSize: height * 0.03,
                                                       color: primaryDark
                                                           .withOpacity(0.9),
                                                       fontWeight:
@@ -271,13 +274,21 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   ),
                                                 ],
                                               ),
-                                              Text(
-                                                shopData['Address'],
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(
-                                                  color: primaryDark2,
-                                                  fontWeight: FontWeight.w500,
+                                              // ADDRESS
+                                              Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                  vertical: height * 0.01,
+                                                ),
+                                                child: Text(
+                                                  shopData['Address'],
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                    color: primaryDark2,
+                                                    fontSize: height * 0.02,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
                                                 ),
                                               ),
                                               const Divider(
@@ -285,31 +296,45 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 thickness: 0,
                                                 height: 8,
                                               ),
-                                              Text(
-                                                shopData['Special Note'],
-                                                style: const TextStyle(
-                                                  color: primaryDark,
-                                                  fontWeight: FontWeight.w600,
+                                              // SPECIAL NOTE
+                                              Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                  vertical: height * 0.01,
+                                                ),
+                                                child: Text(
+                                                  shopData['Special Note'],
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                    color: primaryDark,
+                                                    fontSize: height * 0.02125,
+                                                    fontWeight: FontWeight.w600,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
                                                 ),
                                               ),
                                             ],
                                           );
                                         }
 
-                                        return const Center(
-                                          child: CircularProgressIndicator(
-                                            color: primaryDark,
-                                          ),
-                                        );
+                                        // return const Center(
+                                        //   child: CircularProgressIndicator(
+                                        //     color: primaryDark,
+                                        //   ),
+                                        // );
+                                        return Container();
                                       }),
                                 ),
                               ],
                             );
                           }
 
-                          return const CircularProgressIndicator(
-                            color: primaryDark,
-                          );
+                          // return const CircularProgressIndicator(
+                          //   color: primaryDark,
+                          // );
+                          return Container();
                         }),
                   ),
                   Row(
@@ -375,19 +400,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: width * 0.03,
-                          vertical: height * 0.01,
-                        ),
-                        child: const Text(
-                          "VIEW",
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
                       Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: width * 0.025,
