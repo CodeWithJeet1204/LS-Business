@@ -13,9 +13,6 @@ class AddPage extends StatefulWidget {
 
 class _AddPageState extends State<AddPage> {
   final ScrollController scrollController = ScrollController();
-  bool isPressed1 = false;
-  bool isPressed2 = false;
-  bool isPressed3 = false;
 
   @override
   Widget build(BuildContext context) {
@@ -41,56 +38,44 @@ class _AddPageState extends State<AddPage> {
                     SizedOverflowBox(
                       size: Size(width, height * 0.266),
                       child: GestureDetector(
-                        onTapDown: (details) {
-                          setState(() {
-                            isPressed1 = true;
-                          });
-                        },
-                        onTapUp: (details) {
-                          setState(() {
-                            isPressed1 = false;
-                          });
+                        onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: ((context) => const AddPostPage()),
                             ),
                           );
                         },
-                        child: AnimatedSize(
-                          duration: const Duration(milliseconds: 100),
-                          reverseDuration: const Duration(milliseconds: 100),
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 12),
-                            width: isPressed1 ? width * 0.9 : width,
-                            height: isPressed1 ? height * 0.19 : height * 0.2,
-                            decoration: BoxDecoration(
-                              color: primary2.withOpacity(0.67),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Row(
-                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(width: width * 0.1),
-                                SizedBox(
-                                  width: width * 0.5,
-                                  child: const AutoSizeText(
-                                    "POST",
-                                    style: TextStyle(
-                                      color: primaryDark,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 28,
-                                    ),
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 12),
+                          width: width,
+                          height: height * 0.2,
+                          decoration: BoxDecoration(
+                            color: primary2.withOpacity(0.67),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(width: width * 0.1),
+                              SizedBox(
+                                width: width * 0.5,
+                                child: const AutoSizeText(
+                                  "POST",
+                                  style: TextStyle(
+                                    color: primaryDark,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 28,
                                   ),
                                 ),
-                                Expanded(child: Container()),
-                                Icon(
-                                  Icons.arrow_circle_up_outlined,
-                                  size: width * 0.2,
-                                  color: primaryDark2,
-                                ),
-                                SizedBox(width: width * 0.075),
-                              ],
-                            ),
+                              ),
+                              Expanded(child: Container()),
+                              Icon(
+                                Icons.arrow_circle_up_outlined,
+                                size: width * 0.2,
+                                color: primaryDark2,
+                              ),
+                              SizedBox(width: width * 0.075),
+                            ],
                           ),
                         ),
                       ),
@@ -98,56 +83,44 @@ class _AddPageState extends State<AddPage> {
                     SizedOverflowBox(
                       size: Size(width, height * 0.275),
                       child: GestureDetector(
-                        onTapDown: (details) {
-                          setState(() {
-                            isPressed3 = true;
-                          });
-                        },
-                        onTapUp: (details) {
-                          setState(() {
-                            isPressed3 = false;
-                          });
+                        onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: ((context) => const AddProductPage1()),
                             ),
                           );
                         },
-                        child: AnimatedSize(
-                          duration: const Duration(milliseconds: 100),
-                          reverseDuration: const Duration(milliseconds: 100),
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 12),
-                            width: isPressed3 ? width * 0.9 : width,
-                            height: isPressed3 ? height * 0.19 : height * 0.2,
-                            decoration: BoxDecoration(
-                              color: primary2.withOpacity(0.67),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(width: width * 0.1),
-                                SizedBox(
-                                  width: width * 0.5,
-                                  child: const AutoSizeText(
-                                    "PRODUCTS",
-                                    style: TextStyle(
-                                      color: primaryDark,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 28,
-                                    ),
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 12),
+                          width: width,
+                          height: height * 0.2,
+                          decoration: BoxDecoration(
+                            color: primary2.withOpacity(0.67),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(width: width * 0.1),
+                              SizedBox(
+                                width: width * 0.5,
+                                child: const AutoSizeText(
+                                  "PRODUCTS",
+                                  style: TextStyle(
+                                    color: primaryDark,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 28,
                                   ),
                                 ),
-                                Expanded(child: Container()),
-                                Icon(
-                                  Icons.shopping_bag_outlined,
-                                  size: width * 0.2,
-                                  color: primaryDark2,
-                                ),
-                                SizedBox(width: width * 0.075),
-                              ],
-                            ),
+                              ),
+                              Expanded(child: Container()),
+                              Icon(
+                                Icons.shopping_bag_outlined,
+                                size: width * 0.2,
+                                color: primaryDark2,
+                              ),
+                              SizedBox(width: width * 0.075),
+                            ],
                           ),
                         ),
                       ),
@@ -155,51 +128,39 @@ class _AddPageState extends State<AddPage> {
                     SizedOverflowBox(
                       size: Size(width, height * 0.275),
                       child: GestureDetector(
-                        onTapDown: (details) {
-                          setState(() {
-                            isPressed2 = true;
-                          });
-                        },
-                        onTapUp: (details) {
-                          setState(() {
-                            isPressed2 = false;
-                          });
+                        onTap: () {
                           Navigator.of(context).pushNamed('/addCategory');
                         },
-                        child: AnimatedSize(
-                          duration: const Duration(milliseconds: 100),
-                          reverseDuration: const Duration(milliseconds: 100),
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 12),
-                            width: isPressed2 ? width * 0.9 : width,
-                            height: isPressed2 ? height * 0.19 : height * 0.2,
-                            decoration: BoxDecoration(
-                              color: primary2.withOpacity(0.67),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Row(
-                              children: [
-                                SizedBox(width: width * 0.1),
-                                SizedBox(
-                                  width: width * 0.5,
-                                  child: const AutoSizeText(
-                                    "CATEGORY",
-                                    style: TextStyle(
-                                      color: primaryDark,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 28,
-                                    ),
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 12),
+                          width: width,
+                          height: height * 0.2,
+                          decoration: BoxDecoration(
+                            color: primary2.withOpacity(0.67),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            children: [
+                              SizedBox(width: width * 0.1),
+                              SizedBox(
+                                width: width * 0.5,
+                                child: const AutoSizeText(
+                                  "CATEGORY",
+                                  style: TextStyle(
+                                    color: primaryDark,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 28,
                                   ),
                                 ),
-                                Expanded(child: Container()),
-                                Icon(
-                                  Icons.apps_outlined,
-                                  size: width * 0.2,
-                                  color: primaryDark2,
-                                ),
-                                SizedBox(width: width * 0.075),
-                              ],
-                            ),
+                              ),
+                              Expanded(child: Container()),
+                              Icon(
+                                Icons.apps_outlined,
+                                size: width * 0.2,
+                                color: primaryDark2,
+                              ),
+                              SizedBox(width: width * 0.075),
+                            ],
                           ),
                         ),
                       ),

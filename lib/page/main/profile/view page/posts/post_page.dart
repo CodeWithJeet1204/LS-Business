@@ -70,11 +70,12 @@ class _PostPageState extends State<PostPage> {
                       final int likes = postData['postLikes'];
                       final int views = postData['postViews'];
                       final Map comments = postData['postComments'];
-                      final List images = postData['postImages'];
+                      final List images =
+                          isTextPost ? [] : postData['postImages'];
 
                       return Column(
                         children: [
-                          isTextPost
+                          !isTextPost
                               ? CarouselSlider(
                                   items: images
                                       .map(
@@ -117,13 +118,12 @@ class _PostPageState extends State<PostPage> {
                                   ),
                                 )
                               : Container(),
+
                           // DOTS
-                          isTextPost
+                          !isTextPost
                               ? Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const SizedBox(),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
                                         vertical: 12,
