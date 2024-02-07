@@ -523,7 +523,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.of(context).pushNamed('/analyticsPage');
+                            // Navigator.of(context).
                           },
                           child: Container(
                             alignment: Alignment.centerLeft,
@@ -539,7 +539,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Padding(
                                   padding: EdgeInsets.only(left: 16),
                                   child: Text(
-                                    "ANALYTICS",
+                                    "DISCOUNTS",
                                     style: TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.w800,

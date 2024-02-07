@@ -1,3 +1,4 @@
+import 'package:find_easy/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class AnalyticsPage extends StatelessWidget {
@@ -5,7 +6,11 @@ class AnalyticsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
+      backgroundColor: primary,
+      appBar: AppBar(
+        title: Text("ANALYTICS"),
+      ),
       body: Center(
         child: Text('Analytics'),
       ),

@@ -2,6 +2,7 @@ import 'package:find_easy/page/main/add/add_page.dart';
 import 'package:find_easy/page/main/comments/all_comments_screen.dart';
 import 'package:find_easy/page/main/discount/discount_page.dart';
 import 'package:find_easy/page/main/profile/profile_page.dart';
+import 'package:find_easy/page/main/profile/view%20page/analytics/analaytics_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -18,10 +19,12 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  int current = 2;
+  int current = 3;
+
   List<Widget> allPages = [
-    const AddPage(),
+    const AnalyticsPage(),
     const AllCommentPage(),
+    const AddPage(),
     const DiscountPage(),
     const ProfilePage(),
   ];
@@ -38,8 +41,8 @@ class _MainPageState extends State<MainPage> {
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: primary2,
         selectedLabelStyle: const TextStyle(
-          fontWeight: FontWeight.w600,
           color: primaryDark,
+          fontWeight: FontWeight.w600,
         ),
         type: BottomNavigationBarType.fixed,
         selectedIconTheme: const IconThemeData(
@@ -50,28 +53,34 @@ class _MainPageState extends State<MainPage> {
         onTap: (value) {
           changePage(value);
         },
-        items: const [
+        items: [
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.add_circle_outline,
+              current != 0 ? Icons.bar_chart_rounded : Icons.bar_chart,
             ),
-            label: "Add",
+            label: "Analytics",
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.comment_outlined,
+              current != 1 ? Icons.comment_outlined : Icons.comment,
             ),
             label: "Comments",
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.percent,
+              current != 2 ? Icons.add_circle_outline : Icons.add_circle,
+            ),
+            label: "Add",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              current != 3 ? Icons.percent_rounded : Icons.percent,
             ),
             label: "Discount",
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.person_outline,
+              current != 4 ? Icons.person_outline : Icons.person,
             ),
             label: "Profile",
           ),
