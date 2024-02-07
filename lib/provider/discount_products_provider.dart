@@ -5,7 +5,7 @@ class SelectProductForDiscountProvider with ChangeNotifier {
 
   List<String> get selectedProducts => _selectedProducts;
 
-  void changeSelectedProduct(String id) {
+  void selectProduct(String id) {
     if (_selectedProducts.contains(id)) {
       _selectedProducts.remove(id);
     } else {

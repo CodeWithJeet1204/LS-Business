@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/page/main/add/category/category_products_add_page.dart';
 import 'package:find_easy/provider/products_added_to_category_provider.dart';
@@ -103,7 +102,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
             }
             categoryProvider.clearProducts();
             if (context.mounted) {
-              mySnackBar(context, "Added");
+              mySnackBar(context, "Category Added");
               Navigator.of(context).pop();
             }
           } catch (e) {
@@ -189,89 +188,86 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
             builder: (context, constraints) {
               double width = constraints.maxWidth;
               double height = constraints.maxHeight;
-              return Column(
-                children: [
-                  _image != null
-                      ? Center(
-                          child: Stack(
-                            alignment: Alignment.bottomRight,
-                            children: [
-                              Container(
-                                height: 300,
-                                width: width,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(
-                                    color: primaryDark,
-                                    width: 3,
-                                  ),
-                                ),
-                                child: InteractiveViewer(
-                                  child: Image(
-                                    image: FileImage(_image!),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                top: 0,
-                                right: 0,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(4),
-                                  child: IconButton.filledTonal(
-                                    onPressed: removeImage,
-                                    icon: const Icon(
-                                      Icons.highlight_remove_rounded,
-                                      size: 40,
-                                    ),
-                                    tooltip: "Remove Image",
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      : SizedOverflowBox(
-                          size: Size(width, height * 0.4),
-                          child: Container(
-                            width: width,
-                            height: height * 0.4,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: primaryDark,
-                                width: 3,
-                              ),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    _image != null
+                        ? Center(
+                            child: Stack(
+                              alignment: Alignment.bottomRight,
                               children: [
-                                IconButton(
-                                  onPressed: selectImage,
-                                  icon: const Icon(
-                                    Icons.arrow_circle_up_rounded,
-                                    size: 120,
+                                Container(
+                                  height: 300,
+                                  width: width,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(
+                                      color: primaryDark,
+                                      width: 3,
+                                    ),
+                                  ),
+                                  child: InteractiveViewer(
+                                    child: Image(
+                                      image: FileImage(_image!),
+                                    ),
                                   ),
                                 ),
-                                SizedBox(height: height * 0.05),
-                                const Text(
-                                  "Select Image",
-                                  style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.w500,
+                                Positioned(
+                                  top: 0,
+                                  right: 0,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4),
+                                    child: IconButton.filledTonal(
+                                      onPressed: removeImage,
+                                      icon: const Icon(
+                                        Icons.highlight_remove_rounded,
+                                        size: 40,
+                                      ),
+                                      tooltip: "Remove Image",
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
+                          )
+                        : SizedOverflowBox(
+                            size: Size(width, height * 0.4),
+                            child: Container(
+                              width: width,
+                              height: height * 0.4,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: primaryDark,
+                                  width: 3,
+                                ),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  IconButton(
+                                    onPressed: selectImage,
+                                    icon: const Icon(
+                                      Icons.arrow_circle_up_rounded,
+                                      size: 120,
+                                    ),
+                                  ),
+                                  SizedBox(height: height * 0.05),
+                                  const Text(
+                                    "Select Image",
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
-                  const SizedBox(height: 20),
-                  Form(
-                    key: categoryKey,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom,
-                      ),
+                    const SizedBox(height: 20),
+                    Form(
+                      key: categoryKey,
                       child: TextFormField(
                         controller: categoryController,
                         autofillHints: null,
@@ -291,21 +287,21 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                         },
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom,
+                    const SizedBox(height: 20),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom,
+                      ),
+                      child: MyButton(
+                        text:
+                            "Add Products (${productsAddedToCategoryProvider.selectedProducts.length})",
+                        onTap: addProduct,
+                        isLoading: false,
+                        horizontalPadding: 0,
+                      ),
                     ),
-                    child: MyButton(
-                      text:
-                          "Add Products (${productsAddedToCategoryProvider.selectedProducts.length})",
-                      onTap: addProduct,
-                      isLoading: false,
-                      horizontalPadding: 0,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               );
             },
           ),

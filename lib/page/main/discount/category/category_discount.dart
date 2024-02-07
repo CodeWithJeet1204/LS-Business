@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/page/main/discount/products/select_products_for_discount.dart';
-import 'package:find_easy/provider/discount_products_provider.dart';
+import 'package:find_easy/page/main/discount/category/select_category_for_discount.dart';
+import 'package:find_easy/provider/discount_category_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
@@ -14,15 +14,14 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
-class SingleProductDiscountPage extends StatefulWidget {
-  const SingleProductDiscountPage({super.key});
+class CategoryDiscountPage extends StatefulWidget {
+  const CategoryDiscountPage({super.key});
 
   @override
-  State<SingleProductDiscountPage> createState() =>
-      _SingleProductDiscountPageState();
+  State<CategoryDiscountPage> createState() => _CategoryDiscountPageState();
 }
 
-class _SingleProductDiscountPageState extends State<SingleProductDiscountPage> {
+class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   final storage = FirebaseStorage.instance;
@@ -90,8 +89,8 @@ class _SingleProductDiscountPageState extends State<SingleProductDiscountPage> {
     }
   }
 
-  void addDiscount(SelectProductForDiscountProvider provider,
-      List<String> productIdList) async {
+  void addDiscount(SelectCategoryForDiscountProvider provider,
+      List<String> categoryIdList) async {
     // End date should be after start date
     if (discountKey.currentState!.validate()) {
       if (startDate == null) {
@@ -105,8 +104,8 @@ class _SingleProductDiscountPageState extends State<SingleProductDiscountPage> {
       )) {
         return mySnackBar(context, "Start Date should be before End Date");
       }
-      if (provider.selectedProducts.isEmpty) {
-        return mySnackBar(context, "Select Product");
+      if (provider.selectedCategories.isEmpty) {
+        return mySnackBar(context, "Select Category");
       }
 
       setState(() {
@@ -135,17 +134,17 @@ class _SingleProductDiscountPageState extends State<SingleProductDiscountPage> {
             .doc(discountId)
             .set({
           'isPercent': isPercentSelected,
-          'isProducts': true,
-          'isCategories': false,
+          'isProducts': false,
+          'isCategories': true,
           'discountAmount': double.parse(discountController.text),
           'discountStartDate': startDate,
           'discountEndDate': endDate,
           'discountStartDateTime': startDateTime,
           'discountEndDateTime': endDateTime,
           'discountId': discountId,
-          'discountImageUrl': imageUrl,
-          'products': productIdList,
-          'categories': [],
+          'discountImageUrl': imageUrl ?? null,
+          'products': [],
+          'categories': categoryIdList,
           'vendorId': auth.currentUser!.uid,
         });
         mySnackBar(context, "Discount Added");
@@ -164,15 +163,15 @@ class _SingleProductDiscountPageState extends State<SingleProductDiscountPage> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedProductProvider =
-        Provider.of<SelectProductForDiscountProvider>(context);
-    final selectedProducts = selectedProductProvider.selectedProducts;
+    final selectedCategoryProvider =
+        Provider.of<SelectCategoryForDiscountProvider>(context);
+    final selectedCategories = selectedCategoryProvider.selectedCategories;
 
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            selectedProductProvider.clear();
+            selectedCategoryProvider.clear();
             Navigator.of(context).pop();
           },
           icon: Icon(Icons.arrow_back),
@@ -181,7 +180,7 @@ class _SingleProductDiscountPageState extends State<SingleProductDiscountPage> {
         actions: [
           MyTextButton(
             onPressed: () {
-              addDiscount(selectedProductProvider, selectedProducts);
+              addDiscount(selectedCategoryProvider, selectedCategories);
             },
             text: "DONE",
             textColor: primaryDark,
@@ -452,16 +451,16 @@ class _SingleProductDiscountPageState extends State<SingleProductDiscountPage> {
                     ),
                     SizedBox(height: 20),
 
-                    // SELECT PRODUCT
+                    // SELECT CATEGORY
                     MyButton(
-                      text: selectedProducts.isEmpty
-                          ? "SELECT PRODUCTS"
-                          : "SELECTED PRODUCTS - ${selectedProducts.length}",
+                      text: selectedCategories.isEmpty
+                          ? "SELECT CATEGORY"
+                          : "SELECTED CATEGORIES - ${selectedCategories.length}",
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) =>
-                                SelectProductForDiscountPage(),
+                                SelectCategoryForDiscountPage(),
                           ),
                         );
                       },
@@ -478,73 +477,76 @@ class _SingleProductDiscountPageState extends State<SingleProductDiscountPage> {
                         color: primary2.withOpacity(0.5),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          // PERCENT
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                isPercentSelected = !isPercentSelected;
-                              });
-                            },
-                            child: Container(
-                              width: width * 0.4,
-                              height: 48,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: isPercentSelected
-                                    ? primaryDark.withOpacity(0.8)
-                                    : primary2.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Text(
-                                "PERCENT %",
-                                style: TextStyle(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            // PERCENT
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  isPercentSelected = !isPercentSelected;
+                                });
+                              },
+                              child: Container(
+                                width: width * 0.4,
+                                height: 48,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
                                   color: isPercentSelected
-                                      ? white
-                                      : primaryDark.withOpacity(0.9),
-                                  fontSize: width * 0.05,
-                                  fontWeight: isPercentSelected
-                                      ? FontWeight.w600
-                                      : FontWeight.w500,
+                                      ? primary2.withOpacity(0.75)
+                                      : primary2.withOpacity(0.005),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  "PERCENT %",
+                                  style: TextStyle(
+                                    color: !isPercentSelected
+                                        ? white
+                                        : primaryDark.withOpacity(0.9),
+                                    fontSize: width * 0.05,
+                                    fontWeight: isPercentSelected
+                                        ? FontWeight.w600
+                                        : FontWeight.w500,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
 
-                          // PRICE
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                isPercentSelected = !isPercentSelected;
-                              });
-                            },
-                            child: Container(
-                              width: width * 0.4,
-                              height: 48,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: !isPercentSelected
-                                    ? primaryDark.withOpacity(0.8)
-                                    : primary2.withOpacity(0.5),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Text(
-                                "PRICE ₹",
-                                style: TextStyle(
+                            // PRICE
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  isPercentSelected = !isPercentSelected;
+                                });
+                              },
+                              child: Container(
+                                width: width * 0.4,
+                                height: 48,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
                                   color: !isPercentSelected
-                                      ? white
-                                      : primaryDark.withOpacity(0.9),
-                                  fontSize: width * 0.05,
-                                  fontWeight: !isPercentSelected
-                                      ? FontWeight.w600
-                                      : FontWeight.w500,
+                                      ? primary2.withOpacity(0.75)
+                                      : primary2.withOpacity(0.005),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  "PRICE ₹",
+                                  style: TextStyle(
+                                    color: isPercentSelected
+                                        ? white
+                                        : primaryDark.withOpacity(0.9),
+                                    fontSize: width * 0.05,
+                                    fontWeight: !isPercentSelected
+                                        ? FontWeight.w600
+                                        : FontWeight.w500,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                     SizedBox(height: 20),

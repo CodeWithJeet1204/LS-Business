@@ -1,33 +1,33 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/provider/discount_products_provider.dart';
+import 'package:find_easy/provider/discount_category_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SelectProductForDiscountPage extends StatefulWidget {
-  const SelectProductForDiscountPage({super.key});
+class SelectCategoryForDiscountPage extends StatefulWidget {
+  const SelectCategoryForDiscountPage({super.key});
 
   @override
-  State<SelectProductForDiscountPage> createState() =>
-      _SelectProductForDiscountPageState();
+  State<SelectCategoryForDiscountPage> createState() =>
+      _SelectCategoryForDiscountPageState();
 }
 
-class _SelectProductForDiscountPageState
-    extends State<SelectProductForDiscountPage> {
+class _SelectCategoryForDiscountPageState
+    extends State<SelectCategoryForDiscountPage> {
   bool isGridView = true;
-  String? searchedProduct;
+  String? searchedCategory;
 
   @override
   Widget build(BuildContext context) {
-    final selectedProductsProvider =
-        Provider.of<SelectProductForDiscountProvider>(context);
+    final selectCategoryProvider =
+        Provider.of<SelectCategoryForDiscountProvider>(context);
 
-    final Stream<QuerySnapshot> allProductStream = FirebaseFirestore.instance
+    final Stream<QuerySnapshot> allCategoryStream = FirebaseFirestore.instance
         .collection('Business')
         .doc('Data')
-        .collection('Products')
+        .collection('Category')
         .where(
           'vendorId',
           isEqualTo: FirebaseAuth.instance.currentUser!.uid,
@@ -37,7 +37,7 @@ class _SelectProductForDiscountPageState
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("SELECT PRODUCT"),
+        title: const Text("SELECT CATEGORIES"),
         actions: [
           MyTextButton(
             onPressed: () {
@@ -71,7 +71,7 @@ class _SelectProductForDiscountPageState
                           border: OutlineInputBorder(),
                         ),
                         onChanged: (value) {
-                          searchedProduct = value;
+                          searchedCategory = value;
                         },
                       ),
                     ),
@@ -90,7 +90,7 @@ class _SelectProductForDiscountPageState
                 ),
               ),
               StreamBuilder(
-                stream: allProductStream,
+                stream: allCategoryStream,
                 builder: ((context, snapshot) {
                   if (snapshot.hasError) {
                     return const Center(
@@ -112,17 +112,17 @@ class _SelectProductForDiscountPageState
                               ),
                               itemCount: snapshot.data!.docs.length,
                               itemBuilder: (context, index) {
-                                final productData = snapshot.data!.docs[index];
-                                final productDataMap =
-                                    productData.data() as Map<String, dynamic>;
+                                final categoryData = snapshot.data!.docs[index];
+                                final categoryDataMap =
+                                    categoryData.data() as Map<String, dynamic>;
 
                                 // CARD
                                 return Padding(
                                   padding: const EdgeInsets.all(8),
                                   child: GestureDetector(
                                     onTap: () {
-                                      selectedProductsProvider.selectProduct(
-                                        productDataMap['productId'],
+                                      selectCategoryProvider.selectCategory(
+                                        categoryDataMap['categoryId'],
                                       );
                                     },
                                     child: Stack(
@@ -148,7 +148,7 @@ class _SelectProductForDiscountPageState
                                                         BorderRadius.circular(
                                                             12),
                                                     child: Image.network(
-                                                      productData['images'][0],
+                                                      categoryData['imageUrl'],
                                                       height: 140,
                                                       width: 140,
                                                       fit: BoxFit.cover,
@@ -160,7 +160,8 @@ class _SelectProductForDiscountPageState
                                                       const EdgeInsets.fromLTRB(
                                                           8, 4, 4, 0),
                                                   child: Text(
-                                                    productData['productName'],
+                                                    categoryData[
+                                                        'categoryName'],
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -171,37 +172,14 @@ class _SelectProductForDiscountPageState
                                                     ),
                                                   ),
                                                 ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          8, 0, 4, 0),
-                                                  child: Text(
-                                                    productData['productPrice'] !=
-                                                                "" &&
-                                                            productData[
-                                                                    'productPrice'] !=
-                                                                null
-                                                        ? productData[
-                                                            'productPrice']
-                                                        : "N/A",
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: const TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                    ),
-                                                  ),
-                                                ),
                                               ],
                                             ),
                                           ),
                                         ),
-                                        selectedProductsProvider
-                                                .selectedProducts
+                                        selectCategoryProvider
+                                                .selectedCategories
                                                 .contains(
-                                          productDataMap['productId'],
+                                          categoryDataMap['categoryId'],
                                         )
                                             ? Container(
                                                 padding:
@@ -228,9 +206,9 @@ class _SelectProductForDiscountPageState
                                 shrinkWrap: true,
                                 itemCount: snapshot.data!.docs.length,
                                 itemBuilder: ((context, index) {
-                                  final productData =
+                                  final categoryData =
                                       snapshot.data!.docs[index];
-                                  final productDataMap = productData.data()
+                                  final categoryDataMap = categoryData.data()
                                       as Map<String, dynamic>;
                                   return Padding(
                                     padding: const EdgeInsets.symmetric(
@@ -248,9 +226,9 @@ class _SelectProductForDiscountPageState
                                           ),
                                           child: ListTile(
                                             onTap: () {
-                                              selectedProductsProvider
-                                                  .selectProduct(
-                                                productDataMap['productId'],
+                                              selectCategoryProvider
+                                                  .selectCategory(
+                                                categoryDataMap['categoryId'],
                                               );
                                             },
                                             leading: CircleAvatar(
@@ -260,7 +238,7 @@ class _SelectProductForDiscountPageState
                                                 borderRadius:
                                                     BorderRadius.circular(4),
                                                 child: Image.network(
-                                                  productData['images'][0],
+                                                  categoryData['imagesUrl'],
                                                   width: 60,
                                                   height: 60,
                                                   fit: BoxFit.cover,
@@ -268,31 +246,18 @@ class _SelectProductForDiscountPageState
                                               ),
                                             ),
                                             title: Text(
-                                              productData['productName'],
+                                              categoryData['categoryName'],
                                               style: const TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                             ),
-                                            subtitle: Text(
-                                              productData['productPrice'] !=
-                                                          "" &&
-                                                      productData[
-                                                              'productPrice'] !=
-                                                          null
-                                                  ? productData['productPrice']
-                                                  : "N/A",
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
                                           ),
                                         ),
-                                        selectedProductsProvider
-                                                .selectedProducts
+                                        selectCategoryProvider
+                                                .selectedCategories
                                                 .contains(
-                                          productDataMap['productId'],
+                                          categoryDataMap['categoryId'],
                                         )
                                             ? Padding(
                                                 padding: const EdgeInsets.only(

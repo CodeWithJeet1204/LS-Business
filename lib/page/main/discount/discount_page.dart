@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:find_easy/page/main/discount/products/single_product_discount.dart';
+import 'package:find_easy/page/main/discount/category/category_discount.dart';
+import 'package:find_easy/page/main/discount/products/product_discount.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +40,7 @@ class _DiscountPageState extends State<DiscountPage> {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: ((context) => SingleProductDiscountPage()),
+                            builder: ((context) => ProductDiscountPage()),
                           ),
                         );
                       },
@@ -82,6 +83,13 @@ class _DiscountPageState extends State<DiscountPage> {
                   SizedOverflowBox(
                     size: Size(width, height * 0.275),
                     child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: ((context) => CategoryDiscountPage()),
+                          ),
+                        );
+                      },
                       child: Container(
                         margin: const EdgeInsets.symmetric(horizontal: 12),
                         width: width,
