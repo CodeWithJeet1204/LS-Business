@@ -121,6 +121,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
     final FirebaseFirestore store = FirebaseFirestore.instance;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: SingleChildScrollView(
           child: SizedBox(

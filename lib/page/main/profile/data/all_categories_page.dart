@@ -112,6 +112,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
         .snapshots();
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text("ALL CATEGORIES"),
       ),
@@ -248,17 +249,25 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.center,
                                                 children: [
-                                                  Text(
-                                                    categoryData[
-                                                        'categoryName'],
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: const TextStyle(
-                                                      color: primaryDark,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 20,
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                      left: width * 0.02,
+                                                    ),
+                                                    child: SizedBox(
+                                                      width: width * 0.275,
+                                                      child: Text(
+                                                        categoryData[
+                                                            'categoryName'],
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: const TextStyle(
+                                                          color: primaryDark,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 20,
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
                                                   IconButton(
@@ -270,10 +279,10 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                                                             'imageUrl'],
                                                       );
                                                     },
-                                                    icon: const Icon(
+                                                    icon: Icon(
                                                       Icons.delete_forever,
                                                       color: Colors.red,
-                                                      size: 32,
+                                                      size: width * 0.08,
                                                     ),
                                                     tooltip: "DELETE",
                                                   ),

@@ -119,6 +119,7 @@ class _AddPostPageState extends State<AddPostPage> {
         selectedProductProvider.selectedProduct;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text("CREATE POST"),
         actions: [

@@ -51,6 +51,7 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
     final signInMethodProvider = Provider.of<SignInMethodProvider>(context);
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: SingleChildScrollView(
           child: SizedBox(

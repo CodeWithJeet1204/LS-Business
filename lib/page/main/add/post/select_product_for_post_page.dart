@@ -35,6 +35,7 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
         .snapshots();
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text("SELECT PRODUCT"),
         actions: [

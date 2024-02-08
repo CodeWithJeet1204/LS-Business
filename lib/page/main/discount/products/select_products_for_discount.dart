@@ -36,6 +36,7 @@ class _SelectProductForDiscountPageState
         .snapshots();
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text("SELECT PRODUCT"),
         actions: [

@@ -147,6 +147,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
           'categories': categoryIdList,
           'vendorId': auth.currentUser!.uid,
         });
+        provider.clear();
         mySnackBar(context, "Discount Added");
         Navigator.of(context).pop();
         setState(() {
@@ -168,6 +169,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
     final selectedCategories = selectedCategoryProvider.selectedCategories;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
@@ -203,6 +205,18 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                 key: discountKey,
                 child: Column(
                   children: [
+                    // DISCLAIMER
+                    const Text(
+                      "If your category has ongoing discount, then this discount will be applied, after that discount ends (if this discount ends after that)",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: primaryDark2,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+
                     // IMAGE
                     GestureDetector(
                       onTap: _image == null ? addDiscountImage : changeFit,
@@ -291,10 +305,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
 
                     // NAME
                     TextFormField(
-                      autofocus: false,
-                      focusNode: FocusNode(),
                       controller: nameController,
-                      keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -451,6 +462,18 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                     ),
                     SizedBox(height: 20),
 
+                    // DISCLAIMER
+                    const Text(
+                      "If you select 1 jan as end date, discount will end at 31 dec 11:59 pm",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: primaryDark2,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+
                     // SELECT CATEGORY
                     MyButton(
                       text: selectedCategories.isEmpty
@@ -553,8 +576,6 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
 
                     // AMOUNT
                     TextFormField(
-                      autofocus: false,
-                      focusNode: FocusNode(),
                       controller: discountController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(

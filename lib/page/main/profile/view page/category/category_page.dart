@@ -247,6 +247,7 @@ class _CategoryPageState extends State<CategoryPage> {
         .snapshots();
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(),
       body: LayoutBuilder(builder: ((context, constraints) {
         double width = constraints.maxWidth;

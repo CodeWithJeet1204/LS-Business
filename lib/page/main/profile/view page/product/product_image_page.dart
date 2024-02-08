@@ -19,6 +19,7 @@ class _ProductImageViewState extends State<ProductImageView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(),
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {

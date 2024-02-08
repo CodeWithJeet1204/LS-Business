@@ -38,6 +38,7 @@ class _IntroPageViewState extends State<IntroPageView> {
     }
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         alignment: Alignment.center,
         children: [

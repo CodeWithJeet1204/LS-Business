@@ -73,6 +73,7 @@ class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
     }
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text("SELECT PRODUCTS"),
         actions: [

@@ -83,8 +83,8 @@ class _ProfilePageState extends State<ProfilePage> {
             .snapshots();
 
     return Scaffold(
-      backgroundColor: primary,
       resizeToAvoidBottomInset: false,
+      backgroundColor: primary,
       appBar: AppBar(
         title: const Text("PROFILE"),
         actions: [

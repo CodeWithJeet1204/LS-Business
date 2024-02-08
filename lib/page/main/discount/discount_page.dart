@@ -12,13 +12,10 @@ class DiscountPage extends StatefulWidget {
 }
 
 class _DiscountPageState extends State<DiscountPage> {
-  bool isPressed1 = false;
-  bool isPressed2 = false;
-  bool isPressed3 = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: primary,
       appBar: AppBar(
         title: const Text("DISCOUNTS"),
@@ -58,7 +55,7 @@ class _DiscountPageState extends State<DiscountPage> {
                             SizedBox(
                               width: width * 0.5,
                               child: const AutoSizeText(
-                                "SINGLE PRODUCT",
+                                "PRODUCT",
                                 style: TextStyle(
                                   color: primaryDark,
                                   fontWeight: FontWeight.w600,

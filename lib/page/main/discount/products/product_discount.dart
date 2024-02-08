@@ -108,6 +108,10 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
         return mySnackBar(context, "Select Product");
       }
 
+      if (isPercentSelected && int.parse(discountController.text) >= 100) {
+        return mySnackBar(context, "Max Discount is 99.99999999999999999999%");
+      }
+
       setState(() {
         isUploading = true;
       });
@@ -147,6 +151,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
           'categories': [],
           'vendorId': auth.currentUser!.uid,
         });
+        provider.clear();
         mySnackBar(context, "Discount Added");
         Navigator.of(context).pop();
         setState(() {
@@ -168,6 +173,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
     final selectedProducts = selectedProductProvider.selectedProducts;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
@@ -203,6 +209,18 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                 key: discountKey,
                 child: Column(
                   children: [
+                    // DISCLAIMER
+                    const Text(
+                      "If your selected product/s has ongoing discount, then this discount will be applied, after that discount ends (if this discount ends after that)",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: primaryDark2,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+
                     // IMAGE
                     GestureDetector(
                       onTap: _image == null ? addDiscountImage : changeFit,
@@ -291,10 +309,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
 
                     // NAME
                     TextFormField(
-                      autofocus: false,
-                      focusNode: FocusNode(),
                       controller: nameController,
-                      keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -451,6 +466,18 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                     ),
                     SizedBox(height: 20),
 
+                    // DISCLAIMER
+                    const Text(
+                      "If you select 1 jan as end date, discount will end at 31 dec 11:59 pm",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: primaryDark2,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+
                     // SELECT PRODUCT
                     MyButton(
                       text: selectedProducts.isEmpty
@@ -553,8 +580,6 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
 
                     // AMOUNT
                     TextFormField(
-                      autofocus: false,
-                      focusNode: FocusNode(),
                       controller: discountController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(

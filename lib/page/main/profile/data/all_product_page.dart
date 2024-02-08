@@ -104,6 +104,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
         .snapshots();
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text("YOUR PRODUCTS"),
       ),
@@ -189,6 +190,8 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                                     productDataMap['productId'],
                                                 productName: productDataMap[
                                                     'productName'],
+                                                categoryId: productDataMap[
+                                                    'categoryId'],
                                               )),
                                         ),
                                       );

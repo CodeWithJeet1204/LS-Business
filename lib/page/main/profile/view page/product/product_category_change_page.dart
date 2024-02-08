@@ -41,6 +41,7 @@ class _ChangeCategoryState extends State<ChangeCategory> {
         .snapshots();
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text("SELECT CATEGORY"),
         actions: [

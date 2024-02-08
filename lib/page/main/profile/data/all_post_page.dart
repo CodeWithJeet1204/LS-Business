@@ -55,6 +55,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
         .snapshots();
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('ALL POSTS'),
       ),

@@ -891,7 +891,6 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                                                   const EdgeInsets
                                                                       .only(
                                                                 right: 4,
-                                                                top: 4,
                                                               ),
                                                               child: Container(
                                                                 width: 40,

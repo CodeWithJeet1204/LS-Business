@@ -56,6 +56,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
     final AuthMethods auth = AuthMethods();
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

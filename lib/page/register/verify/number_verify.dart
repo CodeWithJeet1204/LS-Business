@@ -31,6 +31,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
     final FirebaseAuth auth = FirebaseAuth.instance;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Center(
           child: Column(

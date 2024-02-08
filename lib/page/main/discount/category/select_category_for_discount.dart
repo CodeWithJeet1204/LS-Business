@@ -36,6 +36,7 @@ class _SelectCategoryForDiscountPageState
         .snapshots();
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text("SELECT CATEGORIES"),
         actions: [

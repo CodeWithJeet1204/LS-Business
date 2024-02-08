@@ -39,6 +39,7 @@ class _LoginPageState extends State<LoginPage> {
     final AuthMethods auth = AuthMethods();
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: SingleChildScrollView(
           child: SizedBox(

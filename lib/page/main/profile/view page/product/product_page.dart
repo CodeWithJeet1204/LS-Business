@@ -22,10 +22,12 @@ class ProductPage extends StatefulWidget {
     required this.productId,
     required this.productName,
     this.fromPost = false,
+    this.categoryId,
   });
 
   final String productId;
   final String productName;
+  final String? categoryId;
   final bool fromPost;
 
   @override
@@ -35,12 +37,20 @@ class ProductPage extends StatefulWidget {
 class _ProductPageState extends State<ProductPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
+  bool isDiscount = false;
   final TextEditingController editController = TextEditingController();
   final GlobalKey<FormState> editKey = GlobalKey<FormState>();
   int _currentIndex = 0;
+
   bool isEditing = false;
   bool categoryExists = true;
   bool isImageChanging = false;
+
+  @override
+  void initState() {
+    ifDiscount();
+    super.initState();
+  }
 
   // EDIT INFO
   void edit(
@@ -538,6 +548,39 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
+  // INIT STATE
+
+  // IS DISCOUNT
+  Future<void> ifDiscount() async {
+    final discount = await store
+        .collection('Business')
+        .doc('Data')
+        .collection('Discounts')
+        .where('vendorId', isEqualTo: auth.currentUser!.uid)
+        .get();
+
+    for (QueryDocumentSnapshot<Map<String, dynamic>> doc in discount.docs) {
+      final data = doc.data();
+      print((data['categories'] as List).contains(widget.categoryId));
+      print("ABC");
+      if ((data['products'] as List).contains(widget.productId) ||
+          (data['categories'] as List).contains(widget.categoryId)) {
+        print("DEF");
+        if ((data['discountEndDateTime'] as Timestamp)
+                .toDate()
+                .isAfter(DateTime.now()) &&
+            !(data['discountStartDateTime'] as Timestamp)
+                .toDate()
+                .isAfter(DateTime.now())) {
+          setState(() {
+            isDiscount = true;
+          });
+          print(isDiscount);
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final productStream = store
@@ -555,6 +598,7 @@ class _ProductPageState extends State<ProductPage> {
         .snapshots();
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         actions: [
           IconButton(
@@ -665,7 +709,7 @@ class _ProductPageState extends State<ProductPage> {
                                 .snapshots();
 
                         return Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // IMAGES
                             CarouselSlider(
@@ -873,185 +917,162 @@ class _ProductPageState extends State<ProductPage> {
                             ),
 
                             // PRICE
-                            StreamBuilder(
-                                stream: discountPriceStream,
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasError) {
-                                    return Center(
-                                      child: Text('Something Went Wrong'),
-                                    );
-                                  }
-
-                                  if (snapshot.hasData) {
-                                    final priceSnap = snapshot.data!;
-                                    Map<String, dynamic> data = {};
-                                    for (QueryDocumentSnapshot<
-                                            Map<String, dynamic>> doc
-                                        in priceSnap.docs) {
-                                      data = doc.data();
-                                      if ((data['discountEndDateTime']
-                                              as Timestamp)
-                                          .toDate()
-                                          .isAfter(DateTime.now())) {
-                                        null;
-                                      } else {
-                                        data = {
-                                          'isProducts': false,
-                                          'isPercent': false,
-                                          'products': [],
-                                          'discountAmount': 0,
-                                          'discountEndDateTime':
-                                              Timestamp.fromDate(
-                                                  DateTime.now()),
-                                        };
+                            isDiscount
+                                ? StreamBuilder(
+                                    stream: discountPriceStream,
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasError) {
+                                        return Center(
+                                          child: Text('Something Went Wrong'),
+                                        );
                                       }
-                                    }
 
-                                    return Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
+                                      if (snapshot.hasData) {
+                                        final priceSnap = snapshot.data!;
+                                        Map<String, dynamic> data = {};
+                                        for (QueryDocumentSnapshot<
+                                                Map<String, dynamic>> doc
+                                            in priceSnap.docs) {
+                                          data = doc.data();
+                                        }
+
+                                        return Column(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                              MainAxisAlignment.center,
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                              CrossAxisAlignment.start,
                                           children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(horizontal: 8),
+                                                  child: RichText(
+                                                    text: TextSpan(
+                                                      text: 'Rs. ',
+                                                      style: TextStyle(
+                                                        color: primaryDark,
+                                                        fontSize: 22,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                      children: [
+                                                        TextSpan(
+                                                          text: price == ""
+                                                              ? 'N/A (price)'
+                                                              : data['isPercent']
+                                                                  ? '${(double.parse(price) * (100 - data['discountAmount']) / 100).toString()}  '
+                                                                  : '${double.parse(price) - data['discountAmount']}  ',
+                                                          style: TextStyle(
+                                                            color: Colors.green,
+                                                          ),
+                                                        ),
+                                                        TextSpan(
+                                                          text: price == ""
+                                                              ? 'N/A (price)'
+                                                              : price,
+                                                          style: TextStyle(
+                                                            fontSize: 20,
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    255,
+                                                                    134,
+                                                                    125,
+                                                                    1),
+                                                            decoration:
+                                                                TextDecoration
+                                                                    .lineThrough,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                                IconButton(
+                                                  onPressed: () {
+                                                    edit(
+                                                      'productPrice',
+                                                      1,
+                                                      false,
+                                                      true,
+                                                    );
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons.edit,
+                                                    size: 22,
+                                                  ),
+                                                  tooltip: "Edit Price",
+                                                ),
+                                              ],
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 10),
+                                              child: data['isPercent']
+                                                  ? Text(
+                                                      "${data['discountAmount']}% off",
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    )
+                                                  : Text(
+                                                      "Save Rs. ${data['discountAmount']}",
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    ),
+                                            ),
                                             Padding(
                                               padding:
                                                   const EdgeInsets.symmetric(
-                                                      horizontal: 8),
-                                              child: RichText(
-                                                text: TextSpan(
-                                                  text: 'Rs. ',
-                                                  style: TextStyle(
-                                                    color: primaryDark,
-                                                    fontSize: 22,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                  children: [
-                                                    TextSpan(
-                                                      text: price == ""
-                                                          ? 'N/A (price)'
-                                                          : data['isProducts']
-                                                              ? (data['products']
-                                                                          as List)
-                                                                      .contains(
-                                                                          widget
-                                                                              .productId)
-                                                                  ? data['isPercent']
-                                                                      ? '${(double.parse(price) * (100 - data['discountAmount']) / 100).toString()}  '
-                                                                      : '${double.parse(price) - data['discountAmount']}  '
-                                                                  : 'Rs. $price'
-                                                              : 'Rs. $price',
-                                                      style: TextStyle(
-                                                        color: data[
-                                                                'isProducts']
-                                                            ? (data['products']
-                                                                        as List)
-                                                                    .contains(widget
-                                                                        .productId)
-                                                                ? Colors.green
-                                                                : primaryDark
-                                                            : primaryDark,
-                                                      ),
-                                                    ),
-                                                    TextSpan(
-                                                      text: price == ""
-                                                          ? 'N/A (price)'
-                                                          : data['isProducts']
-                                                              ? (data['products']
-                                                                          as List)
-                                                                      .contains(
-                                                                          widget
-                                                                              .productId)
-                                                                  ? price
-                                                                  : ""
-                                                              : "",
-                                                      style: TextStyle(
-                                                        fontSize: 20,
-                                                        color: Color.fromRGBO(
-                                                            255, 134, 125, 1),
-                                                        decoration:
-                                                            TextDecoration
-                                                                .lineThrough,
-                                                      ),
-                                                    ),
-                                                  ],
+                                                horizontal: 10,
+                                                vertical: 2,
+                                              ),
+                                              child: Text(
+                                                (data['discountEndDateTime']
+                                                                as Timestamp)
+                                                            .toDate()
+                                                            .difference(
+                                                                DateTime.now())
+                                                            .inHours <
+                                                        24
+                                                    ? '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inHours} Hours Left'''
+                                                    : '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inDays} Days Left''',
+                                                style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontWeight: FontWeight.w500,
                                                 ),
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
                                               ),
-                                            ),
-                                            IconButton(
-                                              onPressed: () {
-                                                edit(
-                                                  'productPrice',
-                                                  1,
-                                                  false,
-                                                  true,
-                                                );
-                                              },
-                                              icon: const Icon(
-                                                Icons.edit,
-                                                size: 22,
-                                              ),
-                                              tooltip: "Edit Price",
                                             ),
                                           ],
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 10),
-                                          child: data['isProducts']
-                                              ? (data['products'] as List)
-                                                      .contains(
-                                                          widget.productId)
-                                                  ? data['isPercent']
-                                                      ? Text(
-                                                          "${data['discountAmount']}% off",
-                                                          style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
-                                                        )
-                                                      : Text(
-                                                          "Save Rs. ${data['discountAmount']}",
-                                                          style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
-                                                        )
-                                                  : Container()
-                                              : Container(),
-                                        ),
-                                        data['isProducts']
-                                            ? Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                  horizontal: 10,
-                                                  vertical: 2,
-                                                ),
-                                                child: Text(
-                                                  '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inHours} Hours Left'''
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                    color: Colors.red,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                              )
-                                            : Container(),
-                                      ],
-                                    );
-                                  }
+                                        );
+                                      }
 
-                                  return Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                }),
+                                      return Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    })
+                                : Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Text(
+                                      "Rs. ${productData['productPrice']}",
+                                      style: TextStyle(
+                                        color: primaryDark,
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
 
                             // AVAILABLE / OUT OF STOCK
                             Padding(

@@ -31,6 +31,7 @@ class _PostPageState extends State<PostPage> {
         .snapshots();
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         actions: [
           IconButton(
