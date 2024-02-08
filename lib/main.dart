@@ -23,6 +23,7 @@ import 'package:find_easy/provider/select_product_for_post_provider.dart';
 import 'package:find_easy/provider/shop_type_provider.dart';
 import 'package:find_easy/provider/sign_in_method_provider.dart';
 import 'package:find_easy/utils/colors.dart';
+import 'package:find_easy/utils/network_connectivity.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -149,7 +150,12 @@ class MyApp extends StatelessWidget {
               builder: ((context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.active) {
                   if (snapshot.hasData) {
-                    return const MainPage();
+                    return Stack(
+                      children: [
+                        const MainPage(),
+                        ConnectivityNotificationWidget(),
+                      ],
+                    );
                   } else if (snapshot.hasData &&
                       FirebaseAuth.instance.currentUser!.email != null &&
                       !FirebaseAuth.instance.currentUser!.emailVerified) {
@@ -161,7 +167,12 @@ class MyApp extends StatelessWidget {
                       ),
                     );
                   } else {
-                    return const LoginPage();
+                    return Stack(
+                      children: [
+                        const LoginPage(),
+                        ConnectivityNotificationWidget(),
+                      ],
+                    );
                   }
                 } else if (snapshot.connectionState ==
                     ConnectionState.waiting) {
@@ -171,7 +182,12 @@ class MyApp extends StatelessWidget {
                     ),
                   );
                 } else {
-                  return const LoginPage();
+                  return Stack(
+                    children: [
+                      const LoginPage(),
+                      ConnectivityNotificationWidget(),
+                    ],
+                  );
                 }
               }),
             ),
