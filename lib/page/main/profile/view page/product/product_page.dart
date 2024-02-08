@@ -10,6 +10,7 @@ import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/info_edit_box.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:find_easy/widgets/text_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -32,6 +33,7 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
+  final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   final TextEditingController editController = TextEditingController();
   final GlobalKey<FormState> editKey = GlobalKey<FormState>();
@@ -50,7 +52,7 @@ class _ProductPageState extends State<ProductPage> {
     showDialog(
         context: context,
         builder: (context) {
-          final propertyStream = FirebaseFirestore.instance
+          final propertyStream = store
               .collection('Business')
               .doc('Data')
               .collection('Products')
@@ -301,7 +303,7 @@ class _ProductPageState extends State<ProductPage> {
                                                   .toString()
                                                   .toUpperCase()
                                             ];
-                                            await FirebaseFirestore.instance
+                                            await store
                                                 .collection('Business')
                                                 .doc('Data')
                                                 .collection('Products')
@@ -313,7 +315,7 @@ class _ProductPageState extends State<ProductPage> {
 
                                             // 1 WORD NOT PROPERTY
                                           } else {
-                                            await FirebaseFirestore.instance
+                                            await store
                                                 .collection('Business')
                                                 .doc('Data')
                                                 .collection('Products')
@@ -372,7 +374,7 @@ class _ProductPageState extends State<ProductPage> {
         await ref.putFile(File(im.path)).whenComplete(() async {
           await ref.getDownloadURL().then((value) {
             images.add(value);
-            FirebaseFirestore.instance
+            store
                 .collection('Business')
                 .doc('Data')
                 .collection('Products')
@@ -446,7 +448,7 @@ class _ProductPageState extends State<ProductPage> {
         .refFromURL(images[images.indexOf(e)])
         .delete();
     images.remove(e);
-    await FirebaseFirestore.instance
+    await store
         .collection('Business')
         .doc('Data')
         .collection('Products')
@@ -538,11 +540,18 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
-    final productStream = FirebaseFirestore.instance
+    final productStream = store
         .collection('Business')
         .doc('Data')
         .collection('Products')
         .doc(widget.productId)
+        .snapshots();
+
+    final discountPriceStream = store
+        .collection('Business')
+        .doc('Data')
+        .collection('Discounts')
+        .where('vendorId', isEqualTo: auth.currentUser!.uid)
         .snapshots();
 
     return Scaffold(
@@ -648,7 +657,7 @@ class _ProductPageState extends State<ProductPage> {
                             properties['propertyInputType5'];
 
                         final Stream<DocumentSnapshot<Map<String, dynamic>>>
-                            categoryStream = FirebaseFirestore.instance
+                            categoryStream = store
                                 .collection('Business')
                                 .doc('Data')
                                 .collection('Category')
@@ -864,40 +873,185 @@ class _ProductPageState extends State<ProductPage> {
                             ),
 
                             // PRICE
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 8),
-                                  child: Text(
-                                    price == "" ? 'N/A (price)' : 'Rs. $price',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      color: primaryDark,
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                                IconButton(
-                                  onPressed: () {
-                                    edit(
-                                      'productPrice',
-                                      1,
-                                      false,
-                                      true,
+                            StreamBuilder(
+                                stream: discountPriceStream,
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasError) {
+                                    return Center(
+                                      child: Text('Something Went Wrong'),
                                     );
-                                  },
-                                  icon: const Icon(
-                                    Icons.edit,
-                                    size: 22,
-                                  ),
-                                  tooltip: "Edit Price",
-                                ),
-                              ],
-                            ),
+                                  }
+
+                                  if (snapshot.hasData) {
+                                    final priceSnap = snapshot.data!;
+                                    Map<String, dynamic> data = {};
+                                    for (QueryDocumentSnapshot<
+                                            Map<String, dynamic>> doc
+                                        in priceSnap.docs) {
+                                      data = doc.data();
+                                      if ((data['discountEndDateTime']
+                                              as Timestamp)
+                                          .toDate()
+                                          .isAfter(DateTime.now())) {
+                                        null;
+                                      } else {
+                                        data = {
+                                          'isProducts': false,
+                                          'isPercent': false,
+                                          'products': [],
+                                          'discountAmount': 0,
+                                          'discountEndDateTime':
+                                              Timestamp.fromDate(
+                                                  DateTime.now()),
+                                        };
+                                      }
+                                    }
+
+                                    return Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 8),
+                                              child: RichText(
+                                                text: TextSpan(
+                                                  text: 'Rs. ',
+                                                  style: TextStyle(
+                                                    color: primaryDark,
+                                                    fontSize: 22,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                  children: [
+                                                    TextSpan(
+                                                      text: price == ""
+                                                          ? 'N/A (price)'
+                                                          : data['isProducts']
+                                                              ? (data['products']
+                                                                          as List)
+                                                                      .contains(
+                                                                          widget
+                                                                              .productId)
+                                                                  ? data['isPercent']
+                                                                      ? '${(double.parse(price) * (100 - data['discountAmount']) / 100).toString()}  '
+                                                                      : '${double.parse(price) - data['discountAmount']}  '
+                                                                  : 'Rs. $price'
+                                                              : 'Rs. $price',
+                                                      style: TextStyle(
+                                                        color: data[
+                                                                'isProducts']
+                                                            ? (data['products']
+                                                                        as List)
+                                                                    .contains(widget
+                                                                        .productId)
+                                                                ? Colors.green
+                                                                : primaryDark
+                                                            : primaryDark,
+                                                      ),
+                                                    ),
+                                                    TextSpan(
+                                                      text: price == ""
+                                                          ? 'N/A (price)'
+                                                          : data['isProducts']
+                                                              ? (data['products']
+                                                                          as List)
+                                                                      .contains(
+                                                                          widget
+                                                                              .productId)
+                                                                  ? price
+                                                                  : ""
+                                                              : "",
+                                                      style: TextStyle(
+                                                        fontSize: 20,
+                                                        color: Color.fromRGBO(
+                                                            255, 134, 125, 1),
+                                                        decoration:
+                                                            TextDecoration
+                                                                .lineThrough,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                            IconButton(
+                                              onPressed: () {
+                                                edit(
+                                                  'productPrice',
+                                                  1,
+                                                  false,
+                                                  true,
+                                                );
+                                              },
+                                              icon: const Icon(
+                                                Icons.edit,
+                                                size: 22,
+                                              ),
+                                              tooltip: "Edit Price",
+                                            ),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 10),
+                                          child: data['isProducts']
+                                              ? (data['products'] as List)
+                                                      .contains(
+                                                          widget.productId)
+                                                  ? data['isPercent']
+                                                      ? Text(
+                                                          "${data['discountAmount']}% off",
+                                                          style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                        )
+                                                      : Text(
+                                                          "Save Rs. ${data['discountAmount']}",
+                                                          style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                        )
+                                                  : Container()
+                                              : Container(),
+                                        ),
+                                        data['isProducts']
+                                            ? Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal: 10,
+                                                  vertical: 2,
+                                                ),
+                                                child: Text(
+                                                  '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inHours} Hours Left'''
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                    color: Colors.red,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              )
+                                            : Container(),
+                                      ],
+                                    );
+                                  }
+
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }),
 
                             // AVAILABLE / OUT OF STOCK
                             Padding(
@@ -911,6 +1065,7 @@ class _ProductPageState extends State<ProductPage> {
                                 ),
                                 child: Column(
                                   children: [
+                                    // AVAILABLE
                                     SizedBox(
                                       width: width,
                                       child: Padding(
@@ -954,6 +1109,7 @@ class _ProductPageState extends State<ProductPage> {
                                       indent: 8,
                                       endIndent: 8,
                                     ),
+                                    // OUT OF STOCK
                                     SizedBox(
                                       width: width,
                                       child: Padding(
@@ -1033,6 +1189,8 @@ class _ProductPageState extends State<ProductPage> {
                                   if (snapshot.hasData) {
                                     categoryExists = true;
                                     final categoryData = snapshot.data!;
+
+                                    // CATEGORY
                                     return Padding(
                                       padding: const EdgeInsets.symmetric(
                                         vertical: 6,
@@ -1054,6 +1212,7 @@ class _ProductPageState extends State<ProductPage> {
                                           children: [
                                             Row(
                                               children: [
+                                                // CATEGORY IMAGE
                                                 ClipRRect(
                                                   borderRadius:
                                                       BorderRadius.circular(
@@ -1086,6 +1245,7 @@ class _ProductPageState extends State<ProductPage> {
                                                   ),
                                                 ),
                                                 SizedBox(width: width * 0.05),
+                                                // CATEGORY NAME
                                                 SizedBox(
                                                   width: width * 0.4,
                                                   child: Text(
@@ -1112,6 +1272,7 @@ class _ProductPageState extends State<ProductPage> {
                                                 ),
                                               ],
                                             ),
+                                            // CHANGE CATEGORY
                                             IconButton(
                                               onPressed: () {
                                                 Navigator.of(context).push(
