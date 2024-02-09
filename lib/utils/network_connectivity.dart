@@ -10,19 +10,26 @@ class ConnectivityNotificationWidget extends StatefulWidget {
 
 class _ConnectivityNotificationWidgetState
     extends State<ConnectivityNotificationWidget> {
-  late ConnectivityResult _connectionStatus;
+  ConnectivityResult _connectionStatus =
+      ConnectivityResult.none; // Initialize with a value
   late StreamSubscription<ConnectivityResult> _connectivitySubscription;
 
   @override
   void initState() {
     super.initState();
 
-    // Listen to connectivity changes
-    Connectivity().checkConnectivity().then(_updateConnectionStatus);
+    connectivityInitialize();
+  }
 
-    // Listen to connectivity changes
-    _connectivitySubscription =
-        Connectivity().onConnectivityChanged.listen(_updateConnectionStatus);
+  void connectivityInitialize() async {
+    // Get initial connection status and listen for changes
+    _connectivitySubscription = await Connectivity()
+        .onConnectivityChanged
+        .first
+        .then((initialResult) => _updateConnectionStatus(initialResult))
+        .then((_) => Connectivity()
+            .onConnectivityChanged
+            .listen(_updateConnectionStatus));
   }
 
   @override
