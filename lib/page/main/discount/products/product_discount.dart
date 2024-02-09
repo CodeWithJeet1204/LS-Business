@@ -140,6 +140,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
           'isPercent': isPercentSelected,
           'isProducts': true,
           'isCategories': false,
+          'discountName': nameController.text.toString(),
           'discountAmount': double.parse(discountController.text),
           'discountStartDate': startDate,
           'discountEndDate': endDate,
@@ -198,15 +199,15 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
           child: isUploading ? const LinearProgressIndicator() : Container(),
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-        child: LayoutBuilder(
-          builder: ((context, constraints) {
-            double width = constraints.maxWidth;
+      body: LayoutBuilder(
+        builder: ((context, constraints) {
+          double width = constraints.maxWidth;
 
-            return SingleChildScrollView(
-              child: Form(
-                key: discountKey,
+          return SingleChildScrollView(
+            child: Form(
+              key: discountKey,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 6, vertical: 6),
                 child: Column(
                   children: [
                     // DISCLAIMER
@@ -513,7 +514,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                             GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  isPercentSelected = !isPercentSelected;
+                                  isPercentSelected = true;
                                 });
                               },
                               child: Container(
@@ -545,7 +546,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                             GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  isPercentSelected = !isPercentSelected;
+                                  isPercentSelected = false;
                                 });
                               },
                               child: Container(
@@ -579,32 +580,37 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                     SizedBox(height: 20),
 
                     // AMOUNT
-                    TextFormField(
-                      controller: discountController,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                            color: Colors.cyan.shade700,
-                          ),
-                        ),
-                        hintText:
-                            isPercentSelected ? "eg. 20%" : "eg. Rs. 200 off",
+                    Padding(
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom,
                       ),
-                      validator: (value) {
-                        if (value != null && value.isEmpty) {
-                          return 'Please enter Discount Amount';
-                        }
-                        return null;
-                      },
+                      child: TextFormField(
+                        controller: discountController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: Colors.cyan.shade700,
+                            ),
+                          ),
+                          hintText:
+                              isPercentSelected ? "eg. 20%" : "eg. Rs. 200 off",
+                        ),
+                        validator: (value) {
+                          if (value != null && value.isEmpty) {
+                            return 'Please enter Discount Amount';
+                          }
+                          return null;
+                        },
+                      ),
                     ),
                   ],
                 ),
               ),
-            );
-          }),
-        ),
+            ),
+          );
+        }),
       ),
     );
   }

@@ -136,6 +136,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
           'isPercent': isPercentSelected,
           'isProducts': false,
           'isCategories': true,
+          'discountName': nameController.text.toString(),
           'discountAmount': double.parse(discountController.text),
           'discountStartDate': startDate,
           'discountEndDate': endDate,

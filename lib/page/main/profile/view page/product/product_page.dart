@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -468,47 +467,8 @@ class _ProductPageState extends State<ProductPage> {
     });
   }
 
-  // DELETE PRODUCT
-  void delete() async {
-    setState(() {
-      isEditing = true;
-    });
-    try {
-      await store
-          .collection('Business')
-          .doc('Data')
-          .collection('Products')
-          .doc(widget.productId)
-          .delete();
-
-      final postSnap = await store
-          .collection('Business')
-          .doc('Data')
-          .collection('Posts')
-          .where('postProductId', isEqualTo: widget.productId)
-          .get();
-
-      for (QueryDocumentSnapshot doc in postSnap.docs) {
-        await doc.reference.delete();
-      }
-      setState(() {
-        isEditing = false;
-      });
-      if (context.mounted) {
-        Navigator.of(context).pop();
-      }
-    } catch (e) {
-      setState(() {
-        isEditing = false;
-      });
-      if (context.mounted) {
-        mySnackBar(context, e.toString());
-      }
-    }
-  }
-
   // CONFIRM DELETE
-  confirmDelete() {
+  void confirmDelete() {
     showDialog(
       context: context,
       builder: ((context) {
@@ -546,6 +506,45 @@ class _ProductPageState extends State<ProductPage> {
         );
       }),
     );
+  }
+
+  // DELETE PRODUCT
+  void delete() async {
+    setState(() {
+      isEditing = true;
+    });
+    try {
+      await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Products')
+          .doc(widget.productId)
+          .delete();
+
+      final postSnap = await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Posts')
+          .where('postProductId', isEqualTo: widget.productId)
+          .get();
+
+      for (QueryDocumentSnapshot doc in postSnap.docs) {
+        await doc.reference.delete();
+      }
+      setState(() {
+        isEditing = false;
+      });
+      if (context.mounted) {
+        Navigator.of(context).pop();
+      }
+    } catch (e) {
+      setState(() {
+        isEditing = false;
+      });
+      if (context.mounted) {
+        mySnackBar(context, e.toString());
+      }
+    }
   }
 
   // IF DISCOUNT
