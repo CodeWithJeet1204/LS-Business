@@ -3,23 +3,69 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/page/main/profile/view%20page/product/product_image_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/info_box.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class PostPage extends StatefulWidget {
   const PostPage({
     super.key,
     required this.postId,
+    required this.productId,
+    required this.productName,
+    required this.categoryId,
   });
 
   final String postId;
+  final String productId;
+  final String productName;
+  final String categoryId;
 
   @override
   State<PostPage> createState() => _PostPageState();
 }
 
 class _PostPageState extends State<PostPage> {
+  final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   int _currentIndex = 0;
+  bool isDiscount = false;
+
+  @override
+  void initState() {
+    ifDiscount();
+    super.initState();
+  }
+
+  // IF DISCOUNT
+  Future<void> ifDiscount() async {
+    final discount = await store
+        .collection('Business')
+        .doc('Data')
+        .collection('Discounts')
+        .where('vendorId', isEqualTo: auth.currentUser!.uid)
+        .get();
+
+    for (QueryDocumentSnapshot<Map<String, dynamic>> doc in discount.docs) {
+      final data = doc.data();
+      print((data['categories'] as List).contains(widget.categoryId));
+      print("ABC");
+      if ((data['products'] as List).contains(widget.productId) ||
+          (data['categories'] as List).contains(widget.categoryId)) {
+        print("DEF");
+        if ((data['discountEndDateTime'] as Timestamp)
+                .toDate()
+                .isAfter(DateTime.now()) &&
+            !(data['discountStartDateTime'] as Timestamp)
+                .toDate()
+                .isAfter(DateTime.now())) {
+          setState(() {
+            isDiscount = true;
+          });
+          print(isDiscount);
+        }
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +74,13 @@ class _PostPageState extends State<PostPage> {
         .doc('Data')
         .collection('Posts')
         .doc(widget.postId)
+        .snapshots();
+
+    final discountPriceStream = store
+        .collection('Business')
+        .doc('Data')
+        .collection('Discounts')
+        .where('vendorId', isEqualTo: auth.currentUser!.uid)
         .snapshots();
 
     return Scaffold(
@@ -64,19 +117,22 @@ class _PostPageState extends State<PostPage> {
                     if (snapshot.hasData) {
                       final postData = snapshot.data!;
                       final bool isTextPost = postData['isTextPost'];
-                      final String name = postData['postName'];
-                      final String brand = postData['postBrand'];
-                      final String price = postData['postPrice'];
-                      final String description = postData['postDescription'];
+                      final String name = postData['postProductName'];
+                      final String brand = postData['postProductBrand'];
+                      final String price = postData['postProductPrice'];
+                      final String description =
+                          postData['postProductDescription'];
                       final int likes = postData['postLikes'];
                       final int views = postData['postViews'];
                       final Map comments = postData['postComments'];
                       final List images =
-                          isTextPost ? [] : postData['postImages'];
+                          isTextPost ? [] : postData['postProductImages'];
 
                       return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           !isTextPost
+                              // IMAGE
                               ? CarouselSlider(
                                   items: images
                                       .map(
@@ -159,7 +215,8 @@ class _PostPageState extends State<PostPage> {
 
                           // NAME
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
                             child: Text(
                               name,
                               maxLines: 1,
@@ -178,17 +235,134 @@ class _PostPageState extends State<PostPage> {
 
                           // PRICE
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                            child: Text(
-                              price == "" ? 'N/A (price)' : 'Rs. $price',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                color: primaryDark,
-                                fontSize: 22,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 6),
+                            child: isDiscount
+                                ? StreamBuilder(
+                                    stream: discountPriceStream,
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasError) {
+                                        return Center(
+                                          child: Text('Something Went Wrong'),
+                                        );
+                                      }
+
+                                      if (snapshot.hasData) {
+                                        final priceSnap = snapshot.data!;
+                                        Map<String, dynamic> data = {};
+                                        for (QueryDocumentSnapshot<
+                                                Map<String, dynamic>> doc
+                                            in priceSnap.docs) {
+                                          data = doc.data();
+                                        }
+
+                                        return Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 8),
+                                              child: RichText(
+                                                text: TextSpan(
+                                                  text: 'Rs. ',
+                                                  style: TextStyle(
+                                                    color: primaryDark,
+                                                    fontSize: 22,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                  children: [
+                                                    TextSpan(
+                                                      text: price == ""
+                                                          ? 'N/A (price)'
+                                                          : data['isPercent']
+                                                              ? '${(double.parse(price) * (100 - data['discountAmount']) / 100).toString()}  '
+                                                              : '${double.parse(price) - data['discountAmount']}  ',
+                                                      style: TextStyle(
+                                                        color: Colors.green,
+                                                      ),
+                                                    ),
+                                                    TextSpan(
+                                                      text: price == ""
+                                                          ? 'N/A (price)'
+                                                          : price,
+                                                      style: TextStyle(
+                                                        fontSize: 20,
+                                                        color: Color.fromRGBO(
+                                                            255, 134, 125, 1),
+                                                        decoration:
+                                                            TextDecoration
+                                                                .lineThrough,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 10),
+                                              child: data['isPercent']
+                                                  ? Text(
+                                                      "${data['discountAmount']}% off",
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    )
+                                                  : Text(
+                                                      "Save Rs. ${data['discountAmount']}",
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                horizontal: 10,
+                                                vertical: 2,
+                                              ),
+                                              child: Text(
+                                                (data['discountEndDateTime']
+                                                                as Timestamp)
+                                                            .toDate()
+                                                            .difference(
+                                                                DateTime.now())
+                                                            .inHours <
+                                                        24
+                                                    ? '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inHours} Hours Left'''
+                                                    : '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inDays} Days Left''',
+                                                style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      }
+
+                                      return Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    })
+                                : Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Text(
+                                      "Rs. ${postData['postProductPrice']}",
+                                      style: TextStyle(
+                                        color: primaryDark,
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
                           ),
 
                           // DESCRIPTION

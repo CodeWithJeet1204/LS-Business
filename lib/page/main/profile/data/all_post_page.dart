@@ -47,10 +47,10 @@ class _AllPostsPageState extends State<AllPostsPage> {
         .doc('Data')
         .collection('Posts')
         .where('postVendorId', isEqualTo: auth.currentUser!.uid)
-        .orderBy('postName')
-        .where('postName',
+        .orderBy('postProductName')
+        .where('postProductName',
             isGreaterThanOrEqualTo: searchController.text.toString())
-        .where('postName', isLessThan: '${searchController.text}\uf8ff')
+        .where('postProductName', isLessThan: '${searchController.text}\uf8ff')
         .orderBy('postDateTime', descending: true)
         .snapshots();
 
@@ -135,6 +135,12 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                           MaterialPageRoute(
                                             builder: ((context) => PostPage(
                                                   postId: postData['postId'],
+                                                  productId:
+                                                      postData['postProductId'],
+                                                  productName: postData[
+                                                      'postProductName'],
+                                                  categoryId: postData[
+                                                      'postCategoryId'],
                                                 )),
                                           ),
                                         );
@@ -158,10 +164,10 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                   borderRadius:
                                                       BorderRadius.circular(12),
                                                   child: Image.network(
-                                                    postData['postImages'] !=
+                                                    postData['postProductImages'] !=
                                                             null
-                                                        ? postData['postImages']
-                                                            [0]
+                                                        ? postData[
+                                                            'postProductImages'][0]
                                                         : 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
                                                     height: 140,
                                                     width: 140,
@@ -194,7 +200,8 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                           0,
                                                         ),
                                                         child: Text(
-                                                          postData['postName'],
+                                                          postData[
+                                                              'postProductName'],
                                                           maxLines: 1,
                                                           overflow: TextOverflow
                                                               .ellipsis,
@@ -216,13 +223,13 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                           0,
                                                         ),
                                                         child: Text(
-                                                          postData['postPrice'] !=
+                                                          postData['postProductPrice'] !=
                                                                       "" &&
                                                                   postData[
-                                                                          'postPrice'] !=
+                                                                          'postProductPrice'] !=
                                                                       null
                                                               ? postData[
-                                                                  'postPrice']
+                                                                  'postProductPrice']
                                                               : "N/A",
                                                           maxLines: 1,
                                                           overflow: TextOverflow
@@ -280,8 +287,8 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                   ProductPage(
                                                     productId: postData[
                                                         'postProductId'],
-                                                    productName:
-                                                        postData['postName'],
+                                                    productName: postData[
+                                                        'postProductName'],
                                                   )),
                                             ),
                                           );
@@ -297,8 +304,10 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                               borderRadius:
                                                   BorderRadius.circular(4),
                                               child: Image.network(
-                                                postData['postImages'] != null
-                                                    ? postData['postImages'][0]
+                                                postData['postProductImages'] !=
+                                                        null
+                                                    ? postData[
+                                                        'postProductImages'][0]
                                                     : 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
                                                 width: 45,
                                                 height: 45,
@@ -306,17 +315,19 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                               ),
                                             ),
                                             title: Text(
-                                              postData['postName'],
+                                              postData['postProductName'],
                                               style: const TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                             ),
                                             subtitle: Text(
-                                              postData['postPrice'] != "" &&
-                                                      postData['postPrice'] !=
+                                              postData['postProductPrice'] !=
+                                                          "" &&
+                                                      postData[
+                                                              'postProductPrice'] !=
                                                           null
-                                                  ? postData['postPrice']
+                                                  ? postData['postProductPrice']
                                                   : "N/A",
                                               style: const TextStyle(
                                                 fontSize: 14,
