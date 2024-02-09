@@ -2,7 +2,7 @@ import 'package:find_easy/page/main/add/add_page.dart';
 import 'package:find_easy/page/main/comments/all_comments_screen.dart';
 import 'package:find_easy/page/main/discount/discount_page.dart';
 import 'package:find_easy/page/main/profile/profile_page.dart';
-import 'package:find_easy/page/main/profile/view%20page/analytics/analaytics_page.dart';
+import 'package:find_easy/page/main/analytics/analaytics_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:flutter/material.dart';
 

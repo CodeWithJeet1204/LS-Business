@@ -58,299 +58,291 @@ class _AllPostsPageState extends State<AllPostsPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('ALL POSTS'),
-      ),
-      body: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          double width = constraints.maxWidth;
-          // double height = constraints.maxHeight;
-
-          return SingleChildScrollView(
-            child: Column(
+        bottom: PreferredSize(
+          preferredSize: Size(
+            MediaQuery.of(context).size.width,
+            80,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 6,
+              vertical: 8,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 6,
-                    vertical: 8,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: searchController,
-                          autocorrect: false,
-                          decoration: const InputDecoration(
-                            labelText: "Case - Sensitive",
-                            hintText: "Search ...",
-                            border: OutlineInputBorder(),
-                          ),
-                          onChanged: (value) {
-                            setState(() {});
-                          },
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-                            isGridView = !isGridView;
-                          });
-                        },
-                        icon: Icon(
-                          isGridView ? Icons.list : Icons.grid_view_rounded,
-                        ),
-                        tooltip: isGridView ? "List View" : "Grid View",
-                      ),
-                    ],
+                Expanded(
+                  child: TextField(
+                    controller: searchController,
+                    autocorrect: false,
+                    decoration: const InputDecoration(
+                      labelText: "Case - Sensitive",
+                      hintText: "Search ...",
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: (value) {
+                      setState(() {});
+                    },
                   ),
                 ),
-                StreamBuilder(
-                    stream: postStream,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return const Center(
-                          child: Text('Something went wrong'),
-                        );
-                      }
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      isGridView = !isGridView;
+                    });
+                  },
+                  icon: Icon(
+                    isGridView ? Icons.list : Icons.grid_view_rounded,
+                  ),
+                  tooltip: isGridView ? "List View" : "Grid View",
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            double width = constraints.maxWidth;
+            // double height = constraints.maxHeight;
 
-                      if (snapshot.hasData) {
-                        return isGridView
-                            ? GridView.builder(
-                                shrinkWrap: true,
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  childAspectRatio: 3 / 4,
-                                ),
-                                itemCount: snapshot.data!.docs.length,
-                                itemBuilder: ((context, index) {
-                                  final postSnap = snapshot.data!.docs[index];
-                                  final Map<String, dynamic> postData =
-                                      postSnap.data();
+            return StreamBuilder(
+                stream: postStream,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return const Center(
+                      child: Text('Something went wrong'),
+                    );
+                  }
 
-                                  return Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: ((context) => PostPage(
-                                                  postId: postData['postId'],
-                                                  productId:
-                                                      postData['postProductId'],
-                                                  productName: postData[
-                                                      'postProductName'],
-                                                  categoryId: postData[
-                                                      'postCategoryId'],
-                                                )),
-                                          ),
-                                        );
-                                      },
-                                      child: Container(
-                                        width: width * 0.5,
-                                        decoration: BoxDecoration(
-                                          color: primary2.withOpacity(0.5),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(4),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              const SizedBox(height: 2),
-                                              Center(
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                  child: Image.network(
-                                                    postData['postProductImages'] !=
-                                                            null
-                                                        ? postData[
-                                                            'postProductImages'][0]
-                                                        : 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
-                                                    height: 140,
-                                                    width: 140,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                ),
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .fromLTRB(
-                                                          8,
-                                                          4,
-                                                          4,
-                                                          0,
-                                                        ),
-                                                        child: Text(
-                                                          postData[
-                                                              'postProductName'],
-                                                          maxLines: 1,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style:
-                                                              const TextStyle(
-                                                            fontSize: 20,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .fromLTRB(
-                                                          8,
-                                                          0,
-                                                          4,
-                                                          0,
-                                                        ),
-                                                        child: Text(
-                                                          postData['postProductPrice'] !=
-                                                                      "" &&
-                                                                  postData[
-                                                                          'postProductPrice'] !=
-                                                                      null
-                                                              ? postData[
-                                                                  'postProductPrice']
-                                                              : "N/A",
-                                                          maxLines: 1,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style:
-                                                              const TextStyle(
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  IconButton(
-                                                    onPressed: () {
-                                                      deletePost(
-                                                        postData['postId'],
-                                                      );
-                                                    },
-                                                    icon: const Icon(
-                                                      Icons.delete_forever,
-                                                      color: Colors.red,
-                                                      size: 32,
-                                                    ),
-                                                    tooltip: "Delete Post",
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
+                  if (snapshot.hasData) {
+                    return isGridView
+                        ? GridView.builder(
+                            shrinkWrap: true,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 3 / 4,
+                            ),
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: ((context, index) {
+                              final postSnap = snapshot.data!.docs[index];
+                              final Map<String, dynamic> postData =
+                                  postSnap.data();
+
+                              return Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: ((context) => PostPage(
+                                              postId: postData['postId'],
+                                              productId:
+                                                  postData['postProductId'],
+                                              productName:
+                                                  postData['postProductName'],
+                                              categoryId:
+                                                  postData['postCategoryId'],
+                                            )),
                                       ),
+                                    );
+                                  },
+                                  child: Container(
+                                    width: width * 0.5,
+                                    decoration: BoxDecoration(
+                                      color: primary2.withOpacity(0.5),
+                                      borderRadius: BorderRadius.circular(12),
                                     ),
-                                  );
-                                }),
-                              )
-                            : SizedBox(
-                                width: width,
-                                child: ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: snapshot.data!.docs.length,
-                                  itemBuilder: ((context, index) {
-                                    final postData = snapshot.data!.docs[index];
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 6,
-                                        vertical: 8,
-                                      ),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: ((context) =>
-                                                  ProductPage(
-                                                    productId: postData[
-                                                        'postProductId'],
-                                                    productName: postData[
-                                                        'postProductName'],
-                                                  )),
-                                            ),
-                                          );
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: primary2.withOpacity(0.5),
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
-                                          child: ListTile(
-                                            leading: ClipRRect(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(4),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const SizedBox(height: 2),
+                                          Center(
+                                            child: ClipRRect(
                                               borderRadius:
-                                                  BorderRadius.circular(4),
+                                                  BorderRadius.circular(12),
                                               child: Image.network(
                                                 postData['postProductImages'] !=
                                                         null
                                                     ? postData[
                                                         'postProductImages'][0]
                                                     : 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
-                                                width: 45,
-                                                height: 45,
+                                                height: 140,
+                                                width: 140,
                                                 fit: BoxFit.cover,
                                               ),
                                             ),
-                                            title: Text(
-                                              postData['postProductName'],
-                                              style: const TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                            subtitle: Text(
-                                              postData['postProductPrice'] !=
-                                                          "" &&
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                        .fromLTRB(
+                                                      8,
+                                                      4,
+                                                      4,
+                                                      0,
+                                                    ),
+                                                    child: Text(
                                                       postData[
-                                                              'postProductPrice'] !=
-                                                          null
-                                                  ? postData['postProductPrice']
-                                                  : "N/A",
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
+                                                          'postProductName'],
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                        .fromLTRB(
+                                                      8,
+                                                      0,
+                                                      4,
+                                                      0,
+                                                    ),
+                                                    child: Text(
+                                                      postData['postProductPrice'] !=
+                                                                  "" &&
+                                                              postData[
+                                                                      'postProductPrice'] !=
+                                                                  null
+                                                          ? postData[
+                                                              'postProductPrice']
+                                                          : "N/A",
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ),
+                                              IconButton(
+                                                onPressed: () {
+                                                  deletePost(
+                                                    postData['postId'],
+                                                  );
+                                                },
+                                                icon: const Icon(
+                                                  Icons.delete_forever,
+                                                  color: Colors.red,
+                                                  size: 32,
+                                                ),
+                                                tooltip: "Delete Post",
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
+                          )
+                        : SizedBox(
+                            width: width,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: snapshot.data!.docs.length,
+                              itemBuilder: ((context, index) {
+                                final postData = snapshot.data!.docs[index];
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 6,
+                                    vertical: 8,
+                                  ),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: ((context) => ProductPage(
+                                                productId:
+                                                    postData['postProductId'],
+                                                productName:
+                                                    postData['postProductName'],
+                                              )),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: primary2.withOpacity(0.5),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: ListTile(
+                                        leading: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                          child: Image.network(
+                                            postData['postProductImages'] !=
+                                                    null
+                                                ? postData['postProductImages']
+                                                    [0]
+                                                : 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
+                                            width: 45,
+                                            height: 45,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        title: Text(
+                                          postData['postProductName'],
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        subtitle: Text(
+                                          postData['postProductPrice'] != "" &&
+                                                  postData[
+                                                          'postProductPrice'] !=
+                                                      null
+                                              ? postData['postProductPrice']
+                                              : "N/A",
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
                                           ),
                                         ),
                                       ),
-                                    );
-                                  }),
-                                ),
-                              );
-                      }
+                                    ),
+                                  ),
+                                );
+                              }),
+                            ),
+                          );
+                  }
 
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }),
-              ],
-            ),
-          );
-        },
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                });
+          },
+        ),
       ),
     );
   }

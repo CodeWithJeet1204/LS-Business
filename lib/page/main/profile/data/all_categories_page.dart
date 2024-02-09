@@ -115,258 +115,245 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text("ALL CATEGORIES"),
+        bottom: PreferredSize(
+          preferredSize: Size(
+            MediaQuery.of(context).size.width,
+            80,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 6,
+              vertical: 8,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: searchController,
+                    autocorrect: false,
+                    decoration: const InputDecoration(
+                      labelText: "Case - Sensitive",
+                      hintText: "Search ...",
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: (value) {
+                      setState(() {});
+                    },
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      isGridView = !isGridView;
+                    });
+                  },
+                  icon: Icon(
+                    isGridView ? Icons.list : Icons.grid_view_rounded,
+                  ),
+                  tooltip: isGridView ? "List View" : "Grid View",
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
             double width = constraints.maxWidth;
 
-            return SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 6,
-                      vertical: 8,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: searchController,
-                            autocorrect: false,
-                            decoration: const InputDecoration(
-                              labelText: "Case - Sensitive",
-                              hintText: "Search ...",
-                              border: OutlineInputBorder(),
-                            ),
-                            onChanged: (value) {
-                              setState(() {});
-                            },
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            setState(() {
-                              isGridView = !isGridView;
-                            });
-                          },
-                          icon: Icon(
-                            isGridView ? Icons.list : Icons.grid_view_rounded,
-                          ),
-                          tooltip: isGridView ? "List View" : "Grid View",
-                        ),
-                      ],
-                    ),
-                  ),
-                  StreamBuilder(
-                    stream: categoryStream,
-                    builder: (BuildContext context,
-                        AsyncSnapshot<dynamic> snapshot) {
-                      if (snapshot.hasError) {
-                        return const Center(
-                          child: Text('Something went wrong'),
-                        );
-                      }
+            return StreamBuilder(
+              stream: categoryStream,
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(
+                    child: Text('Something went wrong'),
+                  );
+                }
 
-                      if (snapshot.hasData) {
-                        return isGridView
-                            ? GridView.builder(
-                                shrinkWrap: true,
-                                physics: const ClampingScrollPhysics(),
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  crossAxisSpacing: 0,
-                                  mainAxisSpacing: 0,
-                                  childAspectRatio: width * 0.5 / 230,
-                                ),
-                                itemCount: snapshot.data!.docs.length,
-                                itemBuilder: ((context, index) {
-                                  final categorySnap =
-                                      snapshot.data!.docs[index];
-                                  final Map<String, dynamic> categoryData =
-                                      categorySnap.data();
+                if (snapshot.hasData) {
+                  return isGridView
+                      ? GridView.builder(
+                          shrinkWrap: true,
+                          physics: const ClampingScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 0,
+                            mainAxisSpacing: 0,
+                            childAspectRatio: width * 0.5 / 230,
+                          ),
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: ((context, index) {
+                            final categorySnap = snapshot.data!.docs[index];
+                            final Map<String, dynamic> categoryData =
+                                categorySnap.data();
 
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 4,
-                                      vertical: 6,
-                                    ),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: ((context) => CategoryPage(
-                                                  categoryId: categoryData[
-                                                      'categoryId'],
-                                                  categoryName: categoryData[
-                                                      'categoryName'],
-                                                )),
-                                          ),
-                                        );
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: primary2.withOpacity(0.5),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 4,
-                                          ),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Expanded(
-                                                flex: 4,
-                                                child: Container(),
-                                              ),
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                  9,
-                                                ),
-                                                child: Image.network(
-                                                  categoryData['imageUrl'],
-                                                  height: width * 0.4,
-                                                  width: width * 0.4,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 5,
-                                                child: Container(),
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                      left: width * 0.02,
-                                                    ),
-                                                    child: SizedBox(
-                                                      width: width * 0.275,
-                                                      child: Text(
-                                                        categoryData[
-                                                            'categoryName'],
-                                                        maxLines: 1,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style: const TextStyle(
-                                                          color: primaryDark,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontSize: 20,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  IconButton(
-                                                    onPressed: () {
-                                                      confirmDelete(
-                                                        categoryData[
-                                                            'categoryId'],
-                                                        categoryData[
-                                                            'imageUrl'],
-                                                      );
-                                                    },
-                                                    icon: Icon(
-                                                      Icons.delete_forever,
-                                                      color: Colors.red,
-                                                      size: width * 0.08,
-                                                    ),
-                                                    tooltip: "DELETE",
-                                                  ),
-                                                ],
-                                              ),
-                                              Expanded(
-                                                flex: 4,
-                                                child: Container(),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 4,
+                                vertical: 6,
+                              ),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: ((context) => CategoryPage(
+                                            categoryId:
+                                                categoryData['categoryId'],
+                                            categoryName:
+                                                categoryData['categoryName'],
+                                          )),
                                     ),
                                   );
-                                }),
-                              )
-                            : SizedBox(
-                                width: width,
-                                child: ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: snapshot.data!.docs.length,
-                                  itemBuilder: ((context, index) {
-                                    final categoryData =
-                                        snapshot.data!.docs[index];
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 6,
-                                        vertical: 8,
-                                      ),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: ((context) =>
-                                                  CategoryPage(
-                                                    categoryId: categoryData[
-                                                        'categoryId'],
-                                                    categoryName: categoryData[
-                                                        'categoryName'],
-                                                  )),
-                                            ),
-                                          );
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: primary2.withOpacity(0.5),
-                                            borderRadius:
-                                                BorderRadius.circular(8),
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: primary2.withOpacity(0.5),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 4,
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Expanded(
+                                          flex: 4,
+                                          child: Container(),
+                                        ),
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                            9,
                                           ),
-                                          child: ListTile(
-                                            leading: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(4),
-                                              child: Image.network(
-                                                categoryData['imageUrl'],
-                                                width: 45,
-                                                height: 45,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                            title: Text(
-                                              categoryData['categoryName'],
-                                              style: const TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
+                                          child: Image.network(
+                                            categoryData['imageUrl'],
+                                            height: width * 0.4,
+                                            width: width * 0.4,
+                                            fit: BoxFit.cover,
                                           ),
                                         ),
+                                        Expanded(
+                                          flex: 5,
+                                          child: Container(),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                left: width * 0.02,
+                                              ),
+                                              child: SizedBox(
+                                                width: width * 0.275,
+                                                child: Text(
+                                                  categoryData['categoryName'],
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                    color: primaryDark,
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 20,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            IconButton(
+                                              onPressed: () {
+                                                confirmDelete(
+                                                  categoryData['categoryId'],
+                                                  categoryData['imageUrl'],
+                                                );
+                                              },
+                                              icon: Icon(
+                                                Icons.delete_forever,
+                                                color: Colors.red,
+                                                size: width * 0.08,
+                                              ),
+                                              tooltip: "DELETE",
+                                            ),
+                                          ],
+                                        ),
+                                        Expanded(
+                                          flex: 4,
+                                          child: Container(),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
+                        )
+                      : SizedBox(
+                          width: width,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: ((context, index) {
+                              final categoryData = snapshot.data!.docs[index];
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6,
+                                  vertical: 8,
+                                ),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: ((context) => CategoryPage(
+                                              categoryId:
+                                                  categoryData['categoryId'],
+                                              categoryName:
+                                                  categoryData['categoryName'],
+                                            )),
                                       ),
                                     );
-                                  }),
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: primary2.withOpacity(0.5),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: ListTile(
+                                      leading: ClipRRect(
+                                        borderRadius: BorderRadius.circular(4),
+                                        child: Image.network(
+                                          categoryData['imageUrl'],
+                                          width: 45,
+                                          height: 45,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      title: Text(
+                                        categoryData['categoryName'],
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               );
-                      }
+                            }),
+                          ),
+                        );
+                }
 
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    },
-                  ),
-                ],
-              ),
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
             );
           },
         ),

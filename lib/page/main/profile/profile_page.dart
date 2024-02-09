@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:find_easy/page/main/profile/data/all_discounts_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -535,7 +536,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         child: GestureDetector(
                           onTap: () {
-                            // Navigator.of(context).
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: ((context) => AllDiscountPage()),
+                              ),
+                            );
                           },
                           child: Container(
                             alignment: Alignment.centerLeft,
