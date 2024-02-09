@@ -178,39 +178,44 @@ class _PostPageState extends State<PostPage> {
 
                           // DOTS
                           !isTextPost
-                              ? Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 12,
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: (images).map((e) {
-                                          int index = images.indexOf(e);
+                              ? images.length > 1
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 12,
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: (images).map((e) {
+                                              int index = images.indexOf(e);
 
-                                          return Container(
-                                            width:
-                                                _currentIndex == index ? 12 : 8,
-                                            height:
-                                                _currentIndex == index ? 12 : 8,
-                                            margin: const EdgeInsets.all(4),
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: _currentIndex == index
-                                                  ? primaryDark
-                                                  : primary2,
-                                            ),
-                                          );
-                                        }).toList(),
-                                      ),
+                                              return Container(
+                                                width: _currentIndex == index
+                                                    ? 12
+                                                    : 8,
+                                                height: _currentIndex == index
+                                                    ? 12
+                                                    : 8,
+                                                margin: const EdgeInsets.all(4),
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: _currentIndex == index
+                                                      ? primaryDark
+                                                      : primary2,
+                                                ),
+                                              );
+                                            }).toList(),
+                                          ),
+                                        )
+                                      ],
                                     )
-                                  ],
-                                )
+                                  : Container()
                               : Container(),
 
                           // NAME

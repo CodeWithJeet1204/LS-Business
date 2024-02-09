@@ -548,8 +548,6 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
-  // INIT STATE
-
   // IF DISCOUNT
   Future<void> ifDiscount() async {
     final discount = await store

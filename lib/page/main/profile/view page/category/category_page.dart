@@ -35,8 +35,16 @@ class _CategoryPageState extends State<CategoryPage> {
   bool isFit = false;
   bool isChangingName = false;
   bool isGridView = true;
+  bool isDiscount = false;
 
-  void changeProductImage(String imageUrl) async {
+  @override
+  void initState() {
+    ifDiscount();
+    super.initState();
+  }
+
+  // CHANGE CATEGORY IMAGE
+  void changeCategoryImage(String imageUrl) async {
     final XFile? im =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (im != null) {
@@ -65,6 +73,7 @@ class _CategoryPageState extends State<CategoryPage> {
     }
   }
 
+  // CATEGORY NAME CHANGE BACKEND
   void changeCategoryName(String newName) async {
     if (categoryNameKey.currentState!.validate()) {
       try {
@@ -93,6 +102,7 @@ class _CategoryPageState extends State<CategoryPage> {
     }
   }
 
+  // CATEGORY NAME CHANGE
   void changeName() {
     showDialog(
       context: context,
@@ -173,12 +183,14 @@ class _CategoryPageState extends State<CategoryPage> {
     );
   }
 
+  // IMAGE FIT CHANGE
   void changeFit() {
     setState(() {
       isFit = !isFit;
     });
   }
 
+  // REMOVE PRODUCT
   void remove(String productId, String productName, String categoryName) {
     showDialog(
       context: context,
@@ -225,8 +237,39 @@ class _CategoryPageState extends State<CategoryPage> {
     );
   }
 
+// IF DISCOUNT
+  Future<void> ifDiscount() async {
+    final discount = await store
+        .collection('Business')
+        .doc('Data')
+        .collection('Discounts')
+        .where('vendorId', isEqualTo: auth.currentUser!.uid)
+        .get();
+
+    for (QueryDocumentSnapshot<Map<String, dynamic>> doc in discount.docs) {
+      final data = doc.data();
+      print((data['categories'] as List).contains(widget.categoryId));
+      print("ABC");
+      if ((data['categories'] as List).contains(widget.categoryId)) {
+        print("DEF");
+        if ((data['discountEndDateTime'] as Timestamp)
+                .toDate()
+                .isAfter(DateTime.now()) &&
+            !(data['discountStartDateTime'] as Timestamp)
+                .toDate()
+                .isAfter(DateTime.now())) {
+          setState(() {
+            isDiscount = true;
+          });
+          print(isDiscount);
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    // CATEGORY STREAM
     final Stream<DocumentSnapshot<Map<String, dynamic>>> categoryStream = store
         .collection('Business')
         .doc('Data')
@@ -234,6 +277,7 @@ class _CategoryPageState extends State<CategoryPage> {
         .doc(widget.categoryId)
         .snapshots();
 
+    // PRODUCT STREAM
     final allProductStream = store
         .collection('Business')
         .doc('Data')
@@ -244,6 +288,14 @@ class _CategoryPageState extends State<CategoryPage> {
             isGreaterThanOrEqualTo: searchController.text.toString())
         .where('productName', isLessThan: '${searchController.text}\uf8ff')
         .orderBy('datetime', descending: true)
+        .snapshots();
+
+    // DISCOUNT STREA,
+    final discountPriceStream = store
+        .collection('Business')
+        .doc('Data')
+        .collection('Discounts')
+        .where('vendorId', isEqualTo: auth.currentUser!.uid)
         .snapshots();
 
     return Scaffold(
@@ -271,6 +323,7 @@ class _CategoryPageState extends State<CategoryPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // IMAGE
                       Stack(
                         alignment: Alignment.topRight,
                         children: [
@@ -297,6 +350,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                     ),
                                   ),
                           ),
+                          // IMAGE CHANGING INDICATOR
                           isImageChanging
                               ? Container()
                               : Padding(
@@ -304,7 +358,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                       const EdgeInsets.only(right: 4, top: 4),
                                   child: IconButton.filledTonal(
                                     onPressed: () {
-                                      changeProductImage(
+                                      changeCategoryImage(
                                         categoryData['imageUrl'],
                                       );
                                     },
@@ -318,6 +372,8 @@ class _CategoryPageState extends State<CategoryPage> {
                         ],
                       ),
                       const SizedBox(height: 40),
+
+                      // NAME
                       Container(
                         width: width,
                         padding: const EdgeInsets.symmetric(
@@ -356,7 +412,96 @@ class _CategoryPageState extends State<CategoryPage> {
                           ],
                         ),
                       ),
+                      const SizedBox(height: 4),
+
+                      // DISCOUNT
+                      isDiscount
+                          ? StreamBuilder(
+                              stream: discountPriceStream,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) {
+                                  return Center(
+                                    child: Text('Something Went Wrong'),
+                                  );
+                                }
+
+                                if (snapshot.hasData) {
+                                  final priceSnap = snapshot.data!;
+                                  Map<String, dynamic> data = {};
+                                  for (QueryDocumentSnapshot<
+                                          Map<String, dynamic>> doc
+                                      in priceSnap.docs) {
+                                    data = doc.data();
+                                  }
+
+                                  return Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 10),
+                                        child: data['isPercent']
+                                            ? Text(
+                                                "${data['discountAmount']}% off",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              )
+                                            : Text(
+                                                "Save Rs. ${data['discountAmount']}",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 10,
+                                          vertical: 2,
+                                        ),
+                                        child: Text(
+                                          (data['discountEndDateTime']
+                                                          as Timestamp)
+                                                      .toDate()
+                                                      .difference(
+                                                          DateTime.now())
+                                                      .inHours <
+                                                  24
+                                              ? '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inHours} Hours Left'''
+                                              : '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inDays} Days Left''',
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 12,
+                                          top: 8,
+                                        ),
+                                        child: Text(
+                                          "This discount is available to all the products within thiss category",
+                                          style: TextStyle(
+                                            color: primaryDark,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                }
+
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              })
+                          : Container(),
                       const SizedBox(height: 28),
+
+                      // ADD PRODUCTS
                       MyButton(
                         onTap: () {
                           Navigator.of(context).push(
@@ -374,6 +519,8 @@ class _CategoryPageState extends State<CategoryPage> {
                         horizontalPadding: 0,
                       ),
                       const SizedBox(height: 28),
+
+                      // PRODUCTS IN CATEGORY
                       ExpansionTile(
                         initiallyExpanded: true,
                         tilePadding: const EdgeInsets.symmetric(horizontal: 8),
@@ -410,10 +557,12 @@ class _CategoryPageState extends State<CategoryPage> {
                             ),
                             child: Column(
                               children: [
+                                // HEADER
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
+                                    // TEXTFIELD
                                     Expanded(
                                       child: TextField(
                                         controller: searchController,
@@ -445,6 +594,8 @@ class _CategoryPageState extends State<CategoryPage> {
                                     ),
                                   ],
                                 ),
+
+                                // PRODUCTS
                                 StreamBuilder(
                                   stream: allProductStream,
                                   builder: ((context, snapshot) {
@@ -457,6 +608,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                     if (snapshot.hasData) {
                                       return SafeArea(
                                         child: isGridView
+                                            // PRODUCTS IN GRIDVIEW
                                             ? GridView.builder(
                                                 shrinkWrap: true,
                                                 gridDelegate:
@@ -620,6 +772,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                                           ),
                                                         );
                                                 })
+                                            // PRODUCTS IN LISTVIEW
                                             : ListView.builder(
                                                 shrinkWrap: true,
                                                 itemCount:
