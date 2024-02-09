@@ -98,13 +98,13 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4),
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final double width = constraints.maxWidth;
-            final double height = constraints.maxHeight;
-            return SingleChildScrollView(
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final double width = constraints.maxWidth;
+          final double height = constraints.maxHeight;
+          return SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: height * 0.0028125),
               child: Column(
                 children: [
                   Container(
@@ -575,9 +575,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ],
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
