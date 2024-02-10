@@ -6,6 +6,7 @@ import 'package:find_easy/page/main/profile/view%20page/product/product_category
 import 'package:find_easy/page/main/profile/view%20page/product/product_image_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
+import 'package:find_easy/widgets/image_pick_dialog.dart';
 import 'package:find_easy/widgets/info_edit_box.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:find_easy/widgets/text_button.dart';
@@ -369,8 +370,7 @@ class _ProductPageState extends State<ProductPage> {
 
   // ADD IMAGES
   void addProductImages(List images) async {
-    final XFile? im =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    final XFile? im = await showImagePickDialog(context);
     if (im != null) {
       try {
         setState(() {
@@ -423,8 +423,7 @@ class _ProductPageState extends State<ProductPage> {
 
   // CHANGE IMAGES
   void changeProductImage(String e, int index, List images) async {
-    final XFile? im =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    final XFile? im = await showImagePickDialog(context);
     if (im != null) {
       try {
         setState(() {

@@ -5,6 +5,7 @@ import 'package:find_easy/firebase/storage_methods.dart';
 import 'package:find_easy/page/main/add/product/add_product_page_2.dart';
 import 'package:find_easy/provider/add_product_provider.dart';
 import 'package:find_easy/utils/colors.dart';
+import 'package:find_easy/widgets/image_pick_dialog.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:find_easy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -50,7 +51,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
   bool isAvailable = true;
 
   void addProductImages() async {
-    final XFile? im = await picker.pickImage(source: ImageSource.gallery);
+    final XFile? im = await showImagePickDialog(context);
     if (im != null) {
       setState(() {
         _image.add(File(im.path));

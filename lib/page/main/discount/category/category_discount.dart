@@ -4,6 +4,7 @@ import 'package:find_easy/page/main/discount/category/select_category_for_discou
 import 'package:find_easy/provider/discount_category_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
+import 'package:find_easy/widgets/image_pick_dialog.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:find_easy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -39,8 +40,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
   String? imageUrl;
 
   void addDiscountImage() async {
-    final XFile? im =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    final XFile? im = await showImagePickDialog(context);
     if (im != null) {
       setState(() {
         _image = File(im.path);

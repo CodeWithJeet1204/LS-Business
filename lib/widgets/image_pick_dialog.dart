@@ -1,14 +1,12 @@
-import 'dart:typed_data';
-
+// ignore_for_file: unnecessary_null_comparison
 import 'package:find_easy/utils/colors.dart';
-import 'package:find_easy/widgets/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-Uint8List? showImagePickDialog(BuildContext context) {
-  Uint8List? im;
+Future<XFile?>? showImagePickDialog(BuildContext context) async {
+  XFile? im;
 
-  showDialog(
+  await showDialog(
     context: context,
     builder: (context) {
       return Dialog(
@@ -17,8 +15,12 @@ Uint8List? showImagePickDialog(BuildContext context) {
           children: [
             GestureDetector(
               onTap: () async {
-                Uint8List? image = await pickImage(ImageSource.camera);
-                im = image;
+                final _image =
+                    await ImagePicker().pickImage(source: ImageSource.camera);
+                if (_image != null) {
+                  im = _image;
+                }
+                Navigator.of(context).pop();
               },
               child: Container(
                 alignment: Alignment.centerLeft,
@@ -47,8 +49,12 @@ Uint8List? showImagePickDialog(BuildContext context) {
             ),
             GestureDetector(
               onTap: () async {
-                Uint8List? image = await pickImage(ImageSource.gallery);
-                im = image;
+                final _image =
+                    await ImagePicker().pickImage(source: ImageSource.gallery);
+                if (_image != null) {
+                  im = _image;
+                }
+                Navigator.of(context).pop();
               },
               child: Container(
                 alignment: Alignment.centerLeft,
@@ -80,5 +86,6 @@ Uint8List? showImagePickDialog(BuildContext context) {
       );
     },
   );
+
   return im;
 }
