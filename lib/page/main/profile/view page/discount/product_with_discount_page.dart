@@ -175,91 +175,80 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
                         ),
                         itemCount: products.length,
                         itemBuilder: (context, index) {
-                          return products[index]['productName']!
-                                  .toLowerCase()
-                                  .contains(searchController.text
-                                      .toString()
-                                      .toLowerCase())
-                              ? Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: width * 0.01),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: primary2.withOpacity(0.8),
-                                      borderRadius: BorderRadius.circular(12),
+                          return Padding(
+                            padding:
+                                EdgeInsets.symmetric(horizontal: width * 0.01),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: primary2.withOpacity(0.8),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: width * 0.02,
                                     ),
-                                    child: Column(
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: Image.network(
+                                        products[index]['imageUrl']!,
+                                        width: width * 0.45,
+                                        height: width * 0.4,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      left: width * 0.01,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        Padding(
-                                          padding: EdgeInsets.symmetric(
-                                            vertical: width * 0.02,
-                                          ),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            child: Image.network(
-                                              products[index]['imageUrl']!,
-                                              width: width * 0.45,
-                                              height: width * 0.4,
-                                              fit: BoxFit.cover,
+                                        SizedBox(
+                                          width: width * 0.45,
+                                          height: width * 0.1,
+                                          child: Text(
+                                            products[index]['productName']!,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              color: primaryDark,
+                                              fontSize: width * 0.06,
+                                              fontWeight: FontWeight.w500,
+                                              overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
                                         ),
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                            left: width * 0.01,
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              SizedBox(
-                                                width: width * 0.45,
-                                                height: width * 0.1,
-                                                child: Text(
-                                                  products[index]
-                                                      ['productName']!,
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                    color: primaryDark,
-                                                    fontSize: width * 0.06,
-                                                    fontWeight: FontWeight.w500,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                ),
-                                              ),
-                                              // IconButton(
-                                              //   onPressed: () {
-                                              //     confirmRemove(
-                                              //       products[index]
-                                              //           ['productId']!,
-                                              //       products[index]
-                                              //           ['productName']!,
-                                              //     );
-                                              //   },
-                                              //   icon: Icon(
-                                              //     Icons
-                                              //         .highlight_remove_outlined,
-                                              //     color: Colors.red,
-                                              //     size: width * 0.075,
-                                              //   ),
-                                              //   tooltip: "Remove",
-                                              // ),
-                                            ],
-                                          ),
-                                        ),
+                                        // IconButton(
+                                        //   onPressed: () {
+                                        //     confirmRemove(
+                                        //       products[index]
+                                        //           ['productId']!,
+                                        //       products[index]
+                                        //           ['productName']!,
+                                        //     );
+                                        //   },
+                                        //   icon: Icon(
+                                        //     Icons
+                                        //         .highlight_remove_outlined,
+                                        //     color: Colors.red,
+                                        //     size: width * 0.075,
+                                        //   ),
+                                        //   tooltip: "Remove",
+                                        // ),
                                       ],
                                     ),
                                   ),
-                                )
-                              : Container();
+                                ],
+                              ),
+                            ),
+                          );
                         },
                       )
                     : ListView.builder(
