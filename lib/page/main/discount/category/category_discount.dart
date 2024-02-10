@@ -576,25 +576,30 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                     SizedBox(height: 20),
 
                     // AMOUNT
-                    TextFormField(
-                      controller: discountController,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                            color: Colors.cyan.shade700,
-                          ),
-                        ),
-                        hintText:
-                            isPercentSelected ? "eg. 20%" : "eg. Rs. 200 off",
+                    Padding(
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom,
                       ),
-                      validator: (value) {
-                        if (value != null && value.isEmpty) {
-                          return 'Please enter Discount Amount';
-                        }
-                        return null;
-                      },
+                      child: TextFormField(
+                        controller: discountController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: Colors.cyan.shade700,
+                            ),
+                          ),
+                          hintText:
+                              isPercentSelected ? "eg. 20%" : "eg. Rs. 200 off",
+                        ),
+                        validator: (value) {
+                          if (value != null && value.isEmpty) {
+                            return 'Please enter Discount Amount';
+                          }
+                          return null;
+                        },
+                      ),
                     ),
                   ],
                 ),

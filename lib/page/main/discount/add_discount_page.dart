@@ -4,14 +4,14 @@ import 'package:find_easy/page/main/discount/products/product_discount.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:flutter/material.dart';
 
-class DiscountPage extends StatefulWidget {
-  const DiscountPage({super.key});
+class AddDiscountPage extends StatefulWidget {
+  const AddDiscountPage({super.key});
 
   @override
-  State<DiscountPage> createState() => _DiscountPageState();
+  State<AddDiscountPage> createState() => _AddDiscountPageState();
 }
 
-class _DiscountPageState extends State<DiscountPage> {
+class _AddDiscountPageState extends State<AddDiscountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

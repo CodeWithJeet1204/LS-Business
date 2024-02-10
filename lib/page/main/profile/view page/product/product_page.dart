@@ -963,7 +963,7 @@ class _ProductPageState extends State<ProductPage> {
                                                           text: price == ""
                                                               ? 'N/A (price)'
                                                               : data['isPercent']
-                                                                  ? '${(double.parse(price) * (100 - data['discountAmount']) / 100).toString()}  '
+                                                                  ? '${(double.parse(price) * (100 - double.parse(data['discountAmount'])) / 100).toString()}  '
                                                                   : '${double.parse(price) - data['discountAmount']}  ',
                                                           style: TextStyle(
                                                             color: Colors.green,

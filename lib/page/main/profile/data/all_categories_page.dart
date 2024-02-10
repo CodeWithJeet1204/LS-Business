@@ -20,6 +20,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
   final searchController = TextEditingController();
   bool isGridView = true;
 
+  // DELETE
   void delete(String categoryId, String imageUrl) async {
     try {
       final postSnap = await store

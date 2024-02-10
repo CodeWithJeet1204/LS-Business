@@ -1,6 +1,6 @@
 import 'package:find_easy/page/main/add/add_page.dart';
 import 'package:find_easy/page/main/comments/all_comments_screen.dart';
-import 'package:find_easy/page/main/discount/discount_page.dart';
+import 'package:find_easy/page/main/discount/add_discount_page.dart';
 import 'package:find_easy/page/main/profile/profile_page.dart';
 import 'package:find_easy/page/main/analytics/analaytics_page.dart';
 import 'package:find_easy/utils/colors.dart';
@@ -25,7 +25,7 @@ class _MainPageState extends State<MainPage> {
     const AnalyticsPage(),
     const AllCommentPage(),
     const AddPage(),
-    const DiscountPage(),
+    const AddDiscountPage(),
     const ProfilePage(),
   ];
 
