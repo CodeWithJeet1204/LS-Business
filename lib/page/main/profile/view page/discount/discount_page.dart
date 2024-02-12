@@ -432,7 +432,6 @@ class DISCOUNT extends State<DiscountPage> {
             icon: Icon(
               Icons.delete_forever_outlined,
               color: Colors.red,
-              size: 24,
             ),
             tooltip: "End Discount",
           ),
@@ -516,8 +515,10 @@ class DISCOUNT extends State<DiscountPage> {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 4, top: 4),
+                                              padding: EdgeInsets.only(
+                                                left: width * 0.0125,
+                                                top: width * 0.0125,
+                                              ),
                                               child: IconButton.filledTonal(
                                                 onPressed: () {
                                                   changeDiscountImage(
@@ -525,16 +526,18 @@ class DISCOUNT extends State<DiscountPage> {
                                                         'discountImageUrl'],
                                                   );
                                                 },
-                                                icon: const Icon(
+                                                icon: Icon(
                                                   Icons.camera_alt_outlined,
-                                                  size: 36,
+                                                  size: width * 0.1,
                                                 ),
                                                 tooltip: "Change Image",
                                               ),
                                             ),
                                             Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 4, top: 4),
+                                              padding: EdgeInsets.only(
+                                                right: width * 0.0125,
+                                                top: width * 0.0125,
+                                              ),
                                               child: IconButton.filledTonal(
                                                 onPressed: () {
                                                   removeDiscountImage(
@@ -542,10 +545,10 @@ class DISCOUNT extends State<DiscountPage> {
                                                         'discountImageUrl'],
                                                   );
                                                 },
-                                                icon: const Icon(
+                                                icon: Icon(
                                                   Icons
                                                       .highlight_remove_outlined,
-                                                  size: 36,
+                                                  size: width * 0.1,
                                                 ),
                                                 tooltip: "Remove Image",
                                               ),
@@ -589,14 +592,14 @@ class DISCOUNT extends State<DiscountPage> {
 
                         // START DATE
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 5,
-                            horizontal: 6,
+                          padding: EdgeInsets.symmetric(
+                            vertical: width * 0.0133,
+                            horizontal: width * 0.01,
                           ),
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 8,
-                              horizontal: 8,
+                            padding: EdgeInsets.symmetric(
+                              vertical: width * 0.025,
+                              horizontal: width * 0.025,
                             ),
                             decoration: BoxDecoration(
                               color: primary.withOpacity(0.3),
@@ -621,8 +624,8 @@ class DISCOUNT extends State<DiscountPage> {
                                       softWrap: true,
                                       overflow: TextOverflow.clip,
                                       maxLines: 1,
-                                      style: const TextStyle(
-                                        fontSize: 21,
+                                      style: TextStyle(
+                                        fontSize: width * 0.05833,
                                         fontWeight: FontWeight.w600,
                                         color: primaryDark,
                                       ),
@@ -650,14 +653,14 @@ class DISCOUNT extends State<DiscountPage> {
 
                         // END DATE
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 5,
-                            horizontal: 6,
+                          padding: EdgeInsets.symmetric(
+                            vertical: width * 0.0133,
+                            horizontal: width * 0.01,
                           ),
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 8,
-                              horizontal: 8,
+                            padding: EdgeInsets.symmetric(
+                              vertical: width * 0.025,
+                              horizontal: width * 0.025,
                             ),
                             decoration: BoxDecoration(
                               color: primary.withOpacity(0.3),
@@ -682,8 +685,8 @@ class DISCOUNT extends State<DiscountPage> {
                                       softWrap: true,
                                       overflow: TextOverflow.clip,
                                       maxLines: 1,
-                                      style: const TextStyle(
-                                        fontSize: 21,
+                                      style: TextStyle(
+                                        fontSize: width * 0.05833,
                                         fontWeight: FontWeight.w600,
                                         color: primaryDark,
                                       ),
@@ -711,11 +714,11 @@ class DISCOUNT extends State<DiscountPage> {
 
                         // PERCENT VS PRICE
                         Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: width * 0.025,
+                            vertical: width * 0.0125,
                           ),
-                          margin: EdgeInsets.only(left: 12),
+                          margin: EdgeInsets.only(left: width * 0.03125),
                           decoration: BoxDecoration(
                             color: primary3,
                             borderRadius: BorderRadius.circular(12),
@@ -724,7 +727,7 @@ class DISCOUNT extends State<DiscountPage> {
                             style: TextStyle(
                               color: primaryDark2,
                               fontWeight: FontWeight.w600,
-                              fontSize: width * 0.05,
+                              fontSize: width * 0.055,
                             ),
                             dropdownColor: primary,
                             hint: Text(
@@ -771,7 +774,7 @@ class DISCOUNT extends State<DiscountPage> {
                           },
                           child: Container(
                             width: width,
-                            height: 80,
+                            height: width * 0.225,
                             padding: EdgeInsets.symmetric(
                               horizontal: width * 0.02,
                             ),
@@ -787,7 +790,7 @@ class DISCOUNT extends State<DiscountPage> {
                                   "Categories with this discount",
                                   style: TextStyle(
                                     color: primaryDark2,
-                                    fontSize: width * 0.05,
+                                    fontSize: width * 0.055,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -819,7 +822,7 @@ class DISCOUNT extends State<DiscountPage> {
                           },
                           child: Container(
                             width: width,
-                            height: 80,
+                            height: width * 0.225,
                             padding: EdgeInsets.symmetric(
                               horizontal: width * 0.02,
                             ),
@@ -835,7 +838,7 @@ class DISCOUNT extends State<DiscountPage> {
                                   "Products with this discount",
                                   style: TextStyle(
                                     color: primaryDark2,
-                                    fontSize: width * 0.05,
+                                    fontSize: width * 0.055,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),

@@ -172,8 +172,6 @@ class _AllProductsPageState extends State<AllProductsPage> {
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            crossAxisSpacing: 0,
-                            mainAxisSpacing: 0,
                             childAspectRatio: width * 0.5 / 230,
                           ),
                           itemCount: snapshot.data!.docs.length,
@@ -183,7 +181,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                 productData.data() as Map<String, dynamic>;
 
                             return Padding(
-                              padding: const EdgeInsets.all(8),
+                              padding: EdgeInsets.all(width * 0.025),
                               child: GestureDetector(
                                 onTap: () {
                                   Navigator.of(context).push(
@@ -199,7 +197,6 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                     ),
                                   );
                                 },
-                                // doubleTap: Options such as delete
                                 child: Container(
                                   width: width * 0.5,
                                   decoration: BoxDecoration(
@@ -207,7 +204,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: Padding(
-                                    padding: const EdgeInsets.all(4),
+                                    padding: EdgeInsets.all(width * 0.0125),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -238,25 +235,35 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          8, 4, 4, 0),
-                                                  child: Text(
-                                                    productData['productName'],
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: const TextStyle(
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                  padding: EdgeInsets.fromLTRB(
+                                                    width * 0.025,
+                                                    width * 0.0125,
+                                                    width * 0.0125,
+                                                    0,
+                                                  ),
+                                                  child: SizedBox(
+                                                    width: width * 0.225,
+                                                    child: Text(
+                                                      productData[
+                                                          'productName'],
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                        fontSize: width * 0.06,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          8, 0, 4, 0),
+                                                  padding: EdgeInsets.fromLTRB(
+                                                    width * 0.025,
+                                                    0,
+                                                    width * 0.0125,
+                                                    0,
+                                                  ),
                                                   child: Text(
                                                     productData['productPrice'] !=
                                                                 "" &&
@@ -269,8 +276,8 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
-                                                    style: const TextStyle(
-                                                      fontSize: 16,
+                                                    style: TextStyle(
+                                                      fontSize: width * 0.0475,
                                                       fontWeight:
                                                           FontWeight.w600,
                                                     ),
@@ -284,10 +291,10 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                                   productData['productId'],
                                                 );
                                               },
-                                              icon: const Icon(
+                                              icon: Icon(
                                                 Icons.delete_forever,
                                                 color: Colors.red,
-                                                size: 32,
+                                                size: width * 0.09,
                                               ),
                                             ),
                                           ],

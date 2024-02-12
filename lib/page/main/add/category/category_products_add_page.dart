@@ -147,6 +147,7 @@ class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
                                     ? Icons.list
                                     : Icons.grid_view_rounded,
                               ),
+                              iconSize: width * 0.08,
                               tooltip: isGridView ? "List View" : "Grid View",
                             ),
                           ],
@@ -166,7 +167,7 @@ class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
                               itemBuilder: (context, index) {
                                 final productData = snapshot.data!.docs[index];
                                 return Padding(
-                                  padding: const EdgeInsets.all(8),
+                                  padding: EdgeInsets.all(width * 0.0175),
                                   child: SizedOverflowBox(
                                     size: Size(width * 0.5, 210),
                                     child: GestureDetector(
@@ -197,27 +198,33 @@ class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
                                                     child: ClipRRect(
                                                       borderRadius:
                                                           BorderRadius.circular(
-                                                              12),
+                                                        12,
+                                                      ),
                                                       child: Image.network(
                                                         productData['images']
                                                             [0],
-                                                        height: 140,
-                                                        width: 140,
+                                                        height: width * 0.4,
+                                                        width: width * 0.4,
                                                         fit: BoxFit.cover,
                                                       ),
                                                     ),
                                                   ),
                                                   Padding(
-                                                    padding: const EdgeInsets
-                                                        .fromLTRB(8, 4, 4, 0),
+                                                    padding:
+                                                        EdgeInsets.fromLTRB(
+                                                      width * 0.025,
+                                                      width * 0.01,
+                                                      width * 0.01,
+                                                      0,
+                                                    ),
                                                     child: Text(
                                                       productData[
                                                           'productName'],
                                                       maxLines: 1,
                                                       overflow:
                                                           TextOverflow.ellipsis,
-                                                      style: const TextStyle(
-                                                        fontSize: 20,
+                                                      style: TextStyle(
+                                                        fontSize: width * 0.06,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                       ),
@@ -232,10 +239,9 @@ class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
                                                   .contains(
                                                       productData['productId'])
                                               ? Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                    right: 4,
-                                                    top: 4,
+                                                  padding: EdgeInsets.only(
+                                                    right: width * 0.01,
+                                                    top: width * 0.01,
                                                   ),
                                                   child: Container(
                                                     padding:
@@ -268,69 +274,78 @@ class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
                                   final productData =
                                       snapshot.data!.docs[index];
                                   return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 6,
-                                      vertical: 8,
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: width * 0.015,
+                                      vertical: width * 0.02,
                                     ),
-                                    child: Stack(
-                                      alignment: Alignment.centerRight,
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: primary2.withOpacity(0.5),
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
-                                          child: ListTile(
-                                            leading: CircleAvatar(
-                                              radius: 30,
-                                              backgroundColor: primaryDark,
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(4),
-                                                child: Image.network(
-                                                  productData['images'][0],
-                                                  width: 60,
-                                                  height: 60,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            ),
-                                            title: Text(
-                                              productData['productName'],
-                                              style: const TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
+                                    child: GestureDetector(
+                                      onTap: () {
                                         productsAddedToCategoryProvider
-                                                .selectedProducts
-                                                .contains(
-                                                    productData['productId'])
-                                            ? Padding(
-                                                padding: const EdgeInsets.only(
-                                                  right: 4,
-                                                  top: 4,
+                                            .addProduct(
+                                          productData['productId'],
+                                        );
+                                      },
+                                      child: Stack(
+                                        alignment: Alignment.centerRight,
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              color: primary2.withOpacity(0.5),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                            child: ListTile(
+                                              leading: Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                  vertical: width * 0.01,
                                                 ),
-                                                child: Container(
-                                                  padding:
-                                                      const EdgeInsets.all(2),
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: primaryDark2,
-                                                  ),
-                                                  child: const Icon(
-                                                    Icons.check,
-                                                    color: Colors.white,
-                                                    size: 32,
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(4),
+                                                  child: Image.network(
+                                                    productData['images'][0],
+                                                    width: width * 0.15,
+                                                    height: width * 0.166,
+                                                    fit: BoxFit.cover,
                                                   ),
                                                 ),
-                                              )
-                                            : Container()
-                                      ],
+                                              ),
+                                              title: Text(
+                                                productData['productName'],
+                                                style: TextStyle(
+                                                  fontSize: width * 0.055,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          productsAddedToCategoryProvider
+                                                  .selectedProducts
+                                                  .contains(
+                                                      productData['productId'])
+                                              ? Padding(
+                                                  padding: EdgeInsets.only(
+                                                    right: width * 0.01,
+                                                  ),
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(
+                                                      width * 0.005,
+                                                    ),
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: primaryDark2,
+                                                    ),
+                                                    child: const Icon(
+                                                      Icons.check,
+                                                      color: Colors.white,
+                                                      size: 32,
+                                                    ),
+                                                  ),
+                                                )
+                                              : Container()
+                                        ],
+                                      ),
                                     ),
                                   );
                                 }),

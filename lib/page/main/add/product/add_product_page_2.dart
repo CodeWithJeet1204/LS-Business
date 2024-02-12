@@ -55,6 +55,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
   String? propertyValue5;
   bool isAddingProduct = false;
 
+  // ADD TAG
   void addTag(String tag) {
     if (tag.length > 1) {
       setState(() {
@@ -66,12 +67,14 @@ class _AddProductPage2State extends State<AddProductPage2> {
     }
   }
 
+  // REMOVE TAG
   void removeTag(int index) {
     setState(() {
       tagList.removeAt(index);
     });
   }
 
+  // ADD OTHER INFO
   void addOtherInfoValue() {
     if (otherInfoValueController.text.toString().length > 1) {
       setState(() {
@@ -83,12 +86,14 @@ class _AddProductPage2State extends State<AddProductPage2> {
     }
   }
 
+  // REMOVE OTHER INFO
   void removeOtherInfo(int index) {
     setState(() {
       otherInfoList.removeAt(index);
     });
   }
 
+  // ADD PRODUCT
   void addProduct(AddProductProvider provider) async {
     if (productKey.currentState!.validate()) {
       if (property0.isEmpty && getCompulsory(0)) {
@@ -259,16 +264,12 @@ class _AddProductPage2State extends State<AddProductPage2> {
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
     await getShopType();
   }
 
+  // GET SHOP TYPE
   Future<void> getShopType() async {
     final Future<String> shopType = FirebaseFirestore.instance
         .collection('Business')
@@ -329,6 +330,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text('Additional Info'),
         actions: [
           IconButton(
@@ -357,7 +359,6 @@ class _AddProductPage2State extends State<AddProductPage2> {
               child: LayoutBuilder(
                 builder: ((context, constraints) {
                   double width = constraints.maxWidth;
-                  double height = constraints.maxHeight;
                   return SingleChildScrollView(
                     child: Form(
                       key: productKey,
@@ -457,7 +458,8 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.only(
-                                                          right: 2),
+                                                    right: 2,
+                                                  ),
                                                   child: IconButton(
                                                     onPressed: () {
                                                       removeTag(index);
@@ -1642,7 +1644,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                       });
                                     },
                                   ),
-                                  SizedBox(height: height * 0.015),
+                                  SizedBox(height: 12),
                                   otherInfo != null
                                       ? Row(
                                           crossAxisAlignment:

@@ -29,12 +29,11 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
   final TextEditingController confirmPasswordController =
       TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  final GlobalKey<FormState> registerFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> registerEmailFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> registerNumberFormKey = GlobalKey<FormState>();
   String phoneButtonText = "SIGNUP";
   String googleText = "Signup With GOOGLE";
   bool isGoogleRegistering = false;
-  bool isShowEmail = false;
-  bool isShowNumber = false;
   bool isEmailRegistering = false;
   bool isPhoneRegistering = false;
 
@@ -49,52 +48,49 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final AuthMethods auth = AuthMethods();
     final signInMethodProvider = Provider.of<SignInMethodProvider>(context);
+    final double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: SingleChildScrollView(
-          child: SizedBox(
-            height: 600,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  flex: 4,
-                  child: Container(),
-                ),
-                const HeadText(text: "REGISTER"),
-                Expanded(
-                  flex: 4,
-                  child: Container(),
-                ),
-                Column(
-                  children: [
-                    // EMAIL
-                    MyCollapseContainer(
-                      headText: "Email",
-                      isShow: isShowEmail,
-                      horizontalMargin: 20,
-                      horizontalPadding: 12,
-                      verticalPadding: 8,
-                      bodyWidget: Form(
-                        key: registerFormKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // REGISTER HEADTEXT
+              SizedBox(height: width * 0.35),
+              const HeadText(text: "REGISTER"),
+              SizedBox(height: width * 0.3),
+
+              Column(
+                children: [
+                  // EMAIL
+                  MyCollapseContainer(
+                    children: Padding(
+                      padding: EdgeInsets.all(width * 0.0225),
+                      child: Form(
+                        key: registerEmailFormKey,
                         child: Column(
                           children: [
+                            // EMAIL
                             MyTextFormField(
                               hintText: "Email",
                               controller: emailController,
                               borderRadius: 16,
-                              horizontalPadding: 24,
+                              horizontalPadding:
+                                  MediaQuery.of(context).size.width * 0.066,
                               keyboardType: TextInputType.emailAddress,
                               autoFillHints: const [AutofillHints.email],
                             ),
                             const SizedBox(height: 8),
+
+                            // PASSWORD
                             MyTextFormField(
                               hintText: "Password",
                               controller: passwordController,
                               borderRadius: 16,
-                              horizontalPadding: 24,
+                              horizontalPadding:
+                                  MediaQuery.of(context).size.width * 0.066,
                               isPassword: true,
                               autoFillHints: const [AutofillHints.newPassword],
                             ),
@@ -102,7 +98,8 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                               hintText: "Confirm Password",
                               controller: confirmPasswordController,
                               borderRadius: 16,
-                              horizontalPadding: 24,
+                              horizontalPadding:
+                                  MediaQuery.of(context).size.width * 0.066,
                               verticalPadding: 8,
                               isPassword: true,
                               autoFillHints: const [AutofillHints.newPassword],
@@ -113,18 +110,20 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                               onTap: () async {
                                 if (passwordController.text ==
                                     confirmPasswordController.text) {
-                                  if (registerFormKey.currentState!
+                                  if (registerEmailFormKey.currentState!
                                       .validate()) {
                                     setState(() {
                                       isEmailRegistering = true;
                                     });
 
                                     try {
+                                      print("ABS");
                                       await auth.signUpWithEmail(
                                         email: emailController.text,
                                         password: passwordController.text,
                                         context: context,
                                       );
+                                      print("ABS123");
 
                                       await FirebaseFirestore.instance
                                           .collection('Business')
@@ -194,39 +193,39 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                                     mySnackBar(
                                         context, "Passwords do not match");
                                   }
+                                } else {
+                                  mySnackBar(
+                                    context,
+                                    "Passwords dont match, check again!",
+                                  );
                                 }
                               },
-                              horizontalPadding: 24,
+                              horizontalPadding: width * 0.066,
                               isLoading: isEmailRegistering,
                             ),
                           ],
                         ),
                       ),
-                      onTap: () {
-                        setState(() {
-                          isShowNumber = false;
-                          isShowEmail = !isShowEmail;
-                        });
-                      },
                     ),
+                    width: MediaQuery.of(context).size.width,
+                    text: "Email",
+                  ),
+                  const SizedBox(height: 12),
 
-                    // PHONE NUMBER
-                    const SizedBox(height: 12),
-                    MyCollapseContainer(
-                      headText: "Phone Number",
-                      isShow: isShowNumber,
-                      horizontalMargin: 20,
-                      horizontalPadding: 12,
-                      verticalPadding: 8,
-                      bodyWidget: Form(
-                        key: registerFormKey,
+                  // PHONE NUMBER
+                  MyCollapseContainer(
+                    children: Padding(
+                      padding: EdgeInsets.all(width * 0.0225),
+                      child: Form(
+                        key: registerNumberFormKey,
                         child: Column(
                           children: [
                             MyTextFormField(
                               hintText: "Phone Number",
                               controller: phoneController,
                               borderRadius: 16,
-                              horizontalPadding: 24,
+                              horizontalPadding:
+                                  MediaQuery.of(context).size.width * 0.066,
                               keyboardType: TextInputType.number,
                               autoFillHints: const [
                                 AutofillHints.telephoneNumber
@@ -236,7 +235,8 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                             MyButton(
                               text: phoneButtonText,
                               onTap: () async {
-                                if (registerFormKey.currentState!.validate()) {
+                                if (registerNumberFormKey.currentState!
+                                    .validate()) {
                                   try {
                                     setState(() {
                                       isPhoneRegistering = true;
@@ -325,114 +325,111 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                                   }
                                 }
                               },
-                              horizontalPadding: 24,
+                              horizontalPadding:
+                                  MediaQuery.of(context).size.width * 0.066,
                               isLoading: isPhoneRegistering,
                             ),
                           ],
                         ),
                       ),
-                      onTap: () {
-                        setState(() {
-                          isShowEmail = false;
-                          isShowNumber = !isShowNumber;
-                        });
-                      },
                     ),
+                    width: MediaQuery.of(context).size.width,
+                    text: "Phone Number",
+                  ),
+                  const SizedBox(height: 16),
 
-                    // GOOGLE
-                    const SizedBox(height: 16),
-                    GestureDetector(
-                      onTap: () async {
-                        setState(() {
-                          isShowEmail = false;
-                          isShowNumber = false;
-                          isGoogleRegistering = true;
-                          googleText = "PLEASE WAIT";
-                        });
-                        try {
-                          // Sign In With Google
-                          signInMethodProvider.chooseGoogle();
-                          await AuthMethods().signInWithGoogle(context);
-                          await _auth.currentUser!.reload();
-                          if (FirebaseAuth.instance.currentUser != null) {
-                            userFirestoreData.addAll({
-                              "Email": FirebaseAuth.instance.currentUser!.email,
-                              "Name": FirebaseAuth
-                                  .instance.currentUser!.displayName,
-                              "uid": FirebaseAuth.instance.currentUser!.uid,
-                            });
-                            await FirebaseFirestore.instance
-                                .collection('Business')
-                                .doc('Owners')
-                                .collection('Users')
-                                .doc(_auth.currentUser!.uid)
-                                .set({
-                              'detailsAdded': false,
-                            });
+                  // GOOGLE
+                  GestureDetector(
+                    onTap: () async {
+                      setState(() {
+                        isGoogleRegistering = true;
+                        googleText = "PLEASE WAIT";
+                      });
+                      try {
+                        // Sign In With Google
+                        signInMethodProvider.chooseGoogle();
+                        await AuthMethods().signInWithGoogle(context);
+                        await _auth.currentUser!.reload();
+                        if (FirebaseAuth.instance.currentUser != null) {
+                          userFirestoreData.addAll({
+                            "Email": FirebaseAuth.instance.currentUser!.email,
+                            "Name":
+                                FirebaseAuth.instance.currentUser!.displayName,
+                            "uid": FirebaseAuth.instance.currentUser!.uid,
+                          });
+                          await FirebaseFirestore.instance
+                              .collection('Business')
+                              .doc('Owners')
+                              .collection('Users')
+                              .doc(_auth.currentUser!.uid)
+                              .set({
+                            'detailsAdded': false,
+                          });
 
-                            // SystemChannels.textInput.invokeMethod('TextInput.hide');
-                            if (context.mounted) {
-                              Navigator.of(context).pop();
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: ((context) =>
-                                      const UserRegisterDetailsPage()),
-                                ),
-                              );
-                            }
-                          } else {
-                            if (context.mounted) {
-                              mySnackBar(
-                                context,
-                                "Some error occured\nTry signing with email / phone number",
-                              );
-                            }
-                          }
-                          setState(() {
-                            isGoogleRegistering = false;
-                          });
-                        } on FirebaseAuthException catch (e) {
-                          setState(() {
-                            isShowEmail = false;
-                            isShowNumber = false;
-                            isGoogleRegistering = false;
-                          });
+                          // SystemChannels.textInput.invokeMethod('TextInput.hide');
                           if (context.mounted) {
-                            mySnackBar(context, e.toString());
+                            Navigator.of(context).pop();
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: ((context) =>
+                                    const UserRegisterDetailsPage()),
+                              ),
+                            );
+                          }
+                        } else {
+                          if (context.mounted) {
+                            mySnackBar(
+                              context,
+                              "Some error occured\nTry signing with email / phone number",
+                            );
                           }
                         }
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 20),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        alignment: Alignment.center,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: primary2.withOpacity(0.75),
-                        ),
-                        child: isGoogleRegistering
-                            ? const CircularProgressIndicator(
-                                color: primaryDark,
-                              )
-                            : Text(
-                                googleText,
-                                style: const TextStyle(
-                                  color: buttonColor,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18,
-                                ),
-                              ),
+                        setState(() {
+                          isGoogleRegistering = false;
+                        });
+                      } on FirebaseAuthException catch (e) {
+                        setState(() {
+                          isGoogleRegistering = false;
+                        });
+                        if (context.mounted) {
+                          mySnackBar(context, e.toString());
+                        }
+                      }
+                    },
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(
+                        MediaQuery.of(context).size.width * 0.035,
+                        0,
+                        MediaQuery.of(context).size.width * 0.035,
+                        MediaQuery.of(context).viewInsets.bottom,
                       ),
+                      padding: EdgeInsets.symmetric(
+                        vertical: MediaQuery.of(context).size.width * 0.033,
+                      ),
+                      alignment: Alignment.center,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: primary2.withOpacity(0.75),
+                      ),
+                      child: isGoogleRegistering
+                          ? const CircularProgressIndicator(
+                              color: primaryDark,
+                            )
+                          : Text(
+                              googleText,
+                              style: TextStyle(
+                                color: buttonColor,
+                                fontWeight: FontWeight.w600,
+                                fontSize:
+                                    MediaQuery.of(context).size.width * 0.045,
+                              ),
+                            ),
                     ),
-                  ],
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(),
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),

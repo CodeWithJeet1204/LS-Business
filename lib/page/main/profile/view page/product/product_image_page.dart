@@ -24,13 +24,12 @@ class _ProductImageViewState extends State<ProductImageView> {
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           double width = constraints.maxWidth;
-          double height = constraints.maxHeight;
 
           return Column(
             children: [
               SizedBox(
                 width: width,
-                height: height * 0.86,
+                height: width * 1.7,
                 child: InteractiveViewer(
                   child: Image.network(
                     widget.imagesUrl[currentIndex],
@@ -38,46 +37,50 @@ class _ProductImageViewState extends State<ProductImageView> {
                   ),
                 ),
               ),
-              SizedBox(height: height * 0.025),
-              SizedBox(
-                width: width,
-                height: height * 0.1,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: widget.imagesUrl.length,
-                  itemBuilder: ((context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: GestureDetector(
-                        onTap: () {
-                          // print(index);
-                          setState(() {
-                            currentIndex = index;
-                          });
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1,
-                              color: primaryDark,
+              SizedBox(height: 12),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: width * 0.0125,
+                ),
+                child: SizedBox(
+                  width: width,
+                  height: width * 0.2,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: widget.imagesUrl.length,
+                    itemBuilder: ((context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              currentIndex = index;
+                            });
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1,
+                                color: primaryDark,
+                              ),
+                              borderRadius: BorderRadius.circular(4),
                             ),
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(4),
-                            child: Image.network(
-                              widget.imagesUrl[index],
-                              height: height * 0.1,
-                              width: height * 0.1,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(4),
+                              child: Image.network(
+                                widget.imagesUrl[index],
+                                height: width * 0.175,
+                                width: width * 0.175,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  }),
+                      );
+                    }),
+                  ),
                 ),
               ),
-              SizedBox(height: height * 0.01),
+              SizedBox(height: 12),
             ],
           );
         },

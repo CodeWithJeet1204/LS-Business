@@ -33,6 +33,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
     super.dispose();
   }
 
+  // SEND EMAIL VERIFICATION
   void sendEmailVerification() async {
     try {
       final user = FirebaseAuth.instance.currentUser!;
@@ -61,12 +62,12 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+            Text(
               "An email has been sent to your account, pls click on it\nTo verify your account\n\nClick on the button after verifying the email\n\n(It may take some time for email to arrive)",
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: primaryDark,
-                fontSize: 16,
+                fontSize: MediaQuery.of(context).size.width * 0.045,
               ),
             ),
             const SizedBox(height: 20),
@@ -99,7 +100,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
                 }
               },
               isLoading: checkingEmailVerified,
-              horizontalPadding: 24,
+              horizontalPadding: MediaQuery.of(context).size.width * 0.066,
             ),
           ],
         ),

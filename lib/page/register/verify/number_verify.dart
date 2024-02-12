@@ -37,12 +37,12 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
           child: Column(
             children: [
               Expanded(child: Container()),
-              const Text(
+              Text(
                 "An OTP has been sent to your Phone Number\nPls enter the OTP below",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: primaryDark,
-                  fontSize: 16,
+                  fontSize: MediaQuery.of(context).size.width * 0.045,
                 ),
               ),
               const SizedBox(height: 10),
@@ -50,15 +50,15 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                 hintText: "OTP - 6 Digits",
                 controller: otpController,
                 borderRadius: 12,
-                horizontalPadding: 24,
+                horizontalPadding: MediaQuery.of(context).size.width * 0.066,
                 keyboardType: TextInputType.number,
                 autoFillHints: const [AutofillHints.oneTimeCode],
               ),
               const SizedBox(height: 20),
               isOTPVerifying
                   ? Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 20,
+                      margin: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width * 0.055,
                         vertical: 0,
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 12),
@@ -127,7 +127,8 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                         return;
                       },
                       isLoading: isOTPVerifying,
-                      horizontalPadding: 24,
+                      horizontalPadding:
+                          MediaQuery.of(context).size.width * 0.066,
                     ),
               Expanded(child: Container()),
             ],

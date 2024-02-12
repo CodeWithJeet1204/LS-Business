@@ -22,6 +22,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
   bool isGridView = true;
   String? searchedProduct;
 
+  // DELETE POST
   void deletePost(String postId) async {
     try {
       await store
@@ -106,7 +107,6 @@ class _AllPostsPageState extends State<AllPostsPage> {
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
             double width = constraints.maxWidth;
-            // double height = constraints.maxHeight;
 
             return StreamBuilder(
                 stream: postStream,
@@ -151,7 +151,6 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                     );
                                   },
                                   child: Container(
-                                    width: width * 0.5,
                                     decoration: BoxDecoration(
                                       color: primary2.withOpacity(0.5),
                                       borderRadius: BorderRadius.circular(12),
@@ -173,8 +172,8 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                     ? postData[
                                                         'postProductImages'][0]
                                                     : 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
-                                                height: 140,
-                                                width: 140,
+                                                width: width * 0.4125,
+                                                height: width * 0.4125,
                                                 fit: BoxFit.cover,
                                               ),
                                             ),
@@ -192,11 +191,11 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Padding(
-                                                    padding: const EdgeInsets
-                                                        .fromLTRB(
-                                                      8,
-                                                      4,
-                                                      4,
+                                                    padding:
+                                                        EdgeInsets.fromLTRB(
+                                                      width * 0.025,
+                                                      width * 0.0125,
+                                                      width * 0.0125,
                                                       0,
                                                     ),
                                                     child: Text(
@@ -213,11 +212,11 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                     ),
                                                   ),
                                                   Padding(
-                                                    padding: const EdgeInsets
-                                                        .fromLTRB(
-                                                      8,
+                                                    padding:
+                                                        EdgeInsets.fromLTRB(
+                                                      width * 0.025,
                                                       0,
-                                                      4,
+                                                      width * 0.0125,
                                                       0,
                                                     ),
                                                     child: Text(
@@ -232,8 +231,8 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                       maxLines: 1,
                                                       overflow:
                                                           TextOverflow.ellipsis,
-                                                      style: const TextStyle(
-                                                        fontSize: 16,
+                                                      style: TextStyle(
+                                                        fontSize: width * 0.045,
                                                         fontWeight:
                                                             FontWeight.w600,
                                                       ),
@@ -247,10 +246,10 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                     postData['postId'],
                                                   );
                                                 },
-                                                icon: const Icon(
+                                                icon: Icon(
                                                   Icons.delete_forever,
                                                   color: Colors.red,
-                                                  size: 32,
+                                                  size: width * 0.09,
                                                 ),
                                                 tooltip: "Delete Post",
                                               ),
@@ -272,9 +271,9 @@ class _AllPostsPageState extends State<AllPostsPage> {
                               itemBuilder: ((context, index) {
                                 final postData = snapshot.data!.docs[index];
                                 return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 6,
-                                    vertical: 8,
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: width * 0.01,
+                                    vertical: width * 0.025,
                                   ),
                                   child: GestureDetector(
                                     onTap: () {
@@ -304,15 +303,15 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                 ? postData['postProductImages']
                                                     [0]
                                                 : 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
-                                            width: 45,
-                                            height: 45,
+                                            width: width * 0.1533,
+                                            height: width * 0.1533,
                                             fit: BoxFit.cover,
                                           ),
                                         ),
                                         title: Text(
                                           postData['postProductName'],
-                                          style: const TextStyle(
-                                            fontSize: 18,
+                                          style: TextStyle(
+                                            fontSize: width * 0.0595,
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
@@ -323,8 +322,8 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                       null
                                               ? postData['postProductPrice']
                                               : "N/A",
-                                          style: const TextStyle(
-                                            fontSize: 14,
+                                          style: TextStyle(
+                                            fontSize: width * 0.04,
                                             fontWeight: FontWeight.w500,
                                           ),
                                         ),

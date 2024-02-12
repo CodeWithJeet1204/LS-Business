@@ -24,11 +24,16 @@ class InfoEditBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 6),
+      padding: EdgeInsets.symmetric(
+        vertical: MediaQuery.of(context).size.width * 0.0133,
+        horizontal: MediaQuery.of(context).size.width * 0.02,
+      ),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+        padding: EdgeInsets.all(
+          MediaQuery.of(context).size.width * 0.0125,
+        ),
         decoration: BoxDecoration(
-          color: primary.withOpacity(0.3),
+          color: primary.withOpacity(0.8),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Row(
@@ -51,8 +56,8 @@ class InfoEditBox extends StatelessWidget {
                         softWrap: true,
                         overflow: TextOverflow.clip,
                         maxLines: 1,
-                        style: const TextStyle(
-                          fontSize: 21,
+                        style: TextStyle(
+                          fontSize: MediaQuery.of(context).size.width * 0.05833,
                           fontWeight: FontWeight.w600,
                           color: primaryDark,
                         ),
@@ -60,8 +65,9 @@ class InfoEditBox extends StatelessWidget {
                     : noOfAnswers == 2
                         ? Text(
                             content,
-                            style: const TextStyle(
-                              fontSize: 21,
+                            style: TextStyle(
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.05833,
                               fontWeight: FontWeight.w600,
                               color: primaryDark,
                             ),
@@ -80,16 +86,33 @@ class InfoEditBox extends StatelessWidget {
                                           children: propertyValue
                                               .map(
                                                 (e) => Container(
-                                                  height: 40,
-                                                  margin: const EdgeInsets.only(
-                                                    right: 4,
-                                                    top: 4,
-                                                    bottom: 4,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.01250,
+                                                  margin: EdgeInsets.only(
+                                                    right:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.0125,
+                                                    top: MediaQuery.of(context)
+                                                            .size
+                                                            .width *
+                                                        0.0125,
+                                                    bottom:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.0125,
                                                   ),
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
+                                                  padding: EdgeInsets.symmetric(
                                                     horizontal: 6,
-                                                    vertical: 4,
+                                                    vertical:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.0125,
                                                   ),
                                                   alignment: Alignment.center,
                                                   decoration: BoxDecoration(
@@ -97,12 +120,20 @@ class InfoEditBox extends StatelessWidget {
                                                         .withOpacity(0.8),
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            4),
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .width *
+                                                          0.0125,
+                                                    ),
                                                   ),
                                                   child: Text(
                                                     e,
-                                                    style: const TextStyle(
-                                                      fontSize: 18,
+                                                    style: TextStyle(
+                                                      fontSize:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.05,
                                                       color: primaryDark2,
                                                       fontWeight:
                                                           FontWeight.w500,

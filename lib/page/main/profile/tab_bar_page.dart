@@ -33,11 +33,11 @@ class _TabBarPageState extends State<TabBarPage> with TickerProviderStateMixin {
               color: primaryDark.withOpacity(0.8),
             ),
           ),
-          indicatorPadding: const EdgeInsets.only(
-            bottom: 10,
-            top: 8,
-            left: -16,
-            right: -16,
+          indicatorPadding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).size.width * 0.0266,
+            top: MediaQuery.of(context).size.width * 0.0225,
+            left: -MediaQuery.of(context).size.width * 0.045,
+            right: -MediaQuery.of(context).size.width * 0.045,
           ),
           automaticIndicatorColorAdjustment: false,
           indicatorWeight: 2,

@@ -39,6 +39,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
   bool isUploading = false;
   String? imageUrl;
 
+  // ADD DISCOUNT IMAGE
   void addDiscountImage() async {
     final XFile? im = await showImagePickDialog(context);
     if (im != null) {
@@ -52,12 +53,14 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
     }
   }
 
+  // CHANGE IMAGE FIT
   void changeFit() {
     setState(() {
       isFit = !isFit;
     });
   }
 
+  // SELECT START DATE
   void selectStartDate() async {
     DateTime? selected = await showDatePicker(
       context: context,
@@ -74,6 +77,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
     }
   }
 
+  // SELECT END DATE
   void selectEndDate() async {
     DateTime? selected = await showDatePicker(
       context: context,
@@ -89,6 +93,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
     }
   }
 
+  // ADD DISCOUNT
   void addDiscount(SelectProductForDiscountProvider provider,
       List<String> productIdList) async {
     // End date should be after start date
@@ -211,12 +216,12 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                 child: Column(
                   children: [
                     // DISCLAIMER
-                    const Text(
+                    Text(
                       "If your selected product/s has ongoing discount, then this discount will be applied, after that discount ends (if this discount ends after that)",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: primaryDark2,
-                        fontSize: 12,
+                        fontSize: width * 0.0375,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -231,7 +236,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: primaryDark,
-                            width: 2,
+                            width: 3,
                           ),
                           borderRadius: BorderRadius.circular(8),
                         ),
@@ -245,7 +250,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                     size: width * 0.35,
                                   ),
                                   Text(
-                                    "Select IMAGE",
+                                    "Select Image",
                                     style: TextStyle(
                                       color: primaryDark,
                                       fontSize: width * 0.08,
@@ -278,9 +283,9 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                         padding: const EdgeInsets.all(4),
                                         child: IconButton.filledTonal(
                                           onPressed: addDiscountImage,
-                                          icon: const Icon(
+                                          icon: Icon(
                                             Icons.camera_alt_outlined,
-                                            size: 40,
+                                            size: width * 0.11,
                                           ),
                                           tooltip: "Change Image",
                                         ),
@@ -293,9 +298,9 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                               _image = null;
                                             });
                                           },
-                                          icon: const Icon(
+                                          icon: Icon(
                                             Icons.highlight_remove_rounded,
-                                            size: 40,
+                                            size: width * 0.11,
                                           ),
                                           tooltip: "Remove Image",
                                         ),
@@ -337,7 +342,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                         // START DATE
                         Container(
                           height: 100,
-                          width: width * 0.475,
+                          width: width * 0.45,
                           decoration: BoxDecoration(
                             color: primary3,
                             borderRadius: BorderRadius.circular(12),
@@ -382,9 +387,9 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                       textColor: primaryDark,
                                     )
                                   : Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 12,
-                                        bottom: 8,
+                                      padding: EdgeInsets.only(
+                                        left: width * 0.036,
+                                        bottom: width * 0.025,
                                       ),
                                       child: Text(
                                         startDate!,
@@ -402,7 +407,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                         // END DATE
                         Container(
                           height: 100,
-                          width: width * 0.475,
+                          width: width * 0.45,
                           decoration: BoxDecoration(
                             color: primary3,
                             borderRadius: BorderRadius.circular(12),
@@ -447,9 +452,9 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                       textColor: primaryDark,
                                     )
                                   : Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 12,
-                                        bottom: 8,
+                                      padding: EdgeInsets.only(
+                                        left: width * 0.366,
+                                        bottom: width * 0.025,
                                       ),
                                       child: Text(
                                         endDate!,
@@ -468,13 +473,18 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                     SizedBox(height: 20),
 
                     // DISCLAIMER
-                    const Text(
-                      "If you select 1 jan as end date, discount will end at 31 dec 11:59 pm",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: primaryDark2,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 2,
+                      ),
+                      child: Text(
+                        "If you select 1 jan as end date, discount will end at 31 dec 11:59 pm",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: primaryDark2,
+                          fontSize: width * 0.035,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                     SizedBox(height: 20),
@@ -533,7 +543,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                     color: !isPercentSelected
                                         ? white
                                         : primaryDark.withOpacity(0.9),
-                                    fontSize: width * 0.05,
+                                    fontSize: width * 0.055,
                                     fontWeight: isPercentSelected
                                         ? FontWeight.w600
                                         : FontWeight.w500,
@@ -565,7 +575,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                     color: isPercentSelected
                                         ? white
                                         : primaryDark.withOpacity(0.9),
-                                    fontSize: width * 0.05,
+                                    fontSize: width * 0.055,
                                     fontWeight: !isPercentSelected
                                         ? FontWeight.w600
                                         : FontWeight.w500,

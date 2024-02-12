@@ -14,7 +14,10 @@ class InfoBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 6),
+      padding: EdgeInsets.symmetric(
+        vertical: MediaQuery.of(context).size.width * 0.0135,
+        horizontal: MediaQuery.of(context).size.width * 0.0025,
+      ),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
         decoration: BoxDecoration(
@@ -29,18 +32,18 @@ class InfoBox extends StatelessWidget {
               children: [
                 Text(
                   text,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: primaryDark2,
-                    fontSize: 18,
+                    fontSize: MediaQuery.of(context).size.width * 0.04,
                     fontWeight: FontWeight.w500,
                   ),
                   maxLines: 1,
                 ),
                 Text(
                   value,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: primaryDark,
-                    fontSize: 20,
+                    fontSize: MediaQuery.of(context).size.width * 0.0666,
                     fontWeight: FontWeight.w600,
                   ),
                   maxLines: 1,

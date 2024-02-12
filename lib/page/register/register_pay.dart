@@ -28,11 +28,15 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
               flex: 3,
               child: Container(),
             ),
+
+            // PAY HEADTEXT
             const HeadText(text: "PAY"),
             Expanded(
               flex: 2,
               child: Container(),
             ),
+
+            // CONTINUE TEXT
             const Text(
               "To continue using the app, please pay Rs. 100",
               style: TextStyle(
@@ -40,6 +44,8 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
               ),
             ),
             const SizedBox(height: 24),
+
+            // PAY BUTTON
             MyButton(
               text: "Pay",
               onTap: () {
@@ -64,13 +70,15 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                   });
                 }
               },
-              horizontalPadding: 24,
+              horizontalPadding: MediaQuery.of(context).size.width * 0.066,
               isLoading: isPaying,
             ),
             Expanded(
               flex: 4,
               child: Container(),
             ),
+
+            // ALREADY HAVE AN ACCOUNT ? TEXT
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

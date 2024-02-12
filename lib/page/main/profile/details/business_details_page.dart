@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/firebase/storage_methods.dart';
 import 'package:find_easy/utils/colors.dart';
@@ -28,6 +29,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
   bool isChangingImage = false;
   bool isSaving = false;
 
+  // CHANGE BUSINESS IMAGE
   void changeImage() async {
     Uint8List? im;
     Uint8List? image = await pickImage(ImageSource.gallery);
@@ -70,6 +72,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
     }
   }
 
+  // SAVE
   void save(
     TextEditingController controller,
     String propertyName,
@@ -115,6 +118,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
     }
   }
 
+  // SHOW IMAGE
   void showImage() {
     final imageStream = FirebaseFirestore.instance
         .collection('Business')
@@ -176,7 +180,6 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
         child: LayoutBuilder(
           builder: ((context, constraints) {
             double width = constraints.maxWidth;
-            double height = constraints.maxHeight;
 
             return StreamBuilder(
                 stream: shopStream,
@@ -227,22 +230,22 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                       bottom: -(width * 0.0015),
                                       child: IconButton.filledTonal(
                                         onPressed: changeImage,
-                                        icon: const Icon(
+                                        icon: Icon(
                                           Icons.camera_alt_outlined,
-                                          size: 40,
+                                          size: width * 0.1,
                                         ),
                                         tooltip: "Change Photo",
                                       ),
                                     ),
                                   ],
                                 ),
-                          SizedBox(height: height * 0.05),
+                          SizedBox(height: 32),
 
                           // NAME
                           Container(
                             width: width,
                             height:
-                                isChangingName ? height * 0.125 : height * 0.08,
+                                isChangingName ? width * 0.2775 : width * 0.175,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                               color: primary2.withOpacity(0.9),
@@ -250,7 +253,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             ),
                             child: isChangingName
                                 ? TextField(
-                                    maxLength: 24,
+                                    maxLength: 32,
                                     autofocus: true,
                                     controller: nameController,
                                     decoration: InputDecoration(
@@ -261,42 +264,52 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                     ),
                                   )
                                 : Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      SizedBox(width: width * 0.05),
-                                      Text(
-                                        shopData['Name'],
-                                        style: TextStyle(
-                                          fontSize: shopData['Name'].length > 20
-                                              ? 16
-                                              : 20,
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          left: width * 0.055,
                                         ),
-                                        overflow: TextOverflow.ellipsis,
+                                        child: SizedBox(
+                                          width: width * 0.725,
+                                          child: AutoSizeText(
+                                            shopData['Name'],
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                              fontSize: width * 0.06,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
                                       ),
-                                      Expanded(child: Container()),
-                                      IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            isChangingName = true;
-                                            isChangingAddress = false;
-                                            isChangingSpecialNote = false;
-                                          });
-                                        },
-                                        icon: const Icon(Icons.edit),
-                                        tooltip: "Edit Name",
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          right: width * 0.03,
+                                        ),
+                                        child: IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              isChangingName = true;
+                                              isChangingAddress = false;
+                                              isChangingSpecialNote = false;
+                                            });
+                                          },
+                                          icon: const Icon(Icons.edit),
+                                          tooltip: "Edit Name",
+                                        ),
                                       ),
-                                      SizedBox(width: width * 0.03),
                                     ],
                                   ),
                           ),
-                          SizedBox(height: height * 0.02),
+                          SizedBox(height: 14),
 
                           // ADDRESS
                           Container(
                             width: width,
                             height: isChangingAddress
-                                ? height * 0.125
-                                : height * 0.08,
+                                ? width * 0.2775
+                                : width * 0.175,
                             decoration: BoxDecoration(
                               color: primary2.withOpacity(0.9),
                               borderRadius: BorderRadius.circular(12),
@@ -314,42 +327,50 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                     ),
                                   )
                                 : Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      SizedBox(width: width * 0.05),
-                                      Text(
-                                        shopData['Address'],
-                                        style: TextStyle(
-                                          fontSize:
-                                              shopData['Address'].length > 20
-                                                  ? 16
-                                                  : 18,
+                                      Padding(
+                                        padding:
+                                            EdgeInsets.only(left: width * 0.05),
+                                        child: SizedBox(
+                                          width: width * 0.725,
+                                          child: AutoSizeText(
+                                            shopData['Address'],
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                              fontSize: width * 0.055,
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                      Expanded(child: Container()),
-                                      IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            isChangingName = false;
-                                            isChangingAddress = true;
-                                            isChangingSpecialNote = false;
-                                          });
-                                        },
-                                        icon: const Icon(Icons.edit),
-                                        tooltip: "Edit Addess",
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          right: width * 0.03,
+                                        ),
+                                        child: IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              isChangingName = false;
+                                              isChangingAddress = true;
+                                              isChangingSpecialNote = false;
+                                            });
+                                          },
+                                          icon: const Icon(Icons.edit),
+                                          tooltip: "Edit Addess",
+                                        ),
                                       ),
-                                      SizedBox(width: width * 0.03),
                                     ],
                                   ),
                           ),
-                          SizedBox(height: height * 0.02),
+                          SizedBox(height: 14),
 
                           // SPECIAL NOTE
                           Container(
                             width: width,
                             height: isChangingSpecialNote
-                                ? height * 0.125
-                                : height * 0.08,
+                                ? width * 0.2775
+                                : width * 0.175,
                             decoration: BoxDecoration(
                               color: primary2.withOpacity(0.9),
                               borderRadius: BorderRadius.circular(12),
@@ -367,66 +388,48 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                     ),
                                   )
                                 : Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      SizedBox(width: width * 0.05),
-                                      Text(
-                                        shopData['Special Note'],
-                                        style: TextStyle(
-                                          fontSize:
-                                              shopData['Special Note'].length >
-                                                      20
-                                                  ? 16
-                                                  : 18,
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          left: width * 0.055,
+                                        ),
+                                        child: SizedBox(
+                                          width: width * 0.725,
+                                          child: AutoSizeText(
+                                            shopData['Special Note'],
+                                            style: TextStyle(
+                                              fontSize: width * 0.055,
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                      Expanded(child: Container()),
-                                      IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            isChangingName = false;
-                                            isChangingAddress = false;
-                                            isChangingSpecialNote = true;
-                                          });
-                                        },
-                                        icon: const Icon(Icons.edit),
-                                        tooltip: "Edit Special Note",
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          right: width * 0.03,
+                                        ),
+                                        child: IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              isChangingName = false;
+                                              isChangingAddress = false;
+                                              isChangingSpecialNote = true;
+                                            });
+                                          },
+                                          icon: const Icon(Icons.edit),
+                                          tooltip: "Edit Special Note",
+                                        ),
                                       ),
-                                      SizedBox(width: width * 0.03),
                                     ],
                                   ),
                           ),
-                          SizedBox(height: height * 0.02),
-
-                          // INDUSTRY
-                          Container(
-                            width: width,
-                            height: height * 0.075,
-                            decoration: BoxDecoration(
-                              color: primary2.withOpacity(0.9),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                SizedBox(width: width * 0.05),
-                                Text(
-                                  shopData['Industry'],
-                                  style: TextStyle(
-                                    fontSize: shopData['Industry'].length > 22
-                                        ? 16
-                                        : 18,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: height * 0.02),
+                          SizedBox(height: 14),
 
                           // TYPE
                           Container(
                             width: width,
-                            height: height * 0.075,
+                            height: width * 0.16,
                             decoration: BoxDecoration(
                               color: primary2.withOpacity(0.9),
                               borderRadius: BorderRadius.circular(12),
@@ -434,132 +437,179 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                SizedBox(width: width * 0.05),
-                                Text(
-                                  shopData['Type'],
-                                  style: TextStyle(
-                                    fontSize:
-                                        shopData['Type'].length > 22 ? 16 : 18,
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    left: width * 0.055,
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: height * 0.02),
-
-                          // GST
-                          Container(
-                            width: width,
-                            height: height * 0.075,
-                            decoration: BoxDecoration(
-                              color: primary2.withOpacity(0.9),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                SizedBox(width: width * 0.05),
-                                FittedBox(
-                                  child: Text(
-                                    shopData['GSTNumber'],
-                                    style: const TextStyle(
-                                      fontSize: 18,
+                                  child: SizedBox(
+                                    width: width * 0.875,
+                                    child: AutoSizeText(
+                                      shopData['Type'],
+                                      style: TextStyle(
+                                        fontSize: width * 0.055,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          SizedBox(height: height * 0.02),
+                          SizedBox(height: 14),
 
-                          // MEMBERSHIP
+                          // GST
                           Container(
                             width: width,
-                            height: height * 0.075,
+                            height: width * 0.16,
                             decoration: BoxDecoration(
-                              color: shopData['MembershipName'] == "PREMIUM"
-                                  ? const Color.fromARGB(255, 202, 226, 238)
-                                  : shopData['MembershipName'] == "GOLD"
-                                      ? const Color.fromARGB(255, 253, 243, 154)
-                                      : white,
+                              color: primary2.withOpacity(0.9),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                SizedBox(width: width * 0.05),
-                                Text(
-                                  shopData['MembershipName'],
-                                  style: TextStyle(
-                                    fontSize:
-                                        shopData['MembershipName'].length > 22
-                                            ? 16
-                                            : 18,
-                                    fontWeight: FontWeight.w700,
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    left: width * 0.055,
+                                  ),
+                                  child: SizedBox(
+                                    width: width * 0.875,
+                                    child: AutoSizeText(
+                                      shopData['GSTNumber'],
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          SizedBox(height: height * 0.05),
-                          isChangingName ||
-                                  isChangingAddress ||
-                                  isChangingSpecialNote
-                              ? Column(
-                                  children: [
-                                    isSaving
-                                        ? Container(
-                                            margin: const EdgeInsets.symmetric(
-                                              horizontal: 0,
-                                            ),
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 12),
-                                            alignment: Alignment.center,
-                                            width: double.infinity,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              color: buttonColor,
-                                            ),
-                                            child: const Center(
-                                              child: CircularProgressIndicator(
-                                                color: white,
-                                              ),
-                                            ))
-                                        : MyButton(
-                                            text: "SAVE",
-                                            onTap: () {
-                                              if (isChangingName) {
-                                                save(
-                                                  nameController,
-                                                  "Name",
-                                                  isChangingName,
-                                                );
-                                              } else if (isChangingAddress) {
-                                                save(
-                                                  addressController,
-                                                  "Address",
-                                                  isChangingAddress,
-                                                );
-                                              } else if (isChangingSpecialNote) {
-                                                save(
-                                                  specialNoteController,
-                                                  "Special Note",
-                                                  isChangingSpecialNote,
-                                                );
-                                              }
-                                            },
-                                            isLoading: false,
-                                            horizontalPadding: 0,
-                                          ),
-                                    SizedBox(height: height * 0.015),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        bottom: MediaQuery.of(context)
-                                            .viewInsets
-                                            .bottom,
+                          SizedBox(height: 14),
+
+                          // INDUSTRY
+                          Container(
+                            width: width,
+                            height: width * 0.16,
+                            decoration: BoxDecoration(
+                              color: primary2.withOpacity(0.9),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    left: width * 0.055,
+                                  ),
+                                  child: SizedBox(
+                                    width: width * 0.725,
+                                    child: Text(
+                                      shopData['Industry'],
+                                      style: TextStyle(
+                                        fontSize: width * 0.055,
+                                        fontWeight: FontWeight.w500,
                                       ),
-                                      child: MyButton(
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 14),
+
+                          // MEMBERSHIP
+                          Container(
+                            width: width,
+                            height: width * 0.16,
+                            decoration: BoxDecoration(
+                              color: shopData['MembershipName'] == "PREMIUM"
+                                  ? Color.fromRGBO(202, 226, 238, 1)
+                                  : shopData['MembershipName'] == "GOLD"
+                                      ? Color.fromRGBO(253, 243, 154, 1)
+                                      : Color.fromRGBO(167, 167, 167, 1),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: width * 0.05),
+                                  child: SizedBox(
+                                    width: width * 0.725,
+                                    child: AutoSizeText(
+                                      shopData['MembershipName'],
+                                      style: TextStyle(
+                                        fontSize: width * 0.055,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 18),
+
+                          // SAVE & CANCEL BUTTON
+                          Padding(
+                            padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).viewInsets.bottom,
+                            ),
+                            child: isChangingName ||
+                                    isChangingAddress ||
+                                    isChangingSpecialNote
+                                ? Column(
+                                    children: [
+                                      isSaving
+                                          ? Container(
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                horizontal: 0,
+                                              ),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 12),
+                                              alignment: Alignment.center,
+                                              width: double.infinity,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                color: buttonColor,
+                                              ),
+                                              child: const Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  color: white,
+                                                ),
+                                              ))
+                                          : MyButton(
+                                              text: "SAVE",
+                                              onTap: () {
+                                                if (isChangingName) {
+                                                  save(
+                                                    nameController,
+                                                    "Name",
+                                                    isChangingName,
+                                                  );
+                                                } else if (isChangingAddress) {
+                                                  save(
+                                                    addressController,
+                                                    "Address",
+                                                    isChangingAddress,
+                                                  );
+                                                } else if (isChangingSpecialNote) {
+                                                  save(
+                                                    specialNoteController,
+                                                    "Special Note",
+                                                    isChangingSpecialNote,
+                                                  );
+                                                }
+                                              },
+                                              isLoading: false,
+                                              horizontalPadding: 0,
+                                            ),
+                                      SizedBox(height: 12),
+                                      MyButton(
                                         text: "CANCEL",
                                         onTap: () {
                                           setState(() {
@@ -571,11 +621,10 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                         isLoading: false,
                                         horizontalPadding: 0,
                                       ),
-                                    ),
-                                  ],
-                                )
-                              : Container(),
-                          const SizedBox(height: 40),
+                                    ],
+                                  )
+                                : Container(),
+                          ),
                         ],
                       ),
                     );

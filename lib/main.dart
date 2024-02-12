@@ -97,7 +97,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Find Easy',
+      title: 'Find Easy Business',
       theme: ThemeData(
         progressIndicatorTheme: const ProgressIndicatorThemeData(
           color: primaryDark2,

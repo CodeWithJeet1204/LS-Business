@@ -46,8 +46,8 @@ class _MainPageState extends State<MainPage> {
           fontWeight: FontWeight.w600,
         ),
         type: BottomNavigationBarType.fixed,
-        selectedIconTheme: const IconThemeData(
-          size: 28,
+        selectedIconTheme: IconThemeData(
+          size: MediaQuery.of(context).size.width * 0.07785,
           color: primaryDark,
         ),
         currentIndex: current,

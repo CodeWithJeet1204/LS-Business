@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/firebase/storage_methods.dart';
 import 'package:find_easy/utils/colors.dart';
@@ -27,6 +28,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
   bool isSaving = false;
   bool isDataLoaded = false;
 
+  // CHANGE USER IMAGE
   void changeImage() async {
     Uint8List? im;
     Uint8List? image = await pickImage(ImageSource.gallery);
@@ -71,6 +73,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
     }
   }
 
+  // SAVE
   void save() async {
     try {
       setState(() {
@@ -176,6 +179,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
     }
   }
 
+  // SHOW IMAGE
   void showImage() {
     final imageStream = FirebaseFirestore.instance
         .collection('Business')
@@ -232,32 +236,29 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
       appBar: AppBar(
         title: const Text("Owner Details"),
       ),
-      body: LayoutBuilder(
-        builder: ((context, constraints) {
-          double width = constraints.maxWidth;
-          double height = constraints.maxHeight;
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: LayoutBuilder(
+          builder: ((context, constraints) {
+            double width = constraints.maxWidth;
 
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: width * 0.08),
-            child: SizedBox(
-              width: width,
-              height: height,
-              child: StreamBuilder(
-                  stream: userStream,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return const Center(
-                        child: Text("Something went wrong"),
-                      );
-                    }
+            return StreamBuilder(
+                stream: userStream,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return const Center(
+                      child: Text("Something went wrong"),
+                    );
+                  }
 
-                    if (snapshot.hasData) {
-                      final userData = snapshot.data!;
+                  if (snapshot.hasData) {
+                    final userData = snapshot.data!;
 
-                      return Column(
+                    return SingleChildScrollView(
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Expanded(child: Container()),
+                          const SizedBox(height: 40),
                           isChangingImage
                               ? Container(
                                   width: width * 0.3,
@@ -290,19 +291,22 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                       bottom: -(width * 0.0015),
                                       child: IconButton.filledTonal(
                                         onPressed: changeImage,
-                                        icon: const Icon(
+                                        icon: Icon(
                                           Icons.camera_alt_outlined,
-                                          size: 40,
+                                          size: width * 0.1,
                                         ),
                                         tooltip: "Change Photo",
                                       ),
                                     ),
                                   ],
                                 ),
-                          SizedBox(height: height * 0.05),
+                          SizedBox(height: 14),
+
+                          // NAME
                           Container(
                             width: width,
-                            height: height * 0.075,
+                            height:
+                                isChangingName ? width * 0.2775 : width * 0.175,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                               color: primary2.withOpacity(0.9),
@@ -320,33 +324,48 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                     ),
                                   )
                                 : Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      SizedBox(width: width * 0.05),
-                                      Text(
-                                        userData['Name'],
-                                        style: const TextStyle(
-                                          fontSize: 20,
+                                      Padding(
+                                        padding:
+                                            EdgeInsets.only(left: width * 0.05),
+                                        child: SizedBox(
+                                          width: width * 0.725,
+                                          child: AutoSizeText(
+                                            userData['Name'],
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                              fontSize: width * 0.06,
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                      Expanded(child: Container()),
-                                      IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            isChangingName = true;
-                                          });
-                                        },
-                                        icon: const Icon(Icons.edit),
-                                        tooltip: "Edit Name",
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          right: width * 0.03,
+                                        ),
+                                        child: IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              isChangingName = true;
+                                            });
+                                          },
+                                          icon: const Icon(Icons.edit),
+                                          tooltip: "Edit Name",
+                                        ),
                                       ),
-                                      SizedBox(width: width * 0.03),
                                     ],
                                   ),
                           ),
-                          SizedBox(height: height * 0.02),
+                          SizedBox(height: 14),
+
+                          // PHONE NUMBER
                           Container(
                             width: width,
-                            height: height * 0.075,
+                            height: isChangingNumber
+                                ? width * 0.2775
+                                : width * 0.175,
                             decoration: BoxDecoration(
                               color: primary2.withOpacity(0.9),
                               borderRadius: BorderRadius.circular(12),
@@ -363,62 +382,84 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                     ),
                                   )
                                 : Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      SizedBox(width: width * 0.05),
-                                      Text(
-                                        userData['Phone Number'],
-                                        style: const TextStyle(
-                                          fontSize: 16,
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          left: width * 0.055,
+                                        ),
+                                        child: SizedBox(
+                                          width: width * 0.725,
+                                          child: AutoSizeText(
+                                            userData['Phone Number'],
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                              fontSize: width * 0.055,
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                      Expanded(child: Container()),
-                                      IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            isChangingNumber = true;
-                                          });
-                                        },
-                                        icon: const Icon(Icons.edit),
-                                        tooltip: "Edit Phone Number",
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          right: width * 0.03,
+                                        ),
+                                        child: IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              isChangingNumber = true;
+                                            });
+                                          },
+                                          icon: const Icon(Icons.edit),
+                                          tooltip: "Edit Phone Number",
+                                        ),
                                       ),
-                                      SizedBox(width: width * 0.03),
                                     ],
                                   ),
                           ),
-                          SizedBox(height: height * 0.02),
+                          SizedBox(height: 14),
+
+                          // EMAIL ADDRESS
                           Container(
                             width: width,
-                            height: height * 0.075,
+                            height: width * 0.16,
                             decoration: BoxDecoration(
                               color: primary2.withOpacity(0.9),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                SizedBox(width: width * 0.05),
-                                Text(
-                                  userData['Email'],
-                                  style: TextStyle(
-                                    fontSize:
-                                        userData['Email'].length > 22 ? 16 : 18,
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    left: width * 0.055,
+                                  ),
+                                  child: SizedBox(
+                                    width: width * 0.725,
+                                    child: AutoSizeText(
+                                      userData['Email'],
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                        fontSize: width * 0.055,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          SizedBox(height: height * 0.05),
+                          SizedBox(height: 18),
+
+                          // SAVE & CANCEL BUTTON
                           isChangingName || isChangingNumber
                               ? Column(
                                   children: [
+                                    // SAVE
                                     isSaving
                                         ? Container(
-                                            margin: const EdgeInsets.symmetric(
-                                              horizontal: 0,
-                                            ),
                                             padding: const EdgeInsets.symmetric(
-                                                vertical: 12),
+                                              vertical: 12,
+                                            ),
                                             alignment: Alignment.center,
                                             width: double.infinity,
                                             decoration: BoxDecoration(
@@ -437,7 +478,9 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                             isLoading: false,
                                             horizontalPadding: 0,
                                           ),
-                                    SizedBox(height: height * 0.015),
+                                    SizedBox(height: 12),
+
+                                    // CANCEL
                                     MyButton(
                                       text: "CANCEL",
                                       onTap: () {
@@ -452,18 +495,17 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                   ],
                                 )
                               : Container(),
-                          Expanded(child: Container()),
                         ],
-                      );
-                    }
-
-                    return const Center(
-                      child: CircularProgressIndicator(),
+                      ),
                     );
-                  }),
-            ),
-          );
-        }),
+                  }
+
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                });
+          }),
+        ),
       ),
     );
   }

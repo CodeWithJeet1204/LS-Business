@@ -30,14 +30,13 @@ class _AddPageState extends State<AddPage> {
           child: LayoutBuilder(
             builder: (context, constraints) {
               double width = constraints.maxWidth;
-              double height = constraints.maxHeight;
               return SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     SizedOverflowBox(
-                      size: Size(width, height * 0.266),
+                      size: Size(width, 180),
                       child: GestureDetector(
                         onTap: () {
                           Navigator.of(context).push(
@@ -49,7 +48,7 @@ class _AddPageState extends State<AddPage> {
                         child: Container(
                           margin: const EdgeInsets.symmetric(horizontal: 12),
                           width: width,
-                          height: height * 0.2,
+                          height: 130,
                           decoration: BoxDecoration(
                             color: primary2.withOpacity(0.67),
                             borderRadius: BorderRadius.circular(8),
@@ -82,7 +81,7 @@ class _AddPageState extends State<AddPage> {
                       ),
                     ),
                     SizedOverflowBox(
-                      size: Size(width, height * 0.275),
+                      size: Size(width, 180),
                       child: GestureDetector(
                         onTap: () {
                           Navigator.of(context).push(
@@ -94,7 +93,7 @@ class _AddPageState extends State<AddPage> {
                         child: Container(
                           margin: const EdgeInsets.symmetric(horizontal: 12),
                           width: width,
-                          height: height * 0.2,
+                          height: 130,
                           decoration: BoxDecoration(
                             color: primary2.withOpacity(0.67),
                             borderRadius: BorderRadius.circular(8),
@@ -127,7 +126,7 @@ class _AddPageState extends State<AddPage> {
                       ),
                     ),
                     SizedOverflowBox(
-                      size: Size(width, height * 0.275),
+                      size: Size(width, 180),
                       child: GestureDetector(
                         onTap: () {
                           Navigator.of(context).pushNamed('/addCategory');
@@ -135,7 +134,7 @@ class _AddPageState extends State<AddPage> {
                         child: Container(
                           margin: const EdgeInsets.symmetric(horizontal: 12),
                           width: width,
-                          height: height * 0.2,
+                          height: 130,
                           decoration: BoxDecoration(
                             color: primary2.withOpacity(0.67),
                             borderRadius: BorderRadius.circular(8),

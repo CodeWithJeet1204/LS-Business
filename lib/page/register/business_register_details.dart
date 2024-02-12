@@ -37,6 +37,7 @@ class _BusinessRegisterDetailsPageState
   bool isImageSelected = false;
   Uint8List? _image;
 
+  // SHOW CATEGORY DIALOG
   void showCategoryDialog() async {
     await showDialog(
       context: context,
@@ -45,6 +46,7 @@ class _BusinessRegisterDetailsPageState
     setState(() {});
   }
 
+  // SELECT IMAGE
   void selectImage() async {
     Uint8List? im = await pickImage(ImageSource.gallery);
     if (im == null) {
@@ -59,6 +61,7 @@ class _BusinessRegisterDetailsPageState
     }
   }
 
+  // UPLOAD DETAILS
   void uploadDetails() async {
     if (businessFormKey.currentState!.validate()) {
       if (_image != null) {
@@ -124,7 +127,10 @@ class _BusinessRegisterDetailsPageState
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 100),
-              const HeadText(text: "BUSINESS\nDETAILS"),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.875,
+                child: const HeadText(text: "BUSINESS\nDETAILS"),
+              ),
               const SizedBox(height: 40),
 
               // IMAGE
@@ -133,28 +139,24 @@ class _BusinessRegisterDetailsPageState
                       alignment: Alignment.bottomRight,
                       children: [
                         CircleAvatar(
-                          radius: 50,
+                          radius: MediaQuery.of(context).size.width * 0.13885,
                           backgroundImage: MemoryImage(_image!),
                         ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: IconButton.filledTonal(
-                            icon: const Icon(Icons.camera_alt_outlined),
-                            iconSize: 30,
-                            tooltip: "Change Shop Picture",
-                            onPressed: selectImage,
-                            color: primaryDark,
-                          ),
+                        IconButton.filledTonal(
+                          icon: const Icon(Icons.camera_alt_outlined),
+                          iconSize: MediaQuery.of(context).size.width * 0.1,
+                          tooltip: "Change Shop Picture",
+                          onPressed: selectImage,
+                          color: primaryDark,
                         ),
                       ],
                     )
                   : CircleAvatar(
-                      radius: 50,
+                      radius: MediaQuery.of(context).size.width * 0.13885,
                       child: IconButton(
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.camera_alt_outlined,
-                          size: 60,
+                          size: MediaQuery.of(context).size.width * 0.166,
                         ),
                         onPressed: selectImage,
                       ),
@@ -169,8 +171,10 @@ class _BusinessRegisterDetailsPageState
                       hintText: "Shop Name",
                       controller: nameController,
                       borderRadius: 12,
-                      horizontalPadding: 20,
-                      verticalPadding: 4,
+                      horizontalPadding:
+                          MediaQuery.of(context).size.width * 0.055,
+                      verticalPadding:
+                          MediaQuery.of(context).size.width * 0.01125,
                       autoFillHints: const [AutofillHints.streetAddressLevel1],
                     ),
 
@@ -179,8 +183,10 @@ class _BusinessRegisterDetailsPageState
                       hintText: "GST Number",
                       controller: gstController,
                       borderRadius: 12,
-                      horizontalPadding: 20,
-                      verticalPadding: 4,
+                      horizontalPadding:
+                          MediaQuery.of(context).size.width * 0.055,
+                      verticalPadding:
+                          MediaQuery.of(context).size.width * 0.01125,
                       autoFillHints: null,
                     ),
 
@@ -189,8 +195,10 @@ class _BusinessRegisterDetailsPageState
                       hintText: "Address (Don't include Shop Name)",
                       controller: addressController,
                       borderRadius: 12,
-                      horizontalPadding: 20,
-                      verticalPadding: 12,
+                      horizontalPadding:
+                          MediaQuery.of(context).size.width * 0.055,
+                      verticalPadding:
+                          MediaQuery.of(context).size.width * 0.033,
                       keyboardType: TextInputType.streetAddress,
                       autoFillHints: const [AutofillHints.streetAddressLevel2],
                     ),
@@ -199,8 +207,8 @@ class _BusinessRegisterDetailsPageState
                     GestureDetector(
                       onTap: showCategoryDialog,
                       child: Container(
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 20,
+                        margin: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * 0.055,
                           vertical: 0,
                         ),
                         padding: const EdgeInsets.symmetric(vertical: 12),
@@ -212,10 +220,10 @@ class _BusinessRegisterDetailsPageState
                         ),
                         child: Text(
                           selectedCategory,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: primaryDark,
                             fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                            fontSize: MediaQuery.of(context).size.width * 0.045,
                           ),
                         ),
                       ),
@@ -230,7 +238,8 @@ class _BusinessRegisterDetailsPageState
                                 hintText: "Category Name",
                                 controller: categoryNameController,
                                 borderRadius: 12,
-                                horizontalPadding: 20,
+                                horizontalPadding:
+                                    MediaQuery.of(context).size.width * 0.055,
                                 autoFillHints: null,
                               ),
                             ],
@@ -277,17 +286,24 @@ class _BusinessRegisterDetailsPageState
                       hintText: "Special Note",
                       controller: specialNoteController,
                       borderRadius: 12,
-                      horizontalPadding: 20,
+                      horizontalPadding:
+                          MediaQuery.of(context).size.width * 0.055,
                       autoFillHints: null,
                     ),
                     const SizedBox(height: 20),
 
                     // NEXT
-                    MyButton(
-                      text: "Next",
-                      onTap: uploadDetails,
-                      isLoading: isNext,
-                      horizontalPadding: 20,
+                    Padding(
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom,
+                      ),
+                      child: MyButton(
+                        text: "Next",
+                        onTap: uploadDetails,
+                        isLoading: isNext,
+                        horizontalPadding:
+                            MediaQuery.of(context).size.width * 0.055,
+                      ),
                     ),
                     const SizedBox(height: 12),
                   ],

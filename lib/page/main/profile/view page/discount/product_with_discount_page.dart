@@ -4,6 +4,8 @@ import 'package:find_easy/widgets/text_button.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
+// TODO: CONNECTION STATE ALWAYS WAITING
+
 class ProductWithDiscountPage extends StatefulWidget {
   const ProductWithDiscountPage({
     super.key,
@@ -193,7 +195,7 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(12),
                                       child: Image.network(
-                                        products[index]['imageUrl']!,
+                                        products[index]['images']![0],
                                         width: width * 0.45,
                                         height: width * 0.4,
                                         fit: BoxFit.cover,

@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:find_easy/firebase/auth_methods.dart';
 import 'package:find_easy/page/register/verify/number_verify.dart';
 import 'package:find_easy/utils/colors.dart';
@@ -23,12 +22,11 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
+  final GlobalKey<FormState> emailLoginFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> numberLoginFormKey = GlobalKey<FormState>();
   String phoneText = "Verify";
   String googleText = "Sign in With GOOGLE";
   bool isGoogleLogging = false;
-  bool isShowEmail = false;
-  bool isShowNumber = false;
   bool isEmailLogging = false;
   bool isPhoneLogging = false;
 
@@ -37,42 +35,36 @@ class _LoginPageState extends State<LoginPage> {
     // ignore: no_leading_underscores_for_local_identifiers
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final AuthMethods auth = AuthMethods();
+    final double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: SingleChildScrollView(
-          child: SizedBox(
-            height: 857,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Container(),
-                ),
-                const HeadText(text: "LOGIN"),
-                Expanded(
-                  flex: 2,
-                  child: Container(),
-                ),
-                Column(
-                  children: [
-                    MyCollapseContainer(
-                      headText: "Email",
-                      isShow: isShowEmail,
-                      horizontalMargin: 20,
-                      horizontalPadding: 12,
-                      verticalPadding: 8,
-                      bodyWidget: Form(
-                        key: numberLoginFormKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: width * 0.35),
+              const HeadText(text: "LOGIN"),
+              SizedBox(height: width * 0.3),
+              Column(
+                children: [
+                  // EMAIL
+                  MyCollapseContainer(
+                    children: Form(
+                      key: emailLoginFormKey,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: width * 0.0225,
+                          horizontal: width * 0.01,
+                        ),
                         child: Column(
                           children: [
                             MyTextFormField(
                               hintText: "Email",
                               controller: emailController,
                               borderRadius: 16,
-                              horizontalPadding: 24,
+                              horizontalPadding: width * 0.066,
                               keyboardType: TextInputType.emailAddress,
                               autoFillHints: const [AutofillHints.email],
                             ),
@@ -81,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                               hintText: "Password",
                               controller: passwordController,
                               borderRadius: 16,
-                              horizontalPadding: 24,
+                              horizontalPadding: width * 0.066,
                               isPassword: true,
                               autoFillHints: const [AutofillHints.password],
                             ),
@@ -89,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                             MyButton(
                               text: "LOGIN",
                               onTap: () async {
-                                if (numberLoginFormKey.currentState!
+                                if (emailLoginFormKey.currentState!
                                     .validate()) {
                                   try {
                                     setState(() {
@@ -124,29 +116,25 @@ class _LoginPageState extends State<LoginPage> {
                                   }
                                 }
                               },
-                              horizontalPadding: 24,
+                              horizontalPadding: width * 0.066,
                               isLoading: isEmailLogging,
                             ),
                           ],
                         ),
                       ),
-                      onTap: () {
-                        Timer(const Duration(milliseconds: 100), () {
-                          setState(() {
-                            isShowNumber = false;
-                            isShowEmail = !isShowEmail;
-                          });
-                        });
-                      },
                     ),
-                    const SizedBox(height: 12),
-                    MyCollapseContainer(
-                      headText: "Phone Number",
-                      isShow: isShowNumber,
-                      horizontalMargin: 20,
-                      horizontalPadding: 12,
-                      verticalPadding: 8,
-                      bodyWidget: Form(
+                    width: width,
+                    text: "Email",
+                  ),
+
+                  // PHONE NUMBER
+                  MyCollapseContainer(
+                    children: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: width * 0.0125,
+                        vertical: width * 0.025,
+                      ),
+                      child: Form(
                         key: numberLoginFormKey,
                         child: Column(
                           children: [
@@ -154,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
                               hintText: "Phone Number",
                               controller: phoneController,
                               borderRadius: 16,
-                              horizontalPadding: 24,
+                              horizontalPadding: width * 0.066,
                               keyboardType: TextInputType.number,
                               autoFillHints: const [
                                 AutofillHints.telephoneNumberDevice
@@ -238,103 +226,92 @@ class _LoginPageState extends State<LoginPage> {
                                   }
                                 }
                               },
-                              horizontalPadding: 24,
+                              horizontalPadding: width * 0.066,
                               isLoading: isPhoneLogging,
                             ),
                           ],
                         ),
                       ),
-                      onTap: () {
-                        Timer(const Duration(milliseconds: 100), () {
-                          setState(() {
-                            isShowEmail = false;
-                            isShowNumber = !isShowNumber;
-                          });
-                        });
-                      },
                     ),
-                    const SizedBox(height: 16),
-                    GestureDetector(
-                      onTap: () async {
-                        try {
-                          setState(() {
-                            isShowEmail = false;
-                            isShowNumber = false;
-                            googleText = "PLEASE WAIT";
-                            isGoogleLogging = true;
-                          });
-                          // Sign In With Google
-                          await AuthMethods().signInWithGoogle(context);
-                          // SystemChannels.textInput
-                          //     .invokeMethod('TextInput.hide');
-                          if (FirebaseAuth.instance.currentUser != null) {
-                            setState(() {});
-                          } else {
-                            if (context.mounted) {
-                              mySnackBar(context, "Some error occured!");
-                            }
-                          }
-                        } on FirebaseAuthException catch (e) {
+                    width: width,
+                    text: "Phone Number",
+                  ),
+                  const SizedBox(height: 16),
+
+                  // SIGN IN WITH GOOGLE
+                  GestureDetector(
+                    onTap: () async {
+                      try {
+                        setState(() {
+                          googleText = "PLEASE WAIT";
+                          isGoogleLogging = true;
+                        });
+                        // Sign In With Google
+                        await AuthMethods().signInWithGoogle(context);
+                        // SystemChannels.textInput
+                        //     .invokeMethod('TextInput.hide');
+                        if (FirebaseAuth.instance.currentUser != null) {
+                          setState(() {});
+                        } else {
                           if (context.mounted) {
-                            mySnackBar(context, e.toString());
+                            mySnackBar(context, "Some error occured!");
                           }
                         }
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 20),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        alignment: Alignment.center,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: primary2.withOpacity(0.75),
-                        ),
-                        child: isGoogleLogging
-                            ? const Center(
-                                child: CircularProgressIndicator(
-                                  color: primaryDark,
-                                ),
-                              )
-                            : Text(
-                                googleText,
-                                style: const TextStyle(
-                                  color: buttonColor,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18,
-                                ),
-                              ),
+                      } on FirebaseAuthException catch (e) {
+                        if (context.mounted) {
+                          mySnackBar(context, e.toString());
+                        }
+                      }
+                    },
+                    child: Container(
+                      margin: EdgeInsets.symmetric(
+                        horizontal: width * 0.035,
                       ),
+                      padding: EdgeInsets.symmetric(
+                        vertical: width * 0.033,
+                      ),
+                      alignment: Alignment.center,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: primary2.withOpacity(0.75),
+                      ),
+                      child: isGoogleLogging
+                          ? const Center(
+                              child: CircularProgressIndicator(
+                                color: primaryDark,
+                              ),
+                            )
+                          : Text(
+                              googleText,
+                              style: TextStyle(
+                                color: buttonColor,
+                                fontWeight: FontWeight.w600,
+                                fontSize: width * 0.05,
+                              ),
+                            ),
                     ),
-                  ],
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Container(),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("Don't have an account?"),
-                    MyTextButton(
-                      onPressed: () {
-                        setState(() {
-                          isShowEmail = false;
-                          isShowNumber = false;
-                        });
-                        SystemChannels.textInput.invokeMethod('TextInput.hide');
-                        Navigator.of(context).popAndPushNamed('/registerPay');
-                      },
-                      text: "REGISTER",
-                      textColor: buttonColor,
-                    ),
-                  ],
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Container(),
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 120),
+
+              // DONT HAVE AN ACCOUNT ? TEXT
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Don't have an account?"),
+                  MyTextButton(
+                    onPressed: () {
+                      SystemChannels.textInput.invokeMethod('TextInput.hide');
+                      Navigator.of(context).popAndPushNamed('/registerPay');
+                    },
+                    text: "REGISTER",
+                    textColor: buttonColor,
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),

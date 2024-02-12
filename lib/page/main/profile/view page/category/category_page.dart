@@ -353,17 +353,19 @@ class _CategoryPageState extends State<CategoryPage> {
                           isImageChanging
                               ? Container()
                               : Padding(
-                                  padding:
-                                      const EdgeInsets.only(right: 4, top: 4),
+                                  padding: EdgeInsets.only(
+                                    right: width * 0.0125,
+                                    top: width * 0.0125,
+                                  ),
                                   child: IconButton.filledTonal(
                                     onPressed: () {
                                       changeCategoryImage(
                                         categoryData['imageUrl'],
                                       );
                                     },
-                                    icon: const Icon(
+                                    icon: Icon(
                                       Icons.camera_alt_outlined,
-                                      size: 36,
+                                      size: width * 0.1,
                                     ),
                                     tooltip: "Change Image",
                                   ),
@@ -375,9 +377,9 @@ class _CategoryPageState extends State<CategoryPage> {
                       // NAME
                       Container(
                         width: width,
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 8,
-                          horizontal: 8,
+                        padding: EdgeInsets.symmetric(
+                          vertical: width * 0.025,
+                          horizontal: width * 0.0,
                         ),
                         decoration: BoxDecoration(
                           color: primary.withOpacity(0.3),
@@ -391,9 +393,9 @@ class _CategoryPageState extends State<CategoryPage> {
                               categoryData['categoryName'],
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: primaryDark,
-                                fontSize: 24,
+                                fontSize: width * 0.0725,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -401,9 +403,9 @@ class _CategoryPageState extends State<CategoryPage> {
                               onPressed: () {
                                 changeName();
                               },
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.edit,
-                                size: 24,
+                                size: width * 0.0725,
                                 color: primaryDark,
                               ),
                               tooltip: "Change Name",
@@ -440,7 +442,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                     children: [
                                       Padding(
                                         padding:
-                                            const EdgeInsets.only(left: 10),
+                                            EdgeInsets.only(left: width * 0.01),
                                         child: data['isPercent']
                                             ? Text(
                                                 "${data['discountAmount']}% off",
@@ -456,9 +458,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                               ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 10,
-                                          vertical: 2,
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: width * 0.01,
+                                          vertical: width * 0.00625,
                                         ),
                                         child: Text(
                                           (data['discountEndDateTime']
@@ -477,9 +479,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(
-                                          left: 12,
-                                          top: 8,
+                                        padding: EdgeInsets.only(
+                                          left: width * 0.01,
+                                          top: width * 0.025,
                                         ),
                                         child: Text(
                                           "This discount is available to all the products within this category",
@@ -541,18 +543,18 @@ class _CategoryPageState extends State<CategoryPage> {
                             color: primaryDark.withOpacity(0.33),
                           ),
                         ),
-                        title: const Text(
+                        title: Text(
                           'Products',
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: width * 0.06,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 6,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: width * 0.0225,
+                              vertical: width * 0.02125,
                             ),
                             child: Column(
                               children: [
@@ -611,11 +613,12 @@ class _CategoryPageState extends State<CategoryPage> {
                                             ? GridView.builder(
                                                 shrinkWrap: true,
                                                 gridDelegate:
-                                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                                    SliverGridDelegateWithFixedCrossAxisCount(
                                                   crossAxisCount: 2,
                                                   crossAxisSpacing: 0,
                                                   mainAxisSpacing: 0,
-                                                  childAspectRatio: 175 / 250,
+                                                  childAspectRatio:
+                                                      width * 0.5 / width * 1.5,
                                                 ),
                                                 itemCount:
                                                     snapshot.data!.docs.length,
@@ -624,7 +627,11 @@ class _CategoryPageState extends State<CategoryPage> {
                                                       .data!.docs[index];
                                                   return Padding(
                                                     padding:
-                                                        const EdgeInsets.all(8),
+                                                        EdgeInsets.symmetric(
+                                                      vertical: width * 0.025,
+                                                      horizontal:
+                                                          width * 0.0125,
+                                                    ),
                                                     child: GestureDetector(
                                                       onTap: () {
                                                         Navigator.of(context)
@@ -658,8 +665,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                                         ),
                                                         child: Padding(
                                                           padding:
-                                                              const EdgeInsets
-                                                                  .all(4),
+                                                              EdgeInsets.all(
+                                                            width * 0.0015,
+                                                          ),
                                                           child: Column(
                                                             crossAxisAlignment:
                                                                 CrossAxisAlignment
@@ -674,17 +682,18 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                   borderRadius:
                                                                       BorderRadius
                                                                           .circular(
-                                                                              12),
+                                                                    12,
+                                                                  ),
                                                                   child: Image
                                                                       .network(
                                                                     productData[
                                                                         'images'][0],
-                                                                    height:
-                                                                        width *
-                                                                            0.4,
                                                                     width:
                                                                         width *
-                                                                            0.4,
+                                                                            0.35,
+                                                                    height:
+                                                                        width *
+                                                                            0.35,
                                                                     fit: BoxFit
                                                                         .cover,
                                                                   ),
@@ -705,10 +714,13 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                     children: [
                                                                       Padding(
                                                                         padding:
-                                                                            const EdgeInsets.fromLTRB(
-                                                                          8,
-                                                                          4,
-                                                                          4,
+                                                                            EdgeInsets.fromLTRB(
+                                                                          width *
+                                                                              0.025,
+                                                                          width *
+                                                                              0.0125,
+                                                                          width *
+                                                                              0.0125,
                                                                           0,
                                                                         ),
                                                                         child:
@@ -720,20 +732,21 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                           overflow:
                                                                               TextOverflow.ellipsis,
                                                                           style:
-                                                                              const TextStyle(
+                                                                              TextStyle(
                                                                             fontSize:
-                                                                                20,
+                                                                                width * 0.058,
                                                                             fontWeight:
                                                                                 FontWeight.bold,
                                                                           ),
                                                                         ),
                                                                       ),
                                                                       Padding(
-                                                                        padding: const EdgeInsets
-                                                                            .fromLTRB(
-                                                                            8,
+                                                                        padding: EdgeInsets.fromLTRB(
+                                                                            width *
+                                                                                0.025,
                                                                             0,
-                                                                            4,
+                                                                            width *
+                                                                                0.0125,
                                                                             0),
                                                                         child:
                                                                             Text(
@@ -745,9 +758,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                           overflow:
                                                                               TextOverflow.ellipsis,
                                                                           style:
-                                                                              const TextStyle(
+                                                                              TextStyle(
                                                                             fontSize:
-                                                                                16,
+                                                                                width * 0.04,
                                                                             fontWeight:
                                                                                 FontWeight.w600,
                                                                           ),
@@ -767,8 +780,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                             .categoryName,
                                                                       );
                                                                     },
-                                                                    icon:
-                                                                        const Icon(
+                                                                    icon: Icon(
                                                                       Icons
                                                                           .delete_forever,
                                                                       color: Color
@@ -778,7 +790,8 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                         14,
                                                                         0,
                                                                       ),
-                                                                      size: 32,
+                                                                      size: width *
+                                                                          0.09,
                                                                     ),
                                                                     tooltip:
                                                                         "Remove Product",
@@ -801,10 +814,11 @@ class _CategoryPageState extends State<CategoryPage> {
                                                   final productData = snapshot
                                                       .data!.docs[index];
                                                   return Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                      horizontal: 2,
-                                                      vertical: 8,
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      horizontal:
+                                                          width * 0.000625,
+                                                      vertical: width * 0.02,
                                                     ),
                                                     child: GestureDetector(
                                                       onTap: () {
@@ -838,22 +852,25 @@ class _CategoryPageState extends State<CategoryPage> {
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
-                                                                        4),
+                                                              4,
+                                                            ),
                                                             child:
                                                                 Image.network(
                                                               productData[
                                                                   'images'][0],
-                                                              width: 60,
-                                                              height: 60,
+                                                              width:
+                                                                  width * 0.15,
+                                                              height:
+                                                                  width * 0.15,
                                                               fit: BoxFit.cover,
                                                             ),
                                                           ),
                                                           title: Text(
                                                             productData[
                                                                 'productName'],
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize: 18,
+                                                            style: TextStyle(
+                                                              fontSize: width *
+                                                                  0.0525,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w600,
@@ -868,9 +885,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                 ? productData[
                                                                     'productPrice']
                                                                 : "N/A",
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize: 14,
+                                                            style: TextStyle(
+                                                              fontSize:
+                                                                  width * 0.035,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w500,
@@ -887,17 +904,14 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                     .categoryName,
                                                               );
                                                             },
-                                                            icon: const Icon(
+                                                            icon: Icon(
                                                               Icons
                                                                   .delete_forever,
                                                               color: Color
-                                                                  .fromARGB(
-                                                                255,
-                                                                215,
-                                                                14,
-                                                                0,
-                                                              ),
-                                                              size: 32,
+                                                                  .fromRGBO(215,
+                                                                      14, 0, 1),
+                                                              size:
+                                                                  width * 0.09,
                                                             ),
                                                             tooltip:
                                                                 "Remove Product",

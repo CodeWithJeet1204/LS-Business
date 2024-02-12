@@ -147,35 +147,42 @@ class _SelectProductForDiscountPageState
                                                   child: ClipRRect(
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            12),
+                                                      12,
+                                                    ),
                                                     child: Image.network(
                                                       productData['images'][0],
-                                                      height: 140,
-                                                      width: 140,
+                                                      width: width * 0.4,
+                                                      height: width * 0.4,
                                                       fit: BoxFit.cover,
                                                     ),
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          8, 4, 4, 0),
+                                                  padding: EdgeInsets.fromLTRB(
+                                                    width * 0.025,
+                                                    width * 0.0125,
+                                                    width * 0.0125,
+                                                    0,
+                                                  ),
                                                   child: Text(
                                                     productData['productName'],
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
-                                                    style: const TextStyle(
-                                                      fontSize: 20,
+                                                    style: TextStyle(
+                                                      fontSize: width * 0.06,
                                                       fontWeight:
                                                           FontWeight.bold,
                                                     ),
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          8, 0, 4, 0),
+                                                  padding: EdgeInsets.fromLTRB(
+                                                    width * 0.025,
+                                                    0,
+                                                    width * 0.0125,
+                                                    0,
+                                                  ),
                                                   child: Text(
                                                     productData['productPrice'] !=
                                                                 "" &&
@@ -188,8 +195,8 @@ class _SelectProductForDiscountPageState
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
-                                                    style: const TextStyle(
-                                                      fontSize: 16,
+                                                    style: TextStyle(
+                                                      fontSize: width * 0.045,
                                                       fontWeight:
                                                           FontWeight.w600,
                                                     ),
@@ -205,16 +212,17 @@ class _SelectProductForDiscountPageState
                                           productDataMap['productId'],
                                         )
                                             ? Container(
-                                                padding:
-                                                    const EdgeInsets.all(2),
+                                                padding: EdgeInsets.all(
+                                                  width * 0.006125,
+                                                ),
                                                 decoration: const BoxDecoration(
                                                   shape: BoxShape.circle,
                                                   color: primaryDark2,
                                                 ),
-                                                child: const Icon(
+                                                child: Icon(
                                                   Icons.check,
                                                   color: Colors.white,
-                                                  size: 32,
+                                                  size: width * 0.09,
                                                 ),
                                               )
                                             : Container()
@@ -254,24 +262,20 @@ class _SelectProductForDiscountPageState
                                                 productDataMap['productId'],
                                               );
                                             },
-                                            leading: CircleAvatar(
-                                              radius: 30,
-                                              backgroundColor: primaryDark,
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(4),
-                                                child: Image.network(
-                                                  productData['images'][0],
-                                                  width: 60,
-                                                  height: 60,
-                                                  fit: BoxFit.cover,
-                                                ),
+                                            leading: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                              child: Image.network(
+                                                productData['images'][0],
+                                                width: width * 0.166,
+                                                height: width * 0.166,
+                                                fit: BoxFit.cover,
                                               ),
                                             ),
                                             title: Text(
                                               productData['productName'],
-                                              style: const TextStyle(
-                                                fontSize: 18,
+                                              style: TextStyle(
+                                                fontSize: width * 0.05125,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                             ),
@@ -283,8 +287,8 @@ class _SelectProductForDiscountPageState
                                                           null
                                                   ? productData['productPrice']
                                                   : "N/A",
-                                              style: const TextStyle(
-                                                fontSize: 14,
+                                              style: TextStyle(
+                                                fontSize: width * 0.04125,
                                                 fontWeight: FontWeight.w500,
                                               ),
                                             ),
@@ -296,20 +300,22 @@ class _SelectProductForDiscountPageState
                                           productDataMap['productId'],
                                         )
                                             ? Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 8),
+                                                padding: EdgeInsets.only(
+                                                  right: width * 0.025,
+                                                ),
                                                 child: Container(
-                                                  padding:
-                                                      const EdgeInsets.all(2),
+                                                  padding: EdgeInsets.all(
+                                                    width * 0.00625,
+                                                  ),
                                                   decoration:
                                                       const BoxDecoration(
                                                     shape: BoxShape.circle,
                                                     color: primaryDark2,
                                                   ),
-                                                  child: const Icon(
+                                                  child: Icon(
                                                     Icons.check,
                                                     color: Colors.white,
-                                                    size: 32,
+                                                    size: width * 0.095,
                                                   ),
                                                 ),
                                               )

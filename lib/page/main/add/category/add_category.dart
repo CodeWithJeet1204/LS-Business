@@ -32,6 +32,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
   bool isFit = true;
   String? imageUrl;
 
+  // ADD CATEGORY
   void addCategory(
       String categoryName, ProductAddedToCategory categoryProvider) async {
     if (categoryKey.currentState!.validate()) {
@@ -123,6 +124,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
     }
   }
 
+  // SELECT CATEGORY IMAGE
   void selectImage() async {
     final XFile? im = await showImagePickDialog(context);
     if (im != null) {
@@ -136,12 +138,14 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
     }
   }
 
+  // REMOVE CATEGORY IMAGE
   void removeImage() {
     setState(() {
       _image = null;
     });
   }
 
+  // ADD PRODUCT TO CATEGORY
   void addProduct() {
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -187,7 +191,6 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
           child: LayoutBuilder(
             builder: (context, constraints) {
               double width = constraints.maxWidth;
-              double height = constraints.maxHeight;
               return SingleChildScrollView(
                 child: Column(
                   children: [
@@ -212,29 +215,25 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                                     ),
                                   ),
                                 ),
-                                Positioned(
-                                  top: 0,
-                                  right: 0,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4),
-                                    child: IconButton.filledTonal(
-                                      onPressed: removeImage,
-                                      icon: const Icon(
-                                        Icons.highlight_remove_rounded,
-                                        size: 40,
-                                      ),
-                                      tooltip: "Remove Image",
+                                Padding(
+                                  padding: const EdgeInsets.all(4),
+                                  child: IconButton.filledTonal(
+                                    onPressed: removeImage,
+                                    icon: const Icon(
+                                      Icons.highlight_remove_rounded,
+                                      size: 40,
                                     ),
+                                    tooltip: "Remove Image",
                                   ),
                                 ),
                               ],
                             ),
                           )
                         : SizedOverflowBox(
-                            size: Size(width, height * 0.4),
+                            size: Size(width, width * 0.9),
                             child: Container(
                               width: width,
-                              height: height * 0.4,
+                              height: width * 0.9,
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 border: Border.all(
@@ -248,16 +247,16 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                                 children: [
                                   IconButton(
                                     onPressed: selectImage,
-                                    icon: const Icon(
+                                    icon: Icon(
                                       Icons.arrow_circle_up_rounded,
-                                      size: 120,
+                                      size: width * 0.33,
                                     ),
                                   ),
-                                  SizedBox(height: height * 0.05),
-                                  const Text(
+                                  SizedBox(height: 8),
+                                  Text(
                                     "Select Image",
                                     style: TextStyle(
-                                      fontSize: 24,
+                                      fontSize: width * 0.08,
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),

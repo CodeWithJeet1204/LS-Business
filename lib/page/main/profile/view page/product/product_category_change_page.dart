@@ -46,17 +46,6 @@ class _ChangeCategoryState extends State<ChangeCategory> {
         title: const Text("SELECT CATEGORY"),
         actions: [
           IconButton(
-            onPressed: () {
-              setState(() {
-                isGridView = !isGridView;
-              });
-            },
-            icon: isGridView
-                ? const Icon(Icons.list)
-                : const Icon(Icons.grid_view_rounded),
-            tooltip: isGridView ? "List View" : "Grid View",
-          ),
-          IconButton(
             onPressed: () async {
               setState(() {
                 isAdding = true;
@@ -95,9 +84,49 @@ class _ChangeCategoryState extends State<ChangeCategory> {
           ),
         ],
         bottom: PreferredSize(
-          preferredSize:
-              Size(isAdding ? double.infinity : 0, isAdding ? 10 : 0),
-          child: isAdding ? const LinearProgressIndicator() : Container(),
+          preferredSize: Size(
+              isAdding ? double.infinity : double.infinity, isAdding ? 90 : 80),
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 6,
+                  vertical: MediaQuery.of(context).size.width * 0.0225,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: searchController,
+                        autocorrect: false,
+                        decoration: const InputDecoration(
+                          labelText: "Case - Sensitive",
+                          hintText: "Search ...",
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (value) {
+                          setState(() {});
+                        },
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          isGridView = !isGridView;
+                        });
+                      },
+                      icon: Icon(
+                        isGridView ? Icons.list : Icons.grid_view_rounded,
+                      ),
+                      tooltip: isGridView ? "List View" : "Grid View",
+                    ),
+                  ],
+                ),
+              ),
+              isAdding ? const LinearProgressIndicator() : Container(),
+            ],
+          ),
         ),
       ),
       body: LayoutBuilder(
@@ -113,196 +142,145 @@ class _ChangeCategoryState extends State<ChangeCategory> {
               }
 
               if (snapshot.hasData) {
-                return SafeArea(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 6,
-                          vertical: 8,
+                return isGridView
+                    ? GridView.builder(
+                        shrinkWrap: true,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 0,
+                          mainAxisSpacing: 0,
+                          childAspectRatio: width * 0.5 / width * 1.75,
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                controller: searchController,
-                                autocorrect: false,
-                                decoration: const InputDecoration(
-                                  labelText: "Case - Sensitive",
-                                  hintText: "Search ...",
-                                  border: OutlineInputBorder(),
-                                ),
-                                onChanged: (value) {
-                                  setState(() {});
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (context, index) {
+                          final categoryData = snapshot.data!.docs[index];
+                          return Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: SizedOverflowBox(
+                              size: Size(width * 0.5, 210),
+                              child: GestureDetector(
+                                onTap: () {
+                                  changeCategoryProvider.changeCategory(
+                                    categoryData['categoryId'],
+                                    categoryData['categoryName'],
+                                  );
                                 },
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  isGridView = !isGridView;
-                                });
-                              },
-                              icon: Icon(
-                                isGridView
-                                    ? Icons.list
-                                    : Icons.grid_view_rounded,
-                              ),
-                              tooltip: isGridView ? "List View" : "Grid View",
-                            ),
-                          ],
-                        ),
-                      ),
-                      isGridView
-                          ? GridView.builder(
-                              shrinkWrap: true,
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 0,
-                                mainAxisSpacing: 0,
-                                childAspectRatio: width * 0.5 / 210,
-                              ),
-                              itemCount: snapshot.data!.docs.length,
-                              itemBuilder: (context, index) {
-                                final categoryData = snapshot.data!.docs[index];
-                                return Padding(
-                                  padding: const EdgeInsets.all(8),
-                                  child: SizedOverflowBox(
-                                    size: Size(width * 0.5, 210),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        changeCategoryProvider.changeCategory(
-                                          categoryData['categoryId'],
-                                          categoryData['categoryName'],
-                                        );
-                                      },
-                                      child: Stack(
-                                        alignment: Alignment.topRight,
-                                        children: [
-                                          Container(
-                                            width: width * 0.5,
-                                            decoration: BoxDecoration(
-                                              color: primary2.withOpacity(0.5),
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                            ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(4),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  const SizedBox(height: 2),
-                                                  Center(
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12),
-                                                      child: Image.network(
-                                                        categoryData[
-                                                            'imageUrl'],
-                                                        height: 140,
-                                                        width: 140,
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding: const EdgeInsets
-                                                        .fromLTRB(8, 4, 4, 0),
-                                                    child: Text(
-                                                      categoryData[
-                                                          'categoryName'],
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: const TextStyle(
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          changeCategoryProvider
-                                                  .selectedCategory
-                                                  .contains(categoryData[
-                                                      'categoryId'])
-                                              ? Container(
-                                                  padding:
-                                                      const EdgeInsets.all(2),
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: primaryDark2,
-                                                  ),
-                                                  child: const Icon(
-                                                    Icons.check,
-                                                    color: Colors.white,
-                                                    size: 32,
-                                                  ),
-                                                )
-                                              : Container()
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              })
-                          : SizedBox(
-                              width: width,
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: snapshot.data!.docs.length,
-                                itemBuilder: ((context, index) {
-                                  final categoryData =
-                                      snapshot.data!.docs[index];
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 6,
-                                      vertical: 8,
-                                    ),
-                                    child: Container(
+                                child: Stack(
+                                  alignment: Alignment.topRight,
+                                  children: [
+                                    Container(
                                       decoration: BoxDecoration(
                                         color: primary2.withOpacity(0.5),
-                                        borderRadius: BorderRadius.circular(8),
+                                        borderRadius: BorderRadius.circular(12),
                                       ),
-                                      child: ListTile(
-                                        leading: CircleAvatar(
-                                          radius: 30,
-                                          backgroundColor: primaryDark,
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(4),
-                                            child: Image.network(
-                                              categoryData['imageUrl'],
-                                              width: 60,
-                                              height: 60,
-                                              fit: BoxFit.cover,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(4),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const SizedBox(height: 2),
+                                            // IMAGE
+                                            Center(
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                child: Image.network(
+                                                  categoryData['imageUrl'],
+                                                  height: width * 0.4,
+                                                  width: width * 0.4,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                        title: Text(
-                                          categoryData['categoryName'],
-                                          style: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w600,
-                                          ),
+                                            Padding(
+                                              padding: EdgeInsets.fromLTRB(
+                                                width * 0.02125,
+                                                width * 0.012125,
+                                                width * 0.0125,
+                                                0,
+                                              ),
+                                              child: Text(
+                                                categoryData['categoryName'],
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontSize: width * 0.055,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
-                                  );
-                                }),
+                                    changeCategoryProvider.selectedCategory
+                                            .contains(
+                                                categoryData['categoryId'])
+                                        ? Container(
+                                            padding: EdgeInsets.all(
+                                              width * 0.00625,
+                                            ),
+                                            margin: EdgeInsets.all(
+                                              width * 0.01,
+                                            ),
+                                            decoration: const BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: primaryDark2,
+                                            ),
+                                            child: Icon(
+                                              Icons.check,
+                                              color: Colors.white,
+                                              size: width * 0.09,
+                                            ),
+                                          )
+                                        : Container()
+                                  ],
+                                ),
                               ),
                             ),
-                    ],
-                  ),
-                );
+                          );
+                        })
+                    : SizedBox(
+                        width: width,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: ((context, index) {
+                            final categoryData = snapshot.data!.docs[index];
+                            return Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.0166,
+                                vertical: width * 0.0225,
+                              ),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: primary2.withOpacity(0.5),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: ListTile(
+                                  leading: ClipRRect(
+                                    borderRadius: BorderRadius.circular(4),
+                                    child: Image.network(
+                                      categoryData['imageUrl'],
+                                      width: width * 0.14,
+                                      height: width * 0.14,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  title: Text(
+                                    categoryData['categoryName'],
+                                    style: TextStyle(
+                                      fontSize: width * 0.05,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
+                      );
               }
 
               return const Center(

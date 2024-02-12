@@ -22,6 +22,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
   final searchController = TextEditingController();
   bool isGridView = true;
 
+  // CONFIRM REMOVE
   void confirmRemove(String categoryId, String categoryName) {
     showDialog(
       context: context,
@@ -51,6 +52,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
     );
   }
 
+  // REMOVE
   void remove(String categoryId) async {
     final discountData = await store
         .collection('Business')
@@ -71,6 +73,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
     });
   }
 
+  // GET DISCOUNT CATEGORY STREAM
   Stream<List<Map<String, String>>> getDiscountCategoriesStream() {
     return store
         .collection('Business')
@@ -177,7 +180,8 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
                                       .toLowerCase())
                               ? Padding(
                                   padding: EdgeInsets.symmetric(
-                                      horizontal: width * 0.01),
+                                    horizontal: width * 0.01,
+                                  ),
                                   child: Container(
                                     decoration: BoxDecoration(
                                       color: primary2.withOpacity(0.8),
@@ -257,11 +261,48 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
                               : Container();
                         },
                       )
-                    : ListView.builder(
-                        itemCount: categories.length,
-                        itemBuilder: (context, index) {
-                          return Container();
-                        },
+                    : SizedBox(
+                        width: width,
+                        child: ListView.builder(
+                          itemCount: categories.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: EdgeInsets.symmetric(
+                                horizontal: width * 0.0225,
+                                vertical: width * 0.02,
+                              ),
+                              width: width,
+                              height: width * 0.2,
+                              decoration: BoxDecoration(
+                                color: primary2.withOpacity(0.8),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: ListTile(
+                                leading: Padding(
+                                  padding: EdgeInsets.only(top: width * 0.02),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(
+                                      4,
+                                    ),
+                                    child: Image.network(
+                                      categories[index]['imageUrl']!,
+                                      width: width * 0.15,
+                                      height: width * 0.15,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                title: Text(
+                                  categories[index]['categoryName']!,
+                                  style: TextStyle(
+                                    fontSize: width * 0.0525,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       );
               }
 

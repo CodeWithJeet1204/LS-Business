@@ -22,6 +22,7 @@ class _AddPostPageState extends State<AddPostPage> {
   int currentImageIndex = 0;
   bool isPosting = false;
 
+  // POST
   Future<String> post(
       SelectProductForPostProvider postprovider, bool isTextPost) async {
     String res = "Some error occured";
@@ -147,73 +148,79 @@ class _AddPostPageState extends State<AddPostPage> {
           child: isPosting ? const LinearProgressIndicator() : Container(),
         ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text(
-            "Select the type of post you want to create",
-            style: TextStyle(
-              color: primaryDark,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const Text(
-            "Just select the product you want the post",
-            style: TextStyle(
-              color: primaryDark,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const Text(
-            "Then the product details will automatically be added",
-            style: TextStyle(
-              color: primaryDark,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 20),
-          MyButton(
-            text: selectedProduct.length < 2
-                ? "TEXT POST"
-                : selectedProductProvider.isTextPost == true
-                    ? "TEXT POST: ${selectedProduct[1]}"
-                    : "TEXT POST",
-            onTap: () {
-              selectedProductProvider.changePostType(true);
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: ((context) => const SelectProductForPostPage()),
+      body: LayoutBuilder(
+        builder: ((context, constraints) {
+          double width = constraints.maxWidth;
+
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Select the type of post you want to create",
+                style: TextStyle(
+                  color: primaryDark,
+                  fontSize: width * 0.045,
+                  fontWeight: FontWeight.w500,
                 ),
-              );
-            },
-            isLoading: false,
-            horizontalPadding: 20,
-          ),
-          const SizedBox(height: 20),
-          MyButton(
-            text: selectedProduct.length < 2
-                ? "IMAGE POST"
-                : selectedProductProvider.isTextPost == false
-                    ? "IMAGE POST: ${selectedProduct[1]}"
-                    : "IMAGE POST",
-            onTap: () {
-              selectedProductProvider.changePostType(false);
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: ((context) => const SelectProductForPostPage()),
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                "Just select the product you want the post",
+                style: TextStyle(
+                  color: primaryDark,
+                  fontSize: width * 0.045,
+                  fontWeight: FontWeight.w500,
                 ),
-              );
-            },
-            isLoading: false,
-            horizontalPadding: 20,
-          ),
-        ],
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                "Then the product details will automatically be added",
+                style: TextStyle(
+                  color: primaryDark,
+                  fontSize: width * 0.045,
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              MyButton(
+                text: selectedProduct.length < 2
+                    ? "TEXT POST"
+                    : selectedProductProvider.isTextPost == true
+                        ? "TEXT POST: ${selectedProduct[1]}"
+                        : "TEXT POST",
+                onTap: () {
+                  selectedProductProvider.changePostType(true);
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: ((context) => const SelectProductForPostPage()),
+                    ),
+                  );
+                },
+                isLoading: false,
+                horizontalPadding: 20,
+              ),
+              const SizedBox(height: 20),
+              MyButton(
+                text: selectedProduct.length < 2
+                    ? "IMAGE POST"
+                    : selectedProductProvider.isTextPost == false
+                        ? "IMAGE POST: ${selectedProduct[1]}"
+                        : "IMAGE POST",
+                onTap: () {
+                  selectedProductProvider.changePostType(false);
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: ((context) => const SelectProductForPostPage()),
+                    ),
+                  );
+                },
+                isLoading: false,
+                horizontalPadding: 20,
+              ),
+            ],
+          );
+        }),
       ),
     );
   }

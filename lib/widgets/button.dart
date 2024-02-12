@@ -28,7 +28,9 @@ class MyButton extends StatelessWidget {
           horizontal: horizontalPadding,
           vertical: verticalPadding,
         ),
-        padding: const EdgeInsets.symmetric(vertical: 12),
+        padding: EdgeInsets.symmetric(
+          vertical: MediaQuery.of(context).size.width * 0.033,
+        ),
         alignment: Alignment.center,
         width: double.infinity,
         decoration: BoxDecoration(
@@ -43,9 +45,9 @@ class MyButton extends StatelessWidget {
               )
             : Text(
                 text,
-                style: const TextStyle(
+                style: TextStyle(
                   color: white,
-                  fontSize: 16,
+                  fontSize: MediaQuery.of(context).size.width * 0.045,
                 ),
               ),
       ),

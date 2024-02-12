@@ -48,6 +48,47 @@ class _SelectCategoryForDiscountPageState
             textColor: primaryDark,
           ),
         ],
+        bottom: PreferredSize(
+          preferredSize: Size(
+            MediaQuery.of(context).size.width,
+            76,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 6,
+              vertical: 8,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // SEARCH
+                Expanded(
+                  child: TextField(
+                    autocorrect: false,
+                    decoration: const InputDecoration(
+                      hintText: "Search ...",
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: (value) {
+                      searchedCategory = value;
+                    },
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      isGridView = !isGridView;
+                    });
+                  },
+                  icon: Icon(
+                    isGridView ? Icons.list : Icons.grid_view_rounded,
+                  ),
+                  tooltip: isGridView ? "List View" : "Grid View",
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
       body: LayoutBuilder(
         builder: ((context, constraints) {
@@ -55,41 +96,6 @@ class _SelectCategoryForDiscountPageState
 
           return Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 6,
-                  vertical: 8,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // SEARCH
-                    Expanded(
-                      child: TextField(
-                        autocorrect: false,
-                        decoration: const InputDecoration(
-                          hintText: "Search ...",
-                          border: OutlineInputBorder(),
-                        ),
-                        onChanged: (value) {
-                          searchedCategory = value;
-                        },
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          isGridView = !isGridView;
-                        });
-                      },
-                      icon: Icon(
-                        isGridView ? Icons.list : Icons.grid_view_rounded,
-                      ),
-                      tooltip: isGridView ? "List View" : "Grid View",
-                    ),
-                  ],
-                ),
-              ),
               StreamBuilder(
                 stream: allCategoryStream,
                 builder: ((context, snapshot) {
@@ -109,7 +115,7 @@ class _SelectCategoryForDiscountPageState
                                 crossAxisCount: 2,
                                 crossAxisSpacing: 0,
                                 mainAxisSpacing: 0,
-                                childAspectRatio: width * 0.5 / 230,
+                                childAspectRatio: width * 0.5 / 220,
                               ),
                               itemCount: snapshot.data!.docs.length,
                               itemBuilder: (context, index) {
@@ -130,7 +136,6 @@ class _SelectCategoryForDiscountPageState
                                       alignment: Alignment.topRight,
                                       children: [
                                         Container(
-                                          width: width * 0.5,
                                           decoration: BoxDecoration(
                                             color: primary2.withOpacity(0.5),
                                             borderRadius:
@@ -147,27 +152,31 @@ class _SelectCategoryForDiscountPageState
                                                   child: ClipRRect(
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            12),
+                                                      12,
+                                                    ),
                                                     child: Image.network(
                                                       categoryData['imageUrl'],
-                                                      height: 140,
-                                                      width: 140,
+                                                      width: width * 0.4,
+                                                      height: width * 0.4,
                                                       fit: BoxFit.cover,
                                                     ),
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          8, 4, 4, 0),
+                                                  padding: EdgeInsets.fromLTRB(
+                                                    width * 0.025,
+                                                    width * 0.0125,
+                                                    width * 0.0125,
+                                                    0,
+                                                  ),
                                                   child: Text(
                                                     categoryData[
                                                         'categoryName'],
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
-                                                    style: const TextStyle(
-                                                      fontSize: 20,
+                                                    style: TextStyle(
+                                                      fontSize: width * 0.06,
                                                       fontWeight:
                                                           FontWeight.bold,
                                                     ),
@@ -183,16 +192,19 @@ class _SelectCategoryForDiscountPageState
                                           categoryDataMap['categoryId'],
                                         )
                                             ? Container(
+                                                margin: EdgeInsets.all(
+                                                  width * 0.01,
+                                                ),
                                                 padding:
                                                     const EdgeInsets.all(2),
                                                 decoration: const BoxDecoration(
                                                   shape: BoxShape.circle,
                                                   color: primaryDark2,
                                                 ),
-                                                child: const Icon(
+                                                child: Icon(
                                                   Icons.check,
                                                   color: Colors.white,
-                                                  size: 32,
+                                                  size: width * 0.1,
                                                 ),
                                               )
                                             : Container()
@@ -232,24 +244,25 @@ class _SelectCategoryForDiscountPageState
                                                 categoryDataMap['categoryId'],
                                               );
                                             },
-                                            leading: CircleAvatar(
-                                              radius: 30,
-                                              backgroundColor: primaryDark,
+                                            leading: Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                vertical: width * 0.01,
+                                              ),
                                               child: ClipRRect(
                                                 borderRadius:
                                                     BorderRadius.circular(4),
                                                 child: Image.network(
-                                                  categoryData['imagesUrl'],
-                                                  width: 60,
-                                                  height: 60,
+                                                  categoryData['imageUrl'],
+                                                  width: width * 0.155,
+                                                  height: width * 0.166,
                                                   fit: BoxFit.cover,
                                                 ),
                                               ),
                                             ),
                                             title: Text(
                                               categoryData['categoryName'],
-                                              style: const TextStyle(
-                                                fontSize: 18,
+                                              style: TextStyle(
+                                                fontSize: width * 0.055,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                             ),
@@ -261,8 +274,9 @@ class _SelectCategoryForDiscountPageState
                                           categoryDataMap['categoryId'],
                                         )
                                             ? Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 8),
+                                                padding: EdgeInsets.only(
+                                                  right: width * 0.025,
+                                                ),
                                                 child: Container(
                                                   padding:
                                                       const EdgeInsets.all(2),
@@ -271,10 +285,10 @@ class _SelectCategoryForDiscountPageState
                                                     shape: BoxShape.circle,
                                                     color: primaryDark2,
                                                   ),
-                                                  child: const Icon(
+                                                  child: Icon(
                                                     Icons.check,
                                                     color: Colors.white,
-                                                    size: 32,
+                                                    size: width * 0.095,
                                                   ),
                                                 ),
                                               )

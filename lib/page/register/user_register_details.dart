@@ -36,6 +36,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
   Uint8List? _image;
   bool isNext = false;
 
+  // SELECT IMAGE
   void selectImage() async {
     Uint8List? im = await pickImage(ImageSource.gallery);
     if (im == null) {
@@ -56,92 +57,103 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final String uid = _auth.currentUser!.uid;
     final signInMethodProvider = Provider.of<SignInMethodProvider>(context);
+    final double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: SingleChildScrollView(
-          child: SizedBox(
-            height: 723,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 100),
-                const HeadText(text: "USER\nDETAILS"),
-                const SizedBox(height: 40),
-                Column(
-                  children: [
-                    isImageSelected
-                        ? Stack(
-                            alignment: Alignment.bottomRight,
-                            children: [
-                              CircleAvatar(
-                                radius: 50,
-                                backgroundImage: MemoryImage(_image!),
-                              ),
-                              Positioned(
-                                bottom: 0,
-                                right: 0,
-                                child: IconButton.filledTonal(
-                                  icon: const Icon(Icons.camera_alt_outlined),
-                                  iconSize: 30,
-                                  tooltip: "Change User Picture",
-                                  onPressed: selectImage,
-                                  color: primaryDark,
-                                ),
-                              ),
-                            ],
-                          )
-                        : CircleAvatar(
-                            radius: 50,
-                            child: IconButton(
-                              icon: const Icon(
-                                Icons.camera_alt_outlined,
-                                size: 60,
-                              ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // USER DETAILS HEADTEXT
+              const SizedBox(height: 100),
+              const HeadText(text: "USER\nDETAILS"),
+              const SizedBox(height: 40),
+
+              Column(
+                children: [
+                  isImageSelected
+                      ? Stack(
+                          alignment: Alignment.bottomRight,
+                          children: [
+                            // IMAGE NOT CHOSEN
+                            CircleAvatar(
+                              radius: width * 0.14,
+                              backgroundImage: MemoryImage(_image!),
+                            ),
+                            IconButton.filledTonal(
+                              icon: const Icon(Icons.camera_alt_outlined),
+                              iconSize: width * 0.09,
+                              tooltip: "Change User Picture",
                               onPressed: selectImage,
+                              color: primaryDark,
                             ),
+                          ],
+                        )
+                      // IMAGE CHOSEN
+                      : CircleAvatar(
+                          radius: 50,
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.camera_alt_outlined,
+                              size: 60,
+                            ),
+                            onPressed: selectImage,
                           ),
-                    const SizedBox(height: 12),
-                  ],
-                ),
-                Form(
-                  key: userFormKey,
-                  child: Column(
-                    children: [
-                      MyTextFormField(
-                        hintText: "Your Name",
-                        controller: nameController,
-                        borderRadius: 12,
-                        horizontalPadding: 20,
-                        verticalPadding: 12,
-                        autoFillHints: const [AutofillHints.name],
+                        ),
+                  const SizedBox(height: 12),
+                ],
+              ),
+
+              Form(
+                key: userFormKey,
+                child: Column(
+                  children: [
+                    // NAME
+                    MyTextFormField(
+                      hintText: "Your Name",
+                      controller: nameController,
+                      borderRadius: 12,
+                      horizontalPadding: width * 0.055,
+                      verticalPadding: width * 0.033,
+                      autoFillHints: const [AutofillHints.name],
+                    ),
+
+                    // EMAIL
+                    !signInMethodProvider.isNumberChosen
+                        ? Container()
+                        : MyTextFormField(
+                            hintText: "Email",
+                            controller: emailController,
+                            borderRadius: 12,
+                            horizontalPadding: width * 0.055,
+                            verticalPadding: width * 0.033,
+                            keyboardType: TextInputType.emailAddress,
+                            autoFillHints: const [AutofillHints.email],
+                          ),
+
+                    // NUMBER
+                    signInMethodProvider.isNumberChosen
+                        ? Container()
+                        : MyTextFormField(
+                            hintText: "Your Phone Number (Personal)",
+                            controller: phoneController,
+                            borderRadius: 12,
+                            horizontalPadding: width * 0.055,
+                            verticalPadding: width * 0.033,
+                            keyboardType: TextInputType.number,
+                            autoFillHints: const [
+                              AutofillHints.telephoneNumber,
+                            ],
+                          ),
+
+                    // NEXT BUTTON
+                    Padding(
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom,
                       ),
-                      !signInMethodProvider.isNumberChosen
-                          ? Container()
-                          : MyTextFormField(
-                              hintText: "Email",
-                              controller: emailController,
-                              borderRadius: 12,
-                              horizontalPadding: 20,
-                              verticalPadding: 12,
-                              keyboardType: TextInputType.emailAddress,
-                              autoFillHints: const [AutofillHints.email],
-                            ),
-                      signInMethodProvider.isNumberChosen
-                          ? Container()
-                          : MyTextFormField(
-                              hintText: "Your Phone Number (Personal)",
-                              controller: phoneController,
-                              borderRadius: 12,
-                              horizontalPadding: 20,
-                              verticalPadding: 12,
-                              keyboardType: TextInputType.number,
-                              autoFillHints: const [
-                                AutofillHints.telephoneNumber
-                              ],
-                            ),
-                      MyButton(
+                      child: MyButton(
                         text: "Next",
                         onTap: () async {
                           if (userFormKey.currentState!.validate()) {
@@ -185,6 +197,8 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                                       phoneController.text
                                                           .toString(),
                                                   "Image": userPhotoUrl,
+                                                  "Name": nameController.text
+                                                      .toString(),
                                                 })
                                               : context.mounted
                                                   ? {
@@ -226,14 +240,14 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                           }
                         },
                         isLoading: isNext,
-                        horizontalPadding: 20,
+                        horizontalPadding: width * 0.055,
                       ),
-                      const SizedBox(height: 12),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 12),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

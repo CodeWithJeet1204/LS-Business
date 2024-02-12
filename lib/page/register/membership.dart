@@ -44,6 +44,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
     isPremiumSelected = true;
   }
 
+  // SHOW PRICES
   String showPrices(String name) {
     if (selectedDuration != "Duration") {
       if (name == "BASIC") {
@@ -70,6 +71,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
     }
   }
 
+  // SHOW INFO DIALOG
   void showInfoDialog() {
     showDialog(
       context: context,
@@ -92,6 +94,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
     );
   }
 
+  // SELECT PRICE
   String selectPrice(bool basic, bool gold, bool premium) {
     if (basic) {
       setState(() {
@@ -119,6 +122,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
   @override
   Widget build(BuildContext context) {
     final FirebaseFirestore store = FirebaseFirestore.instance;
+    final double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -140,7 +144,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(width: 12),
+                    SizedBox(width: width * 0.033),
                     Container(
                       decoration: BoxDecoration(
                         color: primary2,
@@ -187,7 +191,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                         color: primaryDark,
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: width * 0.033),
                   ],
                 ),
                 Expanded(
@@ -404,7 +408,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                     }
                   },
                   isLoading: isPaying,
-                  horizontalPadding: 40,
+                  horizontalPadding: width * 0.01125,
                 ),
                 Expanded(
                   flex: 1,

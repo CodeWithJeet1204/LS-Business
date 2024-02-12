@@ -12,31 +12,29 @@ class IntroPageView extends StatefulWidget {
 }
 
 class _IntroPageViewState extends State<IntroPageView> {
+  final PageController controller = PageController();
   int currentIndex = 0;
   String nextText = "NEXT";
 
-  @override
+  void onSkip() {
+    controller.animateToPage(
+      2,
+      duration: const Duration(seconds: 1),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  void onNext() {
+    nextText == "NEXT"
+        ? controller.animateToPage(
+            currentIndex + 1,
+            duration: const Duration(seconds: 1),
+            curve: Curves.easeInOut,
+          )
+        : Navigator.of(context).popAndPushNamed('profile');
+  }
+
   Widget build(BuildContext context) {
-    final PageController controller = PageController();
-
-    void onSkip() {
-      controller.animateToPage(
-        2,
-        duration: const Duration(seconds: 1),
-        curve: Curves.easeInOut,
-      );
-    }
-
-    void onNext() {
-      nextText == "NEXT"
-          ? controller.animateToPage(
-              currentIndex + 1,
-              duration: const Duration(seconds: 1),
-              curve: Curves.easeInOut,
-            )
-          : Navigator.of(context).popAndPushNamed('profile');
-    }
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
@@ -101,8 +99,8 @@ class _IntroPageViewState extends State<IntroPageView> {
                   onPressed: onNext,
                   child: Text(
                     nextText,
-                    style: const TextStyle(
-                      fontSize: 16,
+                    style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width * 0.045,
                       color: Colors.blueAccent,
                     ),
                   ),

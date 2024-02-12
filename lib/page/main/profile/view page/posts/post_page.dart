@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/page/main/profile/view%20page/product/product_image_page.dart';
@@ -184,8 +185,8 @@ class _PostPageState extends State<PostPage> {
                                           MainAxisAlignment.center,
                                       children: [
                                         Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            vertical: 12,
+                                          padding: EdgeInsets.symmetric(
+                                            vertical: width * 0.035,
                                           ),
                                           child: Row(
                                             mainAxisAlignment:
@@ -220,27 +221,30 @@ class _PostPageState extends State<PostPage> {
 
                           // NAME
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
-                            child: Text(
-                              name,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                color: primaryDark,
-                                fontSize: name.length > 12
-                                    ? 28
-                                    : name.length > 10
-                                        ? 30
-                                        : 32,
-                                fontWeight: FontWeight.w600,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: width * 0.028,
+                              vertical: width * 0.028,
+                            ),
+                            child: SizedBox(
+                              width: width * 0.875,
+                              child: AutoSizeText(
+                                name,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: primaryDark,
+                                  fontSize: width * 0.1,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                           ),
 
                           // PRICE
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 6),
+                            padding: EdgeInsets.symmetric(
+                              vertical: width * 0.0175,
+                            ),
                             child: isDiscount
                                 ? StreamBuilder(
                                     stream: discountPriceStream,
@@ -266,16 +270,17 @@ class _PostPageState extends State<PostPage> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
+                                            // PRICE
                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 8),
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: width * 0.028,
+                                              ),
                                               child: RichText(
                                                 text: TextSpan(
                                                   text: 'Rs. ',
                                                   style: TextStyle(
                                                     color: primaryDark,
-                                                    fontSize: 22,
+                                                    fontSize: width * 0.06,
                                                     fontWeight: FontWeight.w500,
                                                   ),
                                                   children: [
@@ -283,8 +288,8 @@ class _PostPageState extends State<PostPage> {
                                                       text: price == ""
                                                           ? 'N/A (price)'
                                                           : data['isPercent']
-                                                              ? '${(double.parse(price) * (100 - data['discountAmount']) / 100).toString()}  '
-                                                              : '${double.parse(price) - data['discountAmount']}  ',
+                                                              ? '${(double.parse(price) * (100 - double.parse(data['discountAmount'])) / 100).toString()}  '
+                                                              : '${double.parse(price) - double.parse(data['discountAmount'])}  ',
                                                       style: TextStyle(
                                                         color: Colors.green,
                                                       ),
@@ -294,9 +299,13 @@ class _PostPageState extends State<PostPage> {
                                                           ? 'N/A (price)'
                                                           : price,
                                                       style: TextStyle(
-                                                        fontSize: 20,
+                                                        fontSize: width * 0.055,
                                                         color: Color.fromRGBO(
-                                                            255, 134, 125, 1),
+                                                          255,
+                                                          134,
+                                                          125,
+                                                          1,
+                                                        ),
                                                         decoration:
                                                             TextDecoration
                                                                 .lineThrough,
@@ -308,9 +317,12 @@ class _PostPageState extends State<PostPage> {
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                             ),
+
+                                            // DISCOUNT
                                             Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 10),
+                                              padding: EdgeInsets.only(
+                                                left: width * 0.028,
+                                              ),
                                               child: data['isPercent']
                                                   ? Text(
                                                       "${data['discountAmount']}% off",
@@ -327,11 +339,12 @@ class _PostPageState extends State<PostPage> {
                                                       ),
                                                     ),
                                             ),
+
+                                            // TIME
                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 10,
-                                                vertical: 2,
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: width * 0.028,
+                                                vertical: width * 0.00625,
                                               ),
                                               child: Text(
                                                 (data['discountEndDateTime']

@@ -182,9 +182,9 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 4,
-                                      vertical: 4,
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: width * 0.0125,
+                                      vertical: width * 0.0125,
                                     ),
                                     child: Column(
                                       crossAxisAlignment:
@@ -273,7 +273,11 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                             : 'Rs. ${discountData['discountAmount']} off',
                                                         style: TextStyle(
                                                           color: Color.fromRGBO(
-                                                              0, 72, 2, 1),
+                                                            0,
+                                                            72,
+                                                            2,
+                                                            1,
+                                                          ),
                                                           fontSize:
                                                               width * 0.045,
                                                           fontWeight:
@@ -418,7 +422,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                       discountData['discountName'],
                                       style: TextStyle(
                                         color: primaryDark,
-                                        fontSize: width * 0.05,
+                                        fontSize: width * 0.055,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),

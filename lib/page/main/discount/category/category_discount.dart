@@ -39,6 +39,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
   bool isUploading = false;
   String? imageUrl;
 
+  // ADD DISCOUNT IMAGE
   void addDiscountImage() async {
     final XFile? im = await showImagePickDialog(context);
     if (im != null) {
@@ -52,12 +53,14 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
     }
   }
 
+  // CHANGE IMAGE FIT
   void changeFit() {
     setState(() {
       isFit = !isFit;
     });
   }
 
+  // SELECT START DATE
   void selectStartDate() async {
     DateTime? selected = await showDatePicker(
       context: context,
@@ -74,6 +77,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
     }
   }
 
+  // SELECT END DATE
   void selectEndDate() async {
     DateTime? selected = await showDatePicker(
       context: context,
@@ -89,6 +93,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
     }
   }
 
+  // ADD DISCOUNT
   void addDiscount(SelectCategoryForDiscountProvider provider,
       List<String> categoryIdList) async {
     // End date should be after start date
@@ -274,9 +279,9 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                         padding: const EdgeInsets.all(4),
                                         child: IconButton.filledTonal(
                                           onPressed: addDiscountImage,
-                                          icon: const Icon(
+                                          icon: Icon(
                                             Icons.camera_alt_outlined,
-                                            size: 40,
+                                            size: width * 0.115,
                                           ),
                                           tooltip: "Change Image",
                                         ),
@@ -289,9 +294,9 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                               _image = null;
                                             });
                                           },
-                                          icon: const Icon(
+                                          icon: Icon(
                                             Icons.highlight_remove_rounded,
-                                            size: 40,
+                                            size: width * 0.115,
                                           ),
                                           tooltip: "Remove Image",
                                         ),
@@ -378,9 +383,9 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                       textColor: primaryDark,
                                     )
                                   : Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 12,
-                                        bottom: 8,
+                                      padding: EdgeInsets.only(
+                                        left: width * 0.04,
+                                        bottom: width * 0.025,
                                       ),
                                       child: Text(
                                         startDate!,
@@ -443,9 +448,9 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                       textColor: primaryDark,
                                     )
                                   : Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 12,
-                                        bottom: 8,
+                                      padding: EdgeInsets.only(
+                                        left: width * 0.04,
+                                        bottom: width * 0.025,
                                       ),
                                       child: Text(
                                         endDate!,
@@ -464,12 +469,12 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                     SizedBox(height: 20),
 
                     // DISCLAIMER
-                    const Text(
+                    Text(
                       "If you select 1 jan as end date, discount will end at 31 dec 11:59 pm",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: primaryDark2,
-                        fontSize: 12,
+                        fontSize: width * 0.04,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -529,7 +534,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                     color: !isPercentSelected
                                         ? white
                                         : primaryDark.withOpacity(0.9),
-                                    fontSize: width * 0.05,
+                                    fontSize: width * 0.055,
                                     fontWeight: isPercentSelected
                                         ? FontWeight.w600
                                         : FontWeight.w500,
@@ -561,7 +566,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                     color: isPercentSelected
                                         ? white
                                         : primaryDark.withOpacity(0.9),
-                                    fontSize: width * 0.05,
+                                    fontSize: width * 0.055,
                                     fontWeight: !isPercentSelected
                                         ? FontWeight.w600
                                         : FontWeight.w500,

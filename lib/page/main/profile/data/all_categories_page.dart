@@ -216,8 +216,8 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 4,
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: width * 0.0125,
                                     ),
                                     child: Column(
                                       mainAxisAlignment:
@@ -259,10 +259,10 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                                                   maxLines: 1,
                                                   overflow:
                                                       TextOverflow.ellipsis,
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                     color: primaryDark,
                                                     fontWeight: FontWeight.w600,
-                                                    fontSize: 20,
+                                                    fontSize: width * 0.06,
                                                   ),
                                                 ),
                                               ),
@@ -303,9 +303,9 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                             itemBuilder: ((context, index) {
                               final categoryData = snapshot.data!.docs[index];
                               return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 6,
-                                  vertical: 8,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: width * 0.01,
+                                  vertical: width * 0.025,
                                 ),
                                 child: GestureDetector(
                                   onTap: () {
@@ -330,15 +330,15 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                                         borderRadius: BorderRadius.circular(4),
                                         child: Image.network(
                                           categoryData['imageUrl'],
-                                          width: 45,
-                                          height: 45,
+                                          width: width * 0.133,
+                                          height: width * 0.133,
                                           fit: BoxFit.cover,
                                         ),
                                       ),
                                       title: Text(
                                         categoryData['categoryName'],
-                                        style: const TextStyle(
-                                          fontSize: 18,
+                                        style: TextStyle(
+                                          fontSize: width * 0.06,
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),

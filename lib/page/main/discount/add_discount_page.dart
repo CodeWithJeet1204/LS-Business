@@ -25,14 +25,13 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
         child: LayoutBuilder(
           builder: ((context, constraints) {
             double width = constraints.maxWidth;
-            double height = constraints.maxHeight;
 
             return SingleChildScrollView(
               child: Column(
                 children: [
                   // PRODUCTS
                   SizedOverflowBox(
-                    size: Size(width, height * 0.266),
+                    size: Size(width, width * 0.5),
                     child: GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(
@@ -44,7 +43,7 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                       child: Container(
                         margin: const EdgeInsets.symmetric(horizontal: 12),
                         width: width,
-                        height: height * 0.2,
+                        height: width * 0.375,
                         decoration: BoxDecoration(
                           color: primary2.withOpacity(0.67),
                           borderRadius: BorderRadius.circular(8),
@@ -78,7 +77,7 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
 
                   // CATEGORY
                   SizedOverflowBox(
-                    size: Size(width, height * 0.275),
+                    size: Size(width, width * 0.5),
                     child: GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(
@@ -90,7 +89,7 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                       child: Container(
                         margin: const EdgeInsets.symmetric(horizontal: 12),
                         width: width,
-                        height: height * 0.2,
+                        height: width * 0.375,
                         decoration: BoxDecoration(
                           color: primary2.withOpacity(0.67),
                           borderRadius: BorderRadius.circular(8),
