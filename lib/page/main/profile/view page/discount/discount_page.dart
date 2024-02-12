@@ -42,6 +42,13 @@ class DISCOUNT extends State<DiscountPage> {
   bool isFit = true;
   bool isAddingImage = false;
 
+  @override
+  void dispose() {
+    categorySearchController.dispose();
+    productSearchController.dispose();
+    super.dispose();
+  }
+
   // IMAGE FIT CHANGE
   void changeFit() {
     setState(() {

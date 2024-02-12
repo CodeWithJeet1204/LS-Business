@@ -17,6 +17,12 @@ class _AllProductsPageState extends State<AllProductsPage> {
   final searchController = TextEditingController();
   bool isGridView = true;
 
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
   // DELETE PRODUCT
   // When deleting product, also delete all posts related to it.
   void delete(String productId) async {

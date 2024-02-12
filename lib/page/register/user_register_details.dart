@@ -25,16 +25,25 @@ class UserRegisterDetailsPage extends StatefulWidget {
 }
 
 class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
+  final GlobalKey<FormState> userFormKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  final GlobalKey<FormState> userFormKey = GlobalKey<FormState>();
   bool isImageSelected = false;
   Uint8List? _image;
   bool isNext = false;
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    phoneController.dispose();
+    super.dispose();
+  }
 
   // SELECT IMAGE
   void selectImage() async {

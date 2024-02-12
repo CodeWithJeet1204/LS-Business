@@ -19,16 +19,24 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final GlobalKey<FormState> emailLoginFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> numberLoginFormKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  final GlobalKey<FormState> emailLoginFormKey = GlobalKey<FormState>();
-  final GlobalKey<FormState> numberLoginFormKey = GlobalKey<FormState>();
   String phoneText = "Verify";
   String googleText = "Sign in With GOOGLE";
   bool isGoogleLogging = false;
   bool isEmailLogging = false;
   bool isPhoneLogging = false;
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    phoneController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

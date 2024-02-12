@@ -38,6 +38,12 @@ class _CategoryPageState extends State<CategoryPage> {
   bool isDiscount = false;
 
   @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     ifDiscount();
     super.initState();

@@ -30,6 +30,12 @@ class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
   String? searchedProduct;
 
   @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final productsAddedToCategoryProvider =
         Provider.of<ProductAddedToCategory>(context);

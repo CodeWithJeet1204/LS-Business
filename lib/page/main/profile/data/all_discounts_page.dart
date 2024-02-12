@@ -20,6 +20,12 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
   final searchController = TextEditingController();
   bool isGridView = true;
 
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
   // CONFIRMING TO DELETE
   void confirmDelete(String discountId, String imageUrl) {
     showDialog(

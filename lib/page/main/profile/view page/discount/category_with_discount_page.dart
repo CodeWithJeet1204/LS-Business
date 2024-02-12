@@ -22,6 +22,12 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
   final searchController = TextEditingController();
   bool isGridView = true;
 
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
   // CONFIRM REMOVE
   void confirmRemove(String categoryId, String categoryName) {
     showDialog(

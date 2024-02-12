@@ -48,6 +48,18 @@ class _AddProductPage1State extends State<AddProductPage1> {
   String? searchedCategory;
   bool isAvailable = true;
 
+  @override
+  void dispose() {
+    nameController.dispose();
+    priceController.dispose();
+    brandController.dispose();
+    descriptionController.dispose();
+    otherInfoController.dispose();
+    otherInfoValueController.dispose();
+    searchController.dispose();
+    super.dispose();
+  }
+
   // ADD PRODUCT IMAGE
   void addProductImages() async {
     final XFile? im = await showImagePickDialog(context);

@@ -55,6 +55,20 @@ class _AddProductPage2State extends State<AddProductPage2> {
   String? propertyValue5;
   bool isAddingProduct = false;
 
+  @override
+  void dispose() {
+    tagController.dispose();
+    otherInfoController.dispose();
+    otherInfoValueController.dispose();
+    property0Controller.dispose();
+    property1Controller.dispose();
+    property2Controller.dispose();
+    property3Controller.dispose();
+    property4Controller.dispose();
+    property5Controller.dispose();
+    super.dispose();
+  }
+
   // ADD TAG
   void addTag(String tag) {
     if (tag.length > 1) {

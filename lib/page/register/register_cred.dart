@@ -24,19 +24,29 @@ class RegisterCredPage extends StatefulWidget {
 }
 
 class _RegisterCredPageState extends State<RegisterCredPage> {
+  final GlobalKey<FormState> registerEmailFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> registerNumberFormKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  final GlobalKey<FormState> registerEmailFormKey = GlobalKey<FormState>();
-  final GlobalKey<FormState> registerNumberFormKey = GlobalKey<FormState>();
   String phoneButtonText = "SIGNUP";
   String googleText = "Signup With GOOGLE";
   bool isGoogleRegistering = false;
   bool isEmailRegistering = false;
   bool isPhoneRegistering = false;
 
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    phoneController.dispose();
+    super.dispose();
+  }
+
+  // NAVIGATE TO EMAIL VERIFY SCREEN
   void navigateToEmailVerify() {
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     Navigator.of(context).popAndPushNamed('/emailVerify');

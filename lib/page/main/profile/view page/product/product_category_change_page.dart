@@ -23,6 +23,12 @@ class _ChangeCategoryState extends State<ChangeCategory> {
   bool isAdding = false;
 
   @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final changeCategoryProvider = Provider.of<ChangeCategoryProvider>(context);
     final Stream<QuerySnapshot> allCategoryStream = FirebaseFirestore.instance

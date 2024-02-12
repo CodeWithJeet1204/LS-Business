@@ -20,6 +20,12 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
   final searchController = TextEditingController();
   bool isGridView = true;
 
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
   // DELETE
   void delete(String categoryId, String imageUrl) async {
     try {

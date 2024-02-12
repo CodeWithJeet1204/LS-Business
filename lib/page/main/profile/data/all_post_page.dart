@@ -22,6 +22,12 @@ class _AllPostsPageState extends State<AllPostsPage> {
   bool isGridView = true;
   String? searchedProduct;
 
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
   // DELETE POST
   void deletePost(String postId) async {
     try {

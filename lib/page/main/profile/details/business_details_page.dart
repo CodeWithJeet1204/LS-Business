@@ -29,6 +29,14 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
   bool isChangingImage = false;
   bool isSaving = false;
 
+  @override
+  void dispose() {
+    nameController.dispose();
+    addressController.dispose();
+    specialNoteController.dispose();
+    super.dispose();
+  }
+
   // CHANGE BUSINESS IMAGE
   void changeImage() async {
     Uint8List? im;

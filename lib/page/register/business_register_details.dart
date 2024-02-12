@@ -26,16 +26,26 @@ class BusinessRegisterDetailsPage extends StatefulWidget {
 
 class _BusinessRegisterDetailsPageState
     extends State<BusinessRegisterDetailsPage> {
+  final GlobalKey<FormState> businessFormKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController gstController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController specialNoteController = TextEditingController();
-  final GlobalKey<FormState> businessFormKey = GlobalKey<FormState>();
   final TextEditingController categoryNameController = TextEditingController();
   bool isNext = false;
   String? selectedIndustrySegment;
   bool isImageSelected = false;
   Uint8List? _image;
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    gstController.dispose();
+    addressController.dispose();
+    specialNoteController.dispose();
+    categoryNameController.dispose();
+    super.dispose();
+  }
 
   // SHOW CATEGORY DIALOG
   void showCategoryDialog() async {

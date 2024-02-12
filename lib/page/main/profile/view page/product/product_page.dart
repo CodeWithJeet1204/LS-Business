@@ -42,10 +42,15 @@ class _ProductPageState extends State<ProductPage> {
   final TextEditingController editController = TextEditingController();
   final GlobalKey<FormState> editKey = GlobalKey<FormState>();
   int _currentIndex = 0;
-
   bool isEditing = false;
   bool categoryExists = true;
   bool isImageChanging = false;
+
+  @override
+  void dispose() {
+    editController.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {

@@ -39,6 +39,13 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
   bool isUploading = false;
   String? imageUrl;
 
+  @override
+  void dispose() {
+    nameController.dispose();
+    discountController.dispose();
+    super.dispose();
+  }
+
   // ADD DISCOUNT IMAGE
   void addDiscountImage() async {
     final XFile? im = await showImagePickDialog(context);

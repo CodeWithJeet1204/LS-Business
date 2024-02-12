@@ -27,6 +27,12 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
   bool isOTPVerifying = false;
 
   @override
+  void dispose() {
+    otpController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final FirebaseAuth auth = FirebaseAuth.instance;
 

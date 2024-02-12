@@ -28,6 +28,13 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
   bool isSaving = false;
   bool isDataLoaded = false;
 
+  @override
+  void dispose() {
+    nameController.dispose();
+    numberController.dispose();
+    super.dispose();
+  }
+
   // CHANGE USER IMAGE
   void changeImage() async {
     Uint8List? im;

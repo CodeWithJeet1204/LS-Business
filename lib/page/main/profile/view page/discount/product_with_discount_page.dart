@@ -24,6 +24,12 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
   final searchController = TextEditingController();
   bool isGridView = true;
 
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
   void confirmRemove(String productId, String productName) {
     showDialog(
       context: context,

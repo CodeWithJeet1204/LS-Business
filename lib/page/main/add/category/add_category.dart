@@ -32,6 +32,12 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
   bool isFit = true;
   String? imageUrl;
 
+  @override
+  void dispose() {
+    categoryController.dispose();
+    super.dispose();
+  }
+
   // ADD CATEGORY
   void addCategory(
       String categoryName, ProductAddedToCategory categoryProvider) async {
