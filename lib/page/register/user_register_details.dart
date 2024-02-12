@@ -1,14 +1,16 @@
-import 'package:find_easy/firebase/storage_methods.dart';
+import 'dart:io';
+
 import 'package:find_easy/page/register/business_register_details.dart';
 import 'package:find_easy/page/register/firestore_info.dart';
 import 'package:find_easy/provider/sign_in_method_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/head_text.dart';
-import 'package:find_easy/widgets/image_picker.dart';
+import 'package:find_easy/widgets/image_pick_dialog.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:find_easy/widgets/text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -33,7 +35,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
       TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   bool isImageSelected = false;
-  Uint8List? _image;
+  File? _image;
   bool isNext = false;
 
   @override
@@ -47,14 +49,14 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
 
   // SELECT IMAGE
   void selectImage() async {
-    Uint8List? im = await pickImage(ImageSource.gallery);
+    XFile? im = await showImagePickDialog(context);
     if (im == null) {
       setState(() {
         isImageSelected = false;
       });
     } else {
       setState(() {
-        _image = im;
+        _image = File(im.path);
         isImageSelected = true;
       });
     }
@@ -89,7 +91,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                             // IMAGE NOT CHOSEN
                             CircleAvatar(
                               radius: width * 0.14,
-                              backgroundImage: MemoryImage(_image!),
+                              backgroundImage: FileImage(_image!),
                             ),
                             IconButton.filledTonal(
                               icon: const Icon(Icons.camera_alt_outlined),
@@ -170,18 +172,25 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                 passwordController.text) {
                               if (_image != null) {
                                 try {
+                                  String? userPhotoUrl;
                                   setState(() {
                                     isNext = true;
                                   });
                                   userImage.addAll({
-                                    "Image": _image!,
+                                    "Image": _image!.path,
                                   });
-                                  String userPhotoUrl = await StorageMethods()
-                                      .uploadImageToStorage(
-                                    'Profile/Users',
-                                    userImage["Image"]!,
-                                    false,
-                                  );
+                                  Reference ref = FirebaseStorage.instance
+                                      .ref()
+                                      .child('Profile/Owners')
+                                      .child(FirebaseAuth
+                                          .instance.currentUser!.uid);
+                                  await ref
+                                      .putFile(File(userImage['Image']!))
+                                      .whenComplete(() async {
+                                    await ref.getDownloadURL().then((value) {
+                                      userPhotoUrl = value;
+                                    });
+                                  });
                                   signInMethodProvider.isGoogleChosen
                                       ? userFirestoreData.addAll(
                                           {

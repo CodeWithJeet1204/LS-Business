@@ -1,4 +1,5 @@
-import 'package:find_easy/firebase/storage_methods.dart';
+import 'dart:io';
+
 import 'package:find_easy/models/industry_segments.dart';
 import 'package:find_easy/page/register/firestore_info.dart';
 import 'package:find_easy/page/register/membership.dart';
@@ -6,10 +7,12 @@ import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/head_text.dart';
 import 'package:find_easy/widgets/image_container.dart';
-import 'package:find_easy/widgets/image_picker.dart';
+import 'package:find_easy/widgets/image_pick_dialog.dart';
 import 'package:find_easy/widgets/image_text_container.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:find_easy/widgets/text_form_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -35,7 +38,7 @@ class _BusinessRegisterDetailsPageState
   bool isNext = false;
   String? selectedIndustrySegment;
   bool isImageSelected = false;
-  Uint8List? _image;
+  File? _image;
 
   @override
   void dispose() {
@@ -58,14 +61,14 @@ class _BusinessRegisterDetailsPageState
 
   // SELECT IMAGE
   void selectImage() async {
-    Uint8List? im = await pickImage(ImageSource.gallery);
+    XFile? im = await showImagePickDialog(context);
     if (im == null) {
       setState(() {
         isImageSelected = false;
       });
     } else {
       setState(() {
-        _image = im;
+        _image = File(im.path);
         isImageSelected = true;
       });
     }
@@ -76,17 +79,24 @@ class _BusinessRegisterDetailsPageState
     if (businessFormKey.currentState!.validate()) {
       if (_image != null) {
         try {
+          String? businessPhotoUrl;
           setState(() {
             isNext = true;
           });
           businessImage.addAll({
-            "Image": _image!,
+            "Image": _image!.path,
           });
-          String businessPhotoUrl = await StorageMethods().uploadImageToStorage(
-            'Profile/Shops',
-            businessImage["Image"]!,
-            false,
-          );
+          Reference ref = FirebaseStorage.instance
+              .ref()
+              .child('Profile/Shops')
+              .child(FirebaseAuth.instance.currentUser!.uid);
+          await ref
+              .putFile(File(businessImage['Image']!))
+              .whenComplete(() async {
+            await ref.getDownloadURL().then((value) {
+              businessPhotoUrl = value;
+            });
+          });
           businessFirestoreData.addAll(
             {
               "Name": nameController.text.toString(),
@@ -150,7 +160,7 @@ class _BusinessRegisterDetailsPageState
                       children: [
                         CircleAvatar(
                           radius: MediaQuery.of(context).size.width * 0.13885,
-                          backgroundImage: MemoryImage(_image!),
+                          backgroundImage: FileImage(_image!),
                         ),
                         IconButton.filledTonal(
                           icon: const Icon(Icons.camera_alt_outlined),

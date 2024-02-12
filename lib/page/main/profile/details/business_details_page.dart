@@ -1,13 +1,12 @@
-import 'dart:typed_data';
-
+import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/firebase/storage_methods.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
-import 'package:find_easy/widgets/image_picker.dart';
+import 'package:find_easy/widgets/image_pick_dialog.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -39,22 +38,27 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
 
   // CHANGE BUSINESS IMAGE
   void changeImage() async {
-    Uint8List? im;
-    Uint8List? image = await pickImage(ImageSource.gallery);
-    im = image;
+    XFile? im = await showImagePickDialog(context);
+    String? userPhotoUrl;
     if (im != null) {
       try {
         setState(() {
           isChangingImage = true;
         });
         Map<String, dynamic> updatedUserImage = {
-          "Image": im,
+          "Image": im.path,
         };
-        String userPhotoUrl = await StorageMethods().uploadImageToStorage(
-          'Profile/Shops',
-          updatedUserImage["Image"]!,
-          false,
-        );
+        Reference ref = FirebaseStorage.instance
+            .ref()
+            .child('Profile/Shops')
+            .child(auth.currentUser!.uid);
+        await ref
+            .putFile(File(updatedUserImage['Image']!))
+            .whenComplete(() async {
+          await ref.getDownloadURL().then((value) {
+            userPhotoUrl = value;
+          });
+        });
         updatedUserImage = {
           "Image": userPhotoUrl,
         };
