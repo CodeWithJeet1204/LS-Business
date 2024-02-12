@@ -108,6 +108,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                 'categoryId': categoryId,
               });
             }
+            await _image!.delete();
             categoryProvider.clearProducts();
             if (context.mounted) {
               mySnackBar(context, "Category Added");

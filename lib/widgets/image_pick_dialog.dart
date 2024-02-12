@@ -1,5 +1,6 @@
 // ignore_for_file: unnecessary_null_comparison
 import 'package:find_easy/utils/colors.dart';
+import 'package:find_easy/widgets/image_pick.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -15,8 +16,7 @@ Future<XFile?>? showImagePickDialog(BuildContext context) async {
           children: [
             GestureDetector(
               onTap: () async {
-                final _image =
-                    await ImagePicker().pickImage(source: ImageSource.camera);
+                final _image = await pickCompressedImage(ImageSource.camera);
                 if (_image != null) {
                   im = _image;
                 }
@@ -49,8 +49,7 @@ Future<XFile?>? showImagePickDialog(BuildContext context) async {
             ),
             GestureDetector(
               onTap: () async {
-                final _image =
-                    await ImagePicker().pickImage(source: ImageSource.gallery);
+                final _image = await pickCompressedImage(ImageSource.gallery);
                 if (_image != null) {
                   im = _image;
                 }

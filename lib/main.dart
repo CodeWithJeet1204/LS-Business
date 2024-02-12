@@ -24,7 +24,6 @@ import 'package:find_easy/provider/shop_type_provider.dart';
 import 'package:find_easy/provider/sign_in_method_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/utils/network_connectivity.dart';
-import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -40,9 +39,6 @@ void main() async {
       projectId: 'find-easy-1204',
       storageBucket: 'find-easy-1204.appspot.com',
     ),
-  );
-  await FirebaseAppCheck.instance.activate(
-    androidProvider: AndroidProvider.debug,
   );
   runApp(
     MultiProvider(
