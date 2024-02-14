@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:find_easy/page/main/discount/products/product_discount.dart';
 import 'package:find_easy/page/main/profile/view%20page/product/product_category_change_page.dart';
 import 'package:find_easy/page/main/profile/view%20page/product/product_image_page.dart';
 import 'package:find_easy/utils/colors.dart';
@@ -960,7 +961,7 @@ class _ProductPageState extends State<ProductPage> {
                           // PRICE
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               // PRICE
                               isDiscount
@@ -1092,18 +1093,48 @@ class _ProductPageState extends State<ProductPage> {
                                           child: CircularProgressIndicator(),
                                         );
                                       })
-                                  : Padding(
-                                      padding: const EdgeInsets.only(left: 10),
-                                      child: Text(
-                                        productData['productPrice'] == ""
-                                            ? "N/A"
-                                            : "Rs. ${productData['productPrice']}",
-                                        style: TextStyle(
-                                          color: primaryDark,
-                                          fontSize: width * 0.06125,
-                                          fontWeight: FontWeight.w500,
+                                  : Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            left: width * 0.02775,
+                                          ),
+                                          child: Text(
+                                            productData['productPrice'] == ""
+                                                ? "N/A"
+                                                : "Rs. ${productData['productPrice']}",
+                                            style: TextStyle(
+                                              color: primaryDark,
+                                              fontSize: width * 0.06125,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
                                         ),
-                                      ),
+                                        MyTextButton(
+                                          onPressed: () async {
+                                            Navigator.of(context).pop();
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: ((context) =>
+                                                    ProductDiscountPage(
+                                                      changeSelectedProductDiscount:
+                                                          true,
+                                                      changeSelectedProductDiscountId:
+                                                          productData[
+                                                              'productId'],
+                                                      changeSelectedProductDiscountName:
+                                                          productData[
+                                                              'productName'],
+                                                    )),
+                                              ),
+                                            );
+                                          },
+                                          text: "Add Discount",
+                                          textColor: primaryDark2,
+                                        ),
+                                      ],
                                     ),
 
                               // EDIT PRICE

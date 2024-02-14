@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/page/main/discount/products/select_products_for_discount.dart';
+import 'package:find_easy/page/main/profile/view%20page/product/product_page.dart';
 import 'package:find_easy/provider/discount_products_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
@@ -16,7 +17,16 @@ import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class ProductDiscountPage extends StatefulWidget {
-  const ProductDiscountPage({super.key});
+  const ProductDiscountPage({
+    super.key,
+    this.changeSelectedProductDiscount,
+    this.changeSelectedProductDiscountName,
+    this.changeSelectedProductDiscountId,
+  });
+
+  final bool? changeSelectedProductDiscount;
+  final String? changeSelectedProductDiscountName;
+  final String? changeSelectedProductDiscountId;
 
   @override
   State<ProductDiscountPage> createState() => _ProductDiscountPageState();
@@ -116,8 +126,10 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
       )) {
         return mySnackBar(context, "Start Date should be before End Date");
       }
-      if (provider.selectedProducts.isEmpty) {
-        return mySnackBar(context, "Select Product");
+      if (widget.changeSelectedProductDiscount == null) {
+        if (provider.selectedProducts.isEmpty) {
+          return mySnackBar(context, "Select Product");
+        }
       }
 
       if (isPercentSelected && int.parse(discountController.text) >= 100) {
@@ -173,13 +185,29 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
           'discountEndDateTime': endDateTime,
           'discountId': discountId,
           'discountImageUrl': imageUrl ?? null,
-          'products': productIdList,
+          'products': widget.changeSelectedProductDiscount != null
+              ? [
+                  widget.changeSelectedProductDiscountId!,
+                ]
+              : productIdList,
           'categories': [],
           'vendorId': auth.currentUser!.uid,
         });
         provider.clear();
         mySnackBar(context, "Discount Added");
-        Navigator.of(context).pop();
+        if (widget.changeSelectedProductDiscount != null) {
+          Navigator.of(context).pop();
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: ((context) => ProductPage(
+                    productId: widget.changeSelectedProductDiscountId!,
+                    productName: widget.changeSelectedProductDiscountName!,
+                  )),
+            ),
+          );
+        } else {
+          Navigator.of(context).pop();
+        }
         setState(() {
           isUploading = false;
         });
@@ -511,17 +539,21 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
 
                     // SELECT PRODUCT
                     MyButton(
-                      text: selectedProducts.isEmpty
-                          ? "SELECT PRODUCTS"
-                          : "SELECTED PRODUCTS - ${selectedProducts.length}",
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                SelectProductForDiscountPage(),
-                          ),
-                        );
-                      },
+                      text: widget.changeSelectedProductDiscount != null
+                          ? widget.changeSelectedProductDiscountName!
+                          : selectedProducts.isEmpty
+                              ? "SELECT PRODUCTS"
+                              : "SELECTED PRODUCTS - ${selectedProducts.length}",
+                      onTap: widget.changeSelectedProductDiscount != null
+                          ? () {}
+                          : () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      SelectProductForDiscountPage(),
+                                ),
+                              );
+                            },
                       isLoading: false,
                       horizontalPadding: 0,
                     ),
