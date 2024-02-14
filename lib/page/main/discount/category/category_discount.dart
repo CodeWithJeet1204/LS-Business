@@ -139,6 +139,18 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
           });
         }
 
+        for (String id in categoryIdList) {
+          await store
+              .collection('Business')
+              .doc('Data')
+              .collection('Category')
+              .doc(id)
+              .update({
+            'discountId': discountId,
+            'discountEndDate': endDate,
+          });
+        }
+
         await store
             .collection('Business')
             .doc('Data')

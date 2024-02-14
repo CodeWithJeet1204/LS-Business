@@ -145,6 +145,18 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
           });
         }
 
+        for (String id in productIdList) {
+          await store
+              .collection('Business')
+              .doc('Data')
+              .collection('Products')
+              .doc(id)
+              .update({
+            'discountId': discountId,
+            'discountEndDate': endDate,
+          });
+        }
+
         await store
             .collection('Business')
             .doc('Data')

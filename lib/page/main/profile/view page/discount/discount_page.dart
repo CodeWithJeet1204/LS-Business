@@ -157,8 +157,8 @@ class DISCOUNT extends State<DiscountPage> {
   }
 
   // CONFIRMING TO DELETE
-  void confirmDelete(String discountId, String? imageUrl) {
-    showDialog(
+  Future<void> confirmDelete(String discountId, String? imageUrl) async {
+    await showDialog(
       context: context,
       builder: ((context) {
         return AlertDialog(
@@ -180,8 +180,8 @@ class DISCOUNT extends State<DiscountPage> {
             ),
             TextButton(
               onPressed: () async {
+                await delete(discountId, imageUrl);
                 Navigator.of(context).pop();
-                delete(discountId, imageUrl);
               },
               child: const Text(
                 'YES',
@@ -198,7 +198,7 @@ class DISCOUNT extends State<DiscountPage> {
   }
 
   // DELETE DISCOUNT
-  void delete(String discountId, String? imageUrl) async {
+  Future<void> delete(String discountId, String? imageUrl) async {
     try {
       if (imageUrl != null) {
         await storage.refFromURL(imageUrl).delete();
@@ -469,11 +469,12 @@ class DISCOUNT extends State<DiscountPage> {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () {
-              confirmDelete(
+            onPressed: () async {
+              await confirmDelete(
                 widget.discountId,
                 widget.discountImageUrl,
               );
+              Navigator.of(context).pop();
             },
             icon: Icon(
               Icons.delete_forever_outlined,
@@ -1710,7 +1711,7 @@ class DISCOUNT extends State<DiscountPage> {
                                             }
 
                                             if (snapshot.hasData) {
-                                              print(snapshot.data);
+                                              print(snapshot.data?.docs.length);
                                               return SafeArea(
                                                 child: isGridView
                                                     // PRODUCTS IN GRIDVIEW
