@@ -2,7 +2,9 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/page/main/add/product/add_product_page_2.dart';
+import 'package:find_easy/page/main/add/product/select_brand_for_product_page.dart';
 import 'package:find_easy/provider/add_product_provider.dart';
+import 'package:find_easy/provider/select_brand_for_product_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/image_pick_dialog.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
@@ -46,7 +48,6 @@ class _AddProductPage1State extends State<AddProductPage1> {
   bool isGridView = true;
   String? searchedCategory;
   bool isAvailable = true;
-  String selectedBrand = "No Brand";
 
   @override
   void dispose() {
@@ -82,7 +83,8 @@ class _AddProductPage1State extends State<AddProductPage1> {
   }
 
   // ADD PRODUCT
-  void addProduct(AddProductProvider provider) async {
+  void addProduct(AddProductProvider productProvider,
+      SelectBrandForProductProvider brandProvider) async {
     if (productKey.currentState!.validate()) {
       if (_image.isEmpty) {
         return mySnackBar(context, "Select atleast 1 image");
@@ -143,12 +145,13 @@ class _AddProductPage1State extends State<AddProductPage1> {
           }
 
           final String productId = const Uuid().v4();
-          provider.add(
+          productProvider.add(
             {
               'productName': nameController.text,
               'productPrice': priceController.text,
               'productDescription': descriptionController.text,
-              'productBrand': selectedBrand,
+              'productBrand': brandProvider.selectedBrandName,
+              'productBrandId': brandProvider.selectedBrandId,
               'productLikes': 0,
               'productDislikes': 0,
               'productShares': 0,
@@ -198,6 +201,8 @@ class _AddProductPage1State extends State<AddProductPage1> {
 
   @override
   Widget build(BuildContext context) {
+    final selectBrandProvider =
+        Provider.of<SelectBrandForProductProvider>(context);
     final addProductProvider = Provider.of<AddProductProvider>(context);
 
     final Stream<QuerySnapshot<Map<String, dynamic>>> categoryStream = store
@@ -212,14 +217,6 @@ class _AddProductPage1State extends State<AddProductPage1> {
         .orderBy('datetime', descending: true)
         .snapshots();
 
-    // ignore: unused_local_variable
-    final Stream<QuerySnapshot<Map<String, dynamic>>> brandStream = store
-        .collection('Business')
-        .doc("Data")
-        .collection("Brands")
-        .where('vendorId', isEqualTo: auth.currentUser!.uid)
-        .snapshots();
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: primary,
@@ -228,7 +225,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
         actions: [
           MyTextButton(
             onPressed: () {
-              addProduct(addProductProvider);
+              addProduct(addProductProvider, selectBrandProvider);
             },
             text: "NEXT",
             textColor: primaryDark2,
@@ -491,8 +488,14 @@ class _AddProductPage1State extends State<AddProductPage1> {
 
                         // BRAND
                         InkWell(
-                          // TODO: SELECT BRAND
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: ((context) =>
+                                    SelectBrandForProductPage()),
+                              ),
+                            );
+                          },
                           splashColor: primary2,
                           radius: width * 0.5,
                           customBorder: RoundedRectangleBorder(
@@ -512,7 +515,10 @@ class _AddProductPage1State extends State<AddProductPage1> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'Select Brand',
+                                  selectBrandProvider.selectedBrandName ==
+                                          'No Brand'
+                                      ? 'Select Brand'
+                                      : selectBrandProvider.selectedBrandName!,
                                   style: TextStyle(
                                     color: primaryDark,
                                     fontSize: width * 0.06,
