@@ -113,9 +113,9 @@ class _SelectProductForDiscountPageState
                               ),
                               itemCount: snapshot.data!.docs.length,
                               itemBuilder: (context, index) {
-                                final productData = snapshot.data!.docs[index];
-                                final productDataMap =
-                                    productData.data() as Map<String, dynamic>;
+                                final productSnap = snapshot.data!.docs[index];
+                                final productData =
+                                    productSnap.data() as Map<String, dynamic>;
 
                                 // CARD
                                 return Padding(
@@ -123,7 +123,9 @@ class _SelectProductForDiscountPageState
                                   child: GestureDetector(
                                     onTap: () {
                                       selectedProductsProvider.selectProduct(
-                                        productDataMap['productId'],
+                                        productData['productId'],
+                                        productData['productPrice'],
+                                        context,
                                       );
                                     },
                                     child: Stack(
@@ -150,7 +152,7 @@ class _SelectProductForDiscountPageState
                                                       12,
                                                     ),
                                                     child: Image.network(
-                                                      productData['images'][0],
+                                                      productSnap['images'][0],
                                                       width: width * 0.4,
                                                       height: width * 0.4,
                                                       fit: BoxFit.cover,
@@ -165,7 +167,7 @@ class _SelectProductForDiscountPageState
                                                     0,
                                                   ),
                                                   child: Text(
-                                                    productData['productName'],
+                                                    productSnap['productName'],
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -184,12 +186,12 @@ class _SelectProductForDiscountPageState
                                                     0,
                                                   ),
                                                   child: Text(
-                                                    productData['productPrice'] !=
+                                                    productSnap['productPrice'] !=
                                                                 "" &&
-                                                            productData[
+                                                            productSnap[
                                                                     'productPrice'] !=
                                                                 null
-                                                        ? productData[
+                                                        ? productSnap[
                                                             'productPrice']
                                                         : "N/A",
                                                     maxLines: 1,
@@ -209,7 +211,7 @@ class _SelectProductForDiscountPageState
                                         selectedProductsProvider
                                                 .selectedProducts
                                                 .contains(
-                                          productDataMap['productId'],
+                                          productData['productId'],
                                         )
                                             ? Container(
                                                 padding: EdgeInsets.all(
@@ -237,9 +239,9 @@ class _SelectProductForDiscountPageState
                                 shrinkWrap: true,
                                 itemCount: snapshot.data!.docs.length,
                                 itemBuilder: ((context, index) {
-                                  final productData =
+                                  final productSnap =
                                       snapshot.data!.docs[index];
-                                  final productDataMap = productData.data()
+                                  final productData = productSnap.data()
                                       as Map<String, dynamic>;
                                   return Padding(
                                     padding: const EdgeInsets.symmetric(
@@ -259,33 +261,35 @@ class _SelectProductForDiscountPageState
                                             onTap: () {
                                               selectedProductsProvider
                                                   .selectProduct(
-                                                productDataMap['productId'],
+                                                productData['productId'],
+                                                productData['productPrice'],
+                                                context,
                                               );
                                             },
                                             leading: ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(4),
                                               child: Image.network(
-                                                productData['images'][0],
+                                                productSnap['images'][0],
                                                 width: width * 0.166,
                                                 height: width * 0.166,
                                                 fit: BoxFit.cover,
                                               ),
                                             ),
                                             title: Text(
-                                              productData['productName'],
+                                              productSnap['productName'],
                                               style: TextStyle(
                                                 fontSize: width * 0.05125,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                             ),
                                             subtitle: Text(
-                                              productData['productPrice'] !=
+                                              productSnap['productPrice'] !=
                                                           "" &&
-                                                      productData[
+                                                      productSnap[
                                                               'productPrice'] !=
                                                           null
-                                                  ? productData['productPrice']
+                                                  ? productSnap['productPrice']
                                                   : "N/A",
                                               style: TextStyle(
                                                 fontSize: width * 0.04125,
@@ -297,7 +301,7 @@ class _SelectProductForDiscountPageState
                                         selectedProductsProvider
                                                 .selectedProducts
                                                 .contains(
-                                          productDataMap['productId'],
+                                          productData['productId'],
                                         )
                                             ? Padding(
                                                 padding: EdgeInsets.only(

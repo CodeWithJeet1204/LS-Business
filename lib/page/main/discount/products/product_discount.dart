@@ -15,8 +15,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
-// TODO: check if selected products price is not n/a
-
 class ProductDiscountPage extends StatefulWidget {
   const ProductDiscountPage({super.key});
 
