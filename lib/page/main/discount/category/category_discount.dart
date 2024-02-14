@@ -148,6 +148,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
           'isPercent': isPercentSelected,
           'isProducts': false,
           'isCategories': true,
+          'isBrands': false,
           'discountName': nameController.text.toString(),
           'discountAmount': double.parse(discountController.text),
           'discountStartDate': startDate,
@@ -456,7 +457,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                     )
                                   : Padding(
                                       padding: EdgeInsets.only(
-                                        left: width * 0.04,
+                                        left: width * 0.0366,
                                         bottom: width * 0.025,
                                       ),
                                       child: Text(
@@ -522,7 +523,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                             GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  isPercentSelected = !isPercentSelected;
+                                  isPercentSelected = true;
                                 });
                               },
                               child: Container(
@@ -554,7 +555,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                             GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  isPercentSelected = !isPercentSelected;
+                                  isPercentSelected = false;
                                 });
                               },
                               child: Container(

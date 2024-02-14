@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:find_easy/page/main/discount/brand/brand_discount.dart';
 import 'package:find_easy/page/main/discount/category/category_discount.dart';
 import 'package:find_easy/page/main/discount/products/product_discount.dart';
 import 'package:find_easy/utils/colors.dart';
@@ -101,6 +102,52 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                               width: width * 0.5,
                               child: const AutoSizeText(
                                 "CATEGORY",
+                                style: TextStyle(
+                                  color: primaryDark,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 28,
+                                ),
+                              ),
+                            ),
+                            Expanded(child: Container()),
+                            Icon(
+                              Icons.apps_outlined,
+                              size: width * 0.2,
+                              color: primaryDark2,
+                            ),
+                            SizedBox(width: width * 0.075),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  // BRAND
+                  SizedOverflowBox(
+                    size: Size(width, width * 0.5),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: ((context) => BrandDiscountPage()),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 12),
+                        width: width,
+                        height: width * 0.375,
+                        decoration: BoxDecoration(
+                          color: primary2.withOpacity(0.67),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          children: [
+                            SizedBox(width: width * 0.1),
+                            SizedBox(
+                              width: width * 0.5,
+                              child: const AutoSizeText(
+                                "BRAND",
                                 style: TextStyle(
                                   color: primaryDark,
                                   fontWeight: FontWeight.w600,

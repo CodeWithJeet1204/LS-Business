@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/first_launch_detection.dart';
 import 'package:find_easy/page/intro/intro_page_view.dart';
-import 'package:find_easy/page/main/add/category/add_category.dart';
+import 'package:find_easy/page/main/add/brand/add_brand_page.dart';
+import 'package:find_easy/page/main/add/category/add_category_page.dart';
 import 'package:find_easy/page/main/analytics/analaytics_page.dart';
 import 'package:find_easy/page/main/main_page.dart';
+import 'package:find_easy/page/main/profile/data/all_brand_page.dart';
 import 'package:find_easy/page/main/profile/data/all_post_page.dart';
 import 'package:find_easy/page/main/profile/data/all_product_page.dart';
 import 'package:find_easy/page/main/profile/details/business_details_page.dart';
@@ -16,8 +18,10 @@ import 'package:find_easy/page/register/register_pay.dart';
 import 'package:find_easy/page/register/verify/email_verify.dart';
 import 'package:find_easy/provider/add_product_provider.dart';
 import 'package:find_easy/provider/change_category_provider.dart';
+import 'package:find_easy/provider/discount_brand_provider.dart';
 import 'package:find_easy/provider/discount_category_provider.dart';
 import 'package:find_easy/provider/discount_products_provider.dart';
+import 'package:find_easy/provider/products_added_to_brand.dart';
 import 'package:find_easy/provider/products_added_to_category_provider.dart';
 import 'package:find_easy/provider/select_product_for_post_provider.dart';
 import 'package:find_easy/provider/shop_type_provider.dart';
@@ -56,6 +60,9 @@ void main() async {
           create: (_) => ProductAddedToCategory(),
         ),
         ChangeNotifierProvider(
+          create: (_) => ProductAddedToBrandProvider(),
+        ),
+        ChangeNotifierProvider(
           create: (_) => ChangeCategoryProvider(),
         ),
         ChangeNotifierProvider(
@@ -66,6 +73,9 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (_) => SelectCategoryForDiscountProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => SelectBrandForDiscountProvider(),
         ),
       ],
       child: const MyApp(),
@@ -133,9 +143,11 @@ class MyApp extends StatelessWidget {
         '/ownerDetails': (context) => const OwnerDetailsPage(),
         '/businessDetails': (context) => const BusinessDetailsPage(),
         '/addCategory': (context) => const AddCategoryPage(),
+        '/addBrand': (context) => const AddBrandPage(),
         '/postsPage': (context) => const AllPostsPage(),
         '/categoriesPage': (context) => const AllCategoriesPage(),
         '/productsPage': (context) => const AllProductsPage(),
+        '/brandPage': (context) => const AllBrandPage(),
         '/analyticsPage': (context) => const AnalyticsPage(),
       },
       debugShowCheckedModeBanner: false,

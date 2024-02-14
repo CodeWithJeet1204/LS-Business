@@ -89,7 +89,7 @@ class InfoEditBox extends StatelessWidget {
                                                   height: MediaQuery.of(context)
                                                           .size
                                                           .width *
-                                                      0.01250,
+                                                      0.1250,
                                                   margin: EdgeInsets.only(
                                                     right:
                                                         MediaQuery.of(context)

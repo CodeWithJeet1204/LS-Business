@@ -1,44 +1,43 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/provider/discount_category_provider.dart';
+import 'package:find_easy/provider/discount_brand_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SelectCategoryForDiscountPage extends StatefulWidget {
-  const SelectCategoryForDiscountPage({super.key});
+class SelectBrandForDiscountPage extends StatefulWidget {
+  const SelectBrandForDiscountPage({super.key});
 
   @override
-  State<SelectCategoryForDiscountPage> createState() =>
-      _SelectCategoryForDiscountPageState();
+  State<SelectBrandForDiscountPage> createState() =>
+      _SelectBrandForDiscountPageState();
 }
 
-class _SelectCategoryForDiscountPageState
-    extends State<SelectCategoryForDiscountPage> {
+class _SelectBrandForDiscountPageState
+    extends State<SelectBrandForDiscountPage> {
   bool isGridView = true;
-  String? searchedCategory;
+  String? searchedBrand;
 
   @override
   Widget build(BuildContext context) {
-    final selectCategoryProvider =
-        Provider.of<SelectCategoryForDiscountProvider>(context);
+    final selectBrandProvider =
+        Provider.of<SelectBrandForDiscountProvider>(context);
 
-    final Stream<QuerySnapshot> allCategoryStream = FirebaseFirestore.instance
+    final Stream<QuerySnapshot> allBrandStream = FirebaseFirestore.instance
         .collection('Business')
         .doc('Data')
-        .collection('Category')
+        .collection('Brands')
         .where(
           'vendorId',
           isEqualTo: FirebaseAuth.instance.currentUser!.uid,
         )
-        .orderBy('datetime', descending: true)
         .snapshots();
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("SELECT CATEGORIES"),
+        title: const Text("SELECT BRANDS"),
         actions: [
           MyTextButton(
             onPressed: () {
@@ -70,7 +69,7 @@ class _SelectCategoryForDiscountPageState
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
-                      searchedCategory = value;
+                      searchedBrand = value;
                     },
                   ),
                 ),
@@ -97,7 +96,7 @@ class _SelectCategoryForDiscountPageState
           return Column(
             children: [
               StreamBuilder(
-                stream: allCategoryStream,
+                stream: allBrandStream,
                 builder: ((context, snapshot) {
                   if (snapshot.hasError) {
                     return const Center(
@@ -119,17 +118,17 @@ class _SelectCategoryForDiscountPageState
                               ),
                               itemCount: snapshot.data!.docs.length,
                               itemBuilder: (context, index) {
-                                final categoryData = snapshot.data!.docs[index];
-                                final categoryDataMap =
-                                    categoryData.data() as Map<String, dynamic>;
+                                final brandData = snapshot.data!.docs[index];
+                                final brandDataMap =
+                                    brandData.data() as Map<String, dynamic>;
 
                                 // CARD
                                 return Padding(
                                   padding: const EdgeInsets.all(8),
                                   child: GestureDetector(
                                     onTap: () {
-                                      selectCategoryProvider.selectCategory(
-                                        categoryDataMap['categoryId'],
+                                      selectBrandProvider.selectBrands(
+                                        brandDataMap['brandId'],
                                       );
                                     },
                                     child: Stack(
@@ -155,7 +154,7 @@ class _SelectCategoryForDiscountPageState
                                                       12,
                                                     ),
                                                     child: Image.network(
-                                                      categoryData['imageUrl'],
+                                                      brandData['imageUrl'],
                                                       width: width * 0.4,
                                                       height: width * 0.4,
                                                       fit: BoxFit.cover,
@@ -170,8 +169,7 @@ class _SelectCategoryForDiscountPageState
                                                     0,
                                                   ),
                                                   child: Text(
-                                                    categoryData[
-                                                        'categoryName'],
+                                                    brandData['brandName'],
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -186,10 +184,9 @@ class _SelectCategoryForDiscountPageState
                                             ),
                                           ),
                                         ),
-                                        selectCategoryProvider
-                                                .selectedCategories
+                                        selectBrandProvider.selectedBrands
                                                 .contains(
-                                          categoryDataMap['categoryId'],
+                                          brandDataMap['brandId'],
                                         )
                                             ? Container(
                                                 margin: EdgeInsets.all(
@@ -219,10 +216,9 @@ class _SelectCategoryForDiscountPageState
                                 shrinkWrap: true,
                                 itemCount: snapshot.data!.docs.length,
                                 itemBuilder: ((context, index) {
-                                  final categoryData =
-                                      snapshot.data!.docs[index];
-                                  final categoryDataMap = categoryData.data()
-                                      as Map<String, dynamic>;
+                                  final brandData = snapshot.data!.docs[index];
+                                  final brandDataMap =
+                                      brandData.data() as Map<String, dynamic>;
                                   return Padding(
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 6,
@@ -239,9 +235,8 @@ class _SelectCategoryForDiscountPageState
                                           ),
                                           child: ListTile(
                                             onTap: () {
-                                              selectCategoryProvider
-                                                  .selectCategory(
-                                                categoryDataMap['categoryId'],
+                                              selectBrandProvider.selectBrands(
+                                                brandDataMap['brandId'],
                                               );
                                             },
                                             leading: Padding(
@@ -252,7 +247,7 @@ class _SelectCategoryForDiscountPageState
                                                 borderRadius:
                                                     BorderRadius.circular(4),
                                                 child: Image.network(
-                                                  categoryData['imageUrl'],
+                                                  brandData['imageUrl'],
                                                   width: width * 0.155,
                                                   height: width * 0.166,
                                                   fit: BoxFit.cover,
@@ -260,7 +255,7 @@ class _SelectCategoryForDiscountPageState
                                               ),
                                             ),
                                             title: Text(
-                                              categoryData['categoryName'],
+                                              brandData['brandName'],
                                               style: TextStyle(
                                                 fontSize: width * 0.055,
                                                 fontWeight: FontWeight.w600,
@@ -268,10 +263,9 @@ class _SelectCategoryForDiscountPageState
                                             ),
                                           ),
                                         ),
-                                        selectCategoryProvider
-                                                .selectedCategories
+                                        selectBrandProvider.selectedBrands
                                                 .contains(
-                                          categoryDataMap['categoryId'],
+                                          brandDataMap['brandId'],
                                         )
                                             ? Padding(
                                                 padding: EdgeInsets.only(

@@ -1,33 +1,49 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/provider/products_added_to_category_provider.dart';
+import 'package:find_easy/provider/products_added_to_brand.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AddProductsToCategoryPage extends StatefulWidget {
-  const AddProductsToCategoryPage({
+class AddProductsToBrandPage extends StatefulWidget {
+  const AddProductsToBrandPage({
     super.key,
-    required this.fromAddCategoryPage,
-    this.categoryId,
-    this.categoryName,
+    this.brandId,
+    this.brandName,
+    this.isFromBrandPage,
   });
 
-  final String? categoryId;
-  final String? categoryName;
-  final bool fromAddCategoryPage;
+  final String? brandId;
+  final String? brandName;
+  final bool? isFromBrandPage;
 
   @override
-  State<AddProductsToCategoryPage> createState() =>
-      _AddProductsToCategoryPageState();
+  State<AddProductsToBrandPage> createState() => _AddProductsToBrandPageState();
 }
 
-class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
+class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
+  final store = FirebaseFirestore.instance;
   final searchController = TextEditingController();
   bool isGridView = true;
   bool isAdding = false;
   String? searchedProduct;
+
+  void addProductToBrand(ProductAddedToBrandProvider provider) async {
+    for (String id in provider.selectedProducts) {
+      await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Products')
+          .doc(id)
+          .update({
+        'productBrandId': widget.brandId,
+        'productBrand': widget.brandName,
+      });
+    }
+
+    provider.clearProducts();
+  }
 
   @override
   void dispose() {
@@ -37,8 +53,8 @@ class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    final productsAddedToCategoryProvider =
-        Provider.of<ProductAddedToCategory>(context);
+    final productsAddedToBrandProvider =
+        Provider.of<ProductAddedToBrandProvider>(context);
 
     final Stream<QuerySnapshot> allProductStream = FirebaseFirestore.instance
         .collection('Business')
@@ -55,45 +71,20 @@ class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
         .orderBy('datetime', descending: true)
         .snapshots();
 
-    void addProductToCategory(List<String> products) async {
-      for (int i = 0; i < products.length; i++) {
-        setState(() {
-          isAdding = true;
-        });
-        await FirebaseFirestore.instance
-            .collection('Business')
-            .doc('Data')
-            .collection('Products')
-            .doc(products[i])
-            .update({
-          'categoryId': widget.categoryId,
-          'categoryName': widget.categoryName,
-        });
-        setState(() {
-          isAdding = false;
-        });
-      }
-      if (context.mounted) {
-        Navigator.of(context).pop();
-      }
-    }
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text("SELECT PRODUCTS"),
         actions: [
           MyTextButton(
-            onPressed: widget.fromAddCategoryPage
-                ? () {
-                    Navigator.of(context).pop();
-                  }
-                : () {
-                    addProductToCategory(
-                      productsAddedToCategoryProvider.selectedProducts,
-                    );
-                    productsAddedToCategoryProvider.clearProducts();
-                  },
+            onPressed: () {
+              if (widget.isFromBrandPage != null) {
+                if (widget.isFromBrandPage!) {
+                  addProductToBrand(productsAddedToBrandProvider);
+                }
+              }
+              Navigator.of(context).pop();
+            },
             text: "NEXT",
             textColor: primaryDark,
           ),
@@ -180,7 +171,7 @@ class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
                                       size: Size(width * 0.5, 210),
                                       child: GestureDetector(
                                         onTap: () {
-                                          productsAddedToCategoryProvider
+                                          productsAddedToBrandProvider
                                               .addProduct(
                                             productData['productId'],
                                           );
@@ -246,7 +237,7 @@ class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
                                                 ),
                                               ),
                                             ),
-                                            productsAddedToCategoryProvider
+                                            productsAddedToBrandProvider
                                                     .selectedProducts
                                                     .contains(productData[
                                                         'productId'])
@@ -293,7 +284,7 @@ class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
                                       ),
                                       child: GestureDetector(
                                         onTap: () {
-                                          productsAddedToCategoryProvider
+                                          productsAddedToBrandProvider
                                               .addProduct(
                                             productData['productId'],
                                           );
@@ -334,7 +325,7 @@ class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
                                                 ),
                                               ),
                                             ),
-                                            productsAddedToCategoryProvider
+                                            productsAddedToBrandProvider
                                                     .selectedProducts
                                                     .contains(productData[
                                                         'productId'])

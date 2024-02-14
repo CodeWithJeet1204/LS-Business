@@ -515,10 +515,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                         )
                                       : getNoOfAnswers(0) == 2
                                           ? Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 8,
-                                                vertical: 4,
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: width * 0.0225,
+                                                vertical: width * 0.0125,
                                               ),
                                               decoration: BoxDecoration(
                                                 color: primary3,
@@ -704,10 +703,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                         )
                                       : getNoOfAnswers(1) == 2
                                           ? Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 8,
-                                                vertical: 4,
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: width * 0.0225,
+                                                vertical: width * 0.0125,
                                               ),
                                               decoration: BoxDecoration(
                                                 color: primary3,
@@ -893,10 +891,10 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                         )
                                       : getNoOfAnswers(2) == 2
                                           ? Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 8,
-                                                      vertical: 4),
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: width * 0.0225,
+                                                vertical: width * 0.0125,
+                                              ),
                                               decoration: BoxDecoration(
                                                 color: primary3,
                                                 borderRadius:
@@ -1081,10 +1079,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                         )
                                       : getNoOfAnswers(3) == 2
                                           ? Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 8,
-                                                vertical: 4,
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: width * 0.0225,
+                                                vertical: width * 0.0125,
                                               ),
                                               decoration: BoxDecoration(
                                                 color: primary3,
@@ -1270,10 +1267,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                         )
                                       : getNoOfAnswers(4) == 2
                                           ? Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 8,
-                                                vertical: 4,
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: width * 0.0225,
+                                                vertical: width * 0.0125,
                                               ),
                                               decoration: BoxDecoration(
                                                 color: primary3,
@@ -1459,10 +1455,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                         )
                                       : getNoOfAnswers(5) == 2
                                           ? Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 8,
-                                                vertical: 4,
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: width * 0.0225,
+                                                vertical: width * 0.0125,
                                               ),
                                               decoration: BoxDecoration(
                                                 color: primary3,

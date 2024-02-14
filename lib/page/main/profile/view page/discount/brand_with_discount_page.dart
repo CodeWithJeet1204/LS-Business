@@ -4,8 +4,8 @@ import 'package:find_easy/widgets/text_button.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
-class CategoryWithDiscountPage extends StatefulWidget {
-  const CategoryWithDiscountPage({
+class BrandWithDiscountPage extends StatefulWidget {
+  const BrandWithDiscountPage({
     super.key,
     required this.discountId,
   });
@@ -13,11 +13,10 @@ class CategoryWithDiscountPage extends StatefulWidget {
   final String discountId;
 
   @override
-  State<CategoryWithDiscountPage> createState() =>
-      _CategoryWithDiscountPageState();
+  State<BrandWithDiscountPage> createState() => _BrandWithDiscountPageState();
 }
 
-class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
+class _BrandWithDiscountPageState extends State<BrandWithDiscountPage> {
   final store = FirebaseFirestore.instance;
   final searchController = TextEditingController();
   bool isGridView = true;
@@ -29,14 +28,14 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
   }
 
   // CONFIRM REMOVE
-  void confirmRemove(String categoryId, String categoryName) {
+  void confirmRemove(String brandId, String brandName) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Remove $categoryName"),
-          content: Text(
-              'Are you sure you want to remove $categoryName from Discount?'),
+          title: Text("Remove $brandName"),
+          content:
+              Text('Are you sure you want to remove $brandName from Discount?'),
           actions: [
             MyTextButton(
               onPressed: () {
@@ -47,7 +46,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
             ),
             MyTextButton(
               onPressed: () {
-                remove(categoryId);
+                remove(brandId);
               },
               text: "YES",
               textColor: Colors.red,
@@ -59,7 +58,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
   }
 
   // REMOVE
-  void remove(String categoryId) async {
+  void remove(String brandId) async {
     final discountData = await store
         .collection('Business')
         .doc('Data')
@@ -67,7 +66,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
         .doc(widget.discountId)
         .get();
 
-    final List categories = discountData['categories'];
+    final List brands = discountData['brands'];
 
     await store
         .collection('Business')
@@ -75,41 +74,41 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
         .collection('Discounts')
         .doc(widget.discountId)
         .update({
-      'categories': categories.remove(categoryId),
+      'brands': brands.remove(brandId),
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // GET DISCOUNT CATEGORY STREAM
-    Stream<List<Map<String, String>>> discountCategoriesStream = store
+    // GET DISCOUNT BRAND STREAM
+    Stream<List<Map<String, String>>> discountBrandsStream = store
         .collection('Business')
         .doc('Data')
         .collection('Discounts')
         .doc(widget.discountId)
         .snapshots()
         .map((snapshot) {
-      final categoriesData = snapshot.data()?['categories'];
-      if (categoriesData is List<Map<String, String>>) {
+      final brandsData = snapshot.data()?['brands'];
+      if (brandsData is List<Map<String, String>>) {
         print("1");
-        return categoriesData;
+        return brandsData;
       } else {
         print("2");
-        return []; // Return an empty list if categories data is not present or not of the correct type
+        return []; // Return an empty list if brands data is not present or not of the correct type
       }
-    }).switchMap((categoryIds) => Rx.combineLatest(
-              categoryIds.map((categoryId) => store
+    }).switchMap((brandIds) => Rx.combineLatest(
+              brandIds.map((brandId) => store
                   .collection('Business')
                   .doc('Data')
-                  .collection('Category')
-                  .doc(categoryId)
+                  .collection('Brands')
+                  .doc(brandId)
                   .snapshots()),
               (List<DocumentSnapshot<Map<String, dynamic>>> snapshots) =>
                   snapshots
                       .map((snapshot) => {
-                            'categoryId': snapshot.id,
-                            'categoryName':
-                                snapshot.data()!['categoryName'] as String,
+                            'brandId': snapshot.id,
+                            'brandName':
+                                snapshot.data()!['brandName'] as String,
                             'imageUrl': snapshot.data()!['imageUrl'] as String,
                           })
                       .toList()
@@ -118,7 +117,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('CATEGORIES'),
+        title: Text('BRANDS'),
         bottom: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,
@@ -166,7 +165,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
           double width = constraints.maxWidth;
 
           return StreamBuilder(
-            stream: discountCategoriesStream,
+            stream: discountBrandsStream,
             builder: ((context, snapshot) {
               print(1);
               print(snapshot.data);
@@ -177,7 +176,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
               }
 
               if (snapshot.hasData) {
-                final categories = snapshot.data!;
+                final brands = snapshot.data!;
                 return isGridView
                     ? GridView.builder(
                         shrinkWrap: true,
@@ -185,9 +184,9 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
                           crossAxisCount: 2,
                           childAspectRatio: width / 415,
                         ),
-                        itemCount: categories.length,
+                        itemCount: brands.length,
                         itemBuilder: (context, index) {
-                          return categories[index]['categoryName']!
+                          return brands[index]['brandName']!
                                   .toLowerCase()
                                   .contains(searchController.text
                                       .toString()
@@ -213,7 +212,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
                                             borderRadius:
                                                 BorderRadius.circular(12),
                                             child: Image.network(
-                                              categories[index]['imageUrl']!,
+                                              brands[index]['imageUrl']!,
                                               width: width * 0.45,
                                               height: width * 0.4,
                                               fit: BoxFit.cover,
@@ -234,8 +233,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
                                                 width: width * 0.45,
                                                 height: width * 0.1,
                                                 child: Text(
-                                                  categories[index]
-                                                      ['categoryName']!,
+                                                  brands[index]['brandName']!,
                                                   maxLines: 1,
                                                   overflow:
                                                       TextOverflow.ellipsis,
@@ -251,10 +249,10 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
                                               // IconButton(
                                               //   onPressed: () {
                                               //     confirmRemove(
-                                              //       categories[index]
-                                              //           ['categoryId']!,
-                                              //       categories[index]
-                                              //           ['categoryName']!,
+                                              //       brands[index]
+                                              //           ['brandId']!,
+                                              //       brands[index]
+                                              //           ['brandName']!,
                                               //     );
                                               //   },
                                               //   icon: Icon(
@@ -278,7 +276,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
                     : SizedBox(
                         width: width,
                         child: ListView.builder(
-                          itemCount: categories.length,
+                          itemCount: brands.length,
                           itemBuilder: (context, index) {
                             return Container(
                               margin: EdgeInsets.symmetric(
@@ -299,7 +297,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
                                       4,
                                     ),
                                     child: Image.network(
-                                      categories[index]['imageUrl']!,
+                                      brands[index]['imageUrl']!,
                                       width: width * 0.15,
                                       height: width * 0.15,
                                       fit: BoxFit.cover,
@@ -307,7 +305,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
                                   ),
                                 ),
                                 title: Text(
-                                  categories[index]['categoryName']!,
+                                  brands[index]['brandName']!,
                                   style: TextStyle(
                                     fontSize: width * 0.0525,
                                     fontWeight: FontWeight.w600,

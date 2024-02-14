@@ -27,7 +27,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
   }
 
   // CONFIRMING TO DELETE
-  void confirmDelete(String discountId, String imageUrl) {
+  void confirmDelete(String discountId, String? imageUrl) {
     showDialog(
       context: context,
       builder: ((context) {
@@ -68,9 +68,11 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
   }
 
   // DELETE DISCOUNT
-  void delete(String discountId, String imageUrl) async {
+  void delete(String discountId, String? imageUrl) async {
     try {
-      await storage.refFromURL(imageUrl).delete();
+      if (imageUrl != null) {
+        await storage.refFromURL(imageUrl).delete();
+      }
 
       await store
           .collection('Business')
@@ -215,7 +217,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                 children: [
                                                   SizedBox(
                                                     width: width,
-                                                    height: width * 0.4,
+                                                    height: width * 0.375,
                                                     child: Center(
                                                       child: Text(
                                                         "No Image Available",

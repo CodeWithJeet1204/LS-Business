@@ -201,37 +201,61 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
               return SingleChildScrollView(
                 child: Column(
                   children: [
+                    // IMAGE
                     _image != null
                         ? Center(
                             child: Stack(
-                              alignment: Alignment.bottomRight,
+                              alignment: Alignment.topRight,
                               children: [
                                 Container(
-                                  height: 300,
+                                  height: width * 0.8725,
                                   width: width,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
                                     border: Border.all(
                                       color: primaryDark,
-                                      width: 3,
+                                      width: 2,
                                     ),
                                   ),
                                   child: InteractiveViewer(
-                                    child: Image(
-                                      image: FileImage(_image!),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(18),
+                                      child: Image(
+                                        image: FileImage(_image!),
+                                        fit: isFit ? BoxFit.cover : null,
+                                      ),
                                     ),
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(4),
-                                  child: IconButton.filledTonal(
-                                    onPressed: removeImage,
-                                    icon: const Icon(
-                                      Icons.highlight_remove_rounded,
-                                      size: 40,
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    // CHANGE IMAGE
+                                    Padding(
+                                      padding: EdgeInsets.all(width * 0.0125),
+                                      child: IconButton.filledTonal(
+                                        onPressed: selectImage,
+                                        icon: Icon(
+                                          Icons.camera_alt_outlined,
+                                          size: width * 0.1125,
+                                        ),
+                                        tooltip: "Change Image",
+                                      ),
                                     ),
-                                    tooltip: "Remove Image",
-                                  ),
+                                    // REMOVE IMAGE
+                                    Padding(
+                                      padding: EdgeInsets.all(width * 0.0125),
+                                      child: IconButton.filledTonal(
+                                        onPressed: removeImage,
+                                        icon: Icon(
+                                          Icons.highlight_remove_rounded,
+                                          size: width * 0.1125,
+                                        ),
+                                        tooltip: "Remove Image",
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
@@ -272,8 +296,10 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                             ),
                           ),
                     const SizedBox(height: 20),
+
                     Form(
                       key: categoryKey,
+                      // NAME
                       child: TextFormField(
                         controller: categoryController,
                         autofillHints: null,
@@ -294,6 +320,8 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                       ),
                     ),
                     const SizedBox(height: 20),
+
+                    // ADD PRODUCTS
                     Padding(
                       padding: EdgeInsets.only(
                         bottom: MediaQuery.of(context).viewInsets.bottom,

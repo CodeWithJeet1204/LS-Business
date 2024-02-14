@@ -17,7 +17,7 @@ class InfoColorBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: width * 0.45,
-      height: 100,
+      height: width * 0.2775,
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(16),

@@ -392,6 +392,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // POSTS
                       Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: width * 0.025,
@@ -435,6 +436,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                       SizedBox(height: 16),
+
+                      // CATEGORY
                       Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: width * 0.025,
@@ -478,6 +481,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                       SizedBox(height: 16),
+
+                      // PRODUCTS
                       Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: width * 0.025,
@@ -521,6 +526,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                       SizedBox(height: 16),
+
+                      // DISCOUNTS
                       Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: width * 0.025,
@@ -567,6 +574,52 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                       ),
+                      SizedBox(height: 16),
+
+                      // BRAND
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: width * 0.025,
+                        ),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushNamed('/brandPage');
+                          },
+                          child: Container(
+                            alignment: Alignment.centerLeft,
+                            width: width,
+                            height: width * 0.205,
+                            decoration: BoxDecoration(
+                              color: primary2,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: 16),
+                                  child: Text(
+                                    "BRANDS",
+                                    style: TextStyle(
+                                      fontSize: width * 0.066,
+                                      fontWeight: FontWeight.w800,
+                                      color: primaryDark2,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(right: 4),
+                                  child: Icon(
+                                    Icons.arrow_right_sharp,
+                                    size: width * 0.1125,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 8),
                     ],
                   ),
                 ],

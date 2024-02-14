@@ -17,6 +17,7 @@ Future<XFile?>? showImagePickDialog(BuildContext context) async {
             GestureDetector(
               onTap: () async {
                 final _image = await pickCompressedImage(ImageSource.camera);
+                print(_image == null);
                 if (_image != null) {
                   im = _image;
                 }

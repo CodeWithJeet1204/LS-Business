@@ -35,6 +35,7 @@ class _AddPageState extends State<AddPage> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
+                    // POST
                     SizedOverflowBox(
                       size: Size(width, 180),
                       child: GestureDetector(
@@ -80,6 +81,8 @@ class _AddPageState extends State<AddPage> {
                         ),
                       ),
                     ),
+
+                    // PRODUCTS
                     SizedOverflowBox(
                       size: Size(width, 180),
                       child: GestureDetector(
@@ -125,6 +128,8 @@ class _AddPageState extends State<AddPage> {
                         ),
                       ),
                     ),
+
+                    // CATEGORY
                     SizedOverflowBox(
                       size: Size(width, 180),
                       child: GestureDetector(
@@ -146,6 +151,48 @@ class _AddPageState extends State<AddPage> {
                                 width: width * 0.5,
                                 child: const AutoSizeText(
                                   "CATEGORY",
+                                  style: TextStyle(
+                                    color: primaryDark,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 28,
+                                  ),
+                                ),
+                              ),
+                              Expanded(child: Container()),
+                              Icon(
+                                Icons.apps_outlined,
+                                size: width * 0.2,
+                                color: primaryDark2,
+                              ),
+                              SizedBox(width: width * 0.075),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    // BRAND
+                    SizedOverflowBox(
+                      size: Size(width, 180),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushNamed('/addBrand');
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 12),
+                          width: width,
+                          height: 130,
+                          decoration: BoxDecoration(
+                            color: primary2.withOpacity(0.67),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            children: [
+                              SizedBox(width: width * 0.1),
+                              SizedBox(
+                                width: width * 0.5,
+                                child: const AutoSizeText(
+                                  "BRAND",
                                   style: TextStyle(
                                     color: primaryDark,
                                     fontWeight: FontWeight.w600,

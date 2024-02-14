@@ -109,7 +109,7 @@ class _SelectProductForDiscountPageState
                                 crossAxisCount: 2,
                                 crossAxisSpacing: 0,
                                 mainAxisSpacing: 0,
-                                childAspectRatio: width * 0.5 / 230,
+                                childAspectRatio: width * 0.5 / width * 1.565,
                               ),
                               itemCount: snapshot.data!.docs.length,
                               itemBuilder: (context, index) {

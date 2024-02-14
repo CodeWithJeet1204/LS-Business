@@ -26,7 +26,7 @@ final Map<String, List<List<dynamic>>> categoryProperties = {
       'Local/Imported',
       '',
       2,
-      [''],
+      ['Local', 'Imported'],
       TextInputType.text,
       1,
       false,

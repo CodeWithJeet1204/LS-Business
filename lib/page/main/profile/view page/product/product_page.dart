@@ -7,6 +7,7 @@ import 'package:find_easy/page/main/profile/view%20page/product/product_image_pa
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/image_pick_dialog.dart';
+import 'package:find_easy/widgets/info_box.dart';
 import 'package:find_easy/widgets/info_color_box.dart';
 import 'package:find_easy/widgets/info_edit_box.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
@@ -17,6 +18,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
+// TODO: can add discount from product page
+
 class ProductPage extends StatefulWidget {
   const ProductPage({
     super.key,
@@ -24,11 +27,13 @@ class ProductPage extends StatefulWidget {
     required this.productName,
     this.fromPost = false,
     this.categoryId,
+    this.brandId,
   });
 
   final String productId;
   final String productName;
   final String? categoryId;
+  final String? brandId;
   final bool fromPost;
 
   @override
@@ -38,9 +43,9 @@ class ProductPage extends StatefulWidget {
 class _ProductPageState extends State<ProductPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
-  bool isDiscount = false;
-  final TextEditingController editController = TextEditingController();
   final GlobalKey<FormState> editKey = GlobalKey<FormState>();
+  final TextEditingController editController = TextEditingController();
+  bool isDiscount = false;
   int _currentIndex = 0;
   bool isEditing = false;
   bool categoryExists = true;
@@ -54,8 +59,11 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   void initState() {
-    ifDiscount();
     super.initState();
+    print(_currentIndex);
+    print(isDiscount);
+    ifDiscount();
+    print(isDiscount);
   }
 
   // EDIT INFO
@@ -122,11 +130,26 @@ class _ProductPageState extends State<ProductPage> {
                                           ),
                                         ),
                                         validator: (value) {
-                                          if (value != null &&
-                                              value.length > 1) {
-                                            return null;
+                                          if (propertyValue != 'productPrice') {
+                                            if (value != null &&
+                                                value.length >= 2) {
+                                              return null;
+                                            } else {
+                                              return "Min 2 chars required";
+                                            }
                                           } else {
-                                            return "Min 2 chars required";
+                                            if (value == null ||
+                                                value == '0' ||
+                                                value == '') {
+                                              editController.text = '';
+                                              return null;
+                                            } else {
+                                              if (double.parse(value) > 0) {
+                                                return null;
+                                              } else {
+                                                return 'Min price is Rs. 1';
+                                              }
+                                            }
                                           }
                                         },
                                       ),
@@ -304,56 +327,59 @@ class _ProductPageState extends State<ProductPage> {
                                   ? MyButton(
                                       text: "SAVE",
                                       onTap: () async {
-                                        setState(() {
-                                          isEditing = true;
-                                        });
-                                        try {
-                                          // 1 WORD PROPERTY
-                                          if (isProperty) {
-                                            Map<String, dynamic>
-                                                newPropertyMap =
-                                                propertyData['Properties'];
+                                        if (editKey.currentState!.validate()) {
+                                          setState(() {
+                                            isEditing = true;
+                                          });
+                                          try {
+                                            // 1 WORD PROPERTY
+                                            if (isProperty) {
+                                              Map<String, dynamic>
+                                                  newPropertyMap =
+                                                  propertyData['Properties'];
 
-                                            newPropertyMap[propertyValue] = [
-                                              editController.text
-                                                  .toString()
-                                                  .toUpperCase()
-                                            ];
-                                            await store
-                                                .collection('Business')
-                                                .doc('Data')
-                                                .collection('Products')
-                                                .doc(widget.productId)
-                                                .update({
-                                              'Properties': newPropertyMap,
-                                            });
-                                            editController.clear();
+                                              newPropertyMap[propertyValue] = [
+                                                editController.text
+                                                    .toString()
+                                                    .toUpperCase()
+                                              ];
+                                              await store
+                                                  .collection('Business')
+                                                  .doc('Data')
+                                                  .collection('Products')
+                                                  .doc(widget.productId)
+                                                  .update({
+                                                'Properties': newPropertyMap,
+                                              });
+                                              editController.clear();
 
-                                            // 1 WORD NOT PROPERTY
-                                          } else {
-                                            await store
-                                                .collection('Business')
-                                                .doc('Data')
-                                                .collection('Products')
-                                                .doc(widget.productId)
-                                                .update({
-                                              propertyValue: editController.text
-                                                  .toString(),
-                                            });
+                                              // 1 WORD NOT PROPERTY
+                                            } else {
+                                              await store
+                                                  .collection('Business')
+                                                  .doc('Data')
+                                                  .collection('Products')
+                                                  .doc(widget.productId)
+                                                  .update({
+                                                propertyValue: editController
+                                                    .text
+                                                    .toString(),
+                                              });
+                                              editController.clear();
+                                            }
                                             editController.clear();
+                                            if (context.mounted) {
+                                              Navigator.of(context).pop();
+                                            }
+                                          } catch (e) {
+                                            if (context.mounted) {
+                                              mySnackBar(context, e.toString());
+                                            }
                                           }
-                                          editController.clear();
-                                          if (context.mounted) {
-                                            Navigator.of(context).pop();
-                                          }
-                                        } catch (e) {
-                                          if (context.mounted) {
-                                            mySnackBar(context, e.toString());
-                                          }
+                                          setState(() {
+                                            isEditing = false;
+                                          });
                                         }
-                                        setState(() {
-                                          isEditing = false;
-                                        });
                                       },
                                       isLoading: isEditing,
                                       horizontalPadding: 0,
@@ -554,20 +580,21 @@ class _ProductPageState extends State<ProductPage> {
 
   // IF DISCOUNT
   Future<void> ifDiscount() async {
-    final discount = await store
+    final discountSnapshot = await store
         .collection('Business')
         .doc('Data')
         .collection('Discounts')
         .where('vendorId', isEqualTo: auth.currentUser!.uid)
         .get();
 
-    for (QueryDocumentSnapshot<Map<String, dynamic>> doc in discount.docs) {
+    for (QueryDocumentSnapshot<Map<String, dynamic>> doc
+        in discountSnapshot.docs) {
       final data = doc.data();
-      print((data['categories'] as List).contains(widget.categoryId));
-      print("ABC");
-      if ((data['products'] as List).contains(widget.productId) ||
-          (data['categories'] as List).contains(widget.categoryId)) {
-        print("DEF");
+
+      // products
+      if (data['isProducts'] &&
+          (data['products'] as List).contains(widget.productId)) {
+        // Check if the discount is active
         if ((data['discountEndDateTime'] as Timestamp)
                 .toDate()
                 .isAfter(DateTime.now()) &&
@@ -577,7 +604,41 @@ class _ProductPageState extends State<ProductPage> {
           setState(() {
             isDiscount = true;
           });
-          print(isDiscount);
+          return;
+        }
+      }
+
+      // brands
+      if (data['isBrands'] &&
+          (data['brands'] as List).contains(widget.brandId)) {
+        // Check if the discount is active
+        if ((data['discountEndDateTime'] as Timestamp)
+                .toDate()
+                .isAfter(DateTime.now()) &&
+            !(data['discountStartDateTime'] as Timestamp)
+                .toDate()
+                .isAfter(DateTime.now())) {
+          setState(() {
+            isDiscount = true;
+          });
+          return;
+        }
+      }
+
+      // categories
+      if (data['isCategories'] &&
+          (data['categories'] as List).contains(widget.categoryId)) {
+        // Check if the discount is active
+        if ((data['discountEndDateTime'] as Timestamp)
+                .toDate()
+                .isAfter(DateTime.now()) &&
+            !(data['discountStartDateTime'] as Timestamp)
+                .toDate()
+                .isAfter(DateTime.now())) {
+          setState(() {
+            isDiscount = true;
+          });
+          return;
         }
       }
     }
@@ -897,162 +958,172 @@ class _ProductPageState extends State<ProductPage> {
                           ),
 
                           // PRICE
-                          isDiscount
-                              ? StreamBuilder(
-                                  stream: discountPriceStream,
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasError) {
-                                      return Center(
-                                        child: Text('Something Went Wrong'),
-                                      );
-                                    }
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              // PRICE
+                              isDiscount
+                                  ? StreamBuilder(
+                                      stream: discountPriceStream,
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasError) {
+                                          return Center(
+                                            child: Text('Something Went Wrong'),
+                                          );
+                                        }
 
-                                    if (snapshot.hasData) {
-                                      final priceSnap = snapshot.data!;
-                                      Map<String, dynamic> data = {};
-                                      for (QueryDocumentSnapshot<
-                                              Map<String, dynamic>> doc
-                                          in priceSnap.docs) {
-                                        data = doc.data();
-                                      }
+                                        if (snapshot.hasData) {
+                                          final priceSnap = snapshot.data!;
+                                          Map<String, dynamic> data = {};
+                                          for (QueryDocumentSnapshot<
+                                                  Map<String, dynamic>> doc
+                                              in priceSnap.docs) {
+                                            data = doc.data();
+                                          }
 
-                                      return Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
+                                          return Column(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                                MainAxisAlignment.center,
                                             crossAxisAlignment:
-                                                CrossAxisAlignment.center,
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 8),
-                                                child: RichText(
-                                                  text: TextSpan(
-                                                    text: 'Rs. ',
-                                                    style: TextStyle(
-                                                      color: primaryDark,
-                                                      fontSize: 22,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                    children: [
-                                                      TextSpan(
-                                                        text: price == ""
-                                                            ? 'N/A (price)'
-                                                            : data['isPercent']
-                                                                ? '${(double.parse(price) * (100 - double.parse(data['discountAmount'])) / 100)}  '
-                                                                : '${double.parse(price) - double.parse(data['discountAmount'])}  ',
-                                                        style: TextStyle(
-                                                          color: Colors.green,
-                                                        ),
-                                                      ),
-                                                      TextSpan(
-                                                        text: price == ""
-                                                            ? 'N/A (price)'
-                                                            : price,
-                                                        style: TextStyle(
-                                                          fontSize: 20,
-                                                          color: Color.fromRGBO(
-                                                            255,
-                                                            134,
-                                                            125,
-                                                            1,
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: width * 0.0225,
+                                                ),
+                                                child: price == "" ||
+                                                        price == 'N/A'
+                                                    ? Text('N/A')
+                                                    : RichText(
+                                                        text: TextSpan(
+                                                          text: 'Rs. ',
+                                                          style: TextStyle(
+                                                            color: primaryDark,
+                                                            fontSize: 22,
+                                                            fontWeight:
+                                                                FontWeight.w500,
                                                           ),
-                                                          decoration:
-                                                              TextDecoration
-                                                                  .lineThrough,
+                                                          children: [
+                                                            TextSpan(
+                                                              text: data[
+                                                                      'isPercent']
+                                                                  ? (double.parse(price) *
+                                                                              (100 - (data['discountAmount'])) /
+                                                                              100)
+                                                                          .toString() +
+                                                                      '  '
+                                                                  : '${double.parse(price) - (data['discountAmount'])}  ',
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .green,
+                                                              ),
+                                                            ),
+                                                            TextSpan(
+                                                              text: price,
+                                                              style: TextStyle(
+                                                                fontSize: 20,
+                                                                color: Color
+                                                                    .fromRGBO(
+                                                                  255,
+                                                                  134,
+                                                                  125,
+                                                                  1,
+                                                                ),
+                                                                decoration:
+                                                                    TextDecoration
+                                                                        .lineThrough,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                  left: width * 0.0266,
+                                                ),
+                                                child: data['isPercent']
+                                                    ? Text(
+                                                        "${data['discountAmount']}% off",
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      )
+                                                    : Text(
+                                                        "Save Rs. ${data['discountAmount']}",
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w500,
                                                         ),
                                                       ),
-                                                    ],
-                                                  ),
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                ),
                                               ),
-                                              IconButton(
-                                                onPressed: () {
-                                                  edit(
-                                                    'productPrice',
-                                                    1,
-                                                    false,
-                                                    true,
-                                                  );
-                                                },
-                                                icon: Icon(
-                                                  Icons.edit,
-                                                  size: width * 0.065,
+                                              Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: width * 0.0275,
+                                                  vertical: width * 0.0055,
                                                 ),
-                                                tooltip: "Edit Price",
+                                                child: Text(
+                                                  (data['discountEndDateTime']
+                                                                  as Timestamp)
+                                                              .toDate()
+                                                              .difference(
+                                                                  DateTime
+                                                                      .now())
+                                                              .inHours <
+                                                          24
+                                                      ? '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inHours} Hours Left'''
+                                                      : '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inDays} Days Left''',
+                                                  style: TextStyle(
+                                                    color: Colors.red,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
                                               ),
                                             ],
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                              left: width * 0.0266,
-                                            ),
-                                            child: data['isPercent']
-                                                ? Text(
-                                                    "${data['discountAmount']}% off",
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  )
-                                                : Text(
-                                                    "Save Rs. ${data['discountAmount']}",
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: width * 0.0275,
-                                              vertical: width * 0.0055,
-                                            ),
-                                            child: Text(
-                                              (data['discountEndDateTime']
-                                                              as Timestamp)
-                                                          .toDate()
-                                                          .difference(
-                                                              DateTime.now())
-                                                          .inHours <
-                                                      24
-                                                  ? '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inHours} Hours Left'''
-                                                  : '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inDays} Days Left''',
-                                              style: TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      );
-                                    }
+                                          );
+                                        }
 
-                                    return Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                                  })
-                              : Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Text(
-                                    "Rs. ${productData['productPrice']}",
-                                    style: TextStyle(
-                                      color: primaryDark,
-                                      fontSize: width * 0.06125,
-                                      fontWeight: FontWeight.w500,
+                                        return Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      })
+                                  : Padding(
+                                      padding: const EdgeInsets.only(left: 10),
+                                      child: Text(
+                                        productData['productPrice'] == ""
+                                            ? "N/A"
+                                            : "Rs. ${productData['productPrice']}",
+                                        style: TextStyle(
+                                          color: primaryDark,
+                                          fontSize: width * 0.06125,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
                                     ),
-                                  ),
+
+                              // EDIT PRICE
+                              IconButton(
+                                onPressed: () {
+                                  edit(
+                                    'productPrice',
+                                    1,
+                                    false,
+                                    false,
+                                  );
+                                },
+                                icon: Icon(
+                                  Icons.edit,
+                                  color: primaryDark,
                                 ),
+                                tooltip: "Edit Price",
+                              ),
+                            ],
+                          ),
 
                           // AVAILABLE / OUT OF STOCK
                           Padding(
@@ -1295,20 +1366,9 @@ class _ProductPageState extends State<ProductPage> {
                               }),
 
                           // BRAND
-                          InfoEditBox(
-                            head: "Brand",
-                            content: brand,
-                            noOfAnswers: 1,
-                            propertyValue: const [],
-                            width: width,
-                            onPressed: () {
-                              edit(
-                                'productBrand',
-                                1,
-                                false,
-                                true,
-                              );
-                            },
+                          InfoBox(
+                            text: "Brand",
+                            value: brand,
                           ),
 
                           // PROPERTY 0

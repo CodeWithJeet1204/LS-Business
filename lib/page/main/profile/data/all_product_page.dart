@@ -178,13 +178,13 @@ class _AllProductsPageState extends State<AllProductsPage> {
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            childAspectRatio: width * 0.5 / 230,
+                            childAspectRatio: width * 0.5 / width * 1.533,
                           ),
                           itemCount: snapshot.data!.docs.length,
                           itemBuilder: (context, index) {
-                            final productData = snapshot.data!.docs[index];
-                            final productDataMap =
-                                productData.data() as Map<String, dynamic>;
+                            final productSnap = snapshot.data!.docs[index];
+                            final productData =
+                                productSnap.data() as Map<String, dynamic>;
 
                             return Padding(
                               padding: EdgeInsets.all(width * 0.025),
@@ -193,12 +193,13 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: ((context) => ProductPage(
-                                            productId:
-                                                productDataMap['productId'],
+                                            productId: productData['productId'],
                                             productName:
-                                                productDataMap['productName'],
+                                                productData['productName'],
                                             categoryId:
-                                                productDataMap['categoryId'],
+                                                productData['categoryId'],
+                                            brandId:
+                                                productData['productBrandId'],
                                           )),
                                     ),
                                   );
@@ -221,7 +222,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                             borderRadius:
                                                 BorderRadius.circular(12),
                                             child: Image.network(
-                                              productData['images'][0],
+                                              productSnap['images'][0],
                                               height: width * 0.4,
                                               width: width * 0.4,
                                               fit: BoxFit.cover,
@@ -250,7 +251,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                                   child: SizedBox(
                                                     width: width * 0.225,
                                                     child: Text(
-                                                      productData[
+                                                      productSnap[
                                                           'productName'],
                                                       maxLines: 1,
                                                       overflow:
@@ -271,12 +272,12 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                                     0,
                                                   ),
                                                   child: Text(
-                                                    productData['productPrice'] !=
+                                                    productSnap['productPrice'] !=
                                                                 "" &&
-                                                            productData[
+                                                            productSnap[
                                                                     'productPrice'] !=
                                                                 null
-                                                        ? productData[
+                                                        ? productSnap[
                                                             'productPrice']
                                                         : "N/A",
                                                     maxLines: 1,
@@ -294,7 +295,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                             IconButton(
                                               onPressed: () {
                                                 confirmDelete(
-                                                  productData['productId'],
+                                                  productSnap['productId'],
                                                 );
                                               },
                                               icon: Icon(

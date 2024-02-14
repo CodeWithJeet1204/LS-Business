@@ -28,7 +28,6 @@ class _AddProductPage1State extends State<AddProductPage1> {
   final productKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final priceController = TextEditingController();
-  final brandController = TextEditingController();
   final descriptionController = TextEditingController();
   final otherInfoController = TextEditingController();
   final otherInfoValueController = TextEditingController();
@@ -47,12 +46,12 @@ class _AddProductPage1State extends State<AddProductPage1> {
   bool isGridView = true;
   String? searchedCategory;
   bool isAvailable = true;
+  String selectedBrand = "No Brand";
 
   @override
   void dispose() {
     nameController.dispose();
     priceController.dispose();
-    brandController.dispose();
     descriptionController.dispose();
     otherInfoController.dispose();
     otherInfoValueController.dispose();
@@ -149,7 +148,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
               'productName': nameController.text,
               'productPrice': priceController.text,
               'productDescription': descriptionController.text,
-              'productBrand': brandController.text,
+              'productBrand': selectedBrand,
               'productLikes': 0,
               'productDislikes': 0,
               'productShares': 0,
@@ -213,6 +212,14 @@ class _AddProductPage1State extends State<AddProductPage1> {
         .orderBy('datetime', descending: true)
         .snapshots();
 
+    // ignore: unused_local_variable
+    final Stream<QuerySnapshot<Map<String, dynamic>>> brandStream = store
+        .collection('Business')
+        .doc("Data")
+        .collection("Brands")
+        .where('vendorId', isEqualTo: auth.currentUser!.uid)
+        .snapshots();
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: primary,
@@ -244,6 +251,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // IMAGE
                   _image.isNotEmpty
                       ? Column(
                           children: [
@@ -404,6 +412,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                           ),
                         ),
                   SizedBox(height: 28),
+
                   Form(
                     key: productKey,
                     child: Column(
@@ -464,32 +473,6 @@ class _AddProductPage1State extends State<AddProductPage1> {
                         ),
                         SizedBox(height: 12),
 
-                        // BRAND
-                        TextFormField(
-                          controller: brandController,
-                          decoration: const InputDecoration(
-                            hintText: "Brand Name",
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: primaryDark2,
-                                width: 2,
-                              ),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value != null) {
-                              if (value.length < 20 && value.isNotEmpty) {
-                                return null;
-                              } else {
-                                return "20 characters max.";
-                              }
-                            } else {
-                              return "Enter Brand Name";
-                            }
-                          },
-                        ),
-                        SizedBox(height: 12),
-
                         // PRICE
                         TextFormField(
                           controller: priceController,
@@ -504,6 +487,102 @@ class _AddProductPage1State extends State<AddProductPage1> {
                             ),
                           ),
                         ),
+                        SizedBox(height: 12),
+
+                        // BRAND
+                        InkWell(
+                          // TODO: SELECT BRAND
+                          onTap: () {},
+                          splashColor: primary2,
+                          radius: width * 0.5,
+                          customBorder: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Container(
+                            height: width * 0.16,
+                            width: width,
+                            padding:
+                                EdgeInsets.symmetric(horizontal: width * 0.025),
+                            alignment: Alignment.centerLeft,
+                            decoration: BoxDecoration(
+                              color: primary2.withOpacity(0.5),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Select Brand',
+                                  style: TextStyle(
+                                    color: primaryDark,
+                                    fontSize: width * 0.06,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.navigate_next_rounded,
+                                  color: primaryDark,
+                                  size: width * 0.09,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        //   child: StreamBuilder(
+                        //     stream: brandStream,
+                        //     builder: ((context, snapshot) {
+                        //       if (snapshot.hasError) {
+                        //         return Center(
+                        //           child: Text('Something went wrong'),
+                        //         );
+                        //       }
+
+                        //       if (snapshot.hasData) {
+                        //         final brandSnap = snapshot.data!;
+                        //         List data = [];
+                        //         for (QueryDocumentSnapshot<
+                        //                 Map<String, dynamic>> doc
+                        //             in brandSnap.docs) {
+                        //           data.add(doc['brandName']);
+                        //         }
+
+                        //         return Container(
+                        //           padding: EdgeInsets.symmetric(
+                        //             horizontal: width * 0.0225,
+                        //             vertical: width * 0.0125,
+                        //           ),
+                        //           decoration: BoxDecoration(
+                        //             color: primary3,
+                        //             borderRadius: BorderRadius.circular(12),
+                        //           ),
+                        //           child: DropdownButton(
+                        //             dropdownColor: primary,
+                        //             value: selectedBrand,
+                        //             underline: Container(),
+                        //             hint: Text("Select Brand"),
+                        //             items: data
+                        //                 .map(
+                        //                   (e) => DropdownMenuItem(
+                        //                     child: Text(e),
+                        //                     // value: e,
+                        //                   ),
+                        //                 )
+                        //                 .toList(),
+                        //             onChanged: (value) {
+                        //               setState(() {
+                        //                 selectedBrand = value.toString();
+                        //               });
+                        //             },
+                        //           ),
+                        //         );
+                        //       }
+
+                        //       return Center(
+                        //         child: CircularProgressIndicator(),
+                        //       );
+                        //     }),
+                        //   ),
+                        // ),
                         SizedBox(height: 16),
 
                         // AVAILABLE / OUT OF STOCK

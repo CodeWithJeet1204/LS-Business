@@ -4,8 +4,6 @@ import 'package:find_easy/widgets/text_button.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
-// TODO: CONNECTION STATE ALWAYS WAITING
-
 class ProductWithDiscountPage extends StatefulWidget {
   const ProductWithDiscountPage({
     super.key,
@@ -82,8 +80,9 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
     Navigator.of(context).pop();
   }
 
-  Stream<List<Map<String, String>>> getDiscountProductsStream() {
-    return store
+  @override
+  Widget build(BuildContext context) {
+    final productDiscountStream = store
         .collection('Business')
         .doc('Data')
         .collection('Discounts')
@@ -108,10 +107,7 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
                       .toList()
                       .cast<Map<String, String>>(),
             ));
-  }
 
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('PRODUCTS'),
@@ -162,7 +158,7 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
           double width = constraints.maxWidth;
 
           return StreamBuilder(
-            stream: getDiscountProductsStream(),
+            stream: productDiscountStream,
             builder: ((context, snapshot) {
               if (snapshot.hasError) {
                 return Center(
@@ -269,7 +265,7 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
 
               print(snapshot.connectionState);
               return Center(
-                child: Text("No Products Added"),
+                child: CircularProgressIndicator(),
               );
             }),
           );

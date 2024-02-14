@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/page/main/add/category/category_products_add_page.dart';
+import 'package:find_easy/page/main/add/brand/add_products_to_brand_page.dart';
 import 'package:find_easy/page/main/profile/view%20page/product/product_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
@@ -12,25 +12,25 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class CategoryPage extends StatefulWidget {
-  const CategoryPage({
+class BrandPage extends StatefulWidget {
+  const BrandPage({
     super.key,
-    required this.categoryId,
-    required this.categoryName,
+    required this.brandId,
+    required this.brandName,
   });
 
-  final String categoryId;
-  final String categoryName;
+  final String brandId;
+  final String brandName;
 
   @override
-  State<CategoryPage> createState() => _CategoryPageState();
+  State<BrandPage> createState() => _BrandPageState();
 }
 
-class _CategoryPageState extends State<CategoryPage> {
+class _BrandPageState extends State<BrandPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   final searchController = TextEditingController();
-  final categoryNameKey = GlobalKey<FormState>();
+  final brandNameKey = GlobalKey<FormState>();
   bool isImageChanging = false;
   bool isFit = false;
   bool isChangingName = false;
@@ -49,8 +49,8 @@ class _CategoryPageState extends State<CategoryPage> {
     super.initState();
   }
 
-  // CHANGE CATEGORY IMAGE
-  void changeCategoryImage(String imageUrl) async {
+  // CHANGE BRAND IMAGE
+  void changeBrandImage(String imageUrl) async {
     final XFile? im = await showImagePickDialog(context);
     if (im != null) {
       try {
@@ -78,9 +78,23 @@ class _CategoryPageState extends State<CategoryPage> {
     }
   }
 
-  // CATEGORY NAME CHANGE BACKEND
-  void changeCategoryName(String newName) async {
-    if (categoryNameKey.currentState!.validate()) {
+  // REMOVE BRAND IMAGE
+  void removeBrandImage(String imageUrl) async {
+    await FirebaseStorage.instance.refFromURL(imageUrl).delete();
+
+    await store
+        .collection('Business')
+        .doc('Data')
+        .collection('Brands')
+        .doc(widget.brandId)
+        .update({
+      'imageUrl': null,
+    });
+  }
+
+  // BRAND NAME CHANGE BACKEND
+  void changeBrandName(String newName) async {
+    if (brandNameKey.currentState!.validate()) {
       try {
         setState(() {
           isChangingName = true;
@@ -88,10 +102,10 @@ class _CategoryPageState extends State<CategoryPage> {
         await store
             .collection('Business')
             .doc('Data')
-            .collection('Category')
-            .doc(widget.categoryId)
+            .collection('Brands')
+            .doc(widget.brandId)
             .update({
-          'categoryName': newName,
+          'brandName': newName,
         });
         setState(() {
           isChangingName = false;
@@ -107,7 +121,7 @@ class _CategoryPageState extends State<CategoryPage> {
     }
   }
 
-  // CATEGORY NAME CHANGE
+  // BRAND NAME CHANGE
   void changeName() {
     showDialog(
       context: context,
@@ -115,8 +129,8 @@ class _CategoryPageState extends State<CategoryPage> {
         final propertyStream = FirebaseFirestore.instance
             .collection('Business')
             .doc('Data')
-            .collection('Category')
-            .doc(widget.categoryId)
+            .collection('Brands')
+            .doc(widget.brandId)
             .snapshots();
 
         return Dialog(
@@ -136,37 +150,37 @@ class _CategoryPageState extends State<CategoryPage> {
                 }
 
                 if (snapshot.hasData) {
-                  final categoryData = snapshot.data!;
-                  String categoryName = categoryData['categoryName'];
+                  final brandData = snapshot.data!;
+                  String brandName = brandData['brandName'];
 
                   return Form(
-                    key: categoryNameKey,
+                    key: brandNameKey,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           TextFormField(
-                            initialValue: categoryName,
+                            initialValue: brandName,
                             decoration: const InputDecoration(
-                              hintText: "Category Name",
+                              hintText: "Brand Name",
                               border: OutlineInputBorder(),
                             ),
                             onChanged: (value) {
-                              categoryName = value;
+                              brandName = value;
                             },
                             validator: (value) {
                               if (value != null && value.isNotEmpty) {
                                 return null;
                               } else {
-                                return "Enter Category Name";
+                                return "Enter Brand Name";
                               }
                             },
                           ),
                           MyButton(
                             text: "SAVE",
                             onTap: () {
-                              changeCategoryName(categoryName);
+                              changeBrandName(brandName);
                             },
                             isLoading: isChangingName,
                             horizontalPadding: 0,
@@ -196,14 +210,14 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   // REMOVE PRODUCT
-  void remove(String productId, String productName, String categoryName) {
+  void remove(String productId, String productName, String brandName) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: Text("Remove $productName"),
           content: Text(
-              'Are you sure you want to remove $productName from $categoryName'),
+              'Are you sure you want to remove $productName from $brandName'),
           actions: [
             MyTextButton(
               onPressed: () {
@@ -221,8 +235,8 @@ class _CategoryPageState extends State<CategoryPage> {
                       .collection('Products')
                       .doc(productId)
                       .update({
-                    'categoryId': '0',
-                    'categoryName': 'No Category Selected',
+                    'productBrandId': "0",
+                    'productBrand': 'No Brand',
                   });
                   if (context.mounted) {
                     Navigator.of(context).pop();
@@ -242,7 +256,7 @@ class _CategoryPageState extends State<CategoryPage> {
     );
   }
 
-// IF DISCOUNT
+  // IF DISCOUNT
   Future<void> ifDiscount() async {
     final discount = await store
         .collection('Business')
@@ -253,9 +267,9 @@ class _CategoryPageState extends State<CategoryPage> {
 
     for (QueryDocumentSnapshot<Map<String, dynamic>> doc in discount.docs) {
       final data = doc.data();
-      print((data['categories'] as List).contains(widget.categoryId));
+      print((data['brands'] as List).contains(widget.brandId));
       print("ABC");
-      if ((data['categories'] as List).contains(widget.categoryId)) {
+      if ((data['brands'] as List).contains(widget.brandId)) {
         print("DEF");
         if ((data['discountEndDateTime'] as Timestamp)
                 .toDate()
@@ -274,12 +288,12 @@ class _CategoryPageState extends State<CategoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    // CATEGORY STREAM
-    final Stream<DocumentSnapshot<Map<String, dynamic>>> categoryStream = store
+    // BRAND STREAM
+    final Stream<DocumentSnapshot<Map<String, dynamic>>> brandStream = store
         .collection('Business')
         .doc('Data')
-        .collection('Category')
-        .doc(widget.categoryId)
+        .collection('Brands')
+        .doc(widget.brandId)
         .snapshots();
 
     // PRODUCT STREAM
@@ -287,11 +301,11 @@ class _CategoryPageState extends State<CategoryPage> {
         .collection('Business')
         .doc('Data')
         .collection('Products')
-        .where('categoryId', isEqualTo: widget.categoryId)
+        .where('productBrand', isEqualTo: widget.brandName)
         .orderBy('productName')
         .where('productName',
             isGreaterThanOrEqualTo: searchController.text.toString())
-        .where('productName', isLessThan: '${searchController.text}' + '\uf8ff')
+        .where('productName', isLessThan: '${searchController.text}\uf8ff')
         .orderBy('datetime', descending: true)
         .snapshots();
 
@@ -311,7 +325,7 @@ class _CategoryPageState extends State<CategoryPage> {
 
         return SingleChildScrollView(
           child: StreamBuilder(
-            stream: categoryStream,
+            stream: brandStream,
             builder: ((context, snapshot) {
               if (snapshot.hasError) {
                 return const Center(
@@ -320,7 +334,7 @@ class _CategoryPageState extends State<CategoryPage> {
               }
 
               if (snapshot.hasData) {
-                final categoryData = snapshot.data!;
+                final brandData = snapshot.data!;
 
                 return Padding(
                   padding:
@@ -348,7 +362,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                 : GestureDetector(
                                     onTap: changeFit,
                                     child: Image.network(
-                                      categoryData['imageUrl'],
+                                      brandData['imageUrl'],
                                       fit: isFit ? BoxFit.cover : null,
                                       width: width,
                                       height: width,
@@ -358,23 +372,49 @@ class _CategoryPageState extends State<CategoryPage> {
                           // IMAGE CHANGING INDICATOR
                           isImageChanging
                               ? Container()
-                              : Padding(
-                                  padding: EdgeInsets.only(
-                                    right: width * 0.0125,
-                                    top: width * 0.0125,
-                                  ),
-                                  child: IconButton.filledTonal(
-                                    onPressed: () {
-                                      changeCategoryImage(
-                                        categoryData['imageUrl'],
-                                      );
-                                    },
-                                    icon: Icon(
-                                      Icons.camera_alt_outlined,
-                                      size: width * 0.1,
+                              : Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    // CHANGE IMAGE
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        left: width * 0.0125,
+                                        top: width * 0.0125,
+                                      ),
+                                      child: IconButton.filledTonal(
+                                        onPressed: () {
+                                          changeBrandImage(
+                                            brandData['imageUrl'],
+                                          );
+                                        },
+                                        icon: Icon(
+                                          Icons.camera_alt_outlined,
+                                          size: width * 0.1,
+                                        ),
+                                        tooltip: "Change Image",
+                                      ),
                                     ),
-                                    tooltip: "Change Image",
-                                  ),
+                                    // REMOVE IMAGE
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        right: width * 0.0125,
+                                        top: width * 0.0125,
+                                      ),
+                                      child: IconButton.filledTonal(
+                                        onPressed: () {
+                                          changeBrandImage(
+                                            brandData['imageUrl'],
+                                          );
+                                        },
+                                        icon: Icon(
+                                          Icons.highlight_remove_rounded,
+                                          size: width * 0.1,
+                                        ),
+                                        tooltip: "Remove Image",
+                                      ),
+                                    ),
+                                  ],
                                 ),
                         ],
                       ),
@@ -396,7 +436,7 @@ class _CategoryPageState extends State<CategoryPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              categoryData['categoryName'],
+                              brandData['brandName'],
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
@@ -490,7 +530,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                           top: width * 0.025,
                                         ),
                                         child: Text(
-                                          "This discount is available to all the products within this category",
+                                          "This discount is available to all the products within this brand",
                                           style: TextStyle(
                                             color: primaryDark,
                                             fontWeight: FontWeight.w500,
@@ -513,10 +553,10 @@ class _CategoryPageState extends State<CategoryPage> {
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: ((context) => AddProductsToCategoryPage(
-                                    categoryId: widget.categoryId,
-                                    categoryName: widget.categoryName,
-                                    fromAddCategoryPage: false,
+                              builder: ((context) => AddProductsToBrandPage(
+                                    isFromBrandPage: true,
+                                    brandId: brandData['brandId'],
+                                    brandName: brandData['brandName'],
                                   )),
                             ),
                           );
@@ -527,7 +567,7 @@ class _CategoryPageState extends State<CategoryPage> {
                       ),
                       const SizedBox(height: 28),
 
-                      // PRODUCTS IN CATEGORY
+                      // PRODUCTS IN BRAND
                       ExpansionTile(
                         initiallyExpanded: true,
                         tilePadding: const EdgeInsets.symmetric(horizontal: 8),
@@ -783,7 +823,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                         productData[
                                                                             'productName'],
                                                                         widget
-                                                                            .categoryName,
+                                                                            .brandName,
                                                                       );
                                                                     },
                                                                     icon: Icon(
@@ -907,7 +947,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                 productData[
                                                                     'productName'],
                                                                 widget
-                                                                    .categoryName,
+                                                                    .brandName,
                                                               );
                                                             },
                                                             icon: Icon(
