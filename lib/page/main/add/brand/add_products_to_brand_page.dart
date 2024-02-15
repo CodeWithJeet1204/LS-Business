@@ -165,6 +165,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                                 itemBuilder: (context, index) {
                                   final productData =
                                       snapshot.data!.docs[index];
+
                                   return Padding(
                                     padding: EdgeInsets.all(width * 0.0175),
                                     child: SizedOverflowBox(

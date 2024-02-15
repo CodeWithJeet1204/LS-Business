@@ -19,8 +19,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
-// TODO: can add discount from product page
-
 class ProductPage extends StatefulWidget {
   const ProductPage({
     super.key,

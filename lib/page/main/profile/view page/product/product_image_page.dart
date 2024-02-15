@@ -29,7 +29,7 @@ class _ProductImageViewState extends State<ProductImageView> {
             children: [
               SizedBox(
                 width: width,
-                height: width * 1.7,
+                height: width * 1.575,
                 child: InteractiveViewer(
                   child: Image.network(
                     widget.imagesUrl[currentIndex],

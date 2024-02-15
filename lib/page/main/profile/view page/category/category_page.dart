@@ -291,7 +291,7 @@ class _CategoryPageState extends State<CategoryPage> {
         .orderBy('productName')
         .where('productName',
             isGreaterThanOrEqualTo: searchController.text.toString())
-        .where('productName', isLessThan: '${searchController.text}' + '\uf8ff')
+        .where('productName', isLessThan: '${searchController.text}\uf8ff')
         .orderBy('datetime', descending: true)
         .snapshots();
 

@@ -437,7 +437,7 @@ class DISCOUNT extends State<DiscountPage> {
         .where('discountId', isEqualTo: widget.discountId)
         .where('productName',
             isGreaterThanOrEqualTo: searchController.text.toString())
-        .where('productName', isLessThan: '${searchController.text}' + '\uf8ff')
+        .where('productName', isLessThan: '${searchController.text}\uf8ff')
         .snapshots();
 
     // BRANDS STREAM
@@ -449,7 +449,7 @@ class DISCOUNT extends State<DiscountPage> {
         .where('discountId', isEqualTo: widget.discountId)
         .where('brandName',
             isGreaterThanOrEqualTo: searchController.text.toString())
-        .where('brandName', isLessThan: '${searchController.text}' + '\uf8ff')
+        .where('brandName', isLessThan: '${searchController.text}\uf8ff')
         .snapshots();
 
     // CATEGORY STREAM
@@ -461,8 +461,7 @@ class DISCOUNT extends State<DiscountPage> {
         .where('discountId', isEqualTo: widget.discountId)
         .where('categoryName',
             isGreaterThanOrEqualTo: searchController.text.toString())
-        .where('categoryName',
-            isLessThan: '${searchController.text}' + '\uf8ff')
+        .where('categoryName', isLessThan: '${searchController.text}\uf8ff')
         .snapshots();
 
     return Scaffold(
