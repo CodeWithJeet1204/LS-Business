@@ -1,0 +1,70 @@
+List<List<String>> householdCategories = [
+  [
+    'Garments',
+    '',
+  ],
+  [
+    'Weaving,',
+    '',
+  ],
+  [
+    'Tailoring',
+    '',
+  ],
+  [
+    'Food',
+    '',
+  ],
+  [
+    'Bakery Items',
+    '',
+  ],
+  [
+    'Woodwork',
+    '',
+  ],
+  [
+    'Metalwork',
+    '',
+  ],
+  [
+    'Beauty Products (Cosmetics)',
+    '',
+  ],
+  [
+    'Candles',
+    '',
+  ],
+  [
+    'Ayurvedic Products',
+    '',
+  ],
+  [
+    'Indian Snacks',
+    '',
+  ],
+  [
+    'Papercraft',
+    '',
+  ],
+  [
+    'Jewelry',
+    '',
+  ],
+  [
+    'Paintings',
+    '',
+  ],
+  [
+    'Sculptures',
+    '',
+  ],
+  [
+    'Decorations',
+    '',
+  ],
+  [
+    'Festive Essentials',
+    '',
+  ],
+];
