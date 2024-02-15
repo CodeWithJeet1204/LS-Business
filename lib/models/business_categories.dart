@@ -45,7 +45,7 @@ List<List<String>> businessCategories = [
   ],
   [
     "Automobile Parts and Accessories",
-    'https://t3.ftcdn.net/jpg/03/28/55/50/360_F_328555066_uAR5ixhO1aoxOW83ulY2Gr52P0fVoDGZ.jpg',
+    'https://img.freepik.com/free-vector/auto-service-illustration_1284-20618.jpg?w=826&t=st=1707971210~exp=1707971810~hmac=d1d2c429d46718ab43418591140bf9733430ce71c9fbc5178047a14b3693c235',
   ],
   [
     "Gifts and Novelty",
@@ -53,7 +53,7 @@ List<List<String>> businessCategories = [
   ],
   [
     "Toys",
-    'https://thumbs.dreamstime.com/b/kids-toys-box-kids-toys-box-storage-place-things-child-to-play-box-used-keeping-dolls-vector-flat-108200937.jpg',
+    'https://img.freepik.com/free-vector/baby-items-icon-set-with-toys-accessory-kids-cartoon-style_24797-2159.jpg?w=826&t=st=1707971299~exp=1707971899~hmac=85e43cd39b57c55842532714743dc429eedd39946abfa3e433e4c212ef69f3dd',
   ],
   [
     "Sports Goods",
