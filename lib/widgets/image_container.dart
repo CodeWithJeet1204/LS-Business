@@ -32,7 +32,7 @@ class ImageContainer extends StatelessWidget {
                   : householdCategories[index][1],
               text: isShop
                   ? businessCategories[index][0]
-                  : householdCategories[index][1],
+                  : householdCategories[index][0],
             );
           }),
         ),
