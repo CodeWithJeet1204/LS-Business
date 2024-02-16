@@ -90,10 +90,8 @@ class _BrandWithDiscountPageState extends State<BrandWithDiscountPage> {
         .map((snapshot) {
       final brandsData = snapshot.data()?['brands'];
       if (brandsData is List<Map<String, String>>) {
-        print("1");
         return brandsData;
       } else {
-        print("2");
         return []; // Return an empty list if brands data is not present or not of the correct type
       }
     }).switchMap((brandIds) => Rx.combineLatest(
@@ -117,7 +115,7 @@ class _BrandWithDiscountPageState extends State<BrandWithDiscountPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('BRANDS'),
+        title: const Text('BRANDS'),
         bottom: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,
@@ -167,10 +165,8 @@ class _BrandWithDiscountPageState extends State<BrandWithDiscountPage> {
           return StreamBuilder(
             stream: discountBrandsStream,
             builder: ((context, snapshot) {
-              print(1);
-              print(snapshot.data);
               if (snapshot.hasError) {
-                return Center(
+                return const Center(
                   child: Text('Something went wrong'),
                 );
               }
@@ -318,7 +314,7 @@ class _BrandWithDiscountPageState extends State<BrandWithDiscountPage> {
                       );
               }
 
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }),

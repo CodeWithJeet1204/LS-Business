@@ -317,7 +317,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                     ),
                                   ],
                                 ),
-                          SizedBox(height: 14),
+                          const SizedBox(height: 14),
 
                           // NAME
                           Container(
@@ -375,7 +375,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                     ],
                                   ),
                           ),
-                          SizedBox(height: 14),
+                          const SizedBox(height: 14),
 
                           // PHONE NUMBER
                           Container(
@@ -434,7 +434,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                     ],
                                   ),
                           ),
-                          SizedBox(height: 14),
+                          const SizedBox(height: 14),
 
                           // EMAIL ADDRESS
                           Container(
@@ -465,7 +465,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                               ],
                             ),
                           ),
-                          SizedBox(height: 18),
+                          const SizedBox(height: 18),
 
                           // SAVE & CANCEL BUTTON
                           isChangingName || isChangingNumber
@@ -495,7 +495,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                             isLoading: false,
                                             horizontalPadding: 0,
                                           ),
-                                    SizedBox(height: 12),
+                                    const SizedBox(height: 12),
 
                                     // CANCEL
                                     MyButton(

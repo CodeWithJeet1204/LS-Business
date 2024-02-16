@@ -91,10 +91,8 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
         .map((snapshot) {
       final categoriesData = snapshot.data()?['categories'];
       if (categoriesData is List<Map<String, String>>) {
-        print("1");
         return categoriesData;
       } else {
-        print("2");
         return []; // Return an empty list if categories data is not present or not of the correct type
       }
     }).switchMap((categoryIds) => Rx.combineLatest(
@@ -118,7 +116,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('CATEGORIES'),
+        title: const Text('CATEGORIES'),
         bottom: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,
@@ -168,10 +166,8 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
           return StreamBuilder(
             stream: discountCategoriesStream,
             builder: ((context, snapshot) {
-              print(1);
-              print(snapshot.data);
               if (snapshot.hasError) {
-                return Center(
+                return const Center(
                   child: Text('Something went wrong'),
                 );
               }
@@ -320,7 +316,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
                       );
               }
 
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }),

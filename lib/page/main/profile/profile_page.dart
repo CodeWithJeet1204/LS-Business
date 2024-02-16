@@ -49,7 +49,9 @@ class _ProfilePageState extends State<ProfilePage> {
             TextButton(
               onPressed: () async {
                 await auth.signOut();
-                Navigator.of(context).pop();
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                }
                 auth.currentUser!.reload();
               },
               child: const Text(
@@ -190,7 +192,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 12),
+                                const SizedBox(height: 12),
 
                                 // USER INFO & ADDRESS
                                 Container(
@@ -409,7 +411,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(left: 16),
+                                  padding: const EdgeInsets.only(left: 16),
                                   child: Text(
                                     "POSTS",
                                     style: TextStyle(
@@ -420,7 +422,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(right: 4),
+                                  padding: const EdgeInsets.only(right: 4),
                                   child: Icon(
                                     Icons.arrow_right_sharp,
                                     size: width * 0.1125,
@@ -431,7 +433,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
 
                       // CATEGORY
                       Padding(
@@ -454,7 +456,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(left: 16),
+                                  padding: const EdgeInsets.only(left: 16),
                                   child: Text(
                                     "CATEGORIES",
                                     style: TextStyle(
@@ -465,7 +467,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(right: 4),
+                                  padding: const EdgeInsets.only(right: 4),
                                   child: Icon(
                                     Icons.arrow_right_sharp,
                                     size: width * 0.1125,
@@ -476,7 +478,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
 
                       // PRODUCTS
                       Padding(
@@ -499,7 +501,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(left: 16),
+                                  padding: const EdgeInsets.only(left: 16),
                                   child: Text(
                                     "PRODUCTS",
                                     style: TextStyle(
@@ -510,7 +512,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(right: 4),
+                                  padding: const EdgeInsets.only(right: 4),
                                   child: Icon(
                                     Icons.arrow_right_sharp,
                                     size: width * 0.1125,
@@ -521,7 +523,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
 
                       // DISCOUNTS
                       Padding(
@@ -532,7 +534,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: ((context) => AllDiscountPage()),
+                                builder: ((context) => const AllDiscountPage()),
                               ),
                             );
                           },
@@ -548,7 +550,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(left: 16),
+                                  padding: const EdgeInsets.only(left: 16),
                                   child: Text(
                                     "DISCOUNTS",
                                     style: TextStyle(
@@ -559,7 +561,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(right: 4),
+                                  padding: const EdgeInsets.only(right: 4),
                                   child: Icon(
                                     Icons.arrow_right_sharp,
                                     size: width * 0.1125,
@@ -570,7 +572,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
 
                       // BRAND
                       Padding(
@@ -593,7 +595,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(left: 16),
+                                  padding: const EdgeInsets.only(left: 16),
                                   child: Text(
                                     "BRANDS",
                                     style: TextStyle(
@@ -604,7 +606,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(right: 4),
+                                  padding: const EdgeInsets.only(right: 4),
                                   child: Icon(
                                     Icons.arrow_right_sharp,
                                     size: width * 0.1125,
@@ -615,7 +617,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                     ],
                   ),
                 ],

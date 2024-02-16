@@ -56,11 +56,13 @@ class _SelectBusinessCategoryPageState
             .update({
           'Type': selectedCategory,
         });
-
-        Navigator.of(context).pop();
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => SelectMembershipPage()),
-        );
+        if (context.mounted) {
+          Navigator.of(context).pop();
+          Navigator.of(context).push(
+            MaterialPageRoute(
+                builder: (context) => const SelectMembershipPage()),
+          );
+        }
       }
     } else {
       mySnackBar(context, "Select Category");
@@ -86,7 +88,7 @@ class _SelectBusinessCategoryPageState
                   children: [
                     // HEAD TEXT
                     SizedBox(height: width * 0.1125),
-                    HeadText(text: "SELECT\nCATEGORY"),
+                    const HeadText(text: "SELECT\nCATEGORY"),
                     SizedBox(height: width * 0.1125),
 
                     // SHOP VS HOUSEHOLD

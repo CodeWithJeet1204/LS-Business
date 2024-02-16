@@ -148,9 +148,9 @@ class MyApp extends StatelessWidget {
               builder: ((context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.active) {
                   if (snapshot.hasData) {
-                    return Stack(
+                    return const Stack(
                       children: [
-                        const MainPage(),
+                        MainPage(),
                         ConnectivityNotificationWidget(),
                       ],
                     );
@@ -165,9 +165,9 @@ class MyApp extends StatelessWidget {
                       ),
                     );
                   } else {
-                    return Stack(
+                    return const Stack(
                       children: [
-                        const LoginPage(),
+                        LoginPage(),
                         ConnectivityNotificationWidget(),
                       ],
                     );
@@ -180,9 +180,9 @@ class MyApp extends StatelessWidget {
                     ),
                   );
                 } else {
-                  return Stack(
+                  return const Stack(
                     children: [
-                      const LoginPage(),
+                      LoginPage(),
                       ConnectivityNotificationWidget(),
                     ],
                   );

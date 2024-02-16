@@ -298,7 +298,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                 ],
                               ),
                             ),
-                            SizedBox(height: 16),
+                            const SizedBox(height: 16),
                             Row(
                               children: [
                                 Container(
@@ -396,7 +396,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                     size: width * 0.4,
                                   ),
                                 ),
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                                 Text(
                                   "Select Image",
                                   style: TextStyle(
@@ -408,7 +408,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                             ),
                           ),
                         ),
-                  SizedBox(height: 28),
+                  const SizedBox(height: 28),
 
                   Form(
                     key: productKey,
@@ -438,7 +438,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                             }
                           },
                         ),
-                        SizedBox(height: 12),
+                        const SizedBox(height: 12),
 
                         // DESCRIPTION
                         TextFormField(
@@ -468,7 +468,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                             }
                           },
                         ),
-                        SizedBox(height: 12),
+                        const SizedBox(height: 12),
 
                         // PRICE
                         TextFormField(
@@ -484,7 +484,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 12),
+                        const SizedBox(height: 12),
 
                         // BRAND
                         InkWell(
@@ -492,7 +492,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: ((context) =>
-                                    SelectBrandForProductPage()),
+                                    const SelectBrandForProductPage()),
                               ),
                             );
                           },
@@ -589,7 +589,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                         //     }),
                         //   ),
                         // ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
 
                         // AVAILABLE / OUT OF STOCK
                         Container(
@@ -686,11 +686,11 @@ class _AddProductPage1State extends State<AddProductPage1> {
                           ),
                         ),
 
-                        SizedBox(height: 12),
+                        const SizedBox(height: 12),
 
                         const Divider(),
 
-                        SizedBox(height: 12),
+                        const SizedBox(height: 12),
 
                         Text(
                           "Select Category",
@@ -700,7 +700,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
 
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 6),

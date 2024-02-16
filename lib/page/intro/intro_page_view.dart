@@ -34,6 +34,7 @@ class _IntroPageViewState extends State<IntroPageView> {
         : Navigator.of(context).popAndPushNamed('profile');
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,

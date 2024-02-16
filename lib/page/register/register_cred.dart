@@ -75,6 +75,8 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                 children: [
                   // EMAIL
                   MyCollapseContainer(
+                    width: MediaQuery.of(context).size.width,
+                    text: "Email",
                     children: Padding(
                       padding: EdgeInsets.all(width * 0.0225),
                       child: Form(
@@ -126,13 +128,11 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                                     });
 
                                     try {
-                                      print("ABS");
                                       await auth.signUpWithEmail(
                                         email: emailController.text,
                                         password: passwordController.text,
                                         context: context,
                                       );
-                                      print("ABS123");
 
                                       await FirebaseFirestore.instance
                                           .collection('Business')
@@ -236,13 +236,13 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                         ),
                       ),
                     ),
-                    width: MediaQuery.of(context).size.width,
-                    text: "Email",
                   ),
                   const SizedBox(height: 12),
 
                   // PHONE NUMBER
                   MyCollapseContainer(
+                    width: MediaQuery.of(context).size.width,
+                    text: "Phone Number",
                     children: Padding(
                       padding: EdgeInsets.all(width * 0.0225),
                       child: Form(
@@ -308,12 +308,16 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                                     // Register with Phone
                                     signInMethodProvider.chooseNumber();
                                     if (phoneController.text.contains("+91")) {
-                                      await auth.phoneSignIn(
-                                          context, " ${phoneController.text}");
+                                      if (context.mounted) {
+                                        await auth.phoneSignIn(context,
+                                            " ${phoneController.text}");
+                                      }
                                     } else if (phoneController.text
                                         .contains("+91 ")) {
-                                      await auth.phoneSignIn(
-                                          context, phoneController.text);
+                                      if (context.mounted) {
+                                        await auth.phoneSignIn(
+                                            context, phoneController.text);
+                                      }
                                     } else {
                                       setState(() {
                                         isPhoneRegistering = true;
@@ -391,8 +395,6 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                         ),
                       ),
                     ),
-                    width: MediaQuery.of(context).size.width,
-                    text: "Phone Number",
                   ),
                   const SizedBox(height: 16),
 

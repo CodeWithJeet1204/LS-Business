@@ -59,10 +59,7 @@ class _ProductPageState extends State<ProductPage> {
   @override
   void initState() {
     super.initState();
-    print(_currentIndex);
-    print(isDiscount);
     ifDiscount();
-    print(isDiscount);
   }
 
   // EDIT INFO
@@ -674,7 +671,7 @@ class _ProductPageState extends State<ProductPage> {
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         child: LayoutBuilder(
           builder: ((context, constraints) {
             double width = constraints.maxWidth;
@@ -967,7 +964,7 @@ class _ProductPageState extends State<ProductPage> {
                                       stream: discountPriceStream,
                                       builder: (context, snapshot) {
                                         if (snapshot.hasError) {
-                                          return Center(
+                                          return const Center(
                                             child: Text('Something Went Wrong'),
                                           );
                                         }
@@ -993,11 +990,12 @@ class _ProductPageState extends State<ProductPage> {
                                                 ),
                                                 child: price == "" ||
                                                         price == 'N/A'
-                                                    ? Text('N/A')
+                                                    ? const Text('N/A')
                                                     : RichText(
                                                         text: TextSpan(
                                                           text: 'Rs. ',
-                                                          style: TextStyle(
+                                                          style:
+                                                              const TextStyle(
                                                             color: primaryDark,
                                                             fontSize: 22,
                                                             fontWeight:
@@ -1007,20 +1005,18 @@ class _ProductPageState extends State<ProductPage> {
                                                             TextSpan(
                                                               text: data[
                                                                       'isPercent']
-                                                                  ? (double.parse(price) *
-                                                                              (100 - (data['discountAmount'])) /
-                                                                              100)
-                                                                          .toString() +
-                                                                      '  '
+                                                                  ? '${double.parse(price) * (100 - (data['discountAmount'])) / 100}  '
                                                                   : '${double.parse(price) - (data['discountAmount'])}  ',
-                                                              style: TextStyle(
+                                                              style:
+                                                                  const TextStyle(
                                                                 color: Colors
                                                                     .green,
                                                               ),
                                                             ),
                                                             TextSpan(
                                                               text: price,
-                                                              style: TextStyle(
+                                                              style:
+                                                                  const TextStyle(
                                                                 fontSize: 20,
                                                                 color: Color
                                                                     .fromRGBO(
@@ -1048,14 +1044,14 @@ class _ProductPageState extends State<ProductPage> {
                                                 child: data['isPercent']
                                                     ? Text(
                                                         "${data['discountAmount']}% off",
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                           fontWeight:
                                                               FontWeight.w500,
                                                         ),
                                                       )
                                                     : Text(
                                                         "Save Rs. ${data['discountAmount']}",
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                           fontWeight:
                                                               FontWeight.w500,
                                                         ),
@@ -1077,7 +1073,7 @@ class _ProductPageState extends State<ProductPage> {
                                                           24
                                                       ? '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inHours} Hours Left'''
                                                       : '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inDays} Days Left''',
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     color: Colors.red,
                                                     fontWeight: FontWeight.w500,
                                                   ),
@@ -1087,7 +1083,7 @@ class _ProductPageState extends State<ProductPage> {
                                           );
                                         }
 
-                                        return Center(
+                                        return const Center(
                                           child: CircularProgressIndicator(),
                                         );
                                       })
@@ -1145,7 +1141,7 @@ class _ProductPageState extends State<ProductPage> {
                                     false,
                                   );
                                 },
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.edit,
                                   color: primaryDark,
                                 ),

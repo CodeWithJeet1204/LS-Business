@@ -1653,7 +1653,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                       });
                                     },
                                   ),
-                                  SizedBox(height: 12),
+                                  const SizedBox(height: 12),
                                   otherInfo != null
                                       ? Row(
                                           crossAxisAlignment:

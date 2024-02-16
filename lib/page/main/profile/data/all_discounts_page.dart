@@ -81,7 +81,9 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
           .doc(discountId)
           .delete();
     } catch (e) {
-      mySnackBar(context, e.toString());
+      if (context.mounted) {
+        mySnackBar(context, e.toString());
+      }
     }
   }
 
@@ -96,7 +98,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('ALL DISCOUNTS'),
+        title: const Text('ALL DISCOUNTS'),
         bottom: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,
@@ -150,7 +152,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                 stream: discountStream,
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
-                    return Center(
+                    return const Center(
                       child: Text('Something went wrong'),
                     );
                   }
@@ -160,7 +162,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                         ? GridView.builder(
                             shrinkWrap: true,
                             gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
+                                const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 1,
                               childAspectRatio: 16 / 10,
                               mainAxisSpacing: 4,
@@ -218,7 +220,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                   SizedBox(
                                                     width: width,
                                                     height: width * 0.375,
-                                                    child: Center(
+                                                    child: const Center(
                                                       child: Text(
                                                         "No Image Available",
                                                         style: TextStyle(
@@ -229,7 +231,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                       ),
                                                     ),
                                                   ),
-                                                  Divider(),
+                                                  const Divider(),
                                                 ],
                                               ),
 
@@ -280,7 +282,8 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                             ? '${discountData['discountAmount']}% off'
                                                             : 'Rs. ${discountData['discountAmount']} off',
                                                         style: TextStyle(
-                                                          color: Color.fromRGBO(
+                                                          color: const Color
+                                                              .fromRGBO(
                                                             0,
                                                             72,
                                                             2,
@@ -295,7 +298,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                     ),
 
                                                     // DIVIDER
-                                                    Text(
+                                                    const Text(
                                                       "  ●  ",
                                                       style: TextStyle(
                                                         fontWeight:
@@ -343,7 +346,8 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                                     ? 'Expired ${DateTime.now().difference((discountData['discountEndDateTime'] as Timestamp).toDate()).inHours} Hours Ago'
                                                                     : 'Expired ${DateTime.now().difference((discountData['discountEndDateTime'] as Timestamp).toDate()).inDays} Days Ago',
                                                         style: TextStyle(
-                                                          color: Color.fromRGBO(
+                                                          color: const Color
+                                                              .fromRGBO(
                                                             211,
                                                             80,
                                                             71,
@@ -405,7 +409,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                   );
                                 },
                                 child: Container(
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                     vertical: 2,
                                   ),
                                   width: width,
@@ -449,8 +453,8 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                 ? '${discountData['discountAmount']}% off'
                                                 : 'Rs. ${discountData['discountAmount']} off',
                                             style: TextStyle(
-                                              color:
-                                                  Color.fromRGBO(0, 72, 2, 1),
+                                              color: const Color.fromRGBO(
+                                                  0, 72, 2, 1),
                                               fontSize: width * 0.035,
                                               fontWeight: FontWeight.w500,
                                             ),
@@ -458,7 +462,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                         ),
 
                                         // DIVIDER
-                                        Text(
+                                        const Text(
                                           "  ●  ",
                                           style: TextStyle(
                                             fontWeight: FontWeight.w100,
@@ -509,7 +513,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                         ? 'Expired ${DateTime.now().difference((discountData['discountEndDateTime'] as Timestamp).toDate()).inHours} Hours Ago'
                                                         : 'Expired ${DateTime.now().difference((discountData['discountEndDateTime'] as Timestamp).toDate()).inDays} Days Ago',
                                             style: TextStyle(
-                                              color: Color.fromRGBO(
+                                              color: const Color.fromRGBO(
                                                 211,
                                                 80,
                                                 71,
@@ -545,7 +549,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                           );
                   }
 
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 });

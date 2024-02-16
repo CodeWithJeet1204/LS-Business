@@ -283,7 +283,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                                       size: width * 0.33,
                                     ),
                                   ),
-                                  SizedBox(height: 8),
+                                  const SizedBox(height: 8),
                                   Text(
                                     "Select Image",
                                     style: TextStyle(

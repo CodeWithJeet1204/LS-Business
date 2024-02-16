@@ -48,15 +48,10 @@ class _AddBrandPageState extends State<AddBrandPage> {
   // SELECT CATEGORY IMAGE
   void selectImage() async {
     final XFile? im = await showImagePickDialog(context);
-    print(im == null);
-    print(1);
     if (im != null) {
       setState(() {
-        print(File(im.path));
         _image = (File(im.path));
-        print(_image!.path);
       });
-      print(2);
     } else {
       if (context.mounted) {
         mySnackBar(context, "Select an Image");
@@ -70,10 +65,9 @@ class _AddBrandPageState extends State<AddBrandPage> {
         setState(() {
           isSaving = true;
         });
-        final String brandId = Uuid().v4();
+        final String brandId = const Uuid().v4();
         if (_image != null) {
-          Reference ref =
-              await storage.ref().child('Data/Brand').child(brandId);
+          Reference ref = storage.ref().child('Data/Brand').child(brandId);
 
           await ref.putFile(_image!).whenComplete(() async {
             await ref.getDownloadURL().then((value) {
@@ -95,7 +89,9 @@ class _AddBrandPageState extends State<AddBrandPage> {
           'imageUrl': imageUrl,
           'vendorId': FirebaseAuth.instance.currentUser!.uid,
         });
-        mySnackBar(context, "Brand Added");
+        if (context.mounted) {
+          mySnackBar(context, "Brand Added");
+        }
 
         for (String id in provider.selectedProducts) {
           await store
@@ -113,13 +109,16 @@ class _AddBrandPageState extends State<AddBrandPage> {
         setState(() {
           isSaving = false;
         });
-
-        Navigator.of(context).pop();
+        if (context.mounted) {
+          Navigator.of(context).pop();
+        }
       } catch (e) {
         setState(() {
           isSaving = false;
         });
-        mySnackBar(context, e.toString());
+        if (context.mounted) {
+          mySnackBar(context, e.toString());
+        }
       }
     }
   }
@@ -132,7 +131,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
     return Scaffold(
       backgroundColor: primary,
       appBar: AppBar(
-        title: Text("ADD BRAND"),
+        title: const Text("ADD BRAND"),
         actions: [
           MyTextButton(
             onPressed: () {
@@ -151,7 +150,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           horizontal: 8,
           vertical: 4,
         ),
@@ -246,7 +245,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
                                       size: width * 0.33,
                                     ),
                                   ),
-                                  SizedBox(height: 8),
+                                  const SizedBox(height: 8),
                                   Text(
                                     "Select Image",
                                     style: TextStyle(

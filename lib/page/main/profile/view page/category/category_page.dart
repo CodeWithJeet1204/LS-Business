@@ -253,10 +253,7 @@ class _CategoryPageState extends State<CategoryPage> {
 
     for (QueryDocumentSnapshot<Map<String, dynamic>> doc in discount.docs) {
       final data = doc.data();
-      print((data['categories'] as List).contains(widget.categoryId));
-      print("ABC");
       if ((data['categories'] as List).contains(widget.categoryId)) {
-        print("DEF");
         if ((data['discountEndDateTime'] as Timestamp)
                 .toDate()
                 .isAfter(DateTime.now()) &&
@@ -266,7 +263,6 @@ class _CategoryPageState extends State<CategoryPage> {
           setState(() {
             isDiscount = true;
           });
-          print(isDiscount);
         }
       }
     }
@@ -427,7 +423,7 @@ class _CategoryPageState extends State<CategoryPage> {
                               stream: discountPriceStream,
                               builder: (context, snapshot) {
                                 if (snapshot.hasError) {
-                                  return Center(
+                                  return const Center(
                                     child: Text('Something Went Wrong'),
                                   );
                                 }
@@ -452,13 +448,13 @@ class _CategoryPageState extends State<CategoryPage> {
                                         child: data['isPercent']
                                             ? Text(
                                                 "${data['discountAmount']}% off",
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   fontWeight: FontWeight.w500,
                                                 ),
                                               )
                                             : Text(
                                                 "Save Rs. ${data['discountAmount']}",
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   fontWeight: FontWeight.w500,
                                                 ),
                                               ),
@@ -478,7 +474,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                                   24
                                               ? '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inHours} Hours Left'''
                                               : '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inDays} Days Left''',
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: Colors.red,
                                             fontWeight: FontWeight.w500,
                                           ),
@@ -489,7 +485,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                           left: width * 0.01,
                                           top: width * 0.025,
                                         ),
-                                        child: Text(
+                                        child: const Text(
                                           "This discount is available to all the products within this category",
                                           style: TextStyle(
                                             color: primaryDark,
@@ -501,7 +497,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                   );
                                 }
 
-                                return Center(
+                                return const Center(
                                   child: CircularProgressIndicator(),
                                 );
                               })
@@ -789,7 +785,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                     icon: Icon(
                                                                       Icons
                                                                           .delete_forever,
-                                                                      color: Color
+                                                                      color: const Color
                                                                           .fromARGB(
                                                                         255,
                                                                         215,
@@ -913,9 +909,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                                             icon: Icon(
                                                               Icons
                                                                   .delete_forever,
-                                                              color: Color
+                                                              color: const Color
                                                                   .fromRGBO(215,
-                                                                      14, 0, 1),
+                                                                  14, 0, 1),
                                                               size:
                                                                   width * 0.09,
                                                             ),

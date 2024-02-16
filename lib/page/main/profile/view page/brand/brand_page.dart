@@ -267,10 +267,7 @@ class _BrandPageState extends State<BrandPage> {
 
     for (QueryDocumentSnapshot<Map<String, dynamic>> doc in discount.docs) {
       final data = doc.data();
-      print((data['brands'] as List).contains(widget.brandId));
-      print("ABC");
       if ((data['brands'] as List).contains(widget.brandId)) {
-        print("DEF");
         if ((data['discountEndDateTime'] as Timestamp)
                 .toDate()
                 .isAfter(DateTime.now()) &&
@@ -280,7 +277,6 @@ class _BrandPageState extends State<BrandPage> {
           setState(() {
             isDiscount = true;
           });
-          print(isDiscount);
         }
       }
     }
@@ -467,7 +463,7 @@ class _BrandPageState extends State<BrandPage> {
                               stream: discountPriceStream,
                               builder: (context, snapshot) {
                                 if (snapshot.hasError) {
-                                  return Center(
+                                  return const Center(
                                     child: Text('Something Went Wrong'),
                                   );
                                 }
@@ -492,13 +488,13 @@ class _BrandPageState extends State<BrandPage> {
                                         child: data['isPercent']
                                             ? Text(
                                                 "${data['discountAmount']}% off",
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   fontWeight: FontWeight.w500,
                                                 ),
                                               )
                                             : Text(
                                                 "Save Rs. ${data['discountAmount']}",
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   fontWeight: FontWeight.w500,
                                                 ),
                                               ),
@@ -518,7 +514,7 @@ class _BrandPageState extends State<BrandPage> {
                                                   24
                                               ? '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inHours} Hours Left'''
                                               : '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inDays} Days Left''',
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: Colors.red,
                                             fontWeight: FontWeight.w500,
                                           ),
@@ -529,7 +525,7 @@ class _BrandPageState extends State<BrandPage> {
                                           left: width * 0.01,
                                           top: width * 0.025,
                                         ),
-                                        child: Text(
+                                        child: const Text(
                                           "This discount is available to all the products within this brand",
                                           style: TextStyle(
                                             color: primaryDark,
@@ -541,7 +537,7 @@ class _BrandPageState extends State<BrandPage> {
                                   );
                                 }
 
-                                return Center(
+                                return const Center(
                                   child: CircularProgressIndicator(),
                                 );
                               })
@@ -829,7 +825,7 @@ class _BrandPageState extends State<BrandPage> {
                                                                     icon: Icon(
                                                                       Icons
                                                                           .delete_forever,
-                                                                      color: Color
+                                                                      color: const Color
                                                                           .fromARGB(
                                                                         255,
                                                                         215,
@@ -953,9 +949,9 @@ class _BrandPageState extends State<BrandPage> {
                                                             icon: Icon(
                                                               Icons
                                                                   .delete_forever,
-                                                              color: Color
+                                                              color: const Color
                                                                   .fromRGBO(215,
-                                                                      14, 0, 1),
+                                                                  14, 0, 1),
                                                               size:
                                                                   width * 0.09,
                                                             ),

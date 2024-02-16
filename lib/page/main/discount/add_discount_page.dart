@@ -37,7 +37,7 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: ((context) => ProductDiscountPage()),
+                            builder: ((context) => const ProductDiscountPage()),
                           ),
                         );
                       },
@@ -83,7 +83,8 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: ((context) => CategoryDiscountPage()),
+                            builder: ((context) =>
+                                const CategoryDiscountPage()),
                           ),
                         );
                       },
@@ -129,7 +130,7 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: ((context) => BrandDiscountPage()),
+                            builder: ((context) => const BrandDiscountPage()),
                           ),
                         );
                       },

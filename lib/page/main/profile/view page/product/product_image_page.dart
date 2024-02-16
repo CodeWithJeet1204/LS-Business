@@ -37,7 +37,7 @@ class _ProductImageViewState extends State<ProductImageView> {
                   ),
                 ),
               ),
-              SizedBox(height: 12),
+              const SizedBox(height: 12),
               Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: width * 0.0125,
@@ -80,7 +80,7 @@ class _ProductImageViewState extends State<ProductImageView> {
                   ),
                 ),
               ),
-              SizedBox(height: 12),
+              const SizedBox(height: 12),
             ],
           );
         },

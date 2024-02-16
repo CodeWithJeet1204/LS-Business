@@ -66,7 +66,6 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
         .get();
 
     final List products = discountData['products'];
-    print(products);
 
     await store
         .collection('Business')
@@ -76,8 +75,9 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
         .update({
       'products': products.remove(productId),
     });
-
-    Navigator.of(context).pop();
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -110,7 +110,7 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('PRODUCTS'),
+        title: const Text('PRODUCTS'),
         bottom: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,
@@ -161,15 +161,13 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
             stream: productDiscountStream,
             builder: ((context, snapshot) {
               if (snapshot.hasError) {
-                return Center(
+                return const Center(
                   child: Text('Something went wrong'),
                 );
               }
 
               if (snapshot.hasData) {
                 final products = snapshot.data!;
-                print(snapshot.data);
-                print(products);
                 return isGridView
                     ? GridView.builder(
                         shrinkWrap: true,
@@ -263,8 +261,7 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
                       );
               }
 
-              print(snapshot.connectionState);
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }),

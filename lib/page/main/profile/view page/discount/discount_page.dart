@@ -181,7 +181,9 @@ class DISCOUNT extends State<DiscountPage> {
             TextButton(
               onPressed: () async {
                 await delete(discountId, imageUrl);
-                Navigator.of(context).pop();
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                }
               },
               child: const Text(
                 'YES',
@@ -211,7 +213,9 @@ class DISCOUNT extends State<DiscountPage> {
           .doc(discountId)
           .delete();
     } catch (e) {
-      mySnackBar(context, e.toString());
+      if (context.mounted) {
+        mySnackBar(context, e.toString());
+      }
     }
   }
 
@@ -473,9 +477,11 @@ class DISCOUNT extends State<DiscountPage> {
                 widget.discountId,
                 widget.discountImageUrl,
               );
-              Navigator.of(context).pop();
+              if (context.mounted) {
+                Navigator.of(context).pop();
+              }
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.delete_forever_outlined,
               color: Colors.red,
             ),
@@ -508,7 +514,7 @@ class DISCOUNT extends State<DiscountPage> {
                   final discountData = snapshot.data!;
 
                   return Padding(
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       horizontal: 8,
                       vertical: 4,
                     ),
@@ -617,7 +623,7 @@ class DISCOUNT extends State<DiscountPage> {
                           head: "NAME",
                           noOfAnswers: 1,
                           content: discountData['discountName'],
-                          propertyValue: [],
+                          propertyValue: const [],
                           width: width,
                           onPressed: () {
                             change('discountName', TextInputType.name);
@@ -629,7 +635,7 @@ class DISCOUNT extends State<DiscountPage> {
                           head: "AMOUNT",
                           noOfAnswers: 1,
                           content: discountData['discountAmount'].toString(),
-                          propertyValue: [],
+                          propertyValue: const [],
                           width: width,
                           onPressed: () {
                             change('discountAmount', TextInputType.number);
@@ -657,9 +663,9 @@ class DISCOUNT extends State<DiscountPage> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
+                                    const Text(
                                       "Start Date",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         color: primaryDark2,
                                       ),
@@ -718,9 +724,9 @@ class DISCOUNT extends State<DiscountPage> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
+                                    const Text(
                                       "End Date",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         color: primaryDark2,
                                       ),
@@ -781,11 +787,11 @@ class DISCOUNT extends State<DiscountPage> {
                                   ? 'Percent %'
                                   : 'Price Rs.',
                             ),
-                            underline: SizedBox(),
+                            underline: const SizedBox(),
                             items: ['Percent', 'Price']
                                 .map((e) => DropdownMenuItem(
-                                      child: Text(e),
                                       value: e,
+                                      child: Text(e),
                                     ))
                                 .toList(),
                             onChanged: (value) async {
@@ -800,7 +806,7 @@ class DISCOUNT extends State<DiscountPage> {
                             },
                           ),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
 
                         // PRODUCTS
                         discountData['isProducts']
@@ -891,8 +897,6 @@ class DISCOUNT extends State<DiscountPage> {
                                             }
 
                                             if (snapshot.hasData) {
-                                              print(snapshot.data);
-                                              print(snapshot.data!.docs.length);
                                               return SafeArea(
                                                 child: isGridView
                                                     // PRODUCTS IN GRIDVIEW
@@ -1050,7 +1054,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                                             icon:
                                                                                 Icon(
                                                                               Icons.delete_forever,
-                                                                              color: Color.fromARGB(
+                                                                              color: const Color.fromARGB(
                                                                                 255,
                                                                                 215,
                                                                                 14,
@@ -1186,12 +1190,12 @@ class DISCOUNT extends State<DiscountPage> {
                                                                     icon: Icon(
                                                                       Icons
                                                                           .delete_forever,
-                                                                      color: Color
+                                                                      color: const Color
                                                                           .fromRGBO(
-                                                                              215,
-                                                                              14,
-                                                                              0,
-                                                                              1),
+                                                                          215,
+                                                                          14,
+                                                                          0,
+                                                                          1),
                                                                       size: width *
                                                                           0.09,
                                                                     ),
@@ -1310,7 +1314,6 @@ class DISCOUNT extends State<DiscountPage> {
                                             }
 
                                             if (snapshot.hasData) {
-                                              print(snapshot.data);
                                               return SafeArea(
                                                 child: isGridView
                                                     // PRODUCTS IN GRIDVIEW
@@ -1452,7 +1455,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                                             icon:
                                                                                 Icon(
                                                                               Icons.delete_forever,
-                                                                              color: Color.fromARGB(
+                                                                              color: const Color.fromARGB(
                                                                                 255,
                                                                                 215,
                                                                                 14,
@@ -1586,12 +1589,12 @@ class DISCOUNT extends State<DiscountPage> {
                                                                     icon: Icon(
                                                                       Icons
                                                                           .delete_forever,
-                                                                      color: Color
+                                                                      color: const Color
                                                                           .fromRGBO(
-                                                                              215,
-                                                                              14,
-                                                                              0,
-                                                                              1),
+                                                                          215,
+                                                                          14,
+                                                                          0,
+                                                                          1),
                                                                       size: width *
                                                                           0.09,
                                                                     ),
@@ -1710,7 +1713,6 @@ class DISCOUNT extends State<DiscountPage> {
                                             }
 
                                             if (snapshot.hasData) {
-                                              print(snapshot.data?.docs.length);
                                               return SafeArea(
                                                 child: isGridView
                                                     // PRODUCTS IN GRIDVIEW
@@ -1852,7 +1854,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                                             icon:
                                                                                 Icon(
                                                                               Icons.delete_forever,
-                                                                              color: Color.fromARGB(
+                                                                              color: const Color.fromARGB(
                                                                                 255,
                                                                                 215,
                                                                                 14,
@@ -1986,12 +1988,12 @@ class DISCOUNT extends State<DiscountPage> {
                                                                     icon: Icon(
                                                                       Icons
                                                                           .delete_forever,
-                                                                      color: Color
+                                                                      color: const Color
                                                                           .fromRGBO(
-                                                                              215,
-                                                                              14,
-                                                                              0,
-                                                                              1),
+                                                                          215,
+                                                                          14,
+                                                                          0,
+                                                                          1),
                                                                       size: width *
                                                                           0.09,
                                                                     ),

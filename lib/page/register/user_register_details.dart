@@ -196,7 +196,6 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                       .collection('Users')
                                       .doc(auth.currentUser!.uid)
                                       .get();
-                                  print("A");
                                   if (getUser['Name'] != null &&
                                       getUser['Email'] != null) {
                                     await store
@@ -235,7 +234,9 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                       "Name": nameController.text.toString(),
                                     });
                                   } else {
-                                    mySnackBar(context, "Some error occured");
+                                    if (context.mounted) {
+                                      mySnackBar(context, "Some error occured");
+                                    }
                                   }
 
                                   setState(() {

@@ -8,7 +8,6 @@ class SelectBrandForProductProvider with ChangeNotifier {
   String? get selectedBrandId => _selectedBrandId;
 
   void selectBrand(String name, String id) {
-    print('abc');
     if (_selectedBrandId == id) {
       _selectedBrandName = "No Brand";
       _selectedBrandId = '0';

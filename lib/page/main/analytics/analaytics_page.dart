@@ -10,9 +10,9 @@ class AnalyticsPage extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       backgroundColor: primary,
       appBar: AppBar(
-        title: Text("ANALYTICS"),
+        title: const Text("ANALYTICS"),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Analytics'),
       ),
     );

@@ -124,7 +124,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
         isUploading = true;
       });
       try {
-        String discountId = Uuid().v4();
+        String discountId = const Uuid().v4();
         if (_image != null) {
           Reference ref = FirebaseStorage.instance
               .ref()
@@ -168,14 +168,16 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
           'discountStartDateTime': startDateTime,
           'discountEndDateTime': endDateTime,
           'discountId': discountId,
-          'discountImageUrl': imageUrl ?? null,
+          'discountImageUrl': imageUrl,
           'products': [],
           'categories': categoryIdList,
           'vendorId': auth.currentUser!.uid,
         });
         provider.clear();
-        mySnackBar(context, "Discount Added");
-        Navigator.of(context).pop();
+        if (context.mounted) {
+          mySnackBar(context, "Discount Added");
+          Navigator.of(context).pop();
+        }
         setState(() {
           isUploading = false;
         });
@@ -183,7 +185,9 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
         setState(() {
           isUploading = false;
         });
-        mySnackBar(context, e.toString());
+        if (context.mounted) {
+          mySnackBar(context, e.toString());
+        }
       }
     }
   }
@@ -202,7 +206,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
             selectedCategoryProvider.clear();
             Navigator.of(context).pop();
           },
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           tooltip: "Back",
         ),
         actions: [
@@ -221,7 +225,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
         child: LayoutBuilder(
           builder: ((context, constraints) {
             double width = constraints.maxWidth;
@@ -327,7 +331,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                               ),
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
 
                     // NAME
                     TextFormField(
@@ -348,7 +352,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
                     // DATES
                     Row(
@@ -486,7 +490,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
                     // DISCLAIMER
                     Text(
@@ -498,7 +502,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
                     // SELECT CATEGORY
                     MyButton(
@@ -509,14 +513,14 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) =>
-                                SelectCategoryForDiscountPage(),
+                                const SelectCategoryForDiscountPage(),
                           ),
                         );
                       },
                       isLoading: false,
                       horizontalPadding: 0,
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
                     // PERCENT / RUPEES
                     Container(
@@ -598,7 +602,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
                     // AMOUNT
                     Padding(

@@ -48,11 +48,8 @@ class _PostPageState extends State<PostPage> {
 
     for (QueryDocumentSnapshot<Map<String, dynamic>> doc in discount.docs) {
       final data = doc.data();
-      print((data['categories'] as List).contains(widget.categoryId));
-      print("ABC");
       if ((data['products'] as List).contains(widget.productId) ||
           (data['categories'] as List).contains(widget.categoryId)) {
-        print("DEF");
         if ((data['discountEndDateTime'] as Timestamp)
                 .toDate()
                 .isAfter(DateTime.now()) &&
@@ -62,7 +59,6 @@ class _PostPageState extends State<PostPage> {
           setState(() {
             isDiscount = true;
           });
-          print(isDiscount);
         }
       }
     }
@@ -250,7 +246,7 @@ class _PostPageState extends State<PostPage> {
                                     stream: discountPriceStream,
                                     builder: (context, snapshot) {
                                       if (snapshot.hasError) {
-                                        return Center(
+                                        return const Center(
                                           child: Text('Something Went Wrong'),
                                         );
                                       }
@@ -290,7 +286,7 @@ class _PostPageState extends State<PostPage> {
                                                           : data['isPercent']
                                                               ? '${(double.parse(price) * (100 - double.parse(data['discountAmount'])) / 100).toString()}  '
                                                               : '${double.parse(price) - double.parse(data['discountAmount'])}  ',
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                         color: Colors.green,
                                                       ),
                                                     ),
@@ -300,7 +296,8 @@ class _PostPageState extends State<PostPage> {
                                                           : price,
                                                       style: TextStyle(
                                                         fontSize: width * 0.055,
-                                                        color: Color.fromRGBO(
+                                                        color: const Color
+                                                            .fromRGBO(
                                                           255,
                                                           134,
                                                           125,
@@ -326,14 +323,14 @@ class _PostPageState extends State<PostPage> {
                                               child: data['isPercent']
                                                   ? Text(
                                                       "${data['discountAmount']}% off",
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                         fontWeight:
                                                             FontWeight.w500,
                                                       ),
                                                     )
                                                   : Text(
                                                       "Save Rs. ${data['discountAmount']}",
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                         fontWeight:
                                                             FontWeight.w500,
                                                       ),
@@ -356,7 +353,7 @@ class _PostPageState extends State<PostPage> {
                                                         24
                                                     ? '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inHours} Hours Left'''
                                                     : '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inDays} Days Left''',
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   color: Colors.red,
                                                   fontWeight: FontWeight.w500,
                                                 ),
@@ -366,7 +363,7 @@ class _PostPageState extends State<PostPage> {
                                         );
                                       }
 
-                                      return Center(
+                                      return const Center(
                                         child: CircularProgressIndicator(),
                                       );
                                     })
@@ -374,7 +371,7 @@ class _PostPageState extends State<PostPage> {
                                     padding: const EdgeInsets.only(left: 10),
                                     child: Text(
                                       "Rs. ${postData['postProductPrice']}",
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: primaryDark,
                                         fontSize: 22,
                                         fontWeight: FontWeight.w500,

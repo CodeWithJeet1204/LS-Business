@@ -258,7 +258,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                     ),
                                   ],
                                 ),
-                          SizedBox(height: 32),
+                          const SizedBox(height: 32),
 
                           // NAME
                           Container(
@@ -321,7 +321,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                     ],
                                   ),
                           ),
-                          SizedBox(height: 14),
+                          const SizedBox(height: 14),
 
                           // ADDRESS
                           Container(
@@ -382,7 +382,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                     ],
                                   ),
                           ),
-                          SizedBox(height: 14),
+                          const SizedBox(height: 14),
 
                           // SPECIAL NOTE
                           Container(
@@ -443,7 +443,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                     ],
                                   ),
                           ),
-                          SizedBox(height: 14),
+                          const SizedBox(height: 14),
 
                           // TYPE
                           Container(
@@ -473,7 +473,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                               ],
                             ),
                           ),
-                          SizedBox(height: 14),
+                          const SizedBox(height: 14),
 
                           // GST
                           Container(
@@ -503,7 +503,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                               ],
                             ),
                           ),
-                          SizedBox(height: 14),
+                          const SizedBox(height: 14),
 
                           // INDUSTRY
                           Container(
@@ -534,7 +534,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                               ],
                             ),
                           ),
-                          SizedBox(height: 14),
+                          const SizedBox(height: 14),
 
                           // MEMBERSHIP
                           Container(
@@ -542,10 +542,10 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             height: width * 0.16,
                             decoration: BoxDecoration(
                               color: shopData['MembershipName'] == "PREMIUM"
-                                  ? Color.fromRGBO(202, 226, 238, 1)
+                                  ? const Color.fromRGBO(202, 226, 238, 1)
                                   : shopData['MembershipName'] == "GOLD"
-                                      ? Color.fromRGBO(253, 243, 154, 1)
-                                      : Color.fromRGBO(167, 167, 167, 1),
+                                      ? const Color.fromRGBO(253, 243, 154, 1)
+                                      : const Color.fromRGBO(167, 167, 167, 1),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Row(
@@ -567,7 +567,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                               ],
                             ),
                           ),
-                          SizedBox(height: 18),
+                          const SizedBox(height: 18),
 
                           // SAVE & CANCEL BUTTON
                           Padding(
@@ -627,7 +627,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                               isLoading: false,
                                               horizontalPadding: 0,
                                             ),
-                                      SizedBox(height: 12),
+                                      const SizedBox(height: 12),
                                       MyButton(
                                         text: "CANCEL",
                                         onTap: () {

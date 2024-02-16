@@ -16,12 +16,13 @@ Future<XFile?>? showImagePickDialog(BuildContext context) async {
           children: [
             GestureDetector(
               onTap: () async {
-                final _image = await pickCompressedImage(ImageSource.camera);
-                print(_image == null);
-                if (_image != null) {
-                  im = _image;
+                final image = await pickCompressedImage(ImageSource.camera);
+                if (image != null) {
+                  im = image;
                 }
-                Navigator.of(context).pop();
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                }
               },
               child: Container(
                 alignment: Alignment.centerLeft,
@@ -50,11 +51,13 @@ Future<XFile?>? showImagePickDialog(BuildContext context) async {
             ),
             GestureDetector(
               onTap: () async {
-                final _image = await pickCompressedImage(ImageSource.gallery);
-                if (_image != null) {
-                  im = _image;
+                final image = await pickCompressedImage(ImageSource.gallery);
+                if (image != null) {
+                  im = image;
                 }
-                Navigator.of(context).pop();
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                }
               },
               child: Container(
                 alignment: Alignment.centerLeft,

@@ -59,6 +59,8 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   // EMAIL
                   MyCollapseContainer(
+                    width: width,
+                    text: "Email",
                     children: Form(
                       key: emailLoginFormKey,
                       child: Padding(
@@ -131,12 +133,12 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-                    width: width,
-                    text: "Email",
                   ),
 
                   // PHONE NUMBER
                   MyCollapseContainer(
+                    width: width,
+                    text: "Phone Number",
                     children: Padding(
                       padding: EdgeInsets.symmetric(
                         horizontal: width * 0.0125,
@@ -241,8 +243,6 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-                    width: width,
-                    text: "Phone Number",
                   ),
                   const SizedBox(height: 16),
 
@@ -302,7 +302,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ],
               ),
-              SizedBox(height: 120),
+              const SizedBox(height: 120),
 
               // DONT HAVE AN ACCOUNT ? TEXT
               Row(

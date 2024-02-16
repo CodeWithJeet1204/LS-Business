@@ -68,23 +68,23 @@ class _MainPageState extends State<MainPage> {
         .get();
 
     if (!(await isPayed())) {
-      detailsPage = LoginPage();
+      detailsPage = const LoginPage();
     } else {
       if (getUserDetailsAdded['Email'] == null &&
           getUserDetailsAdded['Phone Number'] == null) {
-        detailsPage = RegisterCredPage();
+        detailsPage = const RegisterCredPage();
       } else if (getUserDetailsAdded['Email'] != null &&
           !auth.currentUser!.emailVerified) {
-        detailsPage = EmailVerifyPage();
+        detailsPage = const EmailVerifyPage();
       } else if ((getUserDetailsAdded['Image'] == null)) {
-        detailsPage = UserRegisterDetailsPage();
+        detailsPage = const UserRegisterDetailsPage();
       } else if (getUserDetailsAdded['Image'] != null &&
           getBusinessDetailsAdded['GSTNumber'] == null) {
-        detailsPage = BusinessDetailsPage();
+        detailsPage = const BusinessDetailsPage();
       } else if (getUserDetailsAdded['Image'] != null &&
           getBusinessDetailsAdded['GSTNumber'] != null &&
           getBusinessDetailsAdded['MembershipName'] == null) {
-        detailsPage = SelectMembershipPage();
+        detailsPage = const SelectMembershipPage();
       } else {
         // All details added, set detailsPage to null
         detailsPage = null;

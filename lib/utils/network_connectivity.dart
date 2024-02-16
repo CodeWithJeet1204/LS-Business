@@ -3,7 +3,10 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 
 class ConnectivityNotificationWidget extends StatefulWidget {
+  const ConnectivityNotificationWidget({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _ConnectivityNotificationWidgetState createState() =>
       _ConnectivityNotificationWidgetState();
 }
@@ -56,8 +59,8 @@ class _ConnectivityNotificationWidgetState
       barrierDismissible: false, // Prevent dismissal unless reconnected
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('No Internet Connection'),
-          content: SingleChildScrollView(
+          title: const Text('No Internet Connection'),
+          content: const SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 Text('You are currently offline.'),
@@ -67,12 +70,14 @@ class _ConnectivityNotificationWidgetState
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Retry'),
+              child: const Text('Retry'),
               onPressed: () async {
                 final currentStatus = await Connectivity().checkConnectivity();
                 if (currentStatus != ConnectivityResult.none) {
                   // Internet is back, dismiss dialog
-                  Navigator.pop(context);
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                  }
                 }
               },
             ),
@@ -86,7 +91,7 @@ class _ConnectivityNotificationWidgetState
   Widget build(BuildContext context) {
     return Visibility(
       visible: _connectionStatus == ConnectivityResult.none,
-      child: Align(
+      child: const Align(
         alignment: Alignment.topCenter,
         // child: Container(
         //   // Customize container color, padding, etc. based on your design

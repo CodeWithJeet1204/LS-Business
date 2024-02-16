@@ -44,9 +44,8 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
     isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
 
     if (!isEmailVerified) {
-      timer = Timer.periodic(Duration(seconds: 2), (_) {
+      timer = Timer.periodic(const Duration(seconds: 2), (_) {
         checkEmailVerification();
-        print(isEmailVerified);
       });
     }
   }
@@ -56,13 +55,14 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
     await FirebaseAuth.instance.currentUser!.reload();
 
     isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
-    print(isEmailVerified);
 
     if (isEmailVerified) {
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: ((context) => MainPage())),
-        (route) => false,
-      );
+      if (context.mounted) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: ((context) => const MainPage())),
+          (route) => false,
+        );
+      }
     }
   }
 
@@ -71,7 +71,9 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
     try {
       final user = FirebaseAuth.instance.currentUser!;
       await user.sendEmailVerification();
-      mySnackBar(context, "Verification Email Sent");
+      if (context.mounted) {
+        mySnackBar(context, "Verification Email Sent");
+      }
 
       setState(() {
         canResendEmail = false;

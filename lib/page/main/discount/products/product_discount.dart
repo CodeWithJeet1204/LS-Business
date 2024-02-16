@@ -140,7 +140,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
         isUploading = true;
       });
       try {
-        String discountId = Uuid().v4();
+        String discountId = const Uuid().v4();
         if (_image != null) {
           Reference ref = FirebaseStorage.instance
               .ref()
@@ -184,7 +184,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
           'discountStartDateTime': startDateTime,
           'discountEndDateTime': endDateTime,
           'discountId': discountId,
-          'discountImageUrl': imageUrl ?? null,
+          'discountImageUrl': imageUrl,
           'products': widget.changeSelectedProductDiscount != null
               ? [
                   widget.changeSelectedProductDiscountId!,
@@ -194,19 +194,26 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
           'vendorId': auth.currentUser!.uid,
         });
         provider.clear();
-        mySnackBar(context, "Discount Added");
+        if (context.mounted) {
+          mySnackBar(context, "Discount Added");
+        }
         if (widget.changeSelectedProductDiscount != null) {
-          Navigator.of(context).pop();
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: ((context) => ProductPage(
-                    productId: widget.changeSelectedProductDiscountId!,
-                    productName: widget.changeSelectedProductDiscountName!,
-                  )),
-            ),
-          );
+          if (context.mounted) {
+            Navigator.of(context).pop();
+
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: ((context) => ProductPage(
+                      productId: widget.changeSelectedProductDiscountId!,
+                      productName: widget.changeSelectedProductDiscountName!,
+                    )),
+              ),
+            );
+          }
         } else {
-          Navigator.of(context).pop();
+          if (context.mounted) {
+            Navigator.of(context).pop();
+          }
         }
         setState(() {
           isUploading = false;
@@ -215,7 +222,9 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
         setState(() {
           isUploading = false;
         });
-        mySnackBar(context, e.toString());
+        if (context.mounted) {
+          mySnackBar(context, e.toString());
+        }
       }
     }
   }
@@ -234,7 +243,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
             selectedProductProvider.clear();
             Navigator.of(context).pop();
           },
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           tooltip: "Back",
         ),
         actions: [
@@ -260,7 +269,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
             child: Form(
               key: discountKey,
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
                 child: Column(
                   children: [
                     // DISCLAIMER
@@ -359,7 +368,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                               ),
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
 
                     // NAME
                     TextFormField(
@@ -380,7 +389,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
                     // DATES
                     Row(
@@ -518,7 +527,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
                     // DISCLAIMER
                     Padding(
@@ -535,7 +544,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
                     // SELECT PRODUCT
                     MyButton(
@@ -550,14 +559,14 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      SelectProductForDiscountPage(),
+                                      const SelectProductForDiscountPage(),
                                 ),
                               );
                             },
                       isLoading: false,
                       horizontalPadding: 0,
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
                     // PERCENT / RUPEES
                     Container(
@@ -639,7 +648,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
                     // AMOUNT
                     Padding(
