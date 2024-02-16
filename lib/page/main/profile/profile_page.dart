@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/page/main/profile/data/all_discounts_page.dart';
-import 'package:find_easy/page/register/login_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -50,15 +49,7 @@ class _ProfilePageState extends State<ProfilePage> {
             TextButton(
               onPressed: () async {
                 await auth.signOut();
-                if (context.mounted) {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: ((context) => LoginPage()),
-                    ),
-                    (route) => false,
-                  );
-                }
+                auth.currentUser!.reload();
               },
               child: const Text(
                 'YES',

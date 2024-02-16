@@ -80,7 +80,7 @@ class _MainPageState extends State<MainPage> {
           getUserDetailsAdded['Phone Number'] == null) {
         detailsPage = RegisterCredPage();
       } else if (getUserDetailsAdded['Email'] != null &&
-          getUserDetailsAdded['emailVerified'] == false) {
+          !auth.currentUser!.emailVerified) {
         detailsPage = EmailVerifyPage();
       } else if ((getUserDetailsAdded['emailVerified'] == true ||
               getUserDetailsAdded['numberVerified'] == true) &&
