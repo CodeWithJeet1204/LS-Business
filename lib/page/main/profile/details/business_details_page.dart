@@ -463,7 +463,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                   child: SizedBox(
                                     width: width * 0.875,
                                     child: AutoSizeText(
-                                      shopData['Type'],
+                                      shopData['Type'] ?? 'N/A',
                                       style: TextStyle(
                                         fontSize: width * 0.055,
                                       ),
@@ -556,7 +556,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                   child: SizedBox(
                                     width: width * 0.725,
                                     child: AutoSizeText(
-                                      shopData['MembershipName'],
+                                      shopData['MembershipName'] ?? 'N/A',
                                       style: TextStyle(
                                         fontSize: width * 0.055,
                                         fontWeight: FontWeight.w700,

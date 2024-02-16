@@ -190,53 +190,54 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                       userPhotoUrl = value;
                                     });
                                   });
-                                  signInMethodProvider.isGoogleChosen
-                                      ? await store
-                                          .collection('Business')
-                                          .doc('Data')
-                                          .collection('Users')
-                                          .doc(auth.currentUser!.uid)
-                                          .update({
-                                          "Phone Number": phoneController.text,
-                                          "Image": userPhotoUrl,
-                                        })
-                                      : signInMethodProvider.isNumberChosen
-                                          ? await store
-                                              .collection('Business')
-                                              .doc('Data')
-                                              .collection('Users')
-                                              .doc(auth.currentUser!.uid)
-                                              .update({
-                                              "uid": uid,
-                                              "Email": emailController.text
-                                                  .toString(),
-                                              "Name": nameController.text
-                                                  .toString(),
-                                              "Image": userPhotoUrl,
-                                            })
-                                          : signInMethodProvider.isEmailChosen
-                                              ? await store
-                                                  .collection('Business')
-                                                  .doc('Data')
-                                                  .collection('Users')
-                                                  .doc(auth.currentUser!.uid)
-                                                  .update({
-                                                  "uid": uid,
-                                                  "Phone Number":
-                                                      phoneController.text
-                                                          .toString(),
-                                                  "Image": userPhotoUrl,
-                                                  "Name": nameController.text
-                                                      .toString(),
-                                                })
-                                              : context.mounted
-                                                  ? {
-                                                      mySnackBar(
-                                                        context,
-                                                        "Some error occured",
-                                                      )
-                                                    }
-                                                  : null;
+                                  final getUser = await store
+                                      .collection('Business')
+                                      .doc('Owners')
+                                      .collection('Users')
+                                      .doc(auth.currentUser!.uid)
+                                      .get();
+                                  print("A");
+                                  if (getUser['Name'] != null &&
+                                      getUser['Email'] != null) {
+                                    await store
+                                        .collection('Business')
+                                        .doc('Owners')
+                                        .collection('Users')
+                                        .doc(auth.currentUser!.uid)
+                                        .update({
+                                      "Phone Number": phoneController.text,
+                                      "Image": userPhotoUrl,
+                                    });
+                                  } else if (getUser['Phone Number'] != null) {
+                                    await store
+                                        .collection('Business')
+                                        .doc('Owners')
+                                        .collection('Users')
+                                        .doc(auth.currentUser!.uid)
+                                        .update({
+                                      "uid": uid,
+                                      "Email": emailController.text.toString(),
+                                      "Name": nameController.text.toString(),
+                                      "Image": userPhotoUrl,
+                                    });
+                                  } else if (getUser['Email'] != null &&
+                                      getUser['Name'] == null) {
+                                    await store
+                                        .collection('Business')
+                                        .doc('Owners')
+                                        .collection('Users')
+                                        .doc(auth.currentUser!.uid)
+                                        .update({
+                                      "uid": uid,
+                                      "Phone Number":
+                                          phoneController.text.toString(),
+                                      "Image": userPhotoUrl,
+                                      "Name": nameController.text.toString(),
+                                    });
+                                  } else {
+                                    mySnackBar(context, "Some error occured");
+                                  }
+
                                   setState(() {
                                     isNext = false;
                                   });

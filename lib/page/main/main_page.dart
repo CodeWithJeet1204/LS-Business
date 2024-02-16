@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/page/main/add/add_page.dart';
+import 'package:find_easy/page/main/analytics/analaytics_page.dart';
 import 'package:find_easy/page/main/comments/all_comments_screen.dart';
 import 'package:find_easy/page/main/discount/add_discount_page.dart';
 import 'package:find_easy/page/main/profile/details/business_details_page.dart';
 import 'package:find_easy/page/main/profile/profile_page.dart';
-import 'package:find_easy/page/main/analytics/analaytics_page.dart';
 import 'package:find_easy/page/register/login_page.dart';
 import 'package:find_easy/page/register/membership.dart';
 import 'package:find_easy/page/register/register_cred.dart';
@@ -41,12 +41,6 @@ class _MainPageState extends State<MainPage> {
     const ProfilePage(),
   ];
 
-  void changePage(value) {
-    setState(() {
-      current = value;
-    });
-  }
-
   @override
   void initState() {
     detailsAdded();
@@ -61,14 +55,14 @@ class _MainPageState extends State<MainPage> {
   void detailsAdded() async {
     final getUserDetailsAdded = await store
         .collection('Business')
-        .doc('Data')
+        .doc('Owners')
         .collection('Users')
         .doc(auth.currentUser!.uid)
         .get();
 
     final getBusinessDetailsAdded = await store
         .collection('Business')
-        .doc('Data')
+        .doc('Owners')
         .collection('Shops')
         .doc(auth.currentUser!.uid)
         .get();
@@ -82,19 +76,30 @@ class _MainPageState extends State<MainPage> {
       } else if (getUserDetailsAdded['Email'] != null &&
           !auth.currentUser!.emailVerified) {
         detailsPage = EmailVerifyPage();
-      } else if ((getUserDetailsAdded['emailVerified'] == true ||
-              getUserDetailsAdded['numberVerified'] == true) &&
-          (getUserDetailsAdded['Image'] == null)) {
+      } else if ((getUserDetailsAdded['Image'] == null)) {
         detailsPage = UserRegisterDetailsPage();
       } else if (getUserDetailsAdded['Image'] != null &&
-          getBusinessDetailsAdded['GST Number'] == null) {
+          getBusinessDetailsAdded['GSTNumber'] == null) {
         detailsPage = BusinessDetailsPage();
       } else if (getUserDetailsAdded['Image'] != null &&
-          getBusinessDetailsAdded['GST Number'] != null &&
+          getBusinessDetailsAdded['GSTNumber'] != null &&
           getBusinessDetailsAdded['MembershipName'] == null) {
         detailsPage = SelectMembershipPage();
+      } else {
+        // All details added, set detailsPage to null
+        detailsPage = null;
       }
     }
+
+    setState(() {
+      // Trigger rebuild after setting detailsPage
+    });
+  }
+
+  void changePage(value) {
+    setState(() {
+      current = value;
+    });
   }
 
   @override

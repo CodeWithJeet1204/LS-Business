@@ -49,6 +49,7 @@ class _ProfilePageState extends State<ProfilePage> {
             TextButton(
               onPressed: () async {
                 await auth.signOut();
+                Navigator.of(context).pop();
                 auth.currentUser!.reload();
               },
               child: const Text(
@@ -143,7 +144,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                         radius: width * 0.1195,
                                         backgroundColor: primary2,
                                         backgroundImage: NetworkImage(
-                                          shopData['Image'],
+                                          shopData['Image'] ??
+                                              'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
                                         ),
                                       ),
                                     ),
@@ -159,7 +161,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                         SizedBox(
                                           width: width * 0.6,
                                           child: Text(
-                                            shopData['Name'].toUpperCase(),
+                                            shopData['Name']?.toUpperCase() ??
+                                                'N/A',
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
@@ -172,7 +175,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         SizedBox(
                                           width: width * 0.33,
                                           child: Text(
-                                            shopData['Type'],
+                                            shopData['Type'] ?? 'N/A',
                                             style: TextStyle(
                                               fontSize: width * 0.0425,
                                               fontWeight: FontWeight.w600,
@@ -229,7 +232,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     backgroundColor: primary2,
                                                     backgroundImage:
                                                         NetworkImage(
-                                                      userData['Image'],
+                                                      userData['Image'] ??
+                                                          'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
                                                     ),
                                                   ),
                                                   SizedBox(
@@ -237,7 +241,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   ),
                                                   // OWNER NAME
                                                   Text(
-                                                    userData['Name'],
+                                                    userData['Name'] ?? 'N/A',
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -258,7 +262,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   vertical: width * 0.01,
                                                 ),
                                                 child: Text(
-                                                  shopData['Address'],
+                                                  shopData['Address'] ?? 'N/A',
                                                   maxLines: 1,
                                                   overflow:
                                                       TextOverflow.ellipsis,
@@ -280,7 +284,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   vertical: width * 0.01,
                                                 ),
                                                 child: Text(
-                                                  shopData['Special Note'],
+                                                  shopData['Special Note'] ??
+                                                      'N/A',
                                                   maxLines: 1,
                                                   overflow:
                                                       TextOverflow.ellipsis,

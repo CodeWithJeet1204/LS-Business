@@ -37,6 +37,12 @@ class _SelectBusinessCategoryPageState
     setState(() {});
   }
 
+  @override
+  void dispose() {
+    otherCategoryController.dispose();
+    super.dispose();
+  }
+
   void uploadDetails() async {
     if (selectedCategory != "Select Category") {
       if (selectedCategory == 'Other' && otherCategoryController.text.isEmpty) {
@@ -44,7 +50,7 @@ class _SelectBusinessCategoryPageState
       } else {
         await store
             .collection('Business')
-            .doc('Data')
+            .doc('Owners')
             .collection('Shops')
             .doc(auth.currentUser!.uid)
             .update({

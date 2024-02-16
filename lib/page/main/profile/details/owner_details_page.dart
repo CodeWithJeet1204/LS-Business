@@ -295,7 +295,8 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                       child: CircleAvatar(
                                         radius: width * 0.15,
                                         backgroundImage: NetworkImage(
-                                          userData['Image'],
+                                          userData['Image'] ??
+                                              'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
                                         ),
                                         backgroundColor: primary2,
                                       ),
@@ -349,7 +350,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                         child: SizedBox(
                                           width: width * 0.725,
                                           child: AutoSizeText(
-                                            userData['Name'],
+                                            userData['Name'] ?? 'N/A',
                                             maxLines: 1,
                                             style: TextStyle(
                                               fontSize: width * 0.06,
@@ -408,7 +409,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                         child: SizedBox(
                                           width: width * 0.725,
                                           child: AutoSizeText(
-                                            userData['Phone Number'],
+                                            userData['Phone Number'] ?? 'N/A',
                                             maxLines: 1,
                                             style: TextStyle(
                                               fontSize: width * 0.055,
@@ -453,7 +454,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                   child: SizedBox(
                                     width: width * 0.725,
                                     child: AutoSizeText(
-                                      userData['Email'],
+                                      userData['Email'] ?? 'N/A',
                                       maxLines: 1,
                                       style: TextStyle(
                                         fontSize: width * 0.055,

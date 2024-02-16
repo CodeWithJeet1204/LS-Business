@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/firebase/auth_methods.dart';
+import 'package:find_easy/page/main/main_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
@@ -29,19 +30,23 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
   // DISPOSE
   @override
   void dispose() {
-    timer?.cancel();
     super.dispose();
+    if (timer != null) {
+      timer!.cancel();
+    }
   }
 
   // INIT STATE + CHECKING EMAIL VERIFY
   @override
   void initState() {
     super.initState();
+    sendEmailVerification();
     isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
 
     if (!isEmailVerified) {
-      Timer.periodic(Duration(seconds: 2), (_) {
+      timer = Timer.periodic(Duration(seconds: 2), (_) {
         checkEmailVerification();
+        print(isEmailVerified);
       });
     }
   }
@@ -51,19 +56,13 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
     await FirebaseAuth.instance.currentUser!.reload();
 
     isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
+    print(isEmailVerified);
 
     if (isEmailVerified) {
-      await store
-          .collection('Business')
-          .doc('Data')
-          .collection('Users')
-          .doc(_auth.currentUser!.uid)
-          .update({
-        'emailVerified': true,
-      });
-      setState(() {});
-
-      timer?.cancel();
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: ((context) => MainPage())),
+        (route) => false,
+      );
     }
   }
 
@@ -106,7 +105,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
               ),
             ),
             Text(
-              "An email has been sent to your account, pls click on it\nTo verify your account\n\nClick on the button after verifying the email\n\n(It may take some time for email to arrive)",
+              "An email has been sent to your account, pls click on it\nTo verify your account\n\nIf you want to resend email click below\n\n(It may take some time for email to arrive)",
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: primaryDark,
@@ -115,14 +114,24 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
             ),
             const SizedBox(height: 20),
             MyButton(
-              text: "Resend Email",
-              onTap: canResendEmail
-                  ? sendEmailVerification
-                  : () {
-                      mySnackBar(context, "Wait for 5 seconds");
-                    },
+              text: "I have Verified my Email",
+              onTap: checkEmailVerification,
               isLoading: checkingEmailVerified,
               horizontalPadding: MediaQuery.of(context).size.width * 0.066,
+            ),
+            const SizedBox(height: 20),
+            Opacity(
+              opacity: canResendEmail ? 1 : 0.5,
+              child: MyButton(
+                text: "Resend Email",
+                onTap: canResendEmail
+                    ? sendEmailVerification
+                    : () {
+                        mySnackBar(context, "Wait for 5 seconds");
+                      },
+                isLoading: checkingEmailVerified,
+                horizontalPadding: MediaQuery.of(context).size.width * 0.066,
+              ),
             ),
           ],
         ),

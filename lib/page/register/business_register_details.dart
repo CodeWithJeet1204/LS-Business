@@ -82,7 +82,7 @@ class _BusinessRegisterDetailsPageState
           });
           await FirebaseFirestore.instance
               .collection('Business')
-              .doc('Data')
+              .doc('Owners')
               .collection('Shops')
               .doc(FirebaseAuth.instance.currentUser!.uid)
               .update({

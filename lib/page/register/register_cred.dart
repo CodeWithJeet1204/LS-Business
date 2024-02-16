@@ -151,10 +151,10 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
 
                                       await FirebaseFirestore.instance
                                           .collection('Business')
-                                          .doc('Data')
+                                          .doc('Owners')
                                           .collection('Shops')
                                           .doc(_auth.currentUser!.uid)
-                                          .update({
+                                          .set({
                                         "Name": null,
                                         'Views': null,
                                         'Favorites': null,
@@ -163,6 +163,7 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                                         "Special Note": null,
                                         "Industry": null,
                                         "Image": null,
+                                        "Type": null,
                                         'MembershipName': null,
                                         'MembershipDuration': null,
                                         'MembershipTime': null,
@@ -286,10 +287,10 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
 
                                     await FirebaseFirestore.instance
                                         .collection('Business')
-                                        .doc('Data')
+                                        .doc('Owners')
                                         .collection('Shops')
                                         .doc(_auth.currentUser!.uid)
-                                        .update({
+                                        .set({
                                       "Name": null,
                                       'Views': null,
                                       'Favorites': null,
@@ -298,6 +299,7 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                                       "Special Note": null,
                                       "Industry": null,
                                       "Image": null,
+                                      "Type": null,
                                       'MembershipName': null,
                                       'MembershipDuration': null,
                                       'MembershipTime': null,
@@ -423,7 +425,7 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
 
                           await FirebaseFirestore.instance
                               .collection('Business')
-                              .doc('Data')
+                              .doc('Owners')
                               .collection('Shops')
                               .doc(_auth.currentUser!.uid)
                               .update({
@@ -435,6 +437,7 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                             "Special Note": null,
                             "Industry": null,
                             "Image": null,
+                            "Type": null,
                             'MembershipName': null,
                             'MembershipDuration': null,
                             'MembershipTime': null,
