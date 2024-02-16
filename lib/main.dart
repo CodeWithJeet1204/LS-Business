@@ -3,13 +3,13 @@ import 'package:find_easy/page/intro/intro_page_view.dart';
 import 'package:find_easy/page/main/add/brand/add_brand_page.dart';
 import 'package:find_easy/page/main/add/category/add_category_page.dart';
 import 'package:find_easy/page/main/analytics/analaytics_page.dart';
-import 'package:find_easy/page/main/main_page.dart';
 import 'package:find_easy/page/main/profile/data/all_brand_page.dart';
 import 'package:find_easy/page/main/profile/data/all_post_page.dart';
 import 'package:find_easy/page/main/profile/data/all_product_page.dart';
 import 'package:find_easy/page/main/profile/details/business_details_page.dart';
 import 'package:find_easy/page/main/profile/data/all_categories_page.dart';
 import 'package:find_easy/page/main/profile/details/owner_details_page.dart';
+import 'package:find_easy/page/main/splash_screen.dart';
 import 'package:find_easy/page/register/login_page.dart';
 import 'package:find_easy/page/main/profile/profile_page.dart';
 import 'package:find_easy/page/register/register_cred.dart';
@@ -150,7 +150,7 @@ class MyApp extends StatelessWidget {
                   if (snapshot.hasData) {
                     return const Stack(
                       children: [
-                        MainPage(),
+                        SplashScreen(isLoggedIn: true),
                         ConnectivityNotificationWidget(),
                       ],
                     );
@@ -164,29 +164,20 @@ class MyApp extends StatelessWidget {
                         "Some error occured\nClose & Open the app again",
                       ),
                     );
-                  } else {
+                  } else if (!snapshot.hasData) {
                     return const Stack(
                       children: [
-                        LoginPage(),
+                        SplashScreen(isLoggedIn: false),
                         ConnectivityNotificationWidget(),
                       ],
                     );
                   }
-                } else if (snapshot.connectionState ==
-                    ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      color: primaryDark,
-                    ),
-                  );
-                } else {
-                  return const Stack(
-                    children: [
-                      LoginPage(),
-                      ConnectivityNotificationWidget(),
-                    ],
-                  );
                 }
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: primaryDark,
+                  ),
+                );
               }),
             ),
     );
