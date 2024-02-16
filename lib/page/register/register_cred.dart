@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/firebase/auth_methods.dart';
-import 'package:find_easy/page/register/firestore_info.dart';
 import 'package:find_easy/page/register/user_register_details.dart';
 import 'package:find_easy/page/register/verify/email_verify.dart';
 import 'package:find_easy/page/register/verify/number_verify.dart';
@@ -141,13 +140,32 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                                           .collection('Users')
                                           .doc(_auth.currentUser!.uid)
                                           .set({
-                                        'detailsAdded': false,
-                                      });
-
-                                      // Registration successful
-                                      userFirestoreData.addAll({
                                         'Email':
                                             emailController.text.toString(),
+                                        'emailVerified': false,
+                                        'Image': null,
+                                        'Name': null,
+                                        'Phone Number': null,
+                                        'uid': null,
+                                      });
+
+                                      await FirebaseFirestore.instance
+                                          .collection('Business')
+                                          .doc('Data')
+                                          .collection('Shops')
+                                          .doc(_auth.currentUser!.uid)
+                                          .update({
+                                        "Name": null,
+                                        'Views': null,
+                                        'Favorites': null,
+                                        "GSTNumber": null,
+                                        "Address": null,
+                                        "Special Note": null,
+                                        "Industry": null,
+                                        "Image": null,
+                                        'MembershipName': null,
+                                        'MembershipDuration': null,
+                                        'MembershipTime': null,
                                       });
 
                                       signInMethodProvider.chooseEmail();
@@ -252,6 +270,39 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                                       isPhoneRegistering = true;
                                       phoneButtonText = "Please Wait";
                                     });
+                                    await FirebaseFirestore.instance
+                                        .collection('Business')
+                                        .doc('Owners')
+                                        .collection('Users')
+                                        .doc(_auth.currentUser!.uid)
+                                        .set({
+                                      'Phone Number':
+                                          phoneController.text.toString(),
+                                      'Image': null,
+                                      'Email': null,
+                                      'Name': null,
+                                      'uid': null,
+                                    });
+
+                                    await FirebaseFirestore.instance
+                                        .collection('Business')
+                                        .doc('Data')
+                                        .collection('Shops')
+                                        .doc(_auth.currentUser!.uid)
+                                        .update({
+                                      "Name": null,
+                                      'Views': null,
+                                      'Favorites': null,
+                                      "GSTNumber": null,
+                                      "Address": null,
+                                      "Special Note": null,
+                                      "Industry": null,
+                                      "Image": null,
+                                      'MembershipName': null,
+                                      'MembershipDuration': null,
+                                      'MembershipTime': null,
+                                    });
+
                                     // Register with Phone
                                     signInMethodProvider.chooseNumber();
                                     if (phoneController.text.contains("+91")) {
@@ -264,11 +315,6 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                                     } else {
                                       setState(() {
                                         isPhoneRegistering = true;
-                                      });
-
-                                      userFirestoreData.addAll({
-                                        'Phone Number':
-                                            phoneController.text.toString(),
                                       });
 
                                       await _auth.verifyPhoneNumber(
@@ -361,19 +407,37 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                         await AuthMethods().signInWithGoogle(context);
                         await _auth.currentUser!.reload();
                         if (FirebaseAuth.instance.currentUser != null) {
-                          userFirestoreData.addAll({
-                            "Email": FirebaseAuth.instance.currentUser!.email,
-                            "Name":
-                                FirebaseAuth.instance.currentUser!.displayName,
-                            "uid": FirebaseAuth.instance.currentUser!.uid,
-                          });
                           await FirebaseFirestore.instance
                               .collection('Business')
                               .doc('Owners')
                               .collection('Users')
                               .doc(_auth.currentUser!.uid)
                               .set({
-                            'detailsAdded': false,
+                            "Email": FirebaseAuth.instance.currentUser!.email,
+                            "Name":
+                                FirebaseAuth.instance.currentUser!.displayName,
+                            "uid": FirebaseAuth.instance.currentUser!.uid,
+                            'Image': null,
+                            'Phone Number': null,
+                          });
+
+                          await FirebaseFirestore.instance
+                              .collection('Business')
+                              .doc('Data')
+                              .collection('Shops')
+                              .doc(_auth.currentUser!.uid)
+                              .update({
+                            "Name": null,
+                            'Views': null,
+                            'Favorites': null,
+                            "GSTNumber": null,
+                            "Address": null,
+                            "Special Note": null,
+                            "Industry": null,
+                            "Image": null,
+                            'MembershipName': null,
+                            'MembershipDuration': null,
+                            'MembershipTime': null,
                           });
 
                           // SystemChannels.textInput.invokeMethod('TextInput.hide');

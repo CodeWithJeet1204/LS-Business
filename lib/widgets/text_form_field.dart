@@ -108,6 +108,10 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
                       if (value.length < 10) {
                         return 'Phone No. should be at least 10 characters';
                       }
+                    } else if (widget.hintText == "GST Number") {
+                      if (value.length < 15) {
+                        return 'GST Number should be 15 characters long';
+                      }
                     }
                   } else {
                     return "Pls enter ${widget.hintText}";

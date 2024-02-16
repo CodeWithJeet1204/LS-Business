@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-final Map<String, List<List<dynamic>>> categoryProperties = {
-  // 1. Name, Price, Hint Text, No of Answers, DropDown Items, TextInputType, Max Lines, Mandatory Info
-
+final Map<String, List<List<dynamic>>> businessCategoryProperties = {
+  // Name, Hint Text, No of Answers, DropDown Items, TextInputType, Max Lines, Mandatory Info
   'Grocery': [
     [
       'Form',

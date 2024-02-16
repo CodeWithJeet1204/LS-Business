@@ -1,14 +1,11 @@
 import 'dart:io';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/models/industry_segments.dart';
-import 'package:find_easy/page/register/firestore_info.dart';
-import 'package:find_easy/page/register/membership.dart';
+import 'package:find_easy/page/register/select_business_category.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/head_text.dart';
-import 'package:find_easy/widgets/image_container.dart';
 import 'package:find_easy/widgets/image_pick_dialog.dart';
-import 'package:find_easy/widgets/image_text_container.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:find_easy/widgets/text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -34,11 +31,11 @@ class _BusinessRegisterDetailsPageState
   final TextEditingController gstController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController specialNoteController = TextEditingController();
-  final TextEditingController categoryNameController = TextEditingController();
   bool isNext = false;
   String? selectedIndustrySegment;
   bool isImageSelected = false;
   File? _image;
+  String? uploadImagePath;
 
   @override
   void dispose() {
@@ -46,17 +43,7 @@ class _BusinessRegisterDetailsPageState
     gstController.dispose();
     addressController.dispose();
     specialNoteController.dispose();
-    categoryNameController.dispose();
     super.dispose();
-  }
-
-  // SHOW CATEGORY DIALOG
-  void showCategoryDialog() async {
-    await showDialog(
-      context: context,
-      builder: ((context) => const ImageContainer()),
-    );
-    setState(() {});
   }
 
   // SELECT IMAGE
@@ -83,40 +70,38 @@ class _BusinessRegisterDetailsPageState
           setState(() {
             isNext = true;
           });
-          businessImage.addAll({
-            "Image": _image!.path,
-          });
+          uploadImagePath = _image!.path;
           Reference ref = FirebaseStorage.instance
               .ref()
               .child('Profile/Shops')
               .child(FirebaseAuth.instance.currentUser!.uid);
-          await ref
-              .putFile(File(businessImage['Image']!))
-              .whenComplete(() async {
+          await ref.putFile(File(uploadImagePath!)).whenComplete(() async {
             await ref.getDownloadURL().then((value) {
               businessPhotoUrl = value;
             });
           });
-          businessFirestoreData.addAll(
-            {
-              "Name": nameController.text.toString(),
-              "Type": selectedCategory == "Other"
-                  ? categoryNameController.text.toString()
-                  : selectedCategory,
-              "GSTNumber": gstController.text.toString(),
-              "Address": addressController.text.toString(),
-              "Special Note": specialNoteController.text.toString(),
-              "Industry": selectedIndustrySegment,
-              "Image": businessPhotoUrl,
-            },
-          );
+          await FirebaseFirestore.instance
+              .collection('Business')
+              .doc('Data')
+              .collection('Shops')
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .update({
+            "Name": nameController.text.toString(),
+            'Views': 0,
+            'Favorites': [],
+            "GSTNumber": gstController.text.toString(),
+            "Address": addressController.text.toString(),
+            "Special Note": specialNoteController.text.toString(),
+            "Industry": selectedIndustrySegment,
+            "Image": businessPhotoUrl,
+          });
 
           SystemChannels.textInput.invokeMethod('TextInput.hide');
           if (context.mounted) {
             Navigator.of(context).pop();
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: ((context) => const SelectMembershipPage()),
+                builder: ((context) => const SelectBusinessCategoryPage()),
               ),
             );
           }
@@ -222,50 +207,6 @@ class _BusinessRegisterDetailsPageState
                       keyboardType: TextInputType.streetAddress,
                       autoFillHints: const [AutofillHints.streetAddressLevel2],
                     ),
-
-                    // CATEGORY
-                    GestureDetector(
-                      onTap: showCategoryDialog,
-                      child: Container(
-                        margin: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width * 0.055,
-                          vertical: 0,
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        alignment: Alignment.center,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: primary2.withOpacity(0.75),
-                        ),
-                        child: Text(
-                          selectedCategory,
-                          style: TextStyle(
-                            color: primaryDark,
-                            fontWeight: FontWeight.bold,
-                            fontSize: MediaQuery.of(context).size.width * 0.045,
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    // OTHER CATEGORY
-                    selectedCategory == "Other"
-                        ? Column(
-                            children: [
-                              const SizedBox(height: 12),
-                              MyTextFormField(
-                                hintText: "Category Name",
-                                controller: categoryNameController,
-                                borderRadius: 12,
-                                horizontalPadding:
-                                    MediaQuery.of(context).size.width * 0.055,
-                                autoFillHints: null,
-                              ),
-                            ],
-                          )
-                        : Container(),
-                    const SizedBox(height: 16),
 
                     // INDUSTRY SEGMENT
                     Padding(

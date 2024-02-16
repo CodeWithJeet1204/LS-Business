@@ -1,4 +1,5 @@
 import 'package:find_easy/utils/colors.dart';
+import 'package:find_easy/utils/is_payed.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/head_text.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
@@ -54,6 +55,7 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                     isPaying = true;
                   });
                   // Paying Methods
+                  saveIsPayed(true);
                   setState(() {
                     isPaying = false;
                   });

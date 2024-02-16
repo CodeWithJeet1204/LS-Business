@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/first_launch_detection.dart';
 import 'package:find_easy/page/intro/intro_page_view.dart';
 import 'package:find_easy/page/main/add/brand/add_brand_page.dart';
@@ -91,19 +90,6 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  Future<bool> isDetailsAdded() async {
-    final userDocSnap = await FirebaseFirestore.instance
-        .collection('Business')
-        .doc("Owners")
-        .collection("Users")
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-
-    bool isAdded = userDocSnap['detailsAdded'];
-    return isAdded;
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

@@ -3,7 +3,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/models/membership_pricings.dart';
 import 'package:find_easy/page/main/main_page.dart';
-import 'package:find_easy/page/register/firestore_info.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/head_text.dart';
@@ -24,6 +23,7 @@ class SelectMembershipPage extends StatefulWidget {
 }
 
 class _SelectMembershipPageState extends State<SelectMembershipPage> {
+  final FirebaseFirestore store = FirebaseFirestore.instance;
   bool isBasicSelected = false;
   bool isGoldSelected = false;
   bool isPremiumSelected = false;
@@ -121,31 +121,23 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
 
   @override
   Widget build(BuildContext context) {
-    final FirebaseFirestore store = FirebaseFirestore.instance;
     final double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: SingleChildScrollView(
-          child: SizedBox(
-            height: 900,
-            child: Column(
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Container(),
-                ),
-                const HeadText(text: "MEMBERSHIPS"),
-                Expanded(
-                  flex: 2,
-                  child: Container(),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(width: width * 0.033),
-                    Container(
+          child: Column(
+            children: [
+              SizedBox(height: width * 0.1),
+              const HeadText(text: "SELECT\nMEMBERSHIP"),
+              SizedBox(height: width * 0.1),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: width * 0.033),
+                    child: Container(
                       decoration: BoxDecoration(
                         color: primary2,
                         borderRadius: BorderRadius.circular(12),
@@ -183,134 +175,124 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                         },
                       ),
                     ),
-                    Expanded(child: Container()),
-                    IconButton(
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: width * 0.033),
+                    child: IconButton(
                       onPressed: showInfoDialog,
                       icon: const Icon(
                         Icons.info_outline,
                         color: primaryDark,
                       ),
                     ),
-                    SizedBox(width: width * 0.033),
-                  ],
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Container(),
-                ),
-                LayoutBuilder(builder: (context, constraints) {
+                  ),
+                ],
+              ),
+              SizedBox(height: width * 0.025),
+
+              // BASIC
+              MembershipCard(
+                isSelected: isBasicSelected,
+                selectedColor: white,
+                selectedBorderColor: Colors.black,
+                name: "BASIC",
+                price: showPrices("BASIC"),
+                textColor: const Color.fromARGB(255, 61, 60, 60),
+                priceTextColor: const Color.fromARGB(255, 81, 81, 81),
+                benefitBackSelectedColor:
+                    const Color.fromARGB(255, 196, 196, 196),
+                width: width,
+                benefit1: 1,
+                benefit2: 2,
+                benefit3: 3,
+                storageSize: 100,
+                storageUnit: "MB",
+                onTap: () {
+                  if (selectedDuration == "Duration") {
+                    mySnackBar(context, "Please select a Duration first");
+                  } else {
+                    setState(() {
+                      isBasicSelected = true;
+                      isGoldSelected = false;
+                      isPremiumSelected = false;
+                      currentBasicPrice = int.parse(showPrices("BASIC"));
+                      currentMembership = "BASIC";
+                    });
+                  }
+                },
+              ),
+
+              // GOLD
+              MembershipCard(
+                isSelected: isGoldSelected,
+                selectedColor: const Color.fromARGB(255, 253, 243, 154),
+                selectedBorderColor: const Color.fromARGB(255, 93, 76, 0),
+                name: "GOLD",
+                price: showPrices("GOLD"),
+                textColor: const Color.fromARGB(255, 94, 86, 0),
+                priceTextColor: const Color.fromARGB(255, 102, 92, 0),
+                benefitBackSelectedColor:
+                    const Color.fromARGB(255, 200, 182, 19),
+                width: width,
+                benefit1: 1,
+                benefit2: 2,
+                benefit3: 3,
+                storageSize: 2,
+                onTap: () {
+                  if (selectedDuration == "Duration") {
+                    mySnackBar(context, "Please select a Duration first");
+                  } else {
+                    setState(() {
+                      isBasicSelected = false;
+                      isGoldSelected = true;
+                      isPremiumSelected = false;
+                      currentGoldPrice = int.parse(showPrices("GOLD"));
+                      currentMembership = "GOLD";
+                    });
+                  }
+                },
+              ),
+
+              // PREMIUM
+              LayoutBuilder(
+                builder: (context, constraints) {
                   return MembershipCard(
-                    isSelected: isBasicSelected,
-                    selectedColor: white,
-                    selectedBorderColor: Colors.black,
-                    name: "BASIC",
-                    price: showPrices("BASIC"),
-                    textColor: const Color.fromARGB(255, 61, 60, 60),
-                    priceTextColor: const Color.fromARGB(255, 81, 81, 81),
+                    isSelected: isPremiumSelected,
+                    selectedColor: const Color.fromARGB(255, 202, 226, 238),
+                    selectedBorderColor: Colors.blueGrey.shade600,
+                    name: "PREMIUM",
+                    price: showPrices("PREMIUM"),
+                    textColor: const Color.fromARGB(255, 43, 72, 87),
+                    priceTextColor: const Color.fromARGB(255, 67, 92, 106),
                     benefitBackSelectedColor:
-                        const Color.fromARGB(255, 196, 196, 196),
+                        const Color.fromARGB(255, 112, 140, 157),
                     width: constraints.maxWidth,
                     benefit1: 1,
                     benefit2: 2,
                     benefit3: 3,
-                    storageSize: 100,
-                    storageUnit: "MB",
+                    storageSize: 5,
                     onTap: () {
                       if (selectedDuration == "Duration") {
                         mySnackBar(context, "Please select a Duration first");
                       } else {
                         setState(() {
-                          isBasicSelected = true;
+                          isBasicSelected = false;
                           isGoldSelected = false;
-                          isPremiumSelected = false;
-                          currentBasicPrice = int.parse(showPrices("BASIC"));
-                          currentMembership = "BASIC";
+                          isPremiumSelected = true;
+                          currentPremiumPrice =
+                              int.parse(showPrices("PREMIUM"));
+                          currentMembership = "PREMIUM";
                         });
                       }
                     },
                   );
-                }),
-                Expanded(
-                  flex: 1,
-                  child: Container(),
-                ),
-                LayoutBuilder(
-                  builder: (context, constraints) {
-                    return MembershipCard(
-                      isSelected: isGoldSelected,
-                      selectedColor: const Color.fromARGB(255, 253, 243, 154),
-                      selectedBorderColor: const Color.fromARGB(255, 93, 76, 0),
-                      name: "GOLD",
-                      price: showPrices("GOLD"),
-                      textColor: const Color.fromARGB(255, 94, 86, 0),
-                      priceTextColor: const Color.fromARGB(255, 102, 92, 0),
-                      benefitBackSelectedColor:
-                          const Color.fromARGB(255, 200, 182, 19),
-                      width: constraints.maxWidth,
-                      benefit1: 1,
-                      benefit2: 2,
-                      benefit3: 3,
-                      storageSize: 2,
-                      onTap: () {
-                        if (selectedDuration == "Duration") {
-                          mySnackBar(context, "Please select a Duration first");
-                        } else {
-                          setState(() {
-                            isBasicSelected = false;
-                            isGoldSelected = true;
-                            isPremiumSelected = false;
-                            currentGoldPrice = int.parse(showPrices("GOLD"));
-                            currentMembership = "GOLD";
-                          });
-                        }
-                      },
-                      // }),
-                    );
-                  },
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(),
-                ),
-                LayoutBuilder(
-                  builder: (context, constraints) {
-                    return MembershipCard(
-                      isSelected: isPremiumSelected,
-                      selectedColor: const Color.fromARGB(255, 202, 226, 238),
-                      selectedBorderColor: Colors.blueGrey.shade600,
-                      name: "PREMIUM",
-                      price: showPrices("PREMIUM"),
-                      textColor: const Color.fromARGB(255, 43, 72, 87),
-                      priceTextColor: const Color.fromARGB(255, 67, 92, 106),
-                      benefitBackSelectedColor:
-                          const Color.fromARGB(255, 112, 140, 157),
-                      width: constraints.maxWidth,
-                      benefit1: 1,
-                      benefit2: 2,
-                      benefit3: 3,
-                      storageSize: 5,
-                      onTap: () {
-                        if (selectedDuration == "Duration") {
-                          mySnackBar(context, "Please select a Duration first");
-                        } else {
-                          setState(() {
-                            isBasicSelected = false;
-                            isGoldSelected = false;
-                            isPremiumSelected = true;
-                            currentPremiumPrice =
-                                int.parse(showPrices("PREMIUM"));
-                            currentMembership = "PREMIUM";
-                          });
-                        }
-                      },
-                    );
-                  },
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Container(),
-                ),
-                MyButton(
+                },
+              ),
+
+              // PAY BUTTON
+              Padding(
+                padding: EdgeInsets.only(bottom: width * 0.0225),
+                child: MyButton(
                   text: selectPrice(isBasicSelected, isGoldSelected,
                                   isPremiumSelected) !=
                               null &&
@@ -348,42 +330,23 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                           setState(() {
                             isPaying = true;
                           });
+
                           // Pay
-
-                          await store
-                              .collection('Business')
-                              .doc('Owners')
-                              .collection('Users')
-                              .doc(FirebaseAuth.instance.currentUser!.uid)
-                              .set({
-                            'detailsAdded': true,
-                          });
-
-                          businessFirestoreData.addAll({
-                            'MembershipName': currentMembership.toString(),
-                            'MembershipDuration': selectedDuration.toString(),
-                            'MembershipTime': DateTime.now().toString(),
-                          });
-                          await store
-                              .collection('Business')
-                              .doc('Owners')
-                              .collection('Users')
-                              .doc(FirebaseAuth.instance.currentUser!.uid)
-                              .update(userFirestoreData);
 
                           await store
                               .collection('Business')
                               .doc('Owners')
                               .collection('Shops')
                               .doc(FirebaseAuth.instance.currentUser!.uid)
-                              .set(businessFirestoreData);
+                              .update({
+                            'MembershipName': currentMembership.toString(),
+                            'MembershipDuration': selectedDuration.toString(),
+                            'MembershipTime': DateTime.now().toString(),
+                          });
 
                           setState(() {
                             isPaying = false;
                           });
-                          SystemChannels.textInput
-                              .invokeMethod('TextInput.hide');
-                          setState(() {});
                           if (FirebaseAuth.instance.currentUser != null) {
                             if (context.mounted) {
                               Navigator.of(context).pushAndRemoveUntil(
@@ -410,12 +373,8 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                   isLoading: isPaying,
                   horizontalPadding: width * 0.01125,
                 ),
-                Expanded(
-                  flex: 1,
-                  child: Container(),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

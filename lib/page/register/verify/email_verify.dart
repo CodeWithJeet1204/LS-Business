@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/firebase/auth_methods.dart';
 import 'package:find_easy/page/register/user_register_details.dart';
 import 'package:find_easy/utils/colors.dart';
@@ -17,6 +18,10 @@ class EmailVerifyPage extends StatefulWidget {
 }
 
 class _EmailVerifyPageState extends State<EmailVerifyPage> {
+  // ignore: no_leading_underscores_for_local_identifiers
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final store = FirebaseFirestore.instance;
+  final AuthMethods auth = AuthMethods();
   bool checkingEmailVerified = false;
   bool canResendEmail = false;
   Timer? timer;
@@ -52,10 +57,6 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: no_leading_underscores_for_local_identifiers
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    final AuthMethods auth = AuthMethods();
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
@@ -81,6 +82,14 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
                 if (_auth.currentUser!.emailVerified) {
                   setState(() {
                     checkingEmailVerified = false;
+                  });
+                  await store
+                      .collection('Business')
+                      .doc('Data')
+                      .collection('Users')
+                      .doc(_auth.currentUser!.uid)
+                      .update({
+                    'emailVerified': true,
                   });
                   if (context.mounted) {
                     Navigator.of(context).pop();

@@ -601,70 +601,84 @@ class _AddProductPage1State extends State<AddProductPage1> {
                           ),
                           child: Column(
                             children: [
-                              SizedBox(
-                                width: width,
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: width * 0.025,
-                                    vertical: 4,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "Available",
-                                        style: TextStyle(
-                                          color: primaryDark,
-                                          fontSize: width * 0.06,
-                                          fontWeight: FontWeight.w500,
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    isAvailable = !isAvailable;
+                                  });
+                                },
+                                child: SizedBox(
+                                  width: width,
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: width * 0.025,
+                                      vertical: 4,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Available",
+                                          style: TextStyle(
+                                            color: primaryDark,
+                                            fontSize: width * 0.06,
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                         ),
-                                      ),
-                                      Checkbox(
-                                        activeColor: primaryDark,
-                                        checkColor: white,
-                                        value: isAvailable,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            isAvailable = value!;
-                                          });
-                                        },
-                                      ),
-                                    ],
+                                        Checkbox(
+                                          activeColor: primaryDark,
+                                          checkColor: white,
+                                          value: isAvailable,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              isAvailable = value!;
+                                            });
+                                          },
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
                               const Divider(),
-                              SizedBox(
-                                width: width,
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: width * 0.025,
-                                    vertical: 4,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "Out Of Stock",
-                                        style: TextStyle(
-                                          color: primaryDark,
-                                          fontSize: width * 0.06,
-                                          fontWeight: FontWeight.w500,
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    isAvailable = !isAvailable;
+                                  });
+                                },
+                                child: SizedBox(
+                                  width: width,
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: width * 0.025,
+                                      vertical: 4,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Out Of Stock",
+                                          style: TextStyle(
+                                            color: primaryDark,
+                                            fontSize: width * 0.06,
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                         ),
-                                      ),
-                                      Checkbox(
-                                        activeColor: primaryDark,
-                                        checkColor: white,
-                                        value: !isAvailable,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            isAvailable = !value!;
-                                          });
-                                        },
-                                      ),
-                                    ],
+                                        Checkbox(
+                                          activeColor: primaryDark,
+                                          checkColor: white,
+                                          value: !isAvailable,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              isAvailable = !value!;
+                                            });
+                                          },
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),

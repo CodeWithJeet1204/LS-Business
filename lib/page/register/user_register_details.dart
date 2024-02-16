@@ -1,7 +1,7 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/page/register/business_register_details.dart';
-import 'package:find_easy/page/register/firestore_info.dart';
 import 'package:find_easy/provider/sign_in_method_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
@@ -37,6 +37,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
   bool isImageSelected = false;
   File? _image;
   bool isNext = false;
+  String? uploadImagePath;
 
   @override
   void dispose() {
@@ -64,9 +65,9 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: no_leading_underscores_for_local_identifiers
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    final String uid = _auth.currentUser!.uid;
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final store = FirebaseFirestore.instance;
+    final String uid = auth.currentUser!.uid;
     final signInMethodProvider = Provider.of<SignInMethodProvider>(context);
     final double width = MediaQuery.of(context).size.width;
 
@@ -176,31 +177,36 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                   setState(() {
                                     isNext = true;
                                   });
-                                  userImage.addAll({
-                                    "Image": _image!.path,
-                                  });
+                                  uploadImagePath = _image!.path;
                                   Reference ref = FirebaseStorage.instance
                                       .ref()
                                       .child('Profile/Owners')
                                       .child(FirebaseAuth
                                           .instance.currentUser!.uid);
                                   await ref
-                                      .putFile(File(userImage['Image']!))
+                                      .putFile(File(uploadImagePath!))
                                       .whenComplete(() async {
                                     await ref.getDownloadURL().then((value) {
                                       userPhotoUrl = value;
                                     });
                                   });
                                   signInMethodProvider.isGoogleChosen
-                                      ? userFirestoreData.addAll(
-                                          {
-                                            "Phone Number":
-                                                phoneController.text,
-                                            "Image": userPhotoUrl,
-                                          },
-                                        )
+                                      ? await store
+                                          .collection('Business')
+                                          .doc('Data')
+                                          .collection('Users')
+                                          .doc(auth.currentUser!.uid)
+                                          .update({
+                                          "Phone Number": phoneController.text,
+                                          "Image": userPhotoUrl,
+                                        })
                                       : signInMethodProvider.isNumberChosen
-                                          ? userFirestoreData.addAll({
+                                          ? await store
+                                              .collection('Business')
+                                              .doc('Data')
+                                              .collection('Users')
+                                              .doc(auth.currentUser!.uid)
+                                              .update({
                                               "uid": uid,
                                               "Email": emailController.text
                                                   .toString(),
@@ -209,7 +215,12 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                               "Image": userPhotoUrl,
                                             })
                                           : signInMethodProvider.isEmailChosen
-                                              ? userFirestoreData.addAll({
+                                              ? await store
+                                                  .collection('Business')
+                                                  .doc('Data')
+                                                  .collection('Users')
+                                                  .doc(auth.currentUser!.uid)
+                                                  .update({
                                                   "uid": uid,
                                                   "Phone Number":
                                                       phoneController.text
@@ -220,8 +231,10 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                                 })
                                               : context.mounted
                                                   ? {
-                                                      mySnackBar(context,
-                                                          "Some error occured")
+                                                      mySnackBar(
+                                                        context,
+                                                        "Some error occured",
+                                                      )
                                                     }
                                                   : null;
                                   setState(() {

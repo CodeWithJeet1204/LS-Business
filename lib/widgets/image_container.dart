@@ -1,11 +1,15 @@
 import 'package:find_easy/models/business_categories.dart';
+import 'package:find_easy/models/household_categories.dart';
 import 'package:find_easy/widgets/image_text_container.dart';
 import 'package:flutter/material.dart';
 
 class ImageContainer extends StatelessWidget {
   const ImageContainer({
     super.key,
+    required this.isShop,
   });
+
+  final bool isShop;
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +27,12 @@ class ImageContainer extends StatelessWidget {
               crossAxisCount: 2),
           itemBuilder: ((context, index) {
             return ImageTextContainer(
-              imageUrl: businessCategories[index][1],
-              text: businessCategories[index][0],
+              imageUrl: isShop
+                  ? businessCategories[index][1]
+                  : householdCategories[index][1],
+              text: isShop
+                  ? businessCategories[index][0]
+                  : householdCategories[index][1],
             );
           }),
         ),

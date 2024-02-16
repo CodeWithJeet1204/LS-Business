@@ -1,6 +1,6 @@
 // ignore_for_file: unnecessary_null_comparison
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/models/category_properties.dart';
+import 'package:find_easy/models/business_category_properties.dart';
 import 'package:find_easy/page/main/main_page.dart';
 import 'package:find_easy/provider/add_product_provider.dart';
 import 'package:find_easy/utils/colors.dart';
@@ -302,27 +302,27 @@ class _AddProductPage2State extends State<AddProductPage2> {
   }
 
   String getPropertiesKeys(int index) {
-    return categoryProperties[shopTypes]![index][0];
+    return businessCategoryProperties[shopTypes]![index][0];
   }
 
   String getPropertiesHintText(int index) {
-    return categoryProperties[shopTypes]![index][1];
+    return businessCategoryProperties[shopTypes]![index][1];
   }
 
   int getNoOfAnswers(int index) {
-    return categoryProperties[shopTypes]![index][2];
+    return businessCategoryProperties[shopTypes]![index][2];
   }
 
   List<String> getDropDownItems(int index) {
-    return categoryProperties[shopTypes]![index][3];
+    return businessCategoryProperties[shopTypes]![index][3];
   }
 
   TextInputType getPropertiesInputType(int index) {
-    return categoryProperties[shopTypes]![index][4];
+    return businessCategoryProperties[shopTypes]![index][4];
   }
 
   int getMaxLines(int index) {
-    return categoryProperties[shopTypes]![index][5];
+    return businessCategoryProperties[shopTypes]![index][5];
   }
 
   bool getChangeBool(int index) {
@@ -334,7 +334,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
   }
 
   bool getCompulsory(int index) {
-    return categoryProperties[shopTypes]![index][6];
+    return businessCategoryProperties[shopTypes]![index][6];
   }
 
   @override

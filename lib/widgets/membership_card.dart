@@ -45,15 +45,20 @@ class MembershipCard extends StatefulWidget {
 class _MembershipCardState extends State<MembershipCard> {
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: widget.isSelected ? 8 : 12),
+      padding: EdgeInsets.symmetric(
+        horizontal: widget.isSelected ? width * 0.0225 : width * 0.033,
+        vertical: widget.isSelected ? width * 0.0225 : width * 0.033,
+      ),
       child: GestureDetector(
         onTap: widget.onTap,
         child: Opacity(
           opacity: widget.isSelected ? 1 : 0.6,
           child: Container(
             width: widget.width,
-            height: widget.isSelected ? 210 : 200,
+            height: widget.isSelected ? width * 0.5833 : width * 0.55,
             decoration: BoxDecoration(
               color: widget.selectedColor,
               border: Border.all(

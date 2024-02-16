@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/page/register/firestore_info.dart';
 import 'package:find_easy/page/register/user_register_details.dart';
 import 'package:find_easy/page/register/verify/number_verify.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
@@ -101,11 +100,6 @@ class AuthMethods {
           await FirebaseAuth.instance.signInWithCredential(credential);
       if (userCredential.user != null) {
         if (userCredential.additionalUserInfo!.isNewUser) {
-          userFirestoreData.addAll({
-            "uid": FirebaseAuth.instance.currentUser!.uid,
-            "Name": FirebaseAuth.instance.currentUser!.displayName,
-            "Email": FirebaseAuth.instance.currentUser!.email,
-          });
           if (context.mounted) {
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(

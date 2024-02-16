@@ -97,8 +97,8 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                                 .doc('Owners')
                                 .collection('Users')
                                 .doc(FirebaseAuth.instance.currentUser!.uid)
-                                .set({
-                              'detailsAdded': false,
+                                .update({
+                              'numberVerified': true,
                             });
 
                             setState(() {
