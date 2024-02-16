@@ -19,6 +19,7 @@ class BusinessDetailsPage extends StatefulWidget {
 
 class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
   final FirebaseAuth auth = FirebaseAuth.instance;
+  final storage = FirebaseStorage.instance;
   final nameController = TextEditingController();
   final addressController = TextEditingController();
   final specialNoteController = TextEditingController();
@@ -37,17 +38,21 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
   }
 
   // CHANGE BUSINESS IMAGE
-  void changeImage() async {
+  void changeImage(String previousUrl) async {
     XFile? im = await showImagePickDialog(context);
-    String? userPhotoUrl;
+    String? businessPhotoUrl;
     if (im != null) {
       try {
         setState(() {
           isChangingImage = true;
         });
+
+        await storage.refFromURL(previousUrl).delete();
+
         Map<String, dynamic> updatedUserImage = {
           "Image": im.path,
         };
+
         Reference ref = FirebaseStorage.instance
             .ref()
             .child('Profile/Shops')
@@ -56,11 +61,11 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
             .putFile(File(updatedUserImage['Image']!))
             .whenComplete(() async {
           await ref.getDownloadURL().then((value) {
-            userPhotoUrl = value;
+            businessPhotoUrl = value;
           });
         });
         updatedUserImage = {
-          "Image": userPhotoUrl,
+          "Image": businessPhotoUrl,
         };
         await FirebaseFirestore.instance
             .collection('Business')
@@ -241,7 +246,9 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                       right: -(width * 0.0015),
                                       bottom: -(width * 0.0015),
                                       child: IconButton.filledTonal(
-                                        onPressed: changeImage,
+                                        onPressed: () {
+                                          changeImage(shopData['Image']);
+                                        },
                                         icon: Icon(
                                           Icons.camera_alt_outlined,
                                           size: width * 0.1,

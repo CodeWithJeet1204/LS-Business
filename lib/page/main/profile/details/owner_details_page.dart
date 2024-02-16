@@ -19,6 +19,7 @@ class OwnerDetailsPage extends StatefulWidget {
 
 class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
   final FirebaseAuth auth = FirebaseAuth.instance;
+  final storage = FirebaseStorage.instance;
   final TextEditingController nameController = TextEditingController();
   final TextEditingController numberController = TextEditingController();
   bool isChangingName = false;
@@ -35,7 +36,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
   }
 
   // CHANGE USER IMAGE
-  void changeImage() async {
+  void changeImage(String previousUrl) async {
     XFile? im = await showImagePickDialog(context);
     String? userPhotoUrl;
     if (im != null) {
@@ -43,6 +44,8 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
         setState(() {
           isChangingImage = true;
         });
+        await storage.refFromURL(previousUrl).delete();
+
         Map<String, dynamic> updatedUserImage = {
           "Image": im.path,
         };
@@ -301,7 +304,9 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                       right: -(width * 0.0015),
                                       bottom: -(width * 0.0015),
                                       child: IconButton.filledTonal(
-                                        onPressed: changeImage,
+                                        onPressed: () {
+                                          changeImage(userData['Image']);
+                                        },
                                         icon: Icon(
                                           Icons.camera_alt_outlined,
                                           size: width * 0.1,
