@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/page/main/add/add_page.dart';
-import 'package:find_easy/page/main/analytics/analaytics_page.dart';
+import 'package:find_easy/page/main/analytics/shop_analytics_page.dart';
 import 'package:find_easy/page/main/comments/all_comments_screen.dart';
 import 'package:find_easy/page/main/discount/add_discount_page.dart';
 import 'package:find_easy/page/main/profile/details/business_details_page.dart';
@@ -30,11 +30,11 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
-  int current = 4;
   Widget? detailsPage;
+  int current = 0;
 
   List<Widget> allPages = [
-    const AnalyticsPage(),
+    const ShopAnalyticsPage(),
     const AllCommentPage(),
     const AddPage(),
     const AddDiscountPage(),

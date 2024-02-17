@@ -7,8 +7,10 @@ class InfoColorBox extends StatelessWidget {
     required this.width,
     required this.property,
     required this.color,
+    required this.text,
   });
 
+  final String text;
   final double width;
   final Color color;
   final int property;
@@ -31,7 +33,7 @@ class InfoColorBox extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "LIKES",
+              text,
               style: TextStyle(
                 color: primaryDark2,
                 fontSize: width * 0.04,

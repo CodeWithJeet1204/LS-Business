@@ -88,10 +88,9 @@ class _BusinessRegisterDetailsPageState
               .update({
             "Name": nameController.text.toString(),
             'Views': 0,
-            'Favorites': [],
-            'viewsTimestamps': [],
+            'viewsDateTime': [],
             'Followers': [],
-            'followersTimestamp': [],
+            'followersDateTime': [],
             "GSTNumber": gstController.text.toString(),
             "Address": addressController.text.toString(),
             "Special Note": specialNoteController.text.toString(),

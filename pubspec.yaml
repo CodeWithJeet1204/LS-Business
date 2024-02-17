@@ -51,6 +51,7 @@ dependencies:
   rxdart: ^0.27.7
   flutter_image_compress: ^2.1.0
   image: ^4.1.7
+  fl_chart: ^0.66.2
 
 dev_dependencies:
   flutter_test:

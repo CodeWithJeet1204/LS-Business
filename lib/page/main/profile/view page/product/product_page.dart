@@ -1548,12 +1548,14 @@ class _ProductPageState extends State<ProductPage> {
                               children: [
                                 // LIKES
                                 InfoColorBox(
+                                  text: 'LIKES',
                                   width: width,
                                   property: likes,
                                   color: const Color.fromRGBO(189, 225, 255, 1),
                                 ),
                                 // DISLIKES
                                 InfoColorBox(
+                                  text: 'DISLIKES',
                                   width: width,
                                   property: dislikes,
                                   color: const Color.fromRGBO(206, 206, 206, 1),
@@ -1571,12 +1573,14 @@ class _ProductPageState extends State<ProductPage> {
                               children: [
                                 // VIEWS
                                 InfoColorBox(
+                                  text: 'VIEWS',
                                   width: width,
                                   property: views,
                                   color: const Color.fromRGBO(255, 248, 184, 1),
                                 ),
                                 // SHARES
                                 InfoColorBox(
+                                  text: 'SHARES',
                                   width: width,
                                   property: shares,
                                   color: const Color.fromRGBO(193, 255, 195, 1),
@@ -1593,6 +1597,7 @@ class _ProductPageState extends State<ProductPage> {
                               children: [
                                 // WISHLIST
                                 InfoColorBox(
+                                  text: 'WISHLIST',
                                   width: width,
                                   property: wishList,
                                   color: const Color.fromRGBO(255, 176, 170, 1),
