@@ -2,7 +2,6 @@ import 'package:find_easy/page/main/main_page.dart';
 import 'package:find_easy/page/register/login_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({
@@ -16,12 +15,10 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen>
-    with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
 
     Future.delayed(
       Duration(milliseconds: 1500),
@@ -34,15 +31,6 @@ class _SplashScreenState extends State<SplashScreen>
         );
       },
     );
-  }
-
-  @override
-  void dispose() {
-    SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.manual,
-      overlays: SystemUiOverlay.values,
-    );
-    super.dispose();
   }
 
   @override
@@ -70,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen>
             ),
             SizedBox(height: width * 0.25),
             Text(
-              'Flutter Tips',
+              'Find Easy',
               style: TextStyle(
                 color: primaryDark2,
                 fontSize: width * 0.08875,
