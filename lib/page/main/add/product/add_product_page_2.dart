@@ -261,7 +261,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
           mySnackBar(context, "Product Added");
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-              builder: ((context) => const MainPage(index: 0)),
+              builder: ((context) => const MainPage()),
             ),
             (route) => false,
           );

@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/info_color_box.dart';
@@ -5,19 +6,22 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-class ShopAnalyticsPage extends StatefulWidget {
-  const ShopAnalyticsPage({Key? key}) : super(key: key);
+class ProductAnalyticsPage extends StatefulWidget {
+  const ProductAnalyticsPage({Key? key}) : super(key: key);
 
   @override
-  State<ShopAnalyticsPage> createState() => _ShopAnalyticsPageState();
+  State<ProductAnalyticsPage> createState() => _ProductAnalyticsPageState();
 }
 
-class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
+class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
-  String? selectedStringDuration;
-  DateTime? selectedDuration;
+  String? selectedStringDuration = '7 Days';
+  DateTime? selectedDuration = DateTime.now().subtract(
+    Duration(days: 7),
+  );
 
+  // SELECTING DURATION
   void selectDate(String date) {
     if (date == '24 Hours') {
       setState(() {
@@ -25,7 +29,6 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
           Duration(days: 1),
         );
       });
-      print(selectedDuration);
     }
     if (date == '7 Days') {
       setState(() {
@@ -55,6 +58,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
     }
   }
 
+  // BAR GRAPH DATA TIMED
   Map<int, List<DateTime>> groupDateTimeIntervals(
     DateTime startDateTime,
     List<DateTime> dateTimeList,
@@ -83,27 +87,91 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
     return groupedTimes;
   }
 
+  // BAR CHART ROD DATA
   List<BarChartRodData> convertMapToBarChartRodData(
     Map<int, List<DateTime>> timeMap,
     int groupNumber,
   ) {
-    // Get the list of DateTime objects for the specified groupNumber
     List<DateTime> dateTimeList = timeMap[groupNumber] ?? [];
 
-    // Calculate the count of DateTime objects in the group
     int count = dateTimeList.length;
 
-    // Create a single BarChartRodData object representing the count
     return [BarChartRodData(toY: count.toDouble())];
+  }
+
+  List<PieChartSectionData> productWiseData(Map<String, int> productWiseData) {
+    List<PieChartSectionData> pieChartSections = [];
+
+    int totalViews = productWiseData.values.reduce((sum, views) => sum + views);
+
+    productWiseData.forEach((productName, data) {
+      int dataCount = data;
+      if (dataCount > 0) {
+        double percentage = dataCount / totalViews;
+        double value = totalViews * percentage;
+
+        PieChartSectionData section = PieChartSectionData(
+          value: value.toDouble(),
+          title: productName,
+          titleStyle: TextStyle(
+            color: primaryDark2,
+            fontWeight: FontWeight.w500,
+          ),
+          color: getRandomColor(),
+          radius: 60,
+        );
+        pieChartSections.add(section);
+      }
+    });
+
+    return pieChartSections;
+  }
+
+  // PIE RANDOM COLOR
+  Color getRandomColor() {
+    Random random = Random();
+
+    // Define the three base colors
+    Color baseColor1 = Colors.red;
+    Color baseColor2 = Colors.green;
+    Color baseColor3 = Colors.blue;
+
+    // Define the weights for each color (random)
+    double weight1 = random.nextDouble();
+    double weight2 = random.nextDouble();
+    double weight3 = random.nextDouble();
+    double sumWeights = weight1 + weight2 + weight3;
+
+    // Normalize the weights to sum up to 1
+    weight1 /= sumWeights;
+    weight2 /= sumWeights;
+    weight3 /= sumWeights;
+
+    // Calculate the weighted average of the RGB components
+    int red = (weight1 * baseColor1.red +
+            weight2 * baseColor2.red +
+            weight3 * baseColor3.red)
+        .toInt();
+    int green = (weight1 * baseColor1.green +
+            weight2 * baseColor2.green +
+            weight3 * baseColor3.green)
+        .toInt();
+    int blue = (weight1 * baseColor1.blue +
+            weight2 * baseColor2.blue +
+            weight3 * baseColor3.blue)
+        .toInt();
+
+    // Create the new color
+    return Color.fromARGB(255, red, green, blue);
   }
 
   @override
   Widget build(BuildContext context) {
-    final shopStream = store
+    final productStream = store
         .collection('Business')
-        .doc('Owners')
-        .collection('Shops')
-        .doc(auth.currentUser!.uid)
+        .doc('Data')
+        .collection('Products')
+        .where('vendorId', isEqualTo: auth.currentUser!.uid)
         .snapshots();
 
     return Scaffold(
@@ -113,12 +181,12 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
           builder: (context, constraints) {
             final double width = constraints.maxWidth;
 
-            return SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: width * 0.035,
-                  vertical: width * 0.0125,
-                ),
+            return Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: width * 0.035,
+                vertical: width * 0.0125,
+              ),
+              child: SingleChildScrollView(
                 child: Column(
                   children: [
                     // TITLE & TIME
@@ -131,7 +199,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                         children: [
                           // TITLE
                           Text(
-                            'SHOP DATA',
+                            'PRODUCT DATA',
                             style: TextStyle(
                               color: primaryDark,
                               fontWeight: FontWeight.w500,
@@ -178,9 +246,9 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                       ),
                     ),
 
-                    // SHOP STREAM
+                    // PRODUCT STREAM
                     StreamBuilder(
-                      stream: shopStream,
+                      stream: productStream,
                       builder: (context, snapshot) {
                         if (snapshot.hasError) {
                           return Center(
@@ -195,11 +263,27 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                         }
 
                         if (snapshot.hasData) {
-                          final shopData = snapshot.data!;
+                          final productSnap = snapshot.data!.docs;
+                          Map<String, dynamic> productData = {
+                            'views': 0,
+                            'viewsTimestamp': [],
+                            'likes': 0,
+                            'likesTimestamp': [],
+                          };
+                          productSnap.forEach((element) {
+                            productData['views'] += element['productViews'];
+                            productData['viewsTimestamp'] +=
+                                element['productViewsTimestamp'];
+                            productData['likes'] += element['productLikes'];
+                            productData['likesTimestamp'] +=
+                                element['productLikesTimestamp'];
+                          });
+
                           List<DateTime> viewTimestamps = [];
-                          List<DateTime> followerTimestamps = [];
+                          List<DateTime> likeTimestamps = [];
+
                           for (Timestamp viewDate
-                              in shopData['viewsDateTime']) {
+                              in productData['viewsTimestamp']) {
                             if (selectedDuration != null) {
                               if (viewDate
                                   .toDate()
@@ -211,20 +295,54 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                             }
                           }
 
-                          for (Timestamp followerTimestamp
-                              in shopData['followersDateTime']) {
+                          for (Timestamp likeTimestamp
+                              in productData['likesTimestamp']) {
                             if (selectedDuration != null) {
-                              if (followerTimestamp
+                              if (likeTimestamp
                                   .toDate()
                                   .isAfter(selectedDuration!)) {
-                                followerTimestamps
-                                    .add(followerTimestamp.toDate());
+                                likeTimestamps.add(likeTimestamp.toDate());
                               }
                             } else {
-                              followerTimestamps
-                                  .add(followerTimestamp.toDate());
+                              likeTimestamps.add(likeTimestamp.toDate());
                             }
                           }
+
+                          Map<String, int> productWiseViews = {};
+
+                          productSnap.forEach((element) {
+                            productWiseViews.addAll({
+                              element['productName'].toString():
+                                  (element['productViews']),
+                            });
+                          });
+
+                          Map<String, int> productWiseLikes = {};
+
+                          productSnap.forEach((element) {
+                            productWiseLikes.addAll({
+                              element['productName'].toString():
+                                  (element['productLikes']),
+                            });
+                          });
+
+                          String maxProductViewsKey = '-';
+                          int maxProductViewsValue = 0;
+                          productWiseViews.forEach((key, value) {
+                            if (value > maxProductViewsValue) {
+                              maxProductViewsKey = key;
+                              maxProductViewsValue = value;
+                            }
+                          });
+
+                          String maxProductLikesKey = '-';
+                          int maxProductLikesValue = 0;
+                          productWiseLikes.forEach((key, value) {
+                            if (value > maxProductLikesValue) {
+                              maxProductLikesKey = key;
+                              maxProductLikesValue = value;
+                            }
+                          });
 
                           return Column(
                             children: [
@@ -256,7 +374,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                         children: [
                                           // PROPERTY
                                           Text(
-                                            'Shop Views',
+                                            'Product Views',
                                             style: TextStyle(
                                               color: primaryDark2,
                                               fontWeight: FontWeight.w500,
@@ -454,7 +572,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                 ),
                               ),
 
-                              // TIMED FOLLOWERS
+                              // TIMED LIKES
                               Container(
                                 width: width,
                                 height: width * 0.5,
@@ -482,7 +600,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                         children: [
                                           // PROPERTY
                                           Text(
-                                            'Shop Followers',
+                                            'Product Likes',
                                             style: TextStyle(
                                               color: primaryDark2,
                                               fontWeight: FontWeight.w500,
@@ -491,12 +609,11 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                           ),
                                           // VALUE
                                           Text(
-                                            followerTimestamps.length > 1000000
-                                                ? '${followerTimestamps.length.toString().substring(0)}.${followerTimestamps.length.toString().substring(1, 3)}M'
-                                                : followerTimestamps.length >
-                                                        1000
-                                                    ? '${followerTimestamps.length.toString().substring(0)}.${followerTimestamps.length.toString().substring(1, 3)}k'
-                                                    : followerTimestamps.length
+                                            likeTimestamps.length > 1000000
+                                                ? '${likeTimestamps.length.toString().substring(0)}.${likeTimestamps.length.toString().substring(1, 3)}M'
+                                                : likeTimestamps.length > 1000
+                                                    ? '${likeTimestamps.length.toString().substring(0)}.${likeTimestamps.length.toString().substring(1, 3)}k'
+                                                    : likeTimestamps.length
                                                         .toString(),
                                             style: TextStyle(
                                               color: primaryDark,
@@ -514,7 +631,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                       height: width * 0.375,
                                       child: BarChart(
                                         BarChartData(
-                                          maxY: followerTimestamps.length * 2,
+                                          maxY: likeTimestamps.length * 2,
                                           gridData: FlGridData(
                                             drawVerticalLine: false,
                                           ),
@@ -571,7 +688,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                                         DateTime.now().subtract(
                                                           Duration(days: 1),
                                                         ),
-                                                        followerTimestamps,
+                                                        likeTimestamps,
                                                         24,
                                                       ),
                                                       groupNumber,
@@ -592,7 +709,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                                                 .subtract(
                                                               Duration(days: 7),
                                                             ),
-                                                            followerTimestamps,
+                                                            likeTimestamps,
                                                             7,
                                                           ),
                                                           groupNumber,
@@ -616,7 +733,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                                                     days: 28,
                                                                   ),
                                                                 ),
-                                                                followerTimestamps,
+                                                                likeTimestamps,
                                                                 4,
                                                               ),
                                                               groupNumber,
@@ -641,7 +758,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                                                             365,
                                                                       ),
                                                                     ),
-                                                                    followerTimestamps,
+                                                                    likeTimestamps,
                                                                     12,
                                                                   ),
                                                                   groupNumber,
@@ -666,7 +783,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                                                                 10000,
                                                                           ),
                                                                         ),
-                                                                        followerTimestamps,
+                                                                        likeTimestamps,
                                                                         10,
                                                                       ),
                                                                       groupNumber,
@@ -681,7 +798,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                 ),
                               ),
 
-                              // ALL TIME VIEWS AND FOLLOWERS
+                              // ALL TIME VIEWS AND LIKES
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -690,22 +807,213 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                   InfoColorBox(
                                     text: 'VIEWS',
                                     width: width,
-                                    property: shopData['Views'],
+                                    property: productData['views'],
                                     color: Color.fromARGB(255, 163, 255, 166),
                                   ),
 
-                                  // ALL FOLLOWERS
+                                  // ALL LIKES
                                   InfoColorBox(
-                                    text: 'FOLLOWERS',
+                                    text: 'LIKES',
                                     width: width,
-                                    property:
-                                        (shopData['Followers'] as List).length,
+                                    property: productData['likes'],
                                     color: Color.fromARGB(255, 237, 255, 163),
                                   ),
                                 ],
                               ),
 
-                              // TODO: ADD COMMON FOLLOWERS LOCATION
+                              // PRODUCT WISE VIEWS
+                              Container(
+                                width: width,
+                                height: width * 0.575,
+                                margin: EdgeInsets.symmetric(
+                                  vertical: width * 0.066,
+                                  horizontal: width * 0.01,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: primary2.withOpacity(0.25),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Product Wise Views',
+                                          style: TextStyle(
+                                            color: primaryDark2,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: width * 0.05,
+                                          ),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                left: width * 0.05,
+                                              ),
+                                              child: Text(
+                                                productData['views'] > 1000000
+                                                    ? productData['views']
+                                                            .toString()
+                                                            .substring(0, 1) +
+                                                        '.' +
+                                                        productData['views']
+                                                            .toString()
+                                                            .substring(1, 4) +
+                                                        'M'
+                                                    : productData['views'] >
+                                                            1000
+                                                        ? productData['views']
+                                                                .toString()
+                                                                .substring(
+                                                                    0, 1) +
+                                                            '.' +
+                                                            productData['views']
+                                                                .toString()
+                                                                .substring(
+                                                                    1, 4) +
+                                                            'k'
+                                                        : productData['views']
+                                                            .toString(),
+                                                style: TextStyle(
+                                                  color: primaryDark2,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: width * 0.15,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: width * 0.5,
+                                              height: width * 0.5,
+                                              child: PieChart(
+                                                PieChartData(
+                                                  pieTouchData: PieTouchData(),
+                                                  sections: productWiseData(
+                                                    productWiseViews,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              // PRODUCT WISE LIKES
+                              Container(
+                                width: width,
+                                height: width * 0.575,
+                                margin: EdgeInsets.symmetric(
+                                  vertical: width * 0.066,
+                                  horizontal: width * 0.01,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: primary2.withOpacity(0.25),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Product Wise Likes',
+                                          style: TextStyle(
+                                            color: primaryDark2,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: width * 0.05,
+                                          ),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                left: width * 0.05,
+                                              ),
+                                              child: Text(
+                                                productData['likes'] > 1000000
+                                                    ? productData['likes']
+                                                            .toString()
+                                                            .substring(0, 1) +
+                                                        '.' +
+                                                        productData['likes']
+                                                            .toString()
+                                                            .substring(1, 4) +
+                                                        'M'
+                                                    : productData['likes'] >
+                                                            1000
+                                                        ? productData['likes']
+                                                                .toString()
+                                                                .substring(
+                                                                    0, 1) +
+                                                            '.' +
+                                                            productData['likes']
+                                                                .toString()
+                                                                .substring(
+                                                                    1, 4) +
+                                                            'k'
+                                                        : productData['likes']
+                                                            .toString(),
+                                                style: TextStyle(
+                                                  color: primaryDark2,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: width * 0.15,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: width * 0.5,
+                                              height: width * 0.5,
+                                              child: PieChart(
+                                                PieChartData(
+                                                  pieTouchData: PieTouchData(),
+                                                  sections: productWiseData(
+                                                    productWiseLikes,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              // PRODUCT WITH MOST VIEWS
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  InfoColorBox(
+                                    text: 'Most Viewed',
+                                    property: maxProductViewsKey,
+                                    width: width,
+                                    color: Color.fromRGBO(255, 135, 175, 1),
+                                  ),
+
+                                  // PRODUCT WITH MOST LIKES
+                                  InfoColorBox(
+                                    text: 'Most Liked',
+                                    property: maxProductLikesKey,
+                                    width: width,
+                                    color: Color.fromRGBO(251, 135, 255, 1),
+                                  ),
+                                ],
+                              ),
                             ],
                           );
                         }

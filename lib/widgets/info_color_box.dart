@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,7 @@ class InfoColorBox extends StatelessWidget {
   final String text;
   final double width;
   final Color color;
-  final int property;
+  final dynamic property;
 
   @override
   Widget build(BuildContext context) {
@@ -40,16 +41,37 @@ class InfoColorBox extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            Text(
-              property > 1000
-                  ? "${(property / 1000).toStringAsFixed(2)}k"
-                  : property.toString(),
-              style: TextStyle(
-                color: primaryDark,
-                fontSize: width * 0.12,
-                fontWeight: FontWeight.w600,
-              ),
-            )
+            property.runtimeType == int
+                ? Text(
+                    property > 1000
+                        ? "${(property / 1000).toStringAsFixed(2)}k"
+                        : property.toString(),
+                    style: TextStyle(
+                      color: primaryDark,
+                      fontSize: width * 0.12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  )
+                : SizedBox(
+                    width: width * 0.4,
+                    height: width * 0.155,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: AutoSizeText(
+                        property.toString(),
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        minFontSize: 12,
+                        maxFontSize: 80,
+                        style: TextStyle(
+                          color: primaryDark,
+                          fontSize: width * 0.12,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
           ],
         ),
       ),

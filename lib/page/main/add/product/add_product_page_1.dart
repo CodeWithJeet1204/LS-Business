@@ -157,6 +157,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
               'productShares': 0,
               'productViews': 0,
               'productViewsTimestamp': [],
+              'productLikesTimestamp': [],
               'productWishList': 0,
               'productId': productId,
               'images': _imageDownloadUrl,

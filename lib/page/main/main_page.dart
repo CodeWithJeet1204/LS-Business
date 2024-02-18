@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/page/main/add/add_page.dart';
-import 'package:find_easy/page/main/analytics/shop_analytics_page.dart';
+import 'package:find_easy/page/main/analytics/analytics_page.dart';
 import 'package:find_easy/page/main/comments/all_comments_screen.dart';
 import 'package:find_easy/page/main/discount/add_discount_page.dart';
 import 'package:find_easy/page/main/profile/details/business_details_page.dart';
@@ -18,10 +18,7 @@ import 'package:flutter/material.dart';
 class MainPage extends StatefulWidget {
   const MainPage({
     super.key,
-    this.index,
   });
-
-  final int? index;
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -34,7 +31,7 @@ class _MainPageState extends State<MainPage> {
   int current = 0;
 
   List<Widget> allPages = [
-    const ShopAnalyticsPage(),
+    const AnalyticsPage(),
     const AllCommentPage(),
     const AddPage(),
     const AddDiscountPage(),

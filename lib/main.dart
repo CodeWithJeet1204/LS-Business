@@ -144,7 +144,7 @@ class MyApp extends StatelessWidget {
       home: isFirstLaunch
           ? const IntroPageView()
           : StreamBuilder(
-              stream: FirebaseAuth.instance.authStateChanges(),
+              stream: FirebaseAuth.instance.userChanges(),
               builder: ((context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.active) {
                   if (snapshot.hasData) {
@@ -187,5 +187,4 @@ class MyApp extends StatelessWidget {
 
 // TODO: No of Text Posts and Images Post
 // TODO: Shorts
-// TODO: Analytics
 // TODO: Comments
