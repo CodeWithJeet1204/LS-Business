@@ -698,10 +698,9 @@ class _ProductPageState extends State<ProductPage> {
                       final List tags = productData['Tags'];
 
                       final int likes = productData['productLikes'];
-                      final int dislikes = productData['productDislikes'];
                       final int shares = productData['productShares'];
                       final int views = productData['productViews'];
-                      final int wishList = productData['productWishList'];
+                      final int wishList = productData['productWishlist'];
 
                       bool isAvailable = productData['isAvailable'];
 
@@ -1540,7 +1539,7 @@ class _ProductPageState extends State<ProductPage> {
                             },
                           ),
 
-                          // LIKES & DISLIKES
+                          // LIKES & VIEWS
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 4),
                             child: Row(
@@ -1553,109 +1552,97 @@ class _ProductPageState extends State<ProductPage> {
                                   width: width,
                                   property: likes,
                                   color: const Color.fromRGBO(189, 225, 255, 1),
-                                ),
-                                // DISLIKES
-                                InfoColorBox(
-                                  text: 'DISLIKES',
-                                  width: width,
-                                  property: dislikes,
-                                  color: const Color.fromRGBO(206, 206, 206, 1),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          // VIEWS & SHARES
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 4),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                // VIEWS
+                                ), // VIEWS
                                 InfoColorBox(
                                   text: 'VIEWS',
                                   width: width,
                                   property: views,
                                   color: const Color.fromRGBO(255, 248, 184, 1),
                                 ),
+                              ],
+                            ),
+                          ),
+
+                          // SHARES & SHARES
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
                                 // SHARES
                                 InfoColorBox(
                                   text: 'SHARES',
                                   width: width,
                                   property: shares,
                                   color: const Color.fromRGBO(193, 255, 195, 1),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          // WISHLIST & VIEW ALL INSIGHTS
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 4),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                // WISHLIST
+                                ), // WISHLIST
                                 InfoColorBox(
                                   text: 'WISHLIST',
                                   width: width,
                                   property: wishList,
                                   color: const Color.fromRGBO(255, 176, 170, 1),
                                 ),
-                                // VIEW ALL INSIGHTS
-                                InkWell(
-                                  customBorder: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(14),
+                              ],
+                            ),
+                          ),
+
+                          // VIEW ALL INSIGHTS
+                          Padding(
+                            padding: EdgeInsets.only(
+                              top: width * 0.0125,
+                              bottom: width * 0.0125,
+                              left: width * 0.025,
+                            ),
+                            child: InkWell(
+                              customBorder: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                              radius: width * 0.2,
+                              splashColor: primary2,
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: ((context) => MainPage()),
                                   ),
-                                  radius: width * 0.2,
-                                  splashColor: primary2,
-                                  onTap: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: ((context) => MainPage()),
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    width: width * 0.45,
-                                    height: 100,
-                                    decoration: BoxDecoration(
-                                      color: primary2.withOpacity(0.4),
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsets.only(
-                                        left: width * 0.033,
-                                        top: width * 0.033,
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          SizedBox(
-                                            width: width * 0.225,
-                                            child: Text(
-                                              "View All Products Insights",
-                                              style: TextStyle(
-                                                color: primaryDark2,
-                                                fontSize: width * 0.04,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
+                                );
+                              },
+                              child: Container(
+                                width: width * 0.95,
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  color: primary2.withOpacity(0.4),
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    left: width * 0.033,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        width: width * 0.5,
+                                        child: Text(
+                                          "View All Products Insights",
+                                          style: TextStyle(
+                                            color: primaryDark2,
+                                            fontSize: width * 0.04,
+                                            fontWeight: FontWeight.w500,
                                           ),
-                                          Icon(
-                                            Icons.navigate_next_rounded,
-                                            size: width * 0.095,
-                                          ),
-                                        ],
+                                        ),
                                       ),
-                                    ),
+                                      Icon(
+                                        Icons.navigate_next_rounded,
+                                        size: width * 0.095,
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ],
+                              ),
                             ),
                           ),
                         ],

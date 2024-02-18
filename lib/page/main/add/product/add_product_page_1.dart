@@ -158,7 +158,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
               'productViews': 0,
               'productViewsTimestamp': [],
               'productLikesTimestamp': [],
-              'productWishList': 0,
+              'productWishlist': 0,
               'productId': productId,
               'images': _imageDownloadUrl,
               'datetime': Timestamp.fromMillisecondsSinceEpoch(

@@ -591,7 +591,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                                   "PRICE ₹",
                                   style: TextStyle(
                                     color: isPercentSelected
-                                        ? white
+                                        ? primaryDark.withOpacity(0.33)
                                         : primaryDark.withOpacity(0.9),
                                     fontSize: width * 0.055,
                                     fontWeight: !isPercentSelected

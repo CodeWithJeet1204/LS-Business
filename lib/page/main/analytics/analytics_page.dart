@@ -16,7 +16,7 @@ class _AnalyticsPageState extends State<AnalyticsPage>
   Widget build(BuildContext context) {
     final TabController tabController = TabController(
       initialIndex: 1,
-      length: 3,
+      length: 2,
       vsync: this,
       animationDuration: const Duration(milliseconds: 400),
     );
@@ -65,9 +65,6 @@ class _AnalyticsPageState extends State<AnalyticsPage>
               Tab(
                 text: "PRODUCTS",
               ),
-              Tab(
-                text: "POSTS",
-              ),
             ],
           ),
         ),
@@ -76,7 +73,6 @@ class _AnalyticsPageState extends State<AnalyticsPage>
         controller: tabController,
         children: const [
           ShopAnalyticsPage(),
-          ProductAnalyticsPage(),
           ProductAnalyticsPage(),
         ],
       ),

@@ -627,14 +627,14 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                 decoration: BoxDecoration(
                                   color: !isPercentSelected
                                       ? primary2.withOpacity(0.75)
-                                      : primary2.withOpacity(0.005),
+                                      : primary2.withOpacity(0.05),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Text(
                                   "PRICE ₹",
                                   style: TextStyle(
                                     color: isPercentSelected
-                                        ? white
+                                        ? primaryDark.withOpacity(0.33)
                                         : primaryDark.withOpacity(0.9),
                                     fontSize: width * 0.055,
                                     fontWeight: !isPercentSelected

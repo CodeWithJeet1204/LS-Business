@@ -269,6 +269,8 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                             'viewsTimestamp': [],
                             'likes': 0,
                             'likesTimestamp': [],
+                            'wishlists': 0,
+                            'shares': 0,
                           };
                           productSnap.forEach((element) {
                             productData['views'] += element['productViews'];
@@ -277,6 +279,9 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                             productData['likes'] += element['productLikes'];
                             productData['likesTimestamp'] +=
                                 element['productLikesTimestamp'];
+                            productData['wishlists'] +=
+                                element['productWishlist'];
+                            productData['shares'] += element['productShares'];
                           });
 
                           List<DateTime> viewTimestamps = [];
@@ -821,6 +826,34 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                 ],
                               ),
 
+                              // WISHLIST & SHARES
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: width * 0.015,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    // ALL TIME WISHLIST
+                                    InfoColorBox(
+                                      text: 'WISHLISTS',
+                                      property: productData['wishlists'],
+                                      width: width,
+                                      color: Color.fromRGBO(255, 174, 201, 1),
+                                    ),
+
+                                    // ALL TIME SHARES
+                                    InfoColorBox(
+                                      text: 'SHARES',
+                                      property: productData['shares'],
+                                      width: width,
+                                      color: Color.fromRGBO(253, 182, 255, 1),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
                               // PRODUCT WISE VIEWS
                               Container(
                                 width: width,
@@ -993,11 +1026,12 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                 ),
                               ),
 
-                              // PRODUCT WITH MOST VIEWS
+                              // VIEWS & LIKES
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
+                                  // PRODUCT WITH MOST VIEWS
                                   InfoColorBox(
                                     text: 'Most Viewed',
                                     property: maxProductViewsKey,
