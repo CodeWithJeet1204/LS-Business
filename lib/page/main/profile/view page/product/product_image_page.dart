@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +15,7 @@ class ProductImageView extends StatefulWidget {
 }
 
 class _ProductImageViewState extends State<ProductImageView> {
+  final controller = CarouselController();
   int currentIndex = 0;
 
   @override
@@ -27,14 +29,23 @@ class _ProductImageViewState extends State<ProductImageView> {
 
           return Column(
             children: [
-              SizedBox(
-                width: width,
-                height: width * 1.575,
-                child: InteractiveViewer(
-                  child: Image.network(
-                    widget.imagesUrl[currentIndex],
-                    fit: BoxFit.fitWidth,
-                  ),
+              CarouselSlider(
+                carouselController: controller,
+                items: widget.imagesUrl
+                    .map((e) => Container(
+                          height: width * 8,
+                          child: InteractiveViewer(child: Image.network(e)),
+                        ))
+                    .toList(),
+                options: CarouselOptions(
+                  enableInfiniteScroll: false,
+                  aspectRatio: 0.6125,
+                  enlargeCenterPage: true,
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      controller.animateToPage(index);
+                    });
+                  },
                 ),
               ),
               const SizedBox(height: 12),
@@ -54,7 +65,7 @@ class _ProductImageViewState extends State<ProductImageView> {
                         child: GestureDetector(
                           onTap: () {
                             setState(() {
-                              currentIndex = index;
+                              controller.animateToPage(index);
                             });
                           },
                           child: Container(
