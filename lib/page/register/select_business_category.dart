@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/page/register/services_page.dart';
+import 'package:find_easy/page/register/membership.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/head_text.dart';
@@ -59,7 +59,8 @@ class _SelectBusinessCategoryPageState
         if (context.mounted) {
           Navigator.of(context).pop();
           Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const SelectServicesPage()),
+            MaterialPageRoute(
+                builder: (context) => const SelectMembershipPage()),
           );
         }
       }

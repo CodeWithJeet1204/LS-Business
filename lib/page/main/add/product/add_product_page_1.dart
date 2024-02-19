@@ -35,7 +35,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
   final otherInfoValueController = TextEditingController();
   final searchController = TextEditingController();
 
-  bool isAddingProduct = false;
+  bool isSaving = false;
   final List<File> _image = [];
   int currentImageIndex = 0;
   String? selectedCategory = 'No Category Selected';
@@ -122,7 +122,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
 
         if (productDoesntExists) {
           setState(() {
-            isAddingProduct = true;
+            isSaving = true;
           });
           for (File img in _image) {
             try {
@@ -172,7 +172,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
             false,
           );
           setState(() {
-            isAddingProduct = false;
+            isSaving = false;
           });
           if (context.mounted) {
             mySnackBar(context, "Basic Info Added");
@@ -185,7 +185,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
         }
       } catch (e) {
         setState(() {
-          isAddingProduct = false;
+          isSaving = false;
         });
         if (context.mounted) {
           mySnackBar(context, e.toString());
@@ -234,11 +234,9 @@ class _AddProductPage1State extends State<AddProductPage1> {
           ),
         ],
         bottom: PreferredSize(
-          preferredSize: isAddingProduct
-              ? const Size(double.infinity, 10)
-              : const Size(0, 0),
-          child:
-              isAddingProduct ? const LinearProgressIndicator() : Container(),
+          preferredSize:
+              isSaving ? const Size(double.infinity, 10) : const Size(0, 0),
+          child: isSaving ? const LinearProgressIndicator() : Container(),
         ),
       ),
       body: Padding(

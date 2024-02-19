@@ -1,20 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/page/register/membership.dart';
+import 'package:find_easy/page/main/main_page.dart';
+import 'package:find_easy/provider/add_product_provider.dart';
 import 'package:find_easy/utils/colors.dart';
-import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/check_box_container.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
+import 'package:find_easy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class SelectServicesPage extends StatefulWidget {
-  const SelectServicesPage({super.key});
+class AddProductPage3 extends StatefulWidget {
+  const AddProductPage3({
+    super.key,
+    required this.productId,
+  });
+
+  final String productId;
 
   @override
-  State<SelectServicesPage> createState() => _SelectServicesPageState();
+  State<AddProductPage3> createState() => _AddProductPage3State();
 }
 
-class _SelectServicesPageState extends State<SelectServicesPage> {
+class _AddProductPage3State extends State<AddProductPage3> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   bool isDeliveryAvailable = false;
@@ -24,35 +31,49 @@ class _SelectServicesPageState extends State<SelectServicesPage> {
   bool isGiftWrapAvailable = false;
   bool isBulkSellAvailable = false;
   bool isGSTInvoiceAvailable = false;
-  bool isMembershipAvailable = false;
+  bool isCardOffersAvailable = false;
   int? deliveryRange;
   int? refundRange;
   int? replacementRange;
   bool isSaving = false;
 
-  Future<void> save() async {
+  Future<void> save(AddProductProvider provider) async {
     try {
       setState(() {
         isSaving = true;
       });
+
+      provider.add(
+        {
+          'deliveryAvailable': isDeliveryAvailable,
+          'codAvailable': isDeliveryAvailable ? isCODAvailable : false,
+          'refundAvailable': isRefundAvailable,
+          'replacementAvailable': isReplacementAvailable,
+          'giftWrapAvailable': isGiftWrapAvailable,
+          'bulkSellAvailable': isBulkSellAvailable,
+          'gstInvoiceAvailable': isGSTInvoiceAvailable,
+          'cardOffersAvailable': isCardOffersAvailable,
+          'deliveryRange': deliveryRange,
+          'refundRange': refundRange,
+          'replacementRange': replacementRange,
+        },
+        true,
+      );
+
       await store
           .collection('Business')
           .doc('Owners')
-          .collection('Shops')
-          .doc(auth.currentUser!.uid)
-          .update({
-        'deliveryAvailable': isDeliveryAvailable,
-        'codAvailable': isCODAvailable,
-        'refundAvailable': isRefundAvailable,
-        'replacementAvailable': isReplacementAvailable,
-        'giftWrapAvailable': isGiftWrapAvailable,
-        'bulkSellAvailable': isBulkSellAvailable,
-        'gstInvoiceAvailable': isGSTInvoiceAvailable,
-        'membershipAvailable': isMembershipAvailable,
-        'deliveryRange': deliveryRange,
-        'refundRange': refundRange,
-        'replacementRange': replacementRange,
-      });
+          .collection('Products')
+          .doc(widget.productId)
+          .set(provider.productInfo);
+
+      mySnackBar(context, "Product Added");
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: ((context) => MainPage()),
+        ),
+        (route) => false,
+      );
       setState(() {
         isSaving = false;
       });
@@ -66,9 +87,25 @@ class _SelectServicesPageState extends State<SelectServicesPage> {
 
   @override
   Widget build(BuildContext context) {
+    final productProvider = Provider.of<AddProductProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('SERVICES Available'),
+        title: Text('SERVICES AVAILABLE'),
+        actions: [
+          MyTextButton(
+            onPressed: () {
+              save(productProvider);
+            },
+            text: 'DONE',
+            textColor: primaryDark2,
+          ),
+        ],
+        bottom: PreferredSize(
+          preferredSize:
+              isSaving ? const Size(double.infinity, 10) : const Size(0, 0),
+          child: isSaving ? const LinearProgressIndicator() : Container(),
+        ),
       ),
       body: LayoutBuilder(
         builder: ((context, constraints) {
@@ -84,7 +121,7 @@ class _SelectServicesPageState extends State<SelectServicesPage> {
                 children: [
                   // DELIVERY AVAILABLE
                   CheckBoxContainer(
-                    text: 'Delivery Available ?',
+                    text: 'Self Delivery Available ?',
                     value: isDeliveryAvailable,
                     function: (_) {
                       setState(() {
@@ -313,33 +350,23 @@ class _SelectServicesPageState extends State<SelectServicesPage> {
                   Divider(),
 
                   // MEMBERSHIP
-                  CheckBoxContainer(
-                    text: 'Membership Card / Offer ?',
-                    value: isMembershipAvailable,
-                    function: (_) {
-                      setState(() {
-                        isMembershipAvailable = !isMembershipAvailable;
-                      });
-                    },
-                    width: width,
+                  Padding(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom,
+                    ),
+                    child: CheckBoxContainer(
+                      text: 'Card Offers ?',
+                      value: isCardOffersAvailable,
+                      function: (_) {
+                        setState(() {
+                          isCardOffersAvailable = !isCardOffersAvailable;
+                        });
+                      },
+                      width: width,
+                    ),
                   ),
 
-                  SizedBox(height: width * 0.05),
-
-                  // NEXT BUTTON
-                  MyButton(
-                    text: 'NEXT',
-                    onTap: () async {
-                      await save();
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: ((context) => SelectMembershipPage()),
-                        ),
-                      );
-                    },
-                    isLoading: isSaving,
-                    horizontalPadding: 0,
-                  ),
+                  SizedBox(height: width * 0.0125),
                 ],
               ),
             ),

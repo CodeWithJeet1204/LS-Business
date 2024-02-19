@@ -8,7 +8,6 @@ import 'package:find_easy/page/main/profile/profile_page.dart';
 import 'package:find_easy/page/register/login_page.dart';
 import 'package:find_easy/page/register/membership.dart';
 import 'package:find_easy/page/register/register_cred.dart';
-import 'package:find_easy/page/register/services_page.dart';
 import 'package:find_easy/page/register/user_register_details.dart';
 import 'package:find_easy/page/register/verify/email_verify.dart';
 import 'package:find_easy/utils/colors.dart';
@@ -79,8 +78,6 @@ class _MainPageState extends State<MainPage> {
       } else if (getUserDetailsAdded['Image'] != null &&
           getBusinessDetailsAdded['GSTNumber'] == null) {
         detailsPage = const BusinessDetailsPage();
-      } else if (getBusinessDetailsAdded['deliveryAvailable'] == null) {
-        detailsPage = SelectServicesPage();
       } else if (getUserDetailsAdded['Image'] != null &&
           getBusinessDetailsAdded['GSTNumber'] != null &&
           getBusinessDetailsAdded['MembershipName'] == null) {

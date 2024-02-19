@@ -1,7 +1,7 @@
 // ignore_for_file: unnecessary_null_comparison
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/models/business_category_properties.dart';
-import 'package:find_easy/page/main/main_page.dart';
+import 'package:find_easy/page/main/add/product/add_product_page_3.dart';
 import 'package:find_easy/provider/add_product_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/additional_info_box.dart';
@@ -53,7 +53,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
   String? propertyValue3;
   String? propertyValue4;
   String? propertyValue5;
-  bool isAddingProduct = false;
+  bool isSaving = false;
 
   @override
   void dispose() {
@@ -203,7 +203,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
 
       try {
         setState(() {
-          isAddingProduct = true;
+          isSaving = true;
         });
         properties.addAll({
           'propertyName0': getPropertiesKeys(0),
@@ -237,38 +237,47 @@ class _AddProductPage2State extends State<AddProductPage2> {
           'propertyInputType4': getPropertiesInputType(4) == TextInputType.text,
           'propertyInputType5': getPropertiesInputType(5) == TextInputType.text,
         });
-        await store
-            .collection('Business')
-            .doc('Data')
-            .collection('Products')
-            .doc(widget.productId)
-            .set(provider.productInfo);
+        // await store
+        //     .collection('Business')
+        //     .doc('Data')
+        //     .collection('Products')
+        //     .doc(widget.productId)
+        //     .set(provider.productInfo);
 
-        await store
-            .collection('Business')
-            .doc('Data')
-            .collection('Products')
-            .doc(widget.productId)
-            .update({
-          'Properties': properties,
-          'Tags': tagList,
-        });
+        // await store
+        //     .collection('Business')
+        //     .doc('Data')
+        //     .collection('Products')
+        //     .doc(widget.productId)
+        //     .update({
+        //   'Properties': properties,
+        //   'Tags': tagList,
+        // });
+
+        provider.add(
+          {
+            'Properties': properties,
+            'Tags': tagList,
+          },
+          true,
+        );
 
         setState(() {
-          isAddingProduct = false;
+          isSaving = false;
         });
         if (context.mounted) {
-          mySnackBar(context, "Product Added");
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-              builder: ((context) => const MainPage()),
+              builder: ((context) => AddProductPage3(
+                    productId: widget.productId,
+                  )),
             ),
             (route) => false,
           );
         }
       } catch (e) {
         setState(() {
-          isAddingProduct = false;
+          isSaving = false;
         });
         if (context.mounted) {
           mySnackBar(context, e.toString());
@@ -344,22 +353,20 @@ class _AddProductPage2State extends State<AddProductPage2> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         title: const Text('Additional Info'),
         actions: [
-          IconButton(
+          MyTextButton(
             onPressed: () {
               addProduct(addProductProvider);
             },
-            icon: const Icon(Icons.ios_share),
+            text: 'NEXT',
+            textColor: primaryDark2,
           ),
         ],
         bottom: PreferredSize(
-          preferredSize: isAddingProduct
-              ? const Size(double.infinity, 10)
-              : const Size(0, 0),
-          child:
-              isAddingProduct ? const LinearProgressIndicator() : Container(),
+          preferredSize:
+              isSaving ? const Size(double.infinity, 10) : const Size(0, 0),
+          child: isSaving ? const LinearProgressIndicator() : Container(),
         ),
       ),
       body: shopTypes == ''
