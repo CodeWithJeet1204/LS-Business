@@ -424,7 +424,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                       child: Image.network(
                                         discountData['discountImageUrl'],
                                         width: width / 5,
-                                        height: width / 8.88888,
+                                        height: width / 8.8875,
                                         fit: BoxFit.cover,
                                       ),
                                     ),

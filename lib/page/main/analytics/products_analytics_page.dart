@@ -256,6 +256,12 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                           );
                         }
 
+                        if (snapshot.data!.docs.isEmpty) {
+                          return Center(
+                            child: Text('No Products Added'),
+                          );
+                        }
+
                         if (!snapshot.hasData) {
                           return Center(
                             child: Text('No Data'),

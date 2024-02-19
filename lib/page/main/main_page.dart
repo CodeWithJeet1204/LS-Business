@@ -28,7 +28,7 @@ class _MainPageState extends State<MainPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   Widget? detailsPage;
-  int current = 0;
+  int current = 4;
 
   List<Widget> allPages = [
     const AnalyticsPage(),

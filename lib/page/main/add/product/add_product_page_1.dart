@@ -240,7 +240,9 @@ class _AddProductPage1State extends State<AddProductPage1> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(
+          MediaQuery.of(context).size.width * 0.0225,
+        ),
         child: LayoutBuilder(
           builder: ((context, constraints) {
             double width = constraints.maxWidth;

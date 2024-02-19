@@ -41,9 +41,13 @@ class AuthMethods {
         email: email,
         password: password,
       );
-    } on FirebaseAuthException catch (e) {
+      await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } catch (e) {
       if (context.mounted) {
-        mySnackBar(context, e.message!);
+        mySnackBar(context, e.toString());
       }
     }
   }

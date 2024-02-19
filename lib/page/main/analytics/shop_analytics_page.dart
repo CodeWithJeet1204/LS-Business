@@ -15,8 +15,10 @@ class ShopAnalyticsPage extends StatefulWidget {
 class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
-  String? selectedStringDuration;
-  DateTime? selectedDuration;
+  String? selectedStringDuration = '7 Days';
+  DateTime? selectedDuration = DateTime.now().subtract(
+    Duration(days: 7),
+  );
 
   void selectDate(String date) {
     if (date == '24 Hours') {

@@ -134,42 +134,47 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                                         context: context,
                                       );
 
-                                      await FirebaseFirestore.instance
-                                          .collection('Business')
-                                          .doc('Owners')
-                                          .collection('Users')
-                                          .doc(_auth.currentUser!.uid)
-                                          .set({
-                                        'Email':
-                                            emailController.text.toString(),
-                                        'emailVerified': false,
-                                        'Image': null,
-                                        'Name': null,
-                                        'Phone Number': null,
-                                        'uid': null,
-                                      });
+                                      if (_auth.currentUser != null) {
+                                        print('abc');
+                                        await FirebaseFirestore.instance
+                                            .collection('Business')
+                                            .doc('Owners')
+                                            .collection('Users')
+                                            .doc(_auth.currentUser!.uid)
+                                            .set({
+                                          'Email':
+                                              emailController.text.toString(),
+                                          'emailVerified': false,
+                                          'Image': null,
+                                          'Name': null,
+                                          'Phone Number': null,
+                                          'uid': null,
+                                        });
 
-                                      await FirebaseFirestore.instance
-                                          .collection('Business')
-                                          .doc('Owners')
-                                          .collection('Shops')
-                                          .doc(_auth.currentUser!.uid)
-                                          .set({
-                                        "Name": null,
-                                        'Views': null,
-                                        'Favorites': null,
-                                        "GSTNumber": null,
-                                        "Address": null,
-                                        "Special Note": null,
-                                        "Industry": null,
-                                        "Image": null,
-                                        "Type": null,
-                                        'MembershipName': null,
-                                        'MembershipDuration': null,
-                                        'MembershipTime': null,
-                                      });
+                                        await FirebaseFirestore.instance
+                                            .collection('Business')
+                                            .doc('Owners')
+                                            .collection('Shops')
+                                            .doc(_auth.currentUser!.uid)
+                                            .set({
+                                          "Name": null,
+                                          'Views': null,
+                                          'Favorites': null,
+                                          "GSTNumber": null,
+                                          "Address": null,
+                                          "Special Note": null,
+                                          "Industry": null,
+                                          "Image": null,
+                                          "Type": null,
+                                          'MembershipName': null,
+                                          'MembershipDuration': null,
+                                          'MembershipTime': null,
+                                        });
 
-                                      signInMethodProvider.chooseEmail();
+                                        signInMethodProvider.chooseEmail();
+                                      } else {
+                                        mySnackBar(context, 'abc');
+                                      }
 
                                       setState(() {
                                         isEmailRegistering = false;
