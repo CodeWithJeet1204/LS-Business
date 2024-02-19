@@ -26,6 +26,7 @@ class BusinessRegisterDetailsPage extends StatefulWidget {
 
 class _BusinessRegisterDetailsPageState
     extends State<BusinessRegisterDetailsPage> {
+  final store = FirebaseFirestore.instance;
   final GlobalKey<FormState> businessFormKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController gstController = TextEditingController();
@@ -80,7 +81,7 @@ class _BusinessRegisterDetailsPageState
               businessPhotoUrl = value;
             });
           });
-          await FirebaseFirestore.instance
+          await store
               .collection('Business')
               .doc('Owners')
               .collection('Shops')

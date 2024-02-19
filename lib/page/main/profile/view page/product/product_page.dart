@@ -641,6 +641,17 @@ class _ProductPageState extends State<ProductPage> {
     }
   }
 
+  // BLUR HASH IMAGE
+  // Future<String> blurHashImage(String imageUrl) async {
+  //   var response = await http.get(Uri.parse(imageUrl));
+  //   Uint8List imageData = response.bodyBytes;
+
+  //   // Generate Blurhash string
+  //   String blurhash = await BlurHash.encode(imageData, 10, 10);
+
+  //   return blurhash;
+  // }
+
   @override
   Widget build(BuildContext context) {
     final productStream = store
@@ -775,7 +786,7 @@ class _ProductPageState extends State<ProductPage> {
                                               BorderRadius.circular(12),
                                         ),
                                         child: isImageChanging
-                                            ? const CircularProgressIndicator()
+                                            ? CircularProgressIndicator()
                                             : GestureDetector(
                                                 onTap: () {
                                                   Navigator.of(context).push(
