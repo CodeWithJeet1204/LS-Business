@@ -706,8 +706,6 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                   ),
                                 ],
                               ),
-
-                              // TODO: ADD COMMON FOLLOWERS LOCATION
                             ],
                           );
                         }

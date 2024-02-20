@@ -1,4 +1,5 @@
 import 'package:find_easy/utils/colors.dart';
+import 'package:find_easy/utils/size.dart';
 import 'package:flutter/material.dart';
 
 class MyButton extends StatelessWidget {
@@ -29,7 +30,9 @@ class MyButton extends StatelessWidget {
           vertical: verticalPadding,
         ),
         padding: EdgeInsets.symmetric(
-          vertical: MediaQuery.of(context).size.width * 0.033,
+          vertical: MediaQuery.of(context).size.width < screenSize
+              ? MediaQuery.of(context).size.width * 0.033
+              : MediaQuery.of(context).size.width * 0.0066,
         ),
         alignment: Alignment.center,
         width: double.infinity,
@@ -47,7 +50,9 @@ class MyButton extends StatelessWidget {
                 text,
                 style: TextStyle(
                   color: white,
-                  fontSize: MediaQuery.of(context).size.width * 0.045,
+                  fontSize: MediaQuery.of(context).size.width < screenSize
+                      ? MediaQuery.of(context).size.width * 0.045
+                      : MediaQuery.of(context).size.width * 0.015,
                 ),
               ),
       ),

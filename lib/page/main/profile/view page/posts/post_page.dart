@@ -415,9 +415,7 @@ class _PostPageState extends State<PostPage> {
                               Padding(
                                 padding: const EdgeInsets.only(right: 8),
                                 child: IconButton(
-                                  onPressed: () {
-                                    // TODO Directly navigate to post's comments
-                                  },
+                                  onPressed: () {},
                                   icon:
                                       const Icon(Icons.navigate_next_outlined),
                                   tooltip: "See Comments",

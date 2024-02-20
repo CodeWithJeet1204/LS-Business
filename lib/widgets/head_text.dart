@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:find_easy/utils/colors.dart';
+import 'package:find_easy/utils/size.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -25,7 +26,9 @@ class HeadText extends StatelessWidget {
       textFormat(text),
       textAlign: TextAlign.center,
       style: GoogleFonts.josefinSans(
-        fontSize: MediaQuery.of(context).size.width * 0.0885,
+        fontSize: MediaQuery.of(context).size.width < screenSize
+            ? MediaQuery.of(context).size.width * 0.0885
+            : MediaQuery.of(context).size.width * 0.0425,
         color: primaryDark,
         fontWeight: FontWeight.bold,
       ),

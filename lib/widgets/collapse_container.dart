@@ -1,4 +1,5 @@
 import 'package:find_easy/utils/colors.dart';
+import 'package:find_easy/utils/size.dart';
 import 'package:flutter/material.dart';
 
 class MyCollapseContainer extends StatefulWidget {
@@ -21,18 +22,24 @@ class _MyCollapseContainerState extends State<MyCollapseContainer> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(widget.width * 0.035),
+      padding: EdgeInsets.all(
+        widget.width < screenSize ? widget.width * 0.035 : widget.width * 0.025,
+      ),
       child: ExpansionTile(
         title: Text(
           widget.text,
           style: TextStyle(
             fontWeight: FontWeight.w600,
-            fontSize: widget.width * 0.045,
+            fontSize: widget.width < screenSize
+                ? widget.width * 0.045
+                : widget.width * 0.0175,
           ),
         ),
         initiallyExpanded: false,
         tilePadding: EdgeInsets.symmetric(
-          horizontal: widget.width * 0.0225,
+          horizontal: widget.width < screenSize
+              ? widget.width * 0.0225
+              : widget.width * 0.02,
         ),
         backgroundColor: primary2.withOpacity(0.5),
         collapsedBackgroundColor: primary2.withOpacity(0.8),
