@@ -85,8 +85,6 @@ void main() async {
       child: const MyApp(),
     ),
   );
-  if (FirebaseAuth.instance.currentUser == null) {
-  } else {}
 }
 
 class MyApp extends StatelessWidget {
@@ -143,7 +141,7 @@ class MyApp extends StatelessWidget {
         '/analyticsPage': (context) => const ShopAnalyticsPage(),
       },
       debugShowCheckedModeBanner: false,
-      home: !isFirstLaunch
+      home: isFirstLaunch
           ? const IntroPageView()
           : StreamBuilder(
               stream: FirebaseAuth.instance.userChanges(),
