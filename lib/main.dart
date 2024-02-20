@@ -4,6 +4,7 @@ import 'package:find_easy/page/main/add/brand/add_brand_page.dart';
 import 'package:find_easy/page/main/add/category/add_category_page.dart';
 import 'package:find_easy/page/main/analytics/shop_analytics_page.dart';
 import 'package:find_easy/page/main/profile/data/all_brand_page.dart';
+import 'package:find_easy/page/main/profile/data/all_discounts_page.dart';
 import 'package:find_easy/page/main/profile/data/all_post_page.dart';
 import 'package:find_easy/page/main/profile/data/all_product_page.dart';
 import 'package:find_easy/page/main/profile/details/business_details_page.dart';
@@ -137,7 +138,8 @@ class MyApp extends StatelessWidget {
         '/postsPage': (context) => const AllPostsPage(),
         '/categoriesPage': (context) => const AllCategoriesPage(),
         '/productsPage': (context) => const AllProductsPage(),
-        '/brandPage': (context) => const AllBrandPage(),
+        '/discountsPage': (context) => const AllDiscountPage(),
+        '/brandsPage': (context) => const AllBrandPage(),
         '/analyticsPage': (context) => const ShopAnalyticsPage(),
       },
       debugShowCheckedModeBanner: false,

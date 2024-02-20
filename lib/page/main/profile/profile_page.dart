@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/page/main/profile/data/all_discounts_page.dart';
 import 'package:find_easy/utils/colors.dart';
+import 'package:find_easy/widgets/small_text_container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -78,14 +78,6 @@ class _ProfilePageState extends State<ProfilePage> {
             .doc(FirebaseAuth.instance.currentUser!.uid)
             .snapshots();
 
-    Stream<DocumentSnapshot<Map<String, dynamic>>> userStream =
-        FirebaseFirestore.instance
-            .collection('Business')
-            .doc('Owners')
-            .collection('Users')
-            .doc(FirebaseAuth.instance.currentUser!.uid)
-            .snapshots();
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: primary,
@@ -114,12 +106,12 @@ class _ProfilePageState extends State<ProfilePage> {
                   // INFO
                   Container(
                     width: width,
-                    height: width * 0.625,
-                    alignment: Alignment.centerLeft,
+                    height: width * 0.5625,
+                    alignment: Alignment.center,
                     margin: EdgeInsets.only(bottom: width * 0.01),
                     padding: EdgeInsets.symmetric(
                       horizontal: width * 0.045,
-                      vertical: width * 0.02125,
+                      vertical: width * 0.01125,
                     ),
                     color: primary,
                     child: StreamBuilder(
@@ -135,190 +127,52 @@ class _ProfilePageState extends State<ProfilePage> {
                             final shopData = snapshot.data!;
 
                             return Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 // IMAGE, NAME & INFO
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    ClipOval(
-                                      child: CircleAvatar(
-                                        radius: width * 0.1195,
-                                        backgroundColor: primary2,
-                                        backgroundImage: NetworkImage(
-                                          shopData['Image'] ??
-                                              'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: width * 0.055,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        SizedBox(
-                                          width: width * 0.6,
-                                          child: Text(
-                                            shopData['Name']?.toUpperCase() ??
-                                                'N/A',
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontSize: width * 0.07,
-                                              fontWeight: FontWeight.w700,
-                                              color: primaryDark.withBlue(5),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: width * 0.33,
-                                          child: Text(
-                                            shopData['Type'] ?? 'N/A',
-                                            style: TextStyle(
-                                              fontSize: width * 0.0425,
-                                              fontWeight: FontWeight.w600,
-                                              color:
-                                                  primaryDark.withOpacity(0.85),
-                                            ),
-                                            textAlign: TextAlign.start,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 12),
-
-                                // USER INFO & ADDRESS
-                                Container(
-                                  width: width,
-                                  height: width * 0.3,
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: width * 0.0225,
-                                    vertical: width * 0.02125,
+                                CircleAvatar(
+                                  radius: width * 0.1195,
+                                  backgroundColor: primary2,
+                                  backgroundImage: NetworkImage(
+                                    shopData['Image'] ??
+                                        'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
                                   ),
-                                  decoration: BoxDecoration(
-                                    color: primary2.withOpacity(1),
-                                    border: Border.all(
-                                      color: primary2.withBlue(200),
-                                    ),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: StreamBuilder(
-                                      stream: userStream,
-                                      builder: (context, snapshot) {
-                                        if (snapshot.hasError) {
-                                          return const Center(
-                                            child: Text("Something went wrong"),
-                                          );
-                                        }
-
-                                        if (snapshot.hasData) {
-                                          final userData = snapshot.data!;
-                                          return Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  // USER IMAGE
-                                                  CircleAvatar(
-                                                    radius: width * 0.0375,
-                                                    backgroundColor: primary2,
-                                                    backgroundImage:
-                                                        NetworkImage(
-                                                      userData['Image'] ??
-                                                          'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: width * 0.025,
-                                                  ),
-                                                  // OWNER NAME
-                                                  Text(
-                                                    userData['Name'] ?? 'N/A',
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: TextStyle(
-                                                      fontSize: width * 0.05,
-                                                      color: primaryDark
-                                                          .withOpacity(0.9),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                    ),
-                                                    textAlign: TextAlign.start,
-                                                  ),
-                                                ],
-                                              ),
-                                              // ADDRESS
-                                              Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                  vertical: width * 0.01,
-                                                ),
-                                                child: Text(
-                                                  shopData['Address'] ?? 'N/A',
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                    color: primaryDark2,
-                                                    fontSize: width * 0.035,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                              ),
-                                              Divider(
-                                                color: primaryDark2,
-                                                thickness: 0,
-                                                height: width * 0.0225,
-                                              ),
-                                              // SPECIAL NOTE
-                                              Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                  vertical: width * 0.01,
-                                                ),
-                                                child: Text(
-                                                  shopData['Special Note'] ??
-                                                      'N/A',
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                    color: primaryDark,
-                                                    fontSize: width * 0.04,
-                                                    fontWeight: FontWeight.w600,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                        }
-
-                                        // return const Center(
-                                        //   child: CircularProgressIndicator(
-                                        //     color: primaryDark,
-                                        //   ),
-                                        // );
-                                        return Container();
-                                      }),
                                 ),
+                                SizedBox(
+                                  width: width * 0.06,
+                                ),
+                                SizedBox(
+                                  width: width * 0.8,
+                                  child: Text(
+                                    shopData['Name']?.toUpperCase() ?? 'N/A',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: width * 0.07,
+                                      fontWeight: FontWeight.w700,
+                                      color: primaryDark.withBlue(5),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: width * 0.8,
+                                  child: Text(
+                                    shopData['Type'] ?? 'N/A',
+                                    style: TextStyle(
+                                      fontSize: width * 0.0425,
+                                      fontWeight: FontWeight.w600,
+                                      color: primaryDark.withOpacity(0.85),
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                SizedBox(height: width * 0.0275),
                               ],
                             );
                           }
 
-                          // return const CircularProgressIndicator(
-                          //   color: primaryDark,
-                          // );
                           return Container();
                         }),
                   ),
@@ -332,9 +186,13 @@ class _ProfilePageState extends State<ProfilePage> {
                         onTap: () {
                           Navigator.of(context).pushNamed('/ownerDetails');
                         },
+                        splashColor: primary3,
+                        customBorder: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                         child: Container(
                           alignment: Alignment.center,
-                          width: width * 0.4,
+                          width: width * 0.45,
                           padding: EdgeInsets.symmetric(
                             vertical: width * 0.02,
                             horizontal: width * 0.005,
@@ -350,17 +208,22 @@ class _ProfilePageState extends State<ProfilePage> {
                             style: TextStyle(
                               fontSize: width * 0.05,
                               color: primaryDark,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
                       ),
+                      // BUSINESS DETAILS
                       InkWell(
                         onTap: () {
                           Navigator.of(context).pushNamed('/businessDetails');
                         },
+                        splashColor: primary3,
+                        customBorder: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                         child: Container(
-                          width: width * 0.4,
+                          width: width * 0.45,
                           padding: EdgeInsets.symmetric(
                             vertical: width * 0.02,
                             horizontal: width * 0.005,
@@ -377,245 +240,68 @@ class _ProfilePageState extends State<ProfilePage> {
                             style: TextStyle(
                               fontSize: width * 0.05,
                               color: primaryDark,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
                       ),
                     ],
                   ),
-                  const Divider(),
+                  Divider(
+                    height: width * 0.138875,
+                  ),
 
                   // VIEW
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // POSTS
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: width * 0.025,
-                        ),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).pushNamed('/postsPage');
-                          },
-                          child: Container(
-                            alignment: Alignment.centerLeft,
-                            width: width,
-                            height: width * 0.205,
-                            decoration: BoxDecoration(
-                              color: primary2,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 16),
-                                  child: Text(
-                                    "POSTS",
-                                    style: TextStyle(
-                                      fontSize: width * 0.066,
-                                      fontWeight: FontWeight.w800,
-                                      color: primaryDark2,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 4),
-                                  child: Icon(
-                                    Icons.arrow_right_sharp,
-                                    size: width * 0.1125,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                      SmallTextContainer(
+                        text: 'POSTS',
+                        onPressed: () {
+                          Navigator.of(context).pushNamed('/postsPage');
+                        },
+                        width: width,
                       ),
                       const SizedBox(height: 16),
 
                       // CATEGORY
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: width * 0.025,
-                        ),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).pushNamed('/categoriesPage');
-                          },
-                          child: Container(
-                            alignment: Alignment.centerLeft,
-                            width: width,
-                            height: width * 0.205,
-                            decoration: BoxDecoration(
-                              color: primary2,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 16),
-                                  child: Text(
-                                    "CATEGORIES",
-                                    style: TextStyle(
-                                      fontSize: width * 0.066,
-                                      fontWeight: FontWeight.w800,
-                                      color: primaryDark2,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 4),
-                                  child: Icon(
-                                    Icons.arrow_right_sharp,
-                                    size: width * 0.1125,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                      SmallTextContainer(
+                        text: 'CATEGORIES',
+                        onPressed: () {
+                          Navigator.of(context).pushNamed('/categoriesPage');
+                        },
+                        width: width,
                       ),
                       const SizedBox(height: 16),
 
                       // PRODUCTS
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: width * 0.025,
-                        ),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).pushNamed('/productsPage');
-                          },
-                          child: Container(
-                            alignment: Alignment.centerLeft,
-                            width: width,
-                            height: width * 0.205,
-                            decoration: BoxDecoration(
-                              color: primary2,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 16),
-                                  child: Text(
-                                    "PRODUCTS",
-                                    style: TextStyle(
-                                      fontSize: width * 0.066,
-                                      fontWeight: FontWeight.w800,
-                                      color: primaryDark2,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 4),
-                                  child: Icon(
-                                    Icons.arrow_right_sharp,
-                                    size: width * 0.1125,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                      SmallTextContainer(
+                        text: 'PRODUCTS',
+                        onPressed: () {
+                          Navigator.of(context).pushNamed('/productsPage');
+                        },
+                        width: width,
                       ),
                       const SizedBox(height: 16),
 
                       // DISCOUNTS
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: width * 0.025,
-                        ),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: ((context) => const AllDiscountPage()),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            alignment: Alignment.centerLeft,
-                            width: width,
-                            height: width * 0.205,
-                            decoration: BoxDecoration(
-                              color: primary2,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 16),
-                                  child: Text(
-                                    "DISCOUNTS",
-                                    style: TextStyle(
-                                      fontSize: width * 0.066,
-                                      fontWeight: FontWeight.w800,
-                                      color: primaryDark2,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 4),
-                                  child: Icon(
-                                    Icons.arrow_right_sharp,
-                                    size: width * 0.1125,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                      SmallTextContainer(
+                        text: 'DISCOUNTS',
+                        onPressed: () {
+                          Navigator.of(context).pushNamed('/discountsPage');
+                        },
+                        width: width,
                       ),
                       const SizedBox(height: 16),
 
                       // BRAND
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: width * 0.025,
-                        ),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).pushNamed('/brandPage');
-                          },
-                          child: Container(
-                            alignment: Alignment.centerLeft,
-                            width: width,
-                            height: width * 0.205,
-                            decoration: BoxDecoration(
-                              color: primary2,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 16),
-                                  child: Text(
-                                    "BRANDS",
-                                    style: TextStyle(
-                                      fontSize: width * 0.066,
-                                      fontWeight: FontWeight.w800,
-                                      color: primaryDark2,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 4),
-                                  child: Icon(
-                                    Icons.arrow_right_sharp,
-                                    size: width * 0.1125,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                      SmallTextContainer(
+                        text: 'BRANDS',
+                        onPressed: () {
+                          Navigator.of(context).pushNamed('/brandsPage');
+                        },
+                        width: width,
                       ),
                       const SizedBox(height: 8),
                     ],

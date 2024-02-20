@@ -112,7 +112,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("YOUR PRODUCTS"),
+        title: const Text("ALL PRODUCTS"),
         bottom: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,

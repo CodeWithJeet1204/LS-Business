@@ -130,7 +130,7 @@ class _MainPageState extends State<MainPage> {
                 icon: Icon(
                   current != 1 ? Icons.comment_outlined : Icons.comment,
                 ),
-                label: "Comments",
+                label: "Chats",
               ),
               BottomNavigationBarItem(
                 icon: Icon(

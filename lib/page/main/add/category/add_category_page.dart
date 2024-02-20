@@ -6,6 +6,7 @@ import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/image_pick_dialog.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
+import 'package:find_easy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -173,15 +174,15 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
       appBar: AppBar(
         title: const Text("ADD CATEGORY"),
         actions: [
-          IconButton(
+          MyTextButton(
             onPressed: () {
               addCategory(
                 categoryController.text.toString(),
                 productsAddedToCategoryProvider,
               );
             },
-            icon: const Icon(Icons.ios_share),
-            tooltip: "Add Category",
+            text: 'DONE',
+            textColor: primaryDark2,
           ),
         ],
         bottom: PreferredSize(
