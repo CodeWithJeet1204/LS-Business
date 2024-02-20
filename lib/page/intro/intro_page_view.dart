@@ -31,7 +31,7 @@ class _IntroPageViewState extends State<IntroPageView> {
             duration: const Duration(seconds: 1),
             curve: Curves.easeInOut,
           )
-        : Navigator.of(context).popAndPushNamed('profile');
+        : Navigator.of(context).popAndPushNamed('/profile');
   }
 
   @override
@@ -51,34 +51,45 @@ class _IntroPageViewState extends State<IntroPageView> {
                     nextText = "NEXT";
                   });
                 }
-                if (value == 2) {
+                if (value == 3) {
                   setState(() {
-                    nextText = "DONE";
+                    nextText = "OK";
                   });
                 }
               });
             },
             children: const [
               MyPageView(
-                text: "Reach new customers in your neighborhood",
+                text: "Why\nFIND EASY ?",
+                animation:
+                    'https://lottie.host/42f81d17-142d-477a-a114-0e8fd17cf3d1/BtWfHFygeT.json',
+                textColor: Color.fromARGB(255, 12, 0, 104),
+                backgroundColor: Color.fromARGB(255, 251, 227, 225),
+                fontSize: 32,
+              ),
+              MyPageView(
+                text:
+                    "Reach new customers in your neighborhood and 27000+ pincodes across India",
                 animation:
                     'https://lottie.host/42f81d17-142d-477a-a114-0e8fd17cf3d1/BtWfHFygeT.json',
                 textColor: Color.fromARGB(255, 255, 53, 39),
                 backgroundColor: Color.fromARGB(255, 251, 227, 225),
               ),
               MyPageView(
-                text: "Track sales, analyze trends, understand what works",
+                text: "Track sales, analyze trends,\nunderstand what works",
                 animation:
                     'https://lottie.host/45111ab9-1b7f-4f96-bda8-3ff1bda7a995/t750Okdqh3.json',
-                textColor: Colors.green,
+                textColor: Color.fromARGB(255, 0, 86, 3),
                 backgroundColor: Color.fromARGB(255, 210, 255, 211),
+                fontSize: 24,
               ),
               MyPageView(
-                text: "Lets get Started",
+                text: "BUSINESS ON THE GO!\nLets get Started",
                 animation:
                     'https://lottie.host/958e98ec-395e-435b-b0f2-91e22622d2c6/szwj6ORXWP.json',
-                textColor: Color.fromARGB(255, 0, 140, 255),
+                textColor: Color.fromARGB(255, 0, 59, 107),
                 backgroundColor: Color.fromARGB(255, 219, 239, 255),
+                fontSize: 24,
               ),
             ],
           ),
@@ -94,7 +105,7 @@ class _IntroPageViewState extends State<IntroPageView> {
                 ),
                 SmoothPageIndicator(
                   controller: controller,
-                  count: 3,
+                  count: 4,
                 ),
                 TextButton(
                   onPressed: onNext,
@@ -102,7 +113,7 @@ class _IntroPageViewState extends State<IntroPageView> {
                     nextText,
                     style: TextStyle(
                       fontSize: MediaQuery.of(context).size.width * 0.045,
-                      color: Colors.blueAccent,
+                      color: const Color.fromARGB(255, 0, 33, 91),
                     ),
                   ),
                 ),

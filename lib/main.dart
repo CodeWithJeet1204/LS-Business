@@ -143,7 +143,7 @@ class MyApp extends StatelessWidget {
         '/analyticsPage': (context) => const ShopAnalyticsPage(),
       },
       debugShowCheckedModeBanner: false,
-      home: isFirstLaunch
+      home: !isFirstLaunch
           ? const IntroPageView()
           : StreamBuilder(
               stream: FirebaseAuth.instance.userChanges(),

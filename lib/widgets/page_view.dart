@@ -8,12 +8,14 @@ class MyPageView extends StatelessWidget {
     required this.animation,
     required this.textColor,
     required this.backgroundColor,
+    this.fontSize = 18,
   });
 
   final String text;
   final String animation;
   final Color textColor;
   final Color backgroundColor;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -31,29 +33,19 @@ class MyPageView extends StatelessWidget {
                 animation,
                 reverse: false,
                 height: 400,
-                // width: 300,
+                width: 300,
               ),
             ),
             const SizedBox(height: 36),
-            text != "Lets get started"
-                ? Text(
-                    text,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: textColor,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
-                : Text(
-                    text,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: textColor,
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+            Text(
+              text,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: textColor,
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold,
+              ),
+            )
           ],
         ),
       ),
