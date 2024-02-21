@@ -30,7 +30,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
   final TextEditingController categoryController = TextEditingController();
   bool isSaving = false;
   File? _image;
-  bool isFit = true;
+  bool isFit = false;
   String? imageUrl;
 
   @override

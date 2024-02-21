@@ -1,11 +1,12 @@
 import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/page/main/discount/products/product_discount.dart';
 import 'package:find_easy/page/main/main_page.dart';
 import 'package:find_easy/page/main/profile/view%20page/product/product_category_change_page.dart';
-import 'package:find_easy/page/main/profile/view%20page/product/product_image_page.dart';
+import 'package:find_easy/page/main/profile/view%20page/product/image_view.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/image_pick_dialog.dart';
@@ -51,16 +52,18 @@ class _ProductPageState extends State<ProductPage> {
   bool categoryExists = true;
   bool isImageChanging = false;
 
-  @override
-  void dispose() {
-    editController.dispose();
-    super.dispose();
-  }
-
+  // INIT STATE
   @override
   void initState() {
     super.initState();
     ifDiscount();
+  }
+
+  // DISPOSE
+  @override
+  void dispose() {
+    editController.dispose();
+    super.dispose();
   }
 
   // EDIT INFO
@@ -645,10 +648,8 @@ class _ProductPageState extends State<ProductPage> {
   // Future<String> blurHashImage(String imageUrl) async {
   //   var response = await http.get(Uri.parse(imageUrl));
   //   Uint8List imageData = response.bodyBytes;
-
-  //   // Generate Blurhash string
+  // Generate Blurhash string
   //   String blurhash = await BlurHash.encode(imageData, 10, 10);
-
   //   return blurhash;
   // }
 
@@ -792,13 +793,39 @@ class _ProductPageState extends State<ProductPage> {
                                                   Navigator.of(context).push(
                                                     MaterialPageRoute(
                                                       builder: ((context) =>
-                                                          ProductImageView(
+                                                          ImageView(
                                                             imagesUrl: images,
                                                           )),
                                                     ),
                                                   );
                                                 },
-                                                child: Image.network(e),
+                                                child: CachedNetworkImage(
+                                                  imageUrl: e,
+                                                  imageBuilder:
+                                                      (context, imageProvider) {
+                                                    return Center(
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                          11,
+                                                        ),
+                                                        child: Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            image:
+                                                                DecorationImage(
+                                                              image:
+                                                                  imageProvider,
+                                                              fit: BoxFit
+                                                                  .contain,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
                                               ),
                                       ),
                                       isImageChanging

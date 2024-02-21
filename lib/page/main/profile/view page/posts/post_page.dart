@@ -1,7 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/page/main/profile/view%20page/product/product_image_page.dart';
+import 'package:find_easy/page/main/profile/view%20page/product/image_view.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/info_box.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -148,13 +149,35 @@ class _PostPageState extends State<PostPage> {
                                               Navigator.of(context).push(
                                                 MaterialPageRoute(
                                                   builder: ((context) =>
-                                                      ProductImageView(
+                                                      ImageView(
                                                         imagesUrl: images,
                                                       )),
                                                 ),
                                               );
                                             },
-                                            child: Image.network(e),
+                                            // TODO: IF IMAGE ADDED / REMOVED FROM PRODUCT THEN CHANGE IN POST ALSO
+                                            child: CachedNetworkImage(
+                                              imageUrl: e,
+                                              imageBuilder:
+                                                  (context, imageProvider) {
+                                                return Center(
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      11,
+                                                    ),
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                        image: DecorationImage(
+                                                          image: imageProvider,
+                                                          fit: BoxFit.contain,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            ),
                                           ),
                                         ),
                                       )

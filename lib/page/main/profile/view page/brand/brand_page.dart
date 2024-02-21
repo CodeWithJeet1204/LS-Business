@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/page/main/add/brand/add_products_to_brand_page.dart';
 import 'package:find_easy/page/main/profile/view%20page/product/product_page.dart';
@@ -384,12 +385,41 @@ class _BrandPageState extends State<BrandPage> {
                                       ? const CircularProgressIndicator()
                                       : GestureDetector(
                                           onTap: changeFit,
-                                          child: Image.network(
-                                            brandData['imageUrl'],
-                                            fit: isFit ? BoxFit.cover : null,
-                                            width: width,
-                                            height: width,
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              10,
+                                            ),
+                                            child: InteractiveViewer(
+                                              child: CachedNetworkImage(
+                                                imageUrl: brandData['imageUrl'],
+                                                imageBuilder:
+                                                    (context, imageProvider) {
+                                                  return ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      10,
+                                                    ),
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                        image: DecorationImage(
+                                                          image: imageProvider,
+                                                          fit: isFit
+                                                              ? BoxFit.cover
+                                                              : null,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            ),
                                           ),
+                                          // child: Image.network(
+                                          //   brandData['imageUrl'],
+                                          //   fit: isFit ? BoxFit.cover : null,
+                                          //   width: width,
+                                          //   height: width,
+                                          // ),
                                         ),
                                 ),
                                 // IMAGE CHANGING INDICATOR

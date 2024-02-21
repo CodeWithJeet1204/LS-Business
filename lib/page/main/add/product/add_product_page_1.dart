@@ -44,7 +44,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
   final List<String> _imageDownloadUrl = [];
   final ImagePicker picker = ImagePicker();
   List<String> otherInfoList = [];
-  bool isFit = true;
+  bool isFit = false;
   final Map<String, String> categoryNamesAndIds = {};
   bool isGridView = true;
   String? searchedCategory;

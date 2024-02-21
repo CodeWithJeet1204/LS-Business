@@ -1,9 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:flutter/material.dart';
 
-class ProductImageView extends StatefulWidget {
-  const ProductImageView({
+class ImageView extends StatefulWidget {
+  const ImageView({
     super.key,
     required this.imagesUrl,
   });
@@ -11,10 +12,10 @@ class ProductImageView extends StatefulWidget {
   final List imagesUrl;
 
   @override
-  State<ProductImageView> createState() => _ProductImageViewState();
+  State<ImageView> createState() => _ImageViewState();
 }
 
-class _ProductImageViewState extends State<ProductImageView> {
+class _ImageViewState extends State<ImageView> {
   final controller = CarouselController();
   int currentIndex = 0;
 
@@ -34,7 +35,36 @@ class _ProductImageViewState extends State<ProductImageView> {
                 items: widget.imagesUrl
                     .map((e) => Container(
                           height: width * 8,
-                          child: InteractiveViewer(child: Image.network(e)),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(
+                              8,
+                            ),
+                            child: InteractiveViewer(
+                              child: CachedNetworkImage(
+                                imageUrl: e,
+                                imageBuilder: (context, imageProvider) {
+                                  return Center(
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(
+                                        8,
+                                      ),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: imageProvider,
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                          // child: InteractiveViewer(
+                          //   child: Image.network(e),
+                          // ),
                         ))
                     .toList(),
                 options: CarouselOptions(

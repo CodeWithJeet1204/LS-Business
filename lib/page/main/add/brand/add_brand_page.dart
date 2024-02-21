@@ -28,7 +28,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
   final brandKey = GlobalKey<FormState>();
   final brandNameController = TextEditingController();
   bool isSaving = false;
-  bool isFit = true;
+  bool isFit = false;
   File? _image;
   String? imageUrl;
 

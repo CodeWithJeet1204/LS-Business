@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/page/main/profile/view%20page/brand/brand_page.dart';
 import 'package:find_easy/page/main/profile/view%20page/category/category_page.dart';
@@ -39,10 +40,11 @@ class DISCOUNT extends State<DiscountPage> {
   bool isCategoryGridView = true;
   bool isImageChanging = false;
   bool isChangingName = false;
-  bool isFit = true;
+  bool isFit = false;
   bool isAddingImage = false;
   bool isGridView = true;
 
+  // DISPOSE
   @override
   void dispose() {
     searchController.dispose();
@@ -514,9 +516,9 @@ class DISCOUNT extends State<DiscountPage> {
                   final discountData = snapshot.data!;
 
                   return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: width * 0.0225,
+                      vertical: width * 0.0125,
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -541,18 +543,37 @@ class DISCOUNT extends State<DiscountPage> {
                                         ? const CircularProgressIndicator()
                                         : GestureDetector(
                                             onTap: changeFit,
-                                            child: InteractiveViewer(
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                child: Image.network(
-                                                  discountData[
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                10,
+                                              ),
+                                              child: InteractiveViewer(
+                                                child: CachedNetworkImage(
+                                                  imageUrl: discountData[
                                                       'discountImageUrl'],
-                                                  fit: isFit
-                                                      ? BoxFit.cover
-                                                      : null,
-                                                  width: width,
-                                                  height: width,
+                                                  imageBuilder:
+                                                      (context, imageProvider) {
+                                                    return ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                        10,
+                                                      ),
+                                                      child: Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          image:
+                                                              DecorationImage(
+                                                            image:
+                                                                imageProvider,
+                                                            fit: isFit
+                                                                ? BoxFit.cover
+                                                                : null,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
                                                 ),
                                               ),
                                             ),

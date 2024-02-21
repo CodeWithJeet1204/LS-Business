@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/page/main/add/category/select_products_for_category_page.dart';
 import 'package:find_easy/page/main/profile/view%20page/product/product_page.dart';
@@ -37,16 +38,18 @@ class _CategoryPageState extends State<CategoryPage> {
   bool isGridView = true;
   bool isDiscount = false;
 
-  @override
-  void dispose() {
-    searchController.dispose();
-    super.dispose();
-  }
-
+  // INIT STATE
   @override
   void initState() {
     ifDiscount();
     super.initState();
+  }
+
+  // DISPOSE
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
   }
 
   // CHANGE CATEGORY IMAGE
@@ -343,11 +346,34 @@ class _CategoryPageState extends State<CategoryPage> {
                                 ? const CircularProgressIndicator()
                                 : GestureDetector(
                                     onTap: changeFit,
-                                    child: Image.network(
-                                      categoryData['imageUrl'],
-                                      fit: isFit ? BoxFit.cover : null,
-                                      width: width,
-                                      height: width,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(
+                                        11,
+                                      ),
+                                      child: InteractiveViewer(
+                                        child: CachedNetworkImage(
+                                          imageUrl: categoryData['imageUrl'],
+                                          imageBuilder:
+                                              (context, imageProvider) {
+                                            return ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                11,
+                                              ),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                    image: imageProvider,
+                                                    fit: isFit
+                                                        ? BoxFit.cover
+                                                        : null,
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
                                     ),
                                   ),
                           ),
