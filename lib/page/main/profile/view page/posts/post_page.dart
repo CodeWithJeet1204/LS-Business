@@ -307,8 +307,8 @@ class _PostPageState extends State<PostPage> {
                                                       text: price == ""
                                                           ? 'N/A (price)'
                                                           : data['isPercent']
-                                                              ? '${(double.parse(price) * (100 - double.parse(data['discountAmount'])) / 100).toString()}  '
-                                                              : '${double.parse(price) - double.parse(data['discountAmount'])}  ',
+                                                              ? '${(double.parse(price) * (100 - (data['discountAmount'])) / 100).toStringAsFixed(2)}  '
+                                                              : '${(double.parse(price) - (data['discountAmount'])).toStringAsFixed(2)}  ',
                                                       style: const TextStyle(
                                                         color: Colors.green,
                                                       ),

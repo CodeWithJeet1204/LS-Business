@@ -413,9 +413,9 @@ class _ProductPageState extends State<ProductPage> {
             .child('Data/Products')
             .child(const Uuid().v4());
         await ref.putFile(File(im.path)).whenComplete(() async {
-          await ref.getDownloadURL().then((value) {
+          await ref.getDownloadURL().then((value) async {
             images.add(value);
-            store
+            await store
                 .collection('Business')
                 .doc('Data')
                 .collection('Products')
@@ -423,11 +423,41 @@ class _ProductPageState extends State<ProductPage> {
                 .update({
               'images': images,
             });
+
+            final postSnap = await store
+                .collection('Business')
+                .doc('Data')
+                .collection('Posts')
+                .where('postProductId', isEqualTo: widget.productId)
+                .get();
+
+            postSnap.docs.forEach((doc) async {
+              final postData = await store
+                  .collection('Business')
+                  .doc('Data')
+                  .collection('Posts')
+                  .doc(doc.id)
+                  .get();
+
+              final imageUrls = postData['postProductImages'] as List;
+              imageUrls.add(value);
+
+              await store
+                  .collection('Business')
+                  .doc('Data')
+                  .collection('Posts')
+                  .doc(doc.id)
+                  .update({
+                'postProductImages': imageUrls,
+              });
+            });
           });
         });
+
         setState(() {
-          isImageChanging = true;
+          isImageChanging = false;
         });
+
         if (context.mounted) {
           Navigator.of(context).pop();
           Navigator.of(context).push(
@@ -454,33 +484,33 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   // CHANGE IMAGES
-  void changeProductImage(String e, int index, List images) async {
-    final XFile? im = await showImagePickDialog(context);
-    if (im != null) {
-      try {
-        setState(() {
-          isImageChanging = true;
-        });
-        Reference ref = FirebaseStorage.instance.refFromURL(images[index]);
-        await images.removeAt(index);
-        await ref.putFile(File(im.path));
-        setState(() {
-          isImageChanging = false;
-        });
-      } catch (e) {
-        setState(() {
-          isImageChanging = false;
-        });
-        if (context.mounted) {
-          mySnackBar(context, e.toString());
-        }
-      }
-    } else {
-      if (context.mounted) {
-        mySnackBar(context, "Select an Image");
-      }
-    }
-  }
+  // void changeProductImage(String e, int index, List images) async {
+  //   final XFile? im = await showImagePickDialog(context);
+  //   if (im != null) {
+  //     try {
+  //       setState(() {
+  //         isImageChanging = true;
+  //       });
+  //       Reference ref = FirebaseStorage.instance.refFromURL(images[index]);
+  //       await images.removeAt(index);
+  //       await ref.putFile(File(im.path));
+  //       setState(() {
+  //         isImageChanging = false;
+  //       });
+  //     } catch (e) {
+  //       setState(() {
+  //         isImageChanging = false;
+  //       });
+  //       if (context.mounted) {
+  //         mySnackBar(context, e.toString());
+  //       }
+  //     }
+  //   } else {
+  //     if (context.mounted) {
+  //       mySnackBar(context, "Select an Image");
+  //     }
+  //   }
+  // }
 
   // REMOVE IMAGES
   void removeProductImages(String e, List images) async {
@@ -495,6 +525,34 @@ class _ProductPageState extends State<ProductPage> {
         .doc(widget.productId)
         .update({
       'images': images,
+    });
+
+    final postSnap = await store
+        .collection('Business')
+        .doc('Data')
+        .collection('Posts')
+        .where('postProductId', isEqualTo: widget.productId)
+        .get();
+
+    postSnap.docs.forEach((doc) async {
+      final postData = await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Posts')
+          .doc(doc.id)
+          .get();
+
+      final imageUrls = postData['postProductImages'] as List;
+      imageUrls.remove(e);
+
+      await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Posts')
+          .doc(doc.id)
+          .update({
+        'postProductImages': imageUrls,
+      });
     });
   }
 
@@ -832,29 +890,28 @@ class _ProductPageState extends State<ProductPage> {
                                           ? Container()
                                           : Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
+                                                  MainAxisAlignment.end,
                                               children: [
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                    left: width * 0.0125,
-                                                    top: width * 0.0125,
-                                                  ),
-                                                  child: IconButton.filledTonal(
-                                                    onPressed: () {
-                                                      changeProductImage(
-                                                        e,
-                                                        images.indexOf(e),
-                                                        images,
-                                                      );
-                                                    },
-                                                    icon: Icon(
-                                                      Icons.camera_alt_outlined,
-                                                      size: width * 0.1,
-                                                    ),
-                                                    tooltip: "Change Image",
-                                                  ),
-                                                ),
+                                                // Padding(
+                                                //   padding: EdgeInsets.only(
+                                                //     left: width * 0.0125,
+                                                //     top: width * 0.0125,
+                                                //   ),
+                                                //   child: IconButton.filledTonal(
+                                                //     onPressed: () {
+                                                //       changeProductImage(
+                                                //         e,
+                                                //         images.indexOf(e),
+                                                //         images,
+                                                //       );
+                                                //     },
+                                                //     icon: Icon(
+                                                //       Icons.camera_alt_outlined,
+                                                //       size: width * 0.1,
+                                                //     ),
+                                                //     tooltip: "Change Image",
+                                                //   ),
+                                                // ),
                                                 Padding(
                                                   padding: EdgeInsets.only(
                                                     right: width * 0.0125,
