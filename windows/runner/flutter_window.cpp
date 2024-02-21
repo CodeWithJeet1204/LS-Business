@@ -1,5 +1,12 @@
 #include "flutter_window.h"
+#include <flutter/event_channel.h>
+#include <flutter/event_sink.h>
+#include <flutter/event_stream_handler_functions.h>
+#include <flutter/method_channel.h>
+#include <flutter/standard_method_codec.h>
+#include <windows.h>
 
+#include <memory>
 #include <optional>
 
 #include "flutter/generated_plugin_registrant.h"
@@ -13,6 +20,20 @@ bool FlutterWindow::OnCreate() {
   if (!Win32Window::OnCreate()) {
     return false;
   }
+
+  RegisterPlugins(flutter_controller_->engine());
+
+  flutter::MethodChannel<> channel(
+      flutter_controller_->engine()->messenger(), "samples.flutter.dev/battery",
+      &flutter::StandardMethodCodec::GetInstance());
+  channel.SetMethodCallHandler(
+      [](const flutter::MethodCall<>& call,
+          std::unique_ptr<flutter::MethodResult<>> result) {
+              // TODO
+      });
+
+  SetChildContent(flutter_controller_->view()->GetNativeWindow());
+  return true;
 
   RECT frame = GetClientArea();
 

@@ -583,68 +583,68 @@ class _LoginPageState extends State<LoginPage> {
                               const SizedBox(height: 16),
 
                               // SIGN IN WITH GOOGLE
-                              GestureDetector(
-                                onTap: () async {
-                                  try {
-                                    setState(() {
-                                      googleText = "PLEASE WAIT";
-                                      isGoogleLogging = true;
-                                    });
-                                    // Sign In With Google
-                                    await AuthMethods()
-                                        .signInWithGoogle(context);
-                                    // SystemChannels.textInput
-                                    //     .invokeMethod('TextInput.hide');
-                                    if (FirebaseAuth.instance.currentUser !=
-                                        null) {
-                                      setState(() {});
-                                    } else {
-                                      if (context.mounted) {
-                                        mySnackBar(
-                                            context, "Some error occured!");
-                                      }
-                                    }
-                                  } on FirebaseAuthException catch (e) {
-                                    if (context.mounted) {
-                                      mySnackBar(context, e.toString());
-                                    }
-                                  }
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.symmetric(
-                                    horizontal: width < screenSize
-                                        ? width * 0.035
-                                        : width * 0.0275,
-                                  ),
-                                  padding: EdgeInsets.symmetric(
-                                    vertical: width < screenSize
-                                        ? width * 0.033
-                                        : width * 0.0125,
-                                  ),
-                                  alignment: Alignment.center,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: primary2.withOpacity(0.75),
-                                  ),
-                                  child: isGoogleLogging
-                                      ? const Center(
-                                          child: CircularProgressIndicator(
-                                            color: primaryDark,
-                                          ),
-                                        )
-                                      : Text(
-                                          googleText,
-                                          style: TextStyle(
-                                            color: buttonColor,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: width < screenSize
-                                                ? width * 0.05
-                                                : width * 0.025,
-                                          ),
-                                        ),
-                                ),
-                              ),
+                              // GestureDetector(
+                              //     onTap: () async {
+                              //       try {
+                              //         setState(() {
+                              //           googleText = "PLEASE WAIT";
+                              //           isGoogleLogging = true;
+                              //         });
+                              //         // Sign In With Google
+                              //         await AuthMethods()
+                              //             .signInWithGoogle(context);
+                              //         // SystemChannels.textInput
+                              //         //     .invokeMethod('TextInput.hide');
+                              //         if (FirebaseAuth.instance.currentUser !=
+                              //             null) {
+                              //           setState(() {});
+                              //         } else {
+                              //           if (context.mounted) {
+                              //             mySnackBar(
+                              //                 context, "Some error occured!");
+                              //           }
+                              //         }
+                              //       } on FirebaseAuthException catch (e) {
+                              //         if (context.mounted) {
+                              //           mySnackBar(context, e.toString());
+                              //         }
+                              //       }
+                              //     },
+                              //     child: Container(
+                              //       margin: EdgeInsets.symmetric(
+                              //         horizontal: width < screenSize
+                              //             ? width * 0.035
+                              //             : width * 0.0275,
+                              //       ),
+                              //       padding: EdgeInsets.symmetric(
+                              //         vertical: width < screenSize
+                              //             ? width * 0.033
+                              //             : width * 0.0125,
+                              //       ),
+                              //       alignment: Alignment.center,
+                              //       width: double.infinity,
+                              //       decoration: BoxDecoration(
+                              //         borderRadius: BorderRadius.circular(10),
+                              //         color: primary2.withOpacity(0.75),
+                              //       ),
+                              //       child: isGoogleLogging
+                              //           ? const Center(
+                              //               child: CircularProgressIndicator(
+                              //                 color: primaryDark,
+                              //               ),
+                              //             )
+                              //           : Text(
+                              //               googleText,
+                              //               style: TextStyle(
+                              //                 color: buttonColor,
+                              //                 fontWeight: FontWeight.w600,
+                              //                 fontSize: width < screenSize
+                              //                     ? width * 0.05
+                              //                     : width * 0.025,
+                              //               ),
+                              //             ),
+                              //     ),
+                              //   ),
                             ],
                           ),
                           const SizedBox(height: 120),
