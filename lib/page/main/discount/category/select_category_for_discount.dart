@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/provider/discount_category_provider.dart';
 import 'package:find_easy/utils/colors.dart';
@@ -148,19 +149,34 @@ class _SelectCategoryForDiscountPageState
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 const SizedBox(height: 2),
-                                                Center(
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                      12,
-                                                    ),
-                                                    child: Image.network(
+                                                CachedNetworkImage(
+                                                  imageUrl:
                                                       categoryData['imageUrl'],
-                                                      width: width * 0.4,
-                                                      height: width * 0.4,
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
+                                                  imageBuilder:
+                                                      (context, imageProvider) {
+                                                    return Center(
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                          12,
+                                                        ),
+                                                        child: Container(
+                                                          width: width * 0.4,
+                                                          height: width * 0.4,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            image:
+                                                                DecorationImage(
+                                                              image:
+                                                                  imageProvider,
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
                                                 ),
                                                 Padding(
                                                   padding: EdgeInsets.fromLTRB(
@@ -246,17 +262,30 @@ class _SelectCategoryForDiscountPageState
                                             },
                                             leading: Padding(
                                               padding: EdgeInsets.symmetric(
-                                                vertical: width * 0.01,
+                                                vertical: width * 0.0125,
                                               ),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(4),
-                                                child: Image.network(
-                                                  categoryData['imageUrl'],
-                                                  width: width * 0.155,
-                                                  height: width * 0.166,
-                                                  fit: BoxFit.cover,
-                                                ),
+                                              child: CachedNetworkImage(
+                                                imageUrl:
+                                                    categoryData['imageUrl'],
+                                                imageBuilder:
+                                                    (context, imageProvider) {
+                                                  return ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      4,
+                                                    ),
+                                                    child: Container(
+                                                      width: width * 0.155,
+                                                      height: width * 0.166,
+                                                      decoration: BoxDecoration(
+                                                        image: DecorationImage(
+                                                          image: imageProvider,
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
                                               ),
                                             ),
                                             title: Text(

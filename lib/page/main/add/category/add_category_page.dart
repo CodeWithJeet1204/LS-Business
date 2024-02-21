@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/page/main/add/category/category_products_add_page.dart';
+import 'package:find_easy/page/main/add/category/select_products_for_category_page.dart';
 import 'package:find_easy/provider/products_added_to_category_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
@@ -157,7 +157,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
   void addProduct() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: ((context) => const AddProductsToCategoryPage(
+        builder: ((context) => const SelectProductsForCategoryPage(
               fromAddCategoryPage: true,
             )),
       ),

@@ -347,14 +347,29 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: ListTile(
-                                      leading: ClipRRect(
-                                        borderRadius: BorderRadius.circular(4),
-                                        child: Image.network(
-                                          categoryData['imageUrl'],
-                                          width: width * 0.133,
-                                          height: width * 0.133,
-                                          fit: BoxFit.cover,
-                                        ),
+                                      leading: CachedNetworkImage(
+                                        imageUrl: categoryData['imageUrl'],
+                                        imageBuilder: (context, imageProvider) {
+                                          return Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              vertical: width * 0.0125,
+                                            ),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                              child: Container(
+                                                width: width * 0.133,
+                                                height: width * 0.133,
+                                                decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                    image: imageProvider,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
                                       ),
                                       title: Text(
                                         categoryData['categoryName'],

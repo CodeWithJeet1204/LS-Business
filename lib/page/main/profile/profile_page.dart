@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/small_text_container.dart';
@@ -133,9 +134,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 CircleAvatar(
                                   radius: width * 0.1195,
                                   backgroundColor: primary2,
-                                  backgroundImage: NetworkImage(
-                                    shopData['Image'] ??
-                                        'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
+                                  backgroundImage: CachedNetworkImageProvider(
+                                    shopData['Image'],
                                   ),
                                 ),
                                 SizedBox(

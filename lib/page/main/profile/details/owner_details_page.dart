@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
@@ -28,6 +29,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
   bool isSaving = false;
   bool isDataLoaded = false;
 
+  // DISPOSE
   @override
   void dispose() {
     nameController.dispose();
@@ -294,7 +296,8 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                       onTap: showImage,
                                       child: CircleAvatar(
                                         radius: width * 0.15,
-                                        backgroundImage: NetworkImage(
+                                        backgroundImage:
+                                            CachedNetworkImageProvider(
                                           userData['Image'] ??
                                               'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
                                         ),

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
@@ -30,6 +31,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
   bool isChangingImage = false;
   bool isSaving = false;
 
+  // DISPOSE
   @override
   void dispose() {
     nameController.dispose();
@@ -239,8 +241,10 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                       onTap: isSaving ? null : showImage,
                                       child: CircleAvatar(
                                         radius: width * 0.15,
-                                        backgroundImage: NetworkImage(
-                                          shopData['Image'],
+                                        backgroundImage:
+                                            CachedNetworkImageProvider(
+                                          shopData['Image'] ??
+                                              'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
                                         ),
                                         backgroundColor: primary2,
                                       ),

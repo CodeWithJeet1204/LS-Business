@@ -369,15 +369,47 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: ListTile(
-                                      leading: ClipRRect(
-                                        borderRadius: BorderRadius.circular(4),
-                                        child: Image.network(
-                                          brandData['imageUrl'] ??
-                                              'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
-                                          width: width * 0.1175,
-                                          height: width * 0.1175,
-                                          fit: BoxFit.cover,
+                                      leading: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: width * 0.0125,
                                         ),
+                                        child: brandData['imageUrl'] != null
+                                            ? CachedNetworkImage(
+                                                imageUrl: brandData['imageUrl'],
+                                                imageBuilder:
+                                                    (context, imageProvider) {
+                                                  return ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      4,
+                                                    ),
+                                                    child: Container(
+                                                      width: width * 0.133,
+                                                      height: width * 0.133,
+                                                      decoration: BoxDecoration(
+                                                        image: DecorationImage(
+                                                          image: imageProvider,
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              )
+                                            : SizedBox(
+                                                width: width * 0.1533,
+                                                height: width * 0.1533,
+                                                child: Center(
+                                                  child: Text(
+                                                    'No Image',
+                                                    style: TextStyle(
+                                                      color: primaryDark2,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
                                       ),
                                       title: Text(
                                         brandData['brandName'],

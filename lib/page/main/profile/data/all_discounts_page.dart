@@ -436,14 +436,30 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                   ),
                                   child: ListTile(
                                     // IMAGE
-                                    leading: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
-                                      child: Image.network(
-                                        discountData['discountImageUrl'],
-                                        width: width / 5,
-                                        height: width / 8.8875,
-                                        fit: BoxFit.cover,
-                                      ),
+                                    leading: CachedNetworkImage(
+                                      imageUrl:
+                                          discountData['discountImageUrl'],
+                                      imageBuilder: (context, imageProvider) {
+                                        return Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            vertical: width * 0.0125,
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                            child: Container(
+                                              width: width * 0.2366,
+                                              height: width * 0.1566,
+                                              decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: imageProvider,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
                                     ),
 
                                     // NAME

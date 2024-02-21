@@ -243,18 +243,6 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                             );
                                           },
                                         ),
-                                        // Center(
-                                        //   child: ClipRRect(
-                                        //     borderRadius:
-                                        //         BorderRadius.circular(12),
-                                        //     child: Image.network(
-                                        //       productSnap['images'][0],
-                                        //       height: width * 0.4,
-                                        //       width: width * 0.4,
-                                        //       fit: BoxFit.cover,
-                                        //     ),
-                                        //   ),
-                                        // ),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
@@ -370,14 +358,29 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: ListTile(
-                                      leading: ClipRRect(
-                                        borderRadius: BorderRadius.circular(4),
-                                        child: Image.network(
-                                          productData['images'][0],
-                                          width: 45,
-                                          height: 45,
-                                          fit: BoxFit.cover,
-                                        ),
+                                      leading: CachedNetworkImage(
+                                        imageUrl: productData['images'][0],
+                                        imageBuilder: (context, imageProvider) {
+                                          return Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              vertical: width * 0.0125,
+                                            ),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                              child: Container(
+                                                width: width * 0.133,
+                                                height: width * 0.133,
+                                                decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                    image: imageProvider,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
                                       ),
                                       title: Text(
                                         productData['productName'],

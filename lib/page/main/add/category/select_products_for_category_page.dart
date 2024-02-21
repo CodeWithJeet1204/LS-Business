@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/provider/products_added_to_category_provider.dart';
 import 'package:find_easy/utils/colors.dart';
@@ -6,8 +7,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AddProductsToCategoryPage extends StatefulWidget {
-  const AddProductsToCategoryPage({
+class SelectProductsForCategoryPage extends StatefulWidget {
+  const SelectProductsForCategoryPage({
     super.key,
     required this.fromAddCategoryPage,
     this.categoryId,
@@ -19,16 +20,18 @@ class AddProductsToCategoryPage extends StatefulWidget {
   final bool fromAddCategoryPage;
 
   @override
-  State<AddProductsToCategoryPage> createState() =>
-      _AddProductsToCategoryPageState();
+  State<SelectProductsForCategoryPage> createState() =>
+      _SelectProductsForCategoryPageState();
 }
 
-class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
+class _SelectProductsForCategoryPageState
+    extends State<SelectProductsForCategoryPage> {
   final searchController = TextEditingController();
   bool isGridView = true;
   bool isAdding = false;
   String? searchedProduct;
 
+  // DISPOSE
   @override
   void dispose() {
     searchController.dispose();
@@ -122,9 +125,11 @@ class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 6,
-                            vertical: 8,
+                          padding: EdgeInsets.symmetric(
+                            horizontal:
+                                MediaQuery.of(context).size.width * 0.0166,
+                            vertical:
+                                MediaQuery.of(context).size.width * 0.0225,
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -204,21 +209,38 @@ class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     const SizedBox(height: 2),
-                                                    Center(
-                                                      child: ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                          12,
-                                                        ),
-                                                        child: Image.network(
+                                                    CachedNetworkImage(
+                                                      imageUrl:
                                                           productData['images']
                                                               [0],
-                                                          height: width * 0.4,
-                                                          width: width * 0.4,
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                      ),
+                                                      imageBuilder: (context,
+                                                          imageProvider) {
+                                                        return Center(
+                                                          child: ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                              12,
+                                                            ),
+                                                            child: Container(
+                                                              width:
+                                                                  width * 0.4,
+                                                              height:
+                                                                  width * 0.4,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                image:
+                                                                    DecorationImage(
+                                                                  image:
+                                                                      imageProvider,
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
                                                     ),
                                                     Padding(
                                                       padding:
@@ -311,18 +333,35 @@ class _AddProductsToCategoryPageState extends State<AddProductsToCategoryPage> {
                                               child: ListTile(
                                                 leading: Padding(
                                                   padding: EdgeInsets.symmetric(
-                                                    vertical: width * 0.01,
+                                                    vertical: width * 0.0125,
                                                   ),
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            4),
-                                                    child: Image.network(
-                                                      productData['images'][0],
-                                                      width: width * 0.15,
-                                                      height: width * 0.166,
-                                                      fit: BoxFit.cover,
-                                                    ),
+                                                  child: CachedNetworkImage(
+                                                    imageUrl:
+                                                        productData['images']
+                                                            [0],
+                                                    imageBuilder: (context,
+                                                        imageProvider) {
+                                                      return ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                          4,
+                                                        ),
+                                                        child: Container(
+                                                          width: width * 0.15,
+                                                          height: width * 0.166,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            image:
+                                                                DecorationImage(
+                                                              image:
+                                                                  imageProvider,
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
                                                   ),
                                                 ),
                                                 title: Text(

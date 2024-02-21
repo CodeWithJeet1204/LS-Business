@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/provider/select_product_for_post_provider.dart';
 import 'package:find_easy/utils/colors.dart';
@@ -142,19 +143,34 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 const SizedBox(height: 2),
-                                                Center(
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                      12,
-                                                    ),
-                                                    child: Image.network(
+                                                CachedNetworkImage(
+                                                  imageUrl:
                                                       productData['images'][0],
-                                                      height: width * 0.4,
-                                                      width: width * 0.4,
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
+                                                  imageBuilder:
+                                                      (context, imageProvider) {
+                                                    return Center(
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                          12,
+                                                        ),
+                                                        child: Container(
+                                                          width: width * 0.4,
+                                                          height: width * 0.4,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            image:
+                                                                DecorationImage(
+                                                              image:
+                                                                  imageProvider,
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
                                                 ),
                                                 Padding(
                                                   padding: EdgeInsets.fromLTRB(
@@ -264,15 +280,28 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                                                 productDataMap['productName'],
                                               );
                                             },
-                                            leading: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(4),
-                                              child: Image.network(
-                                                productData['images'][0],
-                                                width: width * 0.166,
-                                                height: width * 0.166,
-                                                fit: BoxFit.cover,
-                                              ),
+                                            leading: CachedNetworkImage(
+                                              imageUrl: productData['images']
+                                                  [0],
+                                              imageBuilder:
+                                                  (context, imageProvider) {
+                                                return ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    4,
+                                                  ),
+                                                  child: Container(
+                                                    width: width * 0.15,
+                                                    height: width * 0.4,
+                                                    decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                        image: imageProvider,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
                                             ),
                                             title: Text(
                                               productData['productName'],
