@@ -37,28 +37,54 @@ class _BrandPageState extends State<BrandPage> {
   bool isGridView = true;
   bool isDiscount = false;
 
-  @override
-  void dispose() {
-    searchController.dispose();
-    super.dispose();
-  }
-
+  // INIT STATE
   @override
   void initState() {
     ifDiscount();
     super.initState();
   }
 
+  // DISPOSE
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
   // CHANGE BRAND IMAGE
-  void changeBrandImage(String imageUrl) async {
+  void changeBrandImage({String? imageUrl}) async {
     final XFile? im = await showImagePickDialog(context);
     if (im != null) {
+      String? imageDownloadUrl;
       try {
         setState(() {
           isImageChanging = true;
         });
-        Reference ref = FirebaseStorage.instance.refFromURL(imageUrl);
-        await ref.putFile(File(im.path));
+        if (imageUrl != null) {
+          Reference ref = FirebaseStorage.instance.refFromURL(imageUrl);
+          await ref.putFile(File(im.path));
+        } else {
+          Reference ref = FirebaseStorage.instance
+              .ref()
+              .child('Data/Brand')
+              .child(widget.brandId);
+          await ref.putFile(File(im.path)).whenComplete(() async {
+            await ref.getDownloadURL().then((value) {
+              setState(() {
+                imageDownloadUrl = value;
+              });
+            });
+          });
+
+          await store
+              .collection('Business')
+              .doc('Data')
+              .collection('Brands')
+              .doc(widget.brandId)
+              .update({
+            'imageUrl': imageDownloadUrl,
+          });
+        }
         setState(() {
           isImageChanging = false;
         });
@@ -339,81 +365,87 @@ class _BrandPageState extends State<BrandPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // IMAGE
-                      Stack(
-                        alignment: Alignment.topRight,
-                        children: [
-                          Container(
-                            width: width,
-                            height: width,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: primaryDark2,
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: isImageChanging
-                                ? const CircularProgressIndicator()
-                                : GestureDetector(
-                                    onTap: changeFit,
-                                    child: Image.network(
-                                      brandData['imageUrl'],
-                                      fit: isFit ? BoxFit.cover : null,
-                                      width: width,
-                                      height: width,
+                      brandData['imageUrl'] != null
+                          ? Stack(
+                              alignment: Alignment.topRight,
+                              children: [
+                                Container(
+                                  width: width,
+                                  height: width,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: primaryDark2,
+                                      width: 1,
                                     ),
+                                    borderRadius: BorderRadius.circular(12),
                                   ),
-                          ),
-                          // IMAGE CHANGING INDICATOR
-                          isImageChanging
-                              ? Container()
-                              : Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    // CHANGE IMAGE
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        left: width * 0.0125,
-                                        top: width * 0.0125,
-                                      ),
-                                      child: IconButton.filledTonal(
-                                        onPressed: () {
-                                          changeBrandImage(
+                                  child: isImageChanging
+                                      ? const CircularProgressIndicator()
+                                      : GestureDetector(
+                                          onTap: changeFit,
+                                          child: Image.network(
                                             brandData['imageUrl'],
-                                          );
-                                        },
-                                        icon: Icon(
-                                          Icons.camera_alt_outlined,
-                                          size: width * 0.1,
+                                            fit: isFit ? BoxFit.cover : null,
+                                            width: width,
+                                            height: width,
+                                          ),
                                         ),
-                                        tooltip: "Change Image",
-                                      ),
-                                    ),
-                                    // REMOVE IMAGE
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        right: width * 0.0125,
-                                        top: width * 0.0125,
-                                      ),
-                                      child: IconButton.filledTonal(
-                                        onPressed: () {
-                                          changeBrandImage(
-                                            brandData['imageUrl'],
-                                          );
-                                        },
-                                        icon: Icon(
-                                          Icons.highlight_remove_rounded,
-                                          size: width * 0.1,
-                                        ),
-                                        tooltip: "Remove Image",
-                                      ),
-                                    ),
-                                  ],
                                 ),
-                        ],
-                      ),
+                                // IMAGE CHANGING INDICATOR
+                                isImageChanging
+                                    ? Container()
+                                    : Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          // CHANGE IMAGE
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                              left: width * 0.0125,
+                                              top: width * 0.0125,
+                                            ),
+                                            child: IconButton.filledTonal(
+                                              onPressed: changeBrandImage,
+                                              icon: Icon(
+                                                Icons.camera_alt_outlined,
+                                                size: width * 0.1,
+                                              ),
+                                              tooltip: "Change Image",
+                                            ),
+                                          ),
+                                          // REMOVE IMAGE
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                              right: width * 0.0125,
+                                              top: width * 0.0125,
+                                            ),
+                                            child: IconButton.filledTonal(
+                                              onPressed: () {
+                                                removeBrandImage(
+                                                  brandData['imageUrl'],
+                                                );
+                                              },
+                                              icon: Icon(
+                                                Icons.highlight_remove_rounded,
+                                                size: width * 0.1,
+                                              ),
+                                              tooltip: "Remove Image",
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                              ],
+                            )
+                          : Container(
+                              width: width,
+                              height: width,
+                              child: MyTextButton(
+                                onPressed: changeBrandImage,
+                                text: 'Add Image',
+                                textColor: primaryDark2,
+                              ),
+                            ),
                       const SizedBox(height: 40),
 
                       // NAME

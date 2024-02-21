@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/page/main/profile/view%20page/posts/post_page.dart';
 import 'package:find_easy/page/main/profile/view%20page/product/product_page.dart';
@@ -22,6 +23,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
   bool isGridView = true;
   String? searchedProduct;
 
+  // DISPOSE
   @override
   void dispose() {
     searchController.dispose();
@@ -68,12 +70,12 @@ class _AllPostsPageState extends State<AllPostsPage> {
         bottom: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,
-            80,
+            MediaQuery.of(context).size.width * 0.2,
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 6,
-              vertical: 8,
+            padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.0166,
+              vertical: MediaQuery.of(context).size.width * 0.0225,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -168,22 +170,49 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           const SizedBox(height: 2),
-                                          Center(
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                              child: Image.network(
-                                                postData['postProductImages'] !=
-                                                        null
-                                                    ? postData[
-                                                        'postProductImages'][0]
-                                                    : 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
-                                                width: width * 0.4125,
-                                                height: width * 0.4125,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                          ),
+                                          postData['postProductImages'] != null
+                                              ? CachedNetworkImage(
+                                                  imageUrl: postData[
+                                                      'postProductImages'][0],
+                                                  imageBuilder:
+                                                      (context, imageProvider) {
+                                                    return Center(
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(12),
+                                                        child: Container(
+                                                          width: width * 0.4125,
+                                                          height:
+                                                              width * 0.4125,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            image:
+                                                                DecorationImage(
+                                                              image:
+                                                                  imageProvider,
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                )
+                                              : SizedBox(
+                                                  width: width * 0.4125,
+                                                  height: width * 0.4125,
+                                                  child: Center(
+                                                    child: Text(
+                                                      'No Image',
+                                                      style: TextStyle(
+                                                        color: primaryDark2,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,

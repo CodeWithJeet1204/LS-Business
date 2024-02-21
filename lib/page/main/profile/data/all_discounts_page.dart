@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/page/main/profile/view%20page/discount/discount_page.dart';
 import 'package:find_easy/utils/colors.dart';
@@ -102,12 +103,12 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
         bottom: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,
-            80,
+            MediaQuery.of(context).size.width * 0.2,
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 6,
-              vertical: 8,
+            padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.0166,
+              vertical: MediaQuery.of(context).size.width * 0.0225,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -202,16 +203,32 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                       children: [
                                         // IMAGE
                                         discountData['discountImageUrl'] != null
-                                            ? ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                                child: Image.network(
-                                                  discountData[
-                                                      'discountImageUrl'],
-                                                  width: width,
-                                                  height: width * 0.4,
-                                                  fit: BoxFit.cover,
-                                                ),
+                                            ? CachedNetworkImage(
+                                                imageUrl: discountData[
+                                                    'discountImageUrl'],
+                                                imageBuilder:
+                                                    (context, imageProvider) {
+                                                  return Center(
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12),
+                                                      child: Container(
+                                                        width: width,
+                                                        height: width * 0.4,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          image:
+                                                              DecorationImage(
+                                                            image:
+                                                                imageProvider,
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
                                               )
 
                                             // NO IMAGE
@@ -222,7 +239,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                     height: width * 0.375,
                                                     child: const Center(
                                                       child: Text(
-                                                        "No Image Available",
+                                                        "No Image",
                                                         style: TextStyle(
                                                           color: primaryDark2,
                                                           fontWeight:

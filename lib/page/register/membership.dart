@@ -364,7 +364,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                             'MembershipDuration': selectedDuration.toString(),
                             'MembershipTime': DateTime.now().toString(),
                             'MembershipEndDateTime': selectedDurationDateTime,
-                            // TODO: Change tetx and image posts according to duration
+                            // TODO: Change text and image posts according to duration
                             'noOfTextPosts': 5,
                             'noOfImagePosts': 5,
                           });

@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/page/main/profile/view%20page/product/product_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class AllProductsPage extends StatefulWidget {
   const AllProductsPage({super.key});
@@ -116,12 +118,12 @@ class _AllProductsPageState extends State<AllProductsPage> {
         bottom: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,
-            80,
+            MediaQuery.of(context).size.width * 0.2,
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 6,
-              vertical: 8,
+            padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.0166,
+              vertical: MediaQuery.of(context).size.width * 0.0225,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -157,7 +159,9 @@ class _AllProductsPageState extends State<AllProductsPage> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
+        padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width * 0.0225,
+        ),
         child: LayoutBuilder(
           builder: ((context, constraints) {
             final double width = constraints.maxWidth;
@@ -217,18 +221,40 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         const SizedBox(height: 2),
-                                        Center(
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            child: Image.network(
-                                              productSnap['images'][0],
-                                              height: width * 0.4,
-                                              width: width * 0.4,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
+                                        CachedNetworkImage(
+                                          imageUrl: productSnap['images'][0],
+                                          imageBuilder:
+                                              (context, imageProvider) {
+                                            return Center(
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                child: Container(
+                                                  width: width * 0.4,
+                                                  height: width * 0.4,
+                                                  decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                      image: imageProvider,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          },
                                         ),
+                                        // Center(
+                                        //   child: ClipRRect(
+                                        //     borderRadius:
+                                        //         BorderRadius.circular(12),
+                                        //     child: Image.network(
+                                        //       productSnap['images'][0],
+                                        //       height: width * 0.4,
+                                        //       width: width * 0.4,
+                                        //       fit: BoxFit.cover,
+                                        //     ),
+                                        //   ),
+                                        // ),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/page/main/profile/view%20page/brand/brand_page.dart';
 import 'package:find_easy/utils/colors.dart';
@@ -20,6 +21,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
   final searchController = TextEditingController();
   bool isGridView = true;
 
+  // DISPOSE
   @override
   void dispose() {
     searchController.dispose();
@@ -128,12 +130,12 @@ class _AllBrandPageState extends State<AllBrandPage> {
         bottom: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,
-            80,
+            MediaQuery.of(context).size.width * 0.2,
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 6,
-              vertical: 8,
+            padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.0166,
+              vertical: MediaQuery.of(context).size.width * 0.0225,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -234,18 +236,53 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                           flex: 4,
                                           child: Container(),
                                         ),
-                                        ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                            9,
-                                          ),
-                                          child: Image.network(
-                                            brandData['imageUrl'] ??
-                                                'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
-                                            height: width * 0.4,
-                                            width: width * 0.4,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
+                                        brandData['imageUrl'] != null
+                                            ? CachedNetworkImage(
+                                                imageUrl: brandData['imageUrl'],
+                                                imageBuilder:
+                                                    (context, imageProvider) {
+                                                  return Center(
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                        12,
+                                                      ),
+                                                      child: Container(
+                                                        width: width * 0.4,
+                                                        height: width * 0.4,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          image:
+                                                              DecorationImage(
+                                                            image:
+                                                                imageProvider,
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              )
+                                            : Column(
+                                                children: [
+                                                  SizedBox(
+                                                    width: width,
+                                                    height: width * 0.375,
+                                                    child: const Center(
+                                                      child: Text(
+                                                        "No Image",
+                                                        style: TextStyle(
+                                                          color: primaryDark2,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const Divider(),
+                                                ],
+                                              ),
                                         Expanded(
                                           flex: 5,
                                           child: Container(),
