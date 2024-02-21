@@ -62,7 +62,7 @@ class _AddProductPage3State extends State<AddProductPage3> {
 
       await store
           .collection('Business')
-          .doc('Owners')
+          .doc('Data')
           .collection('Products')
           .doc(widget.productId)
           .set(provider.productInfo);

@@ -139,7 +139,7 @@ class _MembershipCardState extends State<MembershipCard> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "• ${widget.benefit1} Posts",
+                              "• ${widget.benefit1} Text Posts",
                               style: const TextStyle(
                                 color: white,
                                 fontSize: 16,
@@ -147,7 +147,7 @@ class _MembershipCardState extends State<MembershipCard> {
                               ),
                             ),
                             Text(
-                              "• ${widget.benefit2} Story",
+                              "• ${widget.benefit2} Image Posts",
                               style: const TextStyle(
                                 color: white,
                                 fontSize: 16,

@@ -429,14 +429,14 @@ class _AddProductPage1State extends State<AddProductPage1> {
                             ),
                           ),
                           validator: (value) {
-                            if (value != null) {
-                              if (value.length < 20 && value.isNotEmpty) {
+                            if (value != null && value.isNotEmpty) {
+                              if (value.length < 20) {
                                 return null;
                               } else {
                                 return "20 characters max.";
                               }
                             } else {
-                              return "Enter name";
+                              return "Enter Name";
                             }
                           },
                         ),

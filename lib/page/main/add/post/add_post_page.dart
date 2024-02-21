@@ -4,8 +4,11 @@ import 'package:find_easy/provider/select_product_for_post_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
+import 'package:find_easy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -17,10 +20,19 @@ class AddPostPage extends StatefulWidget {
 }
 
 class _AddPostPageState extends State<AddPostPage> {
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore store = FirebaseFirestore.instance;
   bool isFit = false;
   int currentImageIndex = 0;
   bool isPosting = false;
+  int textPostRemaining = 0;
+  int imagePostRemaining = 0;
+
+  // INIT STATE
+  @override
+  void initState() {
+    getNoOfPosts();
+    super.initState();
+  }
 
   // POST
   Future<String> post(
@@ -28,7 +40,7 @@ class _AddPostPageState extends State<AddPostPage> {
     String res = "Some error occured";
     try {
       bool postDoesntExists = true;
-      final previousPosts = await firestore
+      final previousPosts = await store
           .collection('Business')
           .doc('Data')
           .collection('Posts')
@@ -56,7 +68,7 @@ class _AddPostPageState extends State<AddPostPage> {
           isPosting = true;
         });
 
-        final productDocSnap = await firestore
+        final productDocSnap = await store
             .collection('Business')
             .doc('Data')
             .collection('Products')
@@ -84,22 +96,35 @@ class _AddPostPageState extends State<AddPostPage> {
           'isTextPost': isTextPost,
         };
 
-        await firestore
+        await store
             .collection('Business')
             .doc('Data')
             .collection('Posts')
             .doc(postId)
             .set(postInfo);
+
+        await store
+            .collection('Business')
+            .doc('Owners')
+            .collection('Shops')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .update({
+          'noOfTextPosts':
+              isTextPost ? textPostRemaining - 1 : textPostRemaining,
+          'noOfImagePosts':
+              !isTextPost ? imagePostRemaining - 1 : textPostRemaining,
+        });
+
+        setState(() {
+          isPosting = false;
+        });
+        res = "";
+
         if (context.mounted) {
           mySnackBar(context, "Posted");
           Navigator.of(context).pop();
         }
       }
-
-      setState(() {
-        isPosting = false;
-      });
-      res = "";
     } catch (e) {
       res = e.toString();
       setState(() {
@@ -111,6 +136,21 @@ class _AddPostPageState extends State<AddPostPage> {
     }
 
     return res;
+  }
+
+  // GET NO OF POSTS
+  void getNoOfPosts() async {
+    final productData = await store
+        .collection('Business')
+        .doc('Owners')
+        .collection('Shops')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    setState(() {
+      textPostRemaining = productData['noOfTextPosts'];
+      imagePostRemaining = productData['noOfImagePosts'];
+    });
   }
 
   @override
@@ -125,21 +165,23 @@ class _AddPostPageState extends State<AddPostPage> {
       appBar: AppBar(
         title: const Text("CREATE POST"),
         actions: [
-          IconButton(
+          MyTextButton(
             onPressed: () async {
               if (selectedProduct.isEmpty ||
                   selectedProductProvider.isTextPost == null) {
                 return mySnackBar(context, "Select a Post Type");
               } else {
-                String res = await post(selectedProductProvider,
-                    selectedProductProvider.isTextPost!);
+                String res = await post(
+                  selectedProductProvider,
+                  selectedProductProvider.isTextPost!,
+                );
                 if (res == "") {
                   selectedProductProvider.clear();
                 }
               }
             },
-            icon: const Icon(Icons.ios_share),
-            tooltip: "Post",
+            text: "DONE",
+            textColor: primaryDark2,
           ),
         ],
         bottom: PreferredSize(
@@ -155,68 +197,125 @@ class _AddPostPageState extends State<AddPostPage> {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                "Select the type of post you want to create",
-                style: TextStyle(
-                  color: primaryDark,
-                  fontSize: width * 0.045,
-                  fontWeight: FontWeight.w500,
+              Container(
+                width: width * 0.9,
+                height: width * 0.2,
+                margin: EdgeInsets.symmetric(vertical: width * 0.05),
+                decoration: BoxDecoration(
+                  color: primary2.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                textAlign: TextAlign.center,
-              ),
-              Text(
-                "Just select the product you want the post",
-                style: TextStyle(
-                  color: primaryDark,
-                  fontSize: width * 0.045,
-                  fontWeight: FontWeight.w500,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              Text(
-                "Then the product details will automatically be added",
-                style: TextStyle(
-                  color: primaryDark,
-                  fontSize: width * 0.045,
-                  fontWeight: FontWeight.w500,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 20),
-              MyButton(
-                text: selectedProduct.length < 2
-                    ? "TEXT POST"
-                    : selectedProductProvider.isTextPost == true
-                        ? "TEXT POST: ${selectedProduct[1]}"
-                        : "TEXT POST",
-                onTap: () {
-                  selectedProductProvider.changePostType(true);
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: ((context) => const SelectProductForPostPage()),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Remaining Text Post - $textPostRemaining',
+                      style: TextStyle(
+                        color: primaryDark,
+                        fontWeight: FontWeight.w500,
+                        fontSize: width * 0.05,
+                      ),
                     ),
-                  );
-                },
-                isLoading: false,
-                horizontalPadding: 20,
-              ),
-              const SizedBox(height: 20),
-              MyButton(
-                text: selectedProduct.length < 2
-                    ? "IMAGE POST"
-                    : selectedProductProvider.isTextPost == false
-                        ? "IMAGE POST: ${selectedProduct[1]}"
-                        : "IMAGE POST",
-                onTap: () {
-                  selectedProductProvider.changePostType(false);
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: ((context) => const SelectProductForPostPage()),
+                    Text(
+                      'Remaining Image Post - $imagePostRemaining',
+                      style: TextStyle(
+                        color: primaryDark,
+                        fontWeight: FontWeight.w500,
+                        fontSize: width * 0.05,
+                      ),
                     ),
-                  );
-                },
-                isLoading: false,
-                horizontalPadding: 20,
+                  ],
+                ),
+              ),
+              textPostRemaining > 0 || imagePostRemaining > 0
+                  ? Column(
+                      children: [
+                        Text(
+                          "Select the type of post you want to create",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: primaryDark,
+                            fontSize: width * 0.045,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Text(
+                          "Just select the product you want the post",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: primaryDark,
+                            fontSize: width * 0.045,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Text(
+                          "Then the product details will automatically be added",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: primaryDark,
+                            fontSize: width * 0.045,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    )
+                  : Text(
+                      'Your no of Text & Image Posts has reached 0\nYou cannot post another post until your current memberhsip ends',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: primaryDark,
+                        fontSize: width * 0.045,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+              SizedBox(height: width * 0.055),
+              Opacity(
+                opacity: textPostRemaining > 0 ? 1 : 0.5,
+                child: MyButton(
+                  text: selectedProduct.length < 2
+                      ? "TEXT POST"
+                      : selectedProductProvider.isTextPost == true
+                          ? "TEXT POST: ${selectedProduct[1]}"
+                          : "TEXT POST",
+                  onTap: textPostRemaining > 0
+                      ? () {
+                          selectedProductProvider.changePostType(true);
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: ((context) =>
+                                  const SelectProductForPostPage()),
+                            ),
+                          );
+                        }
+                      : null,
+                  isLoading: false,
+                  horizontalPadding: width * 0.055,
+                ),
+              ),
+              // IMAGE POST BUTTON
+              SizedBox(height: width * 0.055),
+              Opacity(
+                opacity: imagePostRemaining > 0 ? 1 : 0.5,
+                child: MyButton(
+                  text: selectedProduct.length < 2
+                      ? "IMAGE POST"
+                      : selectedProductProvider.isTextPost == false
+                          ? "IMAGE POST: ${selectedProduct[1]}"
+                          : "IMAGE POST",
+                  onTap: imagePostRemaining > 0
+                      ? () {
+                          selectedProductProvider.changePostType(false);
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: ((context) =>
+                                  const SelectProductForPostPage()),
+                            ),
+                          );
+                        }
+                      : null,
+                  isLoading: false,
+                  horizontalPadding: width * 0.055,
+                ),
               ),
             ],
           );

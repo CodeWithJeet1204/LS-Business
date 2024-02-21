@@ -372,6 +372,7 @@ final Map<String, List<List<dynamic>>> businessCategoryProperties = {
       [''],
       TextInputType.text,
       1,
+      false,
     ],
     [
       'Carat Weight',
@@ -380,6 +381,7 @@ final Map<String, List<List<dynamic>>> businessCategoryProperties = {
       [''],
       TextInputType.text,
       1,
+      false,
     ],
     [
       'Gemstone Cut and Color',
@@ -388,6 +390,7 @@ final Map<String, List<List<dynamic>>> businessCategoryProperties = {
       [''],
       TextInputType.text,
       1,
+      false,
     ],
     [
       'Occasion',
@@ -396,6 +399,7 @@ final Map<String, List<List<dynamic>>> businessCategoryProperties = {
       [''],
       TextInputType.text,
       1,
+      false,
     ],
     [
       'Metal Preference',
@@ -404,6 +408,7 @@ final Map<String, List<List<dynamic>>> businessCategoryProperties = {
       [''],
       TextInputType.text,
       1,
+      false,
     ],
     [
       'Design Preference',
@@ -412,6 +417,7 @@ final Map<String, List<List<dynamic>>> businessCategoryProperties = {
       [''],
       TextInputType.text,
       1,
+      false,
     ],
   ],
   'Decorations': [
