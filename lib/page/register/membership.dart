@@ -29,6 +29,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
   bool isPremiumSelected = false;
   bool isPaying = false;
   String selectedDuration = "Duration";
+  DateTime? selectedDurationDateTime;
 
   String? selectedPrice;
   int? currentBasicPrice;
@@ -135,6 +136,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  // DURATION DROP DOWN
                   Padding(
                     padding: EdgeInsets.only(left: width * 0.033),
                     child: Container(
@@ -148,8 +150,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                       ),
                       child: DropdownButton(
                         autofocus: true,
-                        underline:
-                            DropdownButtonHideUnderline(child: Container()),
+                        underline: SizedBox(),
                         borderRadius: BorderRadius.circular(12),
                         hint: Text(selectedDuration),
                         padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -171,11 +172,31 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                         onChanged: (value) {
                           setState(() {
                             selectedDuration = value!;
+                            if (value == '1 month') {
+                              selectedDurationDateTime = DateTime.now().add(
+                                Duration(
+                                  days: 28,
+                                ),
+                              );
+                            } else if (value == '6 months') {
+                              selectedDurationDateTime = DateTime.now().add(
+                                Duration(
+                                  days: 168,
+                                ),
+                              );
+                            } else if (value == '1 year') {
+                              selectedDurationDateTime = DateTime.now().add(
+                                Duration(
+                                  days: 336,
+                                ),
+                              );
+                            }
                           });
                         },
                       ),
                     ),
                   ),
+                  // INFO ICON
                   Padding(
                     padding: EdgeInsets.only(right: width * 0.033),
                     child: IconButton(
@@ -342,6 +363,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                             'MembershipName': currentMembership.toString(),
                             'MembershipDuration': selectedDuration.toString(),
                             'MembershipTime': DateTime.now().toString(),
+                            'MembershipEndDateTime': selectedDurationDateTime,
                           });
 
                           setState(() {

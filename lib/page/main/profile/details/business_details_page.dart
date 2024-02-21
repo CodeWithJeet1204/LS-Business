@@ -8,7 +8,9 @@ import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class BusinessDetailsPage extends StatefulWidget {
   const BusinessDetailsPage({super.key});
@@ -193,7 +195,9 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
         title: const Text("Business Details"),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width * 0.025,
+        ),
         child: LayoutBuilder(
           builder: ((context, constraints) {
             double width = constraints.maxWidth;
@@ -449,28 +453,24 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                           Container(
                             width: width,
                             height: width * 0.16,
+                            alignment: Alignment.centerLeft,
                             decoration: BoxDecoration(
                               color: primary2.withOpacity(0.9),
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    left: width * 0.055,
-                                  ),
-                                  child: SizedBox(
-                                    width: width * 0.875,
-                                    child: AutoSizeText(
-                                      shopData['Type'] ?? 'N/A',
-                                      style: TextStyle(
-                                        fontSize: width * 0.055,
-                                      ),
-                                    ),
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                left: width * 0.055,
+                              ),
+                              child: SizedBox(
+                                width: width * 0.875,
+                                child: AutoSizeText(
+                                  shopData['Type'] ?? 'N/A',
+                                  style: TextStyle(
+                                    fontSize: width * 0.055,
                                   ),
                                 ),
-                              ],
+                              ),
                             ),
                           ),
                           const SizedBox(height: 14),
@@ -479,28 +479,24 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                           Container(
                             width: width,
                             height: width * 0.16,
+                            alignment: Alignment.centerLeft,
                             decoration: BoxDecoration(
                               color: primary2.withOpacity(0.9),
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    left: width * 0.055,
-                                  ),
-                                  child: SizedBox(
-                                    width: width * 0.875,
-                                    child: AutoSizeText(
-                                      shopData['GSTNumber'],
-                                      style: const TextStyle(
-                                        fontSize: 18,
-                                      ),
-                                    ),
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                left: width * 0.055,
+                              ),
+                              child: SizedBox(
+                                width: width * 0.875,
+                                child: AutoSizeText(
+                                  shopData['GSTNumber'],
+                                  style: const TextStyle(
+                                    fontSize: 18,
                                   ),
                                 ),
-                              ],
+                              ),
                             ),
                           ),
                           const SizedBox(height: 14),
@@ -509,29 +505,25 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                           Container(
                             width: width,
                             height: width * 0.16,
+                            alignment: Alignment.centerLeft,
                             decoration: BoxDecoration(
                               color: primary2.withOpacity(0.9),
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    left: width * 0.055,
-                                  ),
-                                  child: SizedBox(
-                                    width: width * 0.725,
-                                    child: Text(
-                                      shopData['Industry'],
-                                      style: TextStyle(
-                                        fontSize: width * 0.055,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                left: width * 0.055,
+                              ),
+                              child: SizedBox(
+                                width: width * 0.725,
+                                child: Text(
+                                  shopData['Industry'],
+                                  style: TextStyle(
+                                    fontSize: width * 0.055,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                              ],
+                              ),
                             ),
                           ),
                           const SizedBox(height: 14),
@@ -540,6 +532,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                           Container(
                             width: width,
                             height: width * 0.16,
+                            alignment: Alignment.centerLeft,
                             decoration: BoxDecoration(
                               color: shopData['MembershipName'] == "PREMIUM"
                                   ? const Color.fromRGBO(202, 226, 238, 1)
@@ -548,25 +541,48 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                       : const Color.fromRGBO(167, 167, 167, 1),
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(left: width * 0.05),
-                                  child: SizedBox(
-                                    width: width * 0.725,
-                                    child: AutoSizeText(
-                                      shopData['MembershipName'] ?? 'N/A',
-                                      style: TextStyle(
-                                        fontSize: width * 0.055,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
+                            child: Padding(
+                              padding: EdgeInsets.only(left: width * 0.05),
+                              child: SizedBox(
+                                width: width * 0.725,
+                                child: AutoSizeText(
+                                  shopData['MembershipName'] ?? 'N/A',
+                                  style: TextStyle(
+                                    fontSize: width * 0.055,
+                                    fontWeight: FontWeight.w700,
                                   ),
                                 ),
-                              ],
+                              ),
                             ),
                           ),
+                          const SizedBox(height: 14),
+
+                          // MEMBERSHIP END DATETIME
+                          Container(
+                            width: width,
+                            height: width * 0.2,
+                            alignment: Alignment.centerLeft,
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 255, 130, 121),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                left: width * 0.055,
+                              ),
+                              child: SizedBox(
+                                width: width * 0.875,
+                                child: AutoSizeText(
+                                  'Membership Expiry Date - ${DateFormat('dd/mm/yy').format((shopData['MembershipEndDateTime'] as Timestamp).toDate())}',
+                                  style: TextStyle(
+                                    fontSize: width * 0.055,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+
                           const SizedBox(height: 18),
 
                           // SAVE & CANCEL BUTTON

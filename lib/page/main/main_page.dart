@@ -12,6 +12,7 @@ import 'package:find_easy/page/register/user_register_details.dart';
 import 'package:find_easy/page/register/verify/email_verify.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/utils/is_payed.dart';
+import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -80,10 +81,15 @@ class _MainPageState extends State<MainPage> {
         detailsPage = const BusinessDetailsPage();
       } else if (getUserDetailsAdded['Image'] != null &&
           getBusinessDetailsAdded['GSTNumber'] != null &&
-          getBusinessDetailsAdded['MembershipName'] == null) {
+          (getBusinessDetailsAdded['MembershipName'] == null ||
+              getBusinessDetailsAdded['MembershipEndDateTime'] == null)) {
+        detailsPage = const SelectMembershipPage();
+      } else if (DateTime.now().isAfter(
+          (getBusinessDetailsAdded['MembershipEndDateTime'] as Timestamp)
+              .toDate())) {
+        mySnackBar(context, 'Your Membership Has Expired');
         detailsPage = const SelectMembershipPage();
       } else {
-        // All details added, set detailsPage to null
         detailsPage = null;
       }
     }
