@@ -155,7 +155,6 @@ class _PostPageState extends State<PostPage> {
                                                 ),
                                               );
                                             },
-                                            // TODO: IF IMAGE ADDED / REMOVED FROM PRODUCT THEN CHANGE IN POST ALSO
                                             child: CachedNetworkImage(
                                               imageUrl: e,
                                               imageBuilder:
