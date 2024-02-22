@@ -269,10 +269,10 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                                   child: SizedBox(
                                                     width: width * 0.225,
                                                     child: Text(
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
                                                       productSnap[
                                                           'productName'],
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       maxLines: 1,
                                                       style: TextStyle(
                                                         fontSize: width * 0.06,
@@ -290,8 +290,6 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                                     0,
                                                   ),
                                                   child: Text(
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
                                                     productSnap['productPrice'] !=
                                                                 "" &&
                                                             productSnap[
@@ -300,6 +298,8 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                                         ? productSnap[
                                                             'productPrice']
                                                         : "N/A",
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     maxLines: 1,
                                                     style: TextStyle(
                                                       fontSize: width * 0.0475,

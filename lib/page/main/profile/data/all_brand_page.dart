@@ -307,9 +307,9 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                               child: SizedBox(
                                                 width: width * 0.275,
                                                 child: Text(
+                                                  brandData['brandName'],
                                                   overflow:
                                                       TextOverflow.ellipsis,
-                                                  brandData['brandName'],
                                                   maxLines: 1,
                                                   style: TextStyle(
                                                     color: primaryDark,

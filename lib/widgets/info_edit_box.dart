@@ -53,8 +53,8 @@ class InfoEditBox extends StatelessWidget {
                 ),
                 noOfAnswers == 1
                     ? Text(
-                        overflow: TextOverflow.ellipsis,
                         content,
+                        overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         style: TextStyle(
                           fontSize: MediaQuery.of(context).size.width * 0.05833,
@@ -64,8 +64,8 @@ class InfoEditBox extends StatelessWidget {
                       )
                     : noOfAnswers == 2
                         ? Text(
-                            overflow: TextOverflow.ellipsis,
                             content,
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontSize:
                                   MediaQuery.of(context).size.width * 0.05833,

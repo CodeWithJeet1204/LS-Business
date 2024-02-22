@@ -303,8 +303,8 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                         child: SizedBox(
                                           width: width * 0.725,
                                           child: AutoSizeText(
-                                            overflow: TextOverflow.ellipsis,
                                             shopData['Name'],
+                                            overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
                                             style: TextStyle(
                                               fontSize: width * 0.06,
@@ -365,8 +365,8 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                         child: SizedBox(
                                           width: width * 0.725,
                                           child: AutoSizeText(
-                                            overflow: TextOverflow.ellipsis,
                                             shopData['Address'],
+                                            overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
                                             style: TextStyle(
                                               fontSize: width * 0.055,
@@ -428,8 +428,8 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                         child: SizedBox(
                                           width: width * 0.725,
                                           child: AutoSizeText(
-                                            overflow: TextOverflow.ellipsis,
                                             shopData['Special Note'],
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               fontSize: width * 0.055,
                                             ),
@@ -473,8 +473,8 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                               child: SizedBox(
                                 width: width * 0.875,
                                 child: AutoSizeText(
-                                  overflow: TextOverflow.ellipsis,
                                   shopData['Type'] ?? 'N/A',
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     fontSize: width * 0.055,
                                   ),
@@ -500,8 +500,8 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                               child: SizedBox(
                                 width: width * 0.875,
                                 child: AutoSizeText(
-                                  overflow: TextOverflow.ellipsis,
                                   shopData['GSTNumber'],
+                                  overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
                                     fontSize: 18,
                                   ),
@@ -527,8 +527,8 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                               child: SizedBox(
                                 width: width * 0.725,
                                 child: Text(
-                                  overflow: TextOverflow.ellipsis,
                                   shopData['Industry'],
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     fontSize: width * 0.055,
                                     fontWeight: FontWeight.w500,
@@ -557,8 +557,8 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                               child: SizedBox(
                                 width: width * 0.725,
                                 child: AutoSizeText(
-                                  overflow: TextOverflow.ellipsis,
                                   shopData['MembershipName'] ?? 'N/A',
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     fontSize: width * 0.055,
                                     fontWeight: FontWeight.w700,

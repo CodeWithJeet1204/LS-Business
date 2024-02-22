@@ -1467,12 +1467,12 @@ class _ProductPageState extends State<ProductPage> {
                                               SizedBox(
                                                 width: width * 0.4,
                                                 child: AutoSizeText(
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
                                                   categoryExists
                                                       ? productData[
                                                           'categoryName']
                                                       : 'No Category',
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   maxLines: 1,
                                                   style: TextStyle(
                                                     color: primaryDark,

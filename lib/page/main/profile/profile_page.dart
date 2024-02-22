@@ -150,8 +150,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 SizedBox(
                                   width: width * 0.8,
                                   child: Text(
-                                    overflow: TextOverflow.ellipsis,
                                     shopData['Name']?.toUpperCase() ?? 'N/A',
+                                    overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
@@ -164,8 +164,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 SizedBox(
                                   width: width * 0.8,
                                   child: Text(
-                                    overflow: TextOverflow.ellipsis,
                                     shopData['Type'] ?? 'N/A',
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: width * 0.0425,
                                       fontWeight: FontWeight.w600,

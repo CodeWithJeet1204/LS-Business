@@ -281,9 +281,9 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                                               child: SizedBox(
                                                 width: width * 0.275,
                                                 child: Text(
+                                                  categoryData['categoryName'],
                                                   overflow:
                                                       TextOverflow.ellipsis,
-                                                  categoryData['categoryName'],
                                                   maxLines: 1,
                                                   style: TextStyle(
                                                     color: primaryDark,

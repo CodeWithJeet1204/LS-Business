@@ -422,8 +422,8 @@ class _CategoryPageState extends State<CategoryPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              overflow: TextOverflow.ellipsis,
                               categoryData['categoryName'],
+                              overflow: TextOverflow.ellipsis,
                               maxLines: 1,
                               style: TextStyle(
                                 color: primaryDark,
@@ -767,10 +767,10 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                         ),
                                                                         child:
                                                                             Text(
-                                                                          overflow:
-                                                                              TextOverflow.ellipsis,
                                                                           productData[
                                                                               'productName'],
+                                                                          overflow:
+                                                                              TextOverflow.ellipsis,
                                                                           maxLines:
                                                                               1,
                                                                           style:
@@ -792,11 +792,11 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                             0),
                                                                         child:
                                                                             Text(
-                                                                          overflow:
-                                                                              TextOverflow.ellipsis,
                                                                           productData['productPrice'] != "" && productData['productPrice'] != null
                                                                               ? productData['productPrice']
                                                                               : "N/A",
+                                                                          overflow:
+                                                                              TextOverflow.ellipsis,
                                                                           maxLines:
                                                                               1,
                                                                           style:

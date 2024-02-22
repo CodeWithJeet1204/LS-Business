@@ -702,8 +702,8 @@ class DISCOUNT extends State<DiscountPage> {
                                       maxLines: 1,
                                     ),
                                     Text(
-                                      overflow: TextOverflow.ellipsis,
                                       discountData['discountStartDate'],
+                                      overflow: TextOverflow.ellipsis,
                                       softWrap: true,
                                       maxLines: 1,
                                       style: TextStyle(
@@ -764,8 +764,8 @@ class DISCOUNT extends State<DiscountPage> {
                                       maxLines: 1,
                                     ),
                                     Text(
-                                      overflow: TextOverflow.ellipsis,
                                       discountData['discountEndDate'],
+                                      overflow: TextOverflow.ellipsis,
                                       softWrap: true,
                                       maxLines: 1,
                                       style: TextStyle(
@@ -1047,8 +1047,8 @@ class DISCOUNT extends State<DiscountPage> {
                                                                                   0,
                                                                                 ),
                                                                                 child: Text(
-                                                                                  overflow: TextOverflow.ellipsis,
                                                                                   productData['productName'],
+                                                                                  overflow: TextOverflow.ellipsis,
                                                                                   maxLines: 1,
                                                                                   style: TextStyle(
                                                                                     fontSize: width * 0.058,
@@ -1064,8 +1064,8 @@ class DISCOUNT extends State<DiscountPage> {
                                                                                   0,
                                                                                 ),
                                                                                 child: Text(
-                                                                                  overflow: TextOverflow.ellipsis,
                                                                                   productData['productPrice'] != "" && productData['productPrice'] != null ? productData['productPrice'] : "N/A",
+                                                                                  overflow: TextOverflow.ellipsis,
                                                                                   maxLines: 1,
                                                                                   style: TextStyle(
                                                                                     fontSize: width * 0.04,

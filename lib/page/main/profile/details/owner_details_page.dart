@@ -356,8 +356,8 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                         child: SizedBox(
                                           width: width * 0.725,
                                           child: AutoSizeText(
-                                            overflow: TextOverflow.ellipsis,
                                             userData['Name'] ?? 'N/A',
+                                            overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
                                             style: TextStyle(
                                               fontSize: width * 0.06,
@@ -416,8 +416,8 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                         child: SizedBox(
                                           width: width * 0.725,
                                           child: AutoSizeText(
-                                            overflow: TextOverflow.ellipsis,
                                             userData['Phone Number'] ?? 'N/A',
+                                            overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
                                             style: TextStyle(
                                               fontSize: width * 0.055,
@@ -462,8 +462,8 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                   child: SizedBox(
                                     width: width * 0.725,
                                     child: AutoSizeText(
-                                      overflow: TextOverflow.ellipsis,
                                       userData['Email'] ?? 'N/A',
+                                      overflow: TextOverflow.ellipsis,
                                       maxLines: 1,
                                       style: TextStyle(
                                         fontSize: width * 0.055,

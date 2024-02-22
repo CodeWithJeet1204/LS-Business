@@ -280,10 +280,10 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                     top: width * 0.01,
                                                   ),
                                                   child: Text(
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
                                                     discountData[
                                                         'discountName'],
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                       color: primaryDark,
                                                       fontSize: width * 0.06,

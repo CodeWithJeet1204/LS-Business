@@ -238,10 +238,10 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                       0,
                                                     ),
                                                     child: Text(
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
                                                       postData[
                                                           'postProductName'],
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       maxLines: 1,
                                                       style: const TextStyle(
                                                         fontSize: 20,
@@ -259,8 +259,6 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                       0,
                                                     ),
                                                     child: Text(
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
                                                       postData['postProductPrice'] !=
                                                                   "" &&
                                                               postData[
@@ -269,6 +267,8 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                           ? postData[
                                                               'postProductPrice']
                                                           : "N/A",
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       maxLines: 1,
                                                       style: TextStyle(
                                                         fontSize: width * 0.045,

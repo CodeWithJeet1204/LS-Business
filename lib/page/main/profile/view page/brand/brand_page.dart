@@ -498,8 +498,8 @@ class _BrandPageState extends State<BrandPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              overflow: TextOverflow.ellipsis,
                               brandData['brandName'],
+                              overflow: TextOverflow.ellipsis,
                               maxLines: 1,
                               style: TextStyle(
                                 color: primaryDark,
@@ -842,10 +842,10 @@ class _BrandPageState extends State<BrandPage> {
                                                                         ),
                                                                         child:
                                                                             Text(
-                                                                          overflow:
-                                                                              TextOverflow.ellipsis,
                                                                           productData[
                                                                               'productName'],
+                                                                          overflow:
+                                                                              TextOverflow.ellipsis,
                                                                           maxLines:
                                                                               1,
                                                                           style:
@@ -867,11 +867,11 @@ class _BrandPageState extends State<BrandPage> {
                                                                             0),
                                                                         child:
                                                                             Text(
-                                                                          overflow:
-                                                                              TextOverflow.ellipsis,
                                                                           productData['productPrice'] != "" && productData['productPrice'] != null
                                                                               ? productData['productPrice']
                                                                               : "N/A",
+                                                                          overflow:
+                                                                              TextOverflow.ellipsis,
                                                                           maxLines:
                                                                               1,
                                                                           style:
