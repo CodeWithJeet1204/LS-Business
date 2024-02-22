@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/provider/discount_products_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/text_button.dart';
@@ -84,7 +85,7 @@ class _SelectProductForDiscountPageState
                         });
                       },
                       icon: Icon(
-                        isGridView ? Icons.list : Icons.grid_view_rounded,
+                        isGridView ? FeatherIcons.list : FeatherIcons.grid,
                       ),
                       tooltip: isGridView ? "List View" : "Grid View",
                     ),
@@ -97,8 +98,9 @@ class _SelectProductForDiscountPageState
                   if (snapshot.hasError) {
                     return const Center(
                       child: Text(
-                          overflow: TextOverflow.ellipsis,
-                          "Something went wrong"),
+                        "Something went wrong",
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     );
                   }
 
@@ -185,9 +187,9 @@ class _SelectProductForDiscountPageState
                                                     0,
                                                   ),
                                                   child: Text(
+                                                    productData['productName'],
                                                     overflow:
                                                         TextOverflow.ellipsis,
-                                                    productData['productName'],
                                                     maxLines: 1,
                                                     style: TextStyle(
                                                       fontSize: width * 0.06,
@@ -204,8 +206,6 @@ class _SelectProductForDiscountPageState
                                                     0,
                                                   ),
                                                   child: Text(
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
                                                     productData['productPrice'] !=
                                                                 "" &&
                                                             productSnap[
@@ -214,6 +214,8 @@ class _SelectProductForDiscountPageState
                                                         ? productSnap[
                                                             'productPrice']
                                                         : "N/A",
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     maxLines: 1,
                                                     style: TextStyle(
                                                       fontSize: width * 0.045,
@@ -308,15 +310,14 @@ class _SelectProductForDiscountPageState
                                               },
                                             ),
                                             title: Text(
-                                              overflow: TextOverflow.ellipsis,
                                               productSnap['productName'],
+                                              overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                 fontSize: width * 0.05125,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                             ),
                                             subtitle: Text(
-                                              overflow: TextOverflow.ellipsis,
                                               productSnap['productPrice'] !=
                                                           "" &&
                                                       productSnap[
@@ -324,6 +325,7 @@ class _SelectProductForDiscountPageState
                                                           null
                                                   ? productSnap['productPrice']
                                                   : "N/A",
+                                              overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                 fontSize: width * 0.04125,
                                                 fontWeight: FontWeight.w500,
@@ -350,7 +352,7 @@ class _SelectProductForDiscountPageState
                                                     color: primaryDark2,
                                                   ),
                                                   child: Icon(
-                                                    Icons.check,
+                                                    FeatherIcons.check,
                                                     color: Colors.white,
                                                     size: width * 0.095,
                                                   ),

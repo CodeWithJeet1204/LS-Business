@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/provider/discount_brand_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/text_button.dart';
@@ -81,7 +82,7 @@ class _SelectBrandForDiscountPageState
                     });
                   },
                   icon: Icon(
-                    isGridView ? Icons.list : Icons.grid_view_rounded,
+                    isGridView ? FeatherIcons.list : FeatherIcons.grid,
                   ),
                   tooltip: isGridView ? "List View" : "Grid View",
                 ),
@@ -187,9 +188,9 @@ class _SelectBrandForDiscountPageState
                                                     0,
                                                   ),
                                                   child: Text(
+                                                    brandData['brandName'],
                                                     overflow:
                                                         TextOverflow.ellipsis,
-                                                    brandData['brandName'],
                                                     maxLines: 1,
                                                     style: TextStyle(
                                                       fontSize: width * 0.06,
@@ -217,7 +218,7 @@ class _SelectBrandForDiscountPageState
                                                   color: primaryDark2,
                                                 ),
                                                 child: Icon(
-                                                  Icons.check,
+                                                  FeatherIcons.check,
                                                   color: Colors.white,
                                                   size: width * 0.1,
                                                 ),
@@ -285,8 +286,8 @@ class _SelectBrandForDiscountPageState
                                               ),
                                             ),
                                             title: Text(
-                                              overflow: TextOverflow.ellipsis,
                                               brandData['brandName'],
+                                              overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                 fontSize: width * 0.055,
                                                 fontWeight: FontWeight.w600,
@@ -311,7 +312,7 @@ class _SelectBrandForDiscountPageState
                                                     color: primaryDark2,
                                                   ),
                                                   child: Icon(
-                                                    Icons.check,
+                                                    FeatherIcons.check,
                                                     color: Colors.white,
                                                     size: width * 0.095,
                                                   ),

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/page/main/add/brand/add_products_to_brand_page.dart';
+import 'package:feather_icons/feather_icons.dart';
+import 'package:find_easy/page/main/add/brand/select_products_for_brand_page.dart';
 import 'package:find_easy/provider/products_added_to_brand.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
@@ -32,6 +33,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
   File? _image;
   String? imageUrl;
 
+  // DISPOSE
   @override
   void dispose() {
     brandNameController.dispose();
@@ -199,7 +201,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
                                     //   child: IconButton.filledTonal(
                                     //     onPressed: selectImage,
                                     //     icon: Icon(
-                                    //       Icons.camera_alt_outlined,
+                                    //       FeatherIcons.camera,
                                     //       size: width * 0.1125,
                                     //     ),
                                     //     tooltip: "Change Image",
@@ -211,7 +213,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
                                       child: IconButton.filledTonal(
                                         onPressed: removeImage,
                                         icon: Icon(
-                                          Icons.highlight_remove_rounded,
+                                          FeatherIcons.x,
                                           size: width * 0.1125,
                                         ),
                                         tooltip: "Remove Image",
@@ -241,7 +243,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
                                   IconButton(
                                     onPressed: selectImage,
                                     icon: Icon(
-                                      Icons.arrow_circle_up_rounded,
+                                      FeatherIcons.upload,
                                       size: width * 0.33,
                                     ),
                                   ),

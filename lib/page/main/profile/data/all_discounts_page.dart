@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/page/main/profile/view%20page/discount/discount_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
@@ -137,7 +138,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                     });
                   },
                   icon: Icon(
-                    isGridView ? Icons.list : Icons.grid_view_rounded,
+                    isGridView ? FeatherIcons.list : FeatherIcons.grid,
                   ),
                   tooltip: isGridView ? "List View" : "Grid View",
                 ),
@@ -405,7 +406,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                 );
                                               },
                                               icon: Icon(
-                                                Icons.delete_forever_outlined,
+                                                FeatherIcons.trash,
                                                 color: Colors.red,
                                                 size: width * 0.1,
                                               ),
@@ -479,8 +480,8 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
 
                                     // NAME
                                     title: Text(
-                                      overflow: TextOverflow.ellipsis,
                                       discountData['discountName'],
+                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         color: primaryDark,
                                         fontSize: width * 0.055,
@@ -588,9 +589,9 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                         );
                                       },
                                       icon: Icon(
-                                        Icons.delete_forever_outlined,
+                                        FeatherIcons.trash,
                                         color: Colors.red,
-                                        size: width * 0.1,
+                                        size: width * 0.08,
                                       ),
                                       tooltip: "End Discount",
                                     ),

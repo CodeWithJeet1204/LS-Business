@@ -1,3 +1,4 @@
+import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/material.dart';
 
 class MyTextFormField extends StatefulWidget {
@@ -78,8 +79,8 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
                     });
                   },
                   icon: isShowPassword
-                      ? const Icon(Icons.remove_red_eye)
-                      : const Icon(Icons.remove_red_eye_outlined),
+                      ? const Icon(FeatherIcons.eye)
+                      : const Icon(FeatherIcons.eyeOff),
                 ),
               ],
             )

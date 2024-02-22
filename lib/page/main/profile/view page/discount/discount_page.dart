@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/page/main/profile/view%20page/brand/brand_page.dart';
 import 'package:find_easy/page/main/profile/view%20page/category/category_page.dart';
 import 'package:find_easy/page/main/profile/view%20page/product/product_page.dart';
@@ -490,7 +491,7 @@ class DISCOUNT extends State<DiscountPage> {
               }
             },
             icon: const Icon(
-              Icons.delete_forever_outlined,
+              FeatherIcons.trash,
               color: Colors.red,
             ),
             tooltip: "End Discount",
@@ -608,7 +609,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                   );
                                                 },
                                                 icon: Icon(
-                                                  Icons.camera_alt_outlined,
+                                                  FeatherIcons.camera,
                                                   size: width * 0.1,
                                                 ),
                                                 tooltip: "Change Image",
@@ -627,8 +628,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                   );
                                                 },
                                                 icon: Icon(
-                                                  Icons
-                                                      .highlight_remove_outlined,
+                                                  FeatherIcons.x,
                                                   size: width * 0.1,
                                                 ),
                                                 tooltip: "Remove Image",
@@ -723,7 +723,7 @@ class DISCOUNT extends State<DiscountPage> {
                                     );
                                   },
                                   icon: const Icon(
-                                    Icons.edit,
+                                    FeatherIcons.edit,
                                     color: primaryDark,
                                   ),
                                   tooltip: "Change Start Date",
@@ -785,7 +785,7 @@ class DISCOUNT extends State<DiscountPage> {
                                     );
                                   },
                                   icon: const Icon(
-                                    Icons.edit,
+                                    FeatherIcons.edit,
                                     color: primaryDark,
                                   ),
                                   tooltip: "Change End Date",
@@ -911,8 +911,8 @@ class DISCOUNT extends State<DiscountPage> {
                                               },
                                               icon: Icon(
                                                 isGridView
-                                                    ? Icons.list
-                                                    : Icons.grid_view_rounded,
+                                                    ? FeatherIcons.list
+                                                    : FeatherIcons.grid,
                                               ),
                                               tooltip: isGridView
                                                   ? "List View"
@@ -1089,7 +1089,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                                             },
                                                                             icon:
                                                                                 Icon(
-                                                                              Icons.delete_forever,
+                                                                              FeatherIcons.trash,
                                                                               color: const Color.fromARGB(
                                                                                 255,
                                                                                 215,
@@ -1180,11 +1180,11 @@ class DISCOUNT extends State<DiscountPage> {
                                                                     ),
                                                                   ),
                                                                   title: Text(
+                                                                    productData[
+                                                                        'productName'],
                                                                     overflow:
                                                                         TextOverflow
                                                                             .ellipsis,
-                                                                    productData[
-                                                                        'productName'],
                                                                     style:
                                                                         TextStyle(
                                                                       fontSize:
@@ -1197,9 +1197,6 @@ class DISCOUNT extends State<DiscountPage> {
                                                                   ),
                                                                   subtitle:
                                                                       Text(
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
                                                                     productData['productPrice'] !=
                                                                                 "" &&
                                                                             productData['productPrice'] !=
@@ -1207,6 +1204,9 @@ class DISCOUNT extends State<DiscountPage> {
                                                                         ? productData[
                                                                             'productPrice']
                                                                         : "N/A",
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
                                                                     style:
                                                                         TextStyle(
                                                                       fontSize:
@@ -1230,8 +1230,8 @@ class DISCOUNT extends State<DiscountPage> {
                                                                       // );
                                                                     },
                                                                     icon: Icon(
-                                                                      Icons
-                                                                          .delete_forever,
+                                                                      FeatherIcons
+                                                                          .trash,
                                                                       color: const Color
                                                                           .fromRGBO(
                                                                           215,
@@ -1239,7 +1239,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                                           0,
                                                                           1),
                                                                       size: width *
-                                                                          0.09,
+                                                                          0.08,
                                                                     ),
                                                                     tooltip:
                                                                         "Remove Product",
@@ -1337,8 +1337,8 @@ class DISCOUNT extends State<DiscountPage> {
                                               },
                                               icon: Icon(
                                                 isGridView
-                                                    ? Icons.list
-                                                    : Icons.grid_view_rounded,
+                                                    ? FeatherIcons.list
+                                                    : FeatherIcons.grid,
                                               ),
                                               tooltip: isGridView
                                                   ? "List View"
@@ -1499,7 +1499,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                                             },
                                                                             icon:
                                                                                 Icon(
-                                                                              Icons.delete_forever,
+                                                                              FeatherIcons.trash,
                                                                               color: const Color.fromARGB(
                                                                                 255,
                                                                                 215,
@@ -1638,8 +1638,8 @@ class DISCOUNT extends State<DiscountPage> {
                                                                       // );
                                                                     },
                                                                     icon: Icon(
-                                                                      Icons
-                                                                          .delete_forever,
+                                                                      FeatherIcons
+                                                                          .trash,
                                                                       color: const Color
                                                                           .fromRGBO(
                                                                           215,
@@ -1745,8 +1745,8 @@ class DISCOUNT extends State<DiscountPage> {
                                               },
                                               icon: Icon(
                                                 isGridView
-                                                    ? Icons.list
-                                                    : Icons.grid_view_rounded,
+                                                    ? FeatherIcons.list
+                                                    : FeatherIcons.grid,
                                               ),
                                               tooltip: isGridView
                                                   ? "List View"
@@ -1907,7 +1907,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                                             },
                                                                             icon:
                                                                                 Icon(
-                                                                              Icons.delete_forever,
+                                                                              FeatherIcons.trash,
                                                                               color: const Color.fromARGB(
                                                                                 255,
                                                                                 215,
@@ -2046,8 +2046,8 @@ class DISCOUNT extends State<DiscountPage> {
                                                                       // );
                                                                     },
                                                                     icon: Icon(
-                                                                      Icons
-                                                                          .delete_forever,
+                                                                      FeatherIcons
+                                                                          .trash,
                                                                       color: const Color
                                                                           .fromRGBO(
                                                                           215,

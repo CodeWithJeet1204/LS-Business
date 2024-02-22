@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/page/main/discount/products/select_products_for_discount.dart';
 import 'package:find_easy/page/main/profile/view%20page/product/product_page.dart';
 import 'package:find_easy/provider/discount_products_provider.dart';
@@ -243,7 +244,9 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
             selectedProductProvider.clear();
             Navigator.of(context).pop();
           },
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(
+            FeatherIcons.arrowLeft,
+          ),
           tooltip: "Back",
         ),
         actions: [
@@ -304,7 +307,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                     MainAxisAlignment.spaceAround,
                                 children: [
                                   Icon(
-                                    Icons.arrow_circle_up_rounded,
+                                    FeatherIcons.upload,
                                     size: width * 0.35,
                                   ),
                                   Text(
@@ -343,7 +346,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                         child: IconButton.filledTonal(
                                           onPressed: addDiscountImage,
                                           icon: Icon(
-                                            Icons.camera_alt_outlined,
+                                            FeatherIcons.camera,
                                             size: width * 0.11,
                                           ),
                                           tooltip: "Change Image",
@@ -358,7 +361,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                             });
                                           },
                                           icon: Icon(
-                                            Icons.highlight_remove_rounded,
+                                            FeatherIcons.x,
                                             size: width * 0.11,
                                           ),
                                           tooltip: "Remove Image",
@@ -431,8 +434,8 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                         ? IconButton(
                                             onPressed: selectStartDate,
                                             icon: Icon(
-                                              Icons.edit,
-                                              size: width * 0.075,
+                                              FeatherIcons.edit,
+                                              size: width * 0.066,
                                             ),
                                             tooltip: "Change Date",
                                           )
@@ -498,8 +501,8 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                         ? IconButton(
                                             onPressed: selectEndDate,
                                             icon: Icon(
-                                              Icons.edit,
-                                              size: width * 0.075,
+                                              FeatherIcons.edit,
+                                              size: width * 0.066,
                                             ),
                                             tooltip: "Change Date",
                                           )

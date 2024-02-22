@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/page/main/profile/view%20page/product/image_view.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/info_box.dart';
@@ -88,7 +89,7 @@ class _PostPageState extends State<PostPage> {
           IconButton(
             onPressed: () {},
             icon: const Icon(
-              Icons.delete_forever,
+              FeatherIcons.trash,
               color: Colors.red,
             ),
           ),
@@ -448,8 +449,9 @@ class _PostPageState extends State<PostPage> {
                                 padding: const EdgeInsets.only(right: 8),
                                 child: IconButton(
                                   onPressed: () {},
-                                  icon:
-                                      const Icon(Icons.navigate_next_outlined),
+                                  icon: const Icon(
+                                    FeatherIcons.chevronRight,
+                                  ),
                                   tooltip: "See Comments",
                                 ),
                               ),

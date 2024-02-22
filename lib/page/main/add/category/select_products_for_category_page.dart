@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/provider/products_added_to_category_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/text_button.dart';
@@ -38,6 +39,30 @@ class _SelectProductsForCategoryPageState
     super.dispose();
   }
 
+  // ADD PRODUCT TO CATEGORY
+  void addProductToCategory(List<String> products) async {
+    for (int i = 0; i < products.length; i++) {
+      setState(() {
+        isAdding = true;
+      });
+      await FirebaseFirestore.instance
+          .collection('Business')
+          .doc('Data')
+          .collection('Products')
+          .doc(products[i])
+          .update({
+        'categoryId': widget.categoryId,
+        'categoryName': widget.categoryName,
+      });
+      setState(() {
+        isAdding = false;
+      });
+    }
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final productsAddedToCategoryProvider =
@@ -57,29 +82,6 @@ class _SelectProductsForCategoryPageState
         .where('productName', isLessThan: '${searchController.text}\uf8ff')
         .orderBy('datetime', descending: true)
         .snapshots();
-
-    void addProductToCategory(List<String> products) async {
-      for (int i = 0; i < products.length; i++) {
-        setState(() {
-          isAdding = true;
-        });
-        await FirebaseFirestore.instance
-            .collection('Business')
-            .doc('Data')
-            .collection('Products')
-            .doc(products[i])
-            .update({
-          'categoryId': widget.categoryId,
-          'categoryName': widget.categoryName,
-        });
-        setState(() {
-          isAdding = false;
-        });
-      }
-      if (context.mounted) {
-        Navigator.of(context).pop();
-      }
-    }
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -157,8 +159,8 @@ class _SelectProductsForCategoryPageState
                                 },
                                 icon: Icon(
                                   isGridView
-                                      ? Icons.list
-                                      : Icons.grid_view_rounded,
+                                      ? FeatherIcons.list
+                                      : FeatherIcons.grid,
                                 ),
                                 iconSize: width * 0.08,
                                 tooltip: isGridView ? "List View" : "Grid View",
@@ -252,10 +254,10 @@ class _SelectProductsForCategoryPageState
                                                         0,
                                                       ),
                                                       child: Text(
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
                                                         productData[
                                                             'productName'],
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                         maxLines: 1,
                                                         style: TextStyle(
                                                           fontSize:
@@ -281,14 +283,15 @@ class _SelectProductsForCategoryPageState
                                                     child: Container(
                                                       padding:
                                                           const EdgeInsets.all(
-                                                              2),
+                                                        2,
+                                                      ),
                                                       decoration:
                                                           const BoxDecoration(
                                                         shape: BoxShape.circle,
                                                         color: primaryDark2,
                                                       ),
                                                       child: const Icon(
-                                                        Icons.check,
+                                                        FeatherIcons.check,
                                                         color: Colors.white,
                                                         size: 32,
                                                       ),
@@ -366,9 +369,9 @@ class _SelectProductsForCategoryPageState
                                                   ),
                                                 ),
                                                 title: Text(
+                                                  productData['productName'],
                                                   overflow:
                                                       TextOverflow.ellipsis,
-                                                  productData['productName'],
                                                   style: TextStyle(
                                                     fontSize: width * 0.055,
                                                     fontWeight: FontWeight.w600,
@@ -394,7 +397,7 @@ class _SelectProductsForCategoryPageState
                                                         color: primaryDark2,
                                                       ),
                                                       child: const Icon(
-                                                        Icons.check,
+                                                        FeatherIcons.check,
                                                         color: Colors.white,
                                                         size: 32,
                                                       ),

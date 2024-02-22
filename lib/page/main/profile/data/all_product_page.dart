@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/page/main/profile/view%20page/product/product_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
@@ -151,7 +152,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                     });
                   },
                   icon: Icon(
-                    isGridView ? Icons.list : Icons.grid_view_rounded,
+                    isGridView ? FeatherIcons.list : FeatherIcons.grid,
                   ),
                   tooltip: isGridView ? "List View" : "Grid View",
                 ),
@@ -317,7 +318,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                                 );
                                               },
                                               icon: Icon(
-                                                Icons.delete_forever,
+                                                FeatherIcons.trash,
                                                 color: Colors.red,
                                                 size: width * 0.09,
                                               ),
@@ -387,20 +388,20 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                         },
                                       ),
                                       title: Text(
-                                        overflow: TextOverflow.ellipsis,
                                         productData['productName'],
+                                        overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
                                       subtitle: Text(
-                                        overflow: TextOverflow.ellipsis,
                                         productData['productPrice'] != "" &&
                                                 productData['productPrice'] !=
                                                     null
                                             ? productData['productPrice']
                                             : "N/A",
+                                        overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500,

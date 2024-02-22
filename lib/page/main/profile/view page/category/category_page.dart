@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/page/main/add/category/select_products_for_category_page.dart';
 import 'package:find_easy/page/main/profile/view%20page/product/product_page.dart';
 import 'package:find_easy/utils/colors.dart';
@@ -209,7 +210,7 @@ class _CategoryPageState extends State<CategoryPage> {
           title: Text(overflow: TextOverflow.ellipsis, "Remove $productName"),
           content: Text(
               overflow: TextOverflow.ellipsis,
-              'Are you sure you want to remove $productName from $categoryName'),
+              'Are you sure you want to remove \'$productName\'\nfrom $categoryName'),
           actions: [
             MyTextButton(
               onPressed: () {
@@ -396,7 +397,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                       );
                                     },
                                     icon: Icon(
-                                      Icons.camera_alt_outlined,
+                                      FeatherIcons.camera,
                                       size: width * 0.1,
                                     ),
                                     tooltip: "Change Image",
@@ -436,7 +437,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                 changeName();
                               },
                               icon: Icon(
-                                Icons.edit,
+                                FeatherIcons.edit,
                                 size: width * 0.0725,
                                 color: primaryDark,
                               ),
@@ -626,8 +627,8 @@ class _CategoryPageState extends State<CategoryPage> {
                                       },
                                       icon: Icon(
                                         isGridView
-                                            ? Icons.list
-                                            : Icons.grid_view_rounded,
+                                            ? FeatherIcons.list
+                                            : FeatherIcons.grid,
                                       ),
                                       tooltip: isGridView
                                           ? "List View"
@@ -823,15 +824,14 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                       );
                                                                     },
                                                                     icon: Icon(
-                                                                      Icons
-                                                                          .delete_forever,
-                                                                      color: const Color
-                                                                          .fromARGB(
-                                                                        255,
-                                                                        215,
-                                                                        14,
-                                                                        0,
-                                                                      ),
+                                                                      FeatherIcons
+                                                                          .trash,
+                                                                      color: Color
+                                                                          .fromRGBO(
+                                                                              215,
+                                                                              14,
+                                                                              0,
+                                                                              1),
                                                                       size: width *
                                                                           0.09,
                                                                     ),
@@ -908,11 +908,11 @@ class _CategoryPageState extends State<CategoryPage> {
                                                             ),
                                                           ),
                                                           title: Text(
+                                                            productData[
+                                                                'productName'],
                                                             overflow:
                                                                 TextOverflow
                                                                     .ellipsis,
-                                                            productData[
-                                                                'productName'],
                                                             style: TextStyle(
                                                               fontSize: width *
                                                                   0.0525,
@@ -922,9 +922,6 @@ class _CategoryPageState extends State<CategoryPage> {
                                                             ),
                                                           ),
                                                           subtitle: Text(
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
                                                             productData['productPrice'] !=
                                                                         "" &&
                                                                     productData[
@@ -933,6 +930,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                 ? productData[
                                                                     'productPrice']
                                                                 : "N/A",
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
                                                             style: TextStyle(
                                                               fontSize:
                                                                   width * 0.035,
@@ -953,8 +953,8 @@ class _CategoryPageState extends State<CategoryPage> {
                                                               );
                                                             },
                                                             icon: Icon(
-                                                              Icons
-                                                                  .delete_forever,
+                                                              FeatherIcons
+                                                                  .trash,
                                                               color: const Color
                                                                   .fromRGBO(215,
                                                                   14, 0, 1),

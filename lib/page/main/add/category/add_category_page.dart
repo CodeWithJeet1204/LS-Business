@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/page/main/add/category/select_products_for_category_page.dart';
 import 'package:find_easy/provider/products_added_to_category_provider.dart';
 import 'package:find_easy/utils/colors.dart';
@@ -238,7 +239,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                                       child: IconButton.filledTonal(
                                         onPressed: selectImage,
                                         icon: Icon(
-                                          Icons.camera_alt_outlined,
+                                          FeatherIcons.camera,
                                           size: width * 0.1125,
                                         ),
                                         tooltip: "Change Image",
@@ -250,7 +251,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                                       child: IconButton.filledTonal(
                                         onPressed: removeImage,
                                         icon: Icon(
-                                          Icons.highlight_remove_rounded,
+                                          FeatherIcons.x,
                                           size: width * 0.1125,
                                         ),
                                         tooltip: "Remove Image",
@@ -280,7 +281,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                                   IconButton(
                                     onPressed: selectImage,
                                     icon: Icon(
-                                      Icons.arrow_circle_up_rounded,
+                                      FeatherIcons.upload,
                                       size: width * 0.33,
                                     ),
                                   ),

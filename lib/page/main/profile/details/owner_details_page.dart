@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/image_pick_dialog.dart';
@@ -315,7 +316,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                           changeImage(userData['Image']);
                                         },
                                         icon: Icon(
-                                          Icons.camera_alt_outlined,
+                                          FeatherIcons.camera,
                                           size: width * 0.1,
                                         ),
                                         tooltip: "Change Photo",
@@ -375,7 +376,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                               isChangingName = true;
                                             });
                                           },
-                                          icon: const Icon(Icons.edit),
+                                          icon: const Icon(FeatherIcons.edit),
                                           tooltip: "Edit Name",
                                         ),
                                       ),
@@ -435,7 +436,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                               isChangingNumber = true;
                                             });
                                           },
-                                          icon: const Icon(Icons.edit),
+                                          icon: const Icon(FeatherIcons.edit),
                                           tooltip: "Edit Phone Number",
                                         ),
                                       ),

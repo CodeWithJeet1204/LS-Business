@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/page/main/discount/brand/brand_discount.dart';
 import 'package:find_easy/page/main/discount/category/category_discount.dart';
 import 'package:find_easy/page/main/discount/products/product_discount.dart';
@@ -66,7 +67,7 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                             ),
                             Expanded(child: Container()),
                             Icon(
-                              Icons.arrow_circle_up_outlined,
+                              FeatherIcons.box,
                               size: width * 0.2,
                               color: primaryDark2,
                             ),
@@ -114,7 +115,7 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                             ),
                             Expanded(child: Container()),
                             Icon(
-                              Icons.apps_outlined,
+                              FeatherIcons.layers,
                               size: width * 0.2,
                               color: primaryDark2,
                             ),
@@ -161,7 +162,7 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                             ),
                             Expanded(child: Container()),
                             Icon(
-                              Icons.apps_outlined,
+                              FeatherIcons.award,
                               size: width * 0.2,
                               color: primaryDark2,
                             ),

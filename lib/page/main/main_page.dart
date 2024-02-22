@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/page/main/add/add_page.dart';
 import 'package:find_easy/page/main/analytics/analytics_page.dart';
 import 'package:find_easy/page/main/comments/all_comments_screen.dart';
@@ -128,31 +129,35 @@ class _MainPageState extends State<MainPage> {
             items: [
               BottomNavigationBarItem(
                 icon: Icon(
-                  current != 0 ? Icons.bar_chart_rounded : Icons.bar_chart,
+                  current != 0 ? FeatherIcons.barChart2 : FeatherIcons.barChart,
                 ),
                 label: "Analytics",
               ),
               BottomNavigationBarItem(
                 icon: Icon(
-                  current != 1 ? Icons.comment_outlined : Icons.comment,
+                  current != 1
+                      ? FeatherIcons.messageCircle
+                      : FeatherIcons.messageSquare,
                 ),
                 label: "Chats",
               ),
               BottomNavigationBarItem(
                 icon: Icon(
-                  current != 2 ? Icons.add_circle_outline : Icons.add_circle,
+                  current != 2
+                      ? FeatherIcons.plusCircle
+                      : FeatherIcons.plusSquare,
                 ),
                 label: "Add",
               ),
               BottomNavigationBarItem(
                 icon: Icon(
-                  current != 3 ? Icons.percent_rounded : Icons.percent,
+                  current != 3 ? FeatherIcons.percent : Icons.percent_rounded,
                 ),
                 label: "Discount",
               ),
               BottomNavigationBarItem(
                 icon: Icon(
-                  current != 4 ? Icons.person_outline : Icons.person,
+                  current != 4 ? FeatherIcons.user : Icons.person_outline,
                 ),
                 label: "Profile",
               ),

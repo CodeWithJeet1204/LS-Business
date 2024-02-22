@@ -36,9 +36,7 @@ class _ImageViewState extends State<ImageView> {
                     .map((e) => Container(
                           height: width * 8,
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                              8,
-                            ),
+                            borderRadius: BorderRadius.circular(8),
                             child: InteractiveViewer(
                               child: CachedNetworkImage(
                                 imageUrl: e,
@@ -62,9 +60,6 @@ class _ImageViewState extends State<ImageView> {
                               ),
                             ),
                           ),
-                          // child: InteractiveViewer(
-                          //   child: Image.network(e),
-                          // ),
                         ))
                     .toList(),
                 options: CarouselOptions(

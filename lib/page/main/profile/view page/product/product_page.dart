@@ -3,9 +3,10 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/page/main/discount/products/product_discount.dart';
 import 'package:find_easy/page/main/main_page.dart';
-import 'package:find_easy/page/main/profile/view%20page/product/product_category_change_page.dart';
+import 'package:find_easy/page/main/profile/view%20page/product/select_category_for_product_page.dart.dart';
 import 'package:find_easy/page/main/profile/view%20page/product/image_view.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
@@ -313,8 +314,7 @@ class _ProductPageState extends State<ProductPage> {
                                                         }
                                                       },
                                                       icon: const Icon(
-                                                        Icons
-                                                            .highlight_remove_outlined,
+                                                        FeatherIcons.x,
                                                         color: white,
                                                       ),
                                                     ),
@@ -741,7 +741,7 @@ class _ProductPageState extends State<ProductPage> {
           IconButton(
             onPressed: confirmDelete,
             icon: const Icon(
-              Icons.delete_forever,
+              FeatherIcons.trash,
               color: Colors.red,
             ),
             tooltip: "DELETE",
@@ -915,7 +915,7 @@ class _ProductPageState extends State<ProductPage> {
                                                 //       );
                                                 //     },
                                                 //     icon: Icon(
-                                                //       Icons.camera_alt_outlined,
+                                                //       FeatherIcons.camera,
                                                 //       size: width * 0.1,
                                                 //     ),
                                                 //     tooltip: "Change Image",
@@ -934,7 +934,7 @@ class _ProductPageState extends State<ProductPage> {
                                                           }
                                                         : null,
                                                     icon: Icon(
-                                                      Icons.highlight_remove,
+                                                      FeatherIcons.x,
                                                       size: width * 0.1,
                                                     ),
                                                     tooltip: "Remove Image",
@@ -1011,7 +1011,7 @@ class _ProductPageState extends State<ProductPage> {
                                       Text(
                                           overflow: TextOverflow.ellipsis,
                                           "Add Image"),
-                                      Icon(Icons.add),
+                                      Icon(FeatherIcons.plus),
                                     ],
                                   ),
                                 ),
@@ -1051,7 +1051,7 @@ class _ProductPageState extends State<ProductPage> {
                                   );
                                 },
                                 icon: Icon(
-                                  Icons.edit,
+                                  FeatherIcons.edit,
                                   size: width * 0.066,
                                 ),
                                 tooltip: "Edit Name",
@@ -1260,7 +1260,7 @@ class _ProductPageState extends State<ProductPage> {
                                   );
                                 },
                                 icon: const Icon(
-                                  Icons.edit,
+                                  FeatherIcons.edit,
                                   color: primaryDark,
                                 ),
                                 tooltip: "Edit Price",
@@ -1496,7 +1496,7 @@ class _ProductPageState extends State<ProductPage> {
                                                 ),
                                               );
                                             },
-                                            icon: const Icon(Icons.edit),
+                                            icon: const Icon(FeatherIcons.edit),
                                             tooltip: "Change Category",
                                           ),
                                         ],
@@ -1759,7 +1759,7 @@ class _ProductPageState extends State<ProductPage> {
                                         ),
                                       ),
                                       Icon(
-                                        Icons.navigate_next_rounded,
+                                        FeatherIcons.chevronRight,
                                         size: width * 0.095,
                                       ),
                                     ],

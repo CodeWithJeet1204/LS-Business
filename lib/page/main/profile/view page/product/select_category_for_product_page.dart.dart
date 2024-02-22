@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/provider/change_category_provider.dart';
 import 'package:find_easy/utils/colors.dart';
+import 'package:find_easy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -51,7 +53,7 @@ class _ChangeCategoryState extends State<ChangeCategory> {
       appBar: AppBar(
         title: const Text(overflow: TextOverflow.ellipsis, "SELECT CATEGORY"),
         actions: [
-          IconButton(
+          MyTextButton(
             onPressed: () async {
               setState(() {
                 isAdding = true;
@@ -85,8 +87,8 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                 Navigator.of(context).pop();
               }
             },
-            icon: const Icon(Icons.navigate_next),
-            tooltip: "Continue",
+            text: 'DONE',
+            textColor: primaryDark2,
           ),
         ],
         bottom: PreferredSize(
@@ -123,7 +125,7 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                         });
                       },
                       icon: Icon(
-                        isGridView ? Icons.list : Icons.grid_view_rounded,
+                        isGridView ? FeatherIcons.list : FeatherIcons.grid,
                       ),
                       tooltip: isGridView ? "List View" : "Grid View",
                     ),
@@ -208,8 +210,8 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                                                 0,
                                               ),
                                               child: Text(
-                                                overflow: TextOverflow.ellipsis,
                                                 categoryData['categoryName'],
+                                                overflow: TextOverflow.ellipsis,
                                                 maxLines: 1,
                                                 style: TextStyle(
                                                   fontSize: width * 0.055,
@@ -236,7 +238,7 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                                               color: primaryDark2,
                                             ),
                                             child: Icon(
-                                              Icons.check,
+                                              FeatherIcons.check,
                                               color: Colors.white,
                                               size: width * 0.09,
                                             ),
@@ -260,28 +262,63 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                                 horizontal: width * 0.0166,
                                 vertical: width * 0.0225,
                               ),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: primary2.withOpacity(0.5),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: ListTile(
-                                  leading: ClipRRect(
-                                    borderRadius: BorderRadius.circular(4),
-                                    child: Image.network(
-                                      categoryData['imageUrl'],
-                                      width: width * 0.14,
-                                      height: width * 0.14,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  title: Text(
-                                    overflow: TextOverflow.ellipsis,
+                              child: GestureDetector(
+                                onTap: () {
+                                  changeCategoryProvider.changeCategory(
+                                    categoryData['categoryId'],
                                     categoryData['categoryName'],
-                                    style: TextStyle(
-                                      fontSize: width * 0.05,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: primary2.withOpacity(0.5),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Stack(
+                                    alignment: Alignment.centerRight,
+                                    children: [
+                                      ListTile(
+                                        leading: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                          child: Image.network(
+                                            categoryData['imageUrl'],
+                                            width: width * 0.14,
+                                            height: width * 0.14,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        title: Text(
+                                          categoryData['categoryName'],
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: width * 0.05,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                      changeCategoryProvider.selectedCategory
+                                              .contains(
+                                                  categoryData['categoryId'])
+                                          ? Container(
+                                              padding: EdgeInsets.all(
+                                                width * 0.00625,
+                                              ),
+                                              margin: EdgeInsets.all(
+                                                width * 0.01,
+                                              ),
+                                              decoration: const BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: primaryDark2,
+                                              ),
+                                              child: Icon(
+                                                FeatherIcons.check,
+                                                color: Colors.white,
+                                                size: width * 0.09,
+                                              ),
+                                            )
+                                          : Container()
+                                    ],
                                   ),
                                 ),
                               ),

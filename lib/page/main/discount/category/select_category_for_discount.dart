@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/provider/discount_category_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/text_button.dart';
@@ -82,7 +83,7 @@ class _SelectCategoryForDiscountPageState
                     });
                   },
                   icon: Icon(
-                    isGridView ? Icons.list : Icons.grid_view_rounded,
+                    isGridView ? FeatherIcons.list : FeatherIcons.grid,
                   ),
                   tooltip: isGridView ? "List View" : "Grid View",
                 ),
@@ -188,10 +189,10 @@ class _SelectCategoryForDiscountPageState
                                                     0,
                                                   ),
                                                   child: Text(
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
                                                     categoryData[
                                                         'categoryName'],
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     maxLines: 1,
                                                     style: TextStyle(
                                                       fontSize: width * 0.06,
@@ -242,9 +243,9 @@ class _SelectCategoryForDiscountPageState
                                   final categoryDataMap = categoryData.data()
                                       as Map<String, dynamic>;
                                   return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 6,
-                                      vertical: 8,
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: width * 0.0166,
+                                      vertical: width * 0.0225,
                                     ),
                                     child: Stack(
                                       alignment: Alignment.centerRight,
@@ -291,8 +292,8 @@ class _SelectCategoryForDiscountPageState
                                               ),
                                             ),
                                             title: Text(
-                                              overflow: TextOverflow.ellipsis,
                                               categoryData['categoryName'],
+                                              overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                 fontSize: width * 0.055,
                                                 fontWeight: FontWeight.w600,
@@ -318,7 +319,7 @@ class _SelectCategoryForDiscountPageState
                                                     color: primaryDark2,
                                                   ),
                                                   child: Icon(
-                                                    Icons.check,
+                                                    FeatherIcons.check,
                                                     color: Colors.white,
                                                     size: width * 0.095,
                                                   ),

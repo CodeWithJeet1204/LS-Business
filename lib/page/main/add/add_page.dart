@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/page/main/add/post/add_post_page.dart';
 import 'package:find_easy/page/main/add/product/add_product_page_1.dart';
 import 'package:find_easy/utils/colors.dart';
@@ -72,9 +73,11 @@ class _AddPageState extends State<AddPage> {
                               ),
                               Expanded(child: Container()),
                               Icon(
-                                Icons.arrow_circle_up_outlined,
-                                size: width * 0.2,
+                                FeatherIcons.upload,
+                                size: width * 0.1,
                                 color: primaryDark2,
+                                weight: 1,
+                                fill: 0,
                               ),
                               SizedBox(width: width * 0.075),
                             ],
@@ -120,8 +123,8 @@ class _AddPageState extends State<AddPage> {
                               ),
                               Expanded(child: Container()),
                               Icon(
-                                Icons.shopping_bag_outlined,
-                                size: width * 0.2,
+                                FeatherIcons.box,
+                                size: width * 0.1,
                                 color: primaryDark2,
                               ),
                               SizedBox(width: width * 0.075),
@@ -163,8 +166,8 @@ class _AddPageState extends State<AddPage> {
                               ),
                               Expanded(child: Container()),
                               Icon(
-                                Icons.apps_outlined,
-                                size: width * 0.2,
+                                FeatherIcons.layers,
+                                size: width * 0.1,
                                 color: primaryDark2,
                               ),
                               SizedBox(width: width * 0.075),
@@ -176,7 +179,7 @@ class _AddPageState extends State<AddPage> {
 
                     // BRAND
                     SizedOverflowBox(
-                      size: Size(width, 180),
+                      size: Size(width, 160),
                       child: GestureDetector(
                         onTap: () {
                           Navigator.of(context).pushNamed('/addBrand');
@@ -206,8 +209,8 @@ class _AddPageState extends State<AddPage> {
                               ),
                               Expanded(child: Container()),
                               Icon(
-                                Icons.apps_outlined,
-                                size: width * 0.2,
+                                FeatherIcons.award,
+                                size: width * 0.1,
                                 color: primaryDark2,
                               ),
                               SizedBox(width: width * 0.075),

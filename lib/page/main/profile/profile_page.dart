@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/small_text_container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -92,7 +93,7 @@ class _ProfilePageState extends State<ProfilePage> {
           IconButton(
             onPressed: signOut,
             icon: const Icon(
-              Icons.logout,
+              FeatherIcons.logOut,
               color: primaryDark,
             ),
             tooltip: "Log Out",

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/provider/products_added_to_brand.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/text_button.dart';
@@ -29,6 +30,14 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
   bool isAdding = false;
   String? searchedProduct;
 
+  // DISPOSE
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
+  // ADD PRODUCT TO BRAND
   void addProductToBrand(ProductAddedToBrandProvider provider) async {
     for (String id in provider.selectedProducts) {
       await store
@@ -43,12 +52,6 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
     }
 
     provider.clearProducts();
-  }
-
-  @override
-  void dispose() {
-    searchController.dispose();
-    super.dispose();
   }
 
   @override
@@ -143,8 +146,8 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                                 },
                                 icon: Icon(
                                   isGridView
-                                      ? Icons.list
-                                      : Icons.grid_view_rounded,
+                                      ? FeatherIcons.list
+                                      : FeatherIcons.grid,
                                 ),
                                 iconSize: width * 0.08,
                                 tooltip: isGridView ? "List View" : "Grid View",
@@ -222,10 +225,10 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                                                         0,
                                                       ),
                                                       child: Text(
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
                                                         productData[
                                                             'productName'],
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                         maxLines: 1,
                                                         style: TextStyle(
                                                           fontSize:
@@ -258,7 +261,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                                                         color: primaryDark2,
                                                       ),
                                                       child: const Icon(
-                                                        Icons.check,
+                                                        FeatherIcons.check,
                                                         color: Colors.white,
                                                         size: 32,
                                                       ),
@@ -319,9 +322,9 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                                                   ),
                                                 ),
                                                 title: Text(
+                                                  productData['productName'],
                                                   overflow:
                                                       TextOverflow.ellipsis,
-                                                  productData['productName'],
                                                   style: TextStyle(
                                                     fontSize: width * 0.055,
                                                     fontWeight: FontWeight.w600,
@@ -347,7 +350,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                                                         color: primaryDark2,
                                                       ),
                                                       child: const Icon(
-                                                        Icons.check,
+                                                        FeatherIcons.check,
                                                         color: Colors.white,
                                                         size: 32,
                                                       ),

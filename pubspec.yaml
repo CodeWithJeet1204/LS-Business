@@ -55,6 +55,7 @@ dependencies:
   cached_network_image: ^3.3.1
   sqflite: ^2.3.2
   flutter_blurhash: ^0.8.2
+  feather_icons: ^1.2.0
 
 dev_dependencies:
   flutter_test:

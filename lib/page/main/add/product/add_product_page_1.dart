@@ -2,6 +2,7 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/page/main/add/product/add_product_page_2.dart';
 import 'package:find_easy/page/main/add/product/select_brand_for_product_page.dart';
 import 'package:find_easy/provider/add_product_provider.dart';
@@ -292,7 +293,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                                 }
                                               : null,
                                       icon: Icon(
-                                        Icons.highlight_remove_rounded,
+                                        FeatherIcons.x,
                                         size: width * 0.1,
                                       ),
                                       tooltip: "Remove Image",
@@ -367,7 +368,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                       addProductImages();
                                     },
                                     icon: Icon(
-                                      Icons.add,
+                                      FeatherIcons.plus,
                                       size: width * 0.115,
                                     ),
                                   ),
@@ -395,7 +396,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                 IconButton(
                                   onPressed: addProductImages,
                                   icon: Icon(
-                                    Icons.arrow_circle_up_rounded,
+                                    FeatherIcons.upload,
                                     size: width * 0.4,
                                   ),
                                 ),
@@ -531,7 +532,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                   ),
                                 ),
                                 Icon(
-                                  Icons.navigate_next_rounded,
+                                  FeatherIcons.chevronRight,
                                   color: primaryDark,
                                   size: width * 0.09,
                                 ),
@@ -684,8 +685,8 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                 },
                                 icon: Icon(
                                   isGridView
-                                      ? Icons.list
-                                      : Icons.grid_view_rounded,
+                                      ? FeatherIcons.list
+                                      : FeatherIcons.grid,
                                 ),
                                 tooltip: isGridView ? "List View" : "Grid View",
                               ),
@@ -835,11 +836,11 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                                                       0.025,
                                                                 ),
                                                                 child: Text(
+                                                                  categoryData[
+                                                                      'categoryName'],
                                                                   overflow:
                                                                       TextOverflow
                                                                           .ellipsis,
-                                                                  categoryData[
-                                                                      'categoryName'],
                                                                   style:
                                                                       TextStyle(
                                                                     color:
@@ -885,7 +886,8 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                                                       .circle,
                                                                 ),
                                                                 child: Icon(
-                                                                  Icons.check,
+                                                                  FeatherIcons
+                                                                      .check,
                                                                   size: width *
                                                                       0.08,
                                                                   color: Colors
@@ -992,11 +994,11 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                                             },
                                                           ),
                                                           title: Text(
+                                                            categoryData[
+                                                                'categoryName'],
                                                             overflow:
                                                                 TextOverflow
                                                                     .ellipsis,
-                                                            categoryData[
-                                                                'categoryName'],
                                                             style: TextStyle(
                                                               fontSize:
                                                                   width * 0.055,
