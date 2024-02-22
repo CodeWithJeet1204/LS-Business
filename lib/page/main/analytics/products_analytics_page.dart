@@ -199,6 +199,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                         children: [
                           // TITLE
                           Text(
+                            overflow: TextOverflow.ellipsis,
                             'PRODUCT DATA',
                             style: TextStyle(
                               color: primaryDark,
@@ -217,7 +218,9 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                             child: Padding(
                               padding: EdgeInsets.only(left: width * 0.05),
                               child: DropdownButton(
-                                hint: Text("Select Duration"),
+                                hint: Text(
+                                    overflow: TextOverflow.ellipsis,
+                                    "Select Duration"),
                                 value: selectedStringDuration,
                                 underline: SizedBox(),
                                 dropdownColor: primary2,
@@ -229,7 +232,9 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                   'Lifetime'
                                 ]
                                     .map((e) => DropdownMenuItem(
-                                          child: Text(e),
+                                          child: Text(
+                                              overflow: TextOverflow.ellipsis,
+                                              e),
                                           value: e,
                                         ))
                                     .toList(),
@@ -252,21 +257,26 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                       builder: (context, snapshot) {
                         if (snapshot.hasError) {
                           return Center(
-                            child: Text('Something went wrong'),
+                            child: Text(
+                                overflow: TextOverflow.ellipsis,
+                                'Something went wrong'),
                           );
                         }
 
                         if (snapshot.data != null) {
                           if (snapshot.data!.docs.isEmpty) {
                             return Center(
-                              child: Text('No Products Added'),
+                              child: Text(
+                                  overflow: TextOverflow.ellipsis,
+                                  'No Products Added'),
                             );
                           }
                         }
 
                         if (!snapshot.hasData) {
                           return Center(
-                            child: Text('No Data'),
+                            child: Text(
+                                overflow: TextOverflow.ellipsis, 'No Data'),
                           );
                         }
 
@@ -387,6 +397,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                         children: [
                                           // PROPERTY
                                           Text(
+                                            overflow: TextOverflow.ellipsis,
                                             'Product Views',
                                             style: TextStyle(
                                               color: primaryDark2,
@@ -396,6 +407,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                           ),
                                           // VALUE
                                           Text(
+                                            overflow: TextOverflow.ellipsis,
                                             viewTimestamps.length > 1000000
                                                 ? '${viewTimestamps.length.toString().substring(0)}.${viewTimestamps.length.toString().substring(1, 3)}M'
                                                 : viewTimestamps.length > 1000
@@ -445,6 +457,8 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                 reservedSize: width * 0.065,
                                                 getTitlesWidget: (value, meta) {
                                                   return Text(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     value.toStringAsFixed(0),
                                                     style: TextStyle(
                                                       fontSize:
@@ -613,6 +627,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                         children: [
                                           // PROPERTY
                                           Text(
+                                            overflow: TextOverflow.ellipsis,
                                             'Product Likes',
                                             style: TextStyle(
                                               color: primaryDark2,
@@ -622,6 +637,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                           ),
                                           // VALUE
                                           Text(
+                                            overflow: TextOverflow.ellipsis,
                                             likeTimestamps.length > 1000000
                                                 ? '${likeTimestamps.length.toString().substring(0)}.${likeTimestamps.length.toString().substring(1, 3)}M'
                                                 : likeTimestamps.length > 1000
@@ -671,6 +687,8 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                 reservedSize: width * 0.065,
                                                 getTitlesWidget: (value, meta) {
                                                   return Text(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     value.toStringAsFixed(0),
                                                     style: TextStyle(
                                                       fontSize:
@@ -882,6 +900,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
+                                          overflow: TextOverflow.ellipsis,
                                           'Product Wise Views',
                                           style: TextStyle(
                                             color: primaryDark2,
@@ -898,6 +917,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                 left: width * 0.05,
                                               ),
                                               child: Text(
+                                                overflow: TextOverflow.ellipsis,
                                                 productData['views'] > 1000000
                                                     ? productData['views']
                                                             .toString()
@@ -968,6 +988,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
+                                          overflow: TextOverflow.ellipsis,
                                           'Product Wise Likes',
                                           style: TextStyle(
                                             color: primaryDark2,
@@ -984,6 +1005,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                 left: width * 0.05,
                                               ),
                                               child: Text(
+                                                overflow: TextOverflow.ellipsis,
                                                 productData['likes'] > 1000000
                                                     ? productData['likes']
                                                             .toString()

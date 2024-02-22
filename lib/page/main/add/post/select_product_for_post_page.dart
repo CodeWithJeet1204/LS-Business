@@ -38,7 +38,7 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("SELECT PRODUCT"),
+        title: const Text(overflow: TextOverflow.ellipsis, "SELECT PRODUCT"),
         actions: [
           MyTextButton(
             onPressed: () {
@@ -94,7 +94,9 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                 builder: ((context, snapshot) {
                   if (snapshot.hasError) {
                     return const Center(
-                      child: Text("Something went wrong"),
+                      child: Text(
+                          overflow: TextOverflow.ellipsis,
+                          "Something went wrong"),
                     );
                   }
 
@@ -180,10 +182,10 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                                                     0,
                                                   ),
                                                   child: Text(
-                                                    productData['productName'],
-                                                    maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
+                                                    productData['productName'],
+                                                    maxLines: 1,
                                                     style: TextStyle(
                                                       fontSize: width * 0.06,
                                                       fontWeight:
@@ -199,6 +201,8 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                                                     0,
                                                   ),
                                                   child: Text(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     productData['productPrice'] !=
                                                                 "" &&
                                                             productData[
@@ -208,8 +212,6 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                                                             'productPrice']
                                                         : "N/A",
                                                     maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                       fontSize: width * 0.04,
                                                       fontWeight:
@@ -304,6 +306,7 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                                               },
                                             ),
                                             title: Text(
+                                              overflow: TextOverflow.ellipsis,
                                               productData['productName'],
                                               style: TextStyle(
                                                 fontSize: width * 0.055,
@@ -311,6 +314,7 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                                               ),
                                             ),
                                             subtitle: Text(
+                                              overflow: TextOverflow.ellipsis,
                                               productData['productPrice'] !=
                                                           "" &&
                                                       productData[

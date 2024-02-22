@@ -534,6 +534,7 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                                     color: primaryDark,
                                   )
                                 : Text(
+                                    overflow: TextOverflow.ellipsis,
                                     googleText,
                                     style: TextStyle(
                                       color: buttonColor,

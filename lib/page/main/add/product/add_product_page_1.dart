@@ -224,7 +224,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
       resizeToAvoidBottomInset: false,
       backgroundColor: primary,
       appBar: AppBar(
-        title: const Text("Basic Info"),
+        title: const Text(overflow: TextOverflow.ellipsis, "Basic Info"),
         actions: [
           MyTextButton(
             onPressed: () {
@@ -401,6 +401,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                 ),
                                 const SizedBox(height: 20),
                                 Text(
+                                  overflow: TextOverflow.ellipsis,
                                   "Select Image",
                                   style: TextStyle(
                                     fontSize: width * 0.09,
@@ -518,6 +519,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
+                                  overflow: TextOverflow.ellipsis,
                                   selectBrandProvider.selectedBrandName ==
                                           'No Brand'
                                       ? 'Select Brand'
@@ -567,6 +569,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
+                                          overflow: TextOverflow.ellipsis,
                                           "Available",
                                           style: TextStyle(
                                             color: primaryDark,
@@ -608,6 +611,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
+                                          overflow: TextOverflow.ellipsis,
                                           "Out Of Stock",
                                           style: TextStyle(
                                             color: primaryDark,
@@ -642,6 +646,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
 
                         // SELECT CATEGORY TEXT
                         Text(
+                          overflow: TextOverflow.ellipsis,
                           "Select Category",
                           style: TextStyle(
                             color: primaryDark,
@@ -699,7 +704,9 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                 builder: (context, snapshot) {
                                   if (snapshot.hasError) {
                                     return const Center(
-                                      child: Text('Something went wrong'),
+                                      child: Text(
+                                          overflow: TextOverflow.ellipsis,
+                                          'Something went wrong'),
                                     );
                                   }
 
@@ -828,11 +835,11 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                                                       0.025,
                                                                 ),
                                                                 child: Text(
-                                                                  categoryData[
-                                                                      'categoryName'],
                                                                   overflow:
                                                                       TextOverflow
                                                                           .ellipsis,
+                                                                  categoryData[
+                                                                      'categoryName'],
                                                                   style:
                                                                       TextStyle(
                                                                     color:
@@ -985,6 +992,9 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                                             },
                                                           ),
                                                           title: Text(
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
                                                             categoryData[
                                                                 'categoryName'],
                                                             style: TextStyle(

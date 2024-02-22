@@ -303,6 +303,7 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                   )
                                 : Text(
+                                    overflow: TextOverflow.ellipsis,
                                     googleText,
                                     style: TextStyle(
                                       color: buttonColor,
@@ -321,7 +322,9 @@ class _LoginPageState extends State<LoginPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const Text("Don't have an account?"),
+                        const Text(
+                            overflow: TextOverflow.ellipsis,
+                            "Don't have an account?"),
                         MyTextButton(
                           onPressed: () {
                             SystemChannels.textInput
@@ -654,7 +657,9 @@ class _LoginPageState extends State<LoginPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const Text("Don't have an account?"),
+                              const Text(
+                                  overflow: TextOverflow.ellipsis,
+                                  "Don't have an account?"),
                               MyTextButton(
                                 onPressed: () {
                                   SystemChannels.textInput

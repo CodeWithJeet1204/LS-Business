@@ -213,7 +213,8 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return const Center(
-                  child: Text('Something went wrong'),
+                  child: Text(
+                      overflow: TextOverflow.ellipsis, 'Something went wrong'),
                 );
               }
 
@@ -250,7 +251,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("Owner Details"),
+        title: const Text(overflow: TextOverflow.ellipsis, "Owner Details"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -263,7 +264,9 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return const Center(
-                      child: Text("Something went wrong"),
+                      child: Text(
+                          overflow: TextOverflow.ellipsis,
+                          "Something went wrong"),
                     );
                   }
 
@@ -353,6 +356,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                         child: SizedBox(
                                           width: width * 0.725,
                                           child: AutoSizeText(
+                                            overflow: TextOverflow.ellipsis,
                                             userData['Name'] ?? 'N/A',
                                             maxLines: 1,
                                             style: TextStyle(
@@ -412,6 +416,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                         child: SizedBox(
                                           width: width * 0.725,
                                           child: AutoSizeText(
+                                            overflow: TextOverflow.ellipsis,
                                             userData['Phone Number'] ?? 'N/A',
                                             maxLines: 1,
                                             style: TextStyle(
@@ -457,6 +462,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                   child: SizedBox(
                                     width: width * 0.725,
                                     child: AutoSizeText(
+                                      overflow: TextOverflow.ellipsis,
                                       userData['Email'] ?? 'N/A',
                                       maxLines: 1,
                                       style: TextStyle(

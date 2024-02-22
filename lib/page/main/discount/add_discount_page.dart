@@ -19,7 +19,7 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
       resizeToAvoidBottomInset: false,
       backgroundColor: primary,
       appBar: AppBar(
-        title: const Text("DISCOUNTS"),
+        title: const Text(overflow: TextOverflow.ellipsis, "DISCOUNTS"),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
@@ -55,6 +55,7 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                             SizedBox(
                               width: width * 0.5,
                               child: const AutoSizeText(
+                                overflow: TextOverflow.ellipsis,
                                 "PRODUCT",
                                 style: TextStyle(
                                   color: primaryDark,
@@ -102,6 +103,7 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                             SizedBox(
                               width: width * 0.5,
                               child: const AutoSizeText(
+                                overflow: TextOverflow.ellipsis,
                                 "CATEGORY",
                                 style: TextStyle(
                                   color: primaryDark,
@@ -148,6 +150,7 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                             SizedBox(
                               width: width * 0.5,
                               child: const AutoSizeText(
+                                overflow: TextOverflow.ellipsis,
                                 "BRAND",
                                 style: TextStyle(
                                   color: primaryDark,

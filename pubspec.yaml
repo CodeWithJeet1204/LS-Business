@@ -54,6 +54,7 @@ dependencies:
   fl_chart: ^0.66.2
   cached_network_image: ^3.3.1
   sqflite: ^2.3.2
+  flutter_blurhash: ^0.8.2
 
 dev_dependencies:
   flutter_test:

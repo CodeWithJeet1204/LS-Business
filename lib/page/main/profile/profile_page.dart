@@ -32,14 +32,17 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: ((context) {
         return AlertDialog(
-          title: const Text('Sign Out?'),
-          content: const Text('Are you sure\nYou want to Sign Out?'),
+          title: const Text(overflow: TextOverflow.ellipsis, 'Sign Out?'),
+          content: const Text(
+              overflow: TextOverflow.ellipsis,
+              'Are you sure\nYou want to Sign Out?'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
               child: const Text(
+                overflow: TextOverflow.ellipsis,
                 'NO',
                 style: TextStyle(
                   color: Colors.green,
@@ -56,6 +59,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 auth.currentUser!.reload();
               },
               child: const Text(
+                overflow: TextOverflow.ellipsis,
                 'YES',
                 style: TextStyle(
                   color: Colors.red,
@@ -83,7 +87,7 @@ class _ProfilePageState extends State<ProfilePage> {
       resizeToAvoidBottomInset: false,
       backgroundColor: primary,
       appBar: AppBar(
-        title: const Text("PROFILE"),
+        title: const Text(overflow: TextOverflow.ellipsis, "PROFILE"),
         actions: [
           IconButton(
             onPressed: signOut,
@@ -120,7 +124,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
                             return const Center(
-                              child: Text("Something went wrong"),
+                              child: Text(
+                                  overflow: TextOverflow.ellipsis,
+                                  "Something went wrong"),
                             );
                           }
 
@@ -144,9 +150,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 SizedBox(
                                   width: width * 0.8,
                                   child: Text(
+                                    overflow: TextOverflow.ellipsis,
                                     shopData['Name']?.toUpperCase() ?? 'N/A',
                                     maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontSize: width * 0.07,
@@ -158,6 +164,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 SizedBox(
                                   width: width * 0.8,
                                   child: Text(
+                                    overflow: TextOverflow.ellipsis,
                                     shopData['Type'] ?? 'N/A',
                                     style: TextStyle(
                                       fontSize: width * 0.0425,
@@ -165,7 +172,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                       color: primaryDark.withOpacity(0.85),
                                     ),
                                     textAlign: TextAlign.center,
-                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                                 SizedBox(height: width * 0.0275),
@@ -202,9 +208,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
+                            overflow: TextOverflow.ellipsis,
                             "Owner Details",
                             maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontSize: width * 0.05,
                               color: primaryDark,
@@ -234,9 +240,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
+                            overflow: TextOverflow.ellipsis,
                             "Business Details",
                             maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontSize: width * 0.05,
                               color: primaryDark,

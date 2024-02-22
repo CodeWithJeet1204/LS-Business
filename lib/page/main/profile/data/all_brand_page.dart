@@ -75,8 +75,9 @@ class _AllBrandPageState extends State<AllBrandPage> {
       context: context,
       builder: ((context) {
         return AlertDialog(
-          title: const Text("Confirm DELETE"),
+          title: const Text(overflow: TextOverflow.ellipsis, "Confirm DELETE"),
           content: const Text(
+            overflow: TextOverflow.ellipsis,
             "Are you sure you want to delete this Brand\nProducts in this brand will be set as 'No Brand",
           ),
           actions: [
@@ -85,6 +86,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
                 Navigator.of(context).pop();
               },
               child: const Text(
+                overflow: TextOverflow.ellipsis,
                 'NO',
                 style: TextStyle(
                   color: Colors.green,
@@ -97,6 +99,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
                 delete(brandId, imageUrl);
               },
               child: const Text(
+                overflow: TextOverflow.ellipsis,
                 'YES',
                 style: TextStyle(
                   color: Colors.red,
@@ -126,7 +129,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("ALL BRANDS"),
+        title: const Text(overflow: TextOverflow.ellipsis, "ALL BRANDS"),
         bottom: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,
@@ -181,7 +184,9 @@ class _AllBrandPageState extends State<AllBrandPage> {
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                 if (snapshot.hasError) {
                   return const Center(
-                    child: Text('Something went wrong'),
+                    child: Text(
+                        overflow: TextOverflow.ellipsis,
+                        'Something went wrong'),
                   );
                 }
 
@@ -271,6 +276,8 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                                     height: width * 0.375,
                                                     child: const Center(
                                                       child: Text(
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                         "No Image",
                                                         style: TextStyle(
                                                           color: primaryDark2,
@@ -300,10 +307,10 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                               child: SizedBox(
                                                 width: width * 0.275,
                                                 child: Text(
-                                                  brandData['brandName'],
-                                                  maxLines: 1,
                                                   overflow:
                                                       TextOverflow.ellipsis,
+                                                  brandData['brandName'],
+                                                  maxLines: 1,
                                                   style: TextStyle(
                                                     color: primaryDark,
                                                     fontWeight: FontWeight.w600,
@@ -401,6 +408,8 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                                 height: width * 0.1533,
                                                 child: Center(
                                                   child: Text(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     'No Image',
                                                     style: TextStyle(
                                                       color: primaryDark2,
@@ -412,9 +421,9 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                               ),
                                       ),
                                       title: Text(
+                                        overflow: TextOverflow.ellipsis,
                                         brandData['brandName'],
                                         maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                           fontSize: width * 0.06,
                                           fontWeight: FontWeight.w600,

@@ -38,6 +38,7 @@ class MyPageView extends StatelessWidget {
             ),
             const SizedBox(height: 36),
             Text(
+              overflow: TextOverflow.ellipsis,
               text,
               textAlign: TextAlign.center,
               style: TextStyle(

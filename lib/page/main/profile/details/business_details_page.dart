@@ -156,7 +156,8 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return const Center(
-                  child: Text('Something went wrong'),
+                  child: Text(
+                      overflow: TextOverflow.ellipsis, 'Something went wrong'),
                 );
               }
 
@@ -193,7 +194,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("Business Details"),
+        title: const Text(overflow: TextOverflow.ellipsis, "Business Details"),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(
@@ -208,7 +209,9 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return const Center(
-                      child: Text('Something Went Wrong'),
+                      child: Text(
+                          overflow: TextOverflow.ellipsis,
+                          'Something Went Wrong'),
                     );
                   }
 
@@ -300,12 +303,12 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                         child: SizedBox(
                                           width: width * 0.725,
                                           child: AutoSizeText(
+                                            overflow: TextOverflow.ellipsis,
                                             shopData['Name'],
                                             maxLines: 1,
                                             style: TextStyle(
                                               fontSize: width * 0.06,
                                             ),
-                                            overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
                                       ),
@@ -362,6 +365,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                         child: SizedBox(
                                           width: width * 0.725,
                                           child: AutoSizeText(
+                                            overflow: TextOverflow.ellipsis,
                                             shopData['Address'],
                                             maxLines: 1,
                                             style: TextStyle(
@@ -424,6 +428,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                         child: SizedBox(
                                           width: width * 0.725,
                                           child: AutoSizeText(
+                                            overflow: TextOverflow.ellipsis,
                                             shopData['Special Note'],
                                             style: TextStyle(
                                               fontSize: width * 0.055,
@@ -468,6 +473,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                               child: SizedBox(
                                 width: width * 0.875,
                                 child: AutoSizeText(
+                                  overflow: TextOverflow.ellipsis,
                                   shopData['Type'] ?? 'N/A',
                                   style: TextStyle(
                                     fontSize: width * 0.055,
@@ -494,6 +500,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                               child: SizedBox(
                                 width: width * 0.875,
                                 child: AutoSizeText(
+                                  overflow: TextOverflow.ellipsis,
                                   shopData['GSTNumber'],
                                   style: const TextStyle(
                                     fontSize: 18,
@@ -520,6 +527,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                               child: SizedBox(
                                 width: width * 0.725,
                                 child: Text(
+                                  overflow: TextOverflow.ellipsis,
                                   shopData['Industry'],
                                   style: TextStyle(
                                     fontSize: width * 0.055,
@@ -549,6 +557,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                               child: SizedBox(
                                 width: width * 0.725,
                                 child: AutoSizeText(
+                                  overflow: TextOverflow.ellipsis,
                                   shopData['MembershipName'] ?? 'N/A',
                                   style: TextStyle(
                                     fontSize: width * 0.055,
@@ -576,6 +585,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                               child: SizedBox(
                                 width: width * 0.875,
                                 child: AutoSizeText(
+                                  overflow: TextOverflow.ellipsis,
                                   'Membership Expiry Date - ${DateFormat('dd/mm/yy').format((shopData['MembershipEndDateTime'] as Timestamp).toDate())}',
                                   style: TextStyle(
                                     fontSize: width * 0.055,

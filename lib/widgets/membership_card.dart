@@ -77,8 +77,8 @@ class _MembershipCardState extends State<MembershipCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.name,
                       overflow: TextOverflow.ellipsis,
+                      widget.name,
                       style: TextStyle(
                         color: widget.textColor,
                         fontSize: widget.name == "PREMIUM" ? 32 : 40,
@@ -88,8 +88,9 @@ class _MembershipCardState extends State<MembershipCard> {
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        const Text("Rs. "),
+                        const Text(overflow: TextOverflow.ellipsis, "Rs. "),
                         Text(
+                          overflow: TextOverflow.ellipsis,
                           widget.price.toString(),
                           style: TextStyle(
                             fontSize: 22,
@@ -126,6 +127,7 @@ class _MembershipCardState extends State<MembershipCard> {
                       Padding(
                         padding: const EdgeInsets.only(left: 44),
                         child: Text(
+                          overflow: TextOverflow.ellipsis,
                           "BENEFITS",
                           style: GoogleFonts.josefinSans(
                             color: white,
@@ -139,6 +141,7 @@ class _MembershipCardState extends State<MembershipCard> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
+                              overflow: TextOverflow.ellipsis,
                               "• ${widget.benefit1} Text Posts",
                               style: const TextStyle(
                                 color: white,
@@ -147,6 +150,7 @@ class _MembershipCardState extends State<MembershipCard> {
                               ),
                             ),
                             Text(
+                              overflow: TextOverflow.ellipsis,
                               "• ${widget.benefit2} Image Posts",
                               style: const TextStyle(
                                 color: white,
@@ -155,6 +159,7 @@ class _MembershipCardState extends State<MembershipCard> {
                               ),
                             ),
                             Text(
+                              overflow: TextOverflow.ellipsis,
                               "• ${widget.benefit3} Shorts",
                               style: const TextStyle(
                                 color: white,
@@ -180,6 +185,7 @@ class _MembershipCardState extends State<MembershipCard> {
                             textBaseline: TextBaseline.ideographic,
                             children: [
                               Text(
+                                overflow: TextOverflow.ellipsis,
                                 widget.storageSize.toString(),
                                 style: TextStyle(
                                   fontSize: 40,
@@ -189,6 +195,7 @@ class _MembershipCardState extends State<MembershipCard> {
                               ),
                               const SizedBox(width: 4),
                               Text(
+                                overflow: TextOverflow.ellipsis,
                                 widget.storageUnit,
                                 style: TextStyle(
                                   fontSize: 20,

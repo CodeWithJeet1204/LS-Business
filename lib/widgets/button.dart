@@ -47,6 +47,7 @@ class MyButton extends StatelessWidget {
                 ),
               )
             : Text(
+                overflow: TextOverflow.ellipsis,
                 text,
                 style: TextStyle(
                   color: white,

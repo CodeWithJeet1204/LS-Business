@@ -39,7 +39,7 @@ class _SelectCategoryForDiscountPageState
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("SELECT CATEGORIES"),
+        title: const Text(overflow: TextOverflow.ellipsis, "SELECT CATEGORIES"),
         actions: [
           MyTextButton(
             onPressed: () {
@@ -102,7 +102,9 @@ class _SelectCategoryForDiscountPageState
                 builder: ((context, snapshot) {
                   if (snapshot.hasError) {
                     return const Center(
-                      child: Text("Something went wrong"),
+                      child: Text(
+                          overflow: TextOverflow.ellipsis,
+                          "Something went wrong"),
                     );
                   }
 
@@ -186,11 +188,11 @@ class _SelectCategoryForDiscountPageState
                                                     0,
                                                   ),
                                                   child: Text(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     categoryData[
                                                         'categoryName'],
                                                     maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                       fontSize: width * 0.06,
                                                       fontWeight:
@@ -289,6 +291,7 @@ class _SelectCategoryForDiscountPageState
                                               ),
                                             ),
                                             title: Text(
+                                              overflow: TextOverflow.ellipsis,
                                               categoryData['categoryName'],
                                               style: TextStyle(
                                                 fontSize: width * 0.055,

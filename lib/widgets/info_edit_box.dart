@@ -43,6 +43,7 @@ class InfoEditBox extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
+                  overflow: TextOverflow.ellipsis,
                   head,
                   style: const TextStyle(
                     fontWeight: FontWeight.w500,
@@ -52,9 +53,8 @@ class InfoEditBox extends StatelessWidget {
                 ),
                 noOfAnswers == 1
                     ? Text(
+                        overflow: TextOverflow.ellipsis,
                         content,
-                        softWrap: true,
-                        overflow: TextOverflow.clip,
                         maxLines: 1,
                         style: TextStyle(
                           fontSize: MediaQuery.of(context).size.width * 0.05833,
@@ -64,6 +64,7 @@ class InfoEditBox extends StatelessWidget {
                       )
                     : noOfAnswers == 2
                         ? Text(
+                            overflow: TextOverflow.ellipsis,
                             content,
                             style: TextStyle(
                               fontSize:
@@ -127,6 +128,8 @@ class InfoEditBox extends StatelessWidget {
                                                     ),
                                                   ),
                                                   child: Text(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     e,
                                                     style: TextStyle(
                                                       fontSize:
@@ -146,7 +149,8 @@ class InfoEditBox extends StatelessWidget {
                                       },
                                     ),
                                   )
-                                : const Text("N/A")
+                                : const Text(
+                                    overflow: TextOverflow.ellipsis, "N/A")
                             : Container(),
               ],
             ),

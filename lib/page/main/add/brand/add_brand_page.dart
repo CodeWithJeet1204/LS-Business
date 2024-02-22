@@ -131,7 +131,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
     return Scaffold(
       backgroundColor: primary,
       appBar: AppBar(
-        title: const Text("ADD BRAND"),
+        title: const Text(overflow: TextOverflow.ellipsis, "ADD BRAND"),
         actions: [
           MyTextButton(
             onPressed: () {
@@ -247,6 +247,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
+                                    overflow: TextOverflow.ellipsis,
                                     "Select Image",
                                     style: TextStyle(
                                       fontSize: width * 0.08,

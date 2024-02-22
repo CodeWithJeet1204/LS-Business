@@ -84,7 +84,7 @@ class _SelectProductsForCategoryPageState
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("SELECT PRODUCTS"),
+        title: const Text(overflow: TextOverflow.ellipsis, "SELECT PRODUCTS"),
         actions: [
           MyTextButton(
             onPressed: widget.fromAddCategoryPage
@@ -115,7 +115,8 @@ class _SelectProductsForCategoryPageState
             builder: ((context, snapshot) {
               if (snapshot.hasError) {
                 return const Center(
-                  child: Text("Something went wrong"),
+                  child: Text(
+                      overflow: TextOverflow.ellipsis, "Something went wrong"),
                 );
               }
 
@@ -251,11 +252,11 @@ class _SelectProductsForCategoryPageState
                                                         0,
                                                       ),
                                                       child: Text(
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                         productData[
                                                             'productName'],
                                                         maxLines: 1,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
                                                         style: TextStyle(
                                                           fontSize:
                                                               width * 0.06,
@@ -365,6 +366,8 @@ class _SelectProductsForCategoryPageState
                                                   ),
                                                 ),
                                                 title: Text(
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   productData['productName'],
                                                   style: TextStyle(
                                                     fontSize: width * 0.055,

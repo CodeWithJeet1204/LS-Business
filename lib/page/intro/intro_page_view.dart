@@ -110,6 +110,7 @@ class _IntroPageViewState extends State<IntroPageView> {
                 TextButton(
                   onPressed: onNext,
                   child: Text(
+                    overflow: TextOverflow.ellipsis,
                     nextText,
                     style: TextStyle(
                       fontSize: MediaQuery.of(context).size.width * 0.045,

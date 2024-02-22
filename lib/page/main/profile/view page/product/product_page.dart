@@ -95,7 +95,9 @@ class _ProductPageState extends State<ProductPage> {
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return const Center(
-                        child: Text('Something went wrong'),
+                        child: Text(
+                            overflow: TextOverflow.ellipsis,
+                            'Something went wrong'),
                       );
                     }
 
@@ -245,6 +247,8 @@ class _ProductPageState extends State<ProductPage> {
                                                       left: 12,
                                                     ),
                                                     child: Text(
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       property[index],
                                                       style: const TextStyle(
                                                         color: white,
@@ -562,8 +566,9 @@ class _ProductPageState extends State<ProductPage> {
       context: context,
       builder: ((context) {
         return AlertDialog(
-          title: const Text("Confirm DELETE"),
+          title: const Text(overflow: TextOverflow.ellipsis, "Confirm DELETE"),
           content: const Text(
+              overflow: TextOverflow.ellipsis,
               "Are you sure you want to delete this product & all its posts"),
           actions: [
             TextButton(
@@ -571,6 +576,7 @@ class _ProductPageState extends State<ProductPage> {
                 Navigator.of(context).pop();
               },
               child: const Text(
+                overflow: TextOverflow.ellipsis,
                 'NO',
                 style: TextStyle(
                   color: Colors.green,
@@ -584,6 +590,7 @@ class _ProductPageState extends State<ProductPage> {
                 delete();
               },
               child: const Text(
+                overflow: TextOverflow.ellipsis,
                 'YES',
                 style: TextStyle(
                   color: Colors.red,
@@ -753,7 +760,9 @@ class _ProductPageState extends State<ProductPage> {
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return const Center(
-                        child: Text('Something Went Wrong'),
+                        child: Text(
+                            overflow: TextOverflow.ellipsis,
+                            'Something Went Wrong'),
                       );
                     }
 
@@ -999,7 +1008,9 @@ class _ProductPageState extends State<ProductPage> {
                                   child: const Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text("Add Image"),
+                                      Text(
+                                          overflow: TextOverflow.ellipsis,
+                                          "Add Image"),
                                       Icon(Icons.add),
                                     ],
                                   ),
@@ -1019,9 +1030,9 @@ class _ProductPageState extends State<ProductPage> {
                                 child: SizedBox(
                                   width: width * 0.785,
                                   child: AutoSizeText(
+                                    overflow: TextOverflow.ellipsis,
                                     name,
                                     maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       color: primaryDark,
                                       fontSize: width * 0.1,
@@ -1060,7 +1071,9 @@ class _ProductPageState extends State<ProductPage> {
                                       builder: (context, snapshot) {
                                         if (snapshot.hasError) {
                                           return const Center(
-                                            child: Text('Something Went Wrong'),
+                                            child: Text(
+                                                overflow: TextOverflow.ellipsis,
+                                                'Something Went Wrong'),
                                           );
                                         }
 
@@ -1085,8 +1098,13 @@ class _ProductPageState extends State<ProductPage> {
                                                 ),
                                                 child: price == "" ||
                                                         price == 'N/A'
-                                                    ? const Text('N/A')
+                                                    ? const Text(
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        'N/A')
                                                     : RichText(
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                         text: TextSpan(
                                                           text: 'Rs. ',
                                                           style:
@@ -1128,8 +1146,6 @@ class _ProductPageState extends State<ProductPage> {
                                                           ],
                                                         ),
                                                         maxLines: 1,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
                                                       ),
                                               ),
                                               Padding(
@@ -1138,6 +1154,8 @@ class _ProductPageState extends State<ProductPage> {
                                                 ),
                                                 child: data['isPercent']
                                                     ? Text(
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                         "${data['discountAmount']}% off",
                                                         style: const TextStyle(
                                                           fontWeight:
@@ -1145,6 +1163,8 @@ class _ProductPageState extends State<ProductPage> {
                                                         ),
                                                       )
                                                     : Text(
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                         "Save Rs. ${data['discountAmount']}",
                                                         style: const TextStyle(
                                                           fontWeight:
@@ -1158,6 +1178,8 @@ class _ProductPageState extends State<ProductPage> {
                                                   vertical: width * 0.0055,
                                                 ),
                                                 child: Text(
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   (data['discountEndDateTime']
                                                                   as Timestamp)
                                                               .toDate()
@@ -1191,6 +1213,7 @@ class _ProductPageState extends State<ProductPage> {
                                             left: width * 0.02775,
                                           ),
                                           child: Text(
+                                            overflow: TextOverflow.ellipsis,
                                             productData['productPrice'] == ""
                                                 ? "N/A"
                                                 : "Rs. ${productData['productPrice']}",
@@ -1270,6 +1293,7 @@ class _ProductPageState extends State<ProductPage> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
+                                            overflow: TextOverflow.ellipsis,
                                             "Available",
                                             style: TextStyle(
                                               color: primaryDark,
@@ -1314,6 +1338,7 @@ class _ProductPageState extends State<ProductPage> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
+                                            overflow: TextOverflow.ellipsis,
                                             "Out Of Stock",
                                             style: TextStyle(
                                               color: primaryDark,
@@ -1369,7 +1394,9 @@ class _ProductPageState extends State<ProductPage> {
                               builder: (context, snapshot) {
                                 if (snapshot.hasError) {
                                   return const Center(
-                                    child: Text('Something went wrong'),
+                                    child: Text(
+                                        overflow: TextOverflow.ellipsis,
+                                        'Something went wrong'),
                                   );
                                 }
 
@@ -1440,13 +1467,13 @@ class _ProductPageState extends State<ProductPage> {
                                               SizedBox(
                                                 width: width * 0.4,
                                                 child: AutoSizeText(
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   categoryExists
                                                       ? productData[
                                                           'categoryName']
                                                       : 'No Category',
                                                   maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
                                                   style: TextStyle(
                                                     color: primaryDark,
                                                     fontSize: width * 0.0575,
@@ -1722,6 +1749,7 @@ class _ProductPageState extends State<ProductPage> {
                                       SizedBox(
                                         width: width * 0.5,
                                         child: Text(
+                                          overflow: TextOverflow.ellipsis,
                                           "View All Products Insights",
                                           style: TextStyle(
                                             color: primaryDark2,

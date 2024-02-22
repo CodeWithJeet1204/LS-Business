@@ -88,7 +88,9 @@ class _SelectBusinessCategoryPageState
                   children: [
                     // HEAD TEXT
                     SizedBox(height: width * 0.1125),
-                    const HeadText(text: "SELECT\nCATEGORY"),
+                    const HeadText(
+                      text: "SELECT\nCATEGORY",
+                    ),
                     SizedBox(height: width * 0.1125),
 
                     // SHOP VS HOUSEHOLD
@@ -120,6 +122,7 @@ class _SelectBusinessCategoryPageState
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
+                                      overflow: TextOverflow.ellipsis,
                                       "Shop",
                                       style: TextStyle(
                                         color: primaryDark,
@@ -163,6 +166,7 @@ class _SelectBusinessCategoryPageState
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
+                                      overflow: TextOverflow.ellipsis,
                                       "Household",
                                       style: TextStyle(
                                         color: primaryDark,
@@ -208,6 +212,7 @@ class _SelectBusinessCategoryPageState
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
+                          overflow: TextOverflow.ellipsis,
                           selectedCategory,
                           style: TextStyle(
                             color: primaryDark,

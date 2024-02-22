@@ -6,6 +6,7 @@ void mySnackBar(BuildContext context, String text) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(
+        overflow: TextOverflow.ellipsis,
         text,
         style: TextStyle(
           color: primaryDark,

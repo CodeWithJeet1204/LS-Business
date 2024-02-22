@@ -20,7 +20,7 @@ class _AddPageState extends State<AddPage> {
       resizeToAvoidBottomInset: false,
       backgroundColor: primary,
       appBar: AppBar(
-        title: const Text("ADD"),
+        title: const Text(overflow: TextOverflow.ellipsis, "ADD"),
         elevation: 0,
         shadowColor: primary2,
       ),
@@ -61,6 +61,7 @@ class _AddPageState extends State<AddPage> {
                               SizedBox(
                                 width: width * 0.5,
                                 child: const AutoSizeText(
+                                  overflow: TextOverflow.ellipsis,
                                   "POST",
                                   style: TextStyle(
                                     color: primaryDark,
@@ -108,6 +109,7 @@ class _AddPageState extends State<AddPage> {
                               SizedBox(
                                 width: width * 0.5,
                                 child: const AutoSizeText(
+                                  overflow: TextOverflow.ellipsis,
                                   "PRODUCTS",
                                   style: TextStyle(
                                     color: primaryDark,
@@ -150,6 +152,7 @@ class _AddPageState extends State<AddPage> {
                               SizedBox(
                                 width: width * 0.5,
                                 child: const AutoSizeText(
+                                  overflow: TextOverflow.ellipsis,
                                   "CATEGORY",
                                   style: TextStyle(
                                     color: primaryDark,
@@ -192,6 +195,7 @@ class _AddPageState extends State<AddPage> {
                               SizedBox(
                                 width: width * 0.5,
                                 child: const AutoSizeText(
+                                  overflow: TextOverflow.ellipsis,
                                   "BRAND",
                                   style: TextStyle(
                                     color: primaryDark,

@@ -353,7 +353,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Additional Info'),
+        title: const Text(overflow: TextOverflow.ellipsis, 'Additional Info'),
         actions: [
           MyTextButton(
             onPressed: () {
@@ -386,10 +386,10 @@ class _AddProductPage2State extends State<AddProductPage2> {
                       child: Column(
                         children: [
                           const Text(
+                            overflow: TextOverflow.ellipsis,
                             "Properties marked with '*' are compulsory to fill",
                             textAlign: TextAlign.center,
                             maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               color: primaryDark2,
                               fontSize: 12,
@@ -468,6 +468,8 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                     left: 12,
                                                   ),
                                                   child: Text(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     tagList[index],
                                                     style: const TextStyle(
                                                       color: white,
@@ -533,7 +535,10 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                               ),
                                               child: DropdownButton(
                                                 dropdownColor: primary,
-                                                hint: const Text("Select"),
+                                                hint: const Text(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    "Select"),
                                                 value: propertyValue0,
                                                 underline: Container(),
                                                 items: getDropDownItems(0)
@@ -541,6 +546,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                       (e) => DropdownMenuItem(
                                                         value: e.toUpperCase(),
                                                         child: Text(
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
                                                             e.toUpperCase()),
                                                       ),
                                                     )
@@ -648,6 +656,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                               left: 12,
                                                             ),
                                                             child: Text(
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
                                                               property0[index],
                                                               style:
                                                                   const TextStyle(
@@ -721,7 +732,10 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                               ),
                                               child: DropdownButton(
                                                 dropdownColor: primary,
-                                                hint: const Text("Select"),
+                                                hint: const Text(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    "Select"),
                                                 value: propertyValue1,
                                                 underline: Container(),
                                                 items: getDropDownItems(1)
@@ -729,6 +743,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                       (e) => DropdownMenuItem(
                                                         value: e.toUpperCase(),
                                                         child: Text(
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
                                                             e.toUpperCase()),
                                                       ),
                                                     )
@@ -836,6 +853,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                               left: 12,
                                                             ),
                                                             child: Text(
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
                                                               property1[index],
                                                               style:
                                                                   const TextStyle(
@@ -909,7 +929,10 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                               ),
                                               child: DropdownButton(
                                                 dropdownColor: primary,
-                                                hint: const Text("Select"),
+                                                hint: const Text(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    "Select"),
                                                 value: propertyValue2,
                                                 underline: Container(),
                                                 items: getDropDownItems(2)
@@ -917,6 +940,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                       (e) => DropdownMenuItem(
                                                         value: e.toUpperCase(),
                                                         child: Text(
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
                                                             e.toUpperCase()),
                                                       ),
                                                     )
@@ -1024,6 +1050,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                               left: 12,
                                                             ),
                                                             child: Text(
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
                                                               property2[index],
                                                               style:
                                                                   const TextStyle(
@@ -1097,7 +1126,10 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                               ),
                                               child: DropdownButton(
                                                 dropdownColor: primary,
-                                                hint: const Text("Select"),
+                                                hint: const Text(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    "Select"),
                                                 value: propertyValue3,
                                                 underline: Container(),
                                                 items: getDropDownItems(3)
@@ -1105,6 +1137,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                       (e) => DropdownMenuItem(
                                                         value: e.toUpperCase(),
                                                         child: Text(
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
                                                             e.toUpperCase()),
                                                       ),
                                                     )
@@ -1212,6 +1247,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                               left: 12,
                                                             ),
                                                             child: Text(
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
                                                               property3[index],
                                                               style:
                                                                   const TextStyle(
@@ -1285,7 +1323,10 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                               ),
                                               child: DropdownButton(
                                                 dropdownColor: primary,
-                                                hint: const Text("Select"),
+                                                hint: const Text(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    "Select"),
                                                 value: propertyValue4,
                                                 underline: Container(),
                                                 items: getDropDownItems(4)
@@ -1293,6 +1334,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                       (e) => DropdownMenuItem(
                                                         value: e.toUpperCase(),
                                                         child: Text(
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
                                                             e.toUpperCase()),
                                                       ),
                                                     )
@@ -1400,6 +1444,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                               left: 12,
                                                             ),
                                                             child: Text(
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
                                                               property4[index],
                                                               style:
                                                                   const TextStyle(
@@ -1473,7 +1520,10 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                               ),
                                               child: DropdownButton(
                                                 dropdownColor: primary,
-                                                hint: const Text("Select"),
+                                                hint: const Text(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    "Select"),
                                                 value: propertyValue5,
                                                 underline: Container(),
                                                 items: getDropDownItems(5)
@@ -1481,6 +1531,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                       (e) => DropdownMenuItem(
                                                         value: e.toUpperCase(),
                                                         child: Text(
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
                                                             e.toUpperCase()),
                                                       ),
                                                     )
@@ -1588,6 +1641,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                               left: 12,
                                                             ),
                                                             child: Text(
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
                                                               property5[index],
                                                               style:
                                                                   const TextStyle(
@@ -1728,6 +1784,8 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                       left: 12,
                                                     ),
                                                     child: Text(
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       otherInfoList[index],
                                                       style: const TextStyle(
                                                         color: white,

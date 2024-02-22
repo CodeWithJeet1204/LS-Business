@@ -77,8 +77,10 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
     showDialog(
       context: context,
       builder: ((context) => AlertDialog(
-            title: const Text("Select Membership"),
+            title: const Text(
+                overflow: TextOverflow.ellipsis, "Select Membership"),
             content: const Text(
+              overflow: TextOverflow.ellipsis,
               "First select the Duration for which you want the membership\nThen the respective prices will be displayed\nand then select one of them.",
             ),
             actions: [
@@ -152,7 +154,8 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                         autofocus: true,
                         underline: SizedBox(),
                         borderRadius: BorderRadius.circular(12),
-                        hint: Text(selectedDuration),
+                        hint: Text(
+                            overflow: TextOverflow.ellipsis, selectedDuration),
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         elevation: 1,
                         onTap: () {
@@ -165,7 +168,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                             .map(
                               (e) => DropdownMenuItem(
                                 value: e,
-                                child: Text(e),
+                                child: Text(overflow: TextOverflow.ellipsis, e),
                               ),
                             )
                             .toList(),

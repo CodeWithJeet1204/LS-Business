@@ -55,6 +55,7 @@ class _ImageTextContainerState extends State<ImageTextContainer> {
                 ),
                 const SizedBox(height: 24),
                 Text(
+                  overflow: TextOverflow.ellipsis,
                   widget.text,
                   // overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,

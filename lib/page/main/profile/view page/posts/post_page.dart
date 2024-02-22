@@ -108,7 +108,9 @@ class _PostPageState extends State<PostPage> {
                   builder: ((context, snapshot) {
                     if (snapshot.hasError) {
                       return const Center(
-                        child: Text("Something went wrong"),
+                        child: Text(
+                            overflow: TextOverflow.ellipsis,
+                            "Something went wrong"),
                       );
                     }
 
@@ -246,9 +248,9 @@ class _PostPageState extends State<PostPage> {
                             child: SizedBox(
                               width: width * 0.875,
                               child: AutoSizeText(
+                                overflow: TextOverflow.ellipsis,
                                 name,
                                 maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   color: primaryDark,
                                   fontSize: width * 0.1,
@@ -269,7 +271,9 @@ class _PostPageState extends State<PostPage> {
                                     builder: (context, snapshot) {
                                       if (snapshot.hasError) {
                                         return const Center(
-                                          child: Text('Something Went Wrong'),
+                                          child: Text(
+                                              overflow: TextOverflow.ellipsis,
+                                              'Something Went Wrong'),
                                         );
                                       }
 
@@ -294,6 +298,7 @@ class _PostPageState extends State<PostPage> {
                                                 horizontal: width * 0.028,
                                               ),
                                               child: RichText(
+                                                overflow: TextOverflow.ellipsis,
                                                 text: TextSpan(
                                                   text: 'Rs. ',
                                                   style: TextStyle(
@@ -333,7 +338,6 @@ class _PostPageState extends State<PostPage> {
                                                   ],
                                                 ),
                                                 maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
                                               ),
                                             ),
 
@@ -344,6 +348,8 @@ class _PostPageState extends State<PostPage> {
                                               ),
                                               child: data['isPercent']
                                                   ? Text(
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       "${data['discountAmount']}% off",
                                                       style: const TextStyle(
                                                         fontWeight:
@@ -351,6 +357,8 @@ class _PostPageState extends State<PostPage> {
                                                       ),
                                                     )
                                                   : Text(
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       "Save Rs. ${data['discountAmount']}",
                                                       style: const TextStyle(
                                                         fontWeight:
@@ -366,6 +374,7 @@ class _PostPageState extends State<PostPage> {
                                                 vertical: width * 0.00625,
                                               ),
                                               child: Text(
+                                                overflow: TextOverflow.ellipsis,
                                                 (data['discountEndDateTime']
                                                                 as Timestamp)
                                                             .toDate()
@@ -392,6 +401,7 @@ class _PostPageState extends State<PostPage> {
                                 : Padding(
                                     padding: const EdgeInsets.only(left: 10),
                                     child: Text(
+                                      overflow: TextOverflow.ellipsis,
                                       "Rs. ${postData['postProductPrice']}",
                                       style: const TextStyle(
                                         color: primaryDark,

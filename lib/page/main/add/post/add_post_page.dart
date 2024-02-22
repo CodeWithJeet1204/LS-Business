@@ -161,7 +161,7 @@ class _AddPostPageState extends State<AddPostPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("CREATE POST"),
+        title: const Text(overflow: TextOverflow.ellipsis, "CREATE POST"),
         actions: [
           MyTextButton(
             onPressed: () async {
@@ -207,6 +207,7 @@ class _AddPostPageState extends State<AddPostPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
+                      overflow: TextOverflow.ellipsis,
                       'Remaining Text Post - $textPostRemaining',
                       style: TextStyle(
                         color: primaryDark,
@@ -215,6 +216,7 @@ class _AddPostPageState extends State<AddPostPage> {
                       ),
                     ),
                     Text(
+                      overflow: TextOverflow.ellipsis,
                       'Remaining Image Post - $imagePostRemaining',
                       style: TextStyle(
                         color: primaryDark,
@@ -229,6 +231,7 @@ class _AddPostPageState extends State<AddPostPage> {
                   ? Column(
                       children: [
                         Text(
+                          overflow: TextOverflow.ellipsis,
                           "Select the type of post you want to create",
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -238,6 +241,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           ),
                         ),
                         Text(
+                          overflow: TextOverflow.ellipsis,
                           "Just select the product you want the post",
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -247,6 +251,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           ),
                         ),
                         Text(
+                          overflow: TextOverflow.ellipsis,
                           "Then the product details will automatically be added",
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -258,6 +263,7 @@ class _AddPostPageState extends State<AddPostPage> {
                       ],
                     )
                   : Text(
+                      overflow: TextOverflow.ellipsis,
                       'Your no of Text & Image Posts has reached 0\nYou cannot post another post until your current memberhsip ends',
                       textAlign: TextAlign.center,
                       style: TextStyle(

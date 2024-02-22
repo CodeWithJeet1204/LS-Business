@@ -39,7 +39,7 @@ class _SelectProductForDiscountPageState
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("SELECT PRODUCT"),
+        title: const Text(overflow: TextOverflow.ellipsis, "SELECT PRODUCT"),
         actions: [
           MyTextButton(
             onPressed: () {
@@ -96,7 +96,9 @@ class _SelectProductForDiscountPageState
                 builder: ((context, snapshot) {
                   if (snapshot.hasError) {
                     return const Center(
-                      child: Text("Something went wrong"),
+                      child: Text(
+                          overflow: TextOverflow.ellipsis,
+                          "Something went wrong"),
                     );
                   }
 
@@ -183,10 +185,10 @@ class _SelectProductForDiscountPageState
                                                     0,
                                                   ),
                                                   child: Text(
-                                                    productData['productName'],
-                                                    maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
+                                                    productData['productName'],
+                                                    maxLines: 1,
                                                     style: TextStyle(
                                                       fontSize: width * 0.06,
                                                       fontWeight:
@@ -202,6 +204,8 @@ class _SelectProductForDiscountPageState
                                                     0,
                                                   ),
                                                   child: Text(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     productData['productPrice'] !=
                                                                 "" &&
                                                             productSnap[
@@ -211,8 +215,6 @@ class _SelectProductForDiscountPageState
                                                             'productPrice']
                                                         : "N/A",
                                                     maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                       fontSize: width * 0.045,
                                                       fontWeight:
@@ -306,6 +308,7 @@ class _SelectProductForDiscountPageState
                                               },
                                             ),
                                             title: Text(
+                                              overflow: TextOverflow.ellipsis,
                                               productSnap['productName'],
                                               style: TextStyle(
                                                 fontSize: width * 0.05125,
@@ -313,6 +316,7 @@ class _SelectProductForDiscountPageState
                                               ),
                                             ),
                                             subtitle: Text(
+                                              overflow: TextOverflow.ellipsis,
                                               productSnap['productPrice'] !=
                                                           "" &&
                                                       productSnap[

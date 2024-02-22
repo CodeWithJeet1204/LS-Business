@@ -63,6 +63,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             SizedBox(height: width * 0.25),
             Text(
+              overflow: TextOverflow.ellipsis,
               'Find Easy',
               style: TextStyle(
                 color: primaryDark2,

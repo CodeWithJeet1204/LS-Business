@@ -133,6 +133,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                         children: [
                           // TITLE
                           Text(
+                            overflow: TextOverflow.ellipsis,
                             'SHOP DATA',
                             style: TextStyle(
                               color: primaryDark,
@@ -151,7 +152,9 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                             child: Padding(
                               padding: EdgeInsets.only(left: width * 0.05),
                               child: DropdownButton(
-                                hint: Text("Select Duration"),
+                                hint: Text(
+                                    overflow: TextOverflow.ellipsis,
+                                    "Select Duration"),
                                 value: selectedStringDuration,
                                 underline: SizedBox(),
                                 dropdownColor: primary2,
@@ -163,7 +166,9 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                   'Lifetime'
                                 ]
                                     .map((e) => DropdownMenuItem(
-                                          child: Text(e),
+                                          child: Text(
+                                              overflow: TextOverflow.ellipsis,
+                                              e),
                                           value: e,
                                         ))
                                     .toList(),
@@ -186,13 +191,16 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                       builder: (context, snapshot) {
                         if (snapshot.hasError) {
                           return Center(
-                            child: Text('Something went wrong'),
+                            child: Text(
+                                overflow: TextOverflow.ellipsis,
+                                'Something went wrong'),
                           );
                         }
 
                         if (!snapshot.hasData) {
                           return Center(
-                            child: Text('No Data'),
+                            child: Text(
+                                overflow: TextOverflow.ellipsis, 'No Data'),
                           );
                         }
 
@@ -258,6 +266,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                         children: [
                                           // PROPERTY
                                           Text(
+                                            overflow: TextOverflow.ellipsis,
                                             'Shop Views',
                                             style: TextStyle(
                                               color: primaryDark2,
@@ -267,6 +276,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                           ),
                                           // VALUE
                                           Text(
+                                            overflow: TextOverflow.ellipsis,
                                             viewTimestamps.length > 1000000
                                                 ? '${viewTimestamps.length.toString().substring(0)}.${viewTimestamps.length.toString().substring(1, 3)}M'
                                                 : viewTimestamps.length > 1000
@@ -316,6 +326,8 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                                 reservedSize: width * 0.065,
                                                 getTitlesWidget: (value, meta) {
                                                   return Text(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     value.toStringAsFixed(0),
                                                     style: TextStyle(
                                                       fontSize:
@@ -484,6 +496,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                         children: [
                                           // PROPERTY
                                           Text(
+                                            overflow: TextOverflow.ellipsis,
                                             'Shop Followers',
                                             style: TextStyle(
                                               color: primaryDark2,
@@ -493,6 +506,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                           ),
                                           // VALUE
                                           Text(
+                                            overflow: TextOverflow.ellipsis,
                                             followerTimestamps.length > 1000000
                                                 ? '${followerTimestamps.length.toString().substring(0)}.${followerTimestamps.length.toString().substring(1, 3)}M'
                                                 : followerTimestamps.length >
@@ -543,6 +557,8 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                                 reservedSize: width * 0.065,
                                                 getTitlesWidget: (value, meta) {
                                                   return Text(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     value.toStringAsFixed(0),
                                                     style: TextStyle(
                                                       fontSize:

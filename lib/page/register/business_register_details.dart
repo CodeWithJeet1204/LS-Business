@@ -229,11 +229,14 @@ class _BusinessRegisterDetailsPageState
                         menuMaxHeight: 700,
                         itemHeight: 48,
                         dropdownColor: const Color.fromARGB(255, 189, 234, 255),
-                        hint: const Text("Select Industry Segment"),
+                        hint: const Text(
+                            overflow: TextOverflow.ellipsis,
+                            "Select Industry Segment"),
                         items: industrySegments
                             .map((element) => DropdownMenuItem(
                                   value: element,
-                                  child: Text(element),
+                                  child: Text(
+                                      overflow: TextOverflow.ellipsis, element),
                                 ))
                             .toList(),
                         onChanged: (value) {

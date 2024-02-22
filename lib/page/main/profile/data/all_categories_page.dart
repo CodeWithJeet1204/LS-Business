@@ -71,8 +71,9 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
       context: context,
       builder: ((context) {
         return AlertDialog(
-          title: const Text("Confirm DELETE"),
+          title: const Text(overflow: TextOverflow.ellipsis, "Confirm DELETE"),
           content: const Text(
+            overflow: TextOverflow.ellipsis,
             "Are you sure you want to delete this Category\nProducts will not be deleted",
           ),
           actions: [
@@ -81,6 +82,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                 Navigator.of(context).pop();
               },
               child: const Text(
+                overflow: TextOverflow.ellipsis,
                 'NO',
                 style: TextStyle(
                   color: Colors.green,
@@ -93,6 +95,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                 delete(categoryId, imageUrl);
               },
               child: const Text(
+                overflow: TextOverflow.ellipsis,
                 'YES',
                 style: TextStyle(
                   color: Colors.red,
@@ -123,7 +126,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("ALL CATEGORIES"),
+        title: const Text(overflow: TextOverflow.ellipsis, "ALL CATEGORIES"),
         bottom: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,
@@ -180,7 +183,9 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                 if (snapshot.hasError) {
                   return const Center(
-                    child: Text('Something went wrong'),
+                    child: Text(
+                        overflow: TextOverflow.ellipsis,
+                        'Something went wrong'),
                   );
                 }
 
@@ -276,10 +281,10 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                                               child: SizedBox(
                                                 width: width * 0.275,
                                                 child: Text(
-                                                  categoryData['categoryName'],
-                                                  maxLines: 1,
                                                   overflow:
                                                       TextOverflow.ellipsis,
+                                                  categoryData['categoryName'],
+                                                  maxLines: 1,
                                                   style: TextStyle(
                                                     color: primaryDark,
                                                     fontWeight: FontWeight.w600,
@@ -372,6 +377,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                                         },
                                       ),
                                       title: Text(
+                                        overflow: TextOverflow.ellipsis,
                                         categoryData['categoryName'],
                                         style: TextStyle(
                                           fontSize: width * 0.06,

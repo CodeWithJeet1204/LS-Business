@@ -33,9 +33,10 @@ class _BrandWithDiscountPageState extends State<BrandWithDiscountPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Remove $brandName"),
-          content:
-              Text('Are you sure you want to remove $brandName from Discount?'),
+          title: Text(overflow: TextOverflow.ellipsis, "Remove $brandName"),
+          content: Text(
+              overflow: TextOverflow.ellipsis,
+              'Are you sure you want to remove $brandName from Discount?'),
           actions: [
             MyTextButton(
               onPressed: () {
@@ -115,7 +116,7 @@ class _BrandWithDiscountPageState extends State<BrandWithDiscountPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('BRANDS'),
+        title: const Text(overflow: TextOverflow.ellipsis, 'BRANDS'),
         bottom: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,
@@ -167,7 +168,8 @@ class _BrandWithDiscountPageState extends State<BrandWithDiscountPage> {
             builder: ((context, snapshot) {
               if (snapshot.hasError) {
                 return const Center(
-                  child: Text('Something went wrong'),
+                  child: Text(
+                      overflow: TextOverflow.ellipsis, 'Something went wrong'),
                 );
               }
 
@@ -229,10 +231,10 @@ class _BrandWithDiscountPageState extends State<BrandWithDiscountPage> {
                                                 width: width * 0.45,
                                                 height: width * 0.1,
                                                 child: Text(
-                                                  brands[index]['brandName']!,
-                                                  maxLines: 1,
                                                   overflow:
                                                       TextOverflow.ellipsis,
+                                                  brands[index]['brandName']!,
+                                                  maxLines: 1,
                                                   style: TextStyle(
                                                     color: primaryDark,
                                                     fontSize: width * 0.06,
@@ -301,6 +303,7 @@ class _BrandWithDiscountPageState extends State<BrandWithDiscountPage> {
                                   ),
                                 ),
                                 title: Text(
+                                  overflow: TextOverflow.ellipsis,
                                   brands[index]['brandName']!,
                                   style: TextStyle(
                                     fontSize: width * 0.0525,

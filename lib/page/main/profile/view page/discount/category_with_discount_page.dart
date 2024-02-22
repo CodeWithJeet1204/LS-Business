@@ -34,8 +34,9 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Remove $categoryName"),
+          title: Text(overflow: TextOverflow.ellipsis, "Remove $categoryName"),
           content: Text(
+              overflow: TextOverflow.ellipsis,
               'Are you sure you want to remove $categoryName from Discount?'),
           actions: [
             MyTextButton(
@@ -116,7 +117,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('CATEGORIES'),
+        title: const Text(overflow: TextOverflow.ellipsis, 'CATEGORIES'),
         bottom: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,
@@ -168,7 +169,8 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
             builder: ((context, snapshot) {
               if (snapshot.hasError) {
                 return const Center(
-                  child: Text('Something went wrong'),
+                  child: Text(
+                      overflow: TextOverflow.ellipsis, 'Something went wrong'),
                 );
               }
 
@@ -230,11 +232,11 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
                                                 width: width * 0.45,
                                                 height: width * 0.1,
                                                 child: Text(
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   categories[index]
                                                       ['categoryName']!,
                                                   maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
                                                   style: TextStyle(
                                                     color: primaryDark,
                                                     fontSize: width * 0.06,
@@ -303,6 +305,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
                                   ),
                                 ),
                                 title: Text(
+                                  overflow: TextOverflow.ellipsis,
                                   categories[index]['categoryName']!,
                                   style: TextStyle(
                                     fontSize: width * 0.0525,

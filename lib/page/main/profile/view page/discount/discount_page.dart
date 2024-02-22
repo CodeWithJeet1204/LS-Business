@@ -164,8 +164,9 @@ class DISCOUNT extends State<DiscountPage> {
       context: context,
       builder: ((context) {
         return AlertDialog(
-          title: const Text("Confirm DELETE"),
+          title: const Text(overflow: TextOverflow.ellipsis, "Confirm DELETE"),
           content: const Text(
+              overflow: TextOverflow.ellipsis,
               "Are you sure you want to delete this Discount\nDiscount will be removed from all the products/categories with this discount"),
           actions: [
             TextButton(
@@ -173,6 +174,7 @@ class DISCOUNT extends State<DiscountPage> {
                 Navigator.of(context).pop();
               },
               child: const Text(
+                overflow: TextOverflow.ellipsis,
                 'NO',
                 style: TextStyle(
                   color: Colors.green,
@@ -188,6 +190,7 @@ class DISCOUNT extends State<DiscountPage> {
                 }
               },
               child: const Text(
+                overflow: TextOverflow.ellipsis,
                 'YES',
                 style: TextStyle(
                   color: Colors.red,
@@ -275,7 +278,9 @@ class DISCOUNT extends State<DiscountPage> {
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return const Center(
-                    child: Text('Something went wrong'),
+                    child: Text(
+                        overflow: TextOverflow.ellipsis,
+                        'Something went wrong'),
                   );
                 }
 
@@ -384,8 +389,9 @@ class DISCOUNT extends State<DiscountPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Remove $productName"),
+          title: Text(overflow: TextOverflow.ellipsis, "Remove $productName"),
           content: Text(
+              overflow: TextOverflow.ellipsis,
               'Are you sure you want to remove $productName from $categoryName'),
           actions: [
             MyTextButton(
@@ -508,7 +514,9 @@ class DISCOUNT extends State<DiscountPage> {
               builder: ((context, snapshot) {
                 if (snapshot.hasError) {
                   return const Center(
-                    child: Text('Something went wrong'),
+                    child: Text(
+                        overflow: TextOverflow.ellipsis,
+                        'Something went wrong'),
                   );
                 }
 
@@ -685,6 +693,7 @@ class DISCOUNT extends State<DiscountPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     const Text(
+                                      overflow: TextOverflow.ellipsis,
                                       "Start Date",
                                       style: TextStyle(
                                         fontWeight: FontWeight.w500,
@@ -693,9 +702,9 @@ class DISCOUNT extends State<DiscountPage> {
                                       maxLines: 1,
                                     ),
                                     Text(
+                                      overflow: TextOverflow.ellipsis,
                                       discountData['discountStartDate'],
                                       softWrap: true,
-                                      overflow: TextOverflow.clip,
                                       maxLines: 1,
                                       style: TextStyle(
                                         fontSize: width * 0.05833,
@@ -746,6 +755,7 @@ class DISCOUNT extends State<DiscountPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     const Text(
+                                      overflow: TextOverflow.ellipsis,
                                       "End Date",
                                       style: TextStyle(
                                         fontWeight: FontWeight.w500,
@@ -754,9 +764,9 @@ class DISCOUNT extends State<DiscountPage> {
                                       maxLines: 1,
                                     ),
                                     Text(
+                                      overflow: TextOverflow.ellipsis,
                                       discountData['discountEndDate'],
                                       softWrap: true,
-                                      overflow: TextOverflow.clip,
                                       maxLines: 1,
                                       style: TextStyle(
                                         fontSize: width * 0.05833,
@@ -804,6 +814,7 @@ class DISCOUNT extends State<DiscountPage> {
                             ),
                             dropdownColor: primary,
                             hint: Text(
+                              overflow: TextOverflow.ellipsis,
                               discountData['isPercent']
                                   ? 'Percent %'
                                   : 'Price Rs.',
@@ -812,7 +823,8 @@ class DISCOUNT extends State<DiscountPage> {
                             items: ['Percent', 'Price']
                                 .map((e) => DropdownMenuItem(
                                       value: e,
-                                      child: Text(e),
+                                      child: Text(
+                                          overflow: TextOverflow.ellipsis, e),
                                     ))
                                 .toList(),
                             onChanged: (value) async {
@@ -856,6 +868,7 @@ class DISCOUNT extends State<DiscountPage> {
                                   ),
                                 ),
                                 title: Text(
+                                  overflow: TextOverflow.ellipsis,
                                   'Products',
                                   style: TextStyle(
                                     fontSize: width * 0.06,
@@ -913,6 +926,8 @@ class DISCOUNT extends State<DiscountPage> {
                                             if (snapshot.hasError) {
                                               return const Center(
                                                 child: Text(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     "Something went wrong"),
                                               );
                                             }
@@ -1032,9 +1047,9 @@ class DISCOUNT extends State<DiscountPage> {
                                                                                   0,
                                                                                 ),
                                                                                 child: Text(
+                                                                                  overflow: TextOverflow.ellipsis,
                                                                                   productData['productName'],
                                                                                   maxLines: 1,
-                                                                                  overflow: TextOverflow.ellipsis,
                                                                                   style: TextStyle(
                                                                                     fontSize: width * 0.058,
                                                                                     fontWeight: FontWeight.bold,
@@ -1049,9 +1064,9 @@ class DISCOUNT extends State<DiscountPage> {
                                                                                   0,
                                                                                 ),
                                                                                 child: Text(
+                                                                                  overflow: TextOverflow.ellipsis,
                                                                                   productData['productPrice'] != "" && productData['productPrice'] != null ? productData['productPrice'] : "N/A",
                                                                                   maxLines: 1,
-                                                                                  overflow: TextOverflow.ellipsis,
                                                                                   style: TextStyle(
                                                                                     fontSize: width * 0.04,
                                                                                     fontWeight: FontWeight.w600,
@@ -1165,6 +1180,9 @@ class DISCOUNT extends State<DiscountPage> {
                                                                     ),
                                                                   ),
                                                                   title: Text(
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
                                                                     productData[
                                                                         'productName'],
                                                                     style:
@@ -1179,6 +1197,9 @@ class DISCOUNT extends State<DiscountPage> {
                                                                   ),
                                                                   subtitle:
                                                                       Text(
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
                                                                     productData['productPrice'] !=
                                                                                 "" &&
                                                                             productData['productPrice'] !=
@@ -1273,6 +1294,7 @@ class DISCOUNT extends State<DiscountPage> {
                                   ),
                                 ),
                                 title: Text(
+                                  overflow: TextOverflow.ellipsis,
                                   'Brands',
                                   style: TextStyle(
                                     fontSize: width * 0.06,
@@ -1330,6 +1352,8 @@ class DISCOUNT extends State<DiscountPage> {
                                             if (snapshot.hasError) {
                                               return const Center(
                                                 child: Text(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     "Something went wrong"),
                                               );
                                             }
@@ -1450,9 +1474,9 @@ class DISCOUNT extends State<DiscountPage> {
                                                                                   0,
                                                                                 ),
                                                                                 child: Text(
+                                                                                  overflow: TextOverflow.ellipsis,
                                                                                   brandData['brandName'],
                                                                                   maxLines: 1,
-                                                                                  overflow: TextOverflow.ellipsis,
                                                                                   style: TextStyle(
                                                                                     fontSize: width * 0.058,
                                                                                     fontWeight: FontWeight.bold,
@@ -1564,6 +1588,9 @@ class DISCOUNT extends State<DiscountPage> {
                                                                     ),
                                                                   ),
                                                                   title: Text(
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
                                                                     productData[
                                                                         'productName'],
                                                                     style:
@@ -1578,6 +1605,9 @@ class DISCOUNT extends State<DiscountPage> {
                                                                   ),
                                                                   subtitle:
                                                                       Text(
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
                                                                     productData['productPrice'] !=
                                                                                 "" &&
                                                                             productData['productPrice'] !=
@@ -1672,6 +1702,7 @@ class DISCOUNT extends State<DiscountPage> {
                                   ),
                                 ),
                                 title: Text(
+                                  overflow: TextOverflow.ellipsis,
                                   'Categories',
                                   style: TextStyle(
                                     fontSize: width * 0.06,
@@ -1729,6 +1760,8 @@ class DISCOUNT extends State<DiscountPage> {
                                             if (snapshot.hasError) {
                                               return const Center(
                                                 child: Text(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     "Something went wrong"),
                                               );
                                             }
@@ -1849,9 +1882,9 @@ class DISCOUNT extends State<DiscountPage> {
                                                                                   0,
                                                                                 ),
                                                                                 child: Text(
+                                                                                  overflow: TextOverflow.ellipsis,
                                                                                   categoryData['categoryName'],
                                                                                   maxLines: 1,
-                                                                                  overflow: TextOverflow.ellipsis,
                                                                                   style: TextStyle(
                                                                                     fontSize: width * 0.058,
                                                                                     fontWeight: FontWeight.bold,
@@ -1963,6 +1996,9 @@ class DISCOUNT extends State<DiscountPage> {
                                                                     ),
                                                                   ),
                                                                   title: Text(
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
                                                                     productData[
                                                                         'productName'],
                                                                     style:
@@ -1977,6 +2013,9 @@ class DISCOUNT extends State<DiscountPage> {
                                                                   ),
                                                                   subtitle:
                                                                       Text(
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
                                                                     productData['productPrice'] !=
                                                                                 "" &&
                                                                             productData['productPrice'] !=

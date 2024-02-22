@@ -36,7 +36,7 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("SELECT BRANDS"),
+        title: const Text(overflow: TextOverflow.ellipsis, "SELECT BRANDS"),
         actions: [
           MyTextButton(
             onPressed: () {
@@ -99,7 +99,9 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                 builder: ((context, snapshot) {
                   if (snapshot.hasError) {
                     return const Center(
-                      child: Text("Something went wrong"),
+                      child: Text(
+                          overflow: TextOverflow.ellipsis,
+                          "Something went wrong"),
                     );
                   }
 
@@ -169,10 +171,10 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                                                     0,
                                                   ),
                                                   child: Text(
-                                                    brandData['brandName'],
-                                                    maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
+                                                    brandData['brandName'],
+                                                    maxLines: 1,
                                                     style: TextStyle(
                                                       fontSize: width * 0.06,
                                                       fontWeight:
@@ -254,6 +256,7 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                                               ),
                                             ),
                                             title: Text(
+                                              overflow: TextOverflow.ellipsis,
                                               brandData['brandName'],
                                               style: TextStyle(
                                                 fontSize: width * 0.055,

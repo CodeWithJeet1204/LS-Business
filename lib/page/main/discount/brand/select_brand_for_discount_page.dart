@@ -38,7 +38,7 @@ class _SelectBrandForDiscountPageState
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("SELECT BRANDS"),
+        title: const Text(overflow: TextOverflow.ellipsis, "SELECT BRANDS"),
         actions: [
           MyTextButton(
             onPressed: () {
@@ -101,7 +101,9 @@ class _SelectBrandForDiscountPageState
                 builder: ((context, snapshot) {
                   if (snapshot.hasError) {
                     return const Center(
-                      child: Text("Something went wrong"),
+                      child: Text(
+                          overflow: TextOverflow.ellipsis,
+                          "Something went wrong"),
                     );
                   }
 
@@ -185,10 +187,10 @@ class _SelectBrandForDiscountPageState
                                                     0,
                                                   ),
                                                   child: Text(
-                                                    brandData['brandName'],
-                                                    maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
+                                                    brandData['brandName'],
+                                                    maxLines: 1,
                                                     style: TextStyle(
                                                       fontSize: width * 0.06,
                                                       fontWeight:
@@ -283,6 +285,7 @@ class _SelectBrandForDiscountPageState
                                               ),
                                             ),
                                             title: Text(
+                                              overflow: TextOverflow.ellipsis,
                                               brandData['brandName'],
                                               style: TextStyle(
                                                 fontSize: width * 0.055,

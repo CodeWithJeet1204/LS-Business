@@ -134,7 +134,9 @@ class _CategoryPageState extends State<CategoryPage> {
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return const Center(
-                    child: Text('Something went wrong'),
+                    child: Text(
+                        overflow: TextOverflow.ellipsis,
+                        'Something went wrong'),
                   );
                 }
 
@@ -204,8 +206,9 @@ class _CategoryPageState extends State<CategoryPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Remove $productName"),
+          title: Text(overflow: TextOverflow.ellipsis, "Remove $productName"),
           content: Text(
+              overflow: TextOverflow.ellipsis,
               'Are you sure you want to remove $productName from $categoryName'),
           actions: [
             MyTextButton(
@@ -314,7 +317,8 @@ class _CategoryPageState extends State<CategoryPage> {
             builder: ((context, snapshot) {
               if (snapshot.hasError) {
                 return const Center(
-                  child: Text('Something went wrong'),
+                  child: Text(
+                      overflow: TextOverflow.ellipsis, 'Something went wrong'),
                 );
               }
 
@@ -418,9 +422,9 @@ class _CategoryPageState extends State<CategoryPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
+                              overflow: TextOverflow.ellipsis,
                               categoryData['categoryName'],
                               maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 color: primaryDark,
                                 fontSize: width * 0.0725,
@@ -450,7 +454,9 @@ class _CategoryPageState extends State<CategoryPage> {
                               builder: (context, snapshot) {
                                 if (snapshot.hasError) {
                                   return const Center(
-                                    child: Text('Something Went Wrong'),
+                                    child: Text(
+                                        overflow: TextOverflow.ellipsis,
+                                        'Something Went Wrong'),
                                   );
                                 }
 
@@ -473,12 +479,14 @@ class _CategoryPageState extends State<CategoryPage> {
                                             EdgeInsets.only(left: width * 0.01),
                                         child: data['isPercent']
                                             ? Text(
+                                                overflow: TextOverflow.ellipsis,
                                                 "${data['discountAmount']}% off",
                                                 style: const TextStyle(
                                                   fontWeight: FontWeight.w500,
                                                 ),
                                               )
                                             : Text(
+                                                overflow: TextOverflow.ellipsis,
                                                 "Save Rs. ${data['discountAmount']}",
                                                 style: const TextStyle(
                                                   fontWeight: FontWeight.w500,
@@ -491,6 +499,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                           vertical: width * 0.00625,
                                         ),
                                         child: Text(
+                                          overflow: TextOverflow.ellipsis,
                                           (data['discountEndDateTime']
                                                           as Timestamp)
                                                       .toDate()
@@ -512,6 +521,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                           top: width * 0.025,
                                         ),
                                         child: const Text(
+                                          overflow: TextOverflow.ellipsis,
                                           "This discount is available to all the products within this category",
                                           style: TextStyle(
                                             color: primaryDark,
@@ -573,6 +583,7 @@ class _CategoryPageState extends State<CategoryPage> {
                           ),
                         ),
                         title: Text(
+                          overflow: TextOverflow.ellipsis,
                           'Products',
                           style: TextStyle(
                             fontSize: width * 0.06,
@@ -631,7 +642,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                   builder: ((context, snapshot) {
                                     if (snapshot.hasError) {
                                       return const Center(
-                                        child: Text("Something went wrong"),
+                                        child: Text(
+                                            overflow: TextOverflow.ellipsis,
+                                            "Something went wrong"),
                                       );
                                     }
 
@@ -754,12 +767,12 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                         ),
                                                                         child:
                                                                             Text(
+                                                                          overflow:
+                                                                              TextOverflow.ellipsis,
                                                                           productData[
                                                                               'productName'],
                                                                           maxLines:
                                                                               1,
-                                                                          overflow:
-                                                                              TextOverflow.ellipsis,
                                                                           style:
                                                                               TextStyle(
                                                                             fontSize:
@@ -779,13 +792,13 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                             0),
                                                                         child:
                                                                             Text(
+                                                                          overflow:
+                                                                              TextOverflow.ellipsis,
                                                                           productData['productPrice'] != "" && productData['productPrice'] != null
                                                                               ? productData['productPrice']
                                                                               : "N/A",
                                                                           maxLines:
                                                                               1,
-                                                                          overflow:
-                                                                              TextOverflow.ellipsis,
                                                                           style:
                                                                               TextStyle(
                                                                             fontSize:
@@ -895,6 +908,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                                             ),
                                                           ),
                                                           title: Text(
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
                                                             productData[
                                                                 'productName'],
                                                             style: TextStyle(
@@ -906,6 +922,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                                             ),
                                                           ),
                                                           subtitle: Text(
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
                                                             productData['productPrice'] !=
                                                                         "" &&
                                                                     productData[

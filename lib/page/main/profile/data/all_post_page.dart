@@ -66,7 +66,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('ALL POSTS'),
+        title: const Text(overflow: TextOverflow.ellipsis, 'ALL POSTS'),
         bottom: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,
@@ -121,7 +121,9 @@ class _AllPostsPageState extends State<AllPostsPage> {
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return const Center(
-                      child: Text('Something went wrong'),
+                      child: Text(
+                          overflow: TextOverflow.ellipsis,
+                          'Something went wrong'),
                     );
                   }
 
@@ -204,6 +206,8 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                   height: width * 0.4125,
                                                   child: Center(
                                                     child: Text(
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       'No Image',
                                                       style: TextStyle(
                                                         color: primaryDark2,
@@ -234,11 +238,11 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                       0,
                                                     ),
                                                     child: Text(
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       postData[
                                                           'postProductName'],
                                                       maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
                                                       style: const TextStyle(
                                                         fontSize: 20,
                                                         fontWeight:
@@ -255,6 +259,8 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                       0,
                                                     ),
                                                     child: Text(
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       postData['postProductPrice'] !=
                                                                   "" &&
                                                               postData[
@@ -264,8 +270,6 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                               'postProductPrice']
                                                           : "N/A",
                                                       maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
                                                       style: TextStyle(
                                                         fontSize: width * 0.045,
                                                         fontWeight:
@@ -367,6 +371,8 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                   height: width * 0.1533,
                                                   child: Center(
                                                     child: Text(
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       'No Image',
                                                       style: TextStyle(
                                                         color: primaryDark2,
@@ -378,6 +384,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                 ),
                                         ),
                                         title: Text(
+                                          overflow: TextOverflow.ellipsis,
                                           postData['postProductName'],
                                           style: TextStyle(
                                             fontSize: width * 0.0595,
@@ -385,6 +392,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                           ),
                                         ),
                                         subtitle: Text(
+                                          overflow: TextOverflow.ellipsis,
                                           postData['postProductPrice'] != "" &&
                                                   postData[
                                                           'postProductPrice'] !=

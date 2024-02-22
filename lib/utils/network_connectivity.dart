@@ -59,18 +59,23 @@ class _ConnectivityNotificationWidgetState
       barrierDismissible: false, // Prevent dismissal unless reconnected
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('No Internet Connection'),
+          title: const Text(
+              overflow: TextOverflow.ellipsis, 'No Internet Connection'),
           content: const SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('You are currently offline.'),
-                Text('Connect to network to continue using the app'),
+                Text(
+                    overflow: TextOverflow.ellipsis,
+                    'You are currently offline.'),
+                Text(
+                    overflow: TextOverflow.ellipsis,
+                    'Connect to network to continue using the app'),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Retry'),
+              child: const Text(overflow: TextOverflow.ellipsis, 'Retry'),
               onPressed: () async {
                 final currentStatus = await Connectivity().checkConnectivity();
                 if (currentStatus != ConnectivityResult.none) {

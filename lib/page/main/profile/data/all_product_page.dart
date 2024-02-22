@@ -58,8 +58,9 @@ class _AllProductsPageState extends State<AllProductsPage> {
       context: context,
       builder: ((context) {
         return AlertDialog(
-          title: const Text("Confirm DELETE"),
+          title: const Text(overflow: TextOverflow.ellipsis, "Confirm DELETE"),
           content: const Text(
+              overflow: TextOverflow.ellipsis,
               "Are you sure you want to delete this product & all its posts"),
           actions: [
             TextButton(
@@ -67,6 +68,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                 Navigator.of(context).pop();
               },
               child: const Text(
+                overflow: TextOverflow.ellipsis,
                 'NO',
                 style: TextStyle(
                   color: Colors.green,
@@ -80,6 +82,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                 delete(productId);
               },
               child: const Text(
+                overflow: TextOverflow.ellipsis,
                 'YES',
                 style: TextStyle(
                   color: Colors.red,
@@ -113,7 +116,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("ALL PRODUCTS"),
+        title: const Text(overflow: TextOverflow.ellipsis, "ALL PRODUCTS"),
         bottom: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,
@@ -170,7 +173,9 @@ class _AllProductsPageState extends State<AllProductsPage> {
               builder: ((context, snapshot) {
                 if (snapshot.hasError) {
                   return const Center(
-                    child: Text("Something went wrong"),
+                    child: Text(
+                        overflow: TextOverflow.ellipsis,
+                        "Something went wrong"),
                   );
                 }
 
@@ -264,11 +269,11 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                                   child: SizedBox(
                                                     width: width * 0.225,
                                                     child: Text(
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       productSnap[
                                                           'productName'],
                                                       maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
                                                       style: TextStyle(
                                                         fontSize: width * 0.06,
                                                         fontWeight:
@@ -285,6 +290,8 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                                     0,
                                                   ),
                                                   child: Text(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     productSnap['productPrice'] !=
                                                                 "" &&
                                                             productSnap[
@@ -294,8 +301,6 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                                             'productPrice']
                                                         : "N/A",
                                                     maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                       fontSize: width * 0.0475,
                                                       fontWeight:
@@ -382,6 +387,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                         },
                                       ),
                                       title: Text(
+                                        overflow: TextOverflow.ellipsis,
                                         productData['productName'],
                                         style: const TextStyle(
                                           fontSize: 18,
@@ -389,6 +395,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                         ),
                                       ),
                                       subtitle: Text(
+                                        overflow: TextOverflow.ellipsis,
                                         productData['productPrice'] != "" &&
                                                 productData['productPrice'] !=
                                                     null

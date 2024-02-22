@@ -31,6 +31,7 @@ class InfoBox extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
+                  overflow: TextOverflow.ellipsis,
                   text,
                   style: TextStyle(
                     color: primaryDark2,
@@ -40,6 +41,7 @@ class InfoBox extends StatelessWidget {
                   maxLines: 1,
                 ),
                 Text(
+                  overflow: TextOverflow.ellipsis,
                   value,
                   style: TextStyle(
                     color: primaryDark,

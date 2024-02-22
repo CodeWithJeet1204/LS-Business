@@ -49,7 +49,7 @@ class _ChangeCategoryState extends State<ChangeCategory> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("SELECT CATEGORY"),
+        title: const Text(overflow: TextOverflow.ellipsis, "SELECT CATEGORY"),
         actions: [
           IconButton(
             onPressed: () async {
@@ -143,7 +143,8 @@ class _ChangeCategoryState extends State<ChangeCategory> {
             builder: ((context, snapshot) {
               if (snapshot.hasError) {
                 return const Center(
-                  child: Text("Something went wrong"),
+                  child: Text(
+                      overflow: TextOverflow.ellipsis, "Something went wrong"),
                 );
               }
 
@@ -207,9 +208,9 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                                                 0,
                                               ),
                                               child: Text(
+                                                overflow: TextOverflow.ellipsis,
                                                 categoryData['categoryName'],
                                                 maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
                                                   fontSize: width * 0.055,
                                                   fontWeight: FontWeight.bold,
@@ -275,6 +276,7 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                                     ),
                                   ),
                                   title: Text(
+                                    overflow: TextOverflow.ellipsis,
                                     categoryData['categoryName'],
                                     style: TextStyle(
                                       fontSize: width * 0.05,

@@ -33,8 +33,9 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Remove $productName"),
+          title: Text(overflow: TextOverflow.ellipsis, "Remove $productName"),
           content: Text(
+              overflow: TextOverflow.ellipsis,
               'Are you sure you want to remove $productName from Discount?'),
           actions: [
             MyTextButton(
@@ -110,7 +111,7 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('PRODUCTS'),
+        title: const Text(overflow: TextOverflow.ellipsis, 'PRODUCTS'),
         bottom: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,
@@ -162,7 +163,8 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
             builder: ((context, snapshot) {
               if (snapshot.hasError) {
                 return const Center(
-                  child: Text('Something went wrong'),
+                  child: Text(
+                      overflow: TextOverflow.ellipsis, 'Something went wrong'),
                 );
               }
 
@@ -216,9 +218,9 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
                                           width: width * 0.45,
                                           height: width * 0.1,
                                           child: Text(
+                                            overflow: TextOverflow.ellipsis,
                                             products[index]['productName']!,
                                             maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               color: primaryDark,
                                               fontSize: width * 0.06,

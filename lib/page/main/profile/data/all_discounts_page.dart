@@ -33,8 +33,9 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
       context: context,
       builder: ((context) {
         return AlertDialog(
-          title: const Text("Confirm DELETE"),
+          title: const Text(overflow: TextOverflow.ellipsis, "Confirm DELETE"),
           content: const Text(
+              overflow: TextOverflow.ellipsis,
               "Are you sure you want to delete this Discount\nDiscount will be removed from all the products/categories with this discount"),
           actions: [
             TextButton(
@@ -42,6 +43,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                 Navigator.of(context).pop();
               },
               child: const Text(
+                overflow: TextOverflow.ellipsis,
                 'NO',
                 style: TextStyle(
                   color: Colors.green,
@@ -55,6 +57,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                 delete(discountId, imageUrl);
               },
               child: const Text(
+                overflow: TextOverflow.ellipsis,
                 'YES',
                 style: TextStyle(
                   color: Colors.red,
@@ -99,7 +102,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ALL DISCOUNTS'),
+        title: const Text(overflow: TextOverflow.ellipsis, 'ALL DISCOUNTS'),
         bottom: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,
@@ -154,7 +157,9 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return const Center(
-                      child: Text('Something went wrong'),
+                      child: Text(
+                          overflow: TextOverflow.ellipsis,
+                          'Something went wrong'),
                     );
                   }
 
@@ -239,6 +244,8 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                     height: width * 0.375,
                                                     child: const Center(
                                                       child: Text(
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                         "No Image",
                                                         style: TextStyle(
                                                           color: primaryDark2,
@@ -273,6 +280,8 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                     top: width * 0.01,
                                                   ),
                                                   child: Text(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     discountData[
                                                         'discountName'],
                                                     style: TextStyle(
@@ -294,6 +303,8 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                         top: width * 0.01,
                                                       ),
                                                       child: Text(
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                         discountData[
                                                                 'isPercent']
                                                             ? '${discountData['discountAmount']}% off'
@@ -316,6 +327,8 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
 
                                                     // DIVIDER
                                                     const Text(
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       "  ●  ",
                                                       style: TextStyle(
                                                         fontWeight:
@@ -330,6 +343,8 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                         top: width * 0.01,
                                                       ),
                                                       child: Text(
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                         (discountData['discountStartDateTime']
                                                                     as Timestamp)
                                                                 .toDate()
@@ -464,6 +479,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
 
                                     // NAME
                                     title: Text(
+                                      overflow: TextOverflow.ellipsis,
                                       discountData['discountName'],
                                       style: TextStyle(
                                         color: primaryDark,
@@ -482,6 +498,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                             top: width * 0.01,
                                           ),
                                           child: Text(
+                                            overflow: TextOverflow.ellipsis,
                                             discountData['isPercent']
                                                 ? '${discountData['discountAmount']}% off'
                                                 : 'Rs. ${discountData['discountAmount']} off',
@@ -496,6 +513,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
 
                                         // DIVIDER
                                         const Text(
+                                          overflow: TextOverflow.ellipsis,
                                           "  ●  ",
                                           style: TextStyle(
                                             fontWeight: FontWeight.w100,
@@ -509,6 +527,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                             top: width * 0.01,
                                           ),
                                           child: Text(
+                                            overflow: TextOverflow.ellipsis,
                                             (discountData['discountStartDateTime']
                                                         as Timestamp)
                                                     .toDate()

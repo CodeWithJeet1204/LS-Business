@@ -41,6 +41,7 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
 
                   // CONTINUE TEXT
                   const Text(
+                    overflow: TextOverflow.ellipsis,
                     "To continue using the app, please pay Rs. 100",
                     style: TextStyle(
                       color: primaryDark,
@@ -87,7 +88,9 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text("Already have an account?"),
+                      const Text(
+                          overflow: TextOverflow.ellipsis,
+                          "Already have an account?"),
                       MyTextButton(
                         onPressed: () {
                           SystemChannels.textInput
@@ -119,6 +122,7 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                       children: [
                         // CONTINUE TEXT
                         Text(
+                          overflow: TextOverflow.ellipsis,
                           "To continue using the app, please pay Rs. 100",
                           textAlign: TextAlign.center,
                           style: TextStyle(
