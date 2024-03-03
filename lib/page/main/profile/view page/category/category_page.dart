@@ -7,7 +7,7 @@ import 'package:find_easy/page/main/profile/view%20page/product/product_page.dar
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/image_pick_dialog.dart';
-import 'package:find_easy/widgets/product_grid_view_skeleton.dart';
+import 'package:find_easy/widgets/shimmer_skeleton_container.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:find_easy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';

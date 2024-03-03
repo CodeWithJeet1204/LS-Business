@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/provider/discount_brand_provider.dart';
 import 'package:find_easy/utils/colors.dart';
-import 'package:find_easy/widgets/product_grid_view_skeleton.dart';
+import 'package:find_easy/widgets/shimmer_skeleton_container.dart';
 import 'package:find_easy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

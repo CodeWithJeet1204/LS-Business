@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 class SkeletonContainer extends StatelessWidget {
   const SkeletonContainer({
-    super.key,
+    Key? key,
     required this.width,
     required this.height,
-    this.isLighter = false,
-  });
+  }) : super(key: key);
 
   final double width;
   final double height;
-  final bool isLighter;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-        color: isLighter ? Colors.grey.shade200 : Colors.grey.shade300,
-        borderRadius: BorderRadius.circular(12),
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade200,
+      child: Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          color: Colors.grey.shade300,
+          borderRadius: BorderRadius.circular(12),
+        ),
       ),
     );
   }
