@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:find_easy/page/main/discount/category/select_category_for_discount.dart';
-import 'package:find_easy/provider/discount_category_provider.dart';
+import 'package:find_easy/page/main/discount/brand/select_brand_for_discount_page.dart';
+import 'package:find_easy/provider/discount_brand_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/image_pick_dialog.dart';
@@ -16,14 +16,14 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
-class CategoryDiscountPage extends StatefulWidget {
-  const CategoryDiscountPage({super.key});
+class BrandDiscountPage extends StatefulWidget {
+  const BrandDiscountPage({super.key});
 
   @override
-  State<CategoryDiscountPage> createState() => _CategoryDiscountPageState();
+  State<BrandDiscountPage> createState() => _BrandDiscountPageState();
 }
 
-class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
+class _BrandDiscountPageState extends State<BrandDiscountPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   final storage = FirebaseStorage.instance;
@@ -40,6 +40,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
   bool isUploading = false;
   String? imageUrl;
 
+  // DISPOSE
   @override
   void dispose() {
     nameController.dispose();
@@ -102,8 +103,8 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
   }
 
   // ADD DISCOUNT
-  void addDiscount(SelectCategoryForDiscountProvider provider,
-      List<String> categoryIdList) async {
+  void addDiscount(
+      SelectBrandForDiscountProvider provider, List<String> brandIdList) async {
     // End date should be after start date
     if (discountKey.currentState!.validate()) {
       if (startDate == null) {
@@ -117,8 +118,8 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
       )) {
         return mySnackBar(context, "Start Date should be before End Date");
       }
-      if (provider.selectedCategories.isEmpty) {
-        return mySnackBar(context, "Select Category");
+      if (provider.selectedBrands.isEmpty) {
+        return mySnackBar(context, "Select Brand");
       }
 
       setState(() {
@@ -129,7 +130,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
         if (_image != null) {
           Reference ref = FirebaseStorage.instance
               .ref()
-              .child('Data/Discounts/Category')
+              .child('Data/Discounts/Brands')
               .child(discountId);
           await ref.putFile(_image!).whenComplete(() async {
             await ref.getDownloadURL().then((value) {
@@ -140,11 +141,11 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
           });
         }
 
-        for (String id in categoryIdList) {
+        for (String id in brandIdList) {
           await store
               .collection('Business')
               .doc('Data')
-              .collection('Category')
+              .collection('Brands')
               .doc(id)
               .update({
             'discountId': discountId,
@@ -160,8 +161,8 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
             .set({
           'isPercent': isPercentSelected,
           'isProducts': false,
-          'isCategories': true,
-          'isBrands': false,
+          'isCategories': false,
+          'isBrands': true,
           'discountName': nameController.text.toString(),
           'discountAmount': double.parse(discountController.text),
           'discountStartDate': startDate,
@@ -171,17 +172,20 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
           'discountId': discountId,
           'discountImageUrl': imageUrl,
           'products': [],
-          'categories': categoryIdList,
+          'categories': [],
+          'brands': brandIdList,
           'vendorId': auth.currentUser!.uid,
         });
         provider.clear();
         if (context.mounted) {
           mySnackBar(context, "Discount Added");
-          Navigator.of(context).pop();
         }
         setState(() {
           isUploading = false;
         });
+        if (context.mounted) {
+          Navigator.of(context).pop();
+        }
       } catch (e) {
         setState(() {
           isUploading = false;
@@ -195,16 +199,16 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedCategoryProvider =
-        Provider.of<SelectCategoryForDiscountProvider>(context);
-    final selectedCategories = selectedCategoryProvider.selectedCategories;
+    final selectedBrandProvider =
+        Provider.of<SelectBrandForDiscountProvider>(context);
+    final selectedBrands = selectedBrandProvider.selectedBrands;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            selectedCategoryProvider.clear();
+            selectedBrandProvider.clear();
             Navigator.of(context).pop();
           },
           icon: const Icon(
@@ -215,7 +219,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
         actions: [
           MyTextButton(
             onPressed: () {
-              addDiscount(selectedCategoryProvider, selectedCategories);
+              addDiscount(selectedBrandProvider, selectedBrands);
             },
             text: "DONE",
             textColor: primaryDark,
@@ -241,7 +245,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                     // DISCLAIMER
                     const Text(
                       overflow: TextOverflow.ellipsis,
-                      "If your category has ongoing discount, then this discount will be applied, after that discount ends (if this discount ends after that)",
+                      "If your brand has ongoing discount, then this discount will be applied, after that discount ends (if this discount ends after that)",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: primaryDark2,
@@ -481,7 +485,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                     )
                                   : Padding(
                                       padding: EdgeInsets.only(
-                                        left: width * 0.0366,
+                                        left: width * 0.04,
                                         bottom: width * 0.025,
                                       ),
                                       child: Text(
@@ -514,16 +518,16 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                     ),
                     const SizedBox(height: 20),
 
-                    // SELECT CATEGORY
+                    // SELECT BRAND
                     MyButton(
-                      text: selectedCategories.isEmpty
-                          ? "SELECT CATEGORY"
-                          : "SELECTED CATEGORIES - ${selectedCategories.length}",
+                      text: selectedBrands.isEmpty
+                          ? "SELECT BRANDS"
+                          : "SELECTED BRANDS - ${selectedBrands.length}",
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) =>
-                                const SelectCategoryForDiscountPage(),
+                                const SelectBrandForDiscountPage(),
                           ),
                         );
                       },

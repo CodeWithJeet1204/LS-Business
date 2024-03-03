@@ -169,7 +169,9 @@ class _BrandWithDiscountPageState extends State<BrandWithDiscountPage> {
               if (snapshot.hasError) {
                 return const Center(
                   child: Text(
-                      overflow: TextOverflow.ellipsis, 'Something went wrong'),
+                    overflow: TextOverflow.ellipsis,
+                    'Something went wrong',
+                  ),
                 );
               }
 
@@ -289,7 +291,9 @@ class _BrandWithDiscountPageState extends State<BrandWithDiscountPage> {
                               ),
                               child: ListTile(
                                 leading: Padding(
-                                  padding: EdgeInsets.only(top: width * 0.02),
+                                  padding: EdgeInsets.only(
+                                    top: width * 0.02,
+                                  ),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(
                                       4,

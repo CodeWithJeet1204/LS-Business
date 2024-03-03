@@ -9,6 +9,7 @@ import 'package:find_easy/provider/add_product_provider.dart';
 import 'package:find_easy/provider/select_brand_for_product_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/image_pick_dialog.dart';
+import 'package:find_easy/widgets/product_grid_view_skeleton.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:find_easy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -706,8 +707,9 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                   if (snapshot.hasError) {
                                     return const Center(
                                       child: Text(
-                                          overflow: TextOverflow.ellipsis,
-                                          'Something went wrong'),
+                                        overflow: TextOverflow.ellipsis,
+                                        'Something went wrong',
+                                      ),
                                     );
                                   }
 
@@ -1048,9 +1050,48 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                             }),
                                           );
                                   }
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
+
+                                  return isGridView
+                                      ? GridView.builder(
+                                          shrinkWrap: true,
+                                          gridDelegate:
+                                              SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 2,
+                                            crossAxisSpacing: 0,
+                                            mainAxisSpacing: 0,
+                                            childAspectRatio:
+                                                width * 0.5 / width * 1.6,
+                                          ),
+                                          itemCount: 4,
+                                          itemBuilder: (context, index) {
+                                            return Padding(
+                                              padding: EdgeInsets.all(
+                                                width * 0.02,
+                                              ),
+                                              child: GridViewSkeleton(
+                                                width: width,
+                                                isPrice: false,
+                                                height: 30,
+                                              ),
+                                            );
+                                          },
+                                        )
+                                      : ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: 4,
+                                          itemBuilder: (context, index) {
+                                            return Padding(
+                                              padding: EdgeInsets.all(
+                                                width * 0.02,
+                                              ),
+                                              child: ListViewSkeleton(
+                                                width: width,
+                                                isPrice: false,
+                                                height: 30,
+                                              ),
+                                            );
+                                          },
+                                        );
                                 }),
                           ),
                         ),

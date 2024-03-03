@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/provider/select_brand_for_product_provider.dart';
 import 'package:find_easy/utils/colors.dart';
+import 'package:find_easy/widgets/product_grid_view_skeleton.dart';
 import 'package:find_easy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -79,7 +81,7 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                     });
                   },
                   icon: Icon(
-                    isGridView ? Icons.list : Icons.grid_view_rounded,
+                    isGridView ? FeatherIcons.list : FeatherIcons.grid,
                   ),
                   tooltip: isGridView ? "List View" : "Grid View",
                 ),
@@ -100,8 +102,9 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                   if (snapshot.hasError) {
                     return const Center(
                       child: Text(
-                          overflow: TextOverflow.ellipsis,
-                          "Something went wrong"),
+                        "Something went wrong",
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     );
                   }
 
@@ -122,7 +125,6 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                                 final brandData = snapshot.data!.docs[index];
                                 final brandDataMap =
                                     brandData.data() as Map<String, dynamic>;
-
                                 // CARD
                                 return Padding(
                                   padding: const EdgeInsets.all(8),
@@ -171,9 +173,9 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                                                     0,
                                                   ),
                                                   child: Text(
+                                                    brandData['brandName'],
                                                     overflow:
                                                         TextOverflow.ellipsis,
-                                                    brandData['brandName'],
                                                     maxLines: 1,
                                                     style: TextStyle(
                                                       fontSize: width * 0.06,
@@ -199,7 +201,7 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                                                   color: primaryDark2,
                                                 ),
                                                 child: Icon(
-                                                  Icons.check,
+                                                  FeatherIcons.check,
                                                   color: Colors.white,
                                                   size: width * 0.1,
                                                 ),
@@ -256,8 +258,8 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                                               ),
                                             ),
                                             title: Text(
-                                              overflow: TextOverflow.ellipsis,
                                               brandData['brandName'],
+                                              overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                 fontSize: width * 0.055,
                                                 fontWeight: FontWeight.w600,
@@ -280,7 +282,7 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                                                     color: primaryDark2,
                                                   ),
                                                   child: Icon(
-                                                    Icons.check,
+                                                    FeatherIcons.check,
                                                     color: Colors.white,
                                                     size: width * 0.095,
                                                   ),
@@ -296,10 +298,47 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                     );
                   }
 
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      color: primaryDark,
-                    ),
+                  return SafeArea(
+                    child: isGridView
+                        ? GridView.builder(
+                            shrinkWrap: true,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 0,
+                              mainAxisSpacing: 0,
+                              childAspectRatio: width * 0.5 / width * 1.6,
+                            ),
+                            itemCount: 4,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.all(
+                                  width * 0.02,
+                                ),
+                                child: GridViewSkeleton(
+                                  width: width,
+                                  isPrice: false,
+                                  height: 30,
+                                ),
+                              );
+                            },
+                          )
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: 4,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.all(
+                                  width * 0.02,
+                                ),
+                                child: ListViewSkeleton(
+                                  width: width,
+                                  isPrice: false,
+                                  height: 30,
+                                ),
+                              );
+                            },
+                          ),
                   );
                 }),
               ),

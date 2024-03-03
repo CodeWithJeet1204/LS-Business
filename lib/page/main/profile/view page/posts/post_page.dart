@@ -6,6 +6,7 @@ import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/page/main/profile/view%20page/product/image_view.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/info_box.dart';
+import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -33,6 +34,7 @@ class _PostPageState extends State<PostPage> {
   int _currentIndex = 0;
   bool isDiscount = false;
 
+  // INIT STATE
   @override
   void initState() {
     ifDiscount();
@@ -66,6 +68,71 @@ class _PostPageState extends State<PostPage> {
     }
   }
 
+  // DELETE POST
+  void deletePost() async {
+    try {
+      await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Posts')
+          .doc(widget.postId)
+          .delete();
+      if (context.mounted) {
+        Navigator.of(context).pop();
+        mySnackBar(context, "Post Deleted");
+      }
+    } catch (e) {
+      if (context.mounted) {
+        mySnackBar(context, e.toString());
+      }
+    }
+  }
+
+  // CONFIRM DELETE
+  void confirmDelete() async {
+    showDialog(
+      context: context,
+      builder: ((context) {
+        return AlertDialog(
+          title: const Text(overflow: TextOverflow.ellipsis, "Confirm DELETE"),
+          content: const Text(
+            overflow: TextOverflow.ellipsis,
+            "Are you sure you want to delete this Post\nProduct of this post will not be deleted",
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                overflow: TextOverflow.ellipsis,
+                'NO',
+                style: TextStyle(
+                  color: Colors.green,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                deletePost();
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                overflow: TextOverflow.ellipsis,
+                'YES',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
+        );
+      }),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final postStream = store
@@ -87,7 +154,7 @@ class _PostPageState extends State<PostPage> {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: confirmDelete,
             icon: const Icon(
               FeatherIcons.trash,
               color: Colors.red,
@@ -95,13 +162,16 @@ class _PostPageState extends State<PostPage> {
           ),
         ],
       ),
-      body: LayoutBuilder(
-        builder: ((context, constraints) {
-          double width = constraints.maxWidth;
+      body: Padding(
+        padding: EdgeInsets.symmetric(
+          vertical: MediaQuery.of(context).size.width * 0.0166,
+          horizontal: MediaQuery.of(context).size.width * 0.0225,
+        ),
+        child: LayoutBuilder(
+          builder: ((context, constraints) {
+            double width = constraints.maxWidth;
 
-          return SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+            return SingleChildScrollView(
               child: SizedBox(
                 width: width,
                 child: StreamBuilder(
@@ -110,8 +180,9 @@ class _PostPageState extends State<PostPage> {
                     if (snapshot.hasError) {
                       return const Center(
                         child: Text(
-                            overflow: TextOverflow.ellipsis,
-                            "Something went wrong"),
+                          overflow: TextOverflow.ellipsis,
+                          "Something went wrong",
+                        ),
                       );
                     }
 
@@ -273,8 +344,9 @@ class _PostPageState extends State<PostPage> {
                                       if (snapshot.hasError) {
                                         return const Center(
                                           child: Text(
-                                              overflow: TextOverflow.ellipsis,
-                                              'Something Went Wrong'),
+                                            overflow: TextOverflow.ellipsis,
+                                            'Something went wrong',
+                                          ),
                                         );
                                       }
 
@@ -438,24 +510,22 @@ class _PostPageState extends State<PostPage> {
                           ),
 
                           // COMMENTS
-                          Stack(
-                            alignment: Alignment.centerRight,
-                            children: [
-                              InfoBox(
-                                text: "COMMENTS",
-                                value: comments.length.toString(),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 8),
-                                child: IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(
-                                    FeatherIcons.chevronRight,
-                                  ),
-                                  tooltip: "See Comments",
+                          InkWell(
+                            onTap: () {},
+                            splashColor: primary2,
+                            child: Stack(
+                              alignment: Alignment.centerRight,
+                              children: [
+                                InfoBox(
+                                  text: "COMMENTS",
+                                  value: comments.length.toString(),
                                 ),
-                              ),
-                            ],
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 8),
+                                  child: Icon(FeatherIcons.chevronRight),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       );
@@ -467,9 +537,9 @@ class _PostPageState extends State<PostPage> {
                   }),
                 ),
               ),
-            ),
-          );
-        }),
+            );
+          }),
+        ),
       ),
     );
   }

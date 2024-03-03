@@ -4,7 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:find_easy/page/main/discount/products/product_discount.dart';
+import 'package:find_easy/page/main/discount/products/product_discount_page.dart';
 import 'package:find_easy/page/main/main_page.dart';
 import 'package:find_easy/page/main/profile/view%20page/product/select_category_for_product_page.dart.dart';
 import 'package:find_easy/page/main/profile/view%20page/product/image_view.dart';
@@ -14,6 +14,7 @@ import 'package:find_easy/widgets/image_pick_dialog.dart';
 import 'package:find_easy/widgets/info_box.dart';
 import 'package:find_easy/widgets/info_color_box.dart';
 import 'package:find_easy/widgets/info_edit_box.dart';
+import 'package:find_easy/widgets/skeleton_container.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:find_easy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -97,8 +98,9 @@ class _ProductPageState extends State<ProductPage> {
                     if (snapshot.hasError) {
                       return const Center(
                         child: Text(
-                            overflow: TextOverflow.ellipsis,
-                            'Something went wrong'),
+                          overflow: TextOverflow.ellipsis,
+                          'Something went wrong',
+                        ),
                       );
                     }
 
@@ -761,8 +763,9 @@ class _ProductPageState extends State<ProductPage> {
                     if (snapshot.hasError) {
                       return const Center(
                         child: Text(
-                            overflow: TextOverflow.ellipsis,
-                            'Something Went Wrong'),
+                          overflow: TextOverflow.ellipsis,
+                          'Something went wrong',
+                        ),
                       );
                     }
 
@@ -848,7 +851,7 @@ class _ProductPageState extends State<ProductPage> {
                                         decoration: BoxDecoration(
                                           border: Border.all(
                                             color: primaryDark2,
-                                            width: 1,
+                                            width: 2,
                                           ),
                                           borderRadius:
                                               BorderRadius.circular(12),
@@ -875,7 +878,7 @@ class _ProductPageState extends State<ProductPage> {
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(
-                                                          11,
+                                                          12,
                                                         ),
                                                         child: Container(
                                                           decoration:
@@ -1072,8 +1075,9 @@ class _ProductPageState extends State<ProductPage> {
                                         if (snapshot.hasError) {
                                           return const Center(
                                             child: Text(
-                                                overflow: TextOverflow.ellipsis,
-                                                'Something Went Wrong'),
+                                              overflow: TextOverflow.ellipsis,
+                                              'Something went wrong',
+                                            ),
                                           );
                                         }
 
@@ -1225,24 +1229,28 @@ class _ProductPageState extends State<ProductPage> {
                                           ),
                                         ),
                                         MyTextButton(
-                                          onPressed: () async {
-                                            Navigator.of(context).pop();
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder: ((context) =>
-                                                    ProductDiscountPage(
-                                                      changeSelectedProductDiscount:
-                                                          true,
-                                                      changeSelectedProductDiscountId:
-                                                          productData[
-                                                              'productId'],
-                                                      changeSelectedProductDiscountName:
-                                                          productData[
-                                                              'productName'],
-                                                    )),
-                                              ),
-                                            );
-                                          },
+                                          onPressed:
+                                              productData['productPrice'] ==
+                                                      "N/A"
+                                                  ? () {}
+                                                  : () async {
+                                                      Navigator.of(context)
+                                                          .push(
+                                                        MaterialPageRoute(
+                                                          builder: ((context) =>
+                                                              ProductDiscountPage(
+                                                                changeSelectedProductDiscount:
+                                                                    true,
+                                                                changeSelectedProductDiscountId:
+                                                                    productData[
+                                                                        'productId'],
+                                                                changeSelectedProductDiscountName:
+                                                                    productData[
+                                                                        'productName'],
+                                                              )),
+                                                        ),
+                                                      );
+                                                    },
                                           text: "Add Discount",
                                           textColor: primaryDark2,
                                         ),
@@ -1395,8 +1403,9 @@ class _ProductPageState extends State<ProductPage> {
                                 if (snapshot.hasError) {
                                   return const Center(
                                     child: Text(
-                                        overflow: TextOverflow.ellipsis,
-                                        'Something went wrong'),
+                                      overflow: TextOverflow.ellipsis,
+                                      'Something went wrong',
+                                    ),
                                   );
                                 }
 
@@ -1408,7 +1417,6 @@ class _ProductPageState extends State<ProductPage> {
                                 if (snapshot.hasData) {
                                   categoryExists = true;
                                   final categoryData = snapshot.data!;
-
                                   // CATEGORY
                                   return Padding(
                                     padding: EdgeInsets.symmetric(
@@ -1505,9 +1513,37 @@ class _ProductPageState extends State<ProductPage> {
                                   );
                                 }
 
-                                return const Center(
-                                  child: CircularProgressIndicator(
-                                    color: primaryDark,
+                                return Container(
+                                  width: width,
+                                  height: width * 0.2,
+                                  alignment: Alignment.center,
+                                  padding: EdgeInsets.all(width * 0.0225),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade200,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          SkeletonContainer(
+                                            width: width * 0.15,
+                                            height: width * 0.15,
+                                          ),
+                                          SizedBox(width: width * 0.0225),
+                                          SkeletonContainer(
+                                            width: width * 0.3,
+                                            height: width * 0.05,
+                                          ),
+                                        ],
+                                      ),
+                                      SkeletonContainer(
+                                        width: width * 0.1,
+                                        height: width * 0.1,
+                                      ),
+                                    ],
                                   ),
                                 );
                               }),

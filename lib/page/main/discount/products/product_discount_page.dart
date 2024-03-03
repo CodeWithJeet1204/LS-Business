@@ -1,8 +1,9 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:find_easy/page/main/discount/brand/select_brand_for_discount_page.dart';
-import 'package:find_easy/provider/discount_brand_provider.dart';
+import 'package:find_easy/page/main/discount/products/select_products_for_discount.dart';
+import 'package:find_easy/page/main/profile/view%20page/product/product_page.dart';
+import 'package:find_easy/provider/discount_products_provider.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/image_pick_dialog.dart';
@@ -16,14 +17,23 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
-class BrandDiscountPage extends StatefulWidget {
-  const BrandDiscountPage({super.key});
+class ProductDiscountPage extends StatefulWidget {
+  const ProductDiscountPage({
+    super.key,
+    this.changeSelectedProductDiscount,
+    this.changeSelectedProductDiscountName,
+    this.changeSelectedProductDiscountId,
+  });
+
+  final bool? changeSelectedProductDiscount;
+  final String? changeSelectedProductDiscountName;
+  final String? changeSelectedProductDiscountId;
 
   @override
-  State<BrandDiscountPage> createState() => _BrandDiscountPageState();
+  State<ProductDiscountPage> createState() => _ProductDiscountPageState();
 }
 
-class _BrandDiscountPageState extends State<BrandDiscountPage> {
+class _ProductDiscountPageState extends State<ProductDiscountPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   final storage = FirebaseStorage.instance;
@@ -40,6 +50,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
   bool isUploading = false;
   String? imageUrl;
 
+  // DISPOSE
   @override
   void dispose() {
     nameController.dispose();
@@ -102,8 +113,8 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
   }
 
   // ADD DISCOUNT
-  void addDiscount(
-      SelectBrandForDiscountProvider provider, List<String> brandIdList) async {
+  void addDiscount(SelectProductForDiscountProvider provider,
+      List<String> productIdList) async {
     // End date should be after start date
     if (discountKey.currentState!.validate()) {
       if (startDate == null) {
@@ -117,8 +128,14 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
       )) {
         return mySnackBar(context, "Start Date should be before End Date");
       }
-      if (provider.selectedBrands.isEmpty) {
-        return mySnackBar(context, "Select Brand");
+      if (widget.changeSelectedProductDiscount == null) {
+        if (provider.selectedProducts.isEmpty) {
+          return mySnackBar(context, "Select Product");
+        }
+      }
+
+      if (isPercentSelected && int.parse(discountController.text) >= 100) {
+        return mySnackBar(context, "Max Discount is 99.99999999999999999999%");
       }
 
       setState(() {
@@ -129,7 +146,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
         if (_image != null) {
           Reference ref = FirebaseStorage.instance
               .ref()
-              .child('Data/Discounts/Brands')
+              .child('Data/Discounts/Products')
               .child(discountId);
           await ref.putFile(_image!).whenComplete(() async {
             await ref.getDownloadURL().then((value) {
@@ -140,11 +157,11 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
           });
         }
 
-        for (String id in brandIdList) {
+        for (String id in productIdList) {
           await store
               .collection('Business')
               .doc('Data')
-              .collection('Brands')
+              .collection('Products')
               .doc(id)
               .update({
             'discountId': discountId,
@@ -159,9 +176,9 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
             .doc(discountId)
             .set({
           'isPercent': isPercentSelected,
-          'isProducts': false,
+          'isProducts': true,
           'isCategories': false,
-          'isBrands': true,
+          'isBrands': false,
           'discountName': nameController.text.toString(),
           'discountAmount': double.parse(discountController.text),
           'discountStartDate': startDate,
@@ -170,21 +187,40 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
           'discountEndDateTime': endDateTime,
           'discountId': discountId,
           'discountImageUrl': imageUrl,
-          'products': [],
+          'products': widget.changeSelectedProductDiscount != null
+              ? [
+                  widget.changeSelectedProductDiscountId!,
+                ]
+              : productIdList,
           'categories': [],
-          'brands': brandIdList,
           'vendorId': auth.currentUser!.uid,
         });
         provider.clear();
         if (context.mounted) {
           mySnackBar(context, "Discount Added");
         }
+        if (widget.changeSelectedProductDiscount != null) {
+          if (context.mounted) {
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: ((context) => ProductPage(
+                      productId: widget.changeSelectedProductDiscountId!,
+                      productName: widget.changeSelectedProductDiscountName!,
+                    )),
+              ),
+            );
+          }
+        } else {
+          if (context.mounted) {
+            Navigator.of(context).pop();
+          }
+        }
         setState(() {
           isUploading = false;
         });
-        if (context.mounted) {
-          Navigator.of(context).pop();
-        }
       } catch (e) {
         setState(() {
           isUploading = false;
@@ -198,16 +234,16 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedBrandProvider =
-        Provider.of<SelectBrandForDiscountProvider>(context);
-    final selectedBrands = selectedBrandProvider.selectedBrands;
+    final selectedProductProvider =
+        Provider.of<SelectProductForDiscountProvider>(context);
+    final selectedProducts = selectedProductProvider.selectedProducts;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            selectedBrandProvider.clear();
+            selectedProductProvider.clear();
             Navigator.of(context).pop();
           },
           icon: const Icon(
@@ -218,7 +254,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
         actions: [
           MyTextButton(
             onPressed: () {
-              addDiscount(selectedBrandProvider, selectedBrands);
+              addDiscount(selectedProductProvider, selectedProducts);
             },
             text: "DONE",
             textColor: primaryDark,
@@ -230,25 +266,25 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
           child: isUploading ? const LinearProgressIndicator() : Container(),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-        child: LayoutBuilder(
-          builder: ((context, constraints) {
-            double width = constraints.maxWidth;
+      body: LayoutBuilder(
+        builder: ((context, constraints) {
+          double width = constraints.maxWidth;
 
-            return SingleChildScrollView(
-              child: Form(
-                key: discountKey,
+          return SingleChildScrollView(
+            child: Form(
+              key: discountKey,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
                 child: Column(
                   children: [
                     // DISCLAIMER
-                    const Text(
+                    Text(
                       overflow: TextOverflow.ellipsis,
-                      "If your brand has ongoing discount, then this discount will be applied, after that discount ends (if this discount ends after that)",
+                      "If your selected product/s has ongoing discount, then this discount will be applied, after that discount ends (if this discount ends after that)",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: primaryDark2,
-                        fontSize: 12,
+                        fontSize: width * 0.0375,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -263,7 +299,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: primaryDark,
-                            width: 2,
+                            width: 3,
                           ),
                           borderRadius: BorderRadius.circular(8),
                         ),
@@ -278,7 +314,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                                   ),
                                   Text(
                                     overflow: TextOverflow.ellipsis,
-                                    "Select IMAGE",
+                                    "Select Image",
                                     style: TextStyle(
                                       color: primaryDark,
                                       fontSize: width * 0.08,
@@ -313,7 +349,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                                           onPressed: addDiscountImage,
                                           icon: Icon(
                                             FeatherIcons.camera,
-                                            size: width * 0.115,
+                                            size: width * 0.11,
                                           ),
                                           tooltip: "Change Image",
                                         ),
@@ -328,7 +364,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                                           },
                                           icon: Icon(
                                             FeatherIcons.x,
-                                            size: width * 0.115,
+                                            size: width * 0.11,
                                           ),
                                           tooltip: "Remove Image",
                                         ),
@@ -370,7 +406,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                         // START DATE
                         Container(
                           height: 100,
-                          width: width * 0.475,
+                          width: width * 0.45,
                           decoration: BoxDecoration(
                             color: primary3,
                             borderRadius: BorderRadius.circular(12),
@@ -401,7 +437,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                                             onPressed: selectStartDate,
                                             icon: Icon(
                                               FeatherIcons.edit,
-                                              size: width * 0.075,
+                                              size: width * 0.066,
                                             ),
                                             tooltip: "Change Date",
                                           )
@@ -417,7 +453,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                                     )
                                   : Padding(
                                       padding: EdgeInsets.only(
-                                        left: width * 0.04,
+                                        left: width * 0.036,
                                         bottom: width * 0.025,
                                       ),
                                       child: Text(
@@ -437,7 +473,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                         // END DATE
                         Container(
                           height: 100,
-                          width: width * 0.475,
+                          width: width * 0.45,
                           decoration: BoxDecoration(
                             color: primary3,
                             borderRadius: BorderRadius.circular(12),
@@ -468,7 +504,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                                             onPressed: selectEndDate,
                                             icon: Icon(
                                               FeatherIcons.edit,
-                                              size: width * 0.075,
+                                              size: width * 0.066,
                                             ),
                                             tooltip: "Change Date",
                                           )
@@ -484,7 +520,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                                     )
                                   : Padding(
                                       padding: EdgeInsets.only(
-                                        left: width * 0.04,
+                                        left: width * 0.0366,
                                         bottom: width * 0.025,
                                       ),
                                       child: Text(
@@ -505,31 +541,40 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                     const SizedBox(height: 20),
 
                     // DISCLAIMER
-                    Text(
-                      overflow: TextOverflow.ellipsis,
-                      "If you select 1 jan as end date, discount will end at 31 dec 11:59 pm",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: primaryDark2,
-                        fontSize: width * 0.04,
-                        fontWeight: FontWeight.w500,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 2,
+                      ),
+                      child: Text(
+                        "If you select 1 jan as end date, discount will end at 31 dec 11:59 pm",
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: primaryDark2,
+                          fontSize: width * 0.035,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 20),
 
-                    // SELECT BRAND
+                    // SELECT PRODUCT
                     MyButton(
-                      text: selectedBrands.isEmpty
-                          ? "SELECT BRAND"
-                          : "SELECTED BRANDS - ${selectedBrands.length}",
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const SelectBrandForDiscountPage(),
-                          ),
-                        );
-                      },
+                      text: widget.changeSelectedProductDiscount != null
+                          ? widget.changeSelectedProductDiscountName!
+                          : selectedProducts.isEmpty
+                              ? "SELECT PRODUCTS"
+                              : "SELECTED PRODUCTS - ${selectedProducts.length}",
+                      onTap: widget.changeSelectedProductDiscount != null
+                          ? () {}
+                          : () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const SelectProductForDiscountPage(),
+                                ),
+                              );
+                            },
                       isLoading: false,
                       horizontalPadding: 0,
                     ),
@@ -595,7 +640,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                                 decoration: BoxDecoration(
                                   color: !isPercentSelected
                                       ? primary2.withOpacity(0.75)
-                                      : primary2.withOpacity(0.005),
+                                      : primary2.withOpacity(0.05),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Text(
@@ -648,9 +693,9 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                   ],
                 ),
               ),
-            );
-          }),
-        ),
+            ),
+          );
+        }),
       ),
     );
   }

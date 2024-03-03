@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/page/main/profile/view%20page/posts/post_page.dart';
 import 'package:find_easy/utils/colors.dart';
+import 'package:find_easy/widgets/product_grid_view_skeleton.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -49,6 +50,51 @@ class _AllPostsPageState extends State<AllPostsPage> {
     }
   }
 
+  // CONFIRM DELETE
+  void confirmDelete(String postId) async {
+    showDialog(
+      context: context,
+      builder: ((context) {
+        return AlertDialog(
+          title: const Text(overflow: TextOverflow.ellipsis, "Confirm DELETE"),
+          content: const Text(
+            overflow: TextOverflow.ellipsis,
+            "Are you sure you want to delete this Post\nProduct of this post will not be deleted",
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                overflow: TextOverflow.ellipsis,
+                'NO',
+                style: TextStyle(
+                  color: Colors.green,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                deletePost(postId);
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                overflow: TextOverflow.ellipsis,
+                'YES',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
+        );
+      }),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final postStream = store
@@ -70,7 +116,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
         bottom: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,
-            MediaQuery.of(context).size.width * 0.2,
+            80,
           ),
           child: Padding(
             padding: EdgeInsets.symmetric(
@@ -122,8 +168,9 @@ class _AllPostsPageState extends State<AllPostsPage> {
                   if (snapshot.hasError) {
                     return const Center(
                       child: Text(
-                          overflow: TextOverflow.ellipsis,
-                          'Something went wrong'),
+                        'Something went wrong',
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     );
                   }
 
@@ -141,7 +188,6 @@ class _AllPostsPageState extends State<AllPostsPage> {
                               final postSnap = snapshot.data!.docs[index];
                               final Map<String, dynamic> postData =
                                   postSnap.data();
-
                               return Padding(
                                 padding: const EdgeInsets.all(8),
                                 child: GestureDetector(
@@ -281,7 +327,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                               ),
                                               IconButton(
                                                 onPressed: () {
-                                                  deletePost(
+                                                  confirmDelete(
                                                     postData['postId'],
                                                   );
                                                 },
@@ -407,6 +453,19 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                             fontWeight: FontWeight.w500,
                                           ),
                                         ),
+                                        trailing: IconButton(
+                                          onPressed: () {
+                                            confirmDelete(
+                                              postData['postId'],
+                                            );
+                                          },
+                                          icon: Icon(
+                                            FeatherIcons.trash,
+                                            color: Colors.red,
+                                            size: width * 0.08,
+                                          ),
+                                          tooltip: "Delete Post",
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -416,8 +475,49 @@ class _AllPostsPageState extends State<AllPostsPage> {
                           );
                   }
 
-                  return const Center(
-                    child: CircularProgressIndicator(),
+                  return SafeArea(
+                    child: isGridView
+                        ? GridView.builder(
+                            shrinkWrap: true,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 0,
+                              mainAxisSpacing: 0,
+                              childAspectRatio: width * 0.5 / width * 1.6,
+                            ),
+                            itemCount: 4,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.all(
+                                  width * 0.02,
+                                ),
+                                child: GridViewSkeleton(
+                                  width: width,
+                                  isPrice: true,
+                                  height: 30,
+                                  isDelete: true,
+                                ),
+                              );
+                            },
+                          )
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: 4,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.all(
+                                  width * 0.02,
+                                ),
+                                child: ListViewSkeleton(
+                                  width: width,
+                                  isPrice: true,
+                                  height: 30,
+                                  isDelete: true,
+                                ),
+                              );
+                            },
+                          ),
                   );
                 });
           },

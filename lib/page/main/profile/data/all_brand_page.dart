@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/page/main/profile/view%20page/brand/brand_page.dart';
 import 'package:find_easy/utils/colors.dart';
+import 'package:find_easy/widgets/product_grid_view_skeleton.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -134,7 +135,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
         bottom: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,
-            MediaQuery.of(context).size.width * 0.2,
+            80,
           ),
           child: Padding(
             padding: EdgeInsets.symmetric(
@@ -186,8 +187,9 @@ class _AllBrandPageState extends State<AllBrandPage> {
                 if (snapshot.hasError) {
                   return const Center(
                     child: Text(
-                        overflow: TextOverflow.ellipsis,
-                        'Something went wrong'),
+                      overflow: TextOverflow.ellipsis,
+                      'Something went wrong',
+                    ),
                   );
                 }
 
@@ -453,8 +455,49 @@ class _AllBrandPageState extends State<AllBrandPage> {
                         );
                 }
 
-                return const Center(
-                  child: CircularProgressIndicator(),
+                return SafeArea(
+                  child: isGridView
+                      ? GridView.builder(
+                          shrinkWrap: true,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 0,
+                            mainAxisSpacing: 0,
+                            childAspectRatio: width * 0.5 / width * 1.6,
+                          ),
+                          itemCount: 4,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.all(
+                                width * 0.02,
+                              ),
+                              child: GridViewSkeleton(
+                                width: width,
+                                isPrice: false,
+                                height: 30,
+                                isDelete: true,
+                              ),
+                            );
+                          },
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: 4,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.all(
+                                width * 0.02,
+                              ),
+                              child: ListViewSkeleton(
+                                width: width,
+                                isPrice: false,
+                                height: 30,
+                                isDelete: true,
+                              ),
+                            );
+                          },
+                        ),
                 );
               },
             );

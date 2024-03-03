@@ -158,7 +158,9 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
               if (snapshot.hasError) {
                 return const Center(
                   child: Text(
-                      overflow: TextOverflow.ellipsis, 'Something went wrong'),
+                    overflow: TextOverflow.ellipsis,
+                    'Something went wrong',
+                  ),
                 );
               }
 
@@ -211,8 +213,9 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                   if (snapshot.hasError) {
                     return const Center(
                       child: Text(
-                          overflow: TextOverflow.ellipsis,
-                          'Something Went Wrong'),
+                        'Something went wrong',
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     );
                   }
 

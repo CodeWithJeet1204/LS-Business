@@ -1,8 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:find_easy/page/main/discount/brand/brand_discount.dart';
-import 'package:find_easy/page/main/discount/category/category_discount.dart';
-import 'package:find_easy/page/main/discount/products/product_discount.dart';
+import 'package:find_easy/page/main/discount/brand/brand_discount_page.dart';
+import 'package:find_easy/page/main/discount/category/category_discount_page.dart';
+import 'package:find_easy/page/main/discount/products/product_discount_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:flutter/material.dart';
 

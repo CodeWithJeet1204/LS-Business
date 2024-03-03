@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/utils/colors.dart';
+import 'package:find_easy/widgets/skeleton_container.dart';
 import 'package:find_easy/widgets/small_text_container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -126,8 +127,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           if (snapshot.hasError) {
                             return const Center(
                               child: Text(
-                                  overflow: TextOverflow.ellipsis,
-                                  "Something went wrong"),
+                                overflow: TextOverflow.ellipsis,
+                                "Something went wrong",
+                              ),
                             );
                           }
 
@@ -180,7 +182,37 @@ class _ProfilePageState extends State<ProfilePage> {
                             );
                           }
 
-                          return Container();
+                          return Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade200,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                CircleAvatar(
+                                  radius: width * 0.1195,
+                                  backgroundColor: Colors.grey.shade300,
+                                ),
+                                SizedBox(
+                                  width: width * 0.06,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: width * 0.25,
+                                  ),
+                                  child: SkeletonContainer(
+                                    width: width * 0.4,
+                                    height: width * 0.033,
+                                  ),
+                                ),
+                                SkeletonContainer(
+                                  width: width * 0.2,
+                                  height: width * 0.025,
+                                ),
+                              ],
+                            ),
+                          );
                         }),
                   ),
 

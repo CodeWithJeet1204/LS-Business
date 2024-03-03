@@ -162,8 +162,8 @@ class MyApp extends StatelessWidget {
                   } else if (snapshot.hasError) {
                     return const Center(
                       child: Text(
-                        overflow: TextOverflow.ellipsis,
                         "Some error occured\nClose & Open the app again",
+                        overflow: TextOverflow.ellipsis,
                       ),
                     );
                   } else if (!snapshot.hasData) {

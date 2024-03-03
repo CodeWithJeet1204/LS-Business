@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/page/main/profile/view%20page/discount/discount_page.dart';
 import 'package:find_easy/utils/colors.dart';
+import 'package:find_easy/widgets/product_grid_view_skeleton.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -36,7 +37,6 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
         return AlertDialog(
           title: const Text(overflow: TextOverflow.ellipsis, "Confirm DELETE"),
           content: const Text(
-              overflow: TextOverflow.ellipsis,
               "Are you sure you want to delete this Discount\nDiscount will be removed from all the products/categories with this discount"),
           actions: [
             TextButton(
@@ -44,8 +44,8 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                 Navigator.of(context).pop();
               },
               child: const Text(
-                overflow: TextOverflow.ellipsis,
                 'NO',
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.green,
                   fontWeight: FontWeight.bold,
@@ -58,8 +58,8 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                 delete(discountId, imageUrl);
               },
               child: const Text(
-                overflow: TextOverflow.ellipsis,
                 'YES',
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.w500,
@@ -159,8 +159,9 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                   if (snapshot.hasError) {
                     return const Center(
                       child: Text(
-                          overflow: TextOverflow.ellipsis,
-                          'Something went wrong'),
+                        'Something went wrong',
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     );
                   }
 
@@ -218,7 +219,8 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                     child: ClipRRect(
                                                       borderRadius:
                                                           BorderRadius.circular(
-                                                              12),
+                                                        12,
+                                                      ),
                                                       child: Container(
                                                         width: width,
                                                         height: width * 0.4,
@@ -490,7 +492,9 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                     ),
 
                                     // DISCOUNT &  TIME
-                                    subtitle: Row(
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         // DISCOUNT
                                         Padding(
@@ -513,13 +517,13 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                         ),
 
                                         // DIVIDER
-                                        const Text(
-                                          overflow: TextOverflow.ellipsis,
-                                          "  ●  ",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w100,
-                                          ),
-                                        ),
+                                        // const Text(
+                                        //   overflow: TextOverflow.ellipsis,
+                                        //   "  ●  ",
+                                        //   style: TextStyle(
+                                        //     fontWeight: FontWeight.w100,
+                                        //   ),
+                                        // ),
 
                                         // TIME
                                         Padding(
@@ -593,7 +597,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                         color: Colors.red,
                                         size: width * 0.08,
                                       ),
-                                      tooltip: "End Discount",
+                                      tooltip: "Delete Discount",
                                     ),
                                   ),
                                 ),
@@ -602,8 +606,51 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                           );
                   }
 
-                  return const Center(
-                    child: CircularProgressIndicator(),
+                  return SafeArea(
+                    child: isGridView
+                        ? GridView.builder(
+                            shrinkWrap: true,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 1,
+                              crossAxisSpacing: 0,
+                              mainAxisSpacing: 0,
+                              childAspectRatio: width * 0.5 / width * 3.1125,
+                            ),
+                            itemCount: 4,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.all(
+                                  width * 0.02,
+                                ),
+                                child: GridViewSkeleton(
+                                  width: width,
+                                  isPrice: true,
+                                  height: 30,
+                                  isDelete: true,
+                                  isDiscount: true,
+                                ),
+                              );
+                            },
+                          )
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: 4,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.all(
+                                  width * 0.02,
+                                ),
+                                child: ListViewSkeleton(
+                                  width: width,
+                                  isPrice: true,
+                                  height: 30,
+                                  isDelete: true,
+                                  isDiscount: true,
+                                ),
+                              );
+                            },
+                          ),
                   );
                 });
           }),

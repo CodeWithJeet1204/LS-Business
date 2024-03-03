@@ -12,7 +12,7 @@ class SelectProductForDiscountProvider with ChangeNotifier {
     BuildContext context,
   ) {
     if (price == '') {
-      mySnackBar(context, "Product with no price cant be selected");
+      mySnackBar(context, "Product with no price cannot be selected");
     } else {
       if (_selectedProducts.contains(id)) {
         _selectedProducts.remove(id);

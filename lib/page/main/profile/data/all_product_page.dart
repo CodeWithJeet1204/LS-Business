@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/page/main/profile/view%20page/product/product_page.dart';
 import 'package:find_easy/utils/colors.dart';
+import 'package:find_easy/widgets/product_grid_view_skeleton.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -175,8 +176,9 @@ class _AllProductsPageState extends State<AllProductsPage> {
                 if (snapshot.hasError) {
                   return const Center(
                     child: Text(
-                        overflow: TextOverflow.ellipsis,
-                        "Something went wrong"),
+                      overflow: TextOverflow.ellipsis,
+                      "Something went wrong",
+                    ),
                   );
                 }
 
@@ -227,7 +229,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                       children: [
                                         const SizedBox(height: 2),
                                         CachedNetworkImage(
-                                          imageUrl: productSnap['images'][0],
+                                          imageUrl: productData['images'][0],
                                           imageBuilder:
                                               (context, imageProvider) {
                                             return Center(
@@ -270,7 +272,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                                   child: SizedBox(
                                                     width: width * 0.225,
                                                     child: Text(
-                                                      productSnap[
+                                                      productData[
                                                           'productName'],
                                                       overflow:
                                                           TextOverflow.ellipsis,
@@ -291,12 +293,12 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                                     0,
                                                   ),
                                                   child: Text(
-                                                    productSnap['productPrice'] !=
+                                                    productData['productPrice'] !=
                                                                 "" &&
-                                                            productSnap[
+                                                            productData[
                                                                     'productPrice'] !=
                                                                 null
-                                                        ? productSnap[
+                                                        ? productData[
                                                             'productPrice']
                                                         : "N/A",
                                                     overflow:
@@ -314,7 +316,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                             IconButton(
                                               onPressed: () {
                                                 confirmDelete(
-                                                  productSnap['productId'],
+                                                  productData['productId'],
                                                 );
                                               },
                                               icon: Icon(
@@ -407,6 +409,18 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
+                                      trailing: IconButton(
+                                        onPressed: () {
+                                          confirmDelete(
+                                            productData['productId'],
+                                          );
+                                        },
+                                        icon: Icon(
+                                          FeatherIcons.trash,
+                                          color: Colors.red,
+                                          size: width * 0.09,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -416,10 +430,49 @@ class _AllProductsPageState extends State<AllProductsPage> {
                         );
                 }
 
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: primaryDark,
-                  ),
+                return SafeArea(
+                  child: isGridView
+                      ? GridView.builder(
+                          shrinkWrap: true,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 0,
+                            mainAxisSpacing: 0,
+                            childAspectRatio: width * 0.5 / width * 1.6,
+                          ),
+                          itemCount: 4,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.all(
+                                width * 0.02,
+                              ),
+                              child: GridViewSkeleton(
+                                width: width,
+                                isPrice: true,
+                                height: 30,
+                                isDelete: true,
+                              ),
+                            );
+                          },
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: 4,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.all(
+                                width * 0.02,
+                              ),
+                              child: ListViewSkeleton(
+                                width: width,
+                                isPrice: true,
+                                height: 30,
+                                isDelete: true,
+                              ),
+                            );
+                          },
+                        ),
                 );
               }),
             );

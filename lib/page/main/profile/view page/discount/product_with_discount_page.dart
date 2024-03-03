@@ -164,7 +164,9 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
               if (snapshot.hasError) {
                 return const Center(
                   child: Text(
-                      overflow: TextOverflow.ellipsis, 'Something went wrong'),
+                    overflow: TextOverflow.ellipsis,
+                    'Something went wrong',
+                  ),
                 );
               }
 

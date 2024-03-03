@@ -60,8 +60,8 @@ class InfoColorBox extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.center,
                       child: AutoSizeText(
-                        overflow: TextOverflow.ellipsis,
                         property.toString(),
+                        overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.center,
                         maxLines: 1,
                         minFontSize: 12,

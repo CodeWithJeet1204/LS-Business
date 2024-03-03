@@ -258,8 +258,9 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                         if (snapshot.hasError) {
                           return Center(
                             child: Text(
-                                overflow: TextOverflow.ellipsis,
-                                'Something went wrong'),
+                              overflow: TextOverflow.ellipsis,
+                              'Something went wrong',
+                            ),
                           );
                         }
 

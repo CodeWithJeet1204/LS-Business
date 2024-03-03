@@ -9,6 +9,7 @@ import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/image_pick_dialog.dart';
 import 'package:find_easy/widgets/info_edit_box.dart';
+import 'package:find_easy/widgets/product_grid_view_skeleton.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:find_easy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -165,18 +166,22 @@ class DISCOUNT extends State<DiscountPage> {
       context: context,
       builder: ((context) {
         return AlertDialog(
-          title: const Text(overflow: TextOverflow.ellipsis, "Confirm DELETE"),
+          title: const Text(
+            "Confirm DELETE",
+            overflow: TextOverflow.ellipsis,
+          ),
           content: const Text(
-              overflow: TextOverflow.ellipsis,
-              "Are you sure you want to delete this Discount\nDiscount will be removed from all the products/categories with this discount"),
+            "Are you sure you want to delete this Discount\nDiscount will be removed from all the products/categories with this discount",
+            overflow: TextOverflow.ellipsis,
+          ),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
               child: const Text(
-                overflow: TextOverflow.ellipsis,
                 'NO',
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.green,
                   fontWeight: FontWeight.bold,
@@ -191,8 +196,8 @@ class DISCOUNT extends State<DiscountPage> {
                 }
               },
               child: const Text(
-                overflow: TextOverflow.ellipsis,
                 'YES',
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.w500,
@@ -280,8 +285,9 @@ class DISCOUNT extends State<DiscountPage> {
                 if (snapshot.hasError) {
                   return const Center(
                     child: Text(
-                        overflow: TextOverflow.ellipsis,
-                        'Something went wrong'),
+                      'Something went wrong',
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   );
                 }
 
@@ -390,10 +396,14 @@ class DISCOUNT extends State<DiscountPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(overflow: TextOverflow.ellipsis, "Remove $productName"),
+          title: Text(
+            "Remove $productName",
+            overflow: TextOverflow.ellipsis,
+          ),
           content: Text(
-              overflow: TextOverflow.ellipsis,
-              'Are you sure you want to remove $productName from $categoryName'),
+            'Are you sure you want to remove $productName from $categoryName',
+            overflow: TextOverflow.ellipsis,
+          ),
           actions: [
             MyTextButton(
               onPressed: () {
@@ -516,8 +526,9 @@ class DISCOUNT extends State<DiscountPage> {
                 if (snapshot.hasError) {
                   return const Center(
                     child: Text(
-                        overflow: TextOverflow.ellipsis,
-                        'Something went wrong'),
+                      'Something went wrong',
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   );
                 }
 
@@ -693,8 +704,8 @@ class DISCOUNT extends State<DiscountPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     const Text(
-                                      overflow: TextOverflow.ellipsis,
                                       "Start Date",
+                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         color: primaryDark2,
@@ -755,8 +766,8 @@ class DISCOUNT extends State<DiscountPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     const Text(
-                                      overflow: TextOverflow.ellipsis,
                                       "End Date",
+                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         color: primaryDark2,
@@ -814,17 +825,19 @@ class DISCOUNT extends State<DiscountPage> {
                             ),
                             dropdownColor: primary,
                             hint: Text(
-                              overflow: TextOverflow.ellipsis,
                               discountData['isPercent']
                                   ? 'Percent %'
                                   : 'Price Rs.',
+                              overflow: TextOverflow.ellipsis,
                             ),
                             underline: const SizedBox(),
                             items: ['Percent', 'Price']
                                 .map((e) => DropdownMenuItem(
                                       value: e,
                                       child: Text(
-                                          overflow: TextOverflow.ellipsis, e),
+                                        e,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                     ))
                                 .toList(),
                             onChanged: (value) async {
@@ -868,8 +881,8 @@ class DISCOUNT extends State<DiscountPage> {
                                   ),
                                 ),
                                 title: Text(
-                                  overflow: TextOverflow.ellipsis,
                                   'Products',
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     fontSize: width * 0.06,
                                     fontWeight: FontWeight.w600,
@@ -926,9 +939,10 @@ class DISCOUNT extends State<DiscountPage> {
                                             if (snapshot.hasError) {
                                               return const Center(
                                                 child: Text(
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    "Something went wrong"),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  "Something went wrong",
+                                                ),
                                               );
                                             }
 
@@ -1234,10 +1248,11 @@ class DISCOUNT extends State<DiscountPage> {
                                                                           .trash,
                                                                       color: const Color
                                                                           .fromRGBO(
-                                                                          215,
-                                                                          14,
-                                                                          0,
-                                                                          1),
+                                                                        215,
+                                                                        14,
+                                                                        0,
+                                                                        1,
+                                                                      ),
                                                                       size: width *
                                                                           0.08,
                                                                     ),
@@ -1253,10 +1268,62 @@ class DISCOUNT extends State<DiscountPage> {
                                               );
                                             }
 
-                                            return const Center(
-                                              child: CircularProgressIndicator(
-                                                color: primaryDark,
-                                              ),
+                                            return SafeArea(
+                                              child: isGridView
+                                                  ? GridView.builder(
+                                                      shrinkWrap: true,
+                                                      gridDelegate:
+                                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                                        crossAxisCount: 2,
+                                                        crossAxisSpacing: 0,
+                                                        mainAxisSpacing: 0,
+                                                        childAspectRatio:
+                                                            width *
+                                                                0.5 /
+                                                                width *
+                                                                1.45,
+                                                      ),
+                                                      itemCount: 4,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        return Padding(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                            vertical:
+                                                                width * 0.02,
+                                                            horizontal:
+                                                                width * 0.00575,
+                                                          ),
+                                                          child:
+                                                              GridViewSkeleton(
+                                                            width: width,
+                                                            isPrice: true,
+                                                            height: 30,
+                                                            isDelete: true,
+                                                          ),
+                                                        );
+                                                      },
+                                                    )
+                                                  : ListView.builder(
+                                                      shrinkWrap: true,
+                                                      itemCount: 4,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        return Padding(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                            width * 0.02,
+                                                          ),
+                                                          child:
+                                                              ListViewSkeleton(
+                                                            width: width,
+                                                            isPrice: true,
+                                                            height: 30,
+                                                            isDelete: true,
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
                                             );
                                           }),
                                         ),
@@ -1294,8 +1361,8 @@ class DISCOUNT extends State<DiscountPage> {
                                   ),
                                 ),
                                 title: Text(
-                                  overflow: TextOverflow.ellipsis,
                                   'Brands',
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     fontSize: width * 0.06,
                                     fontWeight: FontWeight.w600,
@@ -1352,9 +1419,10 @@ class DISCOUNT extends State<DiscountPage> {
                                             if (snapshot.hasError) {
                                               return const Center(
                                                 child: Text(
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    "Something went wrong"),
+                                                  "Something went wrong",
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
                                               );
                                             }
 
@@ -1474,8 +1542,8 @@ class DISCOUNT extends State<DiscountPage> {
                                                                                   0,
                                                                                 ),
                                                                                 child: Text(
-                                                                                  overflow: TextOverflow.ellipsis,
                                                                                   brandData['brandName'],
+                                                                                  overflow: TextOverflow.ellipsis,
                                                                                   maxLines: 1,
                                                                                   style: TextStyle(
                                                                                     fontSize: width * 0.058,
@@ -1642,10 +1710,11 @@ class DISCOUNT extends State<DiscountPage> {
                                                                           .trash,
                                                                       color: const Color
                                                                           .fromRGBO(
-                                                                          215,
-                                                                          14,
-                                                                          0,
-                                                                          1),
+                                                                        215,
+                                                                        14,
+                                                                        0,
+                                                                        1,
+                                                                      ),
                                                                       size: width *
                                                                           0.09,
                                                                     ),
@@ -1661,10 +1730,62 @@ class DISCOUNT extends State<DiscountPage> {
                                               );
                                             }
 
-                                            return const Center(
-                                              child: CircularProgressIndicator(
-                                                color: primaryDark,
-                                              ),
+                                            return SafeArea(
+                                              child: isGridView
+                                                  ? GridView.builder(
+                                                      shrinkWrap: true,
+                                                      gridDelegate:
+                                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                                        crossAxisCount: 2,
+                                                        crossAxisSpacing: 0,
+                                                        mainAxisSpacing: 0,
+                                                        childAspectRatio:
+                                                            width *
+                                                                0.5 /
+                                                                width *
+                                                                1.545,
+                                                      ),
+                                                      itemCount: 4,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        return Padding(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                            vertical:
+                                                                width * 0.02,
+                                                            horizontal:
+                                                                width * 0.00575,
+                                                          ),
+                                                          child:
+                                                              GridViewSkeleton(
+                                                            width: width,
+                                                            isPrice: false,
+                                                            height: 30,
+                                                            isDelete: true,
+                                                          ),
+                                                        );
+                                                      },
+                                                    )
+                                                  : ListView.builder(
+                                                      shrinkWrap: true,
+                                                      itemCount: 4,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        return Padding(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                            width * 0.02,
+                                                          ),
+                                                          child:
+                                                              ListViewSkeleton(
+                                                            width: width,
+                                                            isPrice: false,
+                                                            height: 30,
+                                                            isDelete: true,
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
                                             );
                                           }),
                                         ),
@@ -1702,8 +1823,8 @@ class DISCOUNT extends State<DiscountPage> {
                                   ),
                                 ),
                                 title: Text(
-                                  overflow: TextOverflow.ellipsis,
                                   'Categories',
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     fontSize: width * 0.06,
                                     fontWeight: FontWeight.w600,
@@ -1760,9 +1881,10 @@ class DISCOUNT extends State<DiscountPage> {
                                             if (snapshot.hasError) {
                                               return const Center(
                                                 child: Text(
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    "Something went wrong"),
+                                                  "Something went wrong",
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
                                               );
                                             }
 
@@ -1794,11 +1916,11 @@ class DISCOUNT extends State<DiscountPage> {
                                                           return Padding(
                                                             padding: EdgeInsets
                                                                 .symmetric(
-                                                              vertical:
-                                                                  width * 0.025,
                                                               horizontal:
                                                                   width *
-                                                                      0.0125,
+                                                                      0.000125,
+                                                              vertical:
+                                                                  width * 0.025,
                                                             ),
                                                             child:
                                                                 GestureDetector(
@@ -1882,8 +2004,8 @@ class DISCOUNT extends State<DiscountPage> {
                                                                                   0,
                                                                                 ),
                                                                                 child: Text(
-                                                                                  overflow: TextOverflow.ellipsis,
                                                                                   categoryData['categoryName'],
+                                                                                  overflow: TextOverflow.ellipsis,
                                                                                   maxLines: 1,
                                                                                   style: TextStyle(
                                                                                     fontSize: width * 0.058,
@@ -1917,7 +2039,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                                               size: width * 0.09,
                                                                             ),
                                                                             tooltip:
-                                                                                "Remove Product",
+                                                                                "Remove Category",
                                                                           ),
                                                                         ],
                                                                       ),
@@ -1935,7 +2057,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                             .data!.docs.length,
                                                         itemBuilder:
                                                             ((context, index) {
-                                                          final productData =
+                                                          final categoryData =
                                                               snapshot.data!
                                                                   .docs[index];
                                                           return Padding(
@@ -1956,9 +2078,9 @@ class DISCOUNT extends State<DiscountPage> {
                                                                   MaterialPageRoute(
                                                                     builder:
                                                                         ((context) =>
-                                                                            ProductPage(
-                                                                              productId: productData['productId'],
-                                                                              productName: productData['productName'],
+                                                                            CategoryPage(
+                                                                              categoryId: categoryData['categoryId'],
+                                                                              categoryName: categoryData['categoryName'],
                                                                             )),
                                                                   ),
                                                                 );
@@ -1968,11 +2090,13 @@ class DISCOUNT extends State<DiscountPage> {
                                                                     BoxDecoration(
                                                                   color: primary2
                                                                       .withOpacity(
-                                                                          0.5),
+                                                                    0.5,
+                                                                  ),
                                                                   borderRadius:
                                                                       BorderRadius
                                                                           .circular(
-                                                                              8),
+                                                                    8,
+                                                                  ),
                                                                 ),
                                                                 child: ListTile(
                                                                   leading:
@@ -1984,23 +2108,22 @@ class DISCOUNT extends State<DiscountPage> {
                                                                     ),
                                                                     child: Image
                                                                         .network(
-                                                                      productData[
+                                                                      categoryData[
                                                                           'imageUrl'],
                                                                       width: width *
-                                                                          0.15,
-                                                                      height:
-                                                                          width *
-                                                                              0.15,
+                                                                          0.1125,
+                                                                      height: width *
+                                                                          0.1125,
                                                                       fit: BoxFit
                                                                           .cover,
                                                                     ),
                                                                   ),
                                                                   title: Text(
+                                                                    categoryData[
+                                                                        'categoryName'],
                                                                     overflow:
                                                                         TextOverflow
                                                                             .ellipsis,
-                                                                    productData[
-                                                                        'productName'],
                                                                     style:
                                                                         TextStyle(
                                                                       fontSize:
@@ -2009,28 +2132,6 @@ class DISCOUNT extends State<DiscountPage> {
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .w600,
-                                                                    ),
-                                                                  ),
-                                                                  subtitle:
-                                                                      Text(
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
-                                                                    productData['productPrice'] !=
-                                                                                "" &&
-                                                                            productData['productPrice'] !=
-                                                                                null
-                                                                        ? productData[
-                                                                            'productPrice']
-                                                                        : "N/A",
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontSize:
-                                                                          width *
-                                                                              0.035,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
                                                                     ),
                                                                   ),
                                                                   trailing:
@@ -2050,15 +2151,16 @@ class DISCOUNT extends State<DiscountPage> {
                                                                           .trash,
                                                                       color: const Color
                                                                           .fromRGBO(
-                                                                          215,
-                                                                          14,
-                                                                          0,
-                                                                          1),
+                                                                        215,
+                                                                        14,
+                                                                        0,
+                                                                        1,
+                                                                      ),
                                                                       size: width *
                                                                           0.09,
                                                                     ),
                                                                     tooltip:
-                                                                        "Remove Product",
+                                                                        "Remove Category",
                                                                   ),
                                                                 ),
                                                               ),
@@ -2069,10 +2171,60 @@ class DISCOUNT extends State<DiscountPage> {
                                               );
                                             }
 
-                                            return const Center(
-                                              child: CircularProgressIndicator(
-                                                color: primaryDark,
-                                              ),
+                                            return SafeArea(
+                                              child: isGridView
+                                                  ? GridView.builder(
+                                                      shrinkWrap: true,
+                                                      gridDelegate:
+                                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                                        crossAxisCount: 2,
+                                                        crossAxisSpacing: 0,
+                                                        mainAxisSpacing: 0,
+                                                        childAspectRatio:
+                                                            width *
+                                                                0.5 /
+                                                                width *
+                                                                1.545,
+                                                      ),
+                                                      itemCount: 4,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        return Padding(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                            vertical:
+                                                                width * 0.02,
+                                                          ),
+                                                          child:
+                                                              GridViewSkeleton(
+                                                            width: width,
+                                                            isPrice: false,
+                                                            height: 30,
+                                                            isDelete: true,
+                                                          ),
+                                                        );
+                                                      },
+                                                    )
+                                                  : ListView.builder(
+                                                      shrinkWrap: true,
+                                                      itemCount: 4,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        return Padding(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                            width * 0.02,
+                                                          ),
+                                                          child:
+                                                              ListViewSkeleton(
+                                                            width: width,
+                                                            isPrice: false,
+                                                            height: 30,
+                                                            isDelete: true,
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
                                             );
                                           }),
                                         ),

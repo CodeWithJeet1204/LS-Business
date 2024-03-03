@@ -146,7 +146,9 @@ class _ChangeCategoryState extends State<ChangeCategory> {
               if (snapshot.hasError) {
                 return const Center(
                   child: Text(
-                      overflow: TextOverflow.ellipsis, "Something went wrong"),
+                    overflow: TextOverflow.ellipsis,
+                    "Something went wrong",
+                  ),
                 );
               }
 

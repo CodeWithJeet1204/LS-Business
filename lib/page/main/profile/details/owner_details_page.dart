@@ -215,7 +215,9 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
               if (snapshot.hasError) {
                 return const Center(
                   child: Text(
-                      overflow: TextOverflow.ellipsis, 'Something went wrong'),
+                    overflow: TextOverflow.ellipsis,
+                    'Something went wrong',
+                  ),
                 );
               }
 
@@ -266,8 +268,9 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                   if (snapshot.hasError) {
                     return const Center(
                       child: Text(
-                          overflow: TextOverflow.ellipsis,
-                          "Something went wrong"),
+                        "Something went wrong",
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     );
                   }
 
@@ -278,7 +281,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const SizedBox(height: 40),
+                          SizedBox(height: width * 0.1111125),
                           isChangingImage
                               ? Container(
                                   width: width * 0.3,
