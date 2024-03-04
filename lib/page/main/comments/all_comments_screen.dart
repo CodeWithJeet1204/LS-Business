@@ -10,10 +10,16 @@ class AllCommentPage extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       backgroundColor: primary,
       appBar: AppBar(
-        title: const Text(overflow: TextOverflow.ellipsis, 'COMMENTS'),
+        title: const Text(
+          overflow: TextOverflow.ellipsis,
+          'COMMENTS',
+        ),
       ),
       body: const Center(
-        child: Text(overflow: TextOverflow.ellipsis, 'All Comments'),
+        child: Text(
+          overflow: TextOverflow.ellipsis,
+          'All Comments',
+        ),
       ),
     );
   }

@@ -208,10 +208,14 @@ class _CategoryPageState extends State<CategoryPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(overflow: TextOverflow.ellipsis, "Remove $productName"),
+          title: Text(
+            overflow: TextOverflow.ellipsis,
+            "Remove $productName",
+          ),
           content: Text(
-              overflow: TextOverflow.ellipsis,
-              'Are you sure you want to remove \'$productName\'\nfrom $categoryName'),
+            overflow: TextOverflow.ellipsis,
+            'Are you sure you want to remove \'$productName\'\nfrom $categoryName',
+          ),
           actions: [
             MyTextButton(
               onPressed: () {

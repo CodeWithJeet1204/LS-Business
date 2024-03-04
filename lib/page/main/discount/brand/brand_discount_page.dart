@@ -567,8 +567,8 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Text(
-                                  overflow: TextOverflow.ellipsis,
                                   "PERCENT %",
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     color: !isPercentSelected
                                         ? white
@@ -600,8 +600,8 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Text(
-                                  overflow: TextOverflow.ellipsis,
                                   "PRICE ₹",
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     color: isPercentSelected
                                         ? primaryDark.withOpacity(0.33)

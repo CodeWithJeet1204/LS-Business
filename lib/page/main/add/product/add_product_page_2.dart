@@ -353,7 +353,10 @@ class _AddProductPage2State extends State<AddProductPage2> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text(overflow: TextOverflow.ellipsis, 'Additional Info'),
+        title: const Text(
+          overflow: TextOverflow.ellipsis,
+          'Additional Info',
+        ),
         actions: [
           MyTextButton(
             onPressed: () {
@@ -536,9 +539,10 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                               child: DropdownButton(
                                                 dropdownColor: primary,
                                                 hint: const Text(
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    "Select"),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  "Select",
+                                                ),
                                                 value: propertyValue0,
                                                 underline: Container(),
                                                 items: getDropDownItems(0)
@@ -733,9 +737,10 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                               child: DropdownButton(
                                                 dropdownColor: primary,
                                                 hint: const Text(
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    "Select"),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  "Select",
+                                                ),
                                                 value: propertyValue1,
                                                 underline: Container(),
                                                 items: getDropDownItems(1)
@@ -930,9 +935,10 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                               child: DropdownButton(
                                                 dropdownColor: primary,
                                                 hint: const Text(
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    "Select"),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  "Select",
+                                                ),
                                                 value: propertyValue2,
                                                 underline: Container(),
                                                 items: getDropDownItems(2)
@@ -1127,9 +1133,10 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                               child: DropdownButton(
                                                 dropdownColor: primary,
                                                 hint: const Text(
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    "Select"),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  "Select",
+                                                ),
                                                 value: propertyValue3,
                                                 underline: Container(),
                                                 items: getDropDownItems(3)
@@ -1324,9 +1331,10 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                               child: DropdownButton(
                                                 dropdownColor: primary,
                                                 hint: const Text(
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    "Select"),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  "Select",
+                                                ),
                                                 value: propertyValue4,
                                                 underline: Container(),
                                                 items: getDropDownItems(4)
@@ -1521,9 +1529,10 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                               child: DropdownButton(
                                                 dropdownColor: primary,
                                                 hint: const Text(
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    "Select"),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  "Select",
+                                                ),
                                                 value: propertyValue5,
                                                 underline: Container(),
                                                 items: getDropDownItems(5)

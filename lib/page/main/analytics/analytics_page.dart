@@ -23,7 +23,10 @@ class _AnalyticsPageState extends State<AnalyticsPage>
     return Scaffold(
       backgroundColor: primary,
       appBar: AppBar(
-        title: const Text(overflow: TextOverflow.ellipsis, "ANALYTICS"),
+        title: const Text(
+          overflow: TextOverflow.ellipsis,
+          "ANALYTICS",
+        ),
         forceMaterialTransparency: true,
         bottom: PreferredSize(
           preferredSize: Size(MediaQuery.of(context).size.width,

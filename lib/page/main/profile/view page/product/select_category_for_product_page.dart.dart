@@ -51,7 +51,10 @@ class _ChangeCategoryState extends State<ChangeCategory> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text(overflow: TextOverflow.ellipsis, "SELECT CATEGORY"),
+        title: const Text(
+          overflow: TextOverflow.ellipsis,
+          "SELECT CATEGORY",
+        ),
         actions: [
           MyTextButton(
             onPressed: () async {

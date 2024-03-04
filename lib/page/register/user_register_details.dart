@@ -80,7 +80,9 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
             children: [
               // USER DETAILS HEADTEXT
               const SizedBox(height: 100),
-              const HeadText(text: "USER\nDETAILS"),
+              const HeadText(
+                text: "USER\nDETAILS",
+              ),
               const SizedBox(height: 40),
 
               Column(

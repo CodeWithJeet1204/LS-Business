@@ -60,22 +60,29 @@ class _ConnectivityNotificationWidgetState
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text(
-              overflow: TextOverflow.ellipsis, 'No Internet Connection'),
+            overflow: TextOverflow.ellipsis,
+            'No Internet Connection',
+          ),
           content: const SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 Text(
-                    overflow: TextOverflow.ellipsis,
-                    'You are currently offline.'),
+                  overflow: TextOverflow.ellipsis,
+                  'You are currently offline.',
+                ),
                 Text(
-                    overflow: TextOverflow.ellipsis,
-                    'Connect to network to continue using the app'),
+                  overflow: TextOverflow.ellipsis,
+                  'Connect to network to continue using the app',
+                ),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text(overflow: TextOverflow.ellipsis, 'Retry'),
+              child: const Text(
+                overflow: TextOverflow.ellipsis,
+                'Retry',
+              ),
               onPressed: () async {
                 final currentStatus = await Connectivity().checkConnectivity();
                 if (currentStatus != ConnectivityResult.none) {

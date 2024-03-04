@@ -35,9 +35,13 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
       context: context,
       builder: ((context) {
         return AlertDialog(
-          title: const Text(overflow: TextOverflow.ellipsis, "Confirm DELETE"),
+          title: const Text(
+            overflow: TextOverflow.ellipsis,
+            "Confirm DELETE",
+          ),
           content: const Text(
-              "Are you sure you want to delete this Discount\nDiscount will be removed from all the products/categories with this discount"),
+            "Are you sure you want to delete this Discount\nDiscount will be removed from all the products/categories with this discount",
+          ),
           actions: [
             TextButton(
               onPressed: () {
@@ -103,7 +107,10 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(overflow: TextOverflow.ellipsis, 'ALL DISCOUNTS'),
+        title: const Text(
+          overflow: TextOverflow.ellipsis,
+          'ALL DISCOUNTS',
+        ),
         bottom: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,

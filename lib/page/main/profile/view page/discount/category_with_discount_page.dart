@@ -34,10 +34,14 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(overflow: TextOverflow.ellipsis, "Remove $categoryName"),
+          title: Text(
+            overflow: TextOverflow.ellipsis,
+            "Remove $categoryName",
+          ),
           content: Text(
-              overflow: TextOverflow.ellipsis,
-              'Are you sure you want to remove $categoryName from Discount?'),
+            overflow: TextOverflow.ellipsis,
+            'Are you sure you want to remove $categoryName from Discount?',
+          ),
           actions: [
             MyTextButton(
               onPressed: () {
@@ -117,7 +121,10 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(overflow: TextOverflow.ellipsis, 'CATEGORIES'),
+        title: const Text(
+          overflow: TextOverflow.ellipsis,
+          'CATEGORIES',
+        ),
         bottom: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,
@@ -309,8 +316,8 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
                                   ),
                                 ),
                                 title: Text(
-                                  overflow: TextOverflow.ellipsis,
                                   categories[index]['categoryName']!,
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     fontSize: width * 0.0525,
                                     fontWeight: FontWeight.w600,

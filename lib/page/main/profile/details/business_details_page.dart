@@ -197,7 +197,10 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text(overflow: TextOverflow.ellipsis, "Business Details"),
+        title: const Text(
+          overflow: TextOverflow.ellipsis,
+          "Business Details",
+        ),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(
@@ -589,8 +592,8 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                               child: SizedBox(
                                 width: width * 0.875,
                                 child: AutoSizeText(
-                                  overflow: TextOverflow.ellipsis,
                                   'Membership Expiry Date - ${DateFormat('dd/mm/yy').format((shopData['MembershipEndDateTime'] as Timestamp).toDate())}',
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     fontSize: width * 0.055,
                                     fontWeight: FontWeight.w500,

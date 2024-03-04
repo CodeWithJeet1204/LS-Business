@@ -226,7 +226,10 @@ class _AddProductPage1State extends State<AddProductPage1> {
       resizeToAvoidBottomInset: false,
       backgroundColor: primary,
       appBar: AppBar(
-        title: const Text(overflow: TextOverflow.ellipsis, "Basic Info"),
+        title: const Text(
+          overflow: TextOverflow.ellipsis,
+          "Basic Info",
+        ),
         actions: [
           MyTextButton(
             onPressed: () {
@@ -403,8 +406,8 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                 ),
                                 const SizedBox(height: 20),
                                 Text(
-                                  overflow: TextOverflow.ellipsis,
                                   "Select Image",
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     fontSize: width * 0.09,
                                     fontWeight: FontWeight.w500,
@@ -521,11 +524,11 @@ class _AddProductPage1State extends State<AddProductPage1> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  overflow: TextOverflow.ellipsis,
                                   selectBrandProvider.selectedBrandName ==
                                           'No Brand'
                                       ? 'Select Brand'
                                       : selectBrandProvider.selectedBrandName!,
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     color: primaryDark,
                                     fontSize: width * 0.06,

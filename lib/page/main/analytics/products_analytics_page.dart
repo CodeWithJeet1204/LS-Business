@@ -219,8 +219,9 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                               padding: EdgeInsets.only(left: width * 0.05),
                               child: DropdownButton(
                                 hint: Text(
-                                    overflow: TextOverflow.ellipsis,
-                                    "Select Duration"),
+                                  "Select Duration",
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                                 value: selectedStringDuration,
                                 underline: SizedBox(),
                                 dropdownColor: primary2,
@@ -233,8 +234,9 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                 ]
                                     .map((e) => DropdownMenuItem(
                                           child: Text(
-                                              overflow: TextOverflow.ellipsis,
-                                              e),
+                                            overflow: TextOverflow.ellipsis,
+                                            e,
+                                          ),
                                           value: e,
                                         ))
                                     .toList(),
@@ -268,8 +270,9 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                           if (snapshot.data!.docs.isEmpty) {
                             return Center(
                               child: Text(
-                                  overflow: TextOverflow.ellipsis,
-                                  'No Products Added'),
+                                'No Products Added',
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             );
                           }
                         }
@@ -277,7 +280,9 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                         if (!snapshot.hasData) {
                           return Center(
                             child: Text(
-                                overflow: TextOverflow.ellipsis, 'No Data'),
+                              overflow: TextOverflow.ellipsis,
+                              'No Data',
+                            ),
                           );
                         }
 

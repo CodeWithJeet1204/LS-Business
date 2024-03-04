@@ -78,7 +78,10 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text(overflow: TextOverflow.ellipsis, "SELECT PRODUCTS"),
+        title: const Text(
+          overflow: TextOverflow.ellipsis,
+          "SELECT PRODUCTS",
+        ),
         actions: [
           MyTextButton(
             onPressed: () {

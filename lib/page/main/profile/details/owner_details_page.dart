@@ -254,7 +254,10 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text(overflow: TextOverflow.ellipsis, "Owner Details"),
+        title: const Text(
+          overflow: TextOverflow.ellipsis,
+          "Owner Details",
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),

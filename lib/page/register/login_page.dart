@@ -55,7 +55,9 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(height: width * 0.35),
-                    const HeadText(text: "LOGIN"),
+                    const HeadText(
+                      text: "LOGIN",
+                    ),
                     SizedBox(height: width * 0.3),
                     Column(
                       children: [
@@ -323,8 +325,9 @@ class _LoginPageState extends State<LoginPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         const Text(
-                            overflow: TextOverflow.ellipsis,
-                            "Don't have an account?"),
+                          overflow: TextOverflow.ellipsis,
+                          "Don't have an account?",
+                        ),
                         MyTextButton(
                           onPressed: () {
                             SystemChannels.textInput
@@ -347,7 +350,9 @@ class _LoginPageState extends State<LoginPage> {
                   Container(
                     alignment: Alignment.center,
                     width: width * 0.66,
-                    child: const HeadText(text: "LOGIN"),
+                    child: const HeadText(
+                      text: "LOGIN",
+                    ),
                   ),
                   Container(
                     width: width * 0.33,
@@ -658,8 +663,9 @@ class _LoginPageState extends State<LoginPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               const Text(
-                                  overflow: TextOverflow.ellipsis,
-                                  "Don't have an account?"),
+                                "Don't have an account?",
+                                overflow: TextOverflow.ellipsis,
+                              ),
                               MyTextButton(
                                 onPressed: () {
                                   SystemChannels.textInput

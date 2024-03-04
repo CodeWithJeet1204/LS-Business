@@ -137,7 +137,9 @@ class _BusinessRegisterDetailsPageState
               const SizedBox(height: 100),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.875,
-                child: const HeadText(text: "BUSINESS\nDETAILS"),
+                child: const HeadText(
+                  text: "BUSINESS\nDETAILS",
+                ),
               ),
               const SizedBox(height: 40),
 
@@ -230,8 +232,9 @@ class _BusinessRegisterDetailsPageState
                         itemHeight: 48,
                         dropdownColor: const Color.fromARGB(255, 189, 234, 255),
                         hint: const Text(
-                            overflow: TextOverflow.ellipsis,
-                            "Select Industry Segment"),
+                          overflow: TextOverflow.ellipsis,
+                          "Select Industry Segment",
+                        ),
                         items: industrySegments
                             .map((element) => DropdownMenuItem(
                                   value: element,

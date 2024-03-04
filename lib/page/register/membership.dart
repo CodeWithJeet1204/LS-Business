@@ -78,7 +78,9 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
       context: context,
       builder: ((context) => AlertDialog(
             title: const Text(
-                overflow: TextOverflow.ellipsis, "Select Membership"),
+              overflow: TextOverflow.ellipsis,
+              "Select Membership",
+            ),
             content: const Text(
               overflow: TextOverflow.ellipsis,
               "First select the Duration for which you want the membership\nThen the respective prices will be displayed\nand then select one of them.",
@@ -133,7 +135,9 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
           child: Column(
             children: [
               SizedBox(height: width * 0.1),
-              const HeadText(text: "SELECT\nMEMBERSHIP"),
+              const HeadText(
+                text: "SELECT\nMEMBERSHIP",
+              ),
               SizedBox(height: width * 0.1),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -220,7 +224,9 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                 selectedColor: white,
                 selectedBorderColor: Colors.black,
                 name: "BASIC",
-                price: showPrices("BASIC"),
+                price: showPrices(
+                  "BASIC",
+                ),
                 textColor: const Color.fromARGB(255, 61, 60, 60),
                 priceTextColor: const Color.fromARGB(255, 81, 81, 81),
                 benefitBackSelectedColor:
@@ -252,7 +258,9 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                 selectedColor: const Color.fromARGB(255, 253, 243, 154),
                 selectedBorderColor: const Color.fromARGB(255, 93, 76, 0),
                 name: "GOLD",
-                price: showPrices("GOLD"),
+                price: showPrices(
+                  "GOLD",
+                ),
                 textColor: const Color.fromARGB(255, 94, 86, 0),
                 priceTextColor: const Color.fromARGB(255, 102, 92, 0),
                 benefitBackSelectedColor:
@@ -285,7 +293,9 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                     selectedColor: const Color.fromARGB(255, 202, 226, 238),
                     selectedBorderColor: Colors.blueGrey.shade600,
                     name: "PREMIUM",
-                    price: showPrices("PREMIUM"),
+                    price: showPrices(
+                      "PREMIUM",
+                    ),
                     textColor: const Color.fromARGB(255, 43, 72, 87),
                     priceTextColor: const Color.fromARGB(255, 67, 92, 106),
                     benefitBackSelectedColor:

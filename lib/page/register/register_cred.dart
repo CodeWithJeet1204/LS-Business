@@ -70,7 +70,9 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                   children: [
                     // REGISTER HEADTEXT
                     SizedBox(height: width * 0.35),
-                    const HeadText(text: "REGISTER"),
+                    const HeadText(
+                      text: "REGISTER",
+                    ),
                     SizedBox(height: width * 0.3),
 
                     Column(
@@ -556,7 +558,9 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                   Container(
                     width: width * 0.66,
                     alignment: Alignment.center,
-                    child: const HeadText(text: "REGISTER"),
+                    child: const HeadText(
+                      text: "REGISTER",
+                    ),
                   ),
                   Container(
                     width: width * 0.33,

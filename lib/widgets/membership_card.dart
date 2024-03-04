@@ -88,7 +88,10 @@ class _MembershipCardState extends State<MembershipCard> {
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        const Text(overflow: TextOverflow.ellipsis, "Rs. "),
+                        const Text(
+                          overflow: TextOverflow.ellipsis,
+                          "Rs. ",
+                        ),
                         Text(
                           overflow: TextOverflow.ellipsis,
                           widget.price.toString(),

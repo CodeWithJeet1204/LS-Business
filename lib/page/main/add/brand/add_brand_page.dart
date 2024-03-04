@@ -133,7 +133,10 @@ class _AddBrandPageState extends State<AddBrandPage> {
     return Scaffold(
       backgroundColor: primary,
       appBar: AppBar(
-        title: const Text(overflow: TextOverflow.ellipsis, "ADD BRAND"),
+        title: const Text(
+          overflow: TextOverflow.ellipsis,
+          "ADD BRAND",
+        ),
         actions: [
           MyTextButton(
             onPressed: () {

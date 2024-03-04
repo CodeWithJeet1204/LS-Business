@@ -153,8 +153,9 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                               padding: EdgeInsets.only(left: width * 0.05),
                               child: DropdownButton(
                                 hint: Text(
-                                    overflow: TextOverflow.ellipsis,
-                                    "Select Duration"),
+                                  overflow: TextOverflow.ellipsis,
+                                  "Select Duration",
+                                ),
                                 value: selectedStringDuration,
                                 underline: SizedBox(),
                                 dropdownColor: primary2,
@@ -201,7 +202,9 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                         if (!snapshot.hasData) {
                           return Center(
                             child: Text(
-                                overflow: TextOverflow.ellipsis, 'No Data'),
+                              overflow: TextOverflow.ellipsis,
+                              'No Data',
+                            ),
                           );
                         }
 

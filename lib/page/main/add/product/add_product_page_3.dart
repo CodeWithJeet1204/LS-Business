@@ -91,7 +91,10 @@ class _AddProductPage3State extends State<AddProductPage3> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(overflow: TextOverflow.ellipsis, 'SERVICES AVAILABLE'),
+        title: Text(
+          overflow: TextOverflow.ellipsis,
+          'SERVICES AVAILABLE',
+        ),
         actions: [
           MyTextButton(
             onPressed: () {

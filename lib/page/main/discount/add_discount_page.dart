@@ -20,7 +20,10 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
       resizeToAvoidBottomInset: false,
       backgroundColor: primary,
       appBar: AppBar(
-        title: const Text(overflow: TextOverflow.ellipsis, "DISCOUNTS"),
+        title: const Text(
+          overflow: TextOverflow.ellipsis,
+          "DISCOUNTS",
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),

@@ -173,7 +173,10 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text(overflow: TextOverflow.ellipsis, "ADD CATEGORY"),
+        title: const Text(
+          overflow: TextOverflow.ellipsis,
+          "ADD CATEGORY",
+        ),
         actions: [
           MyTextButton(
             onPressed: () {

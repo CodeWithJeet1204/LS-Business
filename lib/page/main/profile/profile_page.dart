@@ -26,10 +26,14 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: ((context) {
         return AlertDialog(
-          title: const Text(overflow: TextOverflow.ellipsis, 'Sign Out?'),
+          title: const Text(
+            overflow: TextOverflow.ellipsis,
+            'Sign Out?',
+          ),
           content: const Text(
-              overflow: TextOverflow.ellipsis,
-              'Are you sure\nYou want to Sign Out?'),
+            overflow: TextOverflow.ellipsis,
+            'Are you sure\nYou want to Sign Out?',
+          ),
           actions: [
             TextButton(
               onPressed: () {
@@ -81,7 +85,10 @@ class _ProfilePageState extends State<ProfilePage> {
       resizeToAvoidBottomInset: false,
       backgroundColor: primary,
       appBar: AppBar(
-        title: const Text(overflow: TextOverflow.ellipsis, "PROFILE"),
+        title: const Text(
+          overflow: TextOverflow.ellipsis,
+          "PROFILE",
+        ),
         actions: [
           IconButton(
             onPressed: signOut,

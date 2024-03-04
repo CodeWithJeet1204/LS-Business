@@ -56,7 +56,10 @@ class _AllPostsPageState extends State<AllPostsPage> {
       context: context,
       builder: ((context) {
         return AlertDialog(
-          title: const Text(overflow: TextOverflow.ellipsis, "Confirm DELETE"),
+          title: const Text(
+            overflow: TextOverflow.ellipsis,
+            "Confirm DELETE",
+          ),
           content: const Text(
             overflow: TextOverflow.ellipsis,
             "Are you sure you want to delete this Post\nProduct of this post will not be deleted",
@@ -112,7 +115,10 @@ class _AllPostsPageState extends State<AllPostsPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text(overflow: TextOverflow.ellipsis, 'ALL POSTS'),
+        title: const Text(
+          overflow: TextOverflow.ellipsis,
+          'ALL POSTS',
+        ),
         bottom: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,

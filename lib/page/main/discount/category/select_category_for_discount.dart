@@ -41,7 +41,10 @@ class _SelectCategoryForDiscountPageState
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text(overflow: TextOverflow.ellipsis, "SELECT CATEGORIES"),
+        title: const Text(
+          overflow: TextOverflow.ellipsis,
+          "SELECT CATEGORIES",
+        ),
         actions: [
           MyTextButton(
             onPressed: () {

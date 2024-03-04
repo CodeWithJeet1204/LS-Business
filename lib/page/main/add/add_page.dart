@@ -21,7 +21,10 @@ class _AddPageState extends State<AddPage> {
       resizeToAvoidBottomInset: false,
       backgroundColor: primary,
       appBar: AppBar(
-        title: const Text(overflow: TextOverflow.ellipsis, "ADD"),
+        title: const Text(
+          overflow: TextOverflow.ellipsis,
+          "ADD",
+        ),
         elevation: 0,
         shadowColor: primary2,
       ),
@@ -62,8 +65,8 @@ class _AddPageState extends State<AddPage> {
                               SizedBox(
                                 width: width * 0.5,
                                 child: const AutoSizeText(
-                                  overflow: TextOverflow.ellipsis,
                                   "POST",
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     color: primaryDark,
                                     fontWeight: FontWeight.w600,
@@ -112,8 +115,8 @@ class _AddPageState extends State<AddPage> {
                               SizedBox(
                                 width: width * 0.5,
                                 child: const AutoSizeText(
-                                  overflow: TextOverflow.ellipsis,
                                   "PRODUCTS",
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     color: primaryDark,
                                     fontWeight: FontWeight.w600,
@@ -155,8 +158,8 @@ class _AddPageState extends State<AddPage> {
                               SizedBox(
                                 width: width * 0.5,
                                 child: const AutoSizeText(
-                                  overflow: TextOverflow.ellipsis,
                                   "CATEGORY",
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     color: primaryDark,
                                     fontWeight: FontWeight.w600,
@@ -198,8 +201,8 @@ class _AddPageState extends State<AddPage> {
                               SizedBox(
                                 width: width * 0.5,
                                 child: const AutoSizeText(
-                                  overflow: TextOverflow.ellipsis,
                                   "BRAND",
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     color: primaryDark,
                                     fontWeight: FontWeight.w600,

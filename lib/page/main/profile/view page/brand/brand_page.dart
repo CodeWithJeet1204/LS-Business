@@ -249,10 +249,14 @@ class _BrandPageState extends State<BrandPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(overflow: TextOverflow.ellipsis, "Remove $productName"),
+          title: Text(
+            overflow: TextOverflow.ellipsis,
+            "Remove $productName",
+          ),
           content: Text(
-              overflow: TextOverflow.ellipsis,
-              'Are you sure you want to remove $productName from $brandName'),
+            overflow: TextOverflow.ellipsis,
+            'Are you sure you want to remove $productName from $brandName',
+          ),
           actions: [
             MyTextButton(
               onPressed: () {
@@ -323,7 +327,10 @@ class _BrandPageState extends State<BrandPage> {
       context: context,
       builder: ((context) {
         return AlertDialog(
-          title: const Text(overflow: TextOverflow.ellipsis, "Confirm DELETE"),
+          title: const Text(
+            overflow: TextOverflow.ellipsis,
+            "Confirm DELETE",
+          ),
           content: const Text(
             overflow: TextOverflow.ellipsis,
             "Are you sure you want to delete this Brand\nProducts in this brand will be set as 'No Brand",

@@ -41,7 +41,10 @@ class _SelectProductForDiscountPageState
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text(overflow: TextOverflow.ellipsis, "SELECT PRODUCT"),
+        title: const Text(
+          overflow: TextOverflow.ellipsis,
+          "SELECT PRODUCT",
+        ),
         actions: [
           MyTextButton(
             onPressed: () {

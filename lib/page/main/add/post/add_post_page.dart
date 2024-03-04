@@ -161,7 +161,10 @@ class _AddPostPageState extends State<AddPostPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text(overflow: TextOverflow.ellipsis, "CREATE POST"),
+        title: const Text(
+          overflow: TextOverflow.ellipsis,
+          "CREATE POST",
+        ),
         actions: [
           MyTextButton(
             onPressed: () async {

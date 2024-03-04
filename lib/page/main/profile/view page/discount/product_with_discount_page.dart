@@ -33,10 +33,14 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(overflow: TextOverflow.ellipsis, "Remove $productName"),
+          title: Text(
+            overflow: TextOverflow.ellipsis,
+            "Remove $productName",
+          ),
           content: Text(
-              overflow: TextOverflow.ellipsis,
-              'Are you sure you want to remove $productName from Discount?'),
+            overflow: TextOverflow.ellipsis,
+            'Are you sure you want to remove $productName from Discount?',
+          ),
           actions: [
             MyTextButton(
               onPressed: () {
@@ -111,7 +115,10 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(overflow: TextOverflow.ellipsis, 'PRODUCTS'),
+        title: const Text(
+          overflow: TextOverflow.ellipsis,
+          'PRODUCTS',
+        ),
         bottom: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,

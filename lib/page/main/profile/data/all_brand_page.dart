@@ -77,7 +77,10 @@ class _AllBrandPageState extends State<AllBrandPage> {
       context: context,
       builder: ((context) {
         return AlertDialog(
-          title: const Text(overflow: TextOverflow.ellipsis, "Confirm DELETE"),
+          title: const Text(
+            overflow: TextOverflow.ellipsis,
+            "Confirm DELETE",
+          ),
           content: const Text(
             overflow: TextOverflow.ellipsis,
             "Are you sure you want to delete this Brand\nProducts in this brand will be set as 'No Brand",
@@ -131,7 +134,10 @@ class _AllBrandPageState extends State<AllBrandPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text(overflow: TextOverflow.ellipsis, "ALL BRANDS"),
+        title: const Text(
+          overflow: TextOverflow.ellipsis,
+          "ALL BRANDS",
+        ),
         bottom: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,

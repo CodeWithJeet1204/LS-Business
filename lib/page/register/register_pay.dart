@@ -33,7 +33,9 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                   ),
 
                   // PAY HEADTEXT
-                  const HeadText(text: "PAY"),
+                  const HeadText(
+                    text: "PAY",
+                  ),
                   Expanded(
                     flex: 2,
                     child: Container(),
@@ -89,8 +91,9 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                          overflow: TextOverflow.ellipsis,
-                          "Already have an account?"),
+                        overflow: TextOverflow.ellipsis,
+                        "Already have an account?",
+                      ),
                       MyTextButton(
                         onPressed: () {
                           SystemChannels.textInput
@@ -112,7 +115,9 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                   Container(
                     alignment: Alignment.center,
                     width: MediaQuery.of(context).size.width * 0.66,
-                    child: const HeadText(text: "PAY"),
+                    child: const HeadText(
+                      text: "PAY",
+                    ),
                   ),
                   Container(
                     alignment: Alignment.center,
