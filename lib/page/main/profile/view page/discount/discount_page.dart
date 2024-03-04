@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/page/main/profile/view%20page/brand/brand_page.dart';
@@ -213,6 +212,9 @@ class DISCOUNT extends State<DiscountPage> {
   // DELETE DISCOUNT
   Future<void> delete(String discountId, String? imageUrl) async {
     try {
+      if (context.mounted) {
+        Navigator.of(context).pop();
+      }
       if (imageUrl != null) {
         await storage.refFromURL(imageUrl).delete();
       }
@@ -223,6 +225,9 @@ class DISCOUNT extends State<DiscountPage> {
           .collection('Discounts')
           .doc(discountId)
           .delete();
+      if (context.mounted) {
+        mySnackBar(context, 'Discount Deleted');
+      }
     } catch (e) {
       if (context.mounted) {
         mySnackBar(context, e.toString());
@@ -569,31 +574,24 @@ class DISCOUNT extends State<DiscountPage> {
                                                 10,
                                               ),
                                               child: InteractiveViewer(
-                                                child: CachedNetworkImage(
-                                                  imageUrl: discountData[
-                                                      'discountImageUrl'],
-                                                  imageBuilder:
-                                                      (context, imageProvider) {
-                                                    return ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                        10,
-                                                      ),
-                                                      child: Container(
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          image:
-                                                              DecorationImage(
-                                                            image:
-                                                                imageProvider,
-                                                            fit: isFit
-                                                                ? BoxFit.cover
-                                                                : null,
-                                                          ),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    10,
+                                                  ),
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                        image: NetworkImage(
+                                                          discountData[
+                                                              'discountImageUrl'],
                                                         ),
+                                                        fit: isFit
+                                                            ? BoxFit.cover
+                                                            : null,
                                                       ),
-                                                    );
-                                                  },
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -857,7 +855,7 @@ class DISCOUNT extends State<DiscountPage> {
                         // PRODUCTS
                         discountData['isProducts']
                             ? ExpansionTile(
-                                initiallyExpanded: true,
+                                initiallyExpanded: false,
                                 tilePadding: EdgeInsets.symmetric(
                                   horizontal: width * 0.0225,
                                 ),
@@ -1337,7 +1335,7 @@ class DISCOUNT extends State<DiscountPage> {
                         // BRANDS
                         discountData['isBrands']
                             ? ExpansionTile(
-                                initiallyExpanded: true,
+                                initiallyExpanded: false,
                                 tilePadding: EdgeInsets.symmetric(
                                   horizontal: width * 0.0225,
                                 ),
@@ -1472,6 +1470,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                                             BrandPage(
                                                                               brandId: brandData['brandId'],
                                                                               brandName: brandData['brandName'],
+                                                                              imageUrl: brandData['imageUrl'],
                                                                             )),
                                                                   ),
                                                                 );
@@ -1799,7 +1798,7 @@ class DISCOUNT extends State<DiscountPage> {
                         // CATEGORY
                         discountData['isCategories']
                             ? ExpansionTile(
-                                initiallyExpanded: true,
+                                initiallyExpanded: false,
                                 tilePadding: EdgeInsets.symmetric(
                                   horizontal: width * 0.0225,
                                 ),

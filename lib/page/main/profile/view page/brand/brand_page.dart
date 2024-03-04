@@ -20,10 +20,12 @@ class BrandPage extends StatefulWidget {
     super.key,
     required this.brandId,
     required this.brandName,
+    required this.imageUrl,
   });
 
   final String brandId;
   final String brandName;
+  final String? imageUrl;
 
   @override
   State<BrandPage> createState() => _BrandPageState();
@@ -315,6 +317,100 @@ class _BrandPageState extends State<BrandPage> {
     }
   }
 
+  // CONFIRM DELETE
+  Future<void> confirmDelete() async {
+    showDialog(
+      context: context,
+      builder: ((context) {
+        return AlertDialog(
+          title: const Text(overflow: TextOverflow.ellipsis, "Confirm DELETE"),
+          content: const Text(
+            overflow: TextOverflow.ellipsis,
+            "Are you sure you want to delete this Brand\nProducts in this brand will be set as 'No Brand",
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                overflow: TextOverflow.ellipsis,
+                'NO',
+                style: TextStyle(
+                  color: Colors.green,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                await delete();
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                }
+              },
+              child: const Text(
+                overflow: TextOverflow.ellipsis,
+                'YES',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
+        );
+      }),
+    );
+  }
+
+  // DELETE BRAND
+  Future<void> delete() async {
+    try {
+      if (context.mounted) {
+        Navigator.of(context).pop();
+      }
+      print('a');
+
+      if (widget.imageUrl != null) {
+        await FirebaseStorage.instance.refFromURL(widget.imageUrl!).delete();
+      }
+      final productSnap = await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Products')
+          .where('vendorId', isEqualTo: auth.currentUser!.uid)
+          .where('productBrandId', isEqualTo: widget.brandId)
+          .get();
+
+      for (final doc in productSnap.docs) {
+        await doc.reference.update(
+          {
+            'productBrand': "No Brand",
+            "productBrandId": "0",
+          },
+        );
+      }
+
+      await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Brands')
+          .doc(widget.brandId)
+          .delete();
+
+      print('b');
+      if (context.mounted) {
+        Navigator.of(context).pop();
+        mySnackBar(context, 'Brand Deleted');
+      }
+    } catch (e) {
+      if (context.mounted) {
+        mySnackBar(context, e.toString());
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // BRAND STREAM
@@ -348,7 +444,19 @@ class _BrandPageState extends State<BrandPage> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await confirmDelete();
+            },
+            icon: Icon(
+              FeatherIcons.trash,
+              color: Colors.red,
+            ),
+          ),
+        ],
+      ),
       body: LayoutBuilder(builder: ((context, constraints) {
         double width = constraints.maxWidth;
 
@@ -476,12 +584,10 @@ class _BrandPageState extends State<BrandPage> {
                                       ),
                               ],
                             )
-                          : Container(
-                              width: width,
-                              height: width,
+                          : Center(
                               child: MyTextButton(
                                 onPressed: changeBrandImage,
-                                text: 'Add Image',
+                                text: "Add Image",
                                 textColor: primaryDark2,
                               ),
                             ),
@@ -643,7 +749,7 @@ class _BrandPageState extends State<BrandPage> {
 
                       // PRODUCTS IN BRAND
                       ExpansionTile(
-                        initiallyExpanded: true,
+                        initiallyExpanded: false,
                         tilePadding: const EdgeInsets.symmetric(horizontal: 8),
                         backgroundColor: primary2.withOpacity(0.25),
                         collapsedBackgroundColor: primary2.withOpacity(0.33),

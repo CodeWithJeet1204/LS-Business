@@ -223,6 +223,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                       builder: ((context) => BrandPage(
                                             brandId: brandData['brandId'],
                                             brandName: brandData['brandName'],
+                                            imageUrl: brandData['imageUrl'],
                                           )),
                                     ),
                                   );
@@ -369,6 +370,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                         builder: ((context) => BrandPage(
                                               brandId: brandData['brandId'],
                                               brandName: brandData['brandName'],
+                                              imageUrl: brandData['imageUrl'],
                                             )),
                                       ),
                                     );

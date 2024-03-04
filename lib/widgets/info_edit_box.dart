@@ -129,9 +129,9 @@ class InfoEditBox extends StatelessWidget {
                                                     ),
                                                   ),
                                                   child: Text(
+                                                    e,
                                                     overflow:
                                                         TextOverflow.ellipsis,
-                                                    e,
                                                     style: TextStyle(
                                                       fontSize:
                                                           MediaQuery.of(context)
@@ -151,7 +151,9 @@ class InfoEditBox extends StatelessWidget {
                                     ),
                                   )
                                 : const Text(
-                                    overflow: TextOverflow.ellipsis, "N/A")
+                                    "N/A",
+                                    overflow: TextOverflow.ellipsis,
+                                  )
                             : Container(),
               ],
             ),

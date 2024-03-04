@@ -71,6 +71,9 @@ class _PostPageState extends State<PostPage> {
   // DELETE POST
   void deletePost() async {
     try {
+      if (context.mounted) {
+        Navigator.of(context).pop();
+      }
       await store
           .collection('Business')
           .doc('Data')
@@ -78,7 +81,6 @@ class _PostPageState extends State<PostPage> {
           .doc(widget.postId)
           .delete();
       if (context.mounted) {
-        Navigator.of(context).pop();
         mySnackBar(context, "Post Deleted");
       }
     } catch (e) {
@@ -191,7 +193,7 @@ class _PostPageState extends State<PostPage> {
                       final bool isTextPost = postData['isTextPost'];
                       final String name = postData['postProductName'];
                       final String brand = postData['postProductBrand'];
-                      final String price = postData['postProductPrice'];
+                      final String? price = postData['postProductPrice'];
                       final String description =
                           postData['postProductDescription'];
                       final int likes = postData['postLikes'];
@@ -373,7 +375,11 @@ class _PostPageState extends State<PostPage> {
                                               child: RichText(
                                                 overflow: TextOverflow.ellipsis,
                                                 text: TextSpan(
-                                                  text: 'Rs. ',
+                                                  text: price == "" ||
+                                                          price == null ||
+                                                          price == 0
+                                                      ? ''
+                                                      : 'Rs. ',
                                                   style: TextStyle(
                                                     color: primaryDark,
                                                     fontSize: width * 0.06,
@@ -381,7 +387,9 @@ class _PostPageState extends State<PostPage> {
                                                   ),
                                                   children: [
                                                     TextSpan(
-                                                      text: price == ""
+                                                      text: price == "" ||
+                                                              price == null ||
+                                                              price == 0
                                                           ? 'N/A (price)'
                                                           : data['isPercent']
                                                               ? '${(double.parse(price) * (100 - (data['discountAmount'])) / 100).toStringAsFixed(2)}  '
@@ -475,7 +483,9 @@ class _PostPageState extends State<PostPage> {
                                     padding: const EdgeInsets.only(left: 10),
                                     child: Text(
                                       overflow: TextOverflow.ellipsis,
-                                      "Rs. ${postData['postProductPrice']}",
+                                      price == "" || price == null || price == 0
+                                          ? 'N/A (price)'
+                                          : "Rs. ${postData['postProductPrice']}",
                                       style: const TextStyle(
                                         color: primaryDark,
                                         fontSize: 22,

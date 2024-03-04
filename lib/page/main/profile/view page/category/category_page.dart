@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/page/main/add/category/select_products_for_category_page.dart';
@@ -360,27 +359,21 @@ class _CategoryPageState extends State<CategoryPage> {
                                         11,
                                       ),
                                       child: InteractiveViewer(
-                                        child: CachedNetworkImage(
-                                          imageUrl: categoryData['imageUrl'],
-                                          imageBuilder:
-                                              (context, imageProvider) {
-                                            return ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                11,
-                                              ),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                    image: imageProvider,
-                                                    fit: isFit
-                                                        ? BoxFit.cover
-                                                        : null,
-                                                  ),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                            11,
+                                          ),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: NetworkImage(
+                                                  categoryData['imageUrl'],
                                                 ),
+                                                fit:
+                                                    isFit ? BoxFit.cover : null,
                                               ),
-                                            );
-                                          },
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),

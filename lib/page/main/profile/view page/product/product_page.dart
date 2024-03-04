@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/page/main/discount/products/product_discount_page.dart';
 import 'package:find_easy/page/main/main_page.dart';
+import 'package:find_easy/page/main/profile/view%20page/category/category_page.dart';
 import 'package:find_easy/page/main/profile/view%20page/product/select_category_for_product_page.dart.dart';
 import 'package:find_easy/page/main/profile/view%20page/product/image_view.dart';
 import 'package:find_easy/utils/colors.dart';
@@ -98,8 +98,8 @@ class _ProductPageState extends State<ProductPage> {
                     if (snapshot.hasError) {
                       return const Center(
                         child: Text(
-                          overflow: TextOverflow.ellipsis,
                           'Something went wrong',
+                          overflow: TextOverflow.ellipsis,
                         ),
                       );
                     }
@@ -250,9 +250,9 @@ class _ProductPageState extends State<ProductPage> {
                                                       left: 12,
                                                     ),
                                                     child: Text(
+                                                      property[index],
                                                       overflow:
                                                           TextOverflow.ellipsis,
-                                                      property[index],
                                                       style: const TextStyle(
                                                         color: white,
                                                         fontWeight:
@@ -489,34 +489,34 @@ class _ProductPageState extends State<ProductPage> {
     }
   }
 
-  // CHANGE IMAGES
-  // void changeProductImage(String e, int index, List images) async {
-  //   final XFile? im = await showImagePickDialog(context);
-  //   if (im != null) {
-  //     try {
-  //       setState(() {
-  //         isImageChanging = true;
-  //       });
-  //       Reference ref = FirebaseStorage.instance.refFromURL(images[index]);
-  //       await images.removeAt(index);
-  //       await ref.putFile(File(im.path));
-  //       setState(() {
-  //         isImageChanging = false;
-  //       });
-  //     } catch (e) {
-  //       setState(() {
-  //         isImageChanging = false;
-  //       });
-  //       if (context.mounted) {
-  //         mySnackBar(context, e.toString());
-  //       }
-  //     }
-  //   } else {
-  //     if (context.mounted) {
-  //       mySnackBar(context, "Select an Image");
-  //     }
-  //   }
-  // }
+  // CHANGE IMAGE
+  void changeProductImage(String e, int index, List images) async {
+    final XFile? im = await showImagePickDialog(context);
+    if (im != null) {
+      try {
+        setState(() {
+          isImageChanging = true;
+        });
+        Reference ref = FirebaseStorage.instance.refFromURL(images[index]);
+        await images.removeAt(index);
+        await ref.putFile(File(im.path));
+        setState(() {
+          isImageChanging = false;
+        });
+      } catch (e) {
+        setState(() {
+          isImageChanging = false;
+        });
+        if (context.mounted) {
+          mySnackBar(context, e.toString());
+        }
+      }
+    } else {
+      if (context.mounted) {
+        mySnackBar(context, "Select an Image");
+      }
+    }
+  }
 
   // REMOVE IMAGES
   void removeProductImages(String e, List images) async {
@@ -568,18 +568,22 @@ class _ProductPageState extends State<ProductPage> {
       context: context,
       builder: ((context) {
         return AlertDialog(
-          title: const Text(overflow: TextOverflow.ellipsis, "Confirm DELETE"),
+          title: const Text(
+            "Confirm DELETE",
+            overflow: TextOverflow.ellipsis,
+          ),
           content: const Text(
-              overflow: TextOverflow.ellipsis,
-              "Are you sure you want to delete this product & all its posts"),
+            "Are you sure you want to delete this product & all its posts",
+            overflow: TextOverflow.ellipsis,
+          ),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
               child: const Text(
-                overflow: TextOverflow.ellipsis,
                 'NO',
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.green,
                   fontWeight: FontWeight.bold,
@@ -592,8 +596,8 @@ class _ProductPageState extends State<ProductPage> {
                 delete();
               },
               child: const Text(
-                overflow: TextOverflow.ellipsis,
                 'YES',
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.w500,
@@ -612,6 +616,9 @@ class _ProductPageState extends State<ProductPage> {
       isEditing = true;
     });
     try {
+      if (context.mounted) {
+        Navigator.of(context).pop();
+      }
       await store
           .collection('Business')
           .doc('Data')
@@ -629,12 +636,12 @@ class _ProductPageState extends State<ProductPage> {
       for (QueryDocumentSnapshot doc in postSnap.docs) {
         await doc.reference.delete();
       }
+      if (context.mounted) {
+        mySnackBar(context, 'Product Deleted');
+      }
       setState(() {
         isEditing = false;
       });
-      if (context.mounted) {
-        Navigator.of(context).pop();
-      }
     } catch (e) {
       setState(() {
         isEditing = false;
@@ -763,8 +770,8 @@ class _ProductPageState extends State<ProductPage> {
                     if (snapshot.hasError) {
                       return const Center(
                         child: Text(
-                          overflow: TextOverflow.ellipsis,
                           'Something went wrong',
+                          overflow: TextOverflow.ellipsis,
                         ),
                       );
                     }
@@ -869,32 +876,19 @@ class _ProductPageState extends State<ProductPage> {
                                                     ),
                                                   );
                                                 },
-                                                child: CachedNetworkImage(
-                                                  imageUrl: e,
-                                                  imageBuilder:
-                                                      (context, imageProvider) {
-                                                    return Center(
-                                                      child: ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                          12,
-                                                        ),
-                                                        child: Container(
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            image:
-                                                                DecorationImage(
-                                                              image:
-                                                                  imageProvider,
-                                                              fit: BoxFit
-                                                                  .contain,
-                                                            ),
-                                                          ),
-                                                        ),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    12,
+                                                  ),
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                        image: NetworkImage(e),
+                                                        fit: BoxFit.contain,
                                                       ),
-                                                    );
-                                                  },
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                       ),
@@ -902,28 +896,29 @@ class _ProductPageState extends State<ProductPage> {
                                           ? Container()
                                           : Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.end,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
-                                                // Padding(
-                                                //   padding: EdgeInsets.only(
-                                                //     left: width * 0.0125,
-                                                //     top: width * 0.0125,
-                                                //   ),
-                                                //   child: IconButton.filledTonal(
-                                                //     onPressed: () {
-                                                //       changeProductImage(
-                                                //         e,
-                                                //         images.indexOf(e),
-                                                //         images,
-                                                //       );
-                                                //     },
-                                                //     icon: Icon(
-                                                //       FeatherIcons.camera,
-                                                //       size: width * 0.1,
-                                                //     ),
-                                                //     tooltip: "Change Image",
-                                                //   ),
-                                                // ),
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                    left: width * 0.0125,
+                                                    top: width * 0.0125,
+                                                  ),
+                                                  child: IconButton.filledTonal(
+                                                    onPressed: () {
+                                                      changeProductImage(
+                                                        e,
+                                                        images.indexOf(e),
+                                                        images,
+                                                      );
+                                                    },
+                                                    icon: Icon(
+                                                      FeatherIcons.camera,
+                                                      size: width * 0.1,
+                                                    ),
+                                                    tooltip: "Change Image",
+                                                  ),
+                                                ),
                                                 Padding(
                                                   padding: EdgeInsets.only(
                                                     right: width * 0.0125,
@@ -933,7 +928,9 @@ class _ProductPageState extends State<ProductPage> {
                                                     onPressed: images.last != e
                                                         ? () {
                                                             removeProductImages(
-                                                                e, images);
+                                                              e,
+                                                              images,
+                                                            );
                                                           }
                                                         : null,
                                                     icon: Icon(
@@ -1012,8 +1009,9 @@ class _ProductPageState extends State<ProductPage> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                          overflow: TextOverflow.ellipsis,
-                                          "Add Image"),
+                                        "Add Image",
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                       Icon(FeatherIcons.plus),
                                     ],
                                   ),
@@ -1033,8 +1031,8 @@ class _ProductPageState extends State<ProductPage> {
                                 child: SizedBox(
                                   width: width * 0.785,
                                   child: AutoSizeText(
-                                    overflow: TextOverflow.ellipsis,
                                     name,
+                                    overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                     style: TextStyle(
                                       color: primaryDark,
@@ -1075,8 +1073,8 @@ class _ProductPageState extends State<ProductPage> {
                                         if (snapshot.hasError) {
                                           return const Center(
                                             child: Text(
-                                              overflow: TextOverflow.ellipsis,
                                               'Something went wrong',
+                                              overflow: TextOverflow.ellipsis,
                                             ),
                                           );
                                         }
@@ -1103,9 +1101,10 @@ class _ProductPageState extends State<ProductPage> {
                                                 child: price == "" ||
                                                         price == 'N/A'
                                                     ? const Text(
+                                                        'N/A',
                                                         overflow: TextOverflow
                                                             .ellipsis,
-                                                        'N/A')
+                                                      )
                                                     : RichText(
                                                         overflow: TextOverflow
                                                             .ellipsis,
@@ -1158,18 +1157,18 @@ class _ProductPageState extends State<ProductPage> {
                                                 ),
                                                 child: data['isPercent']
                                                     ? Text(
+                                                        "${data['discountAmount']}% off",
                                                         overflow: TextOverflow
                                                             .ellipsis,
-                                                        "${data['discountAmount']}% off",
                                                         style: const TextStyle(
                                                           fontWeight:
                                                               FontWeight.w500,
                                                         ),
                                                       )
                                                     : Text(
+                                                        "Save Rs. ${data['discountAmount']}",
                                                         overflow: TextOverflow
                                                             .ellipsis,
-                                                        "Save Rs. ${data['discountAmount']}",
                                                         style: const TextStyle(
                                                           fontWeight:
                                                               FontWeight.w500,
@@ -1182,8 +1181,6 @@ class _ProductPageState extends State<ProductPage> {
                                                   vertical: width * 0.0055,
                                                 ),
                                                 child: Text(
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
                                                   (data['discountEndDateTime']
                                                                   as Timestamp)
                                                               .toDate()
@@ -1194,6 +1191,8 @@ class _ProductPageState extends State<ProductPage> {
                                                           24
                                                       ? '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inHours} Hours Left'''
                                                       : '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inDays} Days Left''',
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   style: const TextStyle(
                                                     color: Colors.red,
                                                     fontWeight: FontWeight.w500,
@@ -1217,10 +1216,10 @@ class _ProductPageState extends State<ProductPage> {
                                             left: width * 0.02775,
                                           ),
                                           child: Text(
-                                            overflow: TextOverflow.ellipsis,
                                             productData['productPrice'] == ""
                                                 ? "N/A"
                                                 : "Rs. ${productData['productPrice']}",
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               color: primaryDark,
                                               fontSize: width * 0.06125,
@@ -1275,18 +1274,21 @@ class _ProductPageState extends State<ProductPage> {
                               ),
                             ],
                           ),
+                          SizedBox(height: width * 0.0225),
 
                           // AVAILABLE / OUT OF STOCK
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8),
                             child: Container(
                               width: width,
-                              height: width * 0.3725,
+                              height: width * 0.325,
                               decoration: BoxDecoration(
-                                color: primary.withOpacity(0.4),
+                                color: primary2.withOpacity(0.75),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   // AVAILABLE
                                   SizedBox(
@@ -1301,8 +1303,8 @@ class _ProductPageState extends State<ProductPage> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            overflow: TextOverflow.ellipsis,
                                             "Available",
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               color: primaryDark,
                                               fontSize: width * 0.06,
@@ -1346,8 +1348,8 @@ class _ProductPageState extends State<ProductPage> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            overflow: TextOverflow.ellipsis,
                                             "Out Of Stock",
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               color: primaryDark,
                                               fontSize: width * 0.06,
@@ -1403,8 +1405,8 @@ class _ProductPageState extends State<ProductPage> {
                                 if (snapshot.hasError) {
                                   return const Center(
                                     child: Text(
-                                      overflow: TextOverflow.ellipsis,
                                       'Something went wrong',
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   );
                                 }
@@ -1436,60 +1438,83 @@ class _ProductPageState extends State<ProductPage> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Row(
-                                            children: [
-                                              // CATEGORY IMAGE
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                  4,
+                                          InkWell(
+                                            onTap: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: ((context) =>
+                                                      CategoryPage(
+                                                        categoryId: productData[
+                                                            'categoryId'],
+                                                        categoryName:
+                                                            productData[
+                                                                'categoryName'],
+                                                      )),
                                                 ),
-                                                child: Image.network(
-                                                  categoryExists
-                                                      ? productData[
-                                                                  'categoryId'] !=
-                                                              '0'
-                                                          ? categoryData[
-                                                              'imageUrl']
-                                                          : 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png'
-                                                      : 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
-                                                  fit: BoxFit.cover,
-                                                  width: categoryExists
-                                                      ? productData[
-                                                                  'categoryId'] !=
-                                                              '0'
-                                                          ? width * 0.15
-                                                          : width * 0.1
-                                                      : width * 0.1,
-                                                  height: categoryExists
-                                                      ? productData[
-                                                                  'categoryId'] !=
-                                                              '0'
-                                                          ? width * 0.15
-                                                          : width * 0.1
-                                                      : width * 0.1,
-                                                ),
-                                              ),
-                                              SizedBox(width: width * 0.05),
-                                              // CATEGORY NAME
-                                              SizedBox(
-                                                width: width * 0.4,
-                                                child: AutoSizeText(
-                                                  categoryExists
-                                                      ? productData[
-                                                          'categoryName']
-                                                      : 'No Category',
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  maxLines: 1,
-                                                  style: TextStyle(
-                                                    color: primaryDark,
-                                                    fontSize: width * 0.0575,
-                                                    fontWeight: FontWeight.w500,
+                                              );
+                                            },
+                                            customBorder:
+                                                RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                            splashColor: primary2,
+                                            child: Row(
+                                              children: [
+                                                // CATEGORY IMAGE
+                                                ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    4,
+                                                  ),
+                                                  child: Image.network(
+                                                    categoryExists
+                                                        ? productData[
+                                                                    'categoryId'] !=
+                                                                '0'
+                                                            ? categoryData[
+                                                                'imageUrl']
+                                                            : 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png'
+                                                        : 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
+                                                    fit: BoxFit.cover,
+                                                    width: categoryExists
+                                                        ? productData[
+                                                                    'categoryId'] !=
+                                                                '0'
+                                                            ? width * 0.14
+                                                            : width * 0.1
+                                                        : width * 0.1,
+                                                    height: categoryExists
+                                                        ? productData[
+                                                                    'categoryId'] !=
+                                                                '0'
+                                                            ? width * 0.14
+                                                            : width * 0.1
+                                                        : width * 0.1,
                                                   ),
                                                 ),
-                                              ),
-                                            ],
+                                                SizedBox(width: width * 0.05),
+                                                // CATEGORY NAME
+                                                SizedBox(
+                                                  width: width * 0.4,
+                                                  child: AutoSizeText(
+                                                    categoryExists
+                                                        ? productData[
+                                                            'categoryName']
+                                                        : 'No Category',
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 1,
+                                                    style: TextStyle(
+                                                      color: primaryDark,
+                                                      fontSize: width * 0.0575,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                           // CHANGE CATEGORY
                                           IconButton(
@@ -1785,8 +1810,8 @@ class _ProductPageState extends State<ProductPage> {
                                       SizedBox(
                                         width: width * 0.5,
                                         child: Text(
-                                          overflow: TextOverflow.ellipsis,
                                           "View All Products Insights",
+                                          overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             color: primaryDark2,
                                             fontSize: width * 0.04,
