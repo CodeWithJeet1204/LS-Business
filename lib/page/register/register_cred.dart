@@ -31,7 +31,7 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
   final TextEditingController confirmPasswordController =
       TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  String phoneButtonText = "SIGNUP";
+  String phoneText = "SIGNUP";
   String googleText = "Signup With GOOGLE";
   bool isGoogleRegistering = false;
   bool isEmailRegistering = false;
@@ -270,153 +270,129 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                               key: registerNumberFormKey,
                               child: Column(
                                 children: [
-                                  MyTextFormField(
-                                    hintText: "Phone Number",
-                                    controller: phoneController,
-                                    borderRadius: 16,
-                                    horizontalPadding:
-                                        MediaQuery.of(context).size.width *
-                                            0.066,
-                                    keyboardType: TextInputType.number,
-                                    autoFillHints: const [
-                                      AutofillHints.telephoneNumber
-                                    ],
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: width * 0.07,
+                                    ),
+                                    child: TextFormField(
+                                      autofocus: false,
+                                      controller: phoneController,
+                                      keyboardType: TextInputType.number,
+                                      maxLines: 1,
+                                      minLines: 1,
+                                      decoration: InputDecoration(
+                                        prefixText: '+91 ',
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          borderSide: BorderSide(
+                                            color: Colors.cyan.shade700,
+                                          ),
+                                        ),
+                                        hintText: 'Phone Number',
+                                      ),
+                                      validator: (value) {
+                                        if (value != null) {
+                                          if (value.isEmpty) {
+                                            return 'Please enter Phone Number';
+                                          } else {
+                                            if (value.length != 10) {
+                                              return 'Number must be 10 chars long';
+                                            }
+                                          }
+                                        }
+                                        return null;
+                                      },
+                                    ),
                                   ),
                                   const SizedBox(height: 8),
                                   MyButton(
-                                    text: phoneButtonText,
+                                    text: phoneText,
                                     onTap: () async {
                                       if (registerNumberFormKey.currentState!
                                           .validate()) {
                                         try {
                                           setState(() {
                                             isPhoneRegistering = true;
-                                            phoneButtonText = "Please Wait";
-                                          });
-                                          await FirebaseFirestore.instance
-                                              .collection('Business')
-                                              .doc('Owners')
-                                              .collection('Users')
-                                              .doc(_auth.currentUser!.uid)
-                                              .set({
-                                            'Phone Number':
-                                                phoneController.text.toString(),
-                                            'Image': null,
-                                            'Email': null,
-                                            'Name': null,
-                                            'uid': null,
-                                          });
-
-                                          await FirebaseFirestore.instance
-                                              .collection('Business')
-                                              .doc('Owners')
-                                              .collection('Shops')
-                                              .doc(_auth.currentUser!.uid)
-                                              .set({
-                                            "Name": null,
-                                            'Views': null,
-                                            'Favorites': null,
-                                            "GSTNumber": null,
-                                            "Address": null,
-                                            "Special Note": null,
-                                            "Industry": null,
-                                            "Image": null,
-                                            "Type": null,
-                                            'MembershipName': null,
-                                            'MembershipDuration': null,
-                                            'MembershipTime': null,
-                                            'deliveryAvailable': null,
-                                            'codAvailable': null,
-                                            'refundAvailable': null,
-                                            'replacementAvailable': null,
-                                            'giftWrapAvailable': null,
-                                            'bulkSellAvailable': null,
-                                            'gstInvoiceAvailable': null,
-                                            'membershipAvailable': null,
-                                            'deliveryRange': null,
-                                            'refundRange': null,
-                                            'replacementRange': null,
+                                            phoneText = "Please Wait";
                                           });
 
                                           // Register with Phone
                                           signInMethodProvider.chooseNumber();
-                                          if (phoneController.text
-                                              .contains("+91")) {
-                                            if (context.mounted) {
-                                              await auth.phoneSignIn(context,
-                                                  " ${phoneController.text}");
-                                            }
-                                          } else if (phoneController.text
-                                              .contains("+91 ")) {
-                                            if (context.mounted) {
-                                              await auth.phoneSignIn(context,
-                                                  phoneController.text);
-                                            }
-                                          } else {
-                                            setState(() {
-                                              isPhoneRegistering = true;
-                                            });
 
-                                            await _auth.verifyPhoneNumber(
-                                                phoneNumber:
-                                                    "+91 ${phoneController.text}",
-                                                verificationCompleted: (_) {
-                                                  setState(() {
-                                                    isPhoneRegistering = false;
-                                                  });
-                                                },
-                                                verificationFailed: (e) {
-                                                  if (context.mounted) {
-                                                    mySnackBar(
-                                                        context, e.toString());
-                                                  }
-                                                  setState(() {
-                                                    isPhoneRegistering = false;
-                                                    phoneButtonText = "SIGNUP";
-                                                  });
-                                                },
-                                                codeSent: (
-                                                  String verificationId,
-                                                  int? token,
-                                                ) {
-                                                  SystemChannels.textInput
-                                                      .invokeMethod(
-                                                          'TextInput.hide');
-                                                  Navigator.of(context).pop();
-                                                  Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          NumberVerifyPage(
-                                                        verificationId:
-                                                            verificationId,
-                                                        isLogging: false,
-                                                      ),
-                                                    ),
-                                                  );
-                                                  setState(() {
-                                                    isPhoneRegistering = false;
-                                                    phoneButtonText = "SIGNUP";
-                                                  });
-                                                },
-                                                codeAutoRetrievalTimeout: (e) {
-                                                  if (context.mounted) {
-                                                    mySnackBar(
-                                                        context, e.toString());
-                                                  }
-                                                  setState(() {
-                                                    isPhoneRegistering = false;
-                                                    phoneButtonText = "SIGNUP";
-                                                  });
+                                          setState(() {
+                                            isPhoneRegistering = true;
+                                            phoneText = "PLEASE WAIT";
+                                          });
+
+                                          await _auth.verifyPhoneNumber(
+                                              phoneNumber:
+                                                  "+91 ${phoneController.text}",
+                                              verificationCompleted: (_) {
+                                                setState(() {
+                                                  isPhoneRegistering = false;
                                                 });
-                                          }
+                                              },
+                                              verificationFailed: (e) {
+                                                if (context.mounted) {
+                                                  mySnackBar(
+                                                    context,
+                                                    e.toString(),
+                                                  );
+                                                }
+                                                setState(() {
+                                                  isPhoneRegistering = false;
+                                                  phoneText = "SIGNUP";
+                                                });
+                                              },
+                                              codeSent: (
+                                                String verificationId,
+                                                int? token,
+                                              ) {
+                                                SystemChannels.textInput
+                                                    .invokeMethod(
+                                                  'TextInput.hide',
+                                                );
+                                                setState(() {
+                                                  isPhoneRegistering = false;
+                                                  phoneText = "SIGNUP";
+                                                });
+                                                Navigator.of(context).pop();
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        NumberVerifyPage(
+                                                      verificationId:
+                                                          verificationId,
+                                                      isLogging: false,
+                                                      phoneNumber:
+                                                          phoneController.text
+                                                              .toString(),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              codeAutoRetrievalTimeout: (e) {
+                                                if (context.mounted) {
+                                                  mySnackBar(
+                                                    context,
+                                                    e.toString(),
+                                                  );
+                                                }
+                                                setState(() {
+                                                  isPhoneRegistering = false;
+                                                  phoneText = "SIGNUP";
+                                                });
+                                              });
+
                                           setState(() {
                                             isPhoneRegistering = false;
-                                            phoneButtonText = "SIGNUP";
+                                            phoneText = "SIGNUP";
                                           });
                                         } catch (e) {
                                           setState(() {
                                             isPhoneRegistering = false;
-                                            phoneButtonText = "SIGNUP";
+                                            phoneText = "SIGNUP";
                                           });
                                           if (context.mounted) {
                                             mySnackBar(context, e.toString());
@@ -782,14 +758,16 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                                   ),
                                   const SizedBox(height: 8),
                                   MyButton(
-                                    text: phoneButtonText,
+                                    text: phoneText,
                                     onTap: () async {
+                                      print('a');
                                       if (registerNumberFormKey.currentState!
                                           .validate()) {
+                                        print('b');
                                         try {
                                           setState(() {
                                             isPhoneRegistering = true;
-                                            phoneButtonText = "Please Wait";
+                                            phoneText = "Please Wait";
                                           });
                                           await FirebaseFirestore.instance
                                               .collection('Business')
@@ -870,7 +848,7 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                                                   }
                                                   setState(() {
                                                     isPhoneRegistering = false;
-                                                    phoneButtonText = "SIGNUP";
+                                                    phoneText = "SIGNUP";
                                                   });
                                                 },
                                                 codeSent: (
@@ -888,12 +866,15 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                                                         verificationId:
                                                             verificationId,
                                                         isLogging: false,
+                                                        phoneNumber:
+                                                            phoneController.text
+                                                                .toString(),
                                                       ),
                                                     ),
                                                   );
                                                   setState(() {
                                                     isPhoneRegistering = false;
-                                                    phoneButtonText = "SIGNUP";
+                                                    phoneText = "SIGNUP";
                                                   });
                                                 },
                                                 codeAutoRetrievalTimeout: (e) {
@@ -903,23 +884,25 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                                                   }
                                                   setState(() {
                                                     isPhoneRegistering = false;
-                                                    phoneButtonText = "SIGNUP";
+                                                    phoneText = "SIGNUP";
                                                   });
                                                 });
                                           }
                                           setState(() {
                                             isPhoneRegistering = false;
-                                            phoneButtonText = "SIGNUP";
+                                            phoneText = "SIGNUP";
                                           });
                                         } catch (e) {
                                           setState(() {
                                             isPhoneRegistering = false;
-                                            phoneButtonText = "SIGNUP";
+                                            phoneText = "SIGNUP";
                                           });
                                           if (context.mounted) {
                                             mySnackBar(context, e.toString());
                                           }
                                         }
+                                      } else {
+                                        print(1234);
                                       }
                                     },
                                     horizontalPadding: width < screenSize

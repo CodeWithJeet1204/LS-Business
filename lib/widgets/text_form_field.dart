@@ -13,6 +13,7 @@ class MyTextFormField extends StatefulWidget {
     this.isPassword = false,
     this.keyboardType = TextInputType.text,
     this.autoFocus = false,
+    this.maxLines = 1,
   });
 
   final String hintText;
@@ -22,6 +23,7 @@ class MyTextFormField extends StatefulWidget {
   final double borderRadius;
   final double horizontalPadding;
   final double verticalPadding;
+  final int? maxLines;
   final TextInputType? keyboardType;
   final TextEditingController controller;
 
@@ -48,6 +50,8 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
                     controller: widget.controller,
                     keyboardType: widget.keyboardType,
                     obscureText: isShowPassword,
+                    maxLines: widget.maxLines,
+                    minLines: 1,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius:
@@ -81,6 +85,7 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
                   icon: isShowPassword
                       ? const Icon(FeatherIcons.eye)
                       : const Icon(FeatherIcons.eyeOff),
+                  tooltip: isShowPassword ? 'Show Password' : 'Hide Password',
                 ),
               ],
             )
@@ -89,6 +94,8 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
               autofocus: widget.autoFocus,
               controller: widget.controller,
               keyboardType: widget.keyboardType,
+              maxLines: widget.maxLines,
+              minLines: 1,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(widget.borderRadius),
@@ -106,8 +113,8 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
                         return 'Invalid email';
                       }
                     } else if (widget.hintText == "Phone Number") {
-                      if (value.length < 10) {
-                        return 'Phone No. should be at least 10 characters';
+                      if (value.length != 10) {
+                        return 'Nnumber should be 10 chars long';
                       }
                     } else if (widget.hintText == "GST Number") {
                       if (value.length < 15) {

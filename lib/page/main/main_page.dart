@@ -8,7 +8,6 @@ import 'package:find_easy/page/main/profile/details/business_details_page.dart';
 import 'package:find_easy/page/main/profile/profile_page.dart';
 import 'package:find_easy/page/register/login_page.dart';
 import 'package:find_easy/page/register/membership.dart';
-import 'package:find_easy/page/register/register_cred.dart';
 import 'package:find_easy/page/register/user_register_details.dart';
 import 'package:find_easy/page/register/verify/email_verify.dart';
 import 'package:find_easy/utils/colors.dart';
@@ -40,17 +39,20 @@ class _MainPageState extends State<MainPage> {
     const ProfilePage(),
   ];
 
+  // INIT STATE
   @override
   void initState() {
     detailsAdded();
     super.initState();
   }
 
+  // IS PAYED
   Future<bool> isPayed() async {
     final isPayed = await getIsPayed();
     return isPayed;
   }
 
+  // DETAILS ADDED
   void detailsAdded() async {
     final getUserDetailsAdded = await store
         .collection('Business')
@@ -69,12 +71,16 @@ class _MainPageState extends State<MainPage> {
     if (!(await isPayed())) {
       detailsPage = const LoginPage();
     } else {
-      if (getUserDetailsAdded['Email'] == null &&
+      if (getUserDetailsAdded['Email'] == null ||
           getUserDetailsAdded['Phone Number'] == null) {
-        detailsPage = const RegisterCredPage();
-      } else if (getUserDetailsAdded['Email'] != null &&
-          !auth.currentUser!.emailVerified) {
-        detailsPage = const EmailVerifyPage();
+        detailsPage = const UserRegisterDetailsPage();
+      } else if ((getUserDetailsAdded['Phone Number'] != null &&
+          getUserDetailsAdded['numberVerified'] != true)) {
+        if (!auth.currentUser!.emailVerified) {
+          detailsPage = const EmailVerifyPage();
+        } else {
+          detailsPage = null;
+        }
       } else if ((getUserDetailsAdded['Image'] == null)) {
         detailsPage = const UserRegisterDetailsPage();
       } else if (getUserDetailsAdded['Image'] != null &&
@@ -95,11 +101,10 @@ class _MainPageState extends State<MainPage> {
       }
     }
 
-    setState(() {
-      // Trigger rebuild after setting detailsPage
-    });
+    setState(() {});
   }
 
+  // CHANGE PAGE
   void changePage(value) {
     setState(() {
       current = value;

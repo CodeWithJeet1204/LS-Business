@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
+import 'package:find_easy/page/register/login_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/small_text_container.dart';
+import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +16,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final auth = FirebaseAuth.instance;
+  final _auth = FirebaseAuth.instance;
   final ScrollController scrollController = ScrollController();
   bool hideNameOverflow = true;
   bool showbtn = true;
@@ -50,11 +52,26 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             TextButton(
               onPressed: () async {
-                await auth.signOut();
+                try {
+                  await _auth.signOut().then(
+                        (value) => Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: ((context) => LoginPage()),
+                          ),
+                          (route) => false,
+                        ),
+                      );
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                  }
+                } on FirebaseAuthException catch (e) {
+                  mySnackBar(context, e.toString());
+                }
+                await _auth.signOut();
+                _auth.currentUser!.reload();
                 if (context.mounted) {
                   Navigator.of(context).pop();
                 }
-                auth.currentUser!.reload();
               },
               child: const Text(
                 overflow: TextOverflow.ellipsis,

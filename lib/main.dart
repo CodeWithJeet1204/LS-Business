@@ -3,6 +3,7 @@ import 'package:find_easy/page/intro/intro_page_view.dart';
 import 'package:find_easy/page/main/add/brand/add_brand_page.dart';
 import 'package:find_easy/page/main/add/category/add_category_page.dart';
 import 'package:find_easy/page/main/analytics/shop_analytics_page.dart';
+import 'package:find_easy/page/main/main_page.dart';
 import 'package:find_easy/page/main/profile/data/all_brand_page.dart';
 import 'package:find_easy/page/main/profile/data/all_discounts_page.dart';
 import 'package:find_easy/page/main/profile/data/all_post_page.dart';
@@ -10,7 +11,6 @@ import 'package:find_easy/page/main/profile/data/all_product_page.dart';
 import 'package:find_easy/page/main/profile/details/business_details_page.dart';
 import 'package:find_easy/page/main/profile/data/all_categories_page.dart';
 import 'package:find_easy/page/main/profile/details/owner_details_page.dart';
-import 'package:find_easy/page/main/splash_screen.dart';
 import 'package:find_easy/page/register/login_page.dart';
 import 'package:find_easy/page/main/profile/profile_page.dart';
 import 'package:find_easy/page/register/register_cred.dart';
@@ -45,6 +45,11 @@ void main() async {
       storageBucket: 'find-easy-1204.appspot.com',
     ),
   );
+  if (FirebaseAuth.instance.currentUser != null) {
+    print(FirebaseAuth.instance.currentUser!.email);
+  } else {
+    print("No Current User");
+  }
   runApp(
     MultiProvider(
       providers: [
@@ -144,48 +149,33 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: isFirstLaunch
           ? const IntroPageView()
-          : StreamBuilder(
-              stream: FirebaseAuth.instance.userChanges(),
+          : StreamBuilder<User?>(
+              stream: FirebaseAuth.instance.authStateChanges(),
               builder: ((context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.active) {
-                  if (snapshot.hasData) {
-                    return const Stack(
-                      children: [
-                        SplashScreen(isLoggedIn: true),
-                        ConnectivityNotificationWidget(),
-                      ],
-                    );
-                  } else if (snapshot.hasData &&
-                      FirebaseAuth.instance.currentUser!.email != null &&
-                      !FirebaseAuth.instance.currentUser!.emailVerified) {
-                    return const EmailVerifyPage();
-                  } else if (snapshot.hasError) {
-                    return const Center(
-                      child: Text(
-                        "Some error occured\nClose & Open the app again",
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    );
-                  } else if (!snapshot.hasData) {
-                    return const Stack(
-                      children: [
-                        SplashScreen(isLoggedIn: false),
-                        ConnectivityNotificationWidget(),
-                      ],
-                    );
-                  }
+                if (snapshot.hasData) {
+                  return const Stack(
+                    children: [
+                      MainPage(),
+                      ConnectivityNotificationWidget(),
+                    ],
+                  );
+                } else if (snapshot.hasData &&
+                    FirebaseAuth.instance.currentUser!.email != null &&
+                    !FirebaseAuth.instance.currentUser!.emailVerified) {
+                  return const EmailVerifyPage();
+                } else if (snapshot.hasError) {
+                  return const Center(
+                    child: Text(
+                      "Some error occured\nClose & Open the app again",
+                    ),
+                  );
                 }
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: primaryDark,
-                  ),
-                );
+                return LoginPage();
               }),
             ),
     );
   }
 }
-
 
 // TODO: No of Text Posts and Images Post
 // TODO: Shorts

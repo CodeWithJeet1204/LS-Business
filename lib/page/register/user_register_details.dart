@@ -39,6 +39,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
   bool isNext = false;
   String? uploadImagePath;
 
+  // DISPOSE
   @override
   void dispose() {
     emailController.dispose();

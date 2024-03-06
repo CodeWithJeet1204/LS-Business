@@ -1,4 +1,8 @@
+// ignore_for_file: unnecessary_null_comparison
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/firebase/auth_methods.dart';
+import 'package:find_easy/page/main/profile/profile_page.dart';
 import 'package:find_easy/page/register/verify/number_verify.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/utils/size.dart';
@@ -31,12 +35,142 @@ class _LoginPageState extends State<LoginPage> {
   bool isEmailLogging = false;
   bool isPhoneLogging = false;
 
+  // DISPOSE
   @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
     phoneController.dispose();
     super.dispose();
+  }
+
+  // LOGIN WITH EMAIL
+  Future<void> loginWithEmail() async {
+    if (emailLoginFormKey.currentState!.validate()) {
+      try {
+        setState(() {
+          isEmailLogging = true;
+        });
+        UserCredential? user =
+            await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text.toString(),
+          password: passwordController.text.toString(),
+        );
+        if (user != null) {
+          mySnackBar(
+            context,
+            'Signed In',
+          );
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: ((context) => ProfilePage()),
+            ),
+            (route) => false,
+          );
+        } else {
+          mySnackBar(context, 'Some error occured');
+        }
+        setState(() {
+          isEmailLogging = false;
+        });
+      } catch (e) {
+        setState(() {
+          isEmailLogging = false;
+        });
+        if (context.mounted) {
+          if (context.mounted) {
+            mySnackBar(context, e.toString());
+          }
+        }
+      }
+    }
+  }
+
+  // LOGIN WITH PHONE NUMBER
+  Future<void> loginWithPhone() async {
+    if (numberLoginFormKey.currentState!.validate()) {
+      Future<bool> isPhoneRegistered() async {
+        final phoneSnap = await FirebaseFirestore.instance
+            .collection('Business')
+            .doc('Owners')
+            .collection('Users')
+            .where('Phone Number', isEqualTo: phoneController.text)
+            .get();
+
+        return phoneSnap.docs.isNotEmpty;
+      }
+
+      Future<void> signInIfRegistered() async {
+        final isRegistered = await isPhoneRegistered();
+        if (isRegistered) {
+          try {
+            setState(() {
+              isPhoneLogging = true;
+              phoneText = "PLEASE WAIT";
+            });
+            // Register with Phone
+
+            setState(() {
+              isPhoneLogging = true;
+            });
+            await FirebaseAuth.instance.verifyPhoneNumber(
+                phoneNumber: "+91 ${phoneController.text}",
+                timeout: const Duration(seconds: 120),
+                verificationCompleted: (PhoneAuthCredential credential) async {
+                  await FirebaseAuth.instance.signInWithCredential(credential);
+                  setState(() {
+                    isPhoneLogging = false;
+                  });
+                },
+                verificationFailed: (e) {
+                  if (context.mounted) {
+                    mySnackBar(context, e.toString());
+                  }
+                  setState(() {
+                    isPhoneLogging = false;
+                  });
+                },
+                codeSent: (String verificationId, int? token) {
+                  SystemChannels.textInput.invokeMethod('TextInput.hide');
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => NumberVerifyPage(
+                        verificationId: verificationId,
+                        isLogging: true,
+                        phoneNumber: phoneController.text.toString(),
+                      ),
+                    ),
+                  );
+                  setState(() {
+                    isPhoneLogging = false;
+                  });
+                },
+                codeAutoRetrievalTimeout: (e) {
+                  if (context.mounted) {
+                    mySnackBar(context, e.toString());
+                  }
+                  isPhoneLogging = false;
+                });
+
+            setState(() {
+              isPhoneLogging = false;
+            });
+          } catch (e) {
+            setState(() {
+              isPhoneLogging = false;
+            });
+            if (context.mounted) {
+              mySnackBar(context, e.toString());
+            }
+          }
+        } else {
+          mySnackBar(context, 'You have not registered with this phone number');
+        }
+      }
+
+      await signInIfRegistered();
+    }
   }
 
   @override
@@ -96,45 +230,7 @@ class _LoginPageState extends State<LoginPage> {
                                   const SizedBox(height: 8),
                                   MyButton(
                                     text: "LOGIN",
-                                    onTap: () async {
-                                      if (emailLoginFormKey.currentState!
-                                          .validate()) {
-                                        try {
-                                          setState(() {
-                                            isEmailLogging = true;
-                                          });
-                                          // Login
-                                          await _auth
-                                              .signInWithEmailAndPassword(
-                                            email:
-                                                emailController.text.toString(),
-                                            password: passwordController.text
-                                                .toString(),
-                                          );
-                                          setState(() {});
-                                          // if (context.mounted) {
-                                          //   Navigator.of(context)
-                                          //       .popAndPushNamed('/profile');
-                                          // }
-                                          setState(() {
-                                            isEmailLogging = false;
-                                          });
-                                        } catch (e) {
-                                          setState(() {
-                                            isEmailLogging = false;
-                                          });
-                                          if (context.mounted) {
-                                            if (e !=
-                                                "Null check operator used on a null value") {
-                                              if (context.mounted) {
-                                                mySnackBar(
-                                                    context, e.toString());
-                                              }
-                                            }
-                                          }
-                                        }
-                                      }
-                                    },
+                                    onTap: loginWithEmail,
                                     horizontalPadding: width * 0.066,
                                     isLoading: isEmailLogging,
                                   ),
@@ -157,99 +253,45 @@ class _LoginPageState extends State<LoginPage> {
                               key: numberLoginFormKey,
                               child: Column(
                                 children: [
-                                  MyTextFormField(
-                                    hintText: "Phone Number",
-                                    controller: phoneController,
-                                    borderRadius: 16,
-                                    horizontalPadding: width * 0.066,
-                                    keyboardType: TextInputType.number,
-                                    autoFillHints: const [
-                                      AutofillHints.telephoneNumberDevice
-                                    ],
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: width * 0.07,
+                                    ),
+                                    child: TextFormField(
+                                      autofocus: false,
+                                      controller: phoneController,
+                                      keyboardType: TextInputType.number,
+                                      maxLines: 1,
+                                      minLines: 1,
+                                      decoration: InputDecoration(
+                                        prefixText: '+91 ',
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          borderSide: BorderSide(
+                                            color: Colors.cyan.shade700,
+                                          ),
+                                        ),
+                                        hintText: 'Phone Number',
+                                      ),
+                                      validator: (value) {
+                                        if (value != null) {
+                                          if (value.isEmpty) {
+                                            return 'Please enter Phone Number';
+                                          } else {
+                                            if (value.length != 10) {
+                                              return 'Number must be 10 chars long';
+                                            }
+                                          }
+                                        }
+                                        return null;
+                                      },
+                                    ),
                                   ),
                                   const SizedBox(height: 8),
                                   MyButton(
                                     text: phoneText,
-                                    onTap: () async {
-                                      if (numberLoginFormKey.currentState!
-                                          .validate()) {
-                                        try {
-                                          setState(() {
-                                            isPhoneLogging = true;
-                                            phoneText = "PLEASE WAIT";
-                                          });
-                                          // Register with Phone
-                                          if (phoneController.text
-                                              .contains("+91")) {
-                                            await auth.phoneSignIn(context,
-                                                " ${phoneController.text}");
-                                          } else if (phoneController.text
-                                              .contains("+91 ")) {
-                                            await auth.phoneSignIn(
-                                                context, phoneController.text);
-                                          } else {
-                                            setState(() {
-                                              isPhoneLogging = true;
-                                            });
-                                            await _auth.verifyPhoneNumber(
-                                                phoneNumber:
-                                                    "+91 ${phoneController.text}",
-                                                verificationCompleted: (_) {
-                                                  setState(() {
-                                                    isPhoneLogging = false;
-                                                  });
-                                                },
-                                                verificationFailed: (e) {
-                                                  if (context.mounted) {
-                                                    mySnackBar(
-                                                        context, e.toString());
-                                                  }
-                                                  setState(() {
-                                                    isPhoneLogging = false;
-                                                  });
-                                                },
-                                                codeSent:
-                                                    (String verificationId,
-                                                        int? token) {
-                                                  SystemChannels.textInput
-                                                      .invokeMethod(
-                                                          'TextInput.hide');
-                                                  Navigator.of(context).pop();
-                                                  Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          NumberVerifyPage(
-                                                        verificationId:
-                                                            verificationId,
-                                                        isLogging: true,
-                                                      ),
-                                                    ),
-                                                  );
-                                                  setState(() {
-                                                    isPhoneLogging = false;
-                                                  });
-                                                },
-                                                codeAutoRetrievalTimeout: (e) {
-                                                  if (context.mounted) {
-                                                    mySnackBar(
-                                                        context, e.toString());
-                                                  }
-                                                  isPhoneLogging = false;
-                                                });
-                                          }
-                                          setState(() {
-                                            isPhoneLogging = false;
-                                          });
-                                        } catch (e) {
-                                          setState(() {
-                                            isPhoneLogging = false;
-                                          });
-                                          if (context.mounted) {
-                                            mySnackBar(context, e.toString());
-                                          }
-                                        }
-                                      }
-                                    },
+                                    onTap: loginWithPhone,
                                     horizontalPadding: width * 0.066,
                                     isLoading: isPhoneLogging,
                                   ),
@@ -407,46 +449,7 @@ class _LoginPageState extends State<LoginPage> {
                                         const SizedBox(height: 8),
                                         MyButton(
                                           text: "LOGIN",
-                                          onTap: () async {
-                                            if (emailLoginFormKey.currentState!
-                                                .validate()) {
-                                              try {
-                                                setState(() {
-                                                  isEmailLogging = true;
-                                                });
-                                                // Login
-                                                await _auth
-                                                    .signInWithEmailAndPassword(
-                                                  email: emailController.text
-                                                      .toString(),
-                                                  password: passwordController
-                                                      .text
-                                                      .toString(),
-                                                );
-                                                setState(() {});
-                                                // if (context.mounted) {
-                                                //   Navigator.of(context)
-                                                //       .popAndPushNamed('/profile');
-                                                // }
-                                                setState(() {
-                                                  isEmailLogging = false;
-                                                });
-                                              } catch (e) {
-                                                setState(() {
-                                                  isEmailLogging = false;
-                                                });
-                                                if (context.mounted) {
-                                                  if (e !=
-                                                      "Null check operator used on a null value") {
-                                                    if (context.mounted) {
-                                                      mySnackBar(context,
-                                                          e.toString());
-                                                    }
-                                                  }
-                                                }
-                                              }
-                                            }
-                                          },
+                                          onTap: loginWithEmail,
                                           horizontalPadding: width < screenSize
                                               ? width * 0.066
                                               : width * 0.05,
@@ -547,6 +550,10 @@ class _LoginPageState extends State<LoginPage> {
                                                               verificationId:
                                                                   verificationId,
                                                               isLogging: true,
+                                                              phoneNumber:
+                                                                  phoneController
+                                                                      .text
+                                                                      .toString(),
                                                             ),
                                                           ),
                                                         );
@@ -658,26 +665,31 @@ class _LoginPageState extends State<LoginPage> {
                           const SizedBox(height: 120),
 
                           // DONT HAVE AN ACCOUNT ? TEXT
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              const Text(
-                                "Don't have an account?",
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              MyTextButton(
-                                onPressed: () {
-                                  SystemChannels.textInput
-                                      .invokeMethod('TextInput.hide');
-                                  Navigator.of(context)
-                                      .popAndPushNamed('/registerPay');
-                                },
-                                text: "REGISTER",
-                                textColor: buttonColor,
-                                fontSize: width * 0.0125,
-                              ),
-                            ],
+                          Padding(
+                            padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).viewInsets.bottom,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  "Don't have an account?",
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                MyTextButton(
+                                  onPressed: () {
+                                    SystemChannels.textInput
+                                        .invokeMethod('TextInput.hide');
+                                    Navigator.of(context)
+                                        .popAndPushNamed('/registerPay');
+                                  },
+                                  text: "REGISTER",
+                                  textColor: buttonColor,
+                                  fontSize: width * 0.0125,
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),

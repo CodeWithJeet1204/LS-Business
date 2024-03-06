@@ -6,14 +6,13 @@ void mySnackBar(BuildContext context, String text) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(
-        overflow: TextOverflow.ellipsis,
         text,
         style: TextStyle(
           color: primaryDark,
         ),
       ),
       backgroundColor: primary,
-      dismissDirection: DismissDirection.vertical,
+      dismissDirection: DismissDirection.down,
       behavior: SnackBarBehavior.floating,
     ),
   );

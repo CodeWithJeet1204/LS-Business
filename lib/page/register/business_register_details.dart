@@ -259,6 +259,8 @@ class _BusinessRegisterDetailsPageState
                       horizontalPadding:
                           MediaQuery.of(context).size.width * 0.055,
                       autoFillHints: null,
+                      maxLines: 10,
+                      keyboardType: TextInputType.multiline,
                     ),
                     const SizedBox(height: 20),
 

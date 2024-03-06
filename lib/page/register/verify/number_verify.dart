@@ -14,8 +14,10 @@ class NumberVerifyPage extends StatefulWidget {
     super.key,
     required this.verificationId,
     required this.isLogging,
+    required this.phoneNumber,
   });
   final String verificationId;
+  final String phoneNumber;
   final bool isLogging;
 
   @override
@@ -26,6 +28,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
   final TextEditingController otpController = TextEditingController();
   bool isOTPVerifying = false;
 
+  // DISPOSE
   @override
   void dispose() {
     otpController.dispose();
@@ -76,7 +79,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                         color: buttonColor,
                       ),
                       child: const Center(
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator(color: white),
                       ),
                     )
                   : MyButton(
@@ -93,14 +96,52 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                             });
 
                             await auth.signInWithCredential(credential);
-                            await FirebaseFirestore.instance
-                                .collection('Business')
-                                .doc('Owners')
-                                .collection('Users')
-                                .doc(FirebaseAuth.instance.currentUser!.uid)
-                                .update({
-                              'numberVerified': true,
-                            });
+                            if (!widget.isLogging) {
+                              await FirebaseFirestore.instance
+                                  .collection('Business')
+                                  .doc('Owners')
+                                  .collection('Users')
+                                  .doc(auth.currentUser!.uid)
+                                  .set({
+                                'Phone Number': widget.phoneNumber,
+                                'Image': null,
+                                'Email': null,
+                                'Name': null,
+                                'uid': null,
+                                'numberVerified': true,
+                              });
+
+                              await FirebaseFirestore.instance
+                                  .collection('Business')
+                                  .doc('Owners')
+                                  .collection('Shops')
+                                  .doc(auth.currentUser!.uid)
+                                  .set({
+                                "Name": null,
+                                'Views': null,
+                                'Favorites': null,
+                                "GSTNumber": null,
+                                "Address": null,
+                                "Special Note": null,
+                                "Industry": null,
+                                "Image": null,
+                                "Type": null,
+                                'MembershipName': null,
+                                'MembershipDuration': null,
+                                'MembershipTime': null,
+                                'deliveryAvailable': null,
+                                'codAvailable': null,
+                                'refundAvailable': null,
+                                'replacementAvailable': null,
+                                'giftWrapAvailable': null,
+                                'bulkSellAvailable': null,
+                                'gstInvoiceAvailable': null,
+                                'membershipAvailable': null,
+                                'deliveryRange': null,
+                                'refundRange': null,
+                                'replacementRange': null,
+                              });
+                            }
 
                             setState(() {
                               isOTPVerifying = false;

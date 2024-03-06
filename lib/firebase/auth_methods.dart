@@ -86,7 +86,7 @@ class AuthMethods {
 
   // GOOGLE SIGN IN
   final GoogleSignIn googleSignIn = GoogleSignIn(
-    hostedDomain: "", // Prevent automatic sign-in
+    hostedDomain: "",
   );
 
   /*Future<void>*/ signInWithGoogle(BuildContext context) async {
@@ -146,6 +146,7 @@ class AuthMethods {
               builder: (context) => NumberVerifyPage(
                 verificationId: verificationId,
                 isLogging: false,
+                phoneNumber: phoneNumber,
               ),
             ),
           );
@@ -153,17 +154,6 @@ class AuthMethods {
         codeAutoRetrievalTimeout: (String verificationId) {
           mySnackBar(context, verificationId.toString());
         });
-  }
-
-  // ANONYMOUS SIGN IN
-  Future<void> signInAnonymously(BuildContext context) async {
-    try {
-      await _auth.signInAnonymously();
-    } on FirebaseAuthException catch (e) {
-      if (context.mounted) {
-        mySnackBar(context, e.message!);
-      }
-    }
   }
 
   // SIGN OUT

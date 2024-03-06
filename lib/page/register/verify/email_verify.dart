@@ -98,7 +98,6 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              overflow: TextOverflow.ellipsis,
               _auth.currentUser!.email!,
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -108,7 +107,6 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
               ),
             ),
             Text(
-              overflow: TextOverflow.ellipsis,
               "An email has been sent to your account, pls click on it\nTo verify your account\n\nIf you want to resend email click below\n\n(It may take some time for email to arrive)",
               textAlign: TextAlign.center,
               style: TextStyle(
