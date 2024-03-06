@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/page/main/main_page.dart';
 import 'package:find_easy/provider/add_product_provider.dart';
@@ -6,8 +8,10 @@ import 'package:find_easy/widgets/check_box_container.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:find_easy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class AddProductPage3 extends StatefulWidget {
   const AddProductPage3({
@@ -42,6 +46,27 @@ class _AddProductPage3State extends State<AddProductPage3> {
       setState(() {
         isSaving = true;
       });
+      final List<String> _imageDownloadUrl = [];
+
+      for (File img in (provider.productInfo['imageFiles'] as List<File>)) {
+        try {
+          Reference ref = FirebaseStorage.instance
+              .ref()
+              .child('Data/Products')
+              .child(const Uuid().v4());
+          await ref.putFile(img).whenComplete(() async {
+            await ref.getDownloadURL().then((value) {
+              setState(() {
+                _imageDownloadUrl.add(value);
+              });
+            });
+          });
+        } catch (e) {
+          if (context.mounted) {
+            mySnackBar(context, e.toString());
+          }
+        }
+      }
 
       provider.add(
         {
@@ -56,9 +81,11 @@ class _AddProductPage3State extends State<AddProductPage3> {
           'deliveryRange': deliveryRange,
           'refundRange': refundRange,
           'replacementRange': replacementRange,
+          'images': _imageDownloadUrl,
         },
         true,
       );
+      provider.remove('imageFiles');
 
       await store
           .collection('Business')

@@ -8,4 +8,8 @@ class AddProductProvider with ChangeNotifier {
   void add(Map<String, dynamic> info, bool isAdding) {
     isAdding ? _productInfo.addAll(info) : _productInfo = info;
   }
+
+  void remove(String name) {
+    _productInfo.remove(name);
+  }
 }

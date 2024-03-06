@@ -43,7 +43,6 @@ class _AddProductPage1State extends State<AddProductPage1> {
   int currentImageIndex = 0;
   String? selectedCategory = 'No Category Selected';
   String? selectedCategoryId = '0';
-  final List<String> _imageDownloadUrl = [];
   final ImagePicker picker = ImagePicker();
   List<String> otherInfoList = [];
   bool isFit = false;
@@ -52,6 +51,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
   String? searchedCategory;
   bool isAvailable = true;
 
+  // DISPOSE
   @override
   void dispose() {
     nameController.dispose();
@@ -127,25 +127,6 @@ class _AddProductPage1State extends State<AddProductPage1> {
           setState(() {
             isSaving = true;
           });
-          for (File img in _image) {
-            try {
-              Reference ref = fireStorage
-                  .ref()
-                  .child('Data/Products')
-                  .child(const Uuid().v4());
-              await ref.putFile(img).whenComplete(() async {
-                await ref.getDownloadURL().then((value) {
-                  setState(() {
-                    _imageDownloadUrl.add(value);
-                  });
-                });
-              });
-            } catch (e) {
-              if (context.mounted) {
-                mySnackBar(context, e.toString());
-              }
-            }
-          }
 
           final String productId = const Uuid().v4();
           productProvider.add(
@@ -163,7 +144,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
               'productLikesTimestamp': [],
               'productWishlist': 0,
               'productId': productId,
-              'images': _imageDownloadUrl,
+              'imageFiles': _image,
               'datetime': Timestamp.fromMillisecondsSinceEpoch(
                 DateTime.now().millisecondsSinceEpoch,
               ),
