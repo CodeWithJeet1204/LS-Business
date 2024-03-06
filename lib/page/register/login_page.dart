@@ -2,7 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/firebase/auth_methods.dart';
-import 'package:find_easy/page/main/profile/profile_page.dart';
+import 'package:find_easy/page/main/main_page.dart';
 import 'package:find_easy/page/register/verify/number_verify.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/utils/size.dart';
@@ -63,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
           );
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-              builder: ((context) => ProfilePage()),
+              builder: ((context) => MainPage()),
             ),
             (route) => false,
           );
@@ -310,12 +310,19 @@ class _LoginPageState extends State<LoginPage> {
                                 googleText = "PLEASE WAIT";
                                 isGoogleLogging = true;
                               });
-                              // Sign In With Google
                               await AuthMethods().signInWithGoogle(context);
                               // SystemChannels.textInput
                               //     .invokeMethod('TextInput.hide');
                               if (FirebaseAuth.instance.currentUser != null) {
-                                setState(() {});
+                                setState(() {
+                                  isGoogleLogging = false;
+                                });
+                                Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                    builder: ((context) => MainPage()),
+                                  ),
+                                  (route) => false,
+                                );
                               } else {
                                 if (context.mounted) {
                                   mySnackBar(context, "Some error occured!");

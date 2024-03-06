@@ -54,45 +54,50 @@ class _MainPageState extends State<MainPage> {
 
   // DETAILS ADDED
   void detailsAdded() async {
-    final getUserDetailsAdded = await store
-        .collection('Business')
-        .doc('Owners')
-        .collection('Users')
-        .doc(auth.currentUser!.uid)
-        .get();
+    final DocumentSnapshot<Map<String, dynamic>?>? getUserDetailsAddedDatas =
+        await store
+            .collection('Business')
+            .doc('Owners')
+            .collection('Users')
+            .doc(auth.currentUser!.uid)
+            .get();
 
-    final getBusinessDetailsAdded = await store
-        .collection('Business')
-        .doc('Owners')
-        .collection('Shops')
-        .doc(auth.currentUser!.uid)
-        .get();
+    final Map<String, dynamic>? getUserDetailsAddedData =
+        getUserDetailsAddedDatas?.data();
+
+    final DocumentSnapshot<Map<String, dynamic>?>? getBusinessDetailsAdded =
+        await store
+            .collection('Business')
+            .doc('Owners')
+            .collection('Shops')
+            .doc(auth.currentUser!.uid)
+            .get();
 
     if (!(await isPayed())) {
       detailsPage = const LoginPage();
     } else {
-      if (getUserDetailsAdded['Email'] == null ||
-          getUserDetailsAdded['Phone Number'] == null) {
+      if (getUserDetailsAddedData!['Email'] == null ||
+          getUserDetailsAddedData['Phone Number'] == null) {
         detailsPage = const UserRegisterDetailsPage();
-      } else if ((getUserDetailsAdded['Phone Number'] != null &&
-          getUserDetailsAdded['numberVerified'] != true)) {
+      } else if ((getUserDetailsAddedData['Phone Number'] != null &&
+          getUserDetailsAddedData['numberVerified'] != true)) {
         if (!auth.currentUser!.emailVerified) {
           detailsPage = const EmailVerifyPage();
         } else {
           detailsPage = null;
         }
-      } else if ((getUserDetailsAdded['Image'] == null)) {
+      } else if ((getUserDetailsAddedData['Image'] == null)) {
         detailsPage = const UserRegisterDetailsPage();
-      } else if (getUserDetailsAdded['Image'] != null &&
-          getBusinessDetailsAdded['GSTNumber'] == null) {
+      } else if (getUserDetailsAddedData['Image'] != null &&
+          getBusinessDetailsAdded!['GSTNumber'] == null) {
         detailsPage = const BusinessDetailsPage();
-      } else if (getUserDetailsAdded['Image'] != null &&
-          getBusinessDetailsAdded['GSTNumber'] != null &&
+      } else if (getUserDetailsAddedData['Image'] != null &&
+          getBusinessDetailsAdded!['GSTNumber'] != null &&
           (getBusinessDetailsAdded['MembershipName'] == null ||
               getBusinessDetailsAdded['MembershipEndDateTime'] == null)) {
         detailsPage = const SelectMembershipPage();
       } else if (DateTime.now().isAfter(
-          (getBusinessDetailsAdded['MembershipEndDateTime'] as Timestamp)
+          (getBusinessDetailsAdded!['MembershipEndDateTime'] as Timestamp)
               .toDate())) {
         mySnackBar(context, 'Your Membership Has Expired');
         detailsPage = const SelectMembershipPage();

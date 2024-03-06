@@ -272,6 +272,7 @@ final Map<String, List<List<dynamic>>> businessCategoryProperties = {
       [''],
       TextInputType.text,
       1,
+      false
     ],
     [
       'Benefits',
@@ -280,6 +281,7 @@ final Map<String, List<List<dynamic>>> businessCategoryProperties = {
       [''],
       TextInputType.text,
       1,
+      false
     ],
     [
       'Ingredients',
@@ -288,6 +290,7 @@ final Map<String, List<List<dynamic>>> businessCategoryProperties = {
       [''],
       TextInputType.text,
       1,
+      false
     ],
     [
       'Color',
@@ -296,6 +299,7 @@ final Map<String, List<List<dynamic>>> businessCategoryProperties = {
       [''],
       TextInputType.text,
       1,
+      false
     ],
     [
       'Brand Preference',
@@ -304,6 +308,7 @@ final Map<String, List<List<dynamic>>> businessCategoryProperties = {
       [''],
       TextInputType.text,
       1,
+      false
     ],
     [
       'Packaging Preference',
@@ -312,6 +317,7 @@ final Map<String, List<List<dynamic>>> businessCategoryProperties = {
       [''],
       TextInputType.text,
       1,
+      false
     ],
   ],
   'Furniture': [

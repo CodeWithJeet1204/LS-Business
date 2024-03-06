@@ -383,37 +383,40 @@ class _AddProductPage1State extends State<AddProductPage1> {
                         )
                       : SizedOverflowBox(
                           size: Size(width, width),
-                          child: Container(
-                            width: width,
-                            height: width,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: primaryDark,
-                                width: 3,
-                              ),
+                          child: InkWell(
+                            onTap: addProductImages,
+                            customBorder: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(32),
                             ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                IconButton(
-                                  onPressed: addProductImages,
-                                  icon: Icon(
+                            child: Container(
+                              width: width,
+                              height: width,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: primaryDark,
+                                  width: 3,
+                                ),
+                                borderRadius: BorderRadius.circular(32),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
                                     FeatherIcons.upload,
                                     size: width * 0.4,
                                   ),
-                                ),
-                                const SizedBox(height: 20),
-                                Text(
-                                  "Select Image",
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: width * 0.09,
-                                    fontWeight: FontWeight.w500,
+                                  SizedBox(height: width * 0.09),
+                                  Text(
+                                    "Select Image",
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: width * 0.09,
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
