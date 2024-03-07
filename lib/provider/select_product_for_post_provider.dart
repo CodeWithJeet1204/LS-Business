@@ -1,23 +1,31 @@
+import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
 
 class SelectProductForPostProvider with ChangeNotifier {
-  List<String> _selectedProduct = [];
+  List<String> _selectedProducts = [];
 
-  List<String> get selectedProduct => _selectedProduct;
+  List<String> get selectedProducts => _selectedProducts;
 
-  void changeSelectedProduct(String id, String name) {
-    if (_selectedProduct.contains(id)) {
-      _selectedProduct = [];
+  void addSelectedProduct(
+      String id, int length, bool isTextPost, BuildContext context) {
+    if (_selectedProducts.contains(id)) {
+      _selectedProducts.remove(id);
     } else {
-      _selectedProduct = [];
-      _selectedProduct = [id, name];
+      if (_selectedProducts.length < length) {
+        _selectedProducts.add(id);
+      } else {
+        mySnackBar(
+          context,
+          'You have reached the limit of remaining ${isTextPost ? 'Text' : 'Image'} Posts Remaining',
+        );
+      }
     }
 
     notifyListeners();
   }
 
   void clear() {
-    _selectedProduct = [];
+    _selectedProducts = [];
   }
 
   // ---

@@ -32,14 +32,48 @@ class _AllPostsPageState extends State<AllPostsPage> {
   }
 
   // DELETE POST
-  void deletePost(String postId) async {
+  Future<void> deletePost(String postId, bool isTextPost) async {
     try {
+      int textPostRemaining = 0;
+      int imagePostRemaining = 0;
+
+      final productData = await store
+          .collection('Business')
+          .doc('Owners')
+          .collection('Shops')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get();
+
+      setState(() {
+        textPostRemaining = productData['noOfTextPosts'];
+        imagePostRemaining = productData['noOfImagePosts'];
+      });
+
       await store
           .collection('Business')
           .doc('Data')
           .collection('Posts')
           .doc(postId)
           .delete();
+
+      isTextPost
+          ? await store
+              .collection('Business')
+              .doc('Owners')
+              .collection('Shops')
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .update({
+              'noOfTextPosts': textPostRemaining + 1,
+            })
+          : await store
+              .collection('Business')
+              .doc('Owners')
+              .collection('Shops')
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .update({
+              'noOfImagePosts': imagePostRemaining + 1,
+            });
+
       if (context.mounted) {
         mySnackBar(context, "Post Deleted");
       }
@@ -51,7 +85,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
   }
 
   // CONFIRM DELETE
-  void confirmDelete(String postId) async {
+  void confirmDelete(String postId, bool isTextPost) async {
     showDialog(
       context: context,
       builder: ((context) {
@@ -80,12 +114,12 @@ class _AllPostsPageState extends State<AllPostsPage> {
             ),
             TextButton(
               onPressed: () async {
-                deletePost(postId);
+                await deletePost(postId, isTextPost);
                 Navigator.of(context).pop();
               },
-              child: const Text(
-                overflow: TextOverflow.ellipsis,
+              child: Text(
                 'YES',
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.w500,
@@ -335,6 +369,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                 onPressed: () {
                                                   confirmDelete(
                                                     postData['postId'],
+                                                    postData['isTextPost'],
                                                   );
                                                 },
                                                 icon: Icon(
@@ -463,6 +498,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                           onPressed: () {
                                             confirmDelete(
                                               postData['postId'],
+                                              postData['isTextPost'],
                                             );
                                           },
                                           icon: Icon(

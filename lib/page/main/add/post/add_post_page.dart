@@ -33,107 +33,126 @@ class _AddPostPageState extends State<AddPostPage> {
   }
 
   // POST
-  Future<String> post(
-      SelectProductForPostProvider postprovider, bool isTextPost) async {
-    String res = "Some error occured";
-    try {
-      bool postDoesntExists = true;
-      final previousPosts = await store
-          .collection('Business')
-          .doc('Data')
-          .collection('Posts')
-          .where('postVendorId',
-              isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-          .get();
-
-      for (QueryDocumentSnapshot doc in previousPosts.docs) {
-        if (doc['postProductId'] == postprovider.selectedProduct[0] &&
-            isTextPost == doc['isTextPost']) {
-          if (context.mounted) {
-            mySnackBar(
-              context,
-              isTextPost
-                  ? "Text Post Already Exists for this product"
-                  : "Image Post Already Exists for this product",
-            );
-          }
-          postDoesntExists = false;
-        }
-      }
-
-      if (postDoesntExists) {
-        setState(() {
-          isPosting = true;
-        });
-
-        final productDocSnap = await store
-            .collection('Business')
-            .doc('Data')
-            .collection('Products')
-            .doc(postprovider.selectedProduct[0])
-            .get();
-
-        final String postId = const Uuid().v4();
-
-        Map<String, dynamic> postInfo = {
-          'postId': postId,
-          'postProductId': productDocSnap['productId'],
-          'postProductName': productDocSnap['productName'],
-          'postProductPrice': productDocSnap['productPrice'],
-          'postCategoryId': productDocSnap['categoryId'],
-          'postProductDescription': productDocSnap['productDescription'],
-          'postProductBrand': productDocSnap['productBrand'],
-          'postProductImages': isTextPost ? null : productDocSnap['images'],
-          'postVendorId': productDocSnap['vendorId'],
-          'postViews': 0,
-          'postLikes': 0,
-          'postComments': {},
-          'postDateTime': Timestamp.fromMillisecondsSinceEpoch(
-            DateTime.now().millisecondsSinceEpoch,
-          ),
-          'isTextPost': isTextPost,
-        };
-
-        await store
+  Future<void> post(
+    SelectProductForPostProvider postProvider,
+    bool isTextPost,
+  ) async {
+    if (((isTextPost ? textPostRemaining : imagePostRemaining) -
+            postProvider.selectedProducts.length) >=
+        0) {
+      try {
+        bool postDoesntExists = true;
+        final previousPosts = await store
             .collection('Business')
             .doc('Data')
             .collection('Posts')
-            .doc(postId)
-            .set(postInfo);
+            .where('postVendorId',
+                isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+            .get();
 
-        await store
-            .collection('Business')
-            .doc('Owners')
-            .collection('Shops')
-            .doc(FirebaseAuth.instance.currentUser!.uid)
-            .update({
-          'noOfTextPosts':
-              isTextPost ? textPostRemaining - 1 : textPostRemaining,
-          'noOfImagePosts':
-              !isTextPost ? imagePostRemaining - 1 : textPostRemaining,
-        });
+        for (QueryDocumentSnapshot doc in previousPosts.docs) {
+          postProvider.selectedProducts.forEach((id) {
+            if (doc['postProductId'] == id && isTextPost == doc['isTextPost']) {
+              if (context.mounted) {
+                mySnackBar(
+                  context,
+                  isTextPost
+                      ? "Text Post Already Exists for one of the product"
+                      : "Image Post Already Exists for the product",
+                );
+              }
+              postDoesntExists = false;
+            }
+          });
+        }
 
+        if (postDoesntExists) {
+          setState(() {
+            isPosting = true;
+          });
+
+          postProvider.selectedProducts.forEach((id) async {
+            print(postProvider.selectedProducts.length);
+            print('-');
+            print(isTextPost);
+            print('-');
+            print(postProvider.selectedProducts.length);
+            print('-');
+            await store
+                .collection('Business')
+                .doc('Owners')
+                .collection('Shops')
+                .doc(FirebaseAuth.instance.currentUser!.uid)
+                .update({
+              'noOfTextPosts': isTextPost
+                  ? textPostRemaining - postProvider.selectedProducts.length
+                  : textPostRemaining,
+              'noOfImagePosts': !isTextPost
+                  ? imagePostRemaining - postProvider.selectedProducts.length
+                  : imagePostRemaining,
+            });
+
+            final productDocSnap = await store
+                .collection('Business')
+                .doc('Data')
+                .collection('Products')
+                .doc(id)
+                .get();
+
+            final String postId = const Uuid().v4();
+
+            Map<String, dynamic> postInfo = {
+              'postId': postId,
+              'postProductId': productDocSnap['productId'],
+              'postProductName': productDocSnap['productName'],
+              'postProductPrice': productDocSnap['productPrice'],
+              'postCategoryId': productDocSnap['categoryId'],
+              'postProductDescription': productDocSnap['productDescription'],
+              'postProductBrand': productDocSnap['productBrand'],
+              'postProductImages': isTextPost ? null : productDocSnap['images'],
+              'postVendorId': productDocSnap['vendorId'],
+              'postViews': 0,
+              'postLikes': 0,
+              'postComments': {},
+              'postDateTime': Timestamp.fromMillisecondsSinceEpoch(
+                DateTime.now().millisecondsSinceEpoch,
+              ),
+              'isTextPost': isTextPost,
+            };
+
+            await store
+                .collection('Business')
+                .doc('Data')
+                .collection('Posts')
+                .doc(postId)
+                .set(postInfo);
+          });
+
+          setState(() {
+            isPosting = false;
+          });
+
+          postProvider.clear();
+
+          if (context.mounted) {
+            mySnackBar(context, "Posted");
+            Navigator.of(context).pop();
+          }
+        }
+      } catch (e) {
         setState(() {
           isPosting = false;
         });
-        res = "";
-
         if (context.mounted) {
-          mySnackBar(context, "Posted");
-          Navigator.of(context).pop();
+          mySnackBar(context, e.toString());
         }
       }
-    } catch (e) {
-      res = e.toString();
-      setState(() {
-        isPosting = false;
-      });
-      if (context.mounted) {
-        mySnackBar(context, e.toString());
-      }
+    } else {
+      mySnackBar(
+        context,
+        'You have ${isTextPost ? textPostRemaining : imagePostRemaining} ${isTextPost ? 'Text' : 'Image'} Posts remaining, remove ${-(textPostRemaining - postProvider.selectedProducts.length)} product to continue',
+      );
     }
-
-    return res;
   }
 
   // GET NO OF POSTS
@@ -155,8 +174,8 @@ class _AddPostPageState extends State<AddPostPage> {
   Widget build(BuildContext context) {
     final selectedProductProvider =
         Provider.of<SelectProductForPostProvider>(context);
-    final List<String> selectedProduct =
-        selectedProductProvider.selectedProduct;
+    final List<String> selectedProducts =
+        selectedProductProvider.selectedProducts;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -168,17 +187,14 @@ class _AddPostPageState extends State<AddPostPage> {
         actions: [
           MyTextButton(
             onPressed: () async {
-              if (selectedProduct.isEmpty ||
+              if (selectedProducts.isEmpty ||
                   selectedProductProvider.isTextPost == null) {
                 return mySnackBar(context, "Select a Post Type");
               } else {
-                String res = await post(
+                await post(
                   selectedProductProvider,
                   selectedProductProvider.isTextPost!,
                 );
-                if (res == "") {
-                  selectedProductProvider.clear();
-                }
               }
             },
             text: "DONE",
@@ -254,7 +270,6 @@ class _AddPostPageState extends State<AddPostPage> {
                           ),
                         ),
                         Text(
-                          overflow: TextOverflow.ellipsis,
                           "Then the product details will automatically be added",
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -279,18 +294,22 @@ class _AddPostPageState extends State<AddPostPage> {
               Opacity(
                 opacity: textPostRemaining > 0 ? 1 : 0.5,
                 child: MyButton(
-                  text: selectedProduct.length < 2
+                  text: selectedProducts.length < 1
                       ? "TEXT POST"
                       : selectedProductProvider.isTextPost == true
-                          ? "TEXT POST: ${selectedProduct[1]}"
+                          ? "TEXT POSTS: ${selectedProducts.length}"
                           : "TEXT POST",
                   onTap: textPostRemaining > 0
                       ? () {
                           selectedProductProvider.changePostType(true);
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: ((context) =>
-                                  const SelectProductForPostPage()),
+                              builder: ((context) => SelectProductForPostPage(
+                                    isTextPost:
+                                        selectedProductProvider.isTextPost ==
+                                            true,
+                                    postRemaining: textPostRemaining,
+                                  )),
                             ),
                           );
                         }
@@ -304,18 +323,22 @@ class _AddPostPageState extends State<AddPostPage> {
               Opacity(
                 opacity: imagePostRemaining > 0 ? 1 : 0.5,
                 child: MyButton(
-                  text: selectedProduct.length < 2
+                  text: selectedProducts.length < 1
                       ? "IMAGE POST"
                       : selectedProductProvider.isTextPost == false
-                          ? "IMAGE POST: ${selectedProduct[1]}"
+                          ? "IMAGE POSTS: ${selectedProducts.length}"
                           : "IMAGE POST",
                   onTap: imagePostRemaining > 0
                       ? () {
                           selectedProductProvider.changePostType(false);
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: ((context) =>
-                                  const SelectProductForPostPage()),
+                              builder: ((context) => SelectProductForPostPage(
+                                    isTextPost:
+                                        selectedProductProvider.isTextPost ==
+                                            true,
+                                    postRemaining: imagePostRemaining,
+                                  )),
                             ),
                           );
                         }
