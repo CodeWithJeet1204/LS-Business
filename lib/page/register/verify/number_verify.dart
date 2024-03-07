@@ -170,7 +170,9 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                           }
                         } else {
                           mySnackBar(
-                              context, "OTP should be 6 characters long");
+                            context,
+                            "OTP should be 6 characters long",
+                          );
                         }
                         return;
                       },

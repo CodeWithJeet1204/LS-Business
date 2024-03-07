@@ -37,6 +37,7 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
   bool isEmailRegistering = false;
   bool isPhoneRegistering = false;
 
+  // DISPOSE
   @override
   void dispose() {
     emailController.dispose();
@@ -44,12 +45,6 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
     confirmPasswordController.dispose();
     phoneController.dispose();
     super.dispose();
-  }
-
-  // NAVIGATE TO EMAIL VERIFY SCREEN
-  void navigateToEmailVerify() {
-    SystemChannels.textInput.invokeMethod('TextInput.hide');
-    Navigator.of(context).popAndPushNamed('/emailVerify');
   }
 
   @override
@@ -744,6 +739,7 @@ class _RegisterCredPageState extends State<RegisterCredPage> {
                               key: registerNumberFormKey,
                               child: Column(
                                 children: [
+                                  // TODO: Add circle animation to show that number is getting verified
                                   MyTextFormField(
                                     hintText: "Phone Number",
                                     controller: phoneController,

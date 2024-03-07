@@ -45,11 +45,7 @@ void main() async {
       storageBucket: 'find-easy-1204.appspot.com',
     ),
   );
-  if (FirebaseAuth.instance.currentUser != null) {
-    print(FirebaseAuth.instance.currentUser!.email);
-  } else {
-    print("No Current User");
-  }
+
   runApp(
     MultiProvider(
       providers: [
@@ -90,6 +86,11 @@ void main() async {
       child: const MyApp(),
     ),
   );
+  if (FirebaseAuth.instance.currentUser != null) {
+    print(FirebaseAuth.instance.currentUser!.email);
+  } else {
+    print("No Current User");
+  }
 }
 
 class MyApp extends StatelessWidget {

@@ -313,8 +313,9 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                           isBasicSelected = false;
                           isGoldSelected = false;
                           isPremiumSelected = true;
-                          currentPremiumPrice =
-                              int.parse(showPrices("PREMIUM"));
+                          currentPremiumPrice = int.parse(
+                            showPrices("PREMIUM"),
+                          );
                           currentMembership = "PREMIUM";
                         });
                       }

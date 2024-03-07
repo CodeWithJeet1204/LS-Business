@@ -1,31 +1,15 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/page/register/user_register_details.dart';
 import 'package:find_easy/page/register/verify/number_verify.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:find_easy/models/user.dart' as model;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   User get user => _auth.currentUser!;
-
-  Future<model.User> getUserDetails() async {
-    User currentUser = _auth.currentUser!;
-
-    DocumentSnapshot snap = await _firestore
-        .collection('Business')
-        .doc('Owners')
-        .collection('Users')
-        .doc(currentUser.uid)
-        .get();
-
-    return model.User.fromSnap(snap);
-  }
 
   // STATE PERSISTENCE
   Stream<User?> get authState => FirebaseAuth.instance.authStateChanges();

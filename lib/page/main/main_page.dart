@@ -8,6 +8,7 @@ import 'package:find_easy/page/main/profile/details/business_details_page.dart';
 import 'package:find_easy/page/main/profile/profile_page.dart';
 import 'package:find_easy/page/register/login_page.dart';
 import 'package:find_easy/page/register/membership.dart';
+import 'package:find_easy/page/register/select_business_category.dart';
 import 'package:find_easy/page/register/user_register_details.dart';
 import 'package:find_easy/page/register/verify/email_verify.dart';
 import 'package:find_easy/utils/colors.dart';
@@ -73,6 +74,25 @@ class _MainPageState extends State<MainPage> {
             .doc(auth.currentUser!.uid)
             .get();
 
+    // Future<bool> getCommonCategories(String type) async {
+    //   final getCommonCategoriesDetailsAdded = await store
+    //       .collection('Business')
+    //       .doc('Data')
+    //       .collection('Categories')
+    //       .doc(type)
+    //       .get();
+
+    //   print(getCommonCategoriesDetailsAdded);
+
+    //   print(getCommonCategoriesDetailsAdded.data());
+
+    //   if (getCommonCategoriesDetailsAdded.data()!.isNotEmpty) {
+    //     return false;
+    //   } else {
+    //     return true;
+    //   }
+    // }
+
     if (!(await isPayed())) {
       detailsPage = const LoginPage();
     } else {
@@ -91,13 +111,20 @@ class _MainPageState extends State<MainPage> {
       } else if (getUserDetailsAddedData['Image'] != null &&
           getBusinessDetailsAdded!['GSTNumber'] == null) {
         detailsPage = const BusinessDetailsPage();
-      } else if (getUserDetailsAddedData['Image'] != null &&
-          getBusinessDetailsAdded!['GSTNumber'] != null &&
+      } else if (getBusinessDetailsAdded!['GSTNumber'] != null &&
+          getBusinessDetailsAdded['Type'] == null) {
+        detailsPage = SelectBusinessCategoryPage();
+      } /* else if (getBusinessDetailsAdded['Type'] != null &&
+          await getCommonCategories(getBusinessDetailsAdded['Type'])) {
+        detailsPage = SelectBusinessCategoryPage();
+      }*/
+      else if (getUserDetailsAddedData['Image'] != null &&
+          getBusinessDetailsAdded['GSTNumber'] != null &&
           (getBusinessDetailsAdded['MembershipName'] == null ||
               getBusinessDetailsAdded['MembershipEndDateTime'] == null)) {
         detailsPage = const SelectMembershipPage();
       } else if (DateTime.now().isAfter(
-          (getBusinessDetailsAdded!['MembershipEndDateTime'] as Timestamp)
+          (getBusinessDetailsAdded['MembershipEndDateTime'] as Timestamp)
               .toDate())) {
         mySnackBar(context, 'Your Membership Has Expired');
         detailsPage = const SelectMembershipPage();
