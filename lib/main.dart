@@ -13,7 +13,7 @@ import 'package:find_easy/page/main/profile/data/all_categories_page.dart';
 import 'package:find_easy/page/main/profile/details/owner_details_page.dart';
 import 'package:find_easy/page/register/login_page.dart';
 import 'package:find_easy/page/main/profile/profile_page.dart';
-import 'package:find_easy/page/register/register_cred.dart';
+import 'package:find_easy/page/register/register_method_page.dart';
 import 'package:find_easy/page/register/register_pay.dart';
 import 'package:find_easy/page/register/verify/email_verify.dart';
 import 'package:find_easy/provider/add_product_provider.dart';
@@ -135,7 +135,7 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => const ProfilePage(),
         '/login': (context) => const LoginPage(),
         '/registerPay': (context) => const RegisterPayPage(),
-        '/registerCred': (context) => const RegisterCredPage(),
+        '/registerCred': (context) => const RegisterMethodPage(),
         '/ownerDetails': (context) => const OwnerDetailsPage(),
         '/businessDetails': (context) => const BusinessDetailsPage(),
         '/addCategory': (context) => const AddCategoryPage(),

@@ -7,7 +7,7 @@ import 'package:find_easy/page/main/discount/add_discount_page.dart';
 import 'package:find_easy/page/main/profile/details/business_details_page.dart';
 import 'package:find_easy/page/main/profile/profile_page.dart';
 import 'package:find_easy/page/register/login_page.dart';
-import 'package:find_easy/page/register/membership.dart';
+import 'package:find_easy/page/register/membership_page.dart';
 import 'package:find_easy/page/register/select_business_category.dart';
 import 'package:find_easy/page/register/user_register_details.dart';
 import 'package:find_easy/page/register/verify/email_verify.dart';
@@ -78,7 +78,7 @@ class _MainPageState extends State<MainPage> {
     //   final getCommonCategoriesDetailsAdded = await store
     //       .collection('Business')
     //       .doc('Data')
-    //       .collection('Categories')
+    //       .collection('Category')
     //       .doc(type)
     //       .get();
 

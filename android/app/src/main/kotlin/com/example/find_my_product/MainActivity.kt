@@ -1,4 +1,4 @@
-package com.example.find_easy
+package com.mycompany.findeasy
 
 import io.flutter.embedding.android.FlutterActivity
 

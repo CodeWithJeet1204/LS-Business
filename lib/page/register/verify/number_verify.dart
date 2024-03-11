@@ -129,17 +129,6 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                                 'MembershipName': null,
                                 'MembershipDuration': null,
                                 'MembershipTime': null,
-                                'deliveryAvailable': null,
-                                'codAvailable': null,
-                                'refundAvailable': null,
-                                'replacementAvailable': null,
-                                'giftWrapAvailable': null,
-                                'bulkSellAvailable': null,
-                                'gstInvoiceAvailable': null,
-                                'membershipAvailable': null,
-                                'deliveryRange': null,
-                                'refundRange': null,
-                                'replacementRange': null,
                               });
                             }
 

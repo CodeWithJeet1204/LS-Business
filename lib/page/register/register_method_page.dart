@@ -16,14 +16,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-class RegisterCredPage extends StatefulWidget {
-  const RegisterCredPage({super.key});
+class RegisterMethodPage extends StatefulWidget {
+  const RegisterMethodPage({super.key});
 
   @override
-  State<RegisterCredPage> createState() => _RegisterCredPageState();
+  State<RegisterMethodPage> createState() => _RegisterMethodPageState();
 }
 
-class _RegisterCredPageState extends State<RegisterCredPage> {
+class _RegisterMethodPageState extends State<RegisterMethodPage> {
   final GlobalKey<FormState> registerEmailFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> registerNumberFormKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();

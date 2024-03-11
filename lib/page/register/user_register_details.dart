@@ -86,40 +86,37 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
               ),
               const SizedBox(height: 40),
 
-              Column(
-                children: [
-                  isImageSelected
-                      ? Stack(
-                          alignment: Alignment.bottomRight,
-                          children: [
-                            // IMAGE NOT CHOSEN
-                            CircleAvatar(
-                              radius: width * 0.14,
-                              backgroundImage: FileImage(_image!),
-                            ),
-                            IconButton.filledTonal(
-                              icon: const Icon(Icons.camera_alt_outlined),
-                              iconSize: width * 0.09,
-                              tooltip: "Change User Picture",
-                              onPressed: selectImage,
-                              color: primaryDark,
-                            ),
-                          ],
-                        )
-                      // IMAGE CHOSEN
-                      : CircleAvatar(
-                          radius: 50,
-                          child: IconButton(
-                            icon: const Icon(
-                              Icons.camera_alt_outlined,
-                              size: 60,
-                            ),
-                            onPressed: selectImage,
-                          ),
+              // IMAGE
+              isImageSelected
+                  ? Stack(
+                      alignment: Alignment.bottomRight,
+                      children: [
+                        // IMAGE NOT CHOSEN
+                        CircleAvatar(
+                          radius: width * 0.14,
+                          backgroundImage: FileImage(_image!),
                         ),
-                  const SizedBox(height: 12),
-                ],
-              ),
+                        IconButton.filledTonal(
+                          icon: const Icon(Icons.camera_alt_outlined),
+                          iconSize: width * 0.09,
+                          tooltip: "Change User Picture",
+                          onPressed: selectImage,
+                          color: primaryDark,
+                        ),
+                      ],
+                    )
+                  // IMAGE CHOSEN
+                  : CircleAvatar(
+                      radius: 50,
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.camera_alt_outlined,
+                          size: 60,
+                        ),
+                        onPressed: selectImage,
+                      ),
+                    ),
+              const SizedBox(height: 12),
 
               Form(
                 key: userFormKey,

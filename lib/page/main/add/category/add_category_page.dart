@@ -268,37 +268,40 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                           )
                         : SizedOverflowBox(
                             size: Size(width, width * 0.9),
-                            child: Container(
-                              width: width,
-                              height: width * 0.9,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: primaryDark,
-                                  width: 3,
-                                ),
+                            child: InkWell(
+                              onTap: selectImage,
+                              customBorder: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
                               ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  IconButton(
-                                    onPressed: selectImage,
-                                    icon: Icon(
+                              child: Container(
+                                width: width,
+                                height: width * 0.9,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: primaryDark,
+                                    width: 3,
+                                  ),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
                                       FeatherIcons.upload,
                                       size: width * 0.33,
                                     ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    overflow: TextOverflow.ellipsis,
-                                    "Select Image",
-                                    style: TextStyle(
-                                      fontSize: width * 0.08,
-                                      fontWeight: FontWeight.w500,
+                                    SizedBox(height: width * 0.1125),
+                                    Text(
+                                      overflow: TextOverflow.ellipsis,
+                                      "Select Image",
+                                      style: TextStyle(
+                                        fontSize: width * 0.08,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -335,7 +338,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                       ),
                       child: MyButton(
                         text:
-                            "Add Products (${productsAddedToCategoryProvider.selectedProducts.length})",
+                            "Add Products - ${productsAddedToCategoryProvider.selectedProducts.length}",
                         onTap: addProduct,
                         isLoading: false,
                         horizontalPadding: 0,

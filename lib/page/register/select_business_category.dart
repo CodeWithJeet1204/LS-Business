@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/models/common_categories.dart';
-import 'package:find_easy/page/register/membership.dart';
+import 'package:find_easy/page/register/membership_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/head_text.dart';
@@ -70,7 +70,7 @@ class _SelectBusinessCategoryPageState
               await store
                   .collection('Business')
                   .doc('Data')
-                  .collection('Categories')
+                  .collection('Category')
                   .doc(selectedCategory)
                   .collection(subCategory[0])
                   .doc(auth.currentUser!.uid)

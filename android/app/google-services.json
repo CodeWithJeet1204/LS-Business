@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:851488762803:android:eb89214a6ee6397b3979c6",
         "android_client_info": {
-          "package_name": "com.example.find_easy"
+          "package_name": "com.mycompany.findeasy"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "851488762803-ps9kqonltefmc06fjj2et4ro8j67m5nc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.find_easy",
+            "package_name": "com.mycompany.findeasy",
             "certificate_hash": "b91a26ed5cfd1237d4bc061dc6fec8df84e76827"
           }
         },
@@ -46,7 +46,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:851488762803:android:1efab776cf60da9f3979c6",
         "android_client_info": {
-          "package_name": "com.example.find_easy_user"
+          "package_name": "com.mycompany.findeasy_user"
         }
       },
       "oauth_client": [
@@ -54,7 +54,7 @@
           "client_id": "851488762803-l5j5khk8p1029fq2qnmirrflnfaftg1o.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.find_easy_user",
+            "package_name": "com.mycompany.findeasy_user",
             "certificate_hash": "b91a26ed5cfd1237d4bc061dc6fec8df84e76827"
           }
         },
