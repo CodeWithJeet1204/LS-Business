@@ -6,7 +6,6 @@ product description
 product brand
 product images
 product id
-product tags
 
 vendor id
 
@@ -15,3 +14,5 @@ post comments
 likes
 views
 
+
+No of times product tapped ???

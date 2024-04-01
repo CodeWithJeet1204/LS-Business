@@ -266,13 +266,12 @@ class _AddProductPage2State extends State<AddProductPage2> {
           isSaving = false;
         });
         if (context.mounted) {
-          Navigator.of(context).pushAndRemoveUntil(
+          Navigator.of(context).push(
             MaterialPageRoute(
               builder: ((context) => AddProductPage3(
                     productId: widget.productId,
                   )),
             ),
-            (route) => false,
           );
         }
       } catch (e) {

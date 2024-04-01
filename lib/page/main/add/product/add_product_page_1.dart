@@ -159,7 +159,6 @@ class _AddProductPage1State extends State<AddProductPage1> {
             isSaving = false;
           });
           if (context.mounted) {
-            mySnackBar(context, "Basic Info Added");
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: ((context) => AddProductPage2(productId: productId)),

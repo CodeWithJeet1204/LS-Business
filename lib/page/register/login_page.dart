@@ -61,6 +61,9 @@ class _LoginPageState extends State<LoginPage> {
             context,
             'Signed In',
           );
+          setState(() {
+            isEmailLogging = false;
+          });
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder: ((context) => MainPage()),
@@ -68,11 +71,8 @@ class _LoginPageState extends State<LoginPage> {
             (route) => false,
           );
         } else {
-          mySnackBar(context, 'Some error occured');
+          return mySnackBar(context, 'Some error occured');
         }
-        setState(() {
-          isEmailLogging = false;
-        });
       } catch (e) {
         setState(() {
           isEmailLogging = false;
