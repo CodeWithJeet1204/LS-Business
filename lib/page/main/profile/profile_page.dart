@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
+import 'package:find_easy/models/special_categories.dart';
 import 'package:find_easy/page/register/login_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/small_text_container.dart';
@@ -108,7 +109,35 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         actions: [
           IconButton(
-            onPressed: signOut,
+            // onPressed: signOut,
+            onPressed: () async {
+              Future<void> addSpecialCategories(String shopType) async {
+                final subCategories = specialCategories[shopType];
+
+                final CollectionReference<Map<String, dynamic>>
+                    specialCategoriesCollection = FirebaseFirestore.instance
+                        .collection('Business')
+                        .doc('Special Categories')
+                        .collection(shopType);
+
+                subCategories!.forEach((subcategory, imageUrl) {
+                  specialCategoriesCollection.doc(subcategory).set({
+                    'specialCategoryName': subcategory,
+                    'specialCategoryImageUrl': imageUrl,
+                    'vendorIds': [],
+                  });
+                });
+              }
+
+              Future<void> addAllSpecialCategories() async {
+                specialCategories.forEach((shopType, subCategories) async {
+                  await addSpecialCategories(shopType);
+                  print(shopType);
+                });
+              }
+
+              await addAllSpecialCategories();
+            },
             icon: const Icon(
               FeatherIcons.logOut,
               color: primaryDark,
@@ -160,7 +189,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   radius: width * 0.1195,
                                   backgroundColor: primary2,
                                   backgroundImage: CachedNetworkImageProvider(
-                                    shopData['Image'],
+                                    shopData['Image'] ??
+                                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpFN1Tvo80rYwu-eXsDNNzsuPITOdtyRPlYIsIqKaIbw&s',
                                   ),
                                 ),
                                 SizedBox(

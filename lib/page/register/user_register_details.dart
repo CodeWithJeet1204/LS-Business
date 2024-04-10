@@ -262,7 +262,76 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                   }
                                 }
                               } else {
-                                mySnackBar(context, "Select Profile Image");
+                                setState(() {
+                                  isNext = true;
+                                });
+
+                                final getUser = await store
+                                    .collection('Business')
+                                    .doc('Owners')
+                                    .collection('Users')
+                                    .doc(auth.currentUser!.uid)
+                                    .get();
+                                if (getUser['Name'] != null &&
+                                    getUser['Email'] != null) {
+                                  await store
+                                      .collection('Business')
+                                      .doc('Owners')
+                                      .collection('Users')
+                                      .doc(auth.currentUser!.uid)
+                                      .update({
+                                    "Phone Number": phoneController.text,
+                                    "Image":
+                                        'https://upload.wikimedia.org/wikipedia/commons/a/af/Default_avatar_profile.jpg',
+                                  });
+                                } else if (getUser['Phone Number'] != null) {
+                                  await store
+                                      .collection('Business')
+                                      .doc('Owners')
+                                      .collection('Users')
+                                      .doc(auth.currentUser!.uid)
+                                      .update({
+                                    "uid": uid,
+                                    "Email": emailController.text.toString(),
+                                    "Name": nameController.text.toString(),
+                                    "Image":
+                                        'https://upload.wikimedia.org/wikipedia/commons/a/af/Default_avatar_profile.jpg',
+                                  });
+                                } else if (getUser['Email'] != null &&
+                                    getUser['Name'] == null) {
+                                  await store
+                                      .collection('Business')
+                                      .doc('Owners')
+                                      .collection('Users')
+                                      .doc(auth.currentUser!.uid)
+                                      .update({
+                                    "uid": uid,
+                                    "Phone Number":
+                                        phoneController.text.toString(),
+                                    "Image":
+                                        'https://upload.wikimedia.org/wikipedia/commons/a/af/Default_avatar_profile.jpg',
+                                    "Name": nameController.text.toString(),
+                                  });
+
+                                  setState(() {
+                                    isNext = false;
+                                  });
+                                  SystemChannels.textInput
+                                      .invokeMethod('TextInput.hide');
+                                  if (context.mounted) {
+                                    Navigator.of(context).pop();
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const BusinessRegisterDetailsPage(),
+                                      ),
+                                    );
+                                  }
+                                } else {
+                                  if (context.mounted) {
+                                    mySnackBar(context, "Some error occured");
+                                  }
+                                }
                               }
                             } else {
                               mySnackBar(

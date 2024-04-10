@@ -104,7 +104,9 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
 
   // ADD DISCOUNT
   void addDiscount(
-      SelectBrandForDiscountProvider provider, List<String> brandIdList) async {
+    SelectBrandForDiscountProvider provider,
+    List<String> brandIdList,
+  ) async {
     // End date should be after start date
     if (discountKey.currentState!.validate()) {
       if (startDate == null) {

@@ -116,6 +116,7 @@ class MyApp extends StatelessWidget {
           iconTheme: IconThemeData(
             color: primaryDark,
             weight: 1,
+
           ),
         ),
         iconButtonTheme: const IconButtonThemeData(

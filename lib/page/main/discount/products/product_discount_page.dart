@@ -193,6 +193,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                 ]
               : productIdList,
           'categories': [],
+          'brands': [],
           'vendorId': auth.currentUser!.uid,
         });
         provider.clear();

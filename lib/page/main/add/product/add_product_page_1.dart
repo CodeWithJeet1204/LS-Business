@@ -152,6 +152,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
               'categoryName': selectedCategory,
               'categoryId': selectedCategoryId,
               'vendorId': FirebaseAuth.instance.currentUser!.uid,
+              'ratings': {},
             },
             false,
           );
@@ -409,6 +410,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                         // NAME
                         TextFormField(
                           controller: nameController,
+                          maxLength: 60,
                           decoration: const InputDecoration(
                             hintText: "Product Name",
                             border: OutlineInputBorder(
@@ -420,11 +422,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                           ),
                           validator: (value) {
                             if (value != null && value.isNotEmpty) {
-                              if (value.length < 20) {
-                                return null;
-                              } else {
-                                return "20 characters max.";
-                              }
+                              return null;
                             } else {
                               return "Enter Name";
                             }

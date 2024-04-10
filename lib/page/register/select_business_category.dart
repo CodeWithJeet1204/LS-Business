@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/models/common_categories.dart';
+import 'package:find_easy/models/special_categories.dart';
 import 'package:find_easy/page/register/membership_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
@@ -10,7 +10,6 @@ import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:find_easy/widgets/text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
 
 class SelectBusinessCategoryPage extends StatefulWidget {
   const SelectBusinessCategoryPage({super.key});
@@ -50,7 +49,7 @@ class _SelectBusinessCategoryPageState
   void uploadDetails() async {
     if (selectedCategory != "Select Category") {
       if (selectedCategory == 'Other' && otherCategoryController.text.isEmpty) {
-        mySnackBar(context, "Enter Name of Category");
+        return mySnackBar(context, "Enter Name of Category");
       } else {
         try {
           await store
@@ -62,29 +61,45 @@ class _SelectBusinessCategoryPageState
             'Type': selectedCategory,
           });
 
-          final subCategoryId = Uuid().v4();
-          final List<List<String>>? subCategories =
-              commonCategories[selectedCategory];
-          if (subCategories != null) {
-            for (final subCategory in subCategories) {
-              await store
-                  .collection('Business')
-                  .doc('Data')
-                  .collection('Category')
-                  .doc(selectedCategory)
-                  .collection(subCategory[0])
-                  .doc(auth.currentUser!.uid)
-                  .set({
-                'vendorId': auth.currentUser!.uid,
-                'subCategoryName': subCategory[0],
-                'categoryId': subCategoryId,
-                'imageUrl': subCategory[1],
-                'common': true,
-              });
-            }
-          } else {
-            print('No subcategories found for selected category');
-          }
+          Map<String, String> subCategories =
+              specialCategories[selectedCategory]!;
+
+          final CollectionReference specialCategoriesCollection = store
+              .collection('Business')
+              .doc('Special Categories')
+              .collection(selectedCategory);
+
+          subCategories.forEach((subcategoryName, imageUrl) async {
+            await specialCategoriesCollection.doc(subcategoryName).set({
+              'specialCategoryName': subcategoryName,
+              'imageUrl': imageUrl,
+              'vendorId': [auth.currentUser!.uid],
+            });
+          });
+
+          // final subCategoryId = Uuid().v4();
+          // final List<List<String>>? subCategories =
+          //     commonCategories[selectedCategory];
+          // if (subCategories != null) {
+          //   for (final subCategory in subCategories) {
+          //     await store
+          //         .collection('Business')
+          //         .doc('Data')
+          //         .collection('Category')
+          //         .doc(selectedCategory)
+          //         .collection(subCategory[0])
+          //         .doc(auth.currentUser!.uid)
+          //         .set({
+          //       'vendorId': auth.currentUser!.uid,
+          //       'subCategoryName': subCategory[0],
+          //       'categoryId': subCategoryId,
+          //       'imageUrl': subCategory[1],
+          //       'special': true,
+          //     });
+          //   }
+          // } else {
+          //   print('No subcategories found for selected category');
+          // }
 
           if (context.mounted) {
             Navigator.of(context).pop();
@@ -94,11 +109,11 @@ class _SelectBusinessCategoryPageState
             );
           }
         } catch (e) {
-          mySnackBar(context, e.toString());
+          return mySnackBar(context, e.toString());
         }
       }
     } else {
-      mySnackBar(context, "Select Category");
+      return mySnackBar(context, "Select Category");
     }
   }
 

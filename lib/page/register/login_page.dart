@@ -56,7 +56,21 @@ class _LoginPageState extends State<LoginPage> {
           email: emailController.text.toString(),
           password: passwordController.text.toString(),
         );
+
         if (user != null) {
+          final userExistsSnap = await FirebaseFirestore.instance
+              .collection('Users')
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .get();
+
+          if (userExistsSnap.exists) {
+            await FirebaseAuth.instance.signOut();
+            mySnackBar(
+              context,
+              'This account was created in User app, use different account here',
+            );
+            return;
+          }
           mySnackBar(
             context,
             'Signed In',

@@ -172,6 +172,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
           'discountImageUrl': imageUrl,
           'products': [],
           'categories': categoryIdList,
+          'brands': [],
           'vendorId': auth.currentUser!.uid,
         });
         provider.clear();

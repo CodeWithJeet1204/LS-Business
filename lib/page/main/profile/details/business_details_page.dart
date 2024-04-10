@@ -170,7 +170,8 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                   elevation: 20,
                   child: InteractiveViewer(
                     child: Image.network(
-                      userData['Image'],
+                      userData['Image'] ??
+                          'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
                     ),
                   ),
                 );
@@ -310,7 +311,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                         child: SizedBox(
                                           width: width * 0.725,
                                           child: AutoSizeText(
-                                            shopData['Name'],
+                                            shopData['Name'] ?? 'N/A',
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
                                             style: TextStyle(
@@ -372,7 +373,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                         child: SizedBox(
                                           width: width * 0.725,
                                           child: AutoSizeText(
-                                            shopData['Address'],
+                                            shopData['Address'] ?? 'N/A',
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
                                             style: TextStyle(
@@ -435,7 +436,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                         child: SizedBox(
                                           width: width * 0.725,
                                           child: AutoSizeText(
-                                            shopData['Special Note'],
+                                            shopData['Special Note'] ?? 'N/A',
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               fontSize: width * 0.055,
@@ -507,7 +508,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                               child: SizedBox(
                                 width: width * 0.875,
                                 child: AutoSizeText(
-                                  shopData['GSTNumber'],
+                                  shopData['GSTNumber'] ?? 'N/A',
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
                                     fontSize: 18,
@@ -534,7 +535,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                               child: SizedBox(
                                 width: width * 0.725,
                                 child: Text(
-                                  shopData['Industry'],
+                                  shopData['Industry'] ?? 'N/A',
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     fontSize: width * 0.055,

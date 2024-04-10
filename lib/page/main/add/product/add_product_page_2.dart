@@ -70,12 +70,17 @@ class _AddProductPage2State extends State<AddProductPage2> {
   }
 
   // ADD TAG
-  void addTag(String tag) {
-    if (tag.length > 1) {
-      setState(() {
-        tagList.add(tag);
+  void addTag() {
+    if (tagController.text.toString().length > 1) {
+      if (!tagList.contains(tagController.text.toString().toUpperCase())) {
+        setState(() {
+          tagList.add(tagController.text.toString().toUpperCase());
+          tagController.clear();
+        });
+      } else {
         tagController.clear();
-      });
+        mySnackBar(context, 'This Tag has already been added');
+      }
     } else {
       mySnackBar(context, "Tag should be atleast 2 chars long");
     }
@@ -110,14 +115,26 @@ class _AddProductPage2State extends State<AddProductPage2> {
   // ADD PRODUCT
   void addProduct(AddProductProvider provider) async {
     if (productKey.currentState!.validate()) {
-      if (property0.isEmpty && getCompulsory(0)) {
+      print("PropertyValue0 first: $property0");
+      print("PropertyValue1: $property1");
+      print("PropertyValue2: $property2");
+      print("PropertyValue3: $property3");
+      print("PropertyValue4: $property4");
+      print("PropertyValue5: $property5");
+      print('Property Length 5: ${property5.length}');
+
+      print('Property0 first: $property0');
+      if (property0.isEmpty) {
+        print('PropertyController0: ${property0Controller.text}');
         if (getNoOfAnswers(0) == 1) {
+          print('PropertyController0: ${property0Controller.text}');
           if (property0Controller.text.isEmpty ||
               property0Controller.text == null) {
             return mySnackBar(
                 context, "Enter value for ${getPropertiesKeys(0)}");
           }
           property0.add(property0Controller.text.toString().toUpperCase());
+          print('Property0: $property0');
         } else if (getNoOfAnswers(0) == 2) {
           return mySnackBar(context, "Select ${getPropertiesKeys(0)}");
         } else if (getNoOfAnswers(0) == 3) {
@@ -185,7 +202,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
               context, "Add atleast one value to ${getPropertiesKeys(4)}");
         }
       }
-      if (property5.isEmpty && getCompulsory(5)) {
+      if (property5.isEmpty) {
         if (getNoOfAnswers(5) == 1) {
           if (property5Controller.text.isEmpty ||
               property5Controller.text == null) {
@@ -237,6 +254,8 @@ class _AddProductPage2State extends State<AddProductPage2> {
           'propertyInputType4': getPropertiesInputType(4) == TextInputType.text,
           'propertyInputType5': getPropertiesInputType(5) == TextInputType.text,
         });
+
+        print('Property Value 0 in map: ${properties['propertyValue0']}');
         // await store
         //     .collection('Business')
         //     .doc('Data')
@@ -425,9 +444,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                 ),
                                 MyTextButton(
                                   onPressed: () {
-                                    addTag(tagController.text
-                                        .toString()
-                                        .toUpperCase());
+                                    addTag();
                                   },
                                   text: "Add",
                                   textColor: primaryDark2,
@@ -1504,9 +1521,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                       : getPropertiesKeys(5),
                                   widget1: getNoOfAnswers(5) == 1
                                       ? TextFormField(
-                                          controller: property5Controller,
-                                          minLines: 1,
+                                          controller: property4Controller,
                                           maxLines: getMaxLines(5),
+                                          minLines: 1,
                                           keyboardType:
                                               getPropertiesInputType(5),
                                           decoration: InputDecoration(

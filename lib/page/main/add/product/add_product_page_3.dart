@@ -35,8 +35,8 @@ class _AddProductPage3State extends State<AddProductPage3> {
   bool isBulkSellAvailable = false;
   bool isGSTInvoiceAvailable = false;
   bool isCardOffersAvailable = false;
-  int? deliveryRange;
-  int? refundRange;
+  double? deliveryRange;
+  double? refundRange;
   int? replacementRange;
   bool isSaving = false;
 
@@ -46,6 +46,8 @@ class _AddProductPage3State extends State<AddProductPage3> {
         isSaving = true;
       });
       final List<String> _imageDownloadUrl = [];
+
+      print("Final images: ${provider.productInfo['imageFiles']}");
 
       for (File img in (provider.productInfo['imageFiles'] as List<File>)) {
         try {
@@ -66,6 +68,8 @@ class _AddProductPage3State extends State<AddProductPage3> {
           }
         }
       }
+
+      print("Image download url: $_imageDownloadUrl");
 
       provider.add(
         {
@@ -187,7 +191,7 @@ class _AddProductPage3State extends State<AddProductPage3> {
                               ),
                               onChanged: (value) {
                                 setState(() {
-                                  deliveryRange = int.parse(value);
+                                  deliveryRange = double.parse(value);
                                 });
                               },
                             ),
@@ -277,7 +281,7 @@ class _AddProductPage3State extends State<AddProductPage3> {
                               ),
                               onChanged: (value) {
                                 setState(() {
-                                  refundRange = int.parse(value);
+                                  refundRange = double.parse(value);
                                 });
                               },
                             ),

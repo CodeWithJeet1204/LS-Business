@@ -38,6 +38,7 @@ class _BusinessRegisterDetailsPageState
   File? _image;
   String? uploadImagePath;
 
+  // DISPOSE
   @override
   void dispose() {
     nameController.dispose();
@@ -48,7 +49,7 @@ class _BusinessRegisterDetailsPageState
   }
 
   // SELECT IMAGE
-  void selectImage() async {
+  Future<void> selectImage() async {
     XFile? im = await showImagePickDialog(context);
     if (im == null) {
       setState(() {
@@ -63,14 +64,14 @@ class _BusinessRegisterDetailsPageState
   }
 
   // UPLOAD DETAILS
-  void uploadDetails() async {
+  Future<void> uploadDetails() async {
     if (businessFormKey.currentState!.validate()) {
-      if (_image != null) {
-        try {
-          String? businessPhotoUrl;
-          setState(() {
-            isNext = true;
-          });
+      try {
+        String? businessPhotoUrl;
+        setState(() {
+          isNext = true;
+        });
+        if (_image != null) {
           uploadImagePath = _image!.path;
           Reference ref = FirebaseStorage.instance
               .ref()
@@ -81,46 +82,46 @@ class _BusinessRegisterDetailsPageState
               businessPhotoUrl = value;
             });
           });
-          await store
-              .collection('Business')
-              .doc('Owners')
-              .collection('Shops')
-              .doc(FirebaseAuth.instance.currentUser!.uid)
-              .update({
-            "Name": nameController.text.toString(),
-            'Views': 0,
-            'viewsDateTime': [],
-            'Followers': [],
-            'followersDateTime': [],
-            "GSTNumber": gstController.text.toString(),
-            "Address": addressController.text.toString(),
-            "Special Note": specialNoteController.text.toString(),
-            "Industry": selectedIndustrySegment,
-            "Image": businessPhotoUrl,
-          });
-
-          SystemChannels.textInput.invokeMethod('TextInput.hide');
-          if (context.mounted) {
-            Navigator.of(context).pop();
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: ((context) => const SelectBusinessCategoryPage()),
-              ),
-            );
-          }
-          setState(() {
-            isNext = false;
-          });
-        } catch (e) {
-          setState(() {
-            isNext = false;
-          });
-          if (context.mounted) {
-            mySnackBar(context, e.toString());
-          }
         }
-      } else {
-        mySnackBar(context, "Select an Image");
+        await store
+            .collection('Business')
+            .doc('Owners')
+            .collection('Shops')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .update({
+          "Name": nameController.text.toString(),
+          'Views': 0,
+          'viewsDateTime': [],
+          'Followers': [],
+          'followersDateTime': [],
+          "GSTNumber": gstController.text.toString(),
+          "Address": addressController.text.toString(),
+          "Special Note": specialNoteController.text.toString(),
+          "Industry": selectedIndustrySegment,
+          "Image": _image != null
+              ? businessPhotoUrl
+              : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1fDf705o-VZ3lVxTLh0jLPyFApbnwGoNHhSpwODOC0g&s',
+        });
+
+        SystemChannels.textInput.invokeMethod('TextInput.hide');
+        if (context.mounted) {
+          Navigator.of(context).pop();
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: ((context) => const SelectBusinessCategoryPage()),
+            ),
+          );
+        }
+        setState(() {
+          isNext = false;
+        });
+      } catch (e) {
+        setState(() {
+          isNext = false;
+        });
+        if (context.mounted) {
+          mySnackBar(context, e.toString());
+        }
       }
     }
   }
@@ -156,7 +157,9 @@ class _BusinessRegisterDetailsPageState
                           icon: const Icon(Icons.camera_alt_outlined),
                           iconSize: MediaQuery.of(context).size.width * 0.1,
                           tooltip: "Change Shop Picture",
-                          onPressed: selectImage,
+                          onPressed: () async {
+                            await selectImage();
+                          },
                           color: primaryDark,
                         ),
                       ],
@@ -168,7 +171,9 @@ class _BusinessRegisterDetailsPageState
                           Icons.camera_alt_outlined,
                           size: MediaQuery.of(context).size.width * 0.166,
                         ),
-                        onPressed: selectImage,
+                        onPressed: () async {
+                          await selectImage();
+                        },
                       ),
                     ),
               const SizedBox(height: 12),
@@ -271,7 +276,9 @@ class _BusinessRegisterDetailsPageState
                       ),
                       child: MyButton(
                         text: "Next",
-                        onTap: uploadDetails,
+                        onTap: () async {
+                          await uploadDetails();
+                        },
                         isLoading: isNext,
                         horizontalPadding:
                             MediaQuery.of(context).size.width * 0.055,

@@ -97,7 +97,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                 DateTime.now().millisecondsSinceEpoch,
               ),
               'vendorId': auth.currentUser!.uid,
-              'common': false,
+              'special': false,
             });
 
             for (var element in categoryProvider.selectedProducts) {

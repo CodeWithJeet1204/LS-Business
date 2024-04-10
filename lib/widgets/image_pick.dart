@@ -18,7 +18,8 @@ Future<XFile?> pickCompressedImage(ImageSource source) async {
     }
 
     final dir = await pp.getTemporaryDirectory();
-    final targetPath = '${dir.absolute.path}/temp.jpg';
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    final targetPath = '${dir.absolute.path}/temp_$timestamp.jpg';
 
     final result = await FlutterImageCompress.compressAndGetFile(
       image.path,

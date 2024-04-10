@@ -93,44 +93,60 @@ class _MainPageState extends State<MainPage> {
     //   }
     // }
 
-    if (!(await isPayed())) {
-      detailsPage = const LoginPage();
-    } else {
-      if (getUserDetailsAddedData!['Email'] == null ||
-          getUserDetailsAddedData['Phone Number'] == null) {
-        detailsPage = const UserRegisterDetailsPage();
-      } else if ((getUserDetailsAddedData['Phone Number'] != null &&
-          getUserDetailsAddedData['numberVerified'] != true)) {
-        if (!auth.currentUser!.emailVerified) {
-          detailsPage = const EmailVerifyPage();
+    if (getUserDetailsAddedDatas != null) {
+      if (getUserDetailsAddedDatas.exists) {
+        if (!(await isPayed())) {
+          detailsPage = const LoginPage();
         } else {
-          detailsPage = null;
-        }
-      } else if ((getUserDetailsAddedData['Image'] == null)) {
-        detailsPage = const UserRegisterDetailsPage();
-      } else if (getUserDetailsAddedData['Image'] != null &&
-          getBusinessDetailsAdded!['GSTNumber'] == null) {
-        detailsPage = const BusinessDetailsPage();
-      } else if (getBusinessDetailsAdded!['GSTNumber'] != null &&
-          getBusinessDetailsAdded['Type'] == null) {
-        detailsPage = SelectBusinessCategoryPage();
-      } /* else if (getBusinessDetailsAdded['Type'] != null &&
+          if (getUserDetailsAddedData!['Email'] == null ||
+              getUserDetailsAddedData['Phone Number'] == null) {
+            detailsPage = const UserRegisterDetailsPage();
+          } else if ((getUserDetailsAddedData['Phone Number'] != null &&
+              getUserDetailsAddedData['numberVerified'] != true)) {
+            if (!auth.currentUser!.emailVerified) {
+              detailsPage = const EmailVerifyPage();
+            } else {
+              detailsPage = null;
+            }
+          } else if ((getUserDetailsAddedData['Image'] == null)) {
+            detailsPage = const UserRegisterDetailsPage();
+          } else if (getUserDetailsAddedData['Image'] != null &&
+              getBusinessDetailsAdded!['GSTNumber'] == null) {
+            detailsPage = const BusinessDetailsPage();
+          } else if (getBusinessDetailsAdded!['GSTNumber'] != null &&
+              getBusinessDetailsAdded['Type'] == null) {
+            detailsPage = SelectBusinessCategoryPage();
+          } /* else if (getBusinessDetailsAdded['Type'] != null &&
           await getCommonCategories(getBusinessDetailsAdded['Type'])) {
         detailsPage = SelectBusinessCategoryPage();
       }*/
-      else if (getUserDetailsAddedData['Image'] != null &&
-          getBusinessDetailsAdded['GSTNumber'] != null &&
-          (getBusinessDetailsAdded['MembershipName'] == null ||
-              getBusinessDetailsAdded['MembershipEndDateTime'] == null)) {
-        detailsPage = const SelectMembershipPage();
-      } else if (DateTime.now().isAfter(
-          (getBusinessDetailsAdded['MembershipEndDateTime'] as Timestamp)
-              .toDate())) {
-        mySnackBar(context, 'Your Membership Has Expired');
-        detailsPage = const SelectMembershipPage();
+          else if (getUserDetailsAddedData['Image'] != null &&
+              getBusinessDetailsAdded['GSTNumber'] != null &&
+              (getBusinessDetailsAdded['MembershipName'] == null ||
+                  getBusinessDetailsAdded['MembershipEndDateTime'] == null)) {
+            detailsPage = const SelectMembershipPage();
+          } else if (DateTime.now().isAfter(
+              (getBusinessDetailsAdded['MembershipEndDateTime'] as Timestamp)
+                  .toDate())) {
+            mySnackBar(context, 'Your Membership Has Expired');
+            detailsPage = const SelectMembershipPage();
+          } else {
+            detailsPage = null;
+          }
+        }
       } else {
-        detailsPage = null;
+        await auth.signOut();
+        return mySnackBar(
+          context,
+          'This account was created in User app, use another account to sign in here',
+        );
       }
+    } else {
+      await auth.signOut();
+      return mySnackBar(
+        context,
+        'This account was created in User app, use another account to sign in here',
+      );
     }
 
     setState(() {});

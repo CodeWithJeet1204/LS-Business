@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:851488762803:android:eb89214a6ee6397b3979c6",
         "android_client_info": {
-          "package_name": "com.mycompany.findeasy"
+          "package_name": "com.example.find_easy"
         }
       },
       "oauth_client": [
@@ -17,8 +17,16 @@
           "client_id": "851488762803-ps9kqonltefmc06fjj2et4ro8j67m5nc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.mycompany.findeasy",
+            "package_name": "com.example.find_easy",
             "certificate_hash": "b91a26ed5cfd1237d4bc061dc6fec8df84e76827"
+          }
+        },
+        {
+          "client_id": "851488762803-ti82ua39ilonb2ibpqo0idjv9ilp6091.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.find_easy",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
           }
         },
         {
@@ -37,6 +45,13 @@
             {
               "client_id": "851488762803-820pd8np863ivnf4deb2snd7dckv3qq9.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "851488762803-g71j7te9u229qdmbddcu74pmag1lvhja.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mycompany.findeasy"
+              }
             }
           ]
         }
@@ -46,7 +61,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:851488762803:android:1efab776cf60da9f3979c6",
         "android_client_info": {
-          "package_name": "com.mycompany.findeasy_user"
+          "package_name": "com.example.find_easy_user"
         }
       },
       "oauth_client": [
@@ -54,7 +69,7 @@
           "client_id": "851488762803-l5j5khk8p1029fq2qnmirrflnfaftg1o.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.mycompany.findeasy_user",
+            "package_name": "com.example.find_easy_user",
             "certificate_hash": "b91a26ed5cfd1237d4bc061dc6fec8df84e76827"
           }
         },
@@ -74,6 +89,13 @@
             {
               "client_id": "851488762803-820pd8np863ivnf4deb2snd7dckv3qq9.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "851488762803-g71j7te9u229qdmbddcu74pmag1lvhja.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mycompany.findeasy"
+              }
             }
           ]
         }
