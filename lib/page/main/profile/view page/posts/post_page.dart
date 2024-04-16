@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -319,23 +318,24 @@ class _PostPageState extends State<PostPage> {
                           // NAME
                           Padding(
                             padding: EdgeInsets.symmetric(
-                              horizontal: width * 0.028,
-                              vertical: width * 0.028,
+                              horizontal: width * 0.0225,
                             ),
                             child: SizedBox(
-                              width: width * 0.875,
-                              child: AutoSizeText(
-                                overflow: TextOverflow.ellipsis,
+                              width: width * 0.785,
+                              child: Text(
                                 name,
-                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 20,
                                 style: TextStyle(
                                   color: primaryDark,
-                                  fontSize: width * 0.1,
-                                  fontWeight: FontWeight.w600,
+                                  fontSize: width * 0.06,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ),
                           ),
+
+                          Divider(),
 
                           // PRICE
                           Padding(
@@ -498,17 +498,48 @@ class _PostPageState extends State<PostPage> {
                                   ),
                           ),
 
+                          Divider(),
+
                           // DESCRIPTION
-                          InfoBox(
-                            text: "DESCRIPTION",
-                            value: description,
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: width * 0.0166,
+                              horizontal: width * 0.0166,
+                            ),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                vertical: width * 0.0225,
+                                horizontal: width * 0.0225,
+                              ),
+                              decoration: BoxDecoration(
+                                color: primary.withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: SizedBox(
+                                width: width * 0.75,
+                                child: Text(
+                                  description,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 20,
+                                  style: TextStyle(
+                                    color: primaryDark,
+                                    fontSize: width * 0.0575,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
+
+                          Divider(),
 
                           // BRAND
                           InfoBox(
                             text: "BRAND",
                             value: brand,
                           ),
+
+                          Divider(),
 
                           // LIKES
                           InfoBox(

@@ -651,6 +651,7 @@ class _ProductPageState extends State<ProductPage> {
     setState(() {
       category.add(name);
       category.add(imageUrl);
+      category.add(shopType);
     });
   }
 
@@ -1425,6 +1426,7 @@ class _ProductPageState extends State<ProductPage> {
 
                           Divider(),
 
+                          // DESCRIPTION
                           Padding(
                             padding: EdgeInsets.symmetric(
                               vertical: width * 0.0166,
@@ -1443,44 +1445,22 @@ class _ProductPageState extends State<ProductPage> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  InkWell(
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: ((context) => CategoryPage(
-                                                categoryName:
-                                                    productData['categoryName'],
-                                              )),
-                                        ),
-                                      );
-                                    },
-                                    customBorder: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    splashColor: primary2,
-                                    child: Row(
-                                      children: [
-                                        // CATEGORY NAME
-                                        SizedBox(
-                                          width: width * 0.75,
-                                          child: Text(
-                                            categoryExists
-                                                ? productData[
-                                                    'productDescription']
-                                                : 'No Description',
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 20,
-                                            style: TextStyle(
-                                              color: primaryDark,
-                                              fontSize: width * 0.0575,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                  SizedBox(
+                                    width: width * 0.75,
+                                    child: Text(
+                                      categoryExists
+                                          ? productData['productDescription']
+                                          : 'No Description',
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 20,
+                                      style: TextStyle(
+                                        color: primaryDark,
+                                        fontSize: width * 0.0575,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
                                   ),
-                                  // CHANGE CATEGORY
+                                  // CHANGE DESCRIPTION
                                   IconButton(
                                     onPressed: () async {
                                       await edit(
@@ -1594,16 +1574,22 @@ class _ProductPageState extends State<ProductPage> {
                                         ),
                                         // CHANGE CATEGORY
                                         IconButton(
-                                          onPressed: () {
-                                            Navigator.of(context).push(
+                                          onPressed: () async {
+                                            await Navigator.of(context).push(
                                               MaterialPageRoute(
                                                 builder: ((context) =>
                                                     ChangeCategory(
                                                       productId: productData[
                                                           'productId'],
+                                                      shopType: category[2],
+                                                      productName: productData[
+                                                          'productName'],
                                                     )),
                                               ),
                                             );
+                                            await getCategoryInfo();
+                                            print('abc');
+                                            setState(() {});
                                           },
                                           icon: const Icon(FeatherIcons.edit),
                                           tooltip: "Change Category",
