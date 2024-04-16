@@ -138,47 +138,47 @@ class _AddPageState extends State<AddPage> {
                     ),
 
                     // CATEGORY
-                    SizedOverflowBox(
-                      size: Size(width, 180),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).pushNamed('/addCategory');
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 12),
-                          width: width,
-                          height: 130,
-                          decoration: BoxDecoration(
-                            color: primary2.withOpacity(0.67),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Row(
-                            children: [
-                              SizedBox(width: width * 0.1),
-                              SizedBox(
-                                width: width * 0.5,
-                                child: const AutoSizeText(
-                                  "CATEGORY",
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    color: primaryDark,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 28,
-                                  ),
-                                ),
-                              ),
-                              Expanded(child: Container()),
-                              Icon(
-                                FeatherIcons.layers,
-                                size: width * 0.1,
-                                color: primaryDark2,
-                              ),
-                              SizedBox(width: width * 0.075),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                    // SizedOverflowBox(
+                    //   size: Size(width, 180),
+                    //   child: GestureDetector(
+                    //     onTap: () {
+                    //       Navigator.of(context).pushNamed('/addCategory');
+                    //     },
+                    //     child: Container(
+                    //       margin: const EdgeInsets.symmetric(horizontal: 12),
+                    //       width: width,
+                    //       height: 130,
+                    //       decoration: BoxDecoration(
+                    //         color: primary2.withOpacity(0.67),
+                    //         borderRadius: BorderRadius.circular(8),
+                    //       ),
+                    //       child: Row(
+                    //         children: [
+                    //           SizedBox(width: width * 0.1),
+                    //           SizedBox(
+                    //             width: width * 0.5,
+                    //             child: const AutoSizeText(
+                    //               "CATEGORY",
+                    //               overflow: TextOverflow.ellipsis,
+                    //               style: TextStyle(
+                    //                 color: primaryDark,
+                    //                 fontWeight: FontWeight.w600,
+                    //                 fontSize: 28,
+                    //               ),
+                    //             ),
+                    //           ),
+                    //           Expanded(child: Container()),
+                    //           Icon(
+                    //             FeatherIcons.layers,
+                    //             size: width * 0.1,
+                    //             color: primaryDark2,
+                    //           ),
+                    //           SizedBox(width: width * 0.075),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
 
                     // BRAND
                     SizedOverflowBox(

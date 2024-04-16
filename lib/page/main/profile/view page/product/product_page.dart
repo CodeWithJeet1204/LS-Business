@@ -3,8 +3,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
+import 'package:find_easy/page/main/analytics/analytics_page.dart';
 import 'package:find_easy/page/main/discount/products/product_discount_page.dart';
-import 'package:find_easy/page/main/main_page.dart';
 import 'package:find_easy/page/main/profile/view%20page/category/category_page.dart';
 import 'package:find_easy/page/main/profile/view%20page/product/select_category_for_product_page.dart.dart';
 import 'package:find_easy/page/main/profile/view%20page/product/image_view.dart';
@@ -53,12 +53,14 @@ class _ProductPageState extends State<ProductPage> {
   bool isEditing = false;
   bool categoryExists = true;
   bool isImageChanging = false;
+  List category = [];
 
   // INIT STATE
   @override
   void initState() {
-    super.initState();
     ifDiscount();
+    getCategoryInfo();
+    super.initState();
   }
 
   // DISPOSE
@@ -69,7 +71,7 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   // EDIT INFO
-  void edit(
+  Future<void> edit(
     String propertyValue,
     int noOfAnswers,
     bool isProperty,
@@ -610,6 +612,48 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
+  // GET CATEGORY
+  Future<void> getCategoryInfo() async {
+    final vendorSnap = await store
+        .collection('Business')
+        .doc('Owners')
+        .collection('Shops')
+        .doc(auth.currentUser!.uid)
+        .get();
+
+    final vendorData = vendorSnap.data()!;
+
+    final shopType = vendorData['Type'];
+
+    final productSnap = await store
+        .collection('Business')
+        .doc('Data')
+        .collection('Products')
+        .doc(widget.productId)
+        .get();
+
+    final productData = productSnap.data()!;
+
+    final categoryId = productData['categoryId'];
+
+    final categorySnap = await store
+        .collection('Business')
+        .doc('Special Categories')
+        .collection(shopType)
+        .doc(categoryId)
+        .get();
+
+    final categoryData = categorySnap.data()!;
+
+    final name = categoryData['specialCategoryName'];
+    final imageUrl = categoryData['specialCategoryImageUrl'];
+
+    setState(() {
+      category.add(name);
+      category.add(imageUrl);
+    });
+  }
+
   // DELETE PRODUCT
   void delete() async {
     setState(() {
@@ -780,8 +824,8 @@ class _ProductPageState extends State<ProductPage> {
                       final productData = snapshot.data!;
                       final String name = productData['productName'];
                       final String price = productData['productPrice'];
-                      final String description =
-                          productData['productDescription'];
+                      // final String description =
+                      //     productData['productDescription'];
                       final String brand = productData['productBrand'];
                       final List images = productData['images'];
                       final List tags = productData['Tags'];
@@ -834,14 +878,6 @@ class _ProductPageState extends State<ProductPage> {
                           properties['propertyInputType4'];
                       final bool propertyInputType5 =
                           properties['propertyInputType5'];
-
-                      final Stream<DocumentSnapshot<Map<String, dynamic>>>
-                          categoryStream = store
-                              .collection('Business')
-                              .doc('Data')
-                              .collection('Category')
-                              .doc(productData['categoryId'])
-                              .snapshots();
 
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1020,6 +1056,8 @@ class _ProductPageState extends State<ProductPage> {
                             ],
                           ),
 
+                          Divider(),
+
                           // NAME
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1030,14 +1068,14 @@ class _ProductPageState extends State<ProductPage> {
                                 ),
                                 child: SizedBox(
                                   width: width * 0.785,
-                                  child: AutoSizeText(
+                                  child: Text(
                                     name,
                                     overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
+                                    maxLines: 20,
                                     style: TextStyle(
                                       color: primaryDark,
-                                      fontSize: width * 0.1,
-                                      fontWeight: FontWeight.w600,
+                                      fontSize: width * 0.06,
+                                      fontWeight: FontWeight.w500,
                                     ),
                                   ),
                                 ),
@@ -1059,6 +1097,8 @@ class _ProductPageState extends State<ProductPage> {
                               ),
                             ],
                           ),
+
+                          Divider(),
 
                           // PRICE
                           Row(
@@ -1274,14 +1314,17 @@ class _ProductPageState extends State<ProductPage> {
                               ),
                             ],
                           ),
-                          SizedBox(height: width * 0.0225),
+
+                          Divider(),
 
                           // AVAILABLE / OUT OF STOCK
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            padding: EdgeInsets.symmetric(
+                              vertical: width * 0.0225,
+                            ),
                             child: Container(
                               width: width,
-                              height: width * 0.325,
+                              height: width * 0.36,
                               decoration: BoxDecoration(
                                 color: primary2.withOpacity(0.75),
                                 borderRadius: BorderRadius.circular(12),
@@ -1380,165 +1423,196 @@ class _ProductPageState extends State<ProductPage> {
                             ),
                           ),
 
-                          // DESCRIPTION
-                          InfoEditBox(
-                            head: "Description",
-                            content: description,
-                            noOfAnswers: 1,
-                            propertyValue: const [],
-                            maxLines: 20,
-                            width: width,
-                            onPressed: () {
-                              edit(
-                                "productDescription",
-                                1,
-                                false,
-                                true,
-                              );
-                            },
+                          Divider(),
+
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: width * 0.0166,
+                              horizontal: width * 0.0166,
+                            ),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                vertical: width * 0.0225,
+                                horizontal: width * 0.0225,
+                              ),
+                              decoration: BoxDecoration(
+                                color: primary.withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: ((context) => CategoryPage(
+                                                categoryName:
+                                                    productData['categoryName'],
+                                              )),
+                                        ),
+                                      );
+                                    },
+                                    customBorder: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    splashColor: primary2,
+                                    child: Row(
+                                      children: [
+                                        // CATEGORY NAME
+                                        SizedBox(
+                                          width: width * 0.75,
+                                          child: Text(
+                                            categoryExists
+                                                ? productData[
+                                                    'productDescription']
+                                                : 'No Description',
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 20,
+                                            style: TextStyle(
+                                              color: primaryDark,
+                                              fontSize: width * 0.0575,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  // CHANGE CATEGORY
+                                  IconButton(
+                                    onPressed: () async {
+                                      await edit(
+                                        'productDescription',
+                                        1,
+                                        false,
+                                        true,
+                                      );
+                                    },
+                                    icon: const Icon(FeatherIcons.edit),
+                                    tooltip: "Change Category",
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
 
+                          Divider(),
+
                           // CATEGORY
-                          StreamBuilder(
-                              stream: categoryStream,
-                              builder: (context, snapshot) {
-                                if (snapshot.hasError) {
-                                  return const Center(
-                                    child: Text(
-                                      'Something went wrong',
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  );
-                                }
-
-                                if (!snapshot.hasData ||
-                                    snapshot.data == null) {
-                                  categoryExists = false;
-                                }
-
-                                if (snapshot.hasData) {
-                                  categoryExists = true;
-                                  final categoryData = snapshot.data!;
-                                  // CATEGORY
-                                  return Padding(
+                          category.isNotEmpty
+                              ? Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: width * 0.0166,
+                                    horizontal: width * 0.0166,
+                                  ),
+                                  child: Container(
                                     padding: EdgeInsets.symmetric(
-                                      vertical: width * 0.0166,
-                                      horizontal: width * 0.0166,
+                                      vertical: width * 0.0225,
+                                      horizontal: width * 0.0225,
                                     ),
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: width * 0.0225,
-                                        horizontal: width * 0.0225,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: primary.withOpacity(0.3),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          InkWell(
-                                            onTap: () {
-                                              Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                  builder: ((context) =>
-                                                      CategoryPage(
-                                                        categoryId: productData[
-                                                            'categoryId'],
-                                                        categoryName:
-                                                            productData[
-                                                                'categoryName'],
-                                                      )),
-                                                ),
-                                              );
-                                            },
-                                            customBorder:
-                                                RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                            ),
-                                            splashColor: primary2,
-                                            child: Row(
-                                              children: [
-                                                // CATEGORY IMAGE
-                                                ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                    4,
-                                                  ),
-                                                  child: Image.network(
-                                                    categoryExists
-                                                        ? productData[
-                                                                    'categoryId'] !=
-                                                                '0'
-                                                            ? categoryData[
-                                                                'imageUrl']
-                                                            : 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png'
-                                                        : 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
-                                                    fit: BoxFit.cover,
-                                                    width: categoryExists
-                                                        ? productData[
-                                                                    'categoryId'] !=
-                                                                '0'
-                                                            ? width * 0.14
-                                                            : width * 0.1
-                                                        : width * 0.1,
-                                                    height: categoryExists
-                                                        ? productData[
-                                                                    'categoryId'] !=
-                                                                '0'
-                                                            ? width * 0.14
-                                                            : width * 0.1
-                                                        : width * 0.1,
-                                                  ),
-                                                ),
-                                                SizedBox(width: width * 0.05),
-                                                // CATEGORY NAME
-                                                SizedBox(
-                                                  width: width * 0.4,
-                                                  child: AutoSizeText(
-                                                    categoryExists
-                                                        ? productData[
-                                                            'categoryName']
-                                                        : 'No Category',
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    maxLines: 1,
-                                                    style: TextStyle(
-                                                      color: primaryDark,
-                                                      fontSize: width * 0.0575,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          // CHANGE CATEGORY
-                                          IconButton(
-                                            onPressed: () {
-                                              Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                  builder: ((context) =>
-                                                      ChangeCategory(
-                                                        productId: productData[
-                                                            'productId'],
-                                                      )),
-                                                ),
-                                              );
-                                            },
-                                            icon: const Icon(FeatherIcons.edit),
-                                            tooltip: "Change Category",
-                                          ),
-                                        ],
-                                      ),
+                                    decoration: BoxDecoration(
+                                      color: primary.withOpacity(0.3),
+                                      borderRadius: BorderRadius.circular(8),
                                     ),
-                                  );
-                                }
-
-                                return Container(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: ((context) =>
+                                                    CategoryPage(
+                                                      categoryName: productData[
+                                                          'categoryName'],
+                                                    )),
+                                              ),
+                                            );
+                                          },
+                                          customBorder: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                          ),
+                                          splashColor: primary2,
+                                          child: Row(
+                                            children: [
+                                              // CATEGORY IMAGE
+                                              ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  4,
+                                                ),
+                                                child: Image.network(
+                                                  categoryExists
+                                                      ? productData[
+                                                                  'categoryId'] !=
+                                                              '0'
+                                                          ? category[1]
+                                                          : 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png'
+                                                      : 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
+                                                  fit: BoxFit.cover,
+                                                  width: categoryExists
+                                                      ? productData[
+                                                                  'categoryId'] !=
+                                                              '0'
+                                                          ? width * 0.14
+                                                          : width * 0.1
+                                                      : width * 0.1,
+                                                  height: categoryExists
+                                                      ? productData[
+                                                                  'categoryId'] !=
+                                                              '0'
+                                                          ? width * 0.14
+                                                          : width * 0.1
+                                                      : width * 0.1,
+                                                ),
+                                              ),
+                                              SizedBox(width: width * 0.05),
+                                              // CATEGORY NAME
+                                              SizedBox(
+                                                width: width * 0.4,
+                                                child: AutoSizeText(
+                                                  categoryExists
+                                                      ? productData[
+                                                          'categoryName']
+                                                      : 'No Category',
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  style: TextStyle(
+                                                    color: primaryDark,
+                                                    fontSize: width * 0.0575,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        // CHANGE CATEGORY
+                                        IconButton(
+                                          onPressed: () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: ((context) =>
+                                                    ChangeCategory(
+                                                      productId: productData[
+                                                          'productId'],
+                                                    )),
+                                              ),
+                                            );
+                                          },
+                                          icon: const Icon(FeatherIcons.edit),
+                                          tooltip: "Change Category",
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              : Container(
                                   width: width,
                                   height: width * 0.2,
                                   alignment: Alignment.center,
@@ -1570,14 +1644,17 @@ class _ProductPageState extends State<ProductPage> {
                                       ),
                                     ],
                                   ),
-                                );
-                              }),
+                                ),
+
+                          Divider(),
 
                           // BRAND
                           InfoBox(
                             text: "Brand",
                             value: brand,
                           ),
+
+                          Divider(),
 
                           // PROPERTY 0
                           propertyName0 != ''
@@ -1705,6 +1782,8 @@ class _ProductPageState extends State<ProductPage> {
                                 )
                               : Container(),
 
+                          Divider(),
+
                           // TAGS
                           InfoEditBox(
                             head: "Tags",
@@ -1721,6 +1800,8 @@ class _ProductPageState extends State<ProductPage> {
                               );
                             },
                           ),
+
+                          Divider(),
 
                           // LIKES & VIEWS
                           Padding(
@@ -1786,7 +1867,7 @@ class _ProductPageState extends State<ProductPage> {
                               onTap: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: ((context) => MainPage()),
+                                    builder: ((context) => AnalyticsPage()),
                                   ),
                                 );
                               },

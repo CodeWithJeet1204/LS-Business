@@ -27,7 +27,7 @@ class GridViewSkeleton extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 2),
+            SizedBox(height: width * 0.00625),
             // IMAGE
             Padding(
               padding: EdgeInsets.fromLTRB(
@@ -85,7 +85,7 @@ class GridViewSkeleton extends StatelessWidget {
                       // DELETE
                       Padding(
                         padding: EdgeInsets.fromLTRB(
-                          width * 0.05,
+                          width * 0.025,
                           width * 0.02,
                           width * 0.025,
                           0,

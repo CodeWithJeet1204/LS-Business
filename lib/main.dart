@@ -9,7 +9,6 @@ import 'package:find_easy/page/main/profile/data/all_discounts_page.dart';
 import 'package:find_easy/page/main/profile/data/all_post_page.dart';
 import 'package:find_easy/page/main/profile/data/all_product_page.dart';
 import 'package:find_easy/page/main/profile/details/business_details_page.dart';
-import 'package:find_easy/page/main/profile/data/all_categories_page.dart';
 import 'package:find_easy/page/main/profile/details/owner_details_page.dart';
 import 'package:find_easy/page/register/login_page.dart';
 import 'package:find_easy/page/main/profile/profile_page.dart';
@@ -116,7 +115,6 @@ class MyApp extends StatelessWidget {
           iconTheme: IconThemeData(
             color: primaryDark,
             weight: 1,
-
           ),
         ),
         iconButtonTheme: const IconButtonThemeData(
@@ -142,7 +140,6 @@ class MyApp extends StatelessWidget {
         '/addCategory': (context) => const AddCategoryPage(),
         '/addBrand': (context) => const AddBrandPage(),
         '/postsPage': (context) => const AllPostsPage(),
-        '/categoriesPage': (context) => const AllCategoriesPage(),
         '/productsPage': (context) => const AllProductsPage(),
         '/discountsPage': (context) => const AllDiscountPage(),
         '/brandsPage': (context) => const AllBrandPage(),

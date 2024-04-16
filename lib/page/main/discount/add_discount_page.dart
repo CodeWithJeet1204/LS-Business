@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/page/main/discount/brand/brand_discount_page.dart';
-import 'package:find_easy/page/main/discount/category/category_discount_page.dart';
 import 'package:find_easy/page/main/discount/products/product_discount_page.dart';
 import 'package:find_easy/utils/colors.dart';
 import 'package:flutter/material.dart';
@@ -82,52 +81,52 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                   ),
 
                   // CATEGORY
-                  SizedOverflowBox(
-                    size: Size(width, width * 0.5),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: ((context) =>
-                                const CategoryDiscountPage()),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 12),
-                        width: width,
-                        height: width * 0.375,
-                        decoration: BoxDecoration(
-                          color: primary2.withOpacity(0.67),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Row(
-                          children: [
-                            SizedBox(width: width * 0.1),
-                            SizedBox(
-                              width: width * 0.5,
-                              child: const AutoSizeText(
-                                overflow: TextOverflow.ellipsis,
-                                "CATEGORY",
-                                style: TextStyle(
-                                  color: primaryDark,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 28,
-                                ),
-                              ),
-                            ),
-                            Expanded(child: Container()),
-                            Icon(
-                              FeatherIcons.layers,
-                              size: width * 0.2,
-                              color: primaryDark2,
-                            ),
-                            SizedBox(width: width * 0.075),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                  // SizedOverflowBox(
+                  //   size: Size(width, width * 0.5),
+                  //   child: GestureDetector(
+                  //     onTap: () {
+                  //       Navigator.of(context).push(
+                  //         MaterialPageRoute(
+                  //           builder: ((context) =>
+                  //               const CategoryDiscountPage()),
+                  //         ),
+                  //       );
+                  //     },
+                  //     child: Container(
+                  //       margin: const EdgeInsets.symmetric(horizontal: 12),
+                  //       width: width,
+                  //       height: width * 0.375,
+                  //       decoration: BoxDecoration(
+                  //         color: primary2.withOpacity(0.67),
+                  //         borderRadius: BorderRadius.circular(8),
+                  //       ),
+                  //       child: Row(
+                  //         children: [
+                  //           SizedBox(width: width * 0.1),
+                  //           SizedBox(
+                  //             width: width * 0.5,
+                  //             child: const AutoSizeText(
+                  //               overflow: TextOverflow.ellipsis,
+                  //               "CATEGORY",
+                  //               style: TextStyle(
+                  //                 color: primaryDark,
+                  //                 fontWeight: FontWeight.w600,
+                  //                 fontSize: 28,
+                  //               ),
+                  //             ),
+                  //           ),
+                  //           Expanded(child: Container()),
+                  //           Icon(
+                  //             FeatherIcons.layers,
+                  //             size: width * 0.2,
+                  //             color: primaryDark2,
+                  //           ),
+                  //           SizedBox(width: width * 0.075),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
 
                   // BRAND
                   SizedOverflowBox(

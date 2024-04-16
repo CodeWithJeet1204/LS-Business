@@ -1929,7 +1929,6 @@ class DISCOUNT extends State<DiscountPage> {
                                                                     builder:
                                                                         ((context) =>
                                                                             CategoryPage(
-                                                                              categoryId: categoryData['categoryId'],
                                                                               categoryName: categoryData['categoryName'],
                                                                             )),
                                                                   ),
@@ -2076,7 +2075,6 @@ class DISCOUNT extends State<DiscountPage> {
                                                                     builder:
                                                                         ((context) =>
                                                                             CategoryPage(
-                                                                              categoryId: categoryData['categoryId'],
                                                                               categoryName: categoryData['categoryName'],
                                                                             )),
                                                                   ),
