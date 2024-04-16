@@ -126,7 +126,7 @@ class MyApp extends StatelessWidget {
         ),
         indicatorColor: primaryDark,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 10, 217, 213),
+          seedColor: primary2,
         ),
         useMaterial3: true,
       ),

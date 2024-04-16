@@ -153,9 +153,9 @@ class _MainPageState extends State<MainPage> {
   }
 
   // CHANGE PAGE
-  void changePage(value) {
+  void changePage(int index) {
     setState(() {
-      current = value;
+      current = index;
     });
   }
 
@@ -165,52 +165,67 @@ class _MainPageState extends State<MainPage> {
         Scaffold(
           resizeToAvoidBottomInset: false,
           bottomNavigationBar: BottomNavigationBar(
-            backgroundColor: primary2,
+            elevation: 0,
+            backgroundColor: white,
             selectedLabelStyle: const TextStyle(
+              fontWeight: FontWeight.w500,
               color: primaryDark,
-              fontWeight: FontWeight.w600,
             ),
+            useLegacyColorScheme: false,
             type: BottomNavigationBarType.fixed,
-            selectedIconTheme: IconThemeData(
-              size: MediaQuery.of(context).size.width * 0.07785,
+            selectedIconTheme: const IconThemeData(
+              size: 24,
               color: primaryDark,
+            ),
+            unselectedIconTheme: IconThemeData(
+              size: 24,
+              color: black.withOpacity(0.5),
             ),
             currentIndex: current,
-            onTap: (value) {
-              changePage(value);
-            },
+            onTap: changePage,
             items: [
               BottomNavigationBarItem(
+                activeIcon: Icon(
+                  FeatherIcons.barChart,
+                ),
                 icon: Icon(
-                  current != 0 ? FeatherIcons.barChart2 : FeatherIcons.barChart,
+                  FeatherIcons.barChart2,
                 ),
                 label: "Analytics",
               ),
               BottomNavigationBarItem(
+                activeIcon: Icon(
+                  FeatherIcons.messageSquare,
+                ),
                 icon: Icon(
-                  current != 1
-                      ? FeatherIcons.messageCircle
-                      : FeatherIcons.messageSquare,
+                  FeatherIcons.messageCircle,
                 ),
                 label: "Chats",
               ),
               BottomNavigationBarItem(
+                activeIcon: Icon(
+                  FeatherIcons.plusSquare,
+                ),
                 icon: Icon(
-                  current != 2
-                      ? FeatherIcons.plusCircle
-                      : FeatherIcons.plusSquare,
+                  FeatherIcons.plusCircle,
                 ),
                 label: "Add",
               ),
               BottomNavigationBarItem(
+                activeIcon: Icon(
+                  Icons.percent_rounded,
+                ),
                 icon: Icon(
-                  current != 3 ? FeatherIcons.percent : Icons.percent_rounded,
+                  FeatherIcons.percent,
                 ),
                 label: "Discount",
               ),
               BottomNavigationBarItem(
+                activeIcon: Icon(
+                  Icons.person_outline,
+                ),
                 icon: Icon(
-                  current != 4 ? FeatherIcons.user : Icons.person_outline,
+                  FeatherIcons.user,
                 ),
                 label: "Profile",
               ),
