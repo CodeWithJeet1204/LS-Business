@@ -302,7 +302,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                 element['productViewsTimestamp'];
                             productData['likes'] += element['productLikes'];
                             productData['likesTimestamp'] +=
-                                element['productLikesTimestamp'];
+                                element['productLikesId'];
                             productData['wishlists'] +=
                                 element['productWishlist'];
                             productData['shares'] += element['productShares'];

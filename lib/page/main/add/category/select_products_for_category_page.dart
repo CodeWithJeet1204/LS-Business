@@ -451,7 +451,6 @@ class _SelectProductsForCategoryPageState
                             child: GridViewSkeleton(
                               width: width,
                               isPrice: true,
-                              height: 30,
                             ),
                           );
                         },

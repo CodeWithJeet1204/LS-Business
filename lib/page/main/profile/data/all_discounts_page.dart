@@ -633,7 +633,6 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                 child: GridViewSkeleton(
                                   width: width,
                                   isPrice: true,
-                                  height: 30,
                                   isDelete: true,
                                   isDiscount: true,
                                 ),

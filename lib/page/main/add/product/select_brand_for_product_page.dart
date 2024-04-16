@@ -321,7 +321,6 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                                 child: GridViewSkeleton(
                                   width: width,
                                   isPrice: false,
-                                  height: 30,
                                 ),
                               );
                             },

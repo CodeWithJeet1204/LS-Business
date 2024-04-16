@@ -483,7 +483,6 @@ class _AllBrandPageState extends State<AllBrandPage> {
                               child: GridViewSkeleton(
                                 width: width,
                                 isPrice: false,
-                                height: 30,
                                 isDelete: true,
                               ),
                             );

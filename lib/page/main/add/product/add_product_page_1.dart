@@ -141,7 +141,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
               'productShares': 0,
               'productViews': 0,
               'productViewsTimestamp': [],
-              'productLikesTimestamp': [],
+              'productLikesId': [],
               'productWishlist': 0,
               'productId': productId,
               'imageFiles': _image,
@@ -1055,7 +1055,6 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                               child: GridViewSkeleton(
                                                 width: width,
                                                 isPrice: false,
-                                                height: 30,
                                               ),
                                             );
                                           },

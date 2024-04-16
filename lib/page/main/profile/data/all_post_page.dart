@@ -537,7 +537,6 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                 child: GridViewSkeleton(
                                   width: width,
                                   isPrice: true,
-                                  height: 30,
                                   isDelete: true,
                                 ),
                               );

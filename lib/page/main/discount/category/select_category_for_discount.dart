@@ -340,7 +340,6 @@ class _SelectCategoryForDiscountPageState
                             child: GridViewSkeleton(
                               width: width,
                               isPrice: false,
-                              height: 30,
                             ),
                           );
                         },

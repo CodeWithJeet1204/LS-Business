@@ -413,7 +413,6 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                             child: GridViewSkeleton(
                               width: width,
                               isPrice: true,
-                              height: 30,
                             ),
                           );
                         },

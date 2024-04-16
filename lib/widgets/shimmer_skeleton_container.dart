@@ -5,14 +5,12 @@ class GridViewSkeleton extends StatelessWidget {
   const GridViewSkeleton({
     super.key,
     required this.width,
-    required this.height,
     required this.isPrice,
     this.isDelete = false,
     this.isDiscount = false,
   });
 
   final double width;
-  final double height;
   final bool isPrice;
   final bool isDelete;
   final bool isDiscount;
@@ -40,7 +38,7 @@ class GridViewSkeleton extends StatelessWidget {
               ),
               child: SkeletonContainer(
                 width: isDiscount ? width : width * 0.4,
-                height: height * 5.35,
+                height: width * 0.4,
               ),
             ),
             // NAME, PRICE & DELETE

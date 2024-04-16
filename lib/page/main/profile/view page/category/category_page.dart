@@ -997,7 +997,6 @@ class _CategoryPageState extends State<CategoryPage> {
                                                   child: GridViewSkeleton(
                                                     width: width,
                                                     isPrice: true,
-                                                    height: 30,
                                                     isDelete: true,
                                                   ),
                                                 );

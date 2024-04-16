@@ -449,7 +449,6 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                                   child: GridViewSkeleton(
                                     width: width,
                                     isPrice: true,
-                                    height: 30,
                                   ),
                                 );
                               },

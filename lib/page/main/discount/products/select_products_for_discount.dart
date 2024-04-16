@@ -375,7 +375,6 @@ class _SelectProductForDiscountPageState
                             child: GridViewSkeleton(
                               width: width,
                               isPrice: true,
-                              height: 30,
                             ),
                           );
                         },

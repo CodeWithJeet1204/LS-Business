@@ -240,368 +240,366 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                   return SingleChildScrollView(
                     child: Column(
                       children: [
-                        // isGridView
-                        //     ? GridView.builder(
-                        //         shrinkWrap: true,
-                        //         gridDelegate:
-                        //             SliverGridDelegateWithFixedCrossAxisCount(
-                        //           crossAxisCount: 2,
-                        //         ),
-                        //         itemBuilder: ((context, index) {
-                        //           return FutureBuilder(
-                        //             future: displayCommonCategories(index),
-                        //             builder: ((context, snapshot) {
-                        //               if (snapshot.hasError) {
-                        //                 return Center(
-                        //                   child: Text("Some error occured"),
-                        //                 );
-                        //               }
+                        isGridView
+                            ? GridView.builder(
+                                shrinkWrap: true,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                ),
+                                itemBuilder: ((context, index) {
+                                  return FutureBuilder(
+                                    future: displayCommonCategories(index),
+                                    builder: ((context, snapshot) {
+                                      if (snapshot.hasError) {
+                                        return Center(
+                                          child: Text("Some error occured"),
+                                        );
+                                      }
 
-                        //               if (snapshot.hasData) {
-                        //                 final categoryData = snapshot.data;
+                                      if (snapshot.hasData) {
+                                        final categoryData = snapshot.data;
 
-                        //                 return Padding(
-                        //                   padding: EdgeInsets.symmetric(
-                        //                     horizontal: width * 0.01125,
-                        //                     vertical: width * 0.0166,
-                        //                   ),
-                        //                   child: GestureDetector(
-                        //                     onTap: () {
-                        //                       Navigator.of(context).push(
-                        //                         MaterialPageRoute(
-                        //                           builder: ((context) =>
-                        //                               CategoryPage(
-                        //                                 categoryId:
-                        //                                     categoryData[
-                        //                                         'categoryId'],
-                        //                                 categoryName: categoryData[
-                        //                                     'subCategoryName'],
-                        //                               )),
-                        //                         ),
-                        //                       );
-                        //                     },
-                        //                     child: Container(
-                        //                       decoration: BoxDecoration(
-                        //                         color:
-                        //                             primary2.withOpacity(0.5),
-                        //                         borderRadius:
-                        //                             BorderRadius.circular(12),
-                        //                       ),
-                        //                       child: Padding(
-                        //                         padding: EdgeInsets.symmetric(
-                        //                           horizontal: width * 0.0125,
-                        //                         ),
-                        //                         child: Column(
-                        //                           mainAxisAlignment:
-                        //                               MainAxisAlignment.center,
-                        //                           children: [
-                        //                             Expanded(
-                        //                               flex: 4,
-                        //                               child: Container(),
-                        //                             ),
-                        //                             CachedNetworkImage(
-                        //                               imageUrl: categoryData![
-                        //                                   'imageUrl'],
-                        //                               imageBuilder: (context,
-                        //                                   imageProvider) {
-                        //                                 return Center(
-                        //                                   child: ClipRRect(
-                        //                                     borderRadius:
-                        //                                         BorderRadius
-                        //                                             .circular(
-                        //                                       12,
-                        //                                     ),
-                        //                                     child: Container(
-                        //                                       width:
-                        //                                           width * 0.4,
-                        //                                       height:
-                        //                                           width * 0.4,
-                        //                                       decoration:
-                        //                                           BoxDecoration(
-                        //                                         image:
-                        //                                             DecorationImage(
-                        //                                           image:
-                        //                                               imageProvider,
-                        //                                           fit: BoxFit
-                        //                                               .cover,
-                        //                                         ),
-                        //                                       ),
-                        //                                     ),
-                        //                                   ),
-                        //                                 );
-                        //                               },
-                        //                             ),
-                        //                             Expanded(
-                        //                               flex: 5,
-                        //                               child: Container(),
-                        //                             ),
-                        //                             Row(
-                        //                               mainAxisAlignment:
-                        //                                   MainAxisAlignment
-                        //                                       .spaceBetween,
-                        //                               crossAxisAlignment:
-                        //                                   CrossAxisAlignment
-                        //                                       .center,
-                        //                               children: [
-                        //                                 Padding(
-                        //                                   padding:
-                        //                                       EdgeInsets.only(
-                        //                                     left: width * 0.02,
-                        //                                   ),
-                        //                                   child: SizedBox(
-                        //                                     width:
-                        //                                         width * 0.275,
-                        //                                     child: Text(
-                        //                                       categoryData[
-                        //                                           'subCategoryName'],
-                        //                                       overflow:
-                        //                                           TextOverflow
-                        //                                               .ellipsis,
-                        //                                       maxLines: 1,
-                        //                                       style: TextStyle(
-                        //                                         color:
-                        //                                             primaryDark,
-                        //                                         fontWeight:
-                        //                                             FontWeight
-                        //                                                 .w600,
-                        //                                         fontSize:
-                        //                                             width *
-                        //                                                 0.06,
-                        //                                       ),
-                        //                                     ),
-                        //                                   ),
-                        //                                 ),
-                        //                                 IconButton(
-                        //                                   onPressed: () {
-                        //                                     confirmDelete(
-                        //                                       categoryData[
-                        //                                           'categoryId'],
-                        //                                       categoryData[
-                        //                                           'imageUrl'],
-                        //                                     );
-                        //                                   },
-                        //                                   icon: Icon(
-                        //                                     FeatherIcons.trash,
-                        //                                     color: Colors.red,
-                        //                                     size: width * 0.08,
-                        //                                   ),
-                        //                                   tooltip: "DELETE",
-                        //                                 ),
-                        //                               ],
-                        //                             ),
-                        //                             Expanded(
-                        //                               flex: 4,
-                        //                               child: Container(),
-                        //                             ),
-                        //                           ],
-                        //                         ),
-                        //                       ),
-                        //                     ),
-                        //                   ),
-                        //                 );
-                        //               }
+                                        return Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: width * 0.01125,
+                                            vertical: width * 0.0166,
+                                          ),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: ((context) =>
+                                                      CategoryPage(
+                                                        categoryId:
+                                                            categoryData[
+                                                                'categoryId'],
+                                                        categoryName: categoryData[
+                                                            'subCategoryName'],
+                                                      )),
+                                                ),
+                                              );
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color:
+                                                    primary2.withOpacity(0.5),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              child: Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: width * 0.0125,
+                                                ),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 4,
+                                                      child: Container(),
+                                                    ),
+                                                    CachedNetworkImage(
+                                                      imageUrl: categoryData![
+                                                          'imageUrl'],
+                                                      imageBuilder: (context,
+                                                          imageProvider) {
+                                                        return Center(
+                                                          child: ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                              12,
+                                                            ),
+                                                            child: Container(
+                                                              width:
+                                                                  width * 0.4,
+                                                              height:
+                                                                  width * 0.4,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                image:
+                                                                    DecorationImage(
+                                                                  image:
+                                                                      imageProvider,
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                    Expanded(
+                                                      flex: 5,
+                                                      child: Container(),
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                            left: width * 0.02,
+                                                          ),
+                                                          child: SizedBox(
+                                                            width:
+                                                                width * 0.275,
+                                                            child: Text(
+                                                              categoryData[
+                                                                  'subCategoryName'],
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              maxLines: 1,
+                                                              style: TextStyle(
+                                                                color:
+                                                                    primaryDark,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontSize:
+                                                                    width *
+                                                                        0.06,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        IconButton(
+                                                          onPressed: () {
+                                                            confirmDelete(
+                                                              categoryData[
+                                                                  'categoryId'],
+                                                              categoryData[
+                                                                  'imageUrl'],
+                                                            );
+                                                          },
+                                                          icon: Icon(
+                                                            FeatherIcons.trash,
+                                                            color: Colors.red,
+                                                            size: width * 0.08,
+                                                          ),
+                                                          tooltip: "DELETE",
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Expanded(
+                                                      flex: 4,
+                                                      child: Container(),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }
 
-                        //               return SafeArea(
-                        //                 child: isGridView
-                        //                     ? GridView.builder(
-                        //                         shrinkWrap: true,
-                        //                         gridDelegate:
-                        //                             SliverGridDelegateWithFixedCrossAxisCount(
-                        //                           crossAxisCount: 2,
-                        //                           crossAxisSpacing: 0,
-                        //                           mainAxisSpacing: 0,
-                        //                           childAspectRatio:
-                        //                               width * 0.5 / width * 1.6,
-                        //                         ),
-                        //                         itemCount: 4,
-                        //                         itemBuilder: (context, index) {
-                        //                           return Padding(
-                        //                             padding: EdgeInsets.all(
-                        //                               width * 0.02,
-                        //                             ),
-                        //                             child: GridViewSkeleton(
-                        //                               width: width,
-                        //                               isPrice: false,
-                        //                               height: 30,
-                        //                               isDelete: true,
-                        //                             ),
-                        //                           );
-                        //                         },
-                        //                       )
-                        //                     : ListView.builder(
-                        //                         shrinkWrap: true,
-                        //                         itemCount: 4,
-                        //                         itemBuilder: (context, index) {
-                        //                           return Padding(
-                        //                             padding: EdgeInsets.all(
-                        //                               width * 0.02,
-                        //                             ),
-                        //                             child: ListViewSkeleton(
-                        //                               width: width,
-                        //                               isPrice: false,
-                        //                               height: 30,
-                        //                               isDelete: true,
-                        //                             ),
-                        //                           );
-                        //                         },
-                        //                       ),
-                        //               );
-                        //             }),
-                        //           );
-                        //         }),
-                        //       )
-                        //     : SizedBox(
-                        //         width: width,
-                        //         child: ListView.builder(
-                        //           shrinkWrap: true,
-                        //           itemBuilder: ((context, index) {
-                        //             return FutureBuilder(
-                        //               future: displayCommonCategories(index),
-                        //               builder: ((context, snapshot) {
-                        //                 if (snapshot.hasError) {
-                        //                   return Center(
-                        //                     child: Text("Some error occured"),
-                        //                   );
-                        //                 }
+                                      return SafeArea(
+                                        child: isGridView
+                                            ? GridView.builder(
+                                                shrinkWrap: true,
+                                                gridDelegate:
+                                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                                  crossAxisCount: 2,
+                                                  crossAxisSpacing: 0,
+                                                  mainAxisSpacing: 0,
+                                                  childAspectRatio:
+                                                      width * 0.5 / width * 1.6,
+                                                ),
+                                                itemCount: 4,
+                                                itemBuilder: (context, index) {
+                                                  return Padding(
+                                                    padding: EdgeInsets.all(
+                                                      width * 0.02,
+                                                    ),
+                                                    child: GridViewSkeleton(
+                                                      width: width,
+                                                      isPrice: false,
+                                                      isDelete: true,
+                                                    ),
+                                                  );
+                                                },
+                                              )
+                                            : ListView.builder(
+                                                shrinkWrap: true,
+                                                itemCount: 4,
+                                                itemBuilder: (context, index) {
+                                                  return Padding(
+                                                    padding: EdgeInsets.all(
+                                                      width * 0.02,
+                                                    ),
+                                                    child: ListViewSkeleton(
+                                                      width: width,
+                                                      isPrice: false,
+                                                      height: 30,
+                                                      isDelete: true,
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                      );
+                                    }),
+                                  );
+                                }),
+                              )
+                            : SizedBox(
+                                width: width,
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemBuilder: ((context, index) {
+                                    return FutureBuilder(
+                                      future: displayCommonCategories(index),
+                                      builder: ((context, snapshot) {
+                                        if (snapshot.hasError) {
+                                          return Center(
+                                            child: Text("Some error occured"),
+                                          );
+                                        }
 
-                        //                 if (snapshot.hasData) {
-                        //                   final categoryData = snapshot.data!;
+                                        if (snapshot.hasData) {
+                                          final categoryData = snapshot.data!;
 
-                        //                   return Padding(
-                        //                     padding: EdgeInsets.symmetric(
-                        //                       horizontal: width * 0.01,
-                        //                       vertical: width * 0.025,
-                        //                     ),
-                        //                     child: GestureDetector(
-                        //                       onTap: () {
-                        //                         Navigator.of(context).push(
-                        //                           MaterialPageRoute(
-                        //                             builder: ((context) =>
-                        //                                 CategoryPage(
-                        //                                   categoryId:
-                        //                                       categoryData[
-                        //                                           'categoryId'],
-                        //                                   categoryName:
-                        //                                       categoryData[
-                        //                                           'categoryName'],
-                        //                                 )),
-                        //                           ),
-                        //                         );
-                        //                       },
-                        //                       child: Container(
-                        //                         decoration: BoxDecoration(
-                        //                           color:
-                        //                               primary2.withOpacity(0.5),
-                        //                           borderRadius:
-                        //                               BorderRadius.circular(8),
-                        //                         ),
-                        //                         child: ListTile(
-                        //                           leading: CachedNetworkImage(
-                        //                             imageUrl: categoryData[
-                        //                                 'imageUrl'],
-                        //                             imageBuilder: (context,
-                        //                                 imageProvider) {
-                        //                               return Padding(
-                        //                                 padding: EdgeInsets
-                        //                                     .symmetric(
-                        //                                   vertical:
-                        //                                       width * 0.0125,
-                        //                                 ),
-                        //                                 child: ClipRRect(
-                        //                                   borderRadius:
-                        //                                       BorderRadius
-                        //                                           .circular(4),
-                        //                                   child: Container(
-                        //                                     width:
-                        //                                         width * 0.133,
-                        //                                     height:
-                        //                                         width * 0.133,
-                        //                                     decoration:
-                        //                                         BoxDecoration(
-                        //                                       image:
-                        //                                           DecorationImage(
-                        //                                         image:
-                        //                                             imageProvider,
-                        //                                         fit: BoxFit
-                        //                                             .cover,
-                        //                                       ),
-                        //                                     ),
-                        //                                   ),
-                        //                                 ),
-                        //                               );
-                        //                             },
-                        //                           ),
-                        //                           title: Text(
-                        //                             categoryData[
-                        //                                 'categoryName'],
-                        //                             overflow:
-                        //                                 TextOverflow.ellipsis,
-                        //                             style: TextStyle(
-                        //                               fontSize: width * 0.06,
-                        //                               fontWeight:
-                        //                                   FontWeight.w600,
-                        //                             ),
-                        //                           ),
-                        //                         ),
-                        //                       ),
-                        //                     ),
-                        //                   );
-                        //                 }
+                                          return Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: width * 0.01,
+                                              vertical: width * 0.025,
+                                            ),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: ((context) =>
+                                                        CategoryPage(
+                                                          categoryId:
+                                                              categoryData[
+                                                                  'categoryId'],
+                                                          categoryName:
+                                                              categoryData[
+                                                                  'categoryName'],
+                                                        )),
+                                                  ),
+                                                );
+                                              },
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      primary2.withOpacity(0.5),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                                child: ListTile(
+                                                  leading: CachedNetworkImage(
+                                                    imageUrl: categoryData[
+                                                        'imageUrl'],
+                                                    imageBuilder: (context,
+                                                        imageProvider) {
+                                                      return Padding(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                          vertical:
+                                                              width * 0.0125,
+                                                        ),
+                                                        child: ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(4),
+                                                          child: Container(
+                                                            width:
+                                                                width * 0.133,
+                                                            height:
+                                                                width * 0.133,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              image:
+                                                                  DecorationImage(
+                                                                image:
+                                                                    imageProvider,
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                  title: Text(
+                                                    categoryData[
+                                                        'categoryName'],
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      fontSize: width * 0.06,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        }
 
-                        //                 return SafeArea(
-                        //                   child: isGridView
-                        //                       ? GridView.builder(
-                        //                           shrinkWrap: true,
-                        //                           gridDelegate:
-                        //                               SliverGridDelegateWithFixedCrossAxisCount(
-                        //                             crossAxisCount: 2,
-                        //                             crossAxisSpacing: 0,
-                        //                             mainAxisSpacing: 0,
-                        //                             childAspectRatio: width *
-                        //                                 0.5 /
-                        //                                 width *
-                        //                                 1.6,
-                        //                           ),
-                        //                           itemCount: 4,
-                        //                           itemBuilder:
-                        //                               (context, index) {
-                        //                             return Padding(
-                        //                               padding: EdgeInsets.all(
-                        //                                 width * 0.02,
-                        //                               ),
-                        //                               child: GridViewSkeleton(
-                        //                                 width: width,
-                        //                                 isPrice: false,
-                        //                                 height: 30,
-                        //                                 isDelete: true,
-                        //                               ),
-                        //                             );
-                        //                           },
-                        //                         )
-                        //                       : ListView.builder(
-                        //                           shrinkWrap: true,
-                        //                           itemCount: 4,
-                        //                           itemBuilder:
-                        //                               (context, index) {
-                        //                             return Padding(
-                        //                               padding: EdgeInsets.all(
-                        //                                 width * 0.02,
-                        //                               ),
-                        //                               child: ListViewSkeleton(
-                        //                                 width: width,
-                        //                                 isPrice: false,
-                        //                                 height: 30,
-                        //                                 isDelete: true,
-                        //                               ),
-                        //                             );
-                        //                           },
-                        //                         ),
-                        //                 );
-                        //               }),
-                        //             );
-                        //           }),
-                        //         ),
-                        //       ),
+                                        return SafeArea(
+                                          child: isGridView
+                                              ? GridView.builder(
+                                                  shrinkWrap: true,
+                                                  gridDelegate:
+                                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                                    crossAxisCount: 2,
+                                                    crossAxisSpacing: 0,
+                                                    mainAxisSpacing: 0,
+                                                    childAspectRatio: width *
+                                                        0.5 /
+                                                        width *
+                                                        1.6,
+                                                  ),
+                                                  itemCount: 4,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return Padding(
+                                                      padding: EdgeInsets.all(
+                                                        width * 0.02,
+                                                      ),
+                                                      child: GridViewSkeleton(
+                                                        width: width,
+                                                        isPrice: false,
+                                                        isDelete: true,
+                                                      ),
+                                                    );
+                                                  },
+                                                )
+                                              : ListView.builder(
+                                                  shrinkWrap: true,
+                                                  itemCount: 4,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return Padding(
+                                                      padding: EdgeInsets.all(
+                                                        width * 0.02,
+                                                      ),
+                                                      child: ListViewSkeleton(
+                                                        width: width,
+                                                        isPrice: false,
+                                                        height: 30,
+                                                        isDelete: true,
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                        );
+                                      }),
+                                    );
+                                  }),
+                                ),
+                              ),
                         StreamBuilder(
                           stream: customCategoryStream,
                           builder: (BuildContext context,
@@ -724,8 +722,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                                                             left: width * 0.02,
                                                           ),
                                                           child: SizedBox(
-                                                            width:
-                                                                width * 0.275,
+                                                            width: width * 0.25,
                                                             child: Text(
                                                               categoryData[
                                                                   'categoryName'],
@@ -890,7 +887,6 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                                           child: GridViewSkeleton(
                                             width: width,
                                             isPrice: false,
-                                            height: 30,
                                             isDelete: true,
                                           ),
                                         );

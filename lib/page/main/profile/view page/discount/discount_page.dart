@@ -1296,7 +1296,6 @@ class DISCOUNT extends State<DiscountPage> {
                                                               GridViewSkeleton(
                                                             width: width,
                                                             isPrice: true,
-                                                            height: 30,
                                                             isDelete: true,
                                                           ),
                                                         );
@@ -1759,7 +1758,6 @@ class DISCOUNT extends State<DiscountPage> {
                                                               GridViewSkeleton(
                                                             width: width,
                                                             isPrice: false,
-                                                            height: 30,
                                                             isDelete: true,
                                                           ),
                                                         );
@@ -2198,7 +2196,6 @@ class DISCOUNT extends State<DiscountPage> {
                                                               GridViewSkeleton(
                                                             width: width,
                                                             isPrice: false,
-                                                            height: 30,
                                                             isDelete: true,
                                                           ),
                                                         );

@@ -353,7 +353,6 @@ class _SelectBrandForDiscountPageState
                                 child: GridViewSkeleton(
                                   width: width,
                                   isPrice: false,
-                                  height: 30,
                                 ),
                               );
                             },
