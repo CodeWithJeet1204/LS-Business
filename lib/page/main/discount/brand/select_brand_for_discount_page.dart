@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/provider/discount_brand_provider.dart';
@@ -225,92 +224,100 @@ class _SelectBrandForDiscountPageState
                                 shrinkWrap: true,
                                 itemCount: snapshot.data!.docs.length,
                                 itemBuilder: ((context, index) {
-                                  final brandData = snapshot.data!.docs[index];
-                                  final brandDataMap =
-                                      brandData.data() as Map<String, dynamic>;
-                                  return Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: width * 0.0166,
-                                      vertical: width * 0.0225,
-                                    ),
-                                    child: Stack(
-                                      alignment: Alignment.centerRight,
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: primary2.withOpacity(0.5),
-                                            borderRadius:
-                                                BorderRadius.circular(8),
+                                  final brandSnap = snapshot.data!.docs[index];
+                                  final brandData =
+                                      brandSnap.data() as Map<String, dynamic>;
+
+                                  return Stack(
+                                    alignment: Alignment.centerRight,
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: white,
+                                          border: Border.all(
+                                            width: 0.5,
+                                            color: primaryDark,
                                           ),
-                                          child: ListTile(
-                                            onTap: () {
-                                              selectBrandProvider.selectBrands(
-                                                brandDataMap['brandId'],
-                                              );
-                                            },
-                                            leading: Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                vertical: width * 0.0125,
-                                              ),
-                                              child: CachedNetworkImage(
-                                                imageUrl: brandData['imageUrl'],
-                                                imageBuilder:
-                                                    (context, imageProvider) {
-                                                  return ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                      4,
-                                                    ),
-                                                    child: Container(
-                                                      width: width * 0.155,
-                                                      height: width * 0.175,
-                                                      decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                          image: imageProvider,
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                              ),
+                                          borderRadius:
+                                              BorderRadius.circular(2),
+                                        ),
+                                        margin: EdgeInsets.all(
+                                          width * 0.0125,
+                                        ),
+                                        child: ListTile(
+                                          visualDensity: VisualDensity.standard,
+                                          onTap: () {
+                                            selectBrandProvider.selectBrands(
+                                              brandData['brandId'],
+                                            );
+                                          },
+                                          // leading: CachedNetworkImage(
+                                          //   imageUrl: brandData['imageUrl'],
+                                          //   imageBuilder:
+                                          //       (context, imageProvider) {
+                                          //     return ClipRRect(
+                                          //       borderRadius:
+                                          //           BorderRadius.circular(
+                                          //         4,
+                                          //       ),
+                                          //       child: Container(
+                                          //         width: width * 0.155,
+                                          //         height: width * 0.175,
+                                          //         decoration: BoxDecoration(
+                                          //           image: DecorationImage(
+                                          //             image: imageProvider,
+                                          //             fit: BoxFit.cover,
+                                          //           ),
+                                          //         ),
+                                          //       ),
+                                          //     );
+                                          //   },
+                                          // ),
+                                          leading: ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              2,
                                             ),
-                                            title: Text(
-                                              brandData['brandName'],
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                fontSize: width * 0.055,
-                                                fontWeight: FontWeight.w600,
-                                              ),
+                                            child: Image.network(
+                                              brandData['imageUrl'],
+                                              width: width * 0.15,
+                                              height: width * 0.15,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          title: Text(
+                                            brandSnap['brandName'],
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: width * 0.05,
+                                              fontWeight: FontWeight.w500,
                                             ),
                                           ),
                                         ),
-                                        selectBrandProvider.selectedBrands
-                                                .contains(
-                                          brandDataMap['brandId'],
-                                        )
-                                            ? Padding(
-                                                padding: EdgeInsets.only(
-                                                  right: width * 0.025,
+                                      ),
+                                      selectBrandProvider.selectedBrands
+                                              .contains(
+                                        brandData['brandId'],
+                                      )
+                                          ? Padding(
+                                              padding: EdgeInsets.only(
+                                                right: width * 0.025,
+                                              ),
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.all(2),
+                                                decoration: const BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: primaryDark2,
                                                 ),
-                                                child: Container(
-                                                  padding:
-                                                      const EdgeInsets.all(2),
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: primaryDark2,
-                                                  ),
-                                                  child: Icon(
-                                                    FeatherIcons.check,
-                                                    color: Colors.white,
-                                                    size: width * 0.095,
-                                                  ),
+                                                child: Icon(
+                                                  FeatherIcons.check,
+                                                  color: Colors.white,
+                                                  size: width * 0.1,
                                                 ),
-                                              )
-                                            : Container()
-                                      ],
-                                    ),
+                                              ),
+                                            )
+                                          : Container()
+                                    ],
                                   );
                                 }),
                               ),

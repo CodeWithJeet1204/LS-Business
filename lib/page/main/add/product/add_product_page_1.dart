@@ -1,6 +1,5 @@
 // ignore_for_file: unnecessary_null_comparison
 import 'dart:io';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/page/main/add/product/add_product_page_2.dart';
@@ -899,19 +898,17 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                               );
                                             }),
                                           )
-                                        : ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount:
-                                                snapshot.data!.docs.length,
-                                            itemBuilder: ((context, index) {
-                                              final categoryData =
-                                                  snapshot.data!.docs[index];
-                                              return Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                  horizontal: width * 0.01,
-                                                  vertical: 8,
-                                                ),
-                                                child: GestureDetector(
+                                        : SizedBox(
+                                            width: width,
+                                            child: ListView.builder(
+                                              shrinkWrap: true,
+                                              itemCount:
+                                                  snapshot.data!.docs.length,
+                                              itemBuilder: ((context, index) {
+                                                final categoryData =
+                                                    snapshot.data!.docs[index];
+
+                                                return GestureDetector(
                                                   onTap: () {
                                                     if (selectedCategoryId !=
                                                         categoryData[
@@ -940,55 +937,81 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                                       Container(
                                                         decoration:
                                                             BoxDecoration(
-                                                          color: primary2
-                                                              .withOpacity(0.5),
+                                                          color: white,
+                                                          border: Border.all(
+                                                            width: 0.5,
+                                                            color: primaryDark,
+                                                          ),
                                                           borderRadius:
                                                               BorderRadius
-                                                                  .circular(8),
+                                                                  .circular(2),
+                                                        ),
+                                                        margin: EdgeInsets.all(
+                                                          width * 0.0125,
                                                         ),
                                                         child: ListTile(
-                                                          leading:
-                                                              CachedNetworkImage(
-                                                            imageUrl:
-                                                                categoryData[
-                                                                    'imageUrl'],
-                                                            imageBuilder: (context,
-                                                                imageProvider) {
-                                                              return Padding(
-                                                                padding: EdgeInsets
-                                                                    .symmetric(
-                                                                  vertical:
-                                                                      width *
-                                                                          0.0125,
-                                                                ),
-                                                                child:
-                                                                    ClipRRect(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                    4,
-                                                                  ),
-                                                                  child:
-                                                                      Container(
-                                                                    width: width *
-                                                                        0.133,
-                                                                    height:
-                                                                        width *
-                                                                            0.133,
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                      image:
-                                                                          DecorationImage(
-                                                                        image:
-                                                                            imageProvider,
-                                                                        fit: BoxFit
-                                                                            .cover,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              );
-                                                            },
+                                                          visualDensity:
+                                                              VisualDensity
+                                                                  .standard,
+                                                          // leading:
+                                                          //     CachedNetworkImage(
+                                                          //   imageUrl:
+                                                          //       categoryData[
+                                                          //           'imageUrl'],
+                                                          //   imageBuilder: (context,
+                                                          //       imageProvider) {
+                                                          //     return Padding(
+                                                          //       padding: EdgeInsets
+                                                          //           .symmetric(
+                                                          //         vertical:
+                                                          //             width *
+                                                          //                 0.0125,
+                                                          //       ),
+                                                          //       child:
+                                                          //           ClipRRect(
+                                                          //         borderRadius:
+                                                          //             BorderRadius
+                                                          //                 .circular(
+                                                          //           4,
+                                                          //         ),
+                                                          //         child:
+                                                          //             Container(
+                                                          //           width: width *
+                                                          //               0.133,
+                                                          //           height:
+                                                          //               width *
+                                                          //                   0.133,
+                                                          //           decoration:
+                                                          //               BoxDecoration(
+                                                          //             image:
+                                                          //                 DecorationImage(
+                                                          //               image:
+                                                          //                   imageProvider,
+                                                          //               fit: BoxFit
+                                                          //                   .cover,
+                                                          //             ),
+                                                          //           ),
+                                                          //         ),
+                                                          //       ),
+                                                          //     );
+                                                          //   },
+                                                          // ),
+                                                          leading: ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                              2,
+                                                            ),
+                                                            child:
+                                                                Image.network(
+                                                              categoryData[
+                                                                  'imageUrl'],
+                                                              width:
+                                                                  width * 0.15,
+                                                              height:
+                                                                  width * 0.15,
+                                                              fit: BoxFit.cover,
+                                                            ),
                                                           ),
                                                           title: Text(
                                                             categoryData[
@@ -998,10 +1021,10 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                                                     .ellipsis,
                                                             style: TextStyle(
                                                               fontSize:
-                                                                  width * 0.055,
+                                                                  width * 0.05,
                                                               fontWeight:
                                                                   FontWeight
-                                                                      .w600,
+                                                                      .w500,
                                                             ),
                                                           ),
                                                         ),
@@ -1040,9 +1063,9 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                                           : Container()
                                                     ],
                                                   ),
-                                                ),
-                                              );
-                                            }),
+                                                );
+                                              }),
+                                            ),
                                           );
                                   }
 

@@ -181,14 +181,13 @@ class _ChangeCategoryState extends State<ChangeCategory> {
       body: LayoutBuilder(
         builder: ((context, constraints) {
           final double width = constraints.maxWidth;
+
           return isGridView
               ? GridView.builder(
                   shrinkWrap: true,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    crossAxisSpacing: 0,
-                    mainAxisSpacing: 0,
-                    childAspectRatio: width * 0.5 / width * 1.75,
+                    childAspectRatio: 0.75,
                   ),
                   itemCount: categories.length,
                   itemBuilder: (context, index) {
@@ -196,62 +195,141 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                     final name = categories.keys.toList()[index];
                     final imageUrl = categories.values.toList()[index];
 
-                    return Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: SizedOverflowBox(
-                        size: Size(width * 0.5, 210),
-                        child: GestureDetector(
-                          onTap: () {
-                            changeCategoryProvider.changeCategory(
-                              id,
-                            );
-                          },
-                          child: Stack(
-                            alignment: Alignment.topRight,
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: primary2.withOpacity(0.5),
-                                  borderRadius: BorderRadius.circular(12),
+                    return GestureDetector(
+                      onTap: () {
+                        changeCategoryProvider.changeCategory(
+                          id,
+                        );
+                      },
+                      child: Stack(
+                        alignment: Alignment.topRight,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: primary2.withOpacity(0.125),
+                              border: Border.all(
+                                width: 0.25,
+                                color: primaryDark,
+                              ),
+                              borderRadius: BorderRadius.circular(2),
+                            ),
+                            margin: EdgeInsets.all(width * 0.00625),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                // IMAGE
+                                Padding(
+                                  padding: EdgeInsets.all(
+                                    width * 0.00625,
+                                  ),
+                                  child: Center(
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(2),
+                                      child: Image.network(
+                                        imageUrl,
+                                        height: width * 0.5,
+                                        width: width * 0.5,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(4),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(height: 2),
-                                      // IMAGE
-                                      Center(
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          child: Image.network(
-                                            imageUrl,
-                                            height: width * 0.4,
-                                            width: width * 0.4,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: width * 0.0125,
+                                  ),
+                                  child: SizedBox(
+                                    width: width * 0.5,
+                                    child: Text(
+                                      name,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: width * 0.06,
+                                        fontWeight: FontWeight.w600,
                                       ),
-                                      Padding(
-                                        padding: EdgeInsets.fromLTRB(
-                                          width * 0.02125,
-                                          width * 0.012125,
-                                          width * 0.0125,
-                                          0,
-                                        ),
-                                        child: Text(
-                                          name,
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                          style: TextStyle(
-                                            fontSize: width * 0.055,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          changeCategoryProvider.selectedCategory == id
+                              ? Container(
+                                  padding: EdgeInsets.all(
+                                    width * 0.00625,
+                                  ),
+                                  margin: EdgeInsets.all(
+                                    width * 0.01,
+                                  ),
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: primaryDark2,
+                                  ),
+                                  child: Icon(
+                                    FeatherIcons.check,
+                                    color: Colors.white,
+                                    size: width * 0.1,
+                                  ),
+                                )
+                              : Container()
+                        ],
+                      ),
+                    );
+                  })
+              : SizedBox(
+                  width: width,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: categories.length,
+                    itemBuilder: ((context, index) {
+                      final id = categories.keys.toList()[index];
+                      final name = categories.keys.toList()[index];
+                      final imageUrl = categories.values.toList()[index];
+                      print("ID: $id");
+                      print(
+                          "Selected Category: ${changeCategoryProvider.selectedCategory}");
+
+                      return GestureDetector(
+                        onTap: () {
+                          changeCategoryProvider.changeCategory(
+                            id,
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: white,
+                            border: Border.all(
+                              width: 0.5,
+                              color: primaryDark,
+                            ),
+                            borderRadius: BorderRadius.circular(2),
+                          ),
+                          margin: EdgeInsets.all(
+                            width * 0.0125,
+                          ),
+                          child: Stack(
+                            alignment: Alignment.centerRight,
+                            children: [
+                              ListTile(
+                                visualDensity: VisualDensity.standard,
+                                leading: ClipRRect(
+                                  borderRadius: BorderRadius.circular(2),
+                                  child: Image.network(
+                                    imageUrl,
+                                    width: width * 0.15,
+                                    height: width * 0.15,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                title: Text(
+                                  name,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: width * 0.05,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
                               ),
@@ -270,88 +348,11 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                                       child: Icon(
                                         FeatherIcons.check,
                                         color: Colors.white,
-                                        size: width * 0.09,
+                                        size: width * 0.1,
                                       ),
                                     )
                                   : Container()
                             ],
-                          ),
-                        ),
-                      ),
-                    );
-                  })
-              : SizedBox(
-                  width: width,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: categories.length,
-                    itemBuilder: ((context, index) {
-                      final id = categories.keys.toList()[index];
-                      final name = categories.keys.toList()[index];
-                      final imageUrl = categories.values.toList()[index];
-                      print("ID: $id");
-                      print(
-                          "Selected Category: ${changeCategoryProvider.selectedCategory}");
-
-                      return Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: width * 0.0166,
-                          vertical: width * 0.0225,
-                        ),
-                        child: GestureDetector(
-                          onTap: () {
-                            changeCategoryProvider.changeCategory(
-                              id,
-                            );
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: primary2.withOpacity(0.5),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Stack(
-                              alignment: Alignment.centerRight,
-                              children: [
-                                ListTile(
-                                  leading: ClipRRect(
-                                    borderRadius: BorderRadius.circular(4),
-                                    child: Image.network(
-                                      imageUrl,
-                                      width: width * 0.14,
-                                      height: width * 0.14,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  title: Text(
-                                    name,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: width * 0.05,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                                changeCategoryProvider.selectedCategory == id
-                                    ? Container(
-                                        padding: EdgeInsets.all(
-                                          width * 0.00625,
-                                        ),
-                                        margin: EdgeInsets.all(
-                                          width * 0.01,
-                                        ),
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: primaryDark2,
-                                        ),
-                                        child: Icon(
-                                          FeatherIcons.check,
-                                          color: Colors.white,
-                                          size: width * 0.09,
-                                        ),
-                                      )
-                                    : Container()
-                              ],
-                            ),
                           ),
                         ),
                       );

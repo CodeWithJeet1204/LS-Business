@@ -307,7 +307,7 @@ class _SelectCategoryForDiscountPageState
                                               child: Icon(
                                                 FeatherIcons.check,
                                                 color: Colors.white,
-                                                size: width * 0.095,
+                                                size: width * 0.1,
                                               ),
                                             ),
                                           )

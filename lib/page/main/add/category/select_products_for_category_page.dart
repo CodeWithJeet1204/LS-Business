@@ -305,10 +305,10 @@ class _SelectProductsForCategoryPageState
                                                   shape: BoxShape.circle,
                                                   color: primaryDark2,
                                                 ),
-                                                child: const Icon(
+                                                child: Icon(
                                                   FeatherIcons.check,
                                                   color: Colors.white,
-                                                  size: 32,
+                                                  size: width * 0.1,
                                                 ),
                                               ),
                                             )
@@ -414,10 +414,10 @@ class _SelectProductsForCategoryPageState
                                                   shape: BoxShape.circle,
                                                   color: primaryDark2,
                                                 ),
-                                                child: const Icon(
+                                                child: Icon(
                                                   FeatherIcons.check,
                                                   color: Colors.white,
-                                                  size: 32,
+                                                  size: width * 0.1,
                                                 ),
                                               ),
                                             )

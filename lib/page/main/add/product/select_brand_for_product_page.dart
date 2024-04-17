@@ -6,7 +6,6 @@ import 'package:find_easy/widgets/shimmer_skeleton_container.dart';
 import 'package:find_easy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class SelectBrandForProductPage extends StatefulWidget {
@@ -55,7 +54,7 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
         bottom: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,
-            76,
+            80,
           ),
           child: Padding(
             padding: EdgeInsets.symmetric(
@@ -253,76 +252,93 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                                   final brandData = snapshot.data!.docs[index];
                                   final brandDataMap =
                                       brandData.data() as Map<String, dynamic>;
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 6,
-                                      vertical: 8,
-                                    ),
-                                    child: Stack(
-                                      alignment: Alignment.centerRight,
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: primary2.withOpacity(0.5),
-                                            borderRadius:
-                                                BorderRadius.circular(8),
+
+                                  return Stack(
+                                    alignment: Alignment.centerRight,
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: white,
+                                          border: Border.all(
+                                            width: 0.5,
+                                            color: primaryDark,
                                           ),
-                                          child: ListTile(
-                                            onTap: () {
-                                              selectBrandProvider.selectBrand(
-                                                brandDataMap['brandName'],
-                                                brandDataMap['brandId'],
-                                              );
-                                            },
-                                            leading: Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                vertical: width * 0.01,
-                                              ),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(4),
-                                                child: Image.network(
-                                                  brandData['imageUrl'],
-                                                  width: width * 0.155,
-                                                  height: width * 0.166,
-                                                  fit: BoxFit.cover,
+                                          borderRadius:
+                                              BorderRadius.circular(2),
+                                        ),
+                                        margin: EdgeInsets.all(
+                                          width * 0.0125,
+                                        ),
+                                        child: ListTile(
+                                          visualDensity: VisualDensity.standard,
+                                          onTap: () {
+                                            selectBrandProvider.selectBrand(
+                                              brandDataMap['brandName'],
+                                              brandDataMap['brandId'],
+                                            );
+                                          },
+                                          leading: brandData['imageUrl'] != null
+                                              ? ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    2,
+                                                  ),
+                                                  child: Image.network(
+                                                    brandData['imageUrl'],
+                                                    width: width * 0.15,
+                                                    height: width * 0.15,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                )
+                                              : SizedBox(
+                                                  width: width * 0.15,
+                                                  height: width * 0.15,
+                                                  child: Center(
+                                                    child: Text(
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      'No Image',
+                                                      style: TextStyle(
+                                                        color: primaryDark2,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
-                                            title: Text(
-                                              brandData['brandName'],
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                fontSize: width * 0.055,
-                                                fontWeight: FontWeight.w600,
-                                              ),
+                                          title: Text(
+                                            brandData['brandName'],
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: width * 0.06,
+                                              fontWeight: FontWeight.w600,
                                             ),
                                           ),
                                         ),
-                                        selectBrandProvider.selectedBrandName ==
-                                                brandDataMap['brandId']
-                                            ? Padding(
-                                                padding: EdgeInsets.only(
-                                                  right: width * 0.025,
+                                      ),
+                                      selectBrandProvider.selectedBrandName ==
+                                              brandDataMap['brandId']
+                                          ? Padding(
+                                              padding: EdgeInsets.only(
+                                                right: width * 0.025,
+                                              ),
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.all(2),
+                                                decoration: const BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: primaryDark2,
                                                 ),
-                                                child: Container(
-                                                  padding:
-                                                      const EdgeInsets.all(2),
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: primaryDark2,
-                                                  ),
-                                                  child: Icon(
-                                                    FeatherIcons.check,
-                                                    color: Colors.white,
-                                                    size: width * 0.095,
-                                                  ),
+                                                child: Icon(
+                                                  FeatherIcons.check,
+                                                  color: Colors.white,
+                                                  size: width * 0.1,
                                                 ),
-                                              )
-                                            : Container()
-                                      ],
-                                    ),
+                                              ),
+                                            )
+                                          : Container()
+                                    ],
                                   );
                                 }),
                               ),

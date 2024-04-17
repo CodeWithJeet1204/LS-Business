@@ -273,10 +273,10 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                                               shape: BoxShape.circle,
                                               color: primaryDark2,
                                             ),
-                                            child: const Icon(
+                                            child: Icon(
                                               FeatherIcons.check,
                                               color: Colors.white,
-                                              size: 32,
+                                              size: width * 0.1,
                                             ),
                                           ),
                                         )
@@ -292,91 +292,88 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                             itemCount: snapshot.data!.docs.length,
                             itemBuilder: ((context, index) {
                               final productData = snapshot.data!.docs[index];
-                              return Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: width * 0.015,
-                                  vertical: width * 0.02,
-                                ),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    productsAddedToBrandProvider.addProduct(
-                                      productData['productId'],
-                                    );
-                                  },
-                                  child: Stack(
-                                    alignment: Alignment.centerRight,
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: primary2.withOpacity(0.5),
-                                          borderRadius:
-                                              BorderRadius.circular(8),
+
+                              return GestureDetector(
+                                onTap: () {
+                                  productsAddedToBrandProvider.addProduct(
+                                    productData['productId'],
+                                  );
+                                },
+                                child: Stack(
+                                  alignment: Alignment.centerRight,
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: white,
+                                        border: Border.all(
+                                          width: 0.5,
+                                          color: primaryDark,
                                         ),
-                                        child: ListTile(
-                                          leading: Padding(
-                                            padding: EdgeInsets.symmetric(
-                                              vertical: width * 0.00125,
-                                            ),
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(4),
-                                              child: Image.network(
-                                                productData['images'][0],
-                                                width: width * 0.15,
-                                                height: width * 0.175,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
+                                        borderRadius: BorderRadius.circular(2),
+                                      ),
+                                      margin: EdgeInsets.all(
+                                        width * 0.0125,
+                                      ),
+                                      child: ListTile(
+                                        visualDensity: VisualDensity.standard,
+                                        leading: ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                            2,
                                           ),
-                                          title: Text(
-                                            productData['productName'],
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontSize: width * 0.055,
-                                              fontWeight: FontWeight.w600,
-                                            ),
+                                          child: Image.network(
+                                            productData['images'][0],
+                                            width: width * 0.15,
+                                            height: width * 0.15,
+                                            fit: BoxFit.cover,
                                           ),
-                                          subtitle: Text(
-                                            productData['productPrice'] != "" &&
-                                                    productData[
-                                                            'productPrice'] !=
-                                                        null
-                                                ? productData['productPrice']
-                                                : "N/A",
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontSize: width * 0.04,
-                                              fontWeight: FontWeight.w500,
-                                            ),
+                                        ),
+                                        title: Text(
+                                          productData['productName'],
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: width * 0.05,
+                                          ),
+                                        ),
+                                        subtitle: Text(
+                                          productData['productPrice'] != "" &&
+                                                  productData['productPrice'] !=
+                                                      null
+                                              ? 'Rs. ${productData['productPrice']}'
+                                              : "N/A",
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: width * 0.045,
+                                            fontWeight: FontWeight.w600,
                                           ),
                                         ),
                                       ),
-                                      productsAddedToBrandProvider
-                                              .selectedProducts
-                                              .contains(
-                                                  productData['productId'])
-                                          ? Padding(
-                                              padding: EdgeInsets.only(
-                                                right: width * 0.01,
+                                    ),
+                                    productsAddedToBrandProvider
+                                            .selectedProducts
+                                            .contains(productData['productId'])
+                                        ? Padding(
+                                            padding: EdgeInsets.only(
+                                              right: width * 0.01,
+                                            ),
+                                            child: Container(
+                                              padding: EdgeInsets.all(
+                                                width * 0.005,
                                               ),
-                                              child: Container(
-                                                padding: EdgeInsets.all(
-                                                  width * 0.005,
-                                                ),
-                                                decoration: const BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: primaryDark2,
-                                                ),
-                                                child: const Icon(
-                                                  FeatherIcons.check,
-                                                  color: Colors.white,
-                                                  size: 32,
-                                                ),
+                                              decoration: const BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: primaryDark2,
                                               ),
-                                            )
-                                          : Container()
-                                    ],
-                                  ),
+                                              child: Icon(
+                                                FeatherIcons.check,
+                                                color: Colors.white,
+                                                size: width * 0.1,
+                                              ),
+                                            ),
+                                          )
+                                        : Container()
+                                  ],
                                 ),
                               );
                             }),

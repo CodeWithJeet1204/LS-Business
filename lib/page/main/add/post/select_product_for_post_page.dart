@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/provider/select_product_for_post_provider.dart';
@@ -338,103 +337,117 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                                         snapshot.data!.docs[index];
                                     final productData = productSnap.data()
                                         as Map<String, dynamic>;
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 6,
-                                        vertical: 8,
-                                      ),
-                                      child: Stack(
-                                        alignment: Alignment.centerRight,
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color: primary2.withOpacity(0.5),
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
+
+                                    return Stack(
+                                      alignment: Alignment.centerRight,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: white,
+                                            border: Border.all(
+                                              width: 0.5,
+                                              color: primaryDark,
                                             ),
-                                            child: ListTile(
-                                              onTap: () async {
-                                                await addProduct(
-                                                  selectedProductProvider,
-                                                  productData,
-                                                );
-                                              },
-                                              leading: CachedNetworkImage(
-                                                imageUrl: productSnap['images']
-                                                    [0],
-                                                imageBuilder:
-                                                    (context, imageProvider) {
-                                                  return ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                      4,
-                                                    ),
-                                                    child: Container(
-                                                      width: width * 0.15,
-                                                      height: width * 0.4,
-                                                      decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                          image: imageProvider,
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
+                                            borderRadius:
+                                                BorderRadius.circular(2),
+                                          ),
+                                          margin: EdgeInsets.all(
+                                            width * 0.0125,
+                                          ),
+                                          child: ListTile(
+                                            visualDensity:
+                                                VisualDensity.standard,
+                                            onTap: () async {
+                                              await addProduct(
+                                                selectedProductProvider,
+                                                productData,
+                                              );
+                                            },
+                                            // leading: CachedNetworkImage(
+                                            //   imageUrl: productSnap['images']
+                                            //       [0],
+                                            //   imageBuilder:
+                                            //       (context, imageProvider) {
+                                            //     return ClipRRect(
+                                            //       borderRadius:
+                                            //           BorderRadius.circular(
+                                            //         4,
+                                            //       ),
+                                            //       child: Container(
+                                            //         width: width * 0.15,
+                                            //         height: width * 0.4,
+                                            //         decoration: BoxDecoration(
+                                            //           image: DecorationImage(
+                                            //             image: imageProvider,
+                                            //             fit: BoxFit.cover,
+                                            //           ),
+                                            //         ),
+                                            //       ),
+                                            //     );
+                                            //   },
+                                            // ),
+                                            leading: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                2,
                                               ),
-                                              title: Text(
-                                                productSnap['productName'],
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                  fontSize: width * 0.055,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
+                                              child: Image.network(
+                                                productData['images'][0],
+                                                width: width * 0.15,
+                                                height: width * 0.15,
+                                                fit: BoxFit.cover,
                                               ),
-                                              subtitle: Text(
-                                                productSnap['productPrice'] !=
-                                                            "" &&
-                                                        productSnap[
-                                                                'productPrice'] !=
-                                                            null
-                                                    ? productSnap[
-                                                        'productPrice']
-                                                    : "N/A",
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                  fontSize: width * 0.04,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
+                                            ),
+                                            title: Text(
+                                              productData['productName'],
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize: width * 0.05,
+                                              ),
+                                            ),
+                                            subtitle: Text(
+                                              productData['productPrice'] !=
+                                                          "" &&
+                                                      productData[
+                                                              'productPrice'] !=
+                                                          null
+                                                  ? 'Rs. ${productData['productPrice']}'
+                                                  : "N/A",
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize: width * 0.045,
+                                                fontWeight: FontWeight.w600,
                                               ),
                                             ),
                                           ),
-                                          selectedProductProvider
-                                                  .selectedProducts
-                                                  .contains(
-                                            productData['productId'],
-                                          )
-                                              ? Padding(
-                                                  padding: EdgeInsets.only(
-                                                    right: width * 0.025,
+                                        ),
+                                        selectedProductProvider.selectedProducts
+                                                .contains(
+                                          productData['productId'],
+                                        )
+                                            ? Padding(
+                                                padding: EdgeInsets.only(
+                                                  right: width * 0.025,
+                                                ),
+                                                child: Container(
+                                                  padding: EdgeInsets.all(
+                                                    width * 0.01,
                                                   ),
-                                                  child: Container(
-                                                    padding: EdgeInsets.all(
-                                                      width * 0.01,
-                                                    ),
-                                                    decoration:
-                                                        const BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      color: primaryDark2,
-                                                    ),
-                                                    child: Icon(
-                                                      FeatherIcons.check,
-                                                      color: Colors.white,
-                                                      size: width * 0.09,
-                                                    ),
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: primaryDark2,
                                                   ),
-                                                )
-                                              : Container()
-                                        ],
-                                      ),
+                                                  child: Icon(
+                                                    FeatherIcons.check,
+                                                    color: Colors.white,
+                                                    size: width * 0.1,
+                                                  ),
+                                                ),
+                                              )
+                                            : Container()
+                                      ],
                                     );
                                   }),
                                 ),

@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/page/main/profile/view%20page/product/product_page.dart';
@@ -27,8 +26,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
   }
 
   // DELETE PRODUCT
-  // When deleting product, also delete all posts related to it.
-  void delete(String productId) async {
+  Future<void> delete(String productId) async {
     try {
       await store
           .collection('Business')
@@ -55,7 +53,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
   }
 
   // CONFIRM DELETE
-  confirmDelete(String productId) {
+  Future<void> confirmDelete(String productId) async {
     showDialog(
       context: context,
       builder: ((context) {
@@ -85,7 +83,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
             TextButton(
               onPressed: () async {
                 Navigator.of(context).pop();
-                delete(productId);
+                await delete(productId);
               },
               child: const Text(
                 overflow: TextOverflow.ellipsis,
@@ -308,8 +306,8 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                           ],
                                         ),
                                         IconButton(
-                                          onPressed: () {
-                                            confirmDelete(
+                                          onPressed: () async {
+                                            await confirmDelete(
                                               productData['productId'],
                                             );
                                           },
@@ -333,85 +331,99 @@ class _AllProductsPageState extends State<AllProductsPage> {
                             itemCount: snapshot.data!.docs.length,
                             itemBuilder: ((context, index) {
                               final productData = snapshot.data!.docs[index];
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 6,
-                                  vertical: 8,
-                                ),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: ((context) => ProductPage(
-                                              productId:
-                                                  productData['productId'],
-                                              productName:
-                                                  productData['productName'],
-                                            )),
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: primary2.withOpacity(0.5),
-                                      borderRadius: BorderRadius.circular(8),
+
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: ((context) => ProductPage(
+                                            productId: productData['productId'],
+                                            productName:
+                                                productData['productName'],
+                                          )),
                                     ),
-                                    child: ListTile(
-                                      leading: CachedNetworkImage(
-                                        imageUrl: productData['images'][0],
-                                        imageBuilder: (context, imageProvider) {
-                                          return Padding(
-                                            padding: EdgeInsets.symmetric(
-                                              vertical: width * 0.0125,
-                                            ),
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(4),
-                                              child: Container(
-                                                width: width * 0.133,
-                                                height: width * 0.133,
-                                                decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                    image: imageProvider,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        },
+                                  );
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: white,
+                                    border: Border.all(
+                                      width: 0.5,
+                                      color: primaryDark,
+                                    ),
+                                    borderRadius: BorderRadius.circular(2),
+                                  ),
+                                  margin: EdgeInsets.all(
+                                    width * 0.0125,
+                                  ),
+                                  child: ListTile(
+                                    visualDensity: VisualDensity.standard,
+                                    // leading: CachedNetworkImage(
+                                    //   imageUrl: productData['images'][0],
+                                    //   imageBuilder: (context, imageProvider) {
+                                    //     return Padding(
+                                    //       padding: EdgeInsets.symmetric(
+                                    //         vertical: width * 0.0125,
+                                    //       ),
+                                    //       child: ClipRRect(
+                                    //         borderRadius:
+                                    //             BorderRadius.circular(4),
+                                    //         child: Container(
+                                    //           width: width * 0.133,
+                                    //           height: width * 0.133,
+                                    //           decoration: BoxDecoration(
+                                    //             image: DecorationImage(
+                                    //               image: imageProvider,
+                                    //               fit: BoxFit.cover,
+                                    //             ),
+                                    //           ),
+                                    //         ),
+                                    //       ),
+                                    //     );
+                                    //   },
+                                    // ),
+                                    leading: ClipRRect(
+                                      borderRadius: BorderRadius.circular(
+                                        2,
                                       ),
-                                      title: Text(
-                                        productData['productName'],
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w600,
-                                        ),
+                                      child: Image.network(
+                                        productData['images'][0],
+                                        width: width * 0.15,
+                                        height: width * 0.15,
+                                        fit: BoxFit.cover,
                                       ),
-                                      subtitle: Text(
-                                        productData['productPrice'] != "" &&
-                                                productData['productPrice'] !=
-                                                    null
-                                            ? productData['productPrice']
-                                            : "N/A",
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                    ),
+                                    title: Text(
+                                      productData['productName'],
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: width * 0.05,
                                       ),
-                                      trailing: IconButton(
-                                        onPressed: () {
-                                          confirmDelete(
-                                            productData['productId'],
-                                          );
-                                        },
-                                        icon: Icon(
-                                          FeatherIcons.trash,
-                                          color: Colors.red,
-                                          size: width * 0.09,
-                                        ),
+                                    ),
+                                    subtitle: Text(
+                                      productData['productPrice'] != "" &&
+                                              productData['productPrice'] !=
+                                                  null
+                                          ? 'Rs. ${productData['productPrice']}'
+                                          : "N/A",
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: width * 0.045,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    trailing: IconButton(
+                                      onPressed: () {
+                                        confirmDelete(
+                                          productData['productId'],
+                                        );
+                                      },
+                                      icon: Icon(
+                                        FeatherIcons.trash,
+                                        color: Colors.red,
+                                        size: width * 0.075,
                                       ),
                                     ),
                                   ),
