@@ -1,5 +1,5 @@
-import 'package:find_easy/models/business_categories.dart';
-import 'package:find_easy/models/household_categories.dart';
+import 'package:find_easy/vendors/models/business_categories.dart';
+import 'package:find_easy/vendors/models/household_categories.dart';
 import 'package:find_easy/widgets/image_text_container.dart';
 import 'package:flutter/material.dart';
 

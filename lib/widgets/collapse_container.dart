@@ -1,5 +1,5 @@
-import 'package:find_easy/utils/colors.dart';
-import 'package:find_easy/utils/size.dart';
+import 'package:find_easy/vendors/utils/colors.dart';
+import 'package:find_easy/vendors/utils/size.dart';
 import 'package:flutter/material.dart';
 
 class MyCollapseContainer extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:find_easy/utils/colors.dart';
-import 'package:find_easy/utils/size.dart';
+import 'package:find_easy/vendors/utils/colors.dart';
+import 'package:find_easy/vendors/utils/size.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

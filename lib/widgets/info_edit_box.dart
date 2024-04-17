@@ -1,5 +1,5 @@
 import 'package:feather_icons/feather_icons.dart';
-import 'package:find_easy/utils/colors.dart';
+import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class InfoEditBox extends StatelessWidget {

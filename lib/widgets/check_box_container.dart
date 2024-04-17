@@ -1,4 +1,4 @@
-import 'package:find_easy/utils/colors.dart';
+import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class CheckBoxContainer extends StatefulWidget {
