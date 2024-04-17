@@ -1,9 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:find_easy/vendors/models/special_categories.dart';
+import 'package:find_easy/select_mode_page.dart';
 import 'package:find_easy/vendors/page/main/profile/data/all_categories_page.dart';
-import 'package:find_easy/vendors/page/register/login_page.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:find_easy/widgets/small_text_container.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
@@ -67,7 +66,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   await auth.signOut().then(
                         (value) => Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
-                            builder: ((context) => LoginPage()),
+                            builder: ((context) => SelectModePage()),
                           ),
                           (route) => false,
                         ),
@@ -139,36 +138,34 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               actions: [
                 IconButton(
-                  // onPressed: signOut,
                   onPressed: () async {
-                    Future<void> addSpecialCategories(String shopType) async {
-                      final subCategories = specialCategories[shopType];
-
-                      final CollectionReference<Map<String, dynamic>>
-                          specialCategoriesCollection = store
-                              .collection('Business')
-                              .doc('Special Categories')
-                              .collection(shopType);
-
-                      subCategories!.forEach((subcategory, imageUrl) {
-                        specialCategoriesCollection.doc(subcategory).set({
-                          'specialCategoryName': subcategory,
-                          'specialCategoryImageUrl': imageUrl,
-                          'vendorIds': [],
-                        });
-                      });
-                    }
-
-                    Future<void> addAllSpecialCategories() async {
-                      specialCategories
-                          .forEach((shopType, subCategories) async {
-                        await addSpecialCategories(shopType);
-                        print(shopType);
-                      });
-                    }
-
-                    await addAllSpecialCategories();
+                    await signOut();
                   },
+                  // onPressed: () async {
+                  //   Future<void> addSpecialCategories(String shopType) async {
+                  //     final subCategories = specialCategories[shopType];
+                  //     final CollectionReference<Map<String, dynamic>>
+                  //         specialCategoriesCollection = store
+                  //             .collection('Business')
+                  //             .doc('Special Categories')
+                  //             .collection(shopType);
+                  //     subCategories!.forEach((subcategory, imageUrl) {
+                  //       specialCategoriesCollection.doc(subcategory).set({
+                  //         'specialCategoryName': subcategory,
+                  //         'specialCategoryImageUrl': imageUrl,
+                  //         'vendorIds': [],
+                  //       });
+                  //     });
+                  //   }
+                  //   Future<void> addAllSpecialCategories() async {
+                  //     specialCategories
+                  //         .forEach((shopType, subCategories) async {
+                  //       await addSpecialCategories(shopType);
+                  //       print(shopType);
+                  //     });
+                  //   }
+                  //   await addAllSpecialCategories();
+                  // },
                   icon: const Icon(
                     FeatherIcons.logOut,
                     color: primaryDark,

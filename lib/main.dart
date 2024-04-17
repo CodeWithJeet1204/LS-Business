@@ -1,4 +1,5 @@
 import 'package:find_easy/first_launch_detection.dart';
+import 'package:find_easy/select_mode_page.dart';
 import 'package:find_easy/vendors/page/intro/intro_page_view.dart';
 import 'package:find_easy/vendors/page/main/add/brand/add_brand_page.dart';
 import 'package:find_easy/vendors/page/main/add/category/add_category_page.dart';
@@ -170,7 +171,7 @@ class MyApp extends StatelessWidget {
                     ),
                   );
                 }
-                return LoginPage();
+                return SelectModePage();
               }),
             ),
     );
