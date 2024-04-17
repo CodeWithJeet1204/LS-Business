@@ -29,7 +29,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
   }
 
   // CONFIRM REMOVE
-  void confirmRemove(String categoryId, String categoryName) {
+  void confirmRemove(String categoryName) {
     showDialog(
       context: context,
       builder: (context) {
@@ -52,7 +52,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
             ),
             MyTextButton(
               onPressed: () {
-                remove(categoryId);
+                remove(categoryName);
               },
               text: "YES",
               textColor: Colors.red,
@@ -64,7 +64,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
   }
 
   // REMOVE
-  void remove(String categoryId) async {
+  void remove(String categoryName) async {
     final discountData = await store
         .collection('Business')
         .doc('Data')
@@ -80,7 +80,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
         .collection('Discounts')
         .doc(widget.discountId)
         .update({
-      'categories': categories.remove(categoryId),
+      'categories': categories.remove(categoryName),
     });
   }
 

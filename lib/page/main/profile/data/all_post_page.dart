@@ -239,8 +239,8 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                 postData['postProductId'],
                                             productName:
                                                 postData['postProductName'],
-                                            categoryId:
-                                                postData['postCategoryId'],
+                                            categoryName:
+                                                postData['postCategoryName'],
                                           )),
                                     ),
                                   );
@@ -418,8 +418,8 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                   postData['postProductId'],
                                               productName:
                                                   postData['postProductName'],
-                                              categoryId:
-                                                  postData['postCategoryId'],
+                                              categoryName:
+                                                  postData['postCategoryName'],
                                             )),
                                       ),
                                     );

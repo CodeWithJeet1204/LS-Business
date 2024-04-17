@@ -106,7 +106,7 @@ class _AddPostPageState extends State<AddPostPage> {
               'postProductId': productDocSnap['productId'],
               'postProductName': productDocSnap['productName'],
               'postProductPrice': productDocSnap['productPrice'],
-              'postCategoryId': productDocSnap['categoryId'],
+              'postCategoryName': productDocSnap['categoryName'],
               'postProductDescription': productDocSnap['productDescription'],
               'postProductBrand': productDocSnap['productBrand'],
               'postProductImages': isTextPost ? null : productDocSnap['images'],

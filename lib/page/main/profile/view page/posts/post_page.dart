@@ -15,13 +15,13 @@ class PostPage extends StatefulWidget {
     required this.postId,
     required this.productId,
     required this.productName,
-    required this.categoryId,
+    required this.categoryName,
   });
 
   final String postId;
   final String productId;
   final String productName;
-  final String categoryId;
+  final String categoryName;
 
   @override
   State<PostPage> createState() => _PostPageState();
@@ -52,7 +52,7 @@ class _PostPageState extends State<PostPage> {
     for (QueryDocumentSnapshot<Map<String, dynamic>> doc in discount.docs) {
       final data = doc.data();
       if ((data['products'] as List).contains(widget.productId) ||
-          (data['categories'] as List).contains(widget.categoryId)) {
+          (data['categories'] as List).contains(widget.categoryName)) {
         if ((data['discountEndDateTime'] as Timestamp)
                 .toDate()
                 .isAfter(DateTime.now()) &&

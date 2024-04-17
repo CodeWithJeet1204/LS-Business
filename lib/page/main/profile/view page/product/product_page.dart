@@ -29,13 +29,13 @@ class ProductPage extends StatefulWidget {
     required this.productId,
     required this.productName,
     this.fromPost = false,
-    this.categoryId,
+    this.categoryName,
     this.brandId,
   });
 
   final String productId;
   final String productName;
-  final String? categoryId;
+  final String? categoryName;
   final String? brandId;
   final bool fromPost;
 
@@ -634,13 +634,13 @@ class _ProductPageState extends State<ProductPage> {
 
     final productData = productSnap.data()!;
 
-    final categoryId = productData['categoryId'];
+    final categoryName = productData['categoryName'];
 
     final categorySnap = await store
         .collection('Business')
         .doc('Special Categories')
         .collection(shopType)
-        .doc(categoryId)
+        .doc(categoryName)
         .get();
 
     final categoryData = categorySnap.data()!;
@@ -745,21 +745,21 @@ class _ProductPageState extends State<ProductPage> {
       }
 
       // categories
-      if (data['isCategories'] &&
-          (data['categories'] as List).contains(widget.categoryId)) {
-        // Check if the discount is active
-        if ((data['discountEndDateTime'] as Timestamp)
-                .toDate()
-                .isAfter(DateTime.now()) &&
-            !(data['discountStartDateTime'] as Timestamp)
-                .toDate()
-                .isAfter(DateTime.now())) {
-          setState(() {
-            isDiscount = true;
-          });
-          return;
-        }
-      }
+      // if (data['isCategories'] &&
+      //     (data['categories'] as List).contains(widget.categoryName)) {
+      //   // Check if the discount is active
+      //   if ((data['discountEndDateTime'] as Timestamp)
+      //           .toDate()
+      //           .isAfter(DateTime.now()) &&
+      //       !(data['discountStartDateTime'] as Timestamp)
+      //           .toDate()
+      //           .isAfter(DateTime.now())) {
+      //     setState(() {
+      //       isDiscount = true;
+      //     });
+      //     return;
+      //   }
+      // }
     }
   }
 
@@ -1528,7 +1528,7 @@ class _ProductPageState extends State<ProductPage> {
                                                 child: Image.network(
                                                   categoryExists
                                                       ? productData[
-                                                                  'categoryId'] !=
+                                                                  'categoryName'] !=
                                                               '0'
                                                           ? category[1]
                                                           : 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png'
@@ -1536,14 +1536,14 @@ class _ProductPageState extends State<ProductPage> {
                                                   fit: BoxFit.cover,
                                                   width: categoryExists
                                                       ? productData[
-                                                                  'categoryId'] !=
+                                                                  'categoryName'] !=
                                                               '0'
                                                           ? width * 0.14
                                                           : width * 0.1
                                                       : width * 0.1,
                                                   height: categoryExists
                                                       ? productData[
-                                                                  'categoryId'] !=
+                                                                  'categoryName'] !=
                                                               '0'
                                                           ? width * 0.14
                                                           : width * 0.1

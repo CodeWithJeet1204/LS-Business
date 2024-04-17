@@ -210,7 +210,8 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                           productId: productData['productId'],
                                           productName:
                                               productData['productName'],
-                                          categoryId: productData['categoryId'],
+                                          categoryName:
+                                              productData['categoryName'],
                                           brandId:
                                               productData['productBrandId'],
                                         )),
