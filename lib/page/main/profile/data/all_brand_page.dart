@@ -207,9 +207,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            crossAxisSpacing: 0,
-                            mainAxisSpacing: 0,
-                            childAspectRatio: width * 0.5 / 230,
+                            childAspectRatio: 0.725,
                           ),
                           itemCount: snapshot.data!.docs.length,
                           itemBuilder: ((context, index) {
@@ -217,141 +215,145 @@ class _AllBrandPageState extends State<AllBrandPage> {
                             final Map<String, dynamic> brandData =
                                 brandSnap.data();
 
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 4,
-                                vertical: 6,
-                              ),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: ((context) => BrandPage(
-                                            brandId: brandData['brandId'],
-                                            brandName: brandData['brandName'],
-                                            imageUrl: brandData['imageUrl'],
-                                          )),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: primary2.withOpacity(0.5),
-                                    borderRadius: BorderRadius.circular(12),
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: ((context) => BrandPage(
+                                          brandId: brandData['brandId'],
+                                          brandName: brandData['brandName'],
+                                          imageUrl: brandData['imageUrl'],
+                                        )),
                                   ),
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: width * 0.0125,
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Expanded(
-                                          flex: 4,
-                                          child: Container(),
-                                        ),
-                                        brandData['imageUrl'] != null
-                                            ? CachedNetworkImage(
-                                                imageUrl: brandData['imageUrl'],
-                                                imageBuilder:
-                                                    (context, imageProvider) {
-                                                  return Center(
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                        12,
+                                );
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: primary2.withOpacity(0.125),
+                                  border: Border.all(
+                                    width: 0.25,
+                                    color: primaryDark,
+                                  ),
+                                  borderRadius: BorderRadius.circular(2),
+                                ),
+                                margin: EdgeInsets.all(width * 0.00625),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    brandData['imageUrl'] != null
+                                        // ? CachedNetworkImage(
+                                        //     imageUrl: brandData['imageUrl'],
+                                        //     imageBuilder:
+                                        //         (context, imageProvider) {
+                                        //       return Center(
+                                        //         child: ClipRRect(
+                                        //           borderRadius:
+                                        //               BorderRadius.circular(
+                                        //             12,
+                                        //           ),
+                                        //           child: Container(
+                                        //             width: width * 0.4,
+                                        //             height: width * 0.4,
+                                        //             decoration: BoxDecoration(
+                                        //               image: DecorationImage(
+                                        //                 image: imageProvider,
+                                        //                 fit: BoxFit.cover,
+                                        //               ),
+                                        //             ),
+                                        //           ),
+                                        //         ),
+                                        //       );
+                                        //     },
+                                        //   )
+                                        ? Padding(
+                                            padding: EdgeInsets.all(
+                                              width * 0.0125,
+                                            ),
+                                            child: Center(
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  2,
+                                                ),
+                                                child: Container(
+                                                  width: width * 0.5,
+                                                  height: width * 0.5,
+                                                  decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                      image: NetworkImage(
+                                                        brandData['imageUrl'],
                                                       ),
-                                                      child: Container(
-                                                        width: width * 0.4,
-                                                        height: width * 0.4,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          image:
-                                                              DecorationImage(
-                                                            image:
-                                                                imageProvider,
-                                                            fit: BoxFit.cover,
-                                                          ),
-                                                        ),
-                                                      ),
+                                                      fit: BoxFit.cover,
                                                     ),
-                                                  );
-                                                },
-                                              )
-                                            : Column(
-                                                children: [
-                                                  SizedBox(
-                                                    width: width,
-                                                    height: width * 0.375,
-                                                    child: const Center(
-                                                      child: Text(
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        "No Image",
-                                                        style: TextStyle(
-                                                          color: primaryDark2,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  const Divider(),
-                                                ],
-                                              ),
-                                        Expanded(
-                                          flex: 5,
-                                          child: Container(),
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                left: width * 0.02,
-                                              ),
-                                              child: SizedBox(
-                                                width: width * 0.275,
-                                                child: Text(
-                                                  brandData['brandName'],
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  maxLines: 1,
-                                                  style: TextStyle(
-                                                    color: primaryDark,
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: width * 0.06,
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                            IconButton(
-                                              onPressed: () {
-                                                confirmDelete(
-                                                  brandData['brandId'],
-                                                  brandData['imageUrl'],
-                                                );
-                                              },
-                                              icon: Icon(
-                                                FeatherIcons.trash,
-                                                color: Colors.red,
-                                                size: width * 0.08,
+                                          )
+                                        : Column(
+                                            children: [
+                                              SizedBox(
+                                                width: width,
+                                                height: width * 0.375,
+                                                child: const Center(
+                                                  child: Text(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    "No Image",
+                                                    style: TextStyle(
+                                                      color: primaryDark2,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
-                                              tooltip: "DELETE",
+                                              const Divider(),
+                                            ],
+                                          ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            left: width * 0.02,
+                                          ),
+                                          child: SizedBox(
+                                            width: width * 0.275,
+                                            child: Text(
+                                              brandData['brandName'],
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              style: TextStyle(
+                                                color: primaryDark,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: width * 0.06,
+                                              ),
                                             ),
-                                          ],
+                                          ),
                                         ),
-                                        Expanded(
-                                          flex: 4,
-                                          child: Container(),
+                                        IconButton(
+                                          onPressed: () {
+                                            confirmDelete(
+                                              brandData['brandId'],
+                                              brandData['imageUrl'],
+                                            );
+                                          },
+                                          icon: Icon(
+                                            FeatherIcons.trash,
+                                            color: Colors.red,
+                                            size: width * 0.08,
+                                          ),
+                                          tooltip: "DELETE",
                                         ),
                                       ],
                                     ),
-                                  ),
+                                  ],
                                 ),
                               ),
                             );

@@ -701,10 +701,11 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                     return isGridView
                                         ? GridView.builder(
                                             shrinkWrap: true,
+                                            physics: ClampingScrollPhysics(),
                                             gridDelegate:
                                                 const SliverGridDelegateWithFixedCrossAxisCount(
                                               crossAxisCount: 2,
-                                              childAspectRatio: 0.8,
+                                              childAspectRatio: 0.75,
                                             ),
                                             itemCount:
                                                 snapshot.data!.docs.length,
@@ -714,176 +715,186 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                               final categoryData =
                                                   categorySnap.data();
 
-                                              return Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                  horizontal: width * 0.0125,
-                                                  vertical: 6,
-                                                ),
-                                                child: GestureDetector(
-                                                  onTap: () {
-                                                    if (selectedCategoryId !=
-                                                        categoryData[
-                                                            'categoryId']) {
-                                                      setState(() {
-                                                        selectedCategory =
-                                                            categoryData[
-                                                                'categoryName'];
-                                                        selectedCategoryId =
-                                                            categoryData[
-                                                                'categoryId'];
-                                                      });
-                                                    } else {
-                                                      setState(() {
-                                                        selectedCategory =
-                                                            "No Category Selected";
-                                                        selectedCategoryId =
-                                                            '0';
-                                                      });
-                                                    }
-                                                  },
-                                                  child: Stack(
-                                                    alignment:
-                                                        Alignment.topRight,
-                                                    children: [
-                                                      Container(
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: primary2
-                                                              .withOpacity(0.5),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(12),
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  if (selectedCategoryId !=
+                                                      categoryData[
+                                                          'categoryId']) {
+                                                    setState(() {
+                                                      selectedCategory =
+                                                          categoryData[
+                                                              'categoryName'];
+                                                      selectedCategoryId =
+                                                          categoryData[
+                                                              'categoryId'];
+                                                    });
+                                                  } else {
+                                                    setState(() {
+                                                      selectedCategory =
+                                                          "No Category Selected";
+                                                      selectedCategoryId = '0';
+                                                    });
+                                                  }
+                                                },
+                                                child: Stack(
+                                                  alignment: Alignment.topRight,
+                                                  children: [
+                                                    Container(
+                                                      decoration: BoxDecoration(
+                                                        color: primary2
+                                                            .withOpacity(0.125),
+                                                        border: Border.all(
+                                                          width: 0.25,
+                                                          color: primaryDark,
                                                         ),
-                                                        child: Padding(
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                            horizontal:
-                                                                width * 0.0125,
-                                                          ),
-                                                          child: Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Expanded(
-                                                                flex: 4,
-                                                                child:
-                                                                    Container(),
-                                                              ),
-                                                              CachedNetworkImage(
-                                                                imageUrl:
-                                                                    categoryData[
-                                                                        'imageUrl'],
-                                                                imageBuilder:
-                                                                    (context,
-                                                                        imageProvider) {
-                                                                  return Center(
-                                                                    child:
-                                                                        ClipRRect(
-                                                                      borderRadius:
-                                                                          BorderRadius
-                                                                              .circular(
-                                                                        12,
-                                                                      ),
-                                                                      child:
-                                                                          Container(
-                                                                        width: width *
-                                                                            0.4,
-                                                                        height: width *
-                                                                            0.4,
-                                                                        decoration:
-                                                                            BoxDecoration(
-                                                                          image:
-                                                                              DecorationImage(
-                                                                            image:
-                                                                                imageProvider,
-                                                                            fit:
-                                                                                BoxFit.cover,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  );
-                                                                },
-                                                              ),
-                                                              Expanded(
-                                                                flex: 5,
-                                                                child:
-                                                                    Container(),
-                                                              ),
-                                                              Padding(
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .only(
-                                                                  left: width *
-                                                                      0.025,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(2),
+                                                      ),
+                                                      margin: EdgeInsets.all(
+                                                        width * 0.00625,
+                                                      ),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceAround,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          // CachedNetworkImage(
+                                                          //   imageUrl:
+                                                          //       categoryData[
+                                                          //           'imageUrl'],
+                                                          //   imageBuilder:
+                                                          //       (context,
+                                                          //           imageProvider) {
+                                                          //     return Center(
+                                                          //       child:
+                                                          //           ClipRRect(
+                                                          //         borderRadius:
+                                                          //             BorderRadius
+                                                          //                 .circular(
+                                                          //           12,
+                                                          //         ),
+                                                          //         child:
+                                                          //             Container(
+                                                          //           width: width *
+                                                          //               0.4,
+                                                          //           height: width *
+                                                          //               0.4,
+                                                          //           decoration:
+                                                          //               BoxDecoration(
+                                                          //             image:
+                                                          //                 DecorationImage(
+                                                          //               image:
+                                                          //                   imageProvider,
+                                                          //               fit:
+                                                          //                   BoxFit.cover,
+                                                          //             ),
+                                                          //           ),
+                                                          //         ),
+                                                          //       ),
+                                                          //     );
+                                                          //   },
+                                                          // ),
+                                                          Padding(
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                              width * 0.0125,
+                                                            ),
+                                                            child: Center(
+                                                              child: ClipRRect(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                  2,
                                                                 ),
-                                                                child: Text(
-                                                                  categoryData[
-                                                                      'categoryName'],
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color:
-                                                                        primaryDark,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                    fontSize:
-                                                                        width *
-                                                                            0.06,
+                                                                child:
+                                                                    Container(
+                                                                  width: width *
+                                                                      0.5,
+                                                                  height:
+                                                                      width *
+                                                                          0.5,
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    image:
+                                                                        DecorationImage(
+                                                                      image:
+                                                                          NetworkImage(
+                                                                        categoryData[
+                                                                            'imageUrl'],
+                                                                      ),
+                                                                      fit: BoxFit
+                                                                          .cover,
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               ),
-                                                              Expanded(
-                                                                flex: 4,
-                                                                child:
-                                                                    Container(),
-                                                              ),
-                                                            ],
+                                                            ),
                                                           ),
-                                                        ),
-                                                      ),
-                                                      selectedCategoryId ==
+                                                          Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                              left:
+                                                                  width * 0.02,
+                                                            ),
+                                                            child: Text(
                                                               categoryData[
-                                                                  'categoryId']
-                                                          ? Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                right: 4,
-                                                                top: 4,
+                                                                  'categoryName'],
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              style: TextStyle(
+                                                                color:
+                                                                    primaryDark,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontSize:
+                                                                    width *
+                                                                        0.06,
                                                               ),
-                                                              child: Container(
-                                                                width: width *
-                                                                    0.1125,
-                                                                height: width *
-                                                                    0.1125,
-                                                                decoration:
-                                                                    const BoxDecoration(
-                                                                  color:
-                                                                      primaryDark,
-                                                                  shape: BoxShape
-                                                                      .circle,
-                                                                ),
-                                                                child: Icon(
-                                                                  FeatherIcons
-                                                                      .check,
-                                                                  size: width *
-                                                                      0.08,
-                                                                  color: Colors
-                                                                      .white,
-                                                                ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    selectedCategoryId ==
+                                                            categoryData[
+                                                                'categoryId']
+                                                        ? Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                              right: 4,
+                                                              top: 4,
+                                                            ),
+                                                            child: Container(
+                                                              width: width *
+                                                                  0.1125,
+                                                              height: width *
+                                                                  0.1125,
+                                                              decoration:
+                                                                  const BoxDecoration(
+                                                                color:
+                                                                    primaryDark,
+                                                                shape: BoxShape
+                                                                    .circle,
                                                               ),
-                                                            )
-                                                          : Container()
-                                                    ],
-                                                  ),
+                                                              child: Icon(
+                                                                FeatherIcons
+                                                                    .check,
+                                                                size: width *
+                                                                    0.08,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                          )
+                                                        : Container()
+                                                  ],
                                                 ),
                                               );
                                             }),

@@ -889,8 +889,8 @@ class DISCOUNT extends State<DiscountPage> {
                                 children: [
                                   Padding(
                                     padding: EdgeInsets.symmetric(
-                                      horizontal: width * 0.0225,
-                                      vertical: width * 0.02125,
+                                      horizontal: width * 0.0125,
+                                      vertical: width * 0.0125,
                                     ),
                                     child: Column(
                                       children: [
@@ -953,13 +953,8 @@ class DISCOUNT extends State<DiscountPage> {
                                                         gridDelegate:
                                                             SliverGridDelegateWithFixedCrossAxisCount(
                                                           crossAxisCount: 2,
-                                                          crossAxisSpacing: 0,
-                                                          mainAxisSpacing: 0,
                                                           childAspectRatio:
-                                                              width *
-                                                                  0.5 /
-                                                                  width *
-                                                                  1.5,
+                                                              0.675,
                                                         ),
                                                         itemCount: snapshot
                                                             .data!.docs.length,
@@ -968,156 +963,164 @@ class DISCOUNT extends State<DiscountPage> {
                                                           final productData =
                                                               snapshot.data!
                                                                   .docs[index];
-                                                          return Padding(
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                              vertical:
-                                                                  width * 0.025,
-                                                              horizontal:
-                                                                  width *
-                                                                      0.0125,
-                                                            ),
-                                                            child:
-                                                                GestureDetector(
-                                                              onTap: () {
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .push(
-                                                                  MaterialPageRoute(
-                                                                    builder:
-                                                                        ((context) =>
-                                                                            ProductPage(
-                                                                              productId: productData['productId'],
-                                                                              productName: productData['productName'],
-                                                                            )),
-                                                                  ),
-                                                                );
-                                                              },
-                                                              child: Container(
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: primary2
-                                                                      .withOpacity(
-                                                                    0.5,
-                                                                  ),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                    12,
-                                                                  ),
+
+                                                          return GestureDetector(
+                                                            onTap: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .push(
+                                                                MaterialPageRoute(
+                                                                  builder:
+                                                                      ((context) =>
+                                                                          ProductPage(
+                                                                            productId:
+                                                                                productData['productId'],
+                                                                            productName:
+                                                                                productData['productName'],
+                                                                          )),
                                                                 ),
-                                                                child: Padding(
-                                                                  padding:
-                                                                      EdgeInsets
-                                                                          .all(
-                                                                    width *
-                                                                        0.0015,
+                                                              );
+                                                            },
+                                                            child: Container(
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: primary2
+                                                                    .withOpacity(
+                                                                  0.125,
+                                                                ),
+                                                                border:
+                                                                    Border.all(
+                                                                  width: 0.25,
+                                                                  color:
+                                                                      primaryDark,
+                                                                ),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                  2,
+                                                                ),
+                                                              ),
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .all(
+                                                                width * 0.00625,
+                                                              ),
+                                                              margin: EdgeInsets
+                                                                  .all(
+                                                                width * 0.00625,
+                                                              ),
+                                                              child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Center(
+                                                                    child:
+                                                                        ClipRRect(
+                                                                      borderRadius:
+                                                                          BorderRadius
+                                                                              .circular(
+                                                                        2,
+                                                                      ),
+                                                                      child: Image
+                                                                          .network(
+                                                                        productData['images']
+                                                                            [0],
+                                                                        width: width *
+                                                                            0.5,
+                                                                        height: width *
+                                                                            0.5,
+                                                                        fit: BoxFit
+                                                                            .cover,
+                                                                      ),
+                                                                    ),
                                                                   ),
-                                                                  child: Column(
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
                                                                     crossAxisAlignment:
                                                                         CrossAxisAlignment
-                                                                            .start,
+                                                                            .center,
                                                                     children: [
-                                                                      const SizedBox(
-                                                                        height:
-                                                                            2,
-                                                                      ),
-                                                                      Center(
-                                                                        child:
-                                                                            ClipRRect(
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(
-                                                                            12,
-                                                                          ),
-                                                                          child:
-                                                                              Image.network(
-                                                                            productData['images'][0],
-                                                                            width:
-                                                                                width * 0.35,
-                                                                            height:
-                                                                                width * 0.35,
-                                                                            fit:
-                                                                                BoxFit.cover,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                      Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceBetween,
+                                                                      Column(
                                                                         crossAxisAlignment:
-                                                                            CrossAxisAlignment.center,
+                                                                            CrossAxisAlignment.start,
                                                                         children: [
-                                                                          Column(
-                                                                            crossAxisAlignment:
-                                                                                CrossAxisAlignment.start,
-                                                                            children: [
-                                                                              Padding(
-                                                                                padding: EdgeInsets.fromLTRB(
-                                                                                  width * 0.025,
-                                                                                  width * 0.0125,
-                                                                                  width * 0.0125,
-                                                                                  0,
-                                                                                ),
-                                                                                child: Text(
-                                                                                  productData['productName'],
-                                                                                  overflow: TextOverflow.ellipsis,
-                                                                                  maxLines: 1,
-                                                                                  style: TextStyle(
-                                                                                    fontSize: width * 0.058,
-                                                                                    fontWeight: FontWeight.bold,
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                              Padding(
-                                                                                padding: EdgeInsets.fromLTRB(
-                                                                                  width * 0.025,
-                                                                                  0,
-                                                                                  width * 0.0125,
-                                                                                  0,
-                                                                                ),
-                                                                                child: Text(
-                                                                                  productData['productPrice'] != "" && productData['productPrice'] != null ? productData['productPrice'] : "N/A",
-                                                                                  overflow: TextOverflow.ellipsis,
-                                                                                  maxLines: 1,
-                                                                                  style: TextStyle(
-                                                                                    fontSize: width * 0.04,
-                                                                                    fontWeight: FontWeight.w600,
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                          IconButton(
-                                                                            onPressed:
-                                                                                () {
-                                                                              // remove(
-                                                                              //   productData[
-                                                                              //       'productId'],
-                                                                              //   productData[
-                                                                              //       'productName'],
-                                                                              //   widget
-                                                                              //       .categoryName,
-                                                                              // );
-                                                                            },
-                                                                            icon:
-                                                                                Icon(
-                                                                              FeatherIcons.trash,
-                                                                              color: const Color.fromARGB(
-                                                                                255,
-                                                                                215,
-                                                                                14,
-                                                                                0,
-                                                                              ),
-                                                                              size: width * 0.09,
+                                                                          Padding(
+                                                                            padding:
+                                                                                EdgeInsets.fromLTRB(
+                                                                              width * 0.0125,
+                                                                              width * 0.0125,
+                                                                              width * 0.0125,
+                                                                              0,
                                                                             ),
-                                                                            tooltip:
-                                                                                "Remove Product",
+                                                                            child:
+                                                                                SizedBox(
+                                                                              width: width * 0.275,
+                                                                              child: Text(
+                                                                                productData['productName'],
+                                                                                maxLines: 1,
+                                                                                overflow: TextOverflow.ellipsis,
+                                                                                style: TextStyle(
+                                                                                  fontSize: width * 0.05,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                          Padding(
+                                                                            padding:
+                                                                                EdgeInsets.fromLTRB(
+                                                                              width * 0.0125,
+                                                                              0,
+                                                                              width * 0.0125,
+                                                                              0,
+                                                                            ),
+                                                                            child:
+                                                                                Text(
+                                                                              productData['productPrice'] != "" && productData['productPrice'] != null ? 'Rs. ${productData['productPrice']}' : "N/A",
+                                                                              overflow: TextOverflow.ellipsis,
+                                                                              maxLines: 1,
+                                                                              style: TextStyle(
+                                                                                fontSize: width * 0.04,
+                                                                                fontWeight: FontWeight.w600,
+                                                                              ),
+                                                                            ),
                                                                           ),
                                                                         ],
                                                                       ),
+                                                                      IconButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          // remove(
+                                                                          //   productData[
+                                                                          //       'productId'],
+                                                                          //   productData[
+                                                                          //       'productName'],
+                                                                          //   widget
+                                                                          //       .categoryName,
+                                                                          // );
+                                                                        },
+                                                                        icon:
+                                                                            Icon(
+                                                                          FeatherIcons
+                                                                              .trash,
+                                                                          color:
+                                                                              const Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            14,
+                                                                            0,
+                                                                          ),
+                                                                          size: width *
+                                                                              0.075,
+                                                                        ),
+                                                                        tooltip:
+                                                                            "Remove Product",
+                                                                      ),
                                                                     ],
                                                                   ),
-                                                                ),
+                                                                ],
                                                               ),
                                                             ),
                                                           );
@@ -1368,8 +1371,8 @@ class DISCOUNT extends State<DiscountPage> {
                                 children: [
                                   Padding(
                                     padding: EdgeInsets.symmetric(
-                                      horizontal: width * 0.0225,
-                                      vertical: width * 0.02125,
+                                      horizontal: width * 0.0125,
+                                      vertical: width * 0.0125,
                                     ),
                                     child: Column(
                                       children: [
@@ -1426,19 +1429,14 @@ class DISCOUNT extends State<DiscountPage> {
                                             if (snapshot.hasData) {
                                               return SafeArea(
                                                 child: isGridView
-                                                    // PRODUCTS IN GRIDVIEW
+                                                    // BRANDS IN GRIDVIEW
                                                     ? GridView.builder(
                                                         shrinkWrap: true,
                                                         gridDelegate:
                                                             SliverGridDelegateWithFixedCrossAxisCount(
                                                           crossAxisCount: 2,
-                                                          crossAxisSpacing: 0,
-                                                          mainAxisSpacing: 0,
                                                           childAspectRatio:
-                                                              width *
-                                                                  0.5 /
-                                                                  width *
-                                                                  1.66,
+                                                              0.695,
                                                         ),
                                                         itemCount: snapshot
                                                             .data!.docs.length,
@@ -1448,145 +1446,149 @@ class DISCOUNT extends State<DiscountPage> {
                                                               snapshot.data!
                                                                   .docs[index];
 
-                                                          return Padding(
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                              vertical:
-                                                                  width * 0.025,
-                                                              horizontal:
-                                                                  width *
-                                                                      0.0125,
-                                                            ),
-                                                            child:
-                                                                GestureDetector(
-                                                              onTap: () {
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .push(
-                                                                  MaterialPageRoute(
-                                                                    builder:
-                                                                        ((context) =>
-                                                                            BrandPage(
-                                                                              brandId: brandData['brandId'],
-                                                                              brandName: brandData['brandName'],
-                                                                              imageUrl: brandData['imageUrl'],
-                                                                            )),
-                                                                  ),
-                                                                );
-                                                              },
-                                                              child: Container(
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: primary2
-                                                                      .withOpacity(
-                                                                    0.5,
-                                                                  ),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                    12,
-                                                                  ),
+                                                          return GestureDetector(
+                                                            onTap: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .push(
+                                                                MaterialPageRoute(
+                                                                  builder:
+                                                                      ((context) =>
+                                                                          BrandPage(
+                                                                            brandId:
+                                                                                brandData['brandId'],
+                                                                            brandName:
+                                                                                brandData['brandName'],
+                                                                            imageUrl:
+                                                                                brandData['imageUrl'],
+                                                                          )),
                                                                 ),
-                                                                child: Padding(
-                                                                  padding:
-                                                                      EdgeInsets
-                                                                          .all(
-                                                                    width *
-                                                                        0.0015,
+                                                              );
+                                                            },
+                                                            child: Container(
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: primary2
+                                                                    .withOpacity(
+                                                                  0.125,
+                                                                ),
+                                                                border:
+                                                                    Border.all(
+                                                                  width: 0.25,
+                                                                  color:
+                                                                      primaryDark,
+                                                                ),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                  2,
+                                                                ),
+                                                              ),
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .all(
+                                                                width * 0.00625,
+                                                              ),
+                                                              margin: EdgeInsets
+                                                                  .all(
+                                                                width * 0.00625,
+                                                              ),
+                                                              child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Center(
+                                                                    child:
+                                                                        ClipRRect(
+                                                                      borderRadius:
+                                                                          BorderRadius
+                                                                              .circular(
+                                                                        2,
+                                                                      ),
+                                                                      child: Image
+                                                                          .network(
+                                                                        brandData[
+                                                                            'imageUrl'],
+                                                                        width: width *
+                                                                            0.5,
+                                                                        height: width *
+                                                                            0.5,
+                                                                        fit: BoxFit
+                                                                            .cover,
+                                                                      ),
+                                                                    ),
                                                                   ),
-                                                                  child: Column(
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
                                                                     crossAxisAlignment:
                                                                         CrossAxisAlignment
-                                                                            .start,
+                                                                            .center,
                                                                     children: [
-                                                                      const SizedBox(
-                                                                        height:
-                                                                            2,
-                                                                      ),
-                                                                      Center(
-                                                                        child:
-                                                                            ClipRRect(
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(
-                                                                            12,
-                                                                          ),
-                                                                          child:
-                                                                              Image.network(
-                                                                            brandData['imageUrl'],
-                                                                            width:
-                                                                                width * 0.35,
-                                                                            height:
-                                                                                width * 0.35,
-                                                                            fit:
-                                                                                BoxFit.cover,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                      Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceBetween,
+                                                                      Column(
                                                                         crossAxisAlignment:
-                                                                            CrossAxisAlignment.center,
+                                                                            CrossAxisAlignment.start,
                                                                         children: [
-                                                                          Column(
-                                                                            crossAxisAlignment:
-                                                                                CrossAxisAlignment.start,
-                                                                            children: [
-                                                                              Padding(
-                                                                                padding: EdgeInsets.fromLTRB(
-                                                                                  width * 0.025,
-                                                                                  width * 0.0125,
-                                                                                  width * 0.0125,
-                                                                                  0,
-                                                                                ),
-                                                                                child: Text(
-                                                                                  brandData['brandName'],
-                                                                                  overflow: TextOverflow.ellipsis,
-                                                                                  maxLines: 1,
-                                                                                  style: TextStyle(
-                                                                                    fontSize: width * 0.058,
-                                                                                    fontWeight: FontWeight.bold,
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                          IconButton(
-                                                                            onPressed:
-                                                                                () {
-                                                                              // remove(
-                                                                              //   productData[
-                                                                              //       'productId'],
-                                                                              //   productData[
-                                                                              //       'productName'],
-                                                                              //   widget
-                                                                              //       .categoryName,
-                                                                              // );
-                                                                            },
-                                                                            icon:
-                                                                                Icon(
-                                                                              FeatherIcons.trash,
-                                                                              color: const Color.fromARGB(
-                                                                                255,
-                                                                                215,
-                                                                                14,
-                                                                                0,
-                                                                              ),
-                                                                              size: width * 0.09,
+                                                                          Padding(
+                                                                            padding:
+                                                                                EdgeInsets.fromLTRB(
+                                                                              width * 0.0125,
+                                                                              width * 0.0125,
+                                                                              width * 0.0125,
+                                                                              0,
                                                                             ),
-                                                                            tooltip:
-                                                                                "Remove Product",
+                                                                            child:
+                                                                                Text(
+                                                                              brandData['brandName'],
+                                                                              maxLines: 1,
+                                                                              overflow: TextOverflow.ellipsis,
+                                                                              style: TextStyle(
+                                                                                fontSize: width * 0.055,
+                                                                                fontWeight: FontWeight.w500,
+                                                                              ),
+                                                                            ),
                                                                           ),
                                                                         ],
                                                                       ),
+                                                                      IconButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          // remove(
+                                                                          //   productData[
+                                                                          //       'productId'],
+                                                                          //   productData[
+                                                                          //       'productName'],
+                                                                          //   widget
+                                                                          //       .categoryName,
+                                                                          // );
+                                                                        },
+                                                                        icon:
+                                                                            Icon(
+                                                                          FeatherIcons
+                                                                              .trash,
+                                                                          color:
+                                                                              const Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            14,
+                                                                            0,
+                                                                          ),
+                                                                          size: width *
+                                                                              0.09,
+                                                                        ),
+                                                                        tooltip:
+                                                                            "Remove Product",
+                                                                      ),
                                                                     ],
                                                                   ),
-                                                                ),
+                                                                ],
                                                               ),
                                                             ),
                                                           );
                                                         })
-                                                    // PRODUCTS IN LISTVIEW
+                                                    // BRANDS IN LISTVIEW
                                                     : ListView.builder(
                                                         shrinkWrap: true,
                                                         itemCount: snapshot
@@ -1888,19 +1890,14 @@ class DISCOUNT extends State<DiscountPage> {
                                             if (snapshot.hasData) {
                                               return SafeArea(
                                                 child: isGridView
-                                                    // PRODUCTS IN GRIDVIEW
+                                                    // CATEGORIES IN GRIDVIEW
                                                     ? GridView.builder(
                                                         shrinkWrap: true,
                                                         gridDelegate:
                                                             SliverGridDelegateWithFixedCrossAxisCount(
                                                           crossAxisCount: 2,
-                                                          crossAxisSpacing: 0,
-                                                          mainAxisSpacing: 0,
                                                           childAspectRatio:
-                                                              width *
-                                                                  0.5 /
-                                                                  width *
-                                                                  1.66,
+                                                              0.68,
                                                         ),
                                                         itemCount: snapshot
                                                             .data!.docs.length,
@@ -1910,138 +1907,140 @@ class DISCOUNT extends State<DiscountPage> {
                                                               snapshot.data!
                                                                   .docs[index];
 
-                                                          return Padding(
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                              horizontal:
-                                                                  width *
-                                                                      0.000125,
-                                                              vertical:
-                                                                  width * 0.025,
-                                                            ),
-                                                            child:
-                                                                GestureDetector(
-                                                              onTap: () {
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .push(
-                                                                  MaterialPageRoute(
-                                                                    builder:
-                                                                        ((context) =>
-                                                                            CategoryPage(
-                                                                              categoryName: categoryData['categoryName'],
-                                                                            )),
-                                                                  ),
-                                                                );
-                                                              },
-                                                              child: Container(
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: primary2
-                                                                      .withOpacity(
-                                                                    0.5,
-                                                                  ),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                    12,
-                                                                  ),
+                                                          return GestureDetector(
+                                                            onTap: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .push(
+                                                                MaterialPageRoute(
+                                                                  builder:
+                                                                      ((context) =>
+                                                                          CategoryPage(
+                                                                            categoryName:
+                                                                                categoryData['categoryName'],
+                                                                          )),
                                                                 ),
-                                                                child: Padding(
-                                                                  padding:
-                                                                      EdgeInsets
-                                                                          .all(
-                                                                    width *
-                                                                        0.0015,
+                                                              );
+                                                            },
+                                                            child: Container(
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: primary2
+                                                                    .withOpacity(
+                                                                  0.125,
+                                                                ),
+                                                                border:
+                                                                    Border.all(
+                                                                  width: 0.25,
+                                                                  color:
+                                                                      primaryDark,
+                                                                ),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                  2,
+                                                                ),
+                                                              ),
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .all(
+                                                                width * 0.00625,
+                                                              ),
+                                                              margin: EdgeInsets
+                                                                  .all(
+                                                                width * 0.00625,
+                                                              ),
+                                                              child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Center(
+                                                                    child:
+                                                                        ClipRRect(
+                                                                      borderRadius:
+                                                                          BorderRadius
+                                                                              .circular(
+                                                                        2,
+                                                                      ),
+                                                                      child: Image
+                                                                          .network(
+                                                                        categoryData[
+                                                                            'imageUrl'],
+                                                                        width: width *
+                                                                            0.5,
+                                                                        height: width *
+                                                                            0.5,
+                                                                        fit: BoxFit
+                                                                            .cover,
+                                                                      ),
+                                                                    ),
                                                                   ),
-                                                                  child: Column(
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
                                                                     crossAxisAlignment:
                                                                         CrossAxisAlignment
-                                                                            .start,
+                                                                            .center,
                                                                     children: [
-                                                                      const SizedBox(
-                                                                        height:
-                                                                            2,
-                                                                      ),
-                                                                      Center(
-                                                                        child:
-                                                                            ClipRRect(
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(
-                                                                            12,
-                                                                          ),
-                                                                          child:
-                                                                              Image.network(
-                                                                            categoryData['imageUrl'],
-                                                                            width:
-                                                                                width * 0.35,
-                                                                            height:
-                                                                                width * 0.35,
-                                                                            fit:
-                                                                                BoxFit.cover,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                      Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceBetween,
+                                                                      Column(
                                                                         crossAxisAlignment:
-                                                                            CrossAxisAlignment.center,
+                                                                            CrossAxisAlignment.start,
                                                                         children: [
-                                                                          Column(
-                                                                            crossAxisAlignment:
-                                                                                CrossAxisAlignment.start,
-                                                                            children: [
-                                                                              Padding(
-                                                                                padding: EdgeInsets.fromLTRB(
-                                                                                  width * 0.025,
-                                                                                  width * 0.0125,
-                                                                                  width * 0.0125,
-                                                                                  0,
-                                                                                ),
-                                                                                child: Text(
-                                                                                  categoryData['categoryName'],
-                                                                                  overflow: TextOverflow.ellipsis,
-                                                                                  maxLines: 1,
-                                                                                  style: TextStyle(
-                                                                                    fontSize: width * 0.058,
-                                                                                    fontWeight: FontWeight.bold,
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                          IconButton(
-                                                                            onPressed:
-                                                                                () {
-                                                                              // remove(
-                                                                              //   productData[
-                                                                              //       'productId'],
-                                                                              //   productData[
-                                                                              //       'productName'],
-                                                                              //   widget
-                                                                              //       .categoryName,
-                                                                              // );
-                                                                            },
-                                                                            icon:
-                                                                                Icon(
-                                                                              FeatherIcons.trash,
-                                                                              color: const Color.fromARGB(
-                                                                                255,
-                                                                                215,
-                                                                                14,
-                                                                                0,
-                                                                              ),
-                                                                              size: width * 0.09,
+                                                                          Padding(
+                                                                            padding:
+                                                                                EdgeInsets.fromLTRB(
+                                                                              width * 0.0125,
+                                                                              width * 0.0125,
+                                                                              width * 0.0125,
+                                                                              0,
                                                                             ),
-                                                                            tooltip:
-                                                                                "Remove Category",
+                                                                            child:
+                                                                                Text(
+                                                                              categoryData['categoryName'],
+                                                                              overflow: TextOverflow.ellipsis,
+                                                                              maxLines: 1,
+                                                                              style: TextStyle(
+                                                                                fontSize: width * 0.055,
+                                                                                fontWeight: FontWeight.w500,
+                                                                              ),
+                                                                            ),
                                                                           ),
                                                                         ],
                                                                       ),
+                                                                      IconButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          // remove(
+                                                                          //   productData[
+                                                                          //       'productId'],
+                                                                          //   productData[
+                                                                          //       'productName'],
+                                                                          //   widget
+                                                                          //       .categoryName,
+                                                                          // );
+                                                                        },
+                                                                        icon:
+                                                                            Icon(
+                                                                          FeatherIcons
+                                                                              .trash,
+                                                                          color:
+                                                                              const Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            14,
+                                                                            0,
+                                                                          ),
+                                                                          size: width *
+                                                                              0.075,
+                                                                        ),
+                                                                        tooltip:
+                                                                            "Remove Category",
+                                                                      ),
                                                                     ],
                                                                   ),
-                                                                ),
+                                                                ],
                                                               ),
                                                             ),
                                                           );

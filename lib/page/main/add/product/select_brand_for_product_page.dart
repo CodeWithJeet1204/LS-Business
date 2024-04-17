@@ -6,6 +6,7 @@ import 'package:find_easy/widgets/shimmer_skeleton_container.dart';
 import 'package:find_easy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class SelectBrandForProductPage extends StatefulWidget {
@@ -57,9 +58,9 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
             76,
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 6,
-              vertical: 8,
+            padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.0166,
+              vertical: MediaQuery.of(context).size.width * 0.0225,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -119,99 +120,127 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
-                                crossAxisSpacing: 0,
-                                mainAxisSpacing: 0,
-                                childAspectRatio: width * 0.5 / width * 1.725,
+                                childAspectRatio: 0.75,
                               ),
                               itemCount: snapshot.data!.docs.length,
                               itemBuilder: (context, index) {
                                 final brandData = snapshot.data!.docs[index];
                                 final brandDataMap =
                                     brandData.data() as Map<String, dynamic>;
-                                // CARD
-                                return Padding(
-                                  padding: const EdgeInsets.all(8),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      selectBrandProvider.selectBrand(
-                                        brandDataMap['brandName'],
-                                        brandDataMap['brandId'],
-                                      );
-                                    },
-                                    child: Stack(
-                                      alignment: Alignment.topRight,
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: primary2.withOpacity(0.5),
-                                            borderRadius:
-                                                BorderRadius.circular(12),
+
+                                return GestureDetector(
+                                  onTap: () {
+                                    selectBrandProvider.selectBrand(
+                                      brandDataMap['brandName'],
+                                      brandDataMap['brandId'],
+                                    );
+                                  },
+                                  child: Stack(
+                                    alignment: Alignment.topRight,
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: primary2.withOpacity(0.125),
+                                          border: Border.all(
+                                            width: 0.25,
+                                            color: primaryDark,
                                           ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(4),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                const SizedBox(height: 2),
-                                                Center(
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                      12,
-                                                    ),
-                                                    child: Image.network(
-                                                      brandData['imageUrl'],
-                                                      width: width * 0.4,
-                                                      height: width * 0.4,
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.fromLTRB(
-                                                    width * 0.025,
-                                                    width * 0.0125,
-                                                    width * 0.0125,
-                                                    0,
-                                                  ),
-                                                  child: Text(
-                                                    brandData['brandName'],
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    maxLines: 1,
-                                                    style: TextStyle(
-                                                      fontSize: width * 0.06,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(2),
                                         ),
-                                        selectBrandProvider.selectedBrandId ==
-                                                brandDataMap['brandId']
-                                            ? Container(
-                                                margin: EdgeInsets.all(
-                                                  width * 0.01,
+                                        margin: EdgeInsets.all(width * 0.00625),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            brandData['imageUrl'] != null
+                                                ? Padding(
+                                                    padding: EdgeInsets.all(
+                                                      width * 0.0125,
+                                                    ),
+                                                    child: Center(
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                          2,
+                                                        ),
+                                                        child: Image.network(
+                                                          brandData['imageUrl'],
+                                                          width: width * 0.5,
+                                                          height: width * 0.5,
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                : Column(
+                                                    children: [
+                                                      SizedBox(
+                                                        width: width,
+                                                        height: width * 0.375,
+                                                        child: const Center(
+                                                          child: Text(
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            "No Image",
+                                                            style: TextStyle(
+                                                              color:
+                                                                  primaryDark2,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      const Divider(),
+                                                    ],
+                                                  ),
+                                            Padding(
+                                              padding: EdgeInsets.fromLTRB(
+                                                width * 0.0125,
+                                                width * 0.0125,
+                                                width * 0.0125,
+                                                0,
+                                              ),
+                                              child: SizedBox(
+                                                width: width * 0.5,
+                                                child: Text(
+                                                  brandData['brandName'],
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  style: TextStyle(
+                                                    fontSize: width * 0.06,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
                                                 ),
-                                                padding:
-                                                    const EdgeInsets.all(2),
-                                                decoration: const BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: primaryDark2,
-                                                ),
-                                                child: Icon(
-                                                  FeatherIcons.check,
-                                                  color: Colors.white,
-                                                  size: width * 0.1,
-                                                ),
-                                              )
-                                            : Container()
-                                      ],
-                                    ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      selectBrandProvider.selectedBrandId ==
+                                              brandDataMap['brandId']
+                                          ? Container(
+                                              margin: EdgeInsets.all(
+                                                width * 0.01,
+                                              ),
+                                              padding: const EdgeInsets.all(2),
+                                              decoration: const BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: primaryDark2,
+                                              ),
+                                              child: Icon(
+                                                FeatherIcons.check,
+                                                color: Colors.white,
+                                                size: width * 0.1,
+                                              ),
+                                            )
+                                          : Container()
+                                    ],
                                   ),
                                 );
                               })

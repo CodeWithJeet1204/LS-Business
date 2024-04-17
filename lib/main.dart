@@ -99,6 +99,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Find Easy Business',
       theme: ThemeData(
+        scaffoldBackgroundColor: primary,
         progressIndicatorTheme: const ProgressIndicatorThemeData(
           color: primaryDark2,
         ),

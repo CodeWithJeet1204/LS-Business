@@ -164,9 +164,7 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                                 gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
-                                  crossAxisSpacing: 0,
-                                  mainAxisSpacing: 0,
-                                  childAspectRatio: width * 0.5 / width * 1.6,
+                                  childAspectRatio: 0.725,
                                 ),
                                 itemCount: snapshot.data!.docs.length,
                                 itemBuilder: (context, index) {
@@ -175,143 +173,158 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                                   final productData = productSnap.data()
                                       as Map<String, dynamic>;
 
-                                  return Padding(
-                                    padding: EdgeInsets.all(
-                                      width * 0.02,
-                                    ),
-                                    child: GestureDetector(
-                                      onTap: () async {
-                                        await addProduct(
-                                          selectedProductProvider,
-                                          productData,
-                                        );
-                                      },
-                                      child: Stack(
-                                        alignment: Alignment.topRight,
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color: primary2.withOpacity(0.5),
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
+                                  return GestureDetector(
+                                    onTap: () async {
+                                      await addProduct(
+                                        selectedProductProvider,
+                                        productData,
+                                      );
+                                    },
+                                    child: Stack(
+                                      alignment: Alignment.topRight,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: primary2.withOpacity(0.125),
+                                            border: Border.all(
+                                              width: 0.25,
+                                              color: primaryDark,
                                             ),
-                                            child: Padding(
-                                              padding:
-                                                  EdgeInsets.all(width * 0.01),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  const SizedBox(height: 2),
-                                                  CachedNetworkImage(
-                                                    imageUrl:
-                                                        productSnap['images']
-                                                            [0],
-                                                    imageBuilder: (context,
-                                                        imageProvider) {
-                                                      return Center(
-                                                        child: ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                            12,
-                                                          ),
-                                                          child: Container(
-                                                            width: width * 0.4,
-                                                            height: width * 0.4,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              image:
-                                                                  DecorationImage(
-                                                                image:
-                                                                    imageProvider,
-                                                                fit: BoxFit
-                                                                    .cover,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsets.fromLTRB(
-                                                      width * 0.025,
-                                                      width * 0.01,
-                                                      width * 0.01,
-                                                      0,
-                                                    ),
-                                                    child: Text(
-                                                      productSnap[
-                                                          'productName'],
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      maxLines: 1,
-                                                      style: TextStyle(
-                                                        fontSize: width * 0.06,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsets.fromLTRB(
-                                                      width * 0.025,
-                                                      0,
-                                                      width * 0.01,
-                                                      0,
-                                                    ),
-                                                    child: Text(
-                                                      productSnap['productPrice'] !=
-                                                                  "" &&
-                                                              productSnap[
-                                                                      'productPrice'] !=
-                                                                  null
-                                                          ? productSnap[
-                                                              'productPrice']
-                                                          : "N/A",
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      maxLines: 1,
-                                                      style: TextStyle(
-                                                        fontSize: width * 0.04,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(2),
                                           ),
-                                          selectedProductProvider
-                                                  .selectedProducts
-                                                  .contains(
-                                            productData['productId'],
-                                          )
-                                              ? Container(
-                                                  margin: EdgeInsets.all(
-                                                    width * 0.005,
+                                          margin:
+                                              EdgeInsets.all(width * 0.00625),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              // CachedNetworkImage(
+                                              //   imageUrl:
+                                              //       productSnap['images']
+                                              //           [0],
+                                              //   imageBuilder: (context,
+                                              //       imageProvider) {
+                                              //     return Center(
+                                              //       child: ClipRRect(
+                                              //         borderRadius:
+                                              //             BorderRadius
+                                              //                 .circular(
+                                              //           12,
+                                              //         ),
+                                              //         child: Container(
+                                              //           width: width * 0.4,
+                                              //           height: width * 0.4,
+                                              //           decoration:
+                                              //               BoxDecoration(
+                                              //             image:
+                                              //                 DecorationImage(
+                                              //               image:
+                                              //                   imageProvider,
+                                              //               fit: BoxFit
+                                              //                   .cover,
+                                              //             ),
+                                              //           ),
+                                              //         ),
+                                              //       ),
+                                              //     );
+                                              //   },
+                                              // ),
+                                              Padding(
+                                                padding: EdgeInsets.all(
+                                                  width * 0.00625,
+                                                ),
+                                                child: Center(
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      2,
+                                                    ),
+                                                    child: Image.network(
+                                                      productData['images'][0],
+                                                      width: width * 0.5,
+                                                      height: width * 0.5,
+                                                      fit: BoxFit.cover,
+                                                    ),
                                                   ),
-                                                  padding: EdgeInsets.all(
-                                                    width * 0.01,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.fromLTRB(
+                                                  width * 0.0125,
+                                                  width * 0.01,
+                                                  width * 0.01,
+                                                  0,
+                                                ),
+                                                child: SizedBox(
+                                                  width: width * 0.5,
+                                                  child: Text(
+                                                    productSnap['productName'],
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 1,
+                                                    style: TextStyle(
+                                                      fontSize: width * 0.05,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
                                                   ),
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: primaryDark2,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.fromLTRB(
+                                                  width * 0.0125,
+                                                  0,
+                                                  width * 0.0125,
+                                                  0,
+                                                ),
+                                                child: SizedBox(
+                                                  width: width * 0.275,
+                                                  child: Text(
+                                                    productSnap['productPrice'] !=
+                                                                "" &&
+                                                            productSnap[
+                                                                    'productPrice'] !=
+                                                                null
+                                                        ? '''Rs. ${productSnap['productPrice']}'''
+                                                        : "N/A",
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 1,
+                                                    style: TextStyle(
+                                                      fontSize: width * 0.045,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
                                                   ),
-                                                  child: Icon(
-                                                    FeatherIcons.check,
-                                                    color: Colors.white,
-                                                    size: width * 0.1,
-                                                  ),
-                                                )
-                                              : Container()
-                                        ],
-                                      ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        selectedProductProvider.selectedProducts
+                                                .contains(
+                                          productData['productId'],
+                                        )
+                                            ? Container(
+                                                margin: EdgeInsets.all(
+                                                  width * 0.005,
+                                                ),
+                                                padding: EdgeInsets.all(
+                                                  width * 0.01,
+                                                ),
+                                                decoration: const BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: primaryDark2,
+                                                ),
+                                                child: Icon(
+                                                  FeatherIcons.check,
+                                                  color: Colors.white,
+                                                  size: width * 0.1,
+                                                ),
+                                              )
+                                            : Container()
+                                      ],
                                     ),
                                   );
                                 })

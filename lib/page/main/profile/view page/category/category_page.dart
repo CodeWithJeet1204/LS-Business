@@ -688,10 +688,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                           gridDelegate:
                                               SliverGridDelegateWithFixedCrossAxisCount(
                                             crossAxisCount: 2,
-                                            crossAxisSpacing: 0,
-                                            mainAxisSpacing: 0,
-                                            childAspectRatio:
-                                                width * 0.5 / width * 1.5,
+                                            childAspectRatio: 0.675,
                                           ),
                                           itemCount: products.length,
                                           itemBuilder: (context, index) {
@@ -704,175 +701,158 @@ class _CategoryPageState extends State<CategoryPage> {
                                             final price = products.values
                                                 .toList()[index][2];
 
-                                            return Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                vertical: width * 0.025,
-                                                horizontal: width * 0.0125,
-                                              ),
-                                              child: GestureDetector(
-                                                onTap: () {
-                                                  Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                      builder: ((context) =>
-                                                          ProductPage(
-                                                            productId: id,
-                                                            productName: name,
-                                                          )),
-                                                    ),
-                                                  );
-                                                },
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    color: primary2.withOpacity(
-                                                      0.5,
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                      12,
-                                                    ),
+                                            return GestureDetector(
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: ((context) =>
+                                                        ProductPage(
+                                                          productId: id,
+                                                          productName: name,
+                                                        )),
                                                   ),
-                                                  child: Padding(
-                                                    padding: EdgeInsets.all(
-                                                      width * 0.0015,
+                                                );
+                                              },
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: primary2
+                                                      .withOpacity(0.125),
+                                                  border: Border.all(
+                                                    width: 0.25,
+                                                    color: primaryDark,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(2),
+                                                ),
+                                                padding: EdgeInsets.all(
+                                                  width * 0.00625,
+                                                ),
+                                                margin: EdgeInsets.all(
+                                                  width * 0.00625,
+                                                ),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Center(
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                          2,
+                                                        ),
+                                                        child: Image.network(
+                                                          imageUrl,
+                                                          width: width * 0.5,
+                                                          height: width * 0.5,
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
                                                     ),
-                                                    child: Column(
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
-                                                              .start,
+                                                              .center,
                                                       children: [
-                                                        const SizedBox(
-                                                          height: 2,
-                                                        ),
-                                                        Center(
-                                                          child: ClipRRect(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                              12,
-                                                            ),
-                                                            child:
-                                                                Image.network(
-                                                              imageUrl,
-                                                              width:
-                                                                  width * 0.45,
-                                                              height:
-                                                                  width * 0.4,
-                                                              fit: BoxFit.cover,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
+                                                        Column(
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
-                                                                  .center,
+                                                                  .start,
                                                           children: [
-                                                            Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Padding(
-                                                                  padding:
-                                                                      EdgeInsets
-                                                                          .fromLTRB(
-                                                                    width *
-                                                                        0.0125,
-                                                                    width *
-                                                                        0.0125,
-                                                                    width *
-                                                                        0.0125,
-                                                                    0,
-                                                                  ),
-                                                                  child:
-                                                                      SizedBox(
-                                                                    width: width *
-                                                                        0.275,
-                                                                    child: Text(
-                                                                      name,
-                                                                      maxLines:
-                                                                          1,
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis,
-                                                                      style:
-                                                                          TextStyle(
-                                                                        fontSize:
-                                                                            width *
-                                                                                0.058,
-                                                                        fontWeight:
-                                                                            FontWeight.bold,
-                                                                      ),
-                                                                    ),
+                                                            Padding(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .fromLTRB(
+                                                                width * 0.0125,
+                                                                width * 0.0125,
+                                                                width * 0.0125,
+                                                                0,
+                                                              ),
+                                                              child: SizedBox(
+                                                                width: width *
+                                                                    0.275,
+                                                                child: Text(
+                                                                  name,
+                                                                  maxLines: 1,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        width *
+                                                                            0.058,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
                                                                   ),
                                                                 ),
-                                                                Padding(
-                                                                  padding: EdgeInsets.fromLTRB(
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                              padding: EdgeInsets
+                                                                  .fromLTRB(
                                                                       width *
                                                                           0.025,
                                                                       0,
                                                                       width *
                                                                           0.0125,
                                                                       0),
-                                                                  child:
-                                                                      SizedBox(
-                                                                    width:
+                                                              child: SizedBox(
+                                                                width: width *
+                                                                    0.25,
+                                                                child: Text(
+                                                                  price != "" &&
+                                                                          price !=
+                                                                              null
+                                                                      ? price
+                                                                      : "N/A",
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  maxLines: 1,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
                                                                         width *
-                                                                            0.25,
-                                                                    child: Text(
-                                                                      price != "" &&
-                                                                              price != null
-                                                                          ? price
-                                                                          : "N/A",
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis,
-                                                                      maxLines:
-                                                                          1,
-                                                                      style:
-                                                                          TextStyle(
-                                                                        fontSize:
-                                                                            width *
-                                                                                0.04,
-                                                                        fontWeight:
-                                                                            FontWeight.w600,
-                                                                      ),
-                                                                    ),
+                                                                            0.04,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
                                                                   ),
                                                                 ),
-                                                              ],
-                                                            ),
-                                                            IconButton(
-                                                              onPressed: () {
-                                                                remove(
-                                                                  id,
-                                                                  name,
-                                                                  widget
-                                                                      .categoryName,
-                                                                );
-                                                              },
-                                                              icon: Icon(
-                                                                FeatherIcons
-                                                                    .trash,
-                                                                color: Color
-                                                                    .fromRGBO(
-                                                                        215,
-                                                                        14,
-                                                                        0,
-                                                                        1),
-                                                                size: width *
-                                                                    0.075,
                                                               ),
-                                                              tooltip:
-                                                                  "Remove Product",
                                                             ),
                                                           ],
                                                         ),
+                                                        IconButton(
+                                                          onPressed: () {
+                                                            remove(
+                                                              id,
+                                                              name,
+                                                              widget
+                                                                  .categoryName,
+                                                            );
+                                                          },
+                                                          icon: Icon(
+                                                            FeatherIcons.trash,
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    215,
+                                                                    14,
+                                                                    0,
+                                                                    1),
+                                                            size: width * 0.075,
+                                                          ),
+                                                          tooltip:
+                                                              "Remove Product",
+                                                        ),
                                                       ],
                                                     ),
-                                                  ),
+                                                  ],
                                                 ),
                                               ),
                                             );
