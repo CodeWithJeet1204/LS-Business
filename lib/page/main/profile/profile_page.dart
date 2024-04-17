@@ -34,8 +34,8 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   // SIGN OUT
-  void signOut() async {
-    showDialog(
+  Future<void> signOut() async {
+    await showDialog(
       context: context,
       builder: ((context) {
         return AlertDialog(

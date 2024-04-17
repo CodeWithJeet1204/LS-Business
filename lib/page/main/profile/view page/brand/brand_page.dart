@@ -57,7 +57,7 @@ class _BrandPageState extends State<BrandPage> {
   }
 
   // CHANGE BRAND IMAGE
-  void changeBrandImage({String? imageUrl}) async {
+  Future<void> changeBrandImage({String? imageUrl}) async {
     final XFile? im = await showImagePickDialog(context);
     if (im != null) {
       String? imageDownloadUrl;
@@ -110,7 +110,7 @@ class _BrandPageState extends State<BrandPage> {
   }
 
   // REMOVE BRAND IMAGE
-  void removeBrandImage(String imageUrl) async {
+  Future<void> removeBrandImage(String imageUrl) async {
     await FirebaseStorage.instance.refFromURL(imageUrl).delete();
 
     await store
@@ -124,7 +124,7 @@ class _BrandPageState extends State<BrandPage> {
   }
 
   // BRAND NAME CHANGE BACKEND
-  void changeBrandName(String newName) async {
+  Future<void> changeBrandName(String newName) async {
     if (brandNameKey.currentState!.validate()) {
       try {
         setState(() {
@@ -153,8 +153,8 @@ class _BrandPageState extends State<BrandPage> {
   }
 
   // BRAND NAME CHANGE
-  void changeName() {
-    showDialog(
+  Future<void> changeName() async {
+    await showDialog(
       context: context,
       builder: (context) {
         final propertyStream = FirebaseFirestore.instance
@@ -213,8 +213,8 @@ class _BrandPageState extends State<BrandPage> {
                           ),
                           MyButton(
                             text: "SAVE",
-                            onTap: () {
-                              changeBrandName(brandName);
+                            onTap: () async {
+                              await changeBrandName(brandName);
                             },
                             isLoading: isChangingName,
                             horizontalPadding: 0,
@@ -244,8 +244,9 @@ class _BrandPageState extends State<BrandPage> {
   }
 
   // REMOVE PRODUCT
-  void remove(String productId, String productName, String brandName) {
-    showDialog(
+  Future<void> remove(
+      String productId, String productName, String brandName) async {
+    await showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
@@ -560,7 +561,9 @@ class _BrandPageState extends State<BrandPage> {
                                               top: width * 0.0125,
                                             ),
                                             child: IconButton.filledTonal(
-                                              onPressed: changeBrandImage,
+                                              onPressed: () async {
+                                                await changeBrandImage();
+                                              },
                                               icon: Icon(
                                                 FeatherIcons.camera,
                                                 size: width * 0.1,
@@ -575,8 +578,8 @@ class _BrandPageState extends State<BrandPage> {
                                               top: width * 0.0125,
                                             ),
                                             child: IconButton.filledTonal(
-                                              onPressed: () {
-                                                removeBrandImage(
+                                              onPressed: () async {
+                                                await removeBrandImage(
                                                   brandData['imageUrl'],
                                                 );
                                               },
@@ -593,7 +596,9 @@ class _BrandPageState extends State<BrandPage> {
                             )
                           : Center(
                               child: MyTextButton(
-                                onPressed: changeBrandImage,
+                                onPressed: () async {
+                                  await changeBrandImage();
+                                },
                                 text: "Add Image",
                                 textColor: primaryDark2,
                               ),
@@ -626,8 +631,8 @@ class _BrandPageState extends State<BrandPage> {
                               ),
                             ),
                             IconButton(
-                              onPressed: () {
-                                changeName();
+                              onPressed: () async {
+                                await changeName();
                               },
                               icon: Icon(
                                 FeatherIcons.edit,
@@ -1007,8 +1012,9 @@ class _BrandPageState extends State<BrandPage> {
                                                                 ],
                                                               ),
                                                               IconButton(
-                                                                onPressed: () {
-                                                                  remove(
+                                                                onPressed:
+                                                                    () async {
+                                                                  await remove(
                                                                     productData[
                                                                         'productId'],
                                                                     productData[
@@ -1135,8 +1141,9 @@ class _BrandPageState extends State<BrandPage> {
                                                             ),
                                                           ),
                                                           trailing: IconButton(
-                                                            onPressed: () {
-                                                              remove(
+                                                            onPressed:
+                                                                () async {
+                                                              await remove(
                                                                 productData[
                                                                     'productId'],
                                                                 productData[

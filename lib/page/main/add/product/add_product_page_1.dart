@@ -105,7 +105,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
   }
 
   // ADD PRODUCT IMAGE
-  void addProductImages() async {
+  Future<void> addProductImages() async {
     final XFile? im = await showImagePickDialog(context);
     if (im != null) {
       setState(() {
@@ -127,7 +127,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
   }
 
   // ADD PRODUCT
-  void addProduct(AddProductProvider productProvider,
+  Future<void> addProduct(AddProductProvider productProvider,
       SelectBrandForProductProvider brandProvider) async {
     if (productKey.currentState!.validate()) {
       if (_image.isEmpty) {
@@ -241,8 +241,8 @@ class _AddProductPage1State extends State<AddProductPage1> {
         ),
         actions: [
           MyTextButton(
-            onPressed: () {
-              addProduct(addProductProvider, selectBrandProvider);
+            onPressed: () async {
+              await addProduct(addProductProvider, selectBrandProvider);
             },
             text: "NEXT",
             textColor: primaryDark2,
@@ -377,8 +377,8 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                   ),
                                   child: IconButton(
                                     splashRadius: width * 0.095,
-                                    onPressed: () {
-                                      addProductImages();
+                                    onPressed: () async {
+                                      await addProductImages();
                                     },
                                     icon: Icon(
                                       FeatherIcons.plus,
@@ -393,7 +393,9 @@ class _AddProductPage1State extends State<AddProductPage1> {
                       : SizedOverflowBox(
                           size: Size(width, width),
                           child: InkWell(
-                            onTap: addProductImages,
+                            onTap: () async {
+                              await addProductImages();
+                            },
                             customBorder: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(32),
                             ),

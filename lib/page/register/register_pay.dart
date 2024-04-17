@@ -54,13 +54,13 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                   // PAY BUTTON
                   MyButton(
                     text: "Pay",
-                    onTap: () {
+                    onTap: () async {
                       try {
                         setState(() {
                           isPaying = true;
                         });
                         // Paying Methods
-                        saveIsPayed(true);
+                        await saveIsPayed(true);
                         setState(() {
                           isPaying = false;
                         });
@@ -142,13 +142,13 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                         // PAY BUTTON
                         MyButton(
                           text: "Pay",
-                          onTap: () {
+                          onTap: () async {
                             try {
                               setState(() {
                                 isPaying = true;
                               });
                               // Paying Methods
-                              saveIsPayed(true);
+                              await saveIsPayed(true);
                               setState(() {
                                 isPaying = false;
                               });

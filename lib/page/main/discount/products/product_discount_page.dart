@@ -59,7 +59,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
   }
 
   // ADD DISCOUNT IMAGE
-  void addDiscountImage() async {
+  Future<void> addDiscountImage() async {
     final XFile? im = await showImagePickDialog(context);
     if (im != null) {
       setState(() {
@@ -80,7 +80,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
   }
 
   // SELECT START DATE
-  void selectStartDate() async {
+  Future<void> selectStartDate() async {
     DateTime? selected = await showDatePicker(
       context: context,
       firstDate: DateTime.now(),
@@ -97,7 +97,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
   }
 
   // SELECT END DATE
-  void selectEndDate() async {
+  Future<void> selectEndDate() async {
     DateTime? selected = await showDatePicker(
       context: context,
       firstDate: DateTime.now(),
@@ -113,7 +113,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
   }
 
   // ADD DISCOUNT
-  void addDiscount(SelectProductForDiscountProvider provider,
+  Future<void> addDiscount(SelectProductForDiscountProvider provider,
       List<String> productIdList) async {
     // End date should be after start date
     if (discountKey.currentState!.validate()) {
@@ -254,8 +254,8 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
         ),
         actions: [
           MyTextButton(
-            onPressed: () {
-              addDiscount(selectedProductProvider, selectedProducts);
+            onPressed: () async {
+              await addDiscount(selectedProductProvider, selectedProducts);
             },
             text: "DONE",
             textColor: primaryDark,
@@ -293,7 +293,11 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
 
                     // IMAGE
                     GestureDetector(
-                      onTap: _image == null ? addDiscountImage : changeFit,
+                      onTap: _image == null
+                          ? () async {
+                              await addDiscountImage();
+                            }
+                          : changeFit,
                       child: Container(
                         width: width,
                         height: width * 9 / 16,
@@ -347,7 +351,9 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                       Padding(
                                         padding: const EdgeInsets.all(4),
                                         child: IconButton.filledTonal(
-                                          onPressed: addDiscountImage,
+                                          onPressed: () async {
+                                            await addDiscountImage();
+                                          },
                                           icon: Icon(
                                             FeatherIcons.camera,
                                             size: width * 0.11,
@@ -435,7 +441,9 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                     ),
                                     startDate != null
                                         ? IconButton(
-                                            onPressed: selectStartDate,
+                                            onPressed: () async {
+                                              await selectStartDate();
+                                            },
                                             icon: Icon(
                                               FeatherIcons.edit,
                                               size: width * 0.066,
@@ -448,7 +456,9 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                               ),
                               startDate == null
                                   ? MyTextButton(
-                                      onPressed: selectStartDate,
+                                      onPressed: () async {
+                                        await selectStartDate();
+                                      },
                                       text: "Select Date",
                                       textColor: primaryDark,
                                     )
@@ -502,7 +512,9 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                     ),
                                     endDate != null
                                         ? IconButton(
-                                            onPressed: selectEndDate,
+                                            onPressed: () async {
+                                              await selectEndDate();
+                                            },
                                             icon: Icon(
                                               FeatherIcons.edit,
                                               size: width * 0.066,
@@ -515,7 +527,9 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                               ),
                               endDate == null
                                   ? MyTextButton(
-                                      onPressed: selectEndDate,
+                                      onPressed: () async {
+                                        await selectEndDate();
+                                      },
                                       text: "Select Date",
                                       textColor: primaryDark,
                                     )

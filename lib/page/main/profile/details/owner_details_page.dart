@@ -39,7 +39,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
   }
 
   // CHANGE USER IMAGE
-  void changeImage(String previousUrl) async {
+  Future<void> changeImage(String previousUrl) async {
     XFile? im = await showImagePickDialog(context);
     String? userPhotoUrl;
     if (im != null) {
@@ -91,7 +91,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
   }
 
   // SAVE
-  void save() async {
+  Future<void> save() async {
     try {
       setState(() {
         isSaving = true;
@@ -197,8 +197,8 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
   }
 
   // SHOW IMAGE
-  void showImage() {
-    final imageStream = FirebaseFirestore.instance
+  Future<void> showImage() async {
+    final imageStream = await FirebaseFirestore.instance
         .collection('Business')
         .doc('Owners')
         .collection('Users')
@@ -303,7 +303,9 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                   alignment: Alignment.bottomRight,
                                   children: [
                                     GestureDetector(
-                                      onTap: showImage,
+                                      onTap: () async {
+                                        await showImage();
+                                      },
                                       child: CircleAvatar(
                                         radius: width * 0.15,
                                         backgroundImage:
@@ -318,8 +320,8 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                       right: -(width * 0.0015),
                                       bottom: -(width * 0.0015),
                                       child: IconButton.filledTonal(
-                                        onPressed: () {
-                                          changeImage(userData['Image']);
+                                        onPressed: () async {
+                                          await changeImage(userData['Image']);
                                         },
                                         icon: Icon(
                                           FeatherIcons.camera,
@@ -507,7 +509,9 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                             ))
                                         : MyButton(
                                             text: "SAVE",
-                                            onTap: save,
+                                            onTap: () async {
+                                              await save();
+                                            },
                                             isLoading: false,
                                             horizontalPadding: 0,
                                           ),

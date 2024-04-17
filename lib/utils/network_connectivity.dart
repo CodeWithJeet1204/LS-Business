@@ -13,50 +13,53 @@ class ConnectivityNotificationWidget extends StatefulWidget {
 
 class _ConnectivityNotificationWidgetState
     extends State<ConnectivityNotificationWidget> {
-  ConnectivityResult _connectionStatus =
-      ConnectivityResult.none; // Initialize with a value
+  ConnectivityResult _connectionStatus = ConnectivityResult.none;
   late StreamSubscription<ConnectivityResult> _connectivitySubscription;
 
+  // INIT STATE
   @override
   void initState() {
     super.initState();
-
     connectivityInitialize();
   }
 
-  void connectivityInitialize() async {
-    // Get initial connection status and listen for changes
-    _connectivitySubscription = await Connectivity()
-        .onConnectivityChanged
-        .first
-        .then((initialResult) => _updateConnectionStatus(initialResult))
-        .then((_) => Connectivity()
-            .onConnectivityChanged
-            .listen(_updateConnectionStatus));
-  }
-
+  // DISPOSE
   @override
   void dispose() {
-    // Cancel the subscription to avoid memory leaks
     _connectivitySubscription.cancel();
     super.dispose();
   }
 
-  void _updateConnectionStatus(ConnectivityResult result) {
+  // CONNECTIVITY INITIALIZE
+  Future<void> connectivityInitialize() async {
+    _connectivitySubscription = await Connectivity()
+        .onConnectivityChanged
+        .first
+        .then((initialResult) async {
+      await _updateConnectionStatus(initialResult);
+    }).then((_) async {
+      return await Connectivity().onConnectivityChanged.listen(
+            _updateConnectionStatus,
+          );
+    });
+  }
+
+  // UPDATE CONNECTION STATUS
+  Future<void> _updateConnectionStatus(ConnectivityResult result) async {
     setState(() {
       _connectionStatus = result;
     });
 
-    // Show the dialog if internet is lost
     if (result == ConnectivityResult.none) {
-      _showConnectivityDialog(context);
+      await _showConnectivityDialog(context);
     }
   }
 
-  void _showConnectivityDialog(BuildContext context) {
-    showDialog<void>(
+  // SHOW CONNECTIVITY DIALOG
+  Future<void> _showConnectivityDialog(BuildContext context) async {
+    await showDialog(
       context: context,
-      barrierDismissible: false, // Prevent dismissal unless reconnected
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text(

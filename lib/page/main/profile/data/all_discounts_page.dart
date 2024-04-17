@@ -29,8 +29,8 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
   }
 
   // CONFIRMING TO DELETE
-  void confirmDelete(String discountId, String? imageUrl) {
-    showDialog(
+  Future<void> confirmDelete(String discountId, String? imageUrl) async {
+    await showDialog(
       context: context,
       builder: ((context) {
         return AlertDialog(
@@ -58,7 +58,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
             TextButton(
               onPressed: () async {
                 Navigator.of(context).pop();
-                delete(discountId, imageUrl);
+                await delete(discountId, imageUrl);
               },
               child: const Text(
                 'YES',
@@ -76,7 +76,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
   }
 
   // DELETE DISCOUNT
-  void delete(String discountId, String? imageUrl) async {
+  Future<void> delete(String discountId, String? imageUrl) async {
     try {
       if (imageUrl != null) {
         await storage.refFromURL(imageUrl).delete();

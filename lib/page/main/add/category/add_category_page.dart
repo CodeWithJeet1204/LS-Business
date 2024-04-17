@@ -41,7 +41,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
   }
 
   // ADD CATEGORY
-  void addCategory(
+  Future<void> addCategory(
       String categoryName, ProductAddedToCategory categoryProvider) async {
     if (categoryKey.currentState!.validate()) {
       bool categoryDoesntExists = true;
@@ -135,7 +135,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
   }
 
   // SELECT CATEGORY IMAGE
-  void selectImage() async {
+  Future<void> selectImage() async {
     final XFile? im = await showImagePickDialog(context);
     if (im != null) {
       setState(() {
@@ -180,8 +180,8 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
         ),
         actions: [
           MyTextButton(
-            onPressed: () {
-              addCategory(
+            onPressed: () async {
+              await addCategory(
                 categoryController.text.toString(),
                 productsAddedToCategoryProvider,
               );
@@ -241,7 +241,9 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                                     Padding(
                                       padding: EdgeInsets.all(width * 0.0125),
                                       child: IconButton.filledTonal(
-                                        onPressed: selectImage,
+                                        onPressed: () async {
+                                          await selectImage();
+                                        },
                                         icon: Icon(
                                           FeatherIcons.camera,
                                           size: width * 0.1125,
@@ -269,7 +271,9 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                         : SizedOverflowBox(
                             size: Size(width, width * 0.9),
                             child: InkWell(
-                              onTap: selectImage,
+                              onTap: () async {
+                                await selectImage();
+                              },
                               customBorder: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
                               ),

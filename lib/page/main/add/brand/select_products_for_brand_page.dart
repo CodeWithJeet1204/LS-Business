@@ -39,7 +39,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
   }
 
   // ADD PRODUCT TO BRAND
-  void addProductToBrand(ProductAddedToBrandProvider provider) async {
+  Future<void> addProductToBrand(ProductAddedToBrandProvider provider) async {
     for (String id in provider.selectedProducts) {
       await store
           .collection('Business')
@@ -84,10 +84,10 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
         ),
         actions: [
           MyTextButton(
-            onPressed: () {
+            onPressed: () async {
               if (widget.isFromBrandPage != null) {
                 if (widget.isFromBrandPage!) {
-                  addProductToBrand(productsAddedToBrandProvider);
+                  await addProductToBrand(productsAddedToBrandProvider);
                 }
               }
               Navigator.of(context).pop();

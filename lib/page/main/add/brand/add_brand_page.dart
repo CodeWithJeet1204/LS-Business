@@ -48,7 +48,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
   }
 
   // SELECT CATEGORY IMAGE
-  void selectImage() async {
+  Future<void> selectImage() async {
     final XFile? im = await showImagePickDialog(context);
     if (im != null) {
       setState(() {
@@ -61,7 +61,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
     }
   }
 
-  void addBrand(ProductAddedToBrandProvider provider) async {
+  Future<void> addBrand(ProductAddedToBrandProvider provider) async {
     if (brandKey.currentState!.validate()) {
       try {
         setState(() {
@@ -139,8 +139,8 @@ class _AddBrandPageState extends State<AddBrandPage> {
         ),
         actions: [
           MyTextButton(
-            onPressed: () {
-              addBrand(productsAddedToBrandProvider);
+            onPressed: () async {
+              await addBrand(productsAddedToBrandProvider);
             },
             text: "DONE",
             textColor: primaryDark2,
@@ -244,7 +244,9 @@ class _AddBrandPageState extends State<AddBrandPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   IconButton(
-                                    onPressed: selectImage,
+                                    onPressed: () async {
+                                      await selectImage();
+                                    },
                                     icon: Icon(
                                       FeatherIcons.upload,
                                       size: width * 0.33,

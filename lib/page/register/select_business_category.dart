@@ -35,7 +35,7 @@ class _SelectBusinessCategoryPageState
   }
 
   // SHOW ALL CATEGORY
-  void showCategoryDialog() async {
+  Future<void> showCategoryDialog() async {
     await showDialog(
       context: context,
       builder: ((context) => ImageContainer(
@@ -46,7 +46,7 @@ class _SelectBusinessCategoryPageState
   }
 
   // UPLOAD DETAILS
-  void uploadDetails() async {
+  Future<void> uploadDetails() async {
     if (selectedCategory != "Select Category") {
       if (selectedCategory == 'Other' && otherCategoryController.text.isEmpty) {
         return mySnackBar(context, "Enter Name of Category");
@@ -244,7 +244,9 @@ class _SelectBusinessCategoryPageState
 
                     // SELECT CATEGORY BUTTON
                     GestureDetector(
-                      onTap: showCategoryDialog,
+                      onTap: () async {
+                        await showCategoryDialog();
+                      },
                       child: Container(
                         width: width,
                         height: width * 0.15,
@@ -295,7 +297,9 @@ class _SelectBusinessCategoryPageState
                         height: width * 0.15,
                         child: MyButton(
                           text: "NEXT",
-                          onTap: uploadDetails,
+                          onTap: () async {
+                            await uploadDetails();
+                          },
                           isLoading: isSaving,
                           horizontalPadding: 0,
                         ),

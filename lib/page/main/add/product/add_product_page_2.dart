@@ -113,7 +113,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
   }
 
   // ADD PRODUCT
-  void addProduct(AddProductProvider provider) async {
+  Future<void> addProduct(AddProductProvider provider) async {
     if (productKey.currentState!.validate()) {
       print("PropertyValue0 first: $property0");
       print("PropertyValue1: $property1");
@@ -305,7 +305,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
   }
 
   @override
-  void didChangeDependencies() async {
+  Future<void> didChangeDependencies() async {
     super.didChangeDependencies();
     await getShopType();
   }
@@ -377,8 +377,8 @@ class _AddProductPage2State extends State<AddProductPage2> {
         ),
         actions: [
           MyTextButton(
-            onPressed: () {
-              addProduct(addProductProvider);
+            onPressed: () async {
+              await addProduct(addProductProvider);
             },
             text: 'NEXT',
             textColor: primaryDark2,

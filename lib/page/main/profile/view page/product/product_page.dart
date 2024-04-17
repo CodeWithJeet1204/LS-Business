@@ -409,7 +409,7 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   // ADD IMAGES
-  void addProductImages(List images) async {
+  Future<void> addProductImages(List images) async {
     final XFile? im = await showImagePickDialog(context);
     if (im != null) {
       try {
@@ -492,7 +492,7 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   // CHANGE IMAGE
-  void changeProductImage(String e, int index, List images) async {
+  Future<void> changeProductImage(String e, int index, List images) async {
     final XFile? im = await showImagePickDialog(context);
     if (im != null) {
       try {
@@ -521,7 +521,7 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   // REMOVE IMAGES
-  void removeProductImages(String e, List images) async {
+  Future<void> removeProductImages(String e, List images) async {
     await FirebaseStorage.instance
         .refFromURL(images[images.indexOf(e)])
         .delete();
@@ -565,8 +565,8 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   // CONFIRM DELETE
-  void confirmDelete() {
-    showDialog(
+  Future<void> confirmDelete() async {
+    await showDialog(
       context: context,
       builder: ((context) {
         return AlertDialog(
@@ -595,7 +595,7 @@ class _ProductPageState extends State<ProductPage> {
             TextButton(
               onPressed: () async {
                 Navigator.of(context).pop();
-                delete();
+                await delete();
               },
               child: const Text(
                 'YES',
@@ -656,7 +656,7 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   // DELETE PRODUCT
-  void delete() async {
+  Future<void> delete() async {
     setState(() {
       isEditing = true;
     });
@@ -793,7 +793,9 @@ class _ProductPageState extends State<ProductPage> {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: confirmDelete,
+            onPressed: () async {
+              await confirmDelete();
+            },
             icon: const Icon(
               FeatherIcons.trash,
               color: Colors.red,
@@ -942,8 +944,8 @@ class _ProductPageState extends State<ProductPage> {
                                                     top: width * 0.0125,
                                                   ),
                                                   child: IconButton.filledTonal(
-                                                    onPressed: () {
-                                                      changeProductImage(
+                                                    onPressed: () async {
+                                                      await changeProductImage(
                                                         e,
                                                         images.indexOf(e),
                                                         images,
@@ -963,8 +965,8 @@ class _ProductPageState extends State<ProductPage> {
                                                   ),
                                                   child: IconButton.filledTonal(
                                                     onPressed: images.last != e
-                                                        ? () {
-                                                            removeProductImages(
+                                                        ? () async {
+                                                            await removeProductImages(
                                                               e,
                                                               images,
                                                             );
@@ -1032,8 +1034,8 @@ class _ProductPageState extends State<ProductPage> {
                                     )
                                   : const SizedBox(height: 40),
                               GestureDetector(
-                                onTap: () {
-                                  addProductImages(images);
+                                onTap: () async {
+                                  await addProductImages(images);
                                 },
                                 child: Container(
                                   width: width * 0.275,
@@ -1082,8 +1084,8 @@ class _ProductPageState extends State<ProductPage> {
                                 ),
                               ),
                               IconButton(
-                                onPressed: () {
-                                  edit(
+                                onPressed: () async {
+                                  await edit(
                                     'productName',
                                     1,
                                     false,
@@ -1299,8 +1301,8 @@ class _ProductPageState extends State<ProductPage> {
 
                               // EDIT PRICE
                               IconButton(
-                                onPressed: () {
-                                  edit(
+                                onPressed: () async {
+                                  await edit(
                                     'productPrice',
                                     1,
                                     false,
@@ -1652,8 +1654,8 @@ class _ProductPageState extends State<ProductPage> {
                                   noOfAnswers: propertyNoOfAnswers0,
                                   propertyValue: propertyValue0,
                                   width: width,
-                                  onPressed: () {
-                                    edit(
+                                  onPressed: () async {
+                                    await edit(
                                       'propertyValue0',
                                       propertyNoOfAnswers0,
                                       true,
@@ -1673,8 +1675,8 @@ class _ProductPageState extends State<ProductPage> {
                                   noOfAnswers: propertyNoOfAnswers1,
                                   propertyValue: propertyValue1,
                                   width: width,
-                                  onPressed: () {
-                                    edit(
+                                  onPressed: () async {
+                                    await edit(
                                       'propertyValue1',
                                       propertyNoOfAnswers1,
                                       true,
@@ -1694,8 +1696,8 @@ class _ProductPageState extends State<ProductPage> {
                                   noOfAnswers: propertyNoOfAnswers2,
                                   propertyValue: propertyValue2,
                                   width: width,
-                                  onPressed: () {
-                                    edit(
+                                  onPressed: () async {
+                                    await edit(
                                       'propertyValue2',
                                       propertyNoOfAnswers2,
                                       true,
@@ -1715,8 +1717,8 @@ class _ProductPageState extends State<ProductPage> {
                                   propertyValue: propertyValue3,
                                   noOfAnswers: propertyNoOfAnswers3,
                                   width: width,
-                                  onPressed: () {
-                                    edit(
+                                  onPressed: () async {
+                                    await edit(
                                       'propertyValue3',
                                       propertyNoOfAnswers3,
                                       true,
@@ -1736,8 +1738,8 @@ class _ProductPageState extends State<ProductPage> {
                                   propertyValue: propertyValue4,
                                   noOfAnswers: propertyNoOfAnswers4,
                                   width: width,
-                                  onPressed: () {
-                                    edit(
+                                  onPressed: () async {
+                                    await edit(
                                       'propertyValue4',
                                       propertyNoOfAnswers4,
                                       true,
@@ -1757,8 +1759,8 @@ class _ProductPageState extends State<ProductPage> {
                                   propertyValue: propertyValue5,
                                   noOfAnswers: propertyNoOfAnswers5,
                                   width: width,
-                                  onPressed: () {
-                                    edit(
+                                  onPressed: () async {
+                                    await edit(
                                       'propertyValue5',
                                       propertyNoOfAnswers5,
                                       true,
@@ -1777,8 +1779,8 @@ class _ProductPageState extends State<ProductPage> {
                             propertyValue: tags,
                             noOfAnswers: 3,
                             width: width,
-                            onPressed: () {
-                              edit(
+                            onPressed: () async {
+                              await edit(
                                 'Tags',
                                 3,
                                 false,

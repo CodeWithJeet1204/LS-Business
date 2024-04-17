@@ -44,8 +44,8 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
     isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
 
     if (!isEmailVerified) {
-      timer = Timer.periodic(const Duration(seconds: 2), (_) {
-        checkEmailVerification();
+      timer = Timer.periodic(const Duration(seconds: 2), (_) async {
+        await checkEmailVerification();
       });
     }
   }
@@ -67,7 +67,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
   }
 
   // SEND EMAIL VERIFICATION
-  void sendEmailVerification() async {
+  Future<void> sendEmailVerification() async {
     try {
       final user = FirebaseAuth.instance.currentUser!;
       await user.sendEmailVerification();
@@ -117,7 +117,9 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
             const SizedBox(height: 20),
             MyButton(
               text: "I have Verified my Email",
-              onTap: checkEmailVerification,
+              onTap: () async {
+                await checkEmailVerification();
+              },
               isLoading: checkingEmailVerified,
               horizontalPadding: MediaQuery.of(context).size.width * 0.066,
             ),
@@ -127,7 +129,9 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
               child: MyButton(
                 text: "Resend Email",
                 onTap: canResendEmail
-                    ? sendEmailVerification
+                    ? () async {
+                        await sendEmailVerification();
+                      }
                     : () {
                         mySnackBar(context, "Wait for 5 seconds");
                       },

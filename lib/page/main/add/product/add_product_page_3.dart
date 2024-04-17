@@ -127,8 +127,8 @@ class _AddProductPage3State extends State<AddProductPage3> {
         ),
         actions: [
           MyTextButton(
-            onPressed: () {
-              save(productProvider);
+            onPressed: () async {
+              await save(productProvider);
             },
             text: 'DONE',
             textColor: primaryDark2,

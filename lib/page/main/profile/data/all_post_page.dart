@@ -84,8 +84,8 @@ class _AllPostsPageState extends State<AllPostsPage> {
   }
 
   // CONFIRM DELETE
-  void confirmDelete(String postId, bool isTextPost) async {
-    showDialog(
+  Future<void> confirmDelete(String postId, bool isTextPost) async {
+    await showDialog(
       context: context,
       builder: ((context) {
         return AlertDialog(
@@ -379,8 +379,8 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                             ],
                                           ),
                                           IconButton(
-                                            onPressed: () {
-                                              confirmDelete(
+                                            onPressed: () async {
+                                              await confirmDelete(
                                                 postData['postId'],
                                                 postData['isTextPost'],
                                               );
@@ -513,8 +513,8 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                         ),
                                       ),
                                       trailing: IconButton(
-                                        onPressed: () {
-                                          confirmDelete(
+                                        onPressed: () async {
+                                          await confirmDelete(
                                             postData['postId'],
                                             postData['isTextPost'],
                                           );

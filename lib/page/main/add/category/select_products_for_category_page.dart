@@ -41,7 +41,7 @@ class _SelectProductsForCategoryPageState
   }
 
   // ADD PRODUCT TO CATEGORY
-  void addProductToCategory(List<String> products) async {
+  Future<void> addProductToCategory(List<String> products) async {
     for (int i = 0; i < products.length; i++) {
       setState(() {
         isAdding = true;
@@ -97,8 +97,8 @@ class _SelectProductsForCategoryPageState
                 ? () {
                     Navigator.of(context).pop();
                   }
-                : () {
-                    addProductToCategory(
+                : () async {
+                    await addProductToCategory(
                       productsAddedToCategoryProvider.selectedProducts,
                     );
                     productsAddedToCategoryProvider.clearProducts();

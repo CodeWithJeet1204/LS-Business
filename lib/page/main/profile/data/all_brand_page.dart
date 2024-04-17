@@ -30,7 +30,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
   }
 
   // DELETE
-  void delete(String brandId, String? imageUrl) async {
+  Future<void> delete(String brandId, String? imageUrl) async {
     try {
       final productSnap = await store
           .collection('Business')
@@ -100,7 +100,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
             ),
             TextButton(
               onPressed: () async {
-                delete(brandId, imageUrl);
+                await delete(brandId, imageUrl);
               },
               child: const Text(
                 overflow: TextOverflow.ellipsis,

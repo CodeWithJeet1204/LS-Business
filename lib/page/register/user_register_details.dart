@@ -50,7 +50,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
   }
 
   // SELECT IMAGE
-  void selectImage() async {
+  Future<void> selectImage() async {
     XFile? im = await showImagePickDialog(context);
     if (im == null) {
       setState(() {
@@ -100,7 +100,9 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                           icon: const Icon(Icons.camera_alt_outlined),
                           iconSize: width * 0.09,
                           tooltip: "Change User Picture",
-                          onPressed: selectImage,
+                          onPressed: () async {
+                            await selectImage();
+                          },
                           color: primaryDark,
                         ),
                       ],
@@ -113,7 +115,9 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                           Icons.camera_alt_outlined,
                           size: 60,
                         ),
-                        onPressed: selectImage,
+                        onPressed: () async {
+                          await selectImage();
+                        },
                       ),
                     ),
               const SizedBox(height: 12),

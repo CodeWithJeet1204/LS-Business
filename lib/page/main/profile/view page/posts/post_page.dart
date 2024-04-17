@@ -68,7 +68,7 @@ class _PostPageState extends State<PostPage> {
   }
 
   // DELETE POST
-  void deletePost() async {
+  Future<void> deletePost() async {
     try {
       if (context.mounted) {
         Navigator.of(context).pop();
@@ -90,8 +90,8 @@ class _PostPageState extends State<PostPage> {
   }
 
   // CONFIRM DELETE
-  void confirmDelete() async {
-    showDialog(
+  Future<void> confirmDelete() async {
+    await showDialog(
       context: context,
       builder: ((context) {
         return AlertDialog(
@@ -119,7 +119,7 @@ class _PostPageState extends State<PostPage> {
             ),
             TextButton(
               onPressed: () async {
-                deletePost();
+                await deletePost();
                 Navigator.of(context).pop();
               },
               child: const Text(
@@ -158,7 +158,9 @@ class _PostPageState extends State<PostPage> {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: confirmDelete,
+            onPressed: () async {
+              await confirmDelete();
+            },
             icon: const Icon(
               FeatherIcons.trash,
               color: Colors.red,

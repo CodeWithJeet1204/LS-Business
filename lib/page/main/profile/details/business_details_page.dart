@@ -42,7 +42,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
   }
 
   // CHANGE BUSINESS IMAGE
-  void changeImage(String previousUrl) async {
+  Future<void> changeImage(String previousUrl) async {
     XFile? im = await showImagePickDialog(context);
     String? businessPhotoUrl;
     if (im != null) {
@@ -94,7 +94,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
   }
 
   // SAVE
-  void save(
+  Future<void> save(
     TextEditingController controller,
     String propertyName,
     bool isChanging,
@@ -140,8 +140,8 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
   }
 
   // SHOW IMAGE
-  void showImage() {
-    final imageStream = FirebaseFirestore.instance
+  Future<void> showImage() async {
+    final imageStream = await FirebaseFirestore.instance
         .collection('Business')
         .doc('Owners')
         .collection('Shops')
@@ -249,7 +249,11 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                   alignment: Alignment.bottomRight,
                                   children: [
                                     GestureDetector(
-                                      onTap: isSaving ? null : showImage,
+                                      onTap: isSaving
+                                          ? null
+                                          : () async {
+                                              await showImage();
+                                            },
                                       child: CircleAvatar(
                                         radius: width * 0.15,
                                         backgroundImage:
@@ -264,8 +268,8 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                       right: -(width * 0.0015),
                                       bottom: -(width * 0.0015),
                                       child: IconButton.filledTonal(
-                                        onPressed: () {
-                                          changeImage(shopData['Image']);
+                                        onPressed: () async {
+                                          await changeImage(shopData['Image']);
                                         },
                                         icon: Icon(
                                           FeatherIcons.camera,
@@ -640,21 +644,21 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                               ))
                                           : MyButton(
                                               text: "SAVE",
-                                              onTap: () {
+                                              onTap: () async {
                                                 if (isChangingName) {
-                                                  save(
+                                                  await save(
                                                     nameController,
                                                     "Name",
                                                     isChangingName,
                                                   );
                                                 } else if (isChangingAddress) {
-                                                  save(
+                                                  await save(
                                                     addressController,
                                                     "Address",
                                                     isChangingAddress,
                                                   );
                                                 } else if (isChangingSpecialNote) {
-                                                  save(
+                                                  await save(
                                                     specialNoteController,
                                                     "Special Note",
                                                     isChangingSpecialNote,

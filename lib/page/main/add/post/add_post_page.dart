@@ -156,7 +156,7 @@ class _AddPostPageState extends State<AddPostPage> {
   }
 
   // GET NO OF POSTS
-  void getNoOfPosts() async {
+  Future<void> getNoOfPosts() async {
     final productData = await store
         .collection('Business')
         .doc('Owners')

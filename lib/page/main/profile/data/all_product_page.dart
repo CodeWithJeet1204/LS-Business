@@ -416,8 +416,8 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                       ),
                                     ),
                                     trailing: IconButton(
-                                      onPressed: () {
-                                        confirmDelete(
+                                      onPressed: () async {
+                                        await confirmDelete(
                                           productData['productId'],
                                         );
                                       },

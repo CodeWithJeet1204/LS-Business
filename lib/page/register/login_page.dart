@@ -244,7 +244,9 @@ class _LoginPageState extends State<LoginPage> {
                                   const SizedBox(height: 8),
                                   MyButton(
                                     text: "LOGIN",
-                                    onTap: loginWithEmail,
+                                    onTap: () async {
+                                      await loginWithEmail();
+                                    },
                                     horizontalPadding: width * 0.066,
                                     isLoading: isEmailLogging,
                                   ),
@@ -305,7 +307,9 @@ class _LoginPageState extends State<LoginPage> {
                                   const SizedBox(height: 8),
                                   MyButton(
                                     text: phoneText,
-                                    onTap: loginWithPhone,
+                                    onTap: () async {
+                                      await loginWithPhone();
+                                    },
                                     horizontalPadding: width * 0.066,
                                     isLoading: isPhoneLogging,
                                   ),
@@ -470,7 +474,9 @@ class _LoginPageState extends State<LoginPage> {
                                         const SizedBox(height: 8),
                                         MyButton(
                                           text: "LOGIN",
-                                          onTap: loginWithEmail,
+                                          onTap: () async {
+                                            await loginWithEmail();
+                                          },
                                           horizontalPadding: width < screenSize
                                               ? width * 0.066
                                               : width * 0.05,

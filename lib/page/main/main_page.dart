@@ -54,7 +54,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   // DETAILS ADDED
-  void detailsAdded() async {
+  Future<void> detailsAdded() async {
     final DocumentSnapshot<Map<String, dynamic>?>? getUserDetailsAddedDatas =
         await store
             .collection('Business')

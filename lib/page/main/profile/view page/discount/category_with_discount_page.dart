@@ -29,8 +29,8 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
   }
 
   // CONFIRM REMOVE
-  void confirmRemove(String categoryName) {
-    showDialog(
+  Future<void> confirmRemove(String categoryName) async {
+    await showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
@@ -51,8 +51,8 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
               textColor: Colors.green,
             ),
             MyTextButton(
-              onPressed: () {
-                remove(categoryName);
+              onPressed: () async {
+                await remove(categoryName);
               },
               text: "YES",
               textColor: Colors.red,
@@ -64,7 +64,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
   }
 
   // REMOVE
-  void remove(String categoryName) async {
+  Future<void> remove(String categoryName) async {
     final discountData = await store
         .collection('Business')
         .doc('Data')

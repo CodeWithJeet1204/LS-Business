@@ -289,8 +289,9 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   // REMOVE PRODUCT
-  void remove(String productId, String productName, String categoryName) {
-    showDialog(
+  Future<void> remove(
+      String productId, String productName, String categoryName) async {
+    await showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
@@ -829,8 +830,8 @@ class _CategoryPageState extends State<CategoryPage> {
                                                           ],
                                                         ),
                                                         IconButton(
-                                                          onPressed: () {
-                                                            remove(
+                                                          onPressed: () async {
+                                                            await remove(
                                                               id,
                                                               name,
                                                               widget
@@ -936,8 +937,8 @@ class _CategoryPageState extends State<CategoryPage> {
                                                       ),
                                                     ),
                                                     trailing: IconButton(
-                                                      onPressed: () {
-                                                        remove(
+                                                      onPressed: () async {
+                                                        await remove(
                                                           id,
                                                           name,
                                                           widget.categoryName,

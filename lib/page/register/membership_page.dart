@@ -73,8 +73,8 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
   }
 
   // SHOW INFO DIALOG
-  void showInfoDialog() {
-    showDialog(
+  Future<void> showInfoDialog() async {
+    await showDialog(
       context: context,
       builder: ((context) => AlertDialog(
             title: const Text(
@@ -207,7 +207,9 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                   Padding(
                     padding: EdgeInsets.only(right: width * 0.033),
                     child: IconButton(
-                      onPressed: showInfoDialog,
+                      onPressed: () async {
+                        await showInfoDialog();
+                      },
                       icon: const Icon(
                         Icons.info_outline,
                         color: primaryDark,

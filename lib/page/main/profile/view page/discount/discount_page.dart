@@ -59,7 +59,7 @@ class DISCOUNT extends State<DiscountPage> {
   }
 
   // ADD DISCOUNT IMAGE
-  void addDiscountImage() async {
+  Future<void> addDiscountImage() async {
     final XFile? im = await showImagePickDialog(context);
     if (im != null) {
       String? imageUrl;
@@ -103,7 +103,7 @@ class DISCOUNT extends State<DiscountPage> {
   }
 
   // CHANGE DISCOUNT IMAGE
-  void changeDiscountImage(String imageUrl) async {
+  Future<void> changeDiscountImage(String imageUrl) async {
     final XFile? im = await showImagePickDialog(context);
     if (im != null) {
       try {
@@ -131,7 +131,7 @@ class DISCOUNT extends State<DiscountPage> {
   }
 
   // REMOVE DISCOUNT IMAGE
-  void removeDiscountImage(String imageUrl) async {
+  Future<void> removeDiscountImage(String imageUrl) async {
     try {
       setState(() {
         isImageChanging = true;
@@ -235,7 +235,7 @@ class DISCOUNT extends State<DiscountPage> {
   }
 
   // DISCOUNT NAME CHANGE BACKEND
-  void changeDiscount(
+  Future<void> changeDiscount(
       String newName, String propertyName, TextInputType keyboardType) async {
     if (discountNameKey.currentState!.validate()) {
       try {
@@ -265,8 +265,8 @@ class DISCOUNT extends State<DiscountPage> {
   }
 
   // DISCOUNT NAME CHANGE
-  void change(String propertyName, TextInputType keyboardType) {
-    showDialog(
+  Future<void> change(String propertyName, TextInputType keyboardType) async {
+    await showDialog(
       context: context,
       builder: (context) {
         final propertyStream = FirebaseFirestore.instance
@@ -326,9 +326,12 @@ class DISCOUNT extends State<DiscountPage> {
                           ),
                           MyButton(
                             text: "SAVE",
-                            onTap: () {
-                              changeDiscount(
-                                  discountProperty, propertyName, keyboardType);
+                            onTap: () async {
+                              await changeDiscount(
+                                discountProperty,
+                                propertyName,
+                                keyboardType,
+                              );
                             },
                             isLoading: isChangingName,
                             horizontalPadding: 0,
@@ -351,7 +354,7 @@ class DISCOUNT extends State<DiscountPage> {
   }
 
   // CHANGE START DATE
-  void changeStartDate(DateTime initalDate) async {
+  Future<void> changeStartDate(DateTime initalDate) async {
     DateTime? newDate = await showDatePicker(
       context: context,
       firstDate: DateTime.now(),
@@ -373,7 +376,7 @@ class DISCOUNT extends State<DiscountPage> {
   }
 
   // CHANGE END DATE
-  void changeEndDate(DateTime initalDate) async {
+  Future<void> changeEndDate(DateTime initalDate) async {
     DateTime? newDate = await showDatePicker(
       context: context,
       firstDate: DateTime.now(),
@@ -395,8 +398,8 @@ class DISCOUNT extends State<DiscountPage> {
   }
 
   // REMOVE CATEGORY FROM DISCOUNT
-  // void remove(String productId, String productName, String categoryName) {
-  //   showDialog(
+  // Future<void> remove(String productId, String productName, String categoryName) async {
+  //   await showDialog(
   //     context: context,
   //     builder: (context) {
   //       return AlertDialog(
@@ -610,8 +613,8 @@ class DISCOUNT extends State<DiscountPage> {
                                                 top: width * 0.0125,
                                               ),
                                               child: IconButton.filledTonal(
-                                                onPressed: () {
-                                                  changeDiscountImage(
+                                                onPressed: () async {
+                                                  await changeDiscountImage(
                                                     discountData[
                                                         'discountImageUrl'],
                                                   );
@@ -629,8 +632,8 @@ class DISCOUNT extends State<DiscountPage> {
                                                 top: width * 0.0125,
                                               ),
                                               child: IconButton.filledTonal(
-                                                onPressed: () {
-                                                  removeDiscountImage(
+                                                onPressed: () async {
+                                                  await removeDiscountImage(
                                                     discountData[
                                                         'discountImageUrl'],
                                                   );
@@ -648,7 +651,9 @@ class DISCOUNT extends State<DiscountPage> {
                               )
                             : Center(
                                 child: MyTextButton(
-                                  onPressed: addDiscountImage,
+                                  onPressed: () async {
+                                    await addDiscountImage();
+                                  },
                                   text: "Add Image",
                                   textColor: primaryDark,
                                 ),
@@ -674,8 +679,11 @@ class DISCOUNT extends State<DiscountPage> {
                           content: discountData['discountAmount'].toString(),
                           propertyValue: const [],
                           width: width,
-                          onPressed: () {
-                            change('discountAmount', TextInputType.number);
+                          onPressed: () async {
+                            await change(
+                              'discountAmount',
+                              TextInputType.number,
+                            );
                           },
                         ),
 
@@ -723,8 +731,8 @@ class DISCOUNT extends State<DiscountPage> {
                                   ],
                                 ),
                                 IconButton(
-                                  onPressed: () {
-                                    changeStartDate(
+                                  onPressed: () async {
+                                    await changeStartDate(
                                       (discountData['discountStartDateTime']
                                               as Timestamp)
                                           .toDate(),
@@ -785,8 +793,8 @@ class DISCOUNT extends State<DiscountPage> {
                                   ],
                                 ),
                                 IconButton(
-                                  onPressed: () {
-                                    changeStartDate(
+                                  onPressed: () async {
+                                    await changeEndDate(
                                       (discountData['discountEndDateTime']
                                               as Timestamp)
                                           .toDate(),
