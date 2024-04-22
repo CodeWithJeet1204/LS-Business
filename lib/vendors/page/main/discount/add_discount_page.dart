@@ -57,20 +57,20 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                             SizedBox(width: width * 0.1),
                             SizedBox(
                               width: width * 0.5,
-                              child: const AutoSizeText(
-                                overflow: TextOverflow.ellipsis,
+                              child: AutoSizeText(
                                 "PRODUCT",
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   color: primaryDark,
                                   fontWeight: FontWeight.w600,
-                                  fontSize: 28,
+                                  fontSize: width * 0.0775,
                                 ),
                               ),
                             ),
                             Expanded(child: Container()),
                             Icon(
                               FeatherIcons.box,
-                              size: width * 0.2,
+                              size: width * 0.1,
                               color: primaryDark2,
                             ),
                             SizedBox(width: width * 0.075),
@@ -152,20 +152,20 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                             SizedBox(width: width * 0.1),
                             SizedBox(
                               width: width * 0.5,
-                              child: const AutoSizeText(
-                                overflow: TextOverflow.ellipsis,
+                              child: AutoSizeText(
                                 "BRAND",
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   color: primaryDark,
                                   fontWeight: FontWeight.w600,
-                                  fontSize: 28,
+                                  fontSize: width * 0.0775,
                                 ),
                               ),
                             ),
                             Expanded(child: Container()),
                             Icon(
                               FeatherIcons.award,
-                              size: width * 0.2,
+                              size: width * 0.1,
                               color: primaryDark2,
                             ),
                             SizedBox(width: width * 0.075),

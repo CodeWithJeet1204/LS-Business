@@ -263,11 +263,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                                 decoration: BoxDecoration(
                                   color: primary3,
-                                  borderRadius: BorderRadius.circular(6),
+                                  border: Border.all(
+                                    width: 0.125,
+                                    color: primaryDark,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Text(
-                                  overflow: TextOverflow.ellipsis,
                                   "Owner Details",
+                                  overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
                                   style: TextStyle(
                                     fontSize: width * 0.05,
@@ -296,11 +300,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                   color: primary3,
-                                  borderRadius: BorderRadius.circular(6),
+                                  border: Border.all(
+                                    width: 0.125,
+                                    color: primaryDark,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Text(
-                                  overflow: TextOverflow.ellipsis,
                                   "Business Details",
+                                  overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
                                   style: TextStyle(
                                     fontSize: width * 0.05,

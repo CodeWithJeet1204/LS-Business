@@ -112,7 +112,9 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
 
         PieChartSectionData section = PieChartSectionData(
           value: value.toDouble(),
-          title: productName,
+          title: productName.length > 8
+              ? productName.substring(0, 8) + '...'
+              : productName,
           titleStyle: TextStyle(
             color: primaryDark2,
             fontWeight: FontWeight.w500,
@@ -183,8 +185,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
 
             return Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: width * 0.035,
-                vertical: width * 0.0125,
+                horizontal: width * 0.0225,
               ),
               child: SingleChildScrollView(
                 child: Column(
@@ -209,7 +210,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                           ),
                           // TIME
                           Container(
-                            width: width * 0.4,
+                            width: width * 0.4275,
                             height: width * 0.125,
                             decoration: BoxDecoration(
                               color: primary2.withOpacity(0.4),
@@ -302,7 +303,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                 element['productViewsTimestamp'];
                             productData['likes'] += element['productLikes'];
                             productData['likesTimestamp'] +=
-                                element['productLikesId'];
+                                element['productLikesTimestamp'];
                             productData['wishlists'] +=
                                 element['productWishlist'];
                             productData['shares'] += element['productShares'];

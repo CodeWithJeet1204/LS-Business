@@ -49,9 +49,8 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: no_leading_underscores_for_local_identifiers
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    final AuthMethods auth = AuthMethods();
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final AuthMethods authMethods = AuthMethods();
     final signInMethodProvider = Provider.of<SignInMethodProvider>(context);
     final double width = MediaQuery.of(context).size.width;
 
@@ -134,19 +133,19 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                                           });
 
                                           try {
-                                            await auth.signUpWithEmail(
+                                            await authMethods.signUpWithEmail(
                                               email: emailController.text,
                                               password: passwordController.text,
                                               context: context,
                                             );
 
-                                            if (_auth.currentUser != null) {
+                                            if (auth.currentUser != null) {
                                               print('abc');
                                               await FirebaseFirestore.instance
                                                   .collection('Business')
                                                   .doc('Owners')
                                                   .collection('Users')
-                                                  .doc(_auth.currentUser!.uid)
+                                                  .doc(auth.currentUser!.uid)
                                                   .set({
                                                 'Email': emailController.text
                                                     .toString(),
@@ -161,7 +160,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                                                   .collection('Business')
                                                   .doc('Owners')
                                                   .collection('Shops')
-                                                  .doc(_auth.currentUser!.uid)
+                                                  .doc(auth.currentUser!.uid)
                                                   .set({
                                                 "Name": null,
                                                 'Views': null,
@@ -189,7 +188,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                                             if (FirebaseAuth.instance
                                                         .currentUser!.email !=
                                                     null ||
-                                                _auth.currentUser!.email !=
+                                                auth.currentUser!.email !=
                                                     null) {
                                               SystemChannels.textInput
                                                   .invokeMethod(
@@ -320,7 +319,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                                             phoneText = "PLEASE WAIT";
                                           });
 
-                                          await _auth.verifyPhoneNumber(
+                                          await auth.verifyPhoneNumber(
                                               phoneNumber:
                                                   "+91 ${phoneController.text}",
                                               verificationCompleted: (_) {
@@ -418,13 +417,13 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                               // Sign In With Google
                               signInMethodProvider.chooseGoogle();
                               await AuthMethods().signInWithGoogle(context);
-                              await _auth.currentUser!.reload();
+                              await auth.currentUser!.reload();
                               if (FirebaseAuth.instance.currentUser != null) {
                                 await FirebaseFirestore.instance
                                     .collection('Business')
                                     .doc('Owners')
                                     .collection('Users')
-                                    .doc(_auth.currentUser!.uid)
+                                    .doc(auth.currentUser!.uid)
                                     .set({
                                   "Email":
                                       FirebaseAuth.instance.currentUser!.email,
@@ -439,7 +438,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                                     .collection('Business')
                                     .doc('Owners')
                                     .collection('Shops')
-                                    .doc(_auth.currentUser!.uid)
+                                    .doc(auth.currentUser!.uid)
                                     .update({
                                   "Name": null,
                                   'Views': null,
@@ -606,19 +605,19 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                                           });
 
                                           try {
-                                            await auth.signUpWithEmail(
+                                            await authMethods.signUpWithEmail(
                                               email: emailController.text,
                                               password: passwordController.text,
                                               context: context,
                                             );
 
-                                            if (_auth.currentUser != null) {
+                                            if (auth.currentUser != null) {
                                               print('abc');
                                               await FirebaseFirestore.instance
                                                   .collection('Business')
                                                   .doc('Owners')
                                                   .collection('Users')
-                                                  .doc(_auth.currentUser!.uid)
+                                                  .doc(auth.currentUser!.uid)
                                                   .set({
                                                 'Email': emailController.text
                                                     .toString(),
@@ -633,7 +632,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                                                   .collection('Business')
                                                   .doc('Owners')
                                                   .collection('Shops')
-                                                  .doc(_auth.currentUser!.uid)
+                                                  .doc(auth.currentUser!.uid)
                                                   .set({
                                                 "Name": null,
                                                 'Views': null,
@@ -661,7 +660,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                                             if (FirebaseAuth.instance
                                                         .currentUser!.email !=
                                                     null ||
-                                                _auth.currentUser!.email !=
+                                                auth.currentUser!.email !=
                                                     null) {
                                               SystemChannels.textInput
                                                   .invokeMethod(
@@ -739,7 +738,6 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                               key: registerNumberFormKey,
                               child: Column(
                                 children: [
-                                  // TODO: Add circle animation to show that number is getting verified
                                   MyTextFormField(
                                     hintText: "Phone Number",
                                     controller: phoneController,
@@ -769,7 +767,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                                               .collection('Business')
                                               .doc('Owners')
                                               .collection('Users')
-                                              .doc(_auth.currentUser!.uid)
+                                              .doc(auth.currentUser!.uid)
                                               .set({
                                             'Phone Number':
                                                 phoneController.text.toString(),
@@ -783,7 +781,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                                               .collection('Business')
                                               .doc('Owners')
                                               .collection('Shops')
-                                              .doc(_auth.currentUser!.uid)
+                                              .doc(auth.currentUser!.uid)
                                               .set({
                                             "Name": null,
                                             'Views': null,
@@ -804,13 +802,15 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                                           if (phoneController.text
                                               .contains("+91")) {
                                             if (context.mounted) {
-                                              await auth.phoneSignIn(context,
+                                              await authMethods.phoneSignIn(
+                                                  context,
                                                   " ${phoneController.text}");
                                             }
                                           } else if (phoneController.text
                                               .contains("+91 ")) {
                                             if (context.mounted) {
-                                              await auth.phoneSignIn(context,
+                                              await authMethods.phoneSignIn(
+                                                  context,
                                                   phoneController.text);
                                             }
                                           } else {
@@ -818,7 +818,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                                               isPhoneRegistering = true;
                                             });
 
-                                            await _auth.verifyPhoneNumber(
+                                            await auth.verifyPhoneNumber(
                                                 phoneNumber:
                                                     "+91 ${phoneController.text}",
                                                 verificationCompleted: (_) {

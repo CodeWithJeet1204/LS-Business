@@ -143,7 +143,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                           ),
                           // TIME
                           Container(
-                            width: width * 0.4,
+                            width: width * 0.4275,
                             height: width * 0.125,
                             decoration: BoxDecoration(
                               color: primary2.withOpacity(0.4),

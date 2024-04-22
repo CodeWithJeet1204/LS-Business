@@ -596,9 +596,8 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                               ),
                               child: SizedBox(
                                 width: width * 0.875,
-                                child: AutoSizeText(
-                                  'Membership Expiry Date - ${DateFormat('dd/mm/yy').format((shopData['MembershipEndDateTime'] as Timestamp).toDate())}',
-                                  overflow: TextOverflow.ellipsis,
+                                child: Text(
+                                  'Membership Expiry Date - ${DateFormat('dd/M/yy').format((shopData['MembershipEndDateTime'] as Timestamp).toDate())}',
                                   style: TextStyle(
                                     fontSize: width * 0.055,
                                     fontWeight: FontWeight.w500,

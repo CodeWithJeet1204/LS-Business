@@ -133,12 +133,11 @@ class _AddProductPage1State extends State<AddProductPage1> {
       if (_image.isEmpty) {
         return mySnackBar(context, "Select atleast 1 image");
       }
-      if (priceController.text.toString().length > 10) {
+      if (priceController.text.length > 10) {
         return mySnackBar(context, "Max Price is 100 Cr.");
       }
-      if (priceController.text.toString().isNotEmpty &&
-          priceController.text.toString() != null) {
-        if (double.parse(priceController.text.toString()) <= 0.999) {
+      if (priceController.text.isNotEmpty) {
+        if (double.parse(priceController.text) <= 0.99999999999999999999) {
           return mySnackBar(context, "Min Price is 1 Rs.");
         }
       }
@@ -148,8 +147,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
             .collection('Business')
             .doc('Data')
             .collection('Products')
-            .where('vendorId',
-                isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+            .where('vendorId', isEqualTo: auth.currentUser!.uid)
             .get();
 
         for (QueryDocumentSnapshot doc in previousProducts.docs) {
@@ -183,6 +181,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
               'productViews': 0,
               'productViewsTimestamp': [],
               'productLikesId': [],
+              'productLikesTimestamp': [],
               'productWishlist': 0,
               'productId': productId,
               'imageFiles': _image,
@@ -191,7 +190,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
               ),
               'isAvailable': isAvailable,
               'categoryName': selectedCategory,
-              'vendorId': FirebaseAuth.instance.currentUser!.uid,
+              'vendorId': auth.currentUser!.uid,
               'ratings': {},
             },
             false,
@@ -302,7 +301,8 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                           currentImageIndex != _image.length - 1
                                               ? () {
                                                   removeProductImages(
-                                                      currentImageIndex);
+                                                    currentImageIndex,
+                                                  );
                                                 }
                                               : null,
                                       icon: Icon(
