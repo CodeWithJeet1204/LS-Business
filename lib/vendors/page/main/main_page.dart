@@ -213,10 +213,10 @@ class _MainPageState extends State<MainPage> {
               ),
               BottomNavigationBarItem(
                 activeIcon: Icon(
-                  Icons.percent_rounded,
+                  FeatherIcons.percent,
                 ),
                 icon: Icon(
-                  FeatherIcons.percent,
+                  Icons.percent_rounded,
                 ),
                 label: "Discount",
               ),

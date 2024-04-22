@@ -14,7 +14,6 @@ import 'package:find_easy/widgets/image_pick_dialog.dart';
 import 'package:find_easy/widgets/info_box.dart';
 import 'package:find_easy/widgets/info_color_box.dart';
 import 'package:find_easy/widgets/info_edit_box.dart';
-import 'package:find_easy/widgets/skeleton_container.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:find_easy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -636,23 +635,27 @@ class _ProductPageState extends State<ProductPage> {
 
     final categoryName = productData['categoryName'];
 
-    final categorySnap = await store
-        .collection('Business')
-        .doc('Special Categories')
-        .collection(shopType)
-        .doc(categoryName)
-        .get();
+    if (categoryName == '0') {
+      return;
+    } else {
+      final categorySnap = await store
+          .collection('Business')
+          .doc('Special Categories')
+          .collection(shopType)
+          .doc(categoryName)
+          .get();
 
-    final categoryData = categorySnap.data()!;
+      final categoryData = categorySnap.data()!;
 
-    final name = categoryData['specialCategoryName'];
-    final imageUrl = categoryData['specialCategoryImageUrl'];
+      final name = categoryData['specialCategoryName'];
+      final imageUrl = categoryData['specialCategoryImageUrl'];
 
-    setState(() {
-      category.add(name);
-      category.add(imageUrl);
-      category.add(shopType);
-    });
+      setState(() {
+        category.add(name);
+        category.add(imageUrl);
+        category.add(shopType);
+      });
+    }
   }
 
   // DELETE PRODUCT
@@ -1450,7 +1453,14 @@ class _ProductPageState extends State<ProductPage> {
                                   SizedBox(
                                     width: width * 0.75,
                                     child: Text(
-                                      categoryExists
+                                      productData['productDescription'] !=
+                                                  null &&
+                                              productData[
+                                                      'productDescription'] !=
+                                                  '' &&
+                                              productData[
+                                                      'productDescription'] !=
+                                                  '0'
                                           ? productData['productDescription']
                                           : 'No Description',
                                       overflow: TextOverflow.ellipsis,
@@ -1601,38 +1611,38 @@ class _ProductPageState extends State<ProductPage> {
                                   ),
                                 )
                               : Container(
-                                  width: width,
-                                  height: width * 0.2,
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.all(width * 0.0225),
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey.shade200,
-                                    borderRadius: BorderRadius.circular(12),
+                                  // width: width,
+                                  // height: width * 0.2,
+                                  // alignment: Alignment.center,
+                                  // padding: EdgeInsets.all(width * 0.0225),
+                                  // decoration: BoxDecoration(
+                                  //   color: Colors.grey.shade200,
+                                  //   borderRadius: BorderRadius.circular(12),
+                                  // ),
+                                  // child: Row(
+                                  //   mainAxisAlignment:
+                                  //       MainAxisAlignment.spaceBetween,
+                                  //   children: [
+                                  //     Row(
+                                  //       children: [
+                                  //         SkeletonContainer(
+                                  //           width: width * 0.15,
+                                  //           height: width * 0.15,
+                                  //         ),
+                                  //         SizedBox(width: width * 0.0225),
+                                  //         SkeletonContainer(
+                                  //           width: width * 0.3,
+                                  //           height: width * 0.05,
+                                  //         ),
+                                  //       ],
+                                  //     ),
+                                  //     SkeletonContainer(
+                                  //       width: width * 0.1,
+                                  //       height: width * 0.1,
+                                  //     ),
+                                  //   ],
+                                  // ),
                                   ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          SkeletonContainer(
-                                            width: width * 0.15,
-                                            height: width * 0.15,
-                                          ),
-                                          SizedBox(width: width * 0.0225),
-                                          SkeletonContainer(
-                                            width: width * 0.3,
-                                            height: width * 0.05,
-                                          ),
-                                        ],
-                                      ),
-                                      SkeletonContainer(
-                                        width: width * 0.1,
-                                        height: width * 0.1,
-                                      ),
-                                    ],
-                                  ),
-                                ),
 
                           Divider(),
 

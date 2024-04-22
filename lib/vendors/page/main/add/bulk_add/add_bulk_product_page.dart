@@ -154,24 +154,34 @@ class _AddBulkProductState extends State<AddBulkProduct> {
             .collection('Products')
             .where('vendorId', isEqualTo: auth.currentUser!.uid)
             .get();
+        print(1);
 
-        for (QueryDocumentSnapshot doc in previousProducts.docs) {
-          if (doc['productName'] == nameController1.text.toString()) {
-            if (context.mounted) {
-              mySnackBar(
-                context,
-                "Product 1 with same name already exists",
-              );
+        if (previousProducts.docs.isNotEmpty) {
+          for (QueryDocumentSnapshot doc in previousProducts.docs) {
+            if (doc['productName'] == nameController1.text.toString()) {
+              if (context.mounted) {
+                mySnackBar(
+                  context,
+                  "Product 1 with same name already exists",
+                );
+              }
+              print(2);
+            } else {
+              print(3);
+              await addProduct(1);
+              return;
             }
-          } else {
-            await addProduct(1);
-            return;
           }
+        } else {
+          print(4);
+          await addProduct(1);
+          return;
         }
       } catch (e) {
         setState(() {
           isUploading = false;
         });
+        print("Error - $e");
         return mySnackBar(context, 'Some error occured');
       }
 
@@ -249,23 +259,32 @@ class _AddBulkProductState extends State<AddBulkProduct> {
             .where('vendorId', isEqualTo: auth.currentUser!.uid)
             .get();
 
-        for (QueryDocumentSnapshot doc in previousProducts.docs) {
-          if (doc['productName'] == nameController2.text.toString()) {
-            if (context.mounted) {
-              mySnackBar(
-                context,
-                "Product 2 with same name already exists",
-              );
+        if (previousProducts.docs.isNotEmpty) {
+          for (QueryDocumentSnapshot doc in previousProducts.docs) {
+            if (doc['productName'] == nameController2.text.toString()) {
+              if (context.mounted) {
+                mySnackBar(
+                  context,
+                  "Product 2 with same name already exists",
+                );
+              }
+              print(2);
             } else {
+              print(3);
               await addProduct(2);
               return;
             }
           }
+        } else {
+          print(4);
+          await addProduct(2);
+          return;
         }
       } catch (e) {
         setState(() {
           isUploading = false;
         });
+        print("Error - $e");
         return mySnackBar(context, 'Some error occured');
       }
 
@@ -343,23 +362,32 @@ class _AddBulkProductState extends State<AddBulkProduct> {
             .where('vendorId', isEqualTo: auth.currentUser!.uid)
             .get();
 
-        for (QueryDocumentSnapshot doc in previousProducts.docs) {
-          if (doc['productName'] == nameController3.text.toString()) {
-            if (context.mounted) {
-              mySnackBar(
-                context,
-                "Product 3 with same name already exists",
-              );
+        if (previousProducts.docs.isNotEmpty) {
+          for (QueryDocumentSnapshot doc in previousProducts.docs) {
+            if (doc['productName'] == nameController3.text.toString()) {
+              if (context.mounted) {
+                mySnackBar(
+                  context,
+                  "Product 3 with same name already exists",
+                );
+              }
+              print(2);
             } else {
+              print(3);
               await addProduct(3);
               return;
             }
           }
+        } else {
+          print(4);
+          await addProduct(3);
+          return;
         }
       } catch (e) {
         setState(() {
           isUploading = false;
         });
+        print("Error - $e");
         return mySnackBar(context, 'Some error occured');
       }
 
@@ -437,28 +465,38 @@ class _AddBulkProductState extends State<AddBulkProduct> {
             .where('vendorId', isEqualTo: auth.currentUser!.uid)
             .get();
 
-        for (QueryDocumentSnapshot doc in previousProducts.docs) {
-          if (doc['productName'] == nameController4.text.toString()) {
-            if (context.mounted) {
-              mySnackBar(
-                context,
-                "Product 4 with same name already exists",
-              );
+        if (previousProducts.docs.isNotEmpty) {
+          for (QueryDocumentSnapshot doc in previousProducts.docs) {
+            if (doc['productName'] == nameController4.text.toString()) {
+              if (context.mounted) {
+                mySnackBar(
+                  context,
+                  "Product 4 with same name already exists",
+                );
+              }
+              print(2);
             } else {
+              print(3);
               await addProduct(4);
               return;
             }
           }
+        } else {
+          print(4);
+          await addProduct(4);
+          return;
         }
       } catch (e) {
         setState(() {
           isUploading = false;
         });
+        print("Error - $e");
         return mySnackBar(context, 'Some error occured');
       }
 
       Navigator.of(context).pop();
     }
+    Navigator.of(context).pop();
   }
 
   // ADD PRODUCT
@@ -528,6 +566,7 @@ class _AddBulkProductState extends State<AddBulkProduct> {
         'productViews': 0,
         'productViewsTimestamp': [],
         'productLikesId': [],
+        'productLikesLikesTimestamp': [],
         'productWishlist': 0,
         'productId': productId,
         'images': [
@@ -565,12 +604,12 @@ class _AddBulkProductState extends State<AddBulkProduct> {
           'propertyChangable3': false,
           'propertyChangable4': false,
           'propertyChangable5': false,
-          'propertyInputType0': TextInputType.text,
-          'propertyInputType1': TextInputType.text,
-          'propertyInputType2': TextInputType.text,
-          'propertyInputType3': TextInputType.text,
-          'propertyInputType4': TextInputType.text,
-          'propertyInputType5': TextInputType.text,
+          'propertyInputType0': true,
+          'propertyInputType1': true,
+          'propertyInputType2': true,
+          'propertyInputType3': true,
+          'propertyInputType4': true,
+          'propertyInputType5': true,
         },
         'deliveryAvailable': false,
         'codAvailable': false,
@@ -583,6 +622,7 @@ class _AddBulkProductState extends State<AddBulkProduct> {
         'deliveryRange': 0,
         'refundRange': 0,
         'replacementRange': 0,
+        'Tags': [],
       },
     );
     setState(() {

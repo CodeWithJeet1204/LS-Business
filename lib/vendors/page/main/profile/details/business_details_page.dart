@@ -148,7 +148,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .snapshots();
 
-    showDialog(
+    await showDialog(
       barrierDismissible: true,
       context: context,
       builder: ((context) {

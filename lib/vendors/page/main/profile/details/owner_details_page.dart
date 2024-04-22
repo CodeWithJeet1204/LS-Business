@@ -70,7 +70,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
             .collection('Business')
             .doc('Owners')
             .collection('Users')
-            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .doc(auth.currentUser!.uid)
             .update(updatedUserImage);
         setState(() {
           isChangingImage = false;
@@ -111,7 +111,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
               .collection('Business')
               .doc('Owners')
               .collection('Users')
-              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .doc(auth.currentUser!.uid)
               .update(updatedUserName);
         }
         setState(() {
@@ -134,7 +134,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
               .collection('Business')
               .doc('Owners')
               .collection('Users')
-              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .doc(auth.currentUser!.uid)
               .update(updatedUserNumber);
           setState(() {
             isSaving = false;
@@ -166,7 +166,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
               .collection('Business')
               .doc('Owners')
               .collection('Users')
-              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .doc(auth.currentUser!.uid)
               .update(updatedUserName);
 
           // NUMBER
@@ -177,7 +177,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
               .collection('Business')
               .doc('Owners')
               .collection('Users')
-              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .doc(auth.currentUser!.uid)
               .update(updatedUserNumber);
           setState(() {
             isSaving = false;
@@ -202,10 +202,10 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
         .collection('Business')
         .doc('Owners')
         .collection('Users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .doc(auth.currentUser!.uid)
         .snapshots();
 
-    showDialog(
+    await showDialog(
       barrierDismissible: true,
       context: context,
       builder: ((context) {
@@ -248,7 +248,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
         .collection('Business')
         .doc('Owners')
         .collection('Users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .doc(auth.currentUser!.uid)
         .snapshots();
 
     return Scaffold(

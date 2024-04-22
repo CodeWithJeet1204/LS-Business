@@ -22,7 +22,7 @@ class SmallTextContainer extends StatelessWidget {
       child: InkWell(
         onTap: onPressed,
         customBorder: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(4),
         ),
         splashColor: primary2,
         child: Container(
@@ -40,8 +40,8 @@ class SmallTextContainer extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.only(left: width * 0.05),
             child: Text(
-              overflow: TextOverflow.ellipsis,
               text,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: primaryDark,
                 fontWeight: FontWeight.w500,

@@ -32,6 +32,30 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
   }
 
+  // GET SHOP TYPE
+  Future<void> getShopType() async {
+    final vendorSnap = await store
+        .collection('Business')
+        .doc('Owners')
+        .collection('Shops')
+        .doc(auth.currentUser!.uid)
+        .get();
+
+    final vendorData = vendorSnap.data()!;
+
+    final shopName = vendorData['Name'];
+    final imageUrl = vendorData['Image'];
+    final shopType = vendorData['Type'];
+
+    setState(() {
+      shopData = {
+        'Name': shopName,
+        'Image': imageUrl,
+        'Type': shopType,
+      };
+    });
+  }
+
   // SIGN OUT
   Future<void> signOut() async {
     await showDialog(
@@ -98,28 +122,51 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // GET SHOP TYPE
-  Future<void> getShopType() async {
-    final vendorSnap = await store
+  // SHOW IMAGE
+  Future<void> showImage() async {
+    final imageStream = await FirebaseFirestore.instance
         .collection('Business')
         .doc('Owners')
         .collection('Shops')
-        .doc(auth.currentUser!.uid)
-        .get();
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .snapshots();
 
-    final vendorData = vendorSnap.data()!;
+    await showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: ((context) {
+        return StreamBuilder(
+            stream: imageStream,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return const Center(
+                  child: Text(
+                    overflow: TextOverflow.ellipsis,
+                    'Something went wrong',
+                  ),
+                );
+              }
 
-    final shopName = vendorData['Name'];
-    final imageUrl = vendorData['Image'];
-    final shopType = vendorData['Type'];
-
-    setState(() {
-      shopData = {
-        'Name': shopName,
-        'Image': imageUrl,
-        'Type': shopType,
-      };
-    });
+              if (snapshot.hasData) {
+                final userData = snapshot.data!;
+                return Dialog(
+                  elevation: 20,
+                  child: InteractiveViewer(
+                    child: Image.network(
+                      userData['Image'] ??
+                          'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
+                    ),
+                  ),
+                );
+              }
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: primaryDark,
+                ),
+              );
+            });
+      }),
+    );
   }
 
   @override
@@ -198,12 +245,17 @@ class _ProfilePageState extends State<ProfilePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 // IMAGE, NAME & INFO
-                                CircleAvatar(
-                                  radius: width * 0.1195,
-                                  backgroundColor: primary2,
-                                  backgroundImage: CachedNetworkImageProvider(
-                                    shopData['Image'] ??
-                                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpFN1Tvo80rYwu-eXsDNNzsuPITOdtyRPlYIsIqKaIbw&s',
+                                GestureDetector(
+                                  onTap: () async {
+                                    await showImage();
+                                  },
+                                  child: CircleAvatar(
+                                    radius: width * 0.1195,
+                                    backgroundColor: primary2,
+                                    backgroundImage: CachedNetworkImageProvider(
+                                      shopData['Image'] ??
+                                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpFN1Tvo80rYwu-eXsDNNzsuPITOdtyRPlYIsIqKaIbw&s',
+                                    ),
                                   ),
                                 ),
                                 SizedBox(
