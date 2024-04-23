@@ -19,6 +19,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
   final searchController = TextEditingController();
   bool isGridView = true;
 
+  // DISPOSE
   @override
   void dispose() {
     searchController.dispose();
@@ -293,8 +294,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                                         productData[
                                                                 'productPrice'] !=
                                                             null
-                                                    ? productData[
-                                                        'productPrice']
+                                                    ? 'Rs. ${productData['productPrice']}'
                                                     : "N/A",
                                                 overflow: TextOverflow.ellipsis,
                                                 maxLines: 1,

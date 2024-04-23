@@ -80,13 +80,14 @@ class _AddBulkProductState extends State<AddBulkProduct> {
 
   // SAVE
   Future<void> save() async {
-    if (image1 != null) {
-    } else {}
+    setState(() {
+      isUploading = true;
+    });
     // PRODUCT 1
     if (image1 == null &&
         nameController1.text.isEmpty &&
         priceController1.text.isEmpty) {
-      return null;
+      null;
       // image
     } else if (image1 != null &&
         nameController1.text.isEmpty &&
@@ -154,38 +155,35 @@ class _AddBulkProductState extends State<AddBulkProduct> {
             .collection('Products')
             .where('vendorId', isEqualTo: auth.currentUser!.uid)
             .get();
-        print(1);
+
+        bool productAlreadyExists = false;
 
         if (previousProducts.docs.isNotEmpty) {
           for (QueryDocumentSnapshot doc in previousProducts.docs) {
             if (doc['productName'] == nameController1.text.toString()) {
-              if (context.mounted) {
-                mySnackBar(
-                  context,
-                  "Product 1 with same name already exists",
-                );
-              }
-              print(2);
-            } else {
-              print(3);
-              await addProduct(1);
-              return;
+              productAlreadyExists = true;
+              break;
             }
           }
+        }
+
+        if (productAlreadyExists) {
+          if (context.mounted) {
+            return mySnackBar(
+              context,
+              "Product 1 with the same name already exists",
+            );
+          }
         } else {
-          print(4);
           await addProduct(1);
-          return;
         }
       } catch (e) {
         setState(() {
           isUploading = false;
         });
         print("Error - $e");
-        return mySnackBar(context, 'Some error occured');
+        return mySnackBar(context, 'Some error occurred');
       }
-
-      Navigator.of(context).pop();
     }
 
     // ------------
@@ -259,36 +257,34 @@ class _AddBulkProductState extends State<AddBulkProduct> {
             .where('vendorId', isEqualTo: auth.currentUser!.uid)
             .get();
 
+        bool productAlreadyExists = false;
+
         if (previousProducts.docs.isNotEmpty) {
           for (QueryDocumentSnapshot doc in previousProducts.docs) {
             if (doc['productName'] == nameController2.text.toString()) {
-              if (context.mounted) {
-                mySnackBar(
-                  context,
-                  "Product 2 with same name already exists",
-                );
-              }
-              print(2);
-            } else {
-              print(3);
-              await addProduct(2);
-              return;
+              productAlreadyExists = true;
+              break;
             }
           }
+        }
+
+        if (productAlreadyExists) {
+          if (context.mounted) {
+            return mySnackBar(
+              context,
+              "Product 2 with the same name already exists",
+            );
+          }
         } else {
-          print(4);
           await addProduct(2);
-          return;
         }
       } catch (e) {
         setState(() {
           isUploading = false;
         });
         print("Error - $e");
-        return mySnackBar(context, 'Some error occured');
+        return mySnackBar(context, 'Some error occurred');
       }
-
-      Navigator.of(context).pop();
     }
 
     // ------------
@@ -362,36 +358,34 @@ class _AddBulkProductState extends State<AddBulkProduct> {
             .where('vendorId', isEqualTo: auth.currentUser!.uid)
             .get();
 
+        bool productAlreadyExists = false;
+
         if (previousProducts.docs.isNotEmpty) {
           for (QueryDocumentSnapshot doc in previousProducts.docs) {
             if (doc['productName'] == nameController3.text.toString()) {
-              if (context.mounted) {
-                mySnackBar(
-                  context,
-                  "Product 3 with same name already exists",
-                );
-              }
-              print(2);
-            } else {
-              print(3);
-              await addProduct(3);
-              return;
+              productAlreadyExists = true;
+              break;
             }
           }
+        }
+
+        if (productAlreadyExists) {
+          if (context.mounted) {
+            return mySnackBar(
+              context,
+              "Product 3 with the same name already exists",
+            );
+          }
         } else {
-          print(4);
           await addProduct(3);
-          return;
         }
       } catch (e) {
         setState(() {
           isUploading = false;
         });
         print("Error - $e");
-        return mySnackBar(context, 'Some error occured');
+        return mySnackBar(context, 'Some error occurred');
       }
-
-      Navigator.of(context).pop();
     }
 
     // ------------
@@ -465,37 +459,40 @@ class _AddBulkProductState extends State<AddBulkProduct> {
             .where('vendorId', isEqualTo: auth.currentUser!.uid)
             .get();
 
+        bool productAlreadyExists = false;
+
         if (previousProducts.docs.isNotEmpty) {
           for (QueryDocumentSnapshot doc in previousProducts.docs) {
             if (doc['productName'] == nameController4.text.toString()) {
-              if (context.mounted) {
-                mySnackBar(
-                  context,
-                  "Product 4 with same name already exists",
-                );
-              }
-              print(2);
-            } else {
-              print(3);
-              await addProduct(4);
-              return;
+              productAlreadyExists = true;
+              break;
             }
           }
+        }
+
+        if (productAlreadyExists) {
+          if (context.mounted) {
+            return mySnackBar(
+              context,
+              "Product 4 with the same name already exists",
+            );
+          }
         } else {
-          print(4);
           await addProduct(4);
-          return;
         }
       } catch (e) {
         setState(() {
           isUploading = false;
         });
         print("Error - $e");
-        return mySnackBar(context, 'Some error occured');
+        return mySnackBar(context, 'Some error occurred');
       }
-
-      Navigator.of(context).pop();
     }
+
+    setState(() {
+      isUploading = false;
+    });
+
     Navigator.of(context).pop();
   }
 
@@ -521,10 +518,6 @@ class _AddBulkProductState extends State<AddBulkProduct> {
       priceController = priceController4;
       image = image4;
     }
-
-    setState(() {
-      isUploading = true;
-    });
 
     String imageUrl = '';
 
@@ -625,9 +618,6 @@ class _AddBulkProductState extends State<AddBulkProduct> {
         'Tags': [],
       },
     );
-    setState(() {
-      isUploading = false;
-    });
   }
 
   @override
