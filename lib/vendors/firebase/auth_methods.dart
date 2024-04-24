@@ -108,7 +108,8 @@ class AuthMethods {
   }
 
   // PHONE SIGN IN
-  Future<void> phoneSignIn(BuildContext context, String phoneNumber) async {
+  Future<void> phoneSignIn(
+      BuildContext context, String phoneNumber, String mode) async {
     // TextEditingController codeController = TextEditingController();
     // ADNROID / IOS
 
@@ -131,6 +132,7 @@ class AuthMethods {
                 verificationId: verificationId,
                 isLogging: false,
                 phoneNumber: phoneNumber,
+                mode: mode,
               ),
             ),
           );

@@ -17,13 +17,20 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class RegisterMethodPage extends StatefulWidget {
-  const RegisterMethodPage({super.key});
+  const RegisterMethodPage({
+    super.key,
+    required this.mode,
+  });
+
+  final String mode;
 
   @override
   State<RegisterMethodPage> createState() => _RegisterMethodPageState();
 }
 
 class _RegisterMethodPageState extends State<RegisterMethodPage> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final AuthMethods authMethods = AuthMethods();
   final GlobalKey<FormState> registerEmailFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> registerNumberFormKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
@@ -47,10 +54,125 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
     super.dispose();
   }
 
+  // EMAIL REGISTER
+  Future<void> emailRegister(SignInMethodProvider signInMethodProvider) async {
+    if (passwordController.text == confirmPasswordController.text) {
+      if (registerEmailFormKey.currentState!.validate()) {
+        setState(() {
+          isEmailRegistering = true;
+        });
+
+        try {
+          await authMethods.signUpWithEmail(
+            email: emailController.text,
+            password: passwordController.text,
+            context: context,
+          );
+
+          if (auth.currentUser != null) {
+            if (widget.mode == 'vendor') {
+              await FirebaseFirestore.instance
+                  .collection('Business')
+                  .doc('Owners')
+                  .collection('Users')
+                  .doc(auth.currentUser!.uid)
+                  .set({
+                'Email': emailController.text.toString(),
+                'emailVerified': false,
+                'Image': null,
+                'Name': null,
+                'Phone Number': null,
+                'uid': null,
+              });
+
+              await FirebaseFirestore.instance
+                  .collection('Business')
+                  .doc('Owners')
+                  .collection('Shops')
+                  .doc(auth.currentUser!.uid)
+                  .set({
+                "Name": null,
+                'Views': null,
+                'Favorites': null,
+                "GSTNumber": null,
+                "Address": null,
+                "Special Note": null,
+                "Industry": null,
+                "Image": null,
+                "Type": null,
+                'MembershipName': null,
+                'MembershipDuration': null,
+                'MembershipTime': null,
+              });
+            } else if (widget.mode == 'services') {
+              // code for services
+            } else {
+              // code for events
+            }
+
+            signInMethodProvider.chooseEmail();
+          } else {
+            print('Error - Not Signed In');
+          }
+
+          setState(() {
+            isEmailRegistering = false;
+          });
+          if (FirebaseAuth.instance.currentUser!.email != null ||
+              auth.currentUser!.email != null) {
+            SystemChannels.textInput.invokeMethod('TextInput.hide');
+            if (context.mounted) {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => EmailVerifyPage(
+                    mode: widget.mode,
+                  ),
+                ),
+              );
+            }
+          }
+        } on FirebaseAuthException catch (e) {
+          setState(() {
+            isEmailRegistering = false;
+          });
+
+          if (e.code == 'email-already-in-use') {
+            if (context.mounted) {
+              mySnackBar(
+                context,
+                'This email is already in use.',
+              );
+            }
+          } else {
+            if (context.mounted) {
+              mySnackBar(
+                context,
+                e.message ?? 'An error occurred.',
+              );
+            }
+          }
+        } catch (e) {
+          setState(() {
+            isEmailRegistering = false;
+          });
+          if (context.mounted) {
+            mySnackBar(context, e.toString());
+          }
+        }
+      } else {
+        mySnackBar(context, "Passwords do not match");
+      }
+    } else {
+      mySnackBar(
+        context,
+        "Passwords dont match, check again!",
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final FirebaseAuth auth = FirebaseAuth.instance;
-    final AuthMethods authMethods = AuthMethods();
     final signInMethodProvider = Provider.of<SignInMethodProvider>(context);
     final double width = MediaQuery.of(context).size.width;
 
@@ -124,125 +246,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                                   MyButton(
                                     text: "SIGNUP",
                                     onTap: () async {
-                                      if (passwordController.text ==
-                                          confirmPasswordController.text) {
-                                        if (registerEmailFormKey.currentState!
-                                            .validate()) {
-                                          setState(() {
-                                            isEmailRegistering = true;
-                                          });
-
-                                          try {
-                                            await authMethods.signUpWithEmail(
-                                              email: emailController.text,
-                                              password: passwordController.text,
-                                              context: context,
-                                            );
-
-                                            if (auth.currentUser != null) {
-                                              print('abc');
-                                              await FirebaseFirestore.instance
-                                                  .collection('Business')
-                                                  .doc('Owners')
-                                                  .collection('Users')
-                                                  .doc(auth.currentUser!.uid)
-                                                  .set({
-                                                'Email': emailController.text
-                                                    .toString(),
-                                                'emailVerified': false,
-                                                'Image': null,
-                                                'Name': null,
-                                                'Phone Number': null,
-                                                'uid': null,
-                                              });
-
-                                              await FirebaseFirestore.instance
-                                                  .collection('Business')
-                                                  .doc('Owners')
-                                                  .collection('Shops')
-                                                  .doc(auth.currentUser!.uid)
-                                                  .set({
-                                                "Name": null,
-                                                'Views': null,
-                                                'Favorites': null,
-                                                "GSTNumber": null,
-                                                "Address": null,
-                                                "Special Note": null,
-                                                "Industry": null,
-                                                "Image": null,
-                                                "Type": null,
-                                                'MembershipName': null,
-                                                'MembershipDuration': null,
-                                                'MembershipTime': null,
-                                              });
-
-                                              signInMethodProvider
-                                                  .chooseEmail();
-                                            } else {
-                                              mySnackBar(context, 'abc');
-                                            }
-
-                                            setState(() {
-                                              isEmailRegistering = false;
-                                            });
-                                            if (FirebaseAuth.instance
-                                                        .currentUser!.email !=
-                                                    null ||
-                                                auth.currentUser!.email !=
-                                                    null) {
-                                              SystemChannels.textInput
-                                                  .invokeMethod(
-                                                      'TextInput.hide');
-                                              if (context.mounted) {
-                                                Navigator.of(context).pop();
-                                                Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const EmailVerifyPage(),
-                                                  ),
-                                                );
-                                              }
-                                            }
-                                          } on FirebaseAuthException catch (e) {
-                                            setState(() {
-                                              isEmailRegistering = false;
-                                            });
-
-                                            if (e.code ==
-                                                'email-already-in-use') {
-                                              if (context.mounted) {
-                                                mySnackBar(
-                                                  context,
-                                                  'This email is already in use.',
-                                                );
-                                              }
-                                            } else {
-                                              if (context.mounted) {
-                                                mySnackBar(
-                                                  context,
-                                                  e.message ??
-                                                      'An error occurred.',
-                                                );
-                                              }
-                                            }
-                                          } catch (e) {
-                                            setState(() {
-                                              isEmailRegistering = false;
-                                            });
-                                            if (context.mounted) {
-                                              mySnackBar(context, e.toString());
-                                            }
-                                          }
-                                        } else {
-                                          mySnackBar(context,
-                                              "Passwords do not match");
-                                        }
-                                      } else {
-                                        mySnackBar(
-                                          context,
-                                          "Passwords dont match, check again!",
-                                        );
-                                      }
+                                      await emailRegister(signInMethodProvider);
                                     },
                                     horizontalPadding: width * 0.066,
                                     isLoading: isEmailRegistering,
@@ -362,6 +366,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                                                       phoneNumber:
                                                           phoneController.text
                                                               .toString(),
+                                                      mode: widget.mode,
                                                     ),
                                                   ),
                                                 );
@@ -670,7 +675,9 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                                                 Navigator.of(context).push(
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        const EmailVerifyPage(),
+                                                        EmailVerifyPage(
+                                                      mode: widget.mode,
+                                                    ),
                                                   ),
                                                 );
                                               }
@@ -803,15 +810,19 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                                               .contains("+91")) {
                                             if (context.mounted) {
                                               await authMethods.phoneSignIn(
-                                                  context,
-                                                  " ${phoneController.text}");
+                                                context,
+                                                " ${phoneController.text}",
+                                                widget.mode,
+                                              );
                                             }
                                           } else if (phoneController.text
                                               .contains("+91 ")) {
                                             if (context.mounted) {
                                               await authMethods.phoneSignIn(
-                                                  context,
-                                                  phoneController.text);
+                                                context,
+                                                phoneController.text,
+                                                widget.mode,
+                                              );
                                             }
                                           } else {
                                             setState(() {
@@ -854,6 +865,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                                                         phoneNumber:
                                                             phoneController.text
                                                                 .toString(),
+                                                        mode: widget.mode,
                                                       ),
                                                     ),
                                                   );

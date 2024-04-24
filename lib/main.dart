@@ -1,4 +1,5 @@
 import 'package:find_easy/first_launch_detection.dart';
+import 'package:find_easy/select_mode_page.dart';
 import 'package:find_easy/vendors/page/intro/intro_page_view.dart';
 import 'package:find_easy/vendors/page/main/add/brand/add_brand_page.dart';
 import 'package:find_easy/vendors/page/main/add/category/add_category_page.dart';
@@ -12,8 +13,6 @@ import 'package:find_easy/vendors/page/main/profile/details/business_details_pag
 import 'package:find_easy/vendors/page/main/profile/details/owner_details_page.dart';
 import 'package:find_easy/vendors/page/register/login_page.dart';
 import 'package:find_easy/vendors/page/main/profile/profile_page.dart';
-import 'package:find_easy/vendors/page/register/register_method_page.dart';
-import 'package:find_easy/vendors/page/register/register_pay.dart';
 import 'package:find_easy/vendors/page/register/verify/email_verify.dart';
 import 'package:find_easy/vendors/provider/add_product_provider.dart';
 import 'package:find_easy/vendors/provider/change_category_provider.dart';
@@ -32,6 +31,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -92,88 +92,140 @@ void main() async {
   }
 }
 
+// Function to retrieve the selected mode from SharedPreferences
+Future<String> getSelectedMode() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  String selectedMode = prefs.getString('selectedText') ?? '';
+  print(1);
+  return selectedMode;
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Find Easy Business',
-      theme: ThemeData(
-        scaffoldBackgroundColor: primary,
-        progressIndicatorTheme: const ProgressIndicatorThemeData(
-          color: primaryDark2,
-        ),
-        appBarTheme: const AppBarTheme(
-          // toolbarHeight: 50,
-          backgroundColor: primary,
-          foregroundColor: primaryDark,
-          titleTextStyle: TextStyle(
-            fontWeight: FontWeight.w600,
-            color: primaryDark,
-            fontSize: 22,
-            letterSpacing: 1,
-          ),
-          iconTheme: IconThemeData(
-            color: primaryDark,
-            weight: 1,
-          ),
-        ),
-        iconButtonTheme: const IconButtonThemeData(
-          style: ButtonStyle(
-            iconColor: MaterialStatePropertyAll(
-              primaryDark,
+    return FutureBuilder(
+        future: getSelectedMode(),
+        builder: (context, snapshot) {
+          return MaterialApp(
+            title: 'Find Easy Business',
+            theme: ThemeData(
+              scaffoldBackgroundColor: primary,
+              progressIndicatorTheme: const ProgressIndicatorThemeData(
+                color: primaryDark2,
+              ),
+              appBarTheme: const AppBarTheme(
+                // toolbarHeight: 50,
+                backgroundColor: primary,
+                foregroundColor: primaryDark,
+                titleTextStyle: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: primaryDark,
+                  fontSize: 22,
+                  letterSpacing: 1,
+                ),
+                iconTheme: IconThemeData(
+                  color: primaryDark,
+                  weight: 1,
+                ),
+              ),
+              iconButtonTheme: const IconButtonThemeData(
+                style: ButtonStyle(
+                  iconColor: MaterialStatePropertyAll(
+                    primaryDark,
+                  ),
+                ),
+              ),
+              indicatorColor: primaryDark,
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: primary2,
+              ),
+              useMaterial3: true,
             ),
-          ),
-        ),
-        indicatorColor: primaryDark,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: primary2,
-        ),
-        useMaterial3: true,
-      ),
-      routes: {
-        '/profile': (context) => const ProfilePage(),
-        '/login': (context) => const LoginPage(),
-        '/registerPay': (context) => const RegisterPayPage(),
-        '/registerCred': (context) => const RegisterMethodPage(),
-        '/ownerDetails': (context) => const OwnerDetailsPage(),
-        '/businessDetails': (context) => const BusinessDetailsPage(),
-        '/addCategory': (context) => const AddCategoryPage(),
-        '/addBrand': (context) => const AddBrandPage(),
-        '/postsPage': (context) => const AllPostsPage(),
-        '/productsPage': (context) => const AllProductsPage(),
-        '/discountsPage': (context) => const AllDiscountPage(),
-        '/brandsPage': (context) => const AllBrandPage(),
-        '/analyticsPage': (context) => const ShopAnalyticsPage(),
-      },
-      debugShowCheckedModeBanner: false,
-      home: isFirstLaunch
-          ? const IntroPageView()
-          : StreamBuilder<User?>(
-              stream: FirebaseAuth.instance.authStateChanges(),
-              builder: ((context, snapshot) {
-                if (snapshot.hasData) {
-                  return const Stack(
-                    children: [
-                      MainPage(),
-                      ConnectivityNotificationWidget(),
-                    ],
-                  );
-                } else if (snapshot.hasData &&
-                    FirebaseAuth.instance.currentUser!.email != null &&
-                    !FirebaseAuth.instance.currentUser!.emailVerified) {
-                  return const EmailVerifyPage();
-                } else if (snapshot.hasError) {
-                  return const Center(
-                    child: Text(
-                      "Some error occured\nClose & Open the app again",
-                    ),
-                  );
-                }
-                return LoginPage();
-              }),
+            routes: {
+              '/profile': (context) => const ProfilePage(),
+              '/ownerDetails': (context) => const OwnerDetailsPage(),
+              '/businessDetails': (context) => const BusinessDetailsPage(),
+              '/addCategory': (context) => const AddCategoryPage(),
+              '/addBrand': (context) => const AddBrandPage(),
+              '/postsPage': (context) => const AllPostsPage(),
+              '/productsPage': (context) => const AllProductsPage(),
+              '/discountsPage': (context) => const AllDiscountPage(),
+              '/brandsPage': (context) => const AllBrandPage(),
+              '/analyticsPage': (context) => const ShopAnalyticsPage(),
+            },
+            debugShowCheckedModeBanner: false,
+            home: Stack(
+              children: [
+                isFirstLaunch
+                    ? const IntroPageView()
+                    : StreamBuilder<User?>(
+                        stream: FirebaseAuth.instance.authStateChanges(),
+                        builder: (context, authSnapshot) {
+                          if (snapshot.hasData) {
+                            print("Data: ${snapshot.data}");
+                            if (snapshot.data == 'events') {
+                              if (authSnapshot.hasData) {
+                                if (authSnapshot.data!.emailVerified) {
+                                  return const MainPage();
+                                } else {
+                                  return const EmailVerifyPage(
+                                    mode: 'vendor',
+                                  );
+                                }
+                              } else {
+                                return const LoginPage(
+                                  mode: 'vendor',
+                                );
+                              }
+                            } else if (snapshot.data == 'services') {
+                              if (authSnapshot.hasData) {
+                                if (authSnapshot.data!.emailVerified) {
+                                  // return const MainPage();
+                                } else {
+                                  return const EmailVerifyPage(
+                                    mode: 'services',
+                                  );
+                                }
+                              } else {
+                                return const LoginPage(
+                                  mode: 'services',
+                                );
+                              }
+                            } else if (snapshot.data == 'events') {
+                              if (authSnapshot.hasData) {
+                                if (authSnapshot.data!.emailVerified) {
+                                  // return const MainPage();
+                                } else {
+                                  return const EmailVerifyPage(
+                                    mode: 'events',
+                                  );
+                                }
+                              } else {
+                                return const LoginPage(
+                                  mode: 'events',
+                                );
+                              }
+                            } else {
+                              return const SelectModePage();
+                            }
+                          } else {
+                            return const SelectModePage();
+                          }
+
+                          return Scaffold(
+                            body: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        },
+                      ),
+                ConnectivityNotificationWidget(),
+              ],
             ),
-    );
+          );
+        });
   }
 }
 

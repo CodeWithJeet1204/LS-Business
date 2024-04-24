@@ -96,7 +96,9 @@ class _MainPageState extends State<MainPage> {
     if (getUserDetailsAddedDatas != null) {
       if (getUserDetailsAddedDatas.exists) {
         if (!(await isPayed())) {
-          detailsPage = const LoginPage();
+          detailsPage = const LoginPage(
+            mode: 'vendor',
+          );
         } else {
           if (getUserDetailsAddedData!['Email'] == null ||
               getUserDetailsAddedData['Phone Number'] == null) {
@@ -104,7 +106,9 @@ class _MainPageState extends State<MainPage> {
           } else if ((getUserDetailsAddedData['Phone Number'] != null &&
               getUserDetailsAddedData['numberVerified'] != true)) {
             if (!auth.currentUser!.emailVerified) {
-              detailsPage = const EmailVerifyPage();
+              detailsPage = const EmailVerifyPage(
+                mode: 'vendor',
+              );
             } else {
               detailsPage = null;
             }

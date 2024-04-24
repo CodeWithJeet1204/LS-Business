@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/vendors/firebase/auth_methods.dart';
 import 'package:find_easy/vendors/page/main/main_page.dart';
+import 'package:find_easy/vendors/page/register/register_pay.dart';
 import 'package:find_easy/vendors/page/register/verify/number_verify.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:find_easy/vendors/utils/size.dart';
@@ -17,7 +18,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  const LoginPage({
+    super.key,
+    required this.mode,
+  });
+
+  final String mode;
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -80,7 +86,16 @@ class _LoginPageState extends State<LoginPage> {
           });
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-              builder: ((context) => MainPage()),
+              builder: ((context) {
+                if (widget.mode == 'vendor') {
+                  return MainPage();
+                } else if (widget.mode == 'services') {
+                  // return ServicesMainPage();
+                } else {
+                  // return EventsMainPage();
+                }
+                return MainPage();
+              }),
             ),
             (route) => false,
           );
@@ -148,13 +163,16 @@ class _LoginPageState extends State<LoginPage> {
                   SystemChannels.textInput.invokeMethod('TextInput.hide');
                   Navigator.of(context).pop();
                   Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => NumberVerifyPage(
-                        verificationId: verificationId,
-                        isLogging: true,
-                        phoneNumber: phoneController.text.toString(),
-                      ),
-                    ),
+                    MaterialPageRoute(builder: (context) {
+                      if (widget.mode == 'vendor') {
+                        return MainPage();
+                      } else if (widget.mode == 'services') {
+                        // return ServicesMainPage();
+                      } else {
+                        // return EventsMainPage();
+                      }
+                      return MainPage();
+                    }),
                   );
                   setState(() {
                     isPhoneLogging = false;
@@ -189,9 +207,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: no_leading_underscores_for_local_identifiers
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    final AuthMethods auth = AuthMethods();
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final AuthMethods authMethods = AuthMethods();
     final double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -399,8 +416,14 @@ class _LoginPageState extends State<LoginPage> {
                           onPressed: () {
                             SystemChannels.textInput
                                 .invokeMethod('TextInput.hide');
-                            Navigator.of(context)
-                                .popAndPushNamed('/registerPay');
+                            Navigator.of(context).pop();
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: ((context) => RegisterPayPage(
+                                      mode: widget.mode,
+                                    )),
+                              ),
+                            );
                           },
                           text: "REGISTER",
                           textColor: buttonColor,
@@ -529,19 +552,23 @@ class _LoginPageState extends State<LoginPage> {
                                                 // Register with Phone
                                                 if (phoneController.text
                                                     .contains("+91")) {
-                                                  await auth.phoneSignIn(
-                                                      context,
-                                                      " ${phoneController.text}");
+                                                  await authMethods.phoneSignIn(
+                                                    context,
+                                                    " ${phoneController.text}",
+                                                    widget.mode,
+                                                  );
                                                 } else if (phoneController.text
                                                     .contains("+91 ")) {
-                                                  await auth.phoneSignIn(
-                                                      context,
-                                                      phoneController.text);
+                                                  await authMethods.phoneSignIn(
+                                                    context,
+                                                    phoneController.text,
+                                                    widget.mode,
+                                                  );
                                                 } else {
                                                   setState(() {
                                                     isPhoneLogging = true;
                                                   });
-                                                  await _auth.verifyPhoneNumber(
+                                                  await auth.verifyPhoneNumber(
                                                       phoneNumber:
                                                           "+91 ${phoneController.text}",
                                                       verificationCompleted:
@@ -581,6 +608,7 @@ class _LoginPageState extends State<LoginPage> {
                                                                   phoneController
                                                                       .text
                                                                       .toString(),
+                                                              mode: widget.mode,
                                                             ),
                                                           ),
                                                         );
@@ -708,8 +736,14 @@ class _LoginPageState extends State<LoginPage> {
                                   onPressed: () {
                                     SystemChannels.textInput
                                         .invokeMethod('TextInput.hide');
-                                    Navigator.of(context)
-                                        .popAndPushNamed('/registerPay');
+                                    Navigator.of(context).pop();
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: ((context) => RegisterPayPage(
+                                              mode: widget.mode,
+                                            )),
+                                      ),
+                                    );
                                   },
                                   text: "REGISTER",
                                   textColor: buttonColor,

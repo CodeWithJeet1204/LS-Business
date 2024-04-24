@@ -11,17 +11,19 @@ import 'package:flutter/material.dart';
 class EmailVerifyPage extends StatefulWidget {
   const EmailVerifyPage({
     super.key,
+    required this.mode,
   });
+
+  final String mode;
 
   @override
   State<EmailVerifyPage> createState() => _EmailVerifyPageState();
 }
 
 class _EmailVerifyPageState extends State<EmailVerifyPage> {
-  // ignore: no_leading_underscores_for_local_identifiers
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final AuthMethods authMethods = AuthMethods();
   final store = FirebaseFirestore.instance;
-  final AuthMethods auth = AuthMethods();
   bool checkingEmailVerified = false;
   bool canResendEmail = false;
   Timer? timer;
@@ -59,7 +61,16 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
     if (isEmailVerified) {
       if (context.mounted) {
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: ((context) => const MainPage())),
+          MaterialPageRoute(builder: ((context) {
+            if (widget.mode == 'vendor') {
+              return MainPage();
+            } else if (widget.mode == 'services') {
+              // return ServicesMainPage();
+            } else {
+              // return EventsMainPage();
+            }
+            return MainPage();
+          })),
           (route) => false,
         );
       }
@@ -98,7 +109,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              _auth.currentUser!.email!,
+              auth.currentUser!.email!,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: primaryDark,

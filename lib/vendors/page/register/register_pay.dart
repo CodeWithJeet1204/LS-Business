@@ -1,3 +1,5 @@
+import 'package:find_easy/vendors/page/register/login_page.dart';
+import 'package:find_easy/vendors/page/register/register_method_page.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:find_easy/vendors/utils/is_payed.dart';
 import 'package:find_easy/vendors/utils/size.dart';
@@ -9,7 +11,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class RegisterPayPage extends StatefulWidget {
-  const RegisterPayPage({super.key});
+  const RegisterPayPage({
+    super.key,
+    required this.mode,
+  });
+
+  final String mode;
 
   @override
   State<RegisterPayPage> createState() => _RegisterPayPageState();
@@ -65,7 +72,14 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                           isPaying = false;
                         });
                         SystemChannels.textInput.invokeMethod('TextInput.hide');
-                        Navigator.of(context).popAndPushNamed('/registerCred');
+                        Navigator.of(context).pop();
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: ((context) => RegisterMethodPage(
+                                  mode: widget.mode,
+                                )),
+                          ),
+                        );
                       } catch (e) {
                         setState(() {
                           isPaying = false;
@@ -98,7 +112,14 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                         onPressed: () {
                           SystemChannels.textInput
                               .invokeMethod('TextInput.hide');
-                          Navigator.of(context).popAndPushNamed('/login');
+                          Navigator.of(context).pop();
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: ((context) => LoginPage(
+                                    mode: 'vendor',
+                                  )),
+                            ),
+                          );
                         },
                         text: "LOGIN",
                         textColor: buttonColor,
@@ -154,8 +175,14 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                               });
                               SystemChannels.textInput
                                   .invokeMethod('TextInput.hide');
-                              Navigator.of(context)
-                                  .popAndPushNamed('/registerCred');
+                              Navigator.of(context).pop();
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: ((context) => RegisterMethodPage(
+                                        mode: widget.mode,
+                                      )),
+                                ),
+                              );
                             } catch (e) {
                               setState(() {
                                 isPaying = false;

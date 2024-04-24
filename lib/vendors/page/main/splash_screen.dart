@@ -25,8 +25,11 @@ class _SplashScreenState extends State<SplashScreen> {
       () {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: ((context) =>
-                widget.isLoggedIn ? MainPage() : LoginPage()),
+            builder: ((context) => widget.isLoggedIn
+                ? MainPage()
+                : LoginPage(
+                    mode: 'vendor',
+                  )),
           ),
         );
       },

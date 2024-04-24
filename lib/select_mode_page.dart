@@ -61,7 +61,9 @@ class _SelectModePageState extends State<SelectModePage> {
     if (isVendorSelected) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: ((context) => LoginPage()),
+          builder: ((context) => LoginPage(
+                mode: 'vendor',
+              )),
         ),
       );
     } else if (isServicesSelected) {
