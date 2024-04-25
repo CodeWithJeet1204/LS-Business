@@ -1,4 +1,4 @@
-import 'package:find_easy/vendors/page/register/login_page.dart';
+import 'package:find_easy/auth/login_page.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/mode_card.dart';
 import 'package:flutter/material.dart';

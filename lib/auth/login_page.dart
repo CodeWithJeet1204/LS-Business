@@ -3,8 +3,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/vendors/firebase/auth_methods.dart';
 import 'package:find_easy/vendors/page/main/main_page.dart';
-import 'package:find_easy/vendors/page/register/register_pay.dart';
-import 'package:find_easy/vendors/page/register/verify/number_verify.dart';
+import 'package:find_easy/auth/register_pay.dart';
+import 'package:find_easy/auth/verify/number_verify.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:find_easy/vendors/utils/size.dart';
 import 'package:find_easy/widgets/button.dart';

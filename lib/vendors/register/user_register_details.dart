@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/vendors/page/register/business_register_details.dart';
+import 'package:find_easy/vendors/register/business_register_details.dart';
 import 'package:find_easy/vendors/provider/sign_in_method_provider.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
@@ -30,9 +30,6 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
   final GlobalKey<FormState> userFormKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   bool isImageSelected = false;
   File? _image;
@@ -43,8 +40,6 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
   @override
   void dispose() {
     emailController.dispose();
-    passwordController.dispose();
-    confirmPasswordController.dispose();
     phoneController.dispose();
     super.dispose();
   }
@@ -173,103 +168,25 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                         text: "Next",
                         onTap: () async {
                           if (userFormKey.currentState!.validate()) {
-                            if (confirmPasswordController.text ==
-                                passwordController.text) {
-                              if (_image != null) {
-                                try {
-                                  String? userPhotoUrl;
-                                  setState(() {
-                                    isNext = true;
-                                  });
-                                  uploadImagePath = _image!.path;
-                                  Reference ref = FirebaseStorage.instance
-                                      .ref()
-                                      .child('Profile/Owners')
-                                      .child(FirebaseAuth
-                                          .instance.currentUser!.uid);
-                                  await ref
-                                      .putFile(File(uploadImagePath!))
-                                      .whenComplete(() async {
-                                    await ref.getDownloadURL().then((value) {
-                                      userPhotoUrl = value;
-                                    });
-                                  });
-                                  final getUser = await store
-                                      .collection('Business')
-                                      .doc('Owners')
-                                      .collection('Users')
-                                      .doc(auth.currentUser!.uid)
-                                      .get();
-                                  if (getUser['Name'] != null &&
-                                      getUser['Email'] != null) {
-                                    await store
-                                        .collection('Business')
-                                        .doc('Owners')
-                                        .collection('Users')
-                                        .doc(auth.currentUser!.uid)
-                                        .update({
-                                      "Phone Number": phoneController.text,
-                                      "Image": userPhotoUrl,
-                                    });
-                                  } else if (getUser['Phone Number'] != null) {
-                                    await store
-                                        .collection('Business')
-                                        .doc('Owners')
-                                        .collection('Users')
-                                        .doc(auth.currentUser!.uid)
-                                        .update({
-                                      "uid": uid,
-                                      "Email": emailController.text.toString(),
-                                      "Name": nameController.text.toString(),
-                                      "Image": userPhotoUrl,
-                                    });
-                                  } else if (getUser['Email'] != null &&
-                                      getUser['Name'] == null) {
-                                    await store
-                                        .collection('Business')
-                                        .doc('Owners')
-                                        .collection('Users')
-                                        .doc(auth.currentUser!.uid)
-                                        .update({
-                                      "uid": uid,
-                                      "Phone Number":
-                                          phoneController.text.toString(),
-                                      "Image": userPhotoUrl,
-                                      "Name": nameController.text.toString(),
-                                    });
-                                  } else {
-                                    if (context.mounted) {
-                                      mySnackBar(context, "Some error occured");
-                                    }
-                                  }
-
-                                  setState(() {
-                                    isNext = false;
-                                  });
-                                  SystemChannels.textInput
-                                      .invokeMethod('TextInput.hide');
-                                  if (context.mounted) {
-                                    Navigator.of(context).pop();
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const BusinessRegisterDetailsPage(),
-                                      ),
-                                    );
-                                  }
-                                } catch (e) {
-                                  setState(() {
-                                    isNext = false;
-                                  });
-                                  if (context.mounted) {
-                                    mySnackBar(context, e.toString());
-                                  }
-                                }
-                              } else {
+                            if (_image != null) {
+                              try {
+                                String? userPhotoUrl;
                                 setState(() {
                                   isNext = true;
                                 });
-
+                                uploadImagePath = _image!.path;
+                                Reference ref = FirebaseStorage.instance
+                                    .ref()
+                                    .child('Profile/Owners')
+                                    .child(
+                                        FirebaseAuth.instance.currentUser!.uid);
+                                await ref
+                                    .putFile(File(uploadImagePath!))
+                                    .whenComplete(() async {
+                                  await ref.getDownloadURL().then((value) {
+                                    userPhotoUrl = value;
+                                  });
+                                });
                                 final getUser = await store
                                     .collection('Business')
                                     .doc('Owners')
@@ -285,8 +202,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                       .doc(auth.currentUser!.uid)
                                       .update({
                                     "Phone Number": phoneController.text,
-                                    "Image":
-                                        'https://upload.wikimedia.org/wikipedia/commons/a/af/Default_avatar_profile.jpg',
+                                    "Image": userPhotoUrl,
                                   });
                                 } else if (getUser['Phone Number'] != null) {
                                   await store
@@ -298,8 +214,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                     "uid": uid,
                                     "Email": emailController.text.toString(),
                                     "Name": nameController.text.toString(),
-                                    "Image":
-                                        'https://upload.wikimedia.org/wikipedia/commons/a/af/Default_avatar_profile.jpg',
+                                    "Image": userPhotoUrl,
                                   });
                                 } else if (getUser['Email'] != null &&
                                     getUser['Name'] == null) {
@@ -312,37 +227,114 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                     "uid": uid,
                                     "Phone Number":
                                         phoneController.text.toString(),
-                                    "Image":
-                                        'https://upload.wikimedia.org/wikipedia/commons/a/af/Default_avatar_profile.jpg',
+                                    "Image": userPhotoUrl,
                                     "Name": nameController.text.toString(),
                                   });
-
-                                  setState(() {
-                                    isNext = false;
-                                  });
-                                  SystemChannels.textInput
-                                      .invokeMethod('TextInput.hide');
-                                  if (context.mounted) {
-                                    Navigator.of(context).pop();
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const BusinessRegisterDetailsPage(),
-                                      ),
-                                    );
-                                  }
                                 } else {
                                   if (context.mounted) {
                                     mySnackBar(context, "Some error occured");
                                   }
                                 }
+
+                                setState(() {
+                                  isNext = false;
+                                });
+                                SystemChannels.textInput
+                                    .invokeMethod('TextInput.hide');
+                                if (context.mounted) {
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const BusinessRegisterDetailsPage(),
+                                    ),
+                                  );
+                                }
+                              } catch (e) {
+                                setState(() {
+                                  isNext = false;
+                                });
+                                if (context.mounted) {
+                                  mySnackBar(context, e.toString());
+                                }
                               }
                             } else {
-                              mySnackBar(
-                                context,
-                                "Passwords do not match. Check Again!",
-                              );
+                              setState(() {
+                                isNext = true;
+                              });
+
+                              final getUser = await store
+                                  .collection('Business')
+                                  .doc('Owners')
+                                  .collection('Users')
+                                  .doc(auth.currentUser!.uid)
+                                  .get();
+                              if (getUser['Name'] != null &&
+                                  getUser['Email'] != null) {
+                                await store
+                                    .collection('Business')
+                                    .doc('Owners')
+                                    .collection('Users')
+                                    .doc(auth.currentUser!.uid)
+                                    .update({
+                                  "Phone Number": phoneController.text,
+                                  "Image":
+                                      'https://upload.wikimedia.org/wikipedia/commons/a/af/Default_avatar_profile.jpg',
+                                });
+                              } else if (getUser['Phone Number'] != null) {
+                                await store
+                                    .collection('Business')
+                                    .doc('Owners')
+                                    .collection('Users')
+                                    .doc(auth.currentUser!.uid)
+                                    .update({
+                                  "uid": uid,
+                                  "Email": emailController.text.toString(),
+                                  "Name": nameController.text.toString(),
+                                  "Image":
+                                      'https://upload.wikimedia.org/wikipedia/commons/a/af/Default_avatar_profile.jpg',
+                                });
+                              } else if (getUser['Email'] != null &&
+                                  getUser['Name'] == null) {
+                                await store
+                                    .collection('Business')
+                                    .doc('Owners')
+                                    .collection('Users')
+                                    .doc(auth.currentUser!.uid)
+                                    .update({
+                                  "uid": uid,
+                                  "Phone Number":
+                                      phoneController.text.toString(),
+                                  "Image":
+                                      'https://upload.wikimedia.org/wikipedia/commons/a/af/Default_avatar_profile.jpg',
+                                  "Name": nameController.text.toString(),
+                                });
+
+                                setState(() {
+                                  isNext = false;
+                                });
+                                SystemChannels.textInput
+                                    .invokeMethod('TextInput.hide');
+                                if (context.mounted) {
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const BusinessRegisterDetailsPage(),
+                                    ),
+                                  );
+                                }
+                              } else {
+                                if (context.mounted) {
+                                  mySnackBar(context, "Some error occured");
+                                }
+                              }
                             }
+                          } else {
+                            mySnackBar(
+                              context,
+                              "Passwords do not match. Check Again!",
+                            );
                           }
                         },
                         isLoading: isNext,

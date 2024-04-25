@@ -753,9 +753,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                               child: DropdownButton(
                                                 dropdownColor: primary,
                                                 hint: const Text(
+                                                  "Select",
                                                   overflow:
                                                       TextOverflow.ellipsis,
-                                                  "Select",
                                                 ),
                                                 value: propertyValue1,
                                                 underline: Container(),

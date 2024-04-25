@@ -11,9 +11,9 @@ import 'package:find_easy/vendors/page/main/profile/data/all_post_page.dart';
 import 'package:find_easy/vendors/page/main/profile/data/all_product_page.dart';
 import 'package:find_easy/vendors/page/main/profile/details/business_details_page.dart';
 import 'package:find_easy/vendors/page/main/profile/details/owner_details_page.dart';
-import 'package:find_easy/vendors/page/register/login_page.dart';
+import 'package:find_easy/auth/login_page.dart';
 import 'package:find_easy/vendors/page/main/profile/profile_page.dart';
-import 'package:find_easy/vendors/page/register/verify/email_verify.dart';
+import 'package:find_easy/auth/verify/email_verify.dart';
 import 'package:find_easy/vendors/provider/add_product_provider.dart';
 import 'package:find_easy/vendors/provider/change_category_provider.dart';
 import 'package:find_easy/vendors/provider/discount_brand_provider.dart';
@@ -172,6 +172,7 @@ class MyApp extends StatelessWidget {
                                 } else {
                                   return const EmailVerifyPage(
                                     mode: 'vendor',
+                                    isLogging: true,
                                   );
                                 }
                               } else {
@@ -186,6 +187,7 @@ class MyApp extends StatelessWidget {
                                 } else {
                                   return const EmailVerifyPage(
                                     mode: 'services',
+                                    isLogging: true,
                                   );
                                 }
                               } else {
@@ -200,6 +202,7 @@ class MyApp extends StatelessWidget {
                                 } else {
                                   return const EmailVerifyPage(
                                     mode: 'events',
+                                    isLogging: true,
                                   );
                                 }
                               } else {

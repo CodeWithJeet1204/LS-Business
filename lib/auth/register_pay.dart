@@ -1,5 +1,5 @@
-import 'package:find_easy/vendors/page/register/login_page.dart';
-import 'package:find_easy/vendors/page/register/register_method_page.dart';
+import 'package:find_easy/auth/login_page.dart';
+import 'package:find_easy/auth/register_method_page.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:find_easy/vendors/utils/is_payed.dart';
 import 'package:find_easy/vendors/utils/size.dart';

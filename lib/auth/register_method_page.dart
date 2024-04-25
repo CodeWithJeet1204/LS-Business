@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/vendors/firebase/auth_methods.dart';
-import 'package:find_easy/vendors/page/register/user_register_details.dart';
-import 'package:find_easy/vendors/page/register/verify/email_verify.dart';
-import 'package:find_easy/vendors/page/register/verify/number_verify.dart';
+import 'package:find_easy/vendors/register/user_register_details.dart';
+import 'package:find_easy/auth/verify/email_verify.dart';
+import 'package:find_easy/auth/verify/number_verify.dart';
 import 'package:find_easy/vendors/provider/sign_in_method_provider.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:find_easy/vendors/utils/size.dart';
@@ -31,6 +31,7 @@ class RegisterMethodPage extends StatefulWidget {
 class _RegisterMethodPageState extends State<RegisterMethodPage> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final AuthMethods authMethods = AuthMethods();
+  final store = FirebaseFirestore.instance;
   final GlobalKey<FormState> registerEmailFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> registerNumberFormKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
@@ -71,7 +72,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
 
           if (auth.currentUser != null) {
             if (widget.mode == 'vendor') {
-              await FirebaseFirestore.instance
+              await store
                   .collection('Business')
                   .doc('Owners')
                   .collection('Users')
@@ -85,7 +86,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                 'uid': null,
               });
 
-              await FirebaseFirestore.instance
+              await store
                   .collection('Business')
                   .doc('Owners')
                   .collection('Shops')
@@ -105,7 +106,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                 'MembershipTime': null,
               });
             } else if (widget.mode == 'services') {
-              // code for services
+              // nothing
             } else {
               // code for events
             }
@@ -127,6 +128,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                 MaterialPageRoute(
                   builder: (context) => EmailVerifyPage(
                     mode: widget.mode,
+                    isLogging: false,
                   ),
                 ),
               );
@@ -168,6 +170,137 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
         context,
         "Passwords dont match, check again!",
       );
+    }
+  }
+
+  // PHONE NUMBER REGISTER
+  Future<void> phoneNumberRegister(
+      SignInMethodProvider signInMethodProvider) async {
+    if (registerNumberFormKey.currentState!.validate()) {
+      print('b');
+      try {
+        setState(() {
+          isPhoneRegistering = true;
+          phoneText = "Please Wait";
+        });
+        await store
+            .collection('Business')
+            .doc('Owners')
+            .collection('Users')
+            .doc(auth.currentUser!.uid)
+            .set({
+          'Phone Number': phoneController.text.toString(),
+          'Image': null,
+          'Email': null,
+          'Name': null,
+          'uid': null,
+        });
+
+        await store
+            .collection('Business')
+            .doc('Owners')
+            .collection('Shops')
+            .doc(auth.currentUser!.uid)
+            .set({
+          "Name": null,
+          'Views': null,
+          'Favorites': null,
+          "GSTNumber": null,
+          "Address": null,
+          "Special Note": null,
+          "Industry": null,
+          "Image": null,
+          "Type": null,
+          'MembershipName': null,
+          'MembershipDuration': null,
+          'MembershipTime': null,
+        });
+
+        // Register with Phone
+        signInMethodProvider.chooseNumber();
+        if (phoneController.text.contains("+91")) {
+          if (context.mounted) {
+            await authMethods.phoneSignIn(
+              context,
+              " ${phoneController.text}",
+              widget.mode,
+            );
+          }
+        } else if (phoneController.text.contains("+91 ")) {
+          if (context.mounted) {
+            await authMethods.phoneSignIn(
+              context,
+              phoneController.text,
+              widget.mode,
+            );
+          }
+        } else {
+          setState(() {
+            isPhoneRegistering = true;
+          });
+
+          await auth.verifyPhoneNumber(
+              phoneNumber: "+91 ${phoneController.text}",
+              verificationCompleted: (_) {
+                setState(() {
+                  isPhoneRegistering = false;
+                });
+              },
+              verificationFailed: (e) {
+                if (context.mounted) {
+                  mySnackBar(context, e.toString());
+                }
+                setState(() {
+                  isPhoneRegistering = false;
+                  phoneText = "SIGNUP";
+                });
+              },
+              codeSent: (
+                String verificationId,
+                int? token,
+              ) {
+                SystemChannels.textInput.invokeMethod('TextInput.hide');
+                Navigator.of(context).pop();
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => NumberVerifyPage(
+                      verificationId: verificationId,
+                      isLogging: false,
+                      phoneNumber: phoneController.text.toString(),
+                      mode: widget.mode,
+                    ),
+                  ),
+                );
+                setState(() {
+                  isPhoneRegistering = false;
+                  phoneText = "SIGNUP";
+                });
+              },
+              codeAutoRetrievalTimeout: (e) {
+                if (context.mounted) {
+                  mySnackBar(context, e.toString());
+                }
+                setState(() {
+                  isPhoneRegistering = false;
+                  phoneText = "SIGNUP";
+                });
+              });
+        }
+        setState(() {
+          isPhoneRegistering = false;
+          phoneText = "SIGNUP";
+        });
+      } catch (e) {
+        setState(() {
+          isPhoneRegistering = false;
+          phoneText = "SIGNUP";
+        });
+        if (context.mounted) {
+          mySnackBar(context, e.toString());
+        }
+      }
+    } else {
+      print(1234);
     }
   }
 
@@ -424,7 +557,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                               await AuthMethods().signInWithGoogle(context);
                               await auth.currentUser!.reload();
                               if (FirebaseAuth.instance.currentUser != null) {
-                                await FirebaseFirestore.instance
+                                await store
                                     .collection('Business')
                                     .doc('Owners')
                                     .collection('Users')
@@ -439,7 +572,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                                   'Phone Number': null,
                                 });
 
-                                await FirebaseFirestore.instance
+                                await store
                                     .collection('Business')
                                     .doc('Owners')
                                     .collection('Shops')
@@ -618,7 +751,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
 
                                             if (auth.currentUser != null) {
                                               print('abc');
-                                              await FirebaseFirestore.instance
+                                              await store
                                                   .collection('Business')
                                                   .doc('Owners')
                                                   .collection('Users')
@@ -633,7 +766,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                                                 'uid': null,
                                               });
 
-                                              await FirebaseFirestore.instance
+                                              await store
                                                   .collection('Business')
                                                   .doc('Owners')
                                                   .collection('Shops')
@@ -677,6 +810,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                                                     builder: (context) =>
                                                         EmailVerifyPage(
                                                       mode: widget.mode,
+                                                      isLogging: false,
                                                     ),
                                                   ),
                                                 );
@@ -761,146 +895,8 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                                   MyButton(
                                     text: phoneText,
                                     onTap: () async {
-                                      print('a');
-                                      if (registerNumberFormKey.currentState!
-                                          .validate()) {
-                                        print('b');
-                                        try {
-                                          setState(() {
-                                            isPhoneRegistering = true;
-                                            phoneText = "Please Wait";
-                                          });
-                                          await FirebaseFirestore.instance
-                                              .collection('Business')
-                                              .doc('Owners')
-                                              .collection('Users')
-                                              .doc(auth.currentUser!.uid)
-                                              .set({
-                                            'Phone Number':
-                                                phoneController.text.toString(),
-                                            'Image': null,
-                                            'Email': null,
-                                            'Name': null,
-                                            'uid': null,
-                                          });
-
-                                          await FirebaseFirestore.instance
-                                              .collection('Business')
-                                              .doc('Owners')
-                                              .collection('Shops')
-                                              .doc(auth.currentUser!.uid)
-                                              .set({
-                                            "Name": null,
-                                            'Views': null,
-                                            'Favorites': null,
-                                            "GSTNumber": null,
-                                            "Address": null,
-                                            "Special Note": null,
-                                            "Industry": null,
-                                            "Image": null,
-                                            "Type": null,
-                                            'MembershipName': null,
-                                            'MembershipDuration': null,
-                                            'MembershipTime': null,
-                                          });
-
-                                          // Register with Phone
-                                          signInMethodProvider.chooseNumber();
-                                          if (phoneController.text
-                                              .contains("+91")) {
-                                            if (context.mounted) {
-                                              await authMethods.phoneSignIn(
-                                                context,
-                                                " ${phoneController.text}",
-                                                widget.mode,
-                                              );
-                                            }
-                                          } else if (phoneController.text
-                                              .contains("+91 ")) {
-                                            if (context.mounted) {
-                                              await authMethods.phoneSignIn(
-                                                context,
-                                                phoneController.text,
-                                                widget.mode,
-                                              );
-                                            }
-                                          } else {
-                                            setState(() {
-                                              isPhoneRegistering = true;
-                                            });
-
-                                            await auth.verifyPhoneNumber(
-                                                phoneNumber:
-                                                    "+91 ${phoneController.text}",
-                                                verificationCompleted: (_) {
-                                                  setState(() {
-                                                    isPhoneRegistering = false;
-                                                  });
-                                                },
-                                                verificationFailed: (e) {
-                                                  if (context.mounted) {
-                                                    mySnackBar(
-                                                        context, e.toString());
-                                                  }
-                                                  setState(() {
-                                                    isPhoneRegistering = false;
-                                                    phoneText = "SIGNUP";
-                                                  });
-                                                },
-                                                codeSent: (
-                                                  String verificationId,
-                                                  int? token,
-                                                ) {
-                                                  SystemChannels.textInput
-                                                      .invokeMethod(
-                                                          'TextInput.hide');
-                                                  Navigator.of(context).pop();
-                                                  Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          NumberVerifyPage(
-                                                        verificationId:
-                                                            verificationId,
-                                                        isLogging: false,
-                                                        phoneNumber:
-                                                            phoneController.text
-                                                                .toString(),
-                                                        mode: widget.mode,
-                                                      ),
-                                                    ),
-                                                  );
-                                                  setState(() {
-                                                    isPhoneRegistering = false;
-                                                    phoneText = "SIGNUP";
-                                                  });
-                                                },
-                                                codeAutoRetrievalTimeout: (e) {
-                                                  if (context.mounted) {
-                                                    mySnackBar(
-                                                        context, e.toString());
-                                                  }
-                                                  setState(() {
-                                                    isPhoneRegistering = false;
-                                                    phoneText = "SIGNUP";
-                                                  });
-                                                });
-                                          }
-                                          setState(() {
-                                            isPhoneRegistering = false;
-                                            phoneText = "SIGNUP";
-                                          });
-                                        } catch (e) {
-                                          setState(() {
-                                            isPhoneRegistering = false;
-                                            phoneText = "SIGNUP";
-                                          });
-                                          if (context.mounted) {
-                                            mySnackBar(context, e.toString());
-                                          }
-                                        }
-                                      } else {
-                                        print(1234);
-                                      }
+                                      await phoneNumberRegister(
+                                          signInMethodProvider);
                                     },
                                     horizontalPadding: width < screenSize
                                         ? width * 0.066
@@ -927,7 +923,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                         //       await AuthMethods().signInWithGoogle(context);
                         //       await _auth.currentUser!.reload();
                         //       if (FirebaseAuth.instance.currentUser != null) {
-                        //         await FirebaseFirestore.instance
+                        //         await store
                         //             .collection('Business')
                         //             .doc('Owners')
                         //             .collection('Users')
@@ -941,7 +937,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                         //           'Image': null,
                         //           'Phone Number': null,
                         //         });
-                        //         await FirebaseFirestore.instance
+                        //         await store
                         //             .collection('Business')
                         //             .doc('Owners')
                         //             .collection('Shops')

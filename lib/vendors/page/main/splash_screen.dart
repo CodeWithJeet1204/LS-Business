@@ -1,5 +1,5 @@
 import 'package:find_easy/vendors/page/main/main_page.dart';
-import 'package:find_easy/vendors/page/register/login_page.dart';
+import 'package:find_easy/auth/login_page.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:flutter/material.dart';
 

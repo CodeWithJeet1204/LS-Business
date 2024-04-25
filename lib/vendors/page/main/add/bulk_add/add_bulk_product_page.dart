@@ -626,6 +626,21 @@ class _AddBulkProductState extends State<AddBulkProduct> {
       appBar: AppBar(
         title: Text('Bulk Add Products'),
       ),
+      bottomSheet: Padding(
+        padding: EdgeInsets.all(8),
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: 50,
+          child: MyButton(
+            text: 'DONE',
+            onTap: () async {
+              await save();
+            },
+            isLoading: isUploading,
+            horizontalPadding: MediaQuery.of(context).size.width * 0.0225,
+          ),
+        ),
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(
@@ -686,20 +701,7 @@ class _AddBulkProductState extends State<AddBulkProduct> {
                       },
                       image: image4,
                     ),
-
-                    SizedBox(height: 12),
-
-                    // DONE
-                    MyButton(
-                      text: 'DONE',
-                      onTap: () async {
-                        await save();
-                      },
-                      isLoading: isUploading,
-                      horizontalPadding: width * 0.0225,
-                    ),
-
-                    SizedBox(height: 12),
+                    SizedBox(height: 72),
                   ],
                 ),
               );

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/vendors/models/special_categories.dart';
-import 'package:find_easy/vendors/page/register/membership_page.dart';
+import 'package:find_easy/vendors/register/membership_page.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/head_text.dart';

@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:find_easy/services/register/services_register_details_page.dart';
 import 'package:find_easy/vendors/firebase/auth_methods.dart';
 import 'package:find_easy/vendors/page/main/main_page.dart';
+import 'package:find_easy/vendors/register/user_register_details.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
@@ -12,9 +14,11 @@ class EmailVerifyPage extends StatefulWidget {
   const EmailVerifyPage({
     super.key,
     required this.mode,
+    required this.isLogging,
   });
 
   final String mode;
+  final bool isLogging;
 
   @override
   State<EmailVerifyPage> createState() => _EmailVerifyPageState();
@@ -63,9 +67,17 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: ((context) {
             if (widget.mode == 'vendor') {
-              return MainPage();
+              if (widget.isLogging) {
+                return MainPage();
+              } else {
+                return UserRegisterDetailsPage();
+              }
             } else if (widget.mode == 'services') {
-              // return ServicesMainPage();
+              if (widget.isLogging) {
+                // return ServicesMainPage();
+              } else {
+                return ServicesRegisterDetailsPage();
+              }
             } else {
               // return EventsMainPage();
             }
