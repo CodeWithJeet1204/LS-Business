@@ -67,9 +67,21 @@ class _SelectModePageState extends State<SelectModePage> {
         ),
       );
     } else if (isServicesSelected) {
-      // NAVIGATE TO SERVICE LOGIN PAGE
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: ((context) => LoginPage(
+                mode: 'services',
+              )),
+        ),
+      );
     } else if (isEventsSelected) {
-      // NAVIGATE TO EVENT LOGIN PAGE
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: ((context) => LoginPage(
+                mode: 'events',
+              )),
+        ),
+      );
     }
   }
 

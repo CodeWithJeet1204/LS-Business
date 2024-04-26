@@ -1,5 +1,6 @@
 import 'package:find_easy/first_launch_detection.dart';
 import 'package:find_easy/select_mode_page.dart';
+import 'package:find_easy/services/main/services_main_page.dart';
 import 'package:find_easy/vendors/page/intro/intro_page_view.dart';
 import 'package:find_easy/vendors/page/main/add/brand/add_brand_page.dart';
 import 'package:find_easy/vendors/page/main/add/category/add_category_page.dart';
@@ -165,7 +166,7 @@ class MyApp extends StatelessWidget {
                         builder: (context, authSnapshot) {
                           if (snapshot.hasData) {
                             print("Data: ${snapshot.data}");
-                            if (snapshot.data == 'events') {
+                            if (snapshot.data == 'vendor') {
                               if (authSnapshot.hasData) {
                                 if (authSnapshot.data!.emailVerified) {
                                   return const MainPage();
@@ -183,7 +184,7 @@ class MyApp extends StatelessWidget {
                             } else if (snapshot.data == 'services') {
                               if (authSnapshot.hasData) {
                                 if (authSnapshot.data!.emailVerified) {
-                                  // return const MainPage();
+                                  return const ServicesMainPage();
                                 } else {
                                   return const EmailVerifyPage(
                                     mode: 'services',
