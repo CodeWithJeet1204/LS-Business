@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_null_comparison
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:find_easy/services/main/services_main_page.dart';
 import 'package:find_easy/vendors/firebase/auth_methods.dart';
 import 'package:find_easy/vendors/page/main/main_page.dart';
 import 'package:find_easy/auth/register_pay.dart';
@@ -30,6 +31,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final auth = FirebaseAuth.instance;
   final GlobalKey<FormState> emailLoginFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> numberLoginFormKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
@@ -57,60 +59,59 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           isEmailLogging = true;
         });
-        UserCredential? user =
-            await FirebaseAuth.instance.signInWithEmailAndPassword(
+        UserCredential? user = await auth.signInWithEmailAndPassword(
           email: emailController.text.toString(),
           password: passwordController.text.toString(),
         );
 
         if (user != null) {
+          print("User not null");
           final userExistsSnap = await FirebaseFirestore.instance
               .collection('Users')
-              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .doc(auth.currentUser!.uid)
               .get();
 
-          if (userExistsSnap.exists) {
-            await FirebaseAuth.instance.signOut();
+          if (userExistsSnap.exists && widget.mode == 'vendor') {
+            print("UserSnap Data: ${userExistsSnap.data()}");
+            await auth.signOut();
+            print(123);
+            return mySnackBar(
+              context,
+              'This account was created in User app, use a different account here',
+            );
+          } else {
+            print('abc');
             mySnackBar(
               context,
-              'This account was created in User app, use different account here',
+              'Signed In',
             );
-            return;
-          }
-          mySnackBar(
-            context,
-            'Signed In',
-          );
-          setState(() {
-            isEmailLogging = false;
-          });
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-              builder: ((context) {
-                if (widget.mode == 'vendor') {
+            setState(() {
+              isEmailLogging = false;
+            });
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: ((context) {
+                  if (widget.mode == 'vendor') {
+                    return MainPage();
+                  } else if (widget.mode == 'services') {
+                    return ServicesMainPage();
+                  } else {
+                    // return EventsMainPage();
+                  }
                   return MainPage();
-                } else if (widget.mode == 'services') {
-                  // return ServicesMainPage();
-                } else {
-                  // return EventsMainPage();
-                }
-                return MainPage();
-              }),
-            ),
-            (route) => false,
-          );
+                }),
+              ),
+              (route) => false,
+            );
+          }
         } else {
-          return mySnackBar(context, 'Some error occured');
+          return mySnackBar(context, 'Some error occurred');
         }
       } catch (e) {
         setState(() {
           isEmailLogging = false;
         });
-        if (context.mounted) {
-          if (context.mounted) {
-            mySnackBar(context, e.toString());
-          }
-        }
+        mySnackBar(context, e.toString());
       }
     }
   }
@@ -142,11 +143,11 @@ class _LoginPageState extends State<LoginPage> {
             setState(() {
               isPhoneLogging = true;
             });
-            await FirebaseAuth.instance.verifyPhoneNumber(
+            await auth.verifyPhoneNumber(
                 phoneNumber: "+91 ${phoneController.text}",
                 timeout: const Duration(seconds: 120),
                 verificationCompleted: (PhoneAuthCredential credential) async {
-                  await FirebaseAuth.instance.signInWithCredential(credential);
+                  await auth.signInWithCredential(credential);
                   setState(() {
                     isPhoneLogging = false;
                   });
@@ -167,7 +168,7 @@ class _LoginPageState extends State<LoginPage> {
                       if (widget.mode == 'vendor') {
                         return MainPage();
                       } else if (widget.mode == 'services') {
-                        // return ServicesMainPage();
+                        return ServicesMainPage();
                       } else {
                         // return EventsMainPage();
                       }
@@ -207,7 +208,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final FirebaseAuth auth = FirebaseAuth.instance;
     final AuthMethods authMethods = AuthMethods();
     final double width = MediaQuery.of(context).size.width;
 
@@ -348,7 +348,7 @@ class _LoginPageState extends State<LoginPage> {
                               await AuthMethods().signInWithGoogle(context);
                               // SystemChannels.textInput
                               //     .invokeMethod('TextInput.hide');
-                              if (FirebaseAuth.instance.currentUser != null) {
+                              if (auth.currentUser != null) {
                                 setState(() {
                                   isGoogleLogging = false;
                                 });
@@ -665,7 +665,7 @@ class _LoginPageState extends State<LoginPage> {
                               //             .signInWithGoogle(context);
                               //         // SystemChannels.textInput
                               //         //     .invokeMethod('TextInput.hide');
-                              //         if (FirebaseAuth.instance.currentUser !=
+                              //         if (auth.currentUser !=
                               //             null) {
                               //           setState(() {});
                               //         } else {

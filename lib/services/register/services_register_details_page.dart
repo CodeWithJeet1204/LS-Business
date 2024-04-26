@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:find_easy/services/register/services_choose_page_1.dart';
 import 'package:find_easy/vendors/provider/sign_in_method_provider.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
@@ -9,6 +10,7 @@ import 'package:find_easy/widgets/image_pick_dialog.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:find_easy/widgets/text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -79,17 +81,46 @@ class ServicesRegisterDetailsPageState
         return mySnackBar(context, 'Select First Language');
       }
 
-      Map<String, dynamic> info = {
-        'Name': nameController.text,
-        'Email': emailController.text,
-        'Phone Number': phoneController.text,
-        'Age': ageController.text,
-        'Address': addressController.text,
-        'Gender': isMale! ? 'Male' : 'Female',
-        'First Langauge': firstLanguage,
-        'Second Language': secondLanguage,
-        'Image': _image,
-      };
+      String? uploadImagePath;
+      String? userPhotoUrl;
+      setState(() {
+        isNext = true;
+      });
+
+      try {
+        uploadImagePath = _image!.path;
+        Reference ref = FirebaseStorage.instance
+            .ref()
+            .child('Profile/Owners')
+            .child(FirebaseAuth.instance.currentUser!.uid);
+        await ref.putFile(File(uploadImagePath)).whenComplete(() async {
+          await ref.getDownloadURL().then((value) {
+            userPhotoUrl = value;
+          });
+        });
+
+        Map<String, dynamic> info = {
+          'Name': nameController.text,
+          'Email': emailController.text,
+          'Phone Number': phoneController.text,
+          'Age': ageController.text,
+          'Address': addressController.text,
+          'Gender': isMale! ? 'Male' : 'Female',
+          'First Langauge': firstLanguage,
+          'Second Language': secondLanguage,
+          'Image': userPhotoUrl,
+        };
+
+        await store.collection('Services').doc(auth.currentUser!.uid).set(info);
+
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: ((context) => ServicesChoosePage1()),
+          ),
+        );
+      } catch (e) {
+        mySnackBar(context, e.toString());
+      }
     }
   }
 
@@ -103,49 +134,53 @@ class ServicesRegisterDetailsPageState
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // USER DETAILS HEADTEXT
               const SizedBox(height: 100),
-              const HeadText(
-                text: "USER\nDETAILS",
+              Center(
+                child: const HeadText(
+                  text: "USER\nDETAILS",
+                ),
               ),
               const SizedBox(height: 40),
 
               // IMAGE
-              isImageSelected
-                  ? Stack(
-                      alignment: Alignment.bottomRight,
-                      children: [
-                        // IMAGE NOT CHOSEN
-                        CircleAvatar(
-                          radius: width * 0.14,
-                          backgroundImage: FileImage(_image!),
-                        ),
-                        IconButton.filledTonal(
-                          icon: const Icon(Icons.camera_alt_outlined),
-                          iconSize: width * 0.09,
-                          tooltip: "Change User Picture",
+              Center(
+                child: isImageSelected
+                    ? Stack(
+                        alignment: Alignment.bottomRight,
+                        children: [
+                          // IMAGE NOT CHOSEN
+                          CircleAvatar(
+                            radius: width * 0.14,
+                            backgroundImage: FileImage(_image!),
+                          ),
+                          IconButton.filledTonal(
+                            icon: const Icon(Icons.camera_alt_outlined),
+                            iconSize: width * 0.09,
+                            tooltip: "Change User Picture",
+                            onPressed: () async {
+                              await selectImage();
+                            },
+                            color: primaryDark,
+                          ),
+                        ],
+                      )
+                    // IMAGE CHOSEN
+                    : CircleAvatar(
+                        radius: 50,
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.camera_alt_outlined,
+                            size: 60,
+                          ),
                           onPressed: () async {
                             await selectImage();
                           },
-                          color: primaryDark,
                         ),
-                      ],
-                    )
-                  // IMAGE CHOSEN
-                  : CircleAvatar(
-                      radius: 50,
-                      child: IconButton(
-                        icon: const Icon(
-                          Icons.camera_alt_outlined,
-                          size: 60,
-                        ),
-                        onPressed: () async {
-                          await selectImage();
-                        },
                       ),
-                    ),
+              ),
               const SizedBox(height: 12),
 
               Form(
@@ -154,7 +189,7 @@ class ServicesRegisterDetailsPageState
                   children: [
                     // NAME
                     MyTextFormField(
-                      hintText: "Your Name",
+                      hintText: "Name",
                       controller: nameController,
                       borderRadius: 12,
                       horizontalPadding: width * 0.055,
@@ -177,7 +212,7 @@ class ServicesRegisterDetailsPageState
 
                     // NUMBER
                     MyTextFormField(
-                      hintText: "Your Phone Number (Personal)",
+                      hintText: "Phone Number (Personal)",
                       controller: phoneController,
                       borderRadius: 12,
                       horizontalPadding: width * 0.055,
@@ -190,7 +225,7 @@ class ServicesRegisterDetailsPageState
 
                     // AGE
                     MyTextFormField(
-                      hintText: "Your Age",
+                      hintText: "Age",
                       controller: ageController,
                       borderRadius: 12,
                       horizontalPadding: width * 0.055,
@@ -200,7 +235,7 @@ class ServicesRegisterDetailsPageState
 
                     // ADDRESS
                     MyTextFormField(
-                      hintText: "ADDRESS",
+                      hintText: "Address",
                       controller: addressController,
                       borderRadius: 12,
                       horizontalPadding: width * 0.055,
@@ -210,13 +245,16 @@ class ServicesRegisterDetailsPageState
 
                     // GENDER
                     Container(
+                      decoration: BoxDecoration(
+                        color: primary3,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                       padding: EdgeInsets.symmetric(
                         horizontal: width * 0.0225,
                         vertical: width * 0.0125,
                       ),
-                      decoration: BoxDecoration(
-                        color: primary3,
-                        borderRadius: BorderRadius.circular(12),
+                      margin: EdgeInsets.symmetric(
+                        vertical: 12,
                       ),
                       child: DropdownButton(
                         dropdownColor: primary,
@@ -225,18 +263,19 @@ class ServicesRegisterDetailsPageState
                           overflow: TextOverflow.ellipsis,
                         ),
                         value: isMale != null
-                            ? isMale!
-                                ? 'Male'
-                                : 'Female'
-                            : 'Select',
+                            ? (isMale! ? 'Male' : 'Female')
+                            : null,
                         underline: Container(),
-                        items: ['Male', 'Female']
-                            .map(
-                              (e) => DropdownMenuItem(
-                                child: Text(e),
-                              ),
-                            )
-                            .toList(),
+                        items: [
+                          DropdownMenuItem(
+                            value: 'Male',
+                            child: Text('Male'),
+                          ),
+                          DropdownMenuItem(
+                            value: 'Female',
+                            child: Text('Female'),
+                          ),
+                        ],
                         onChanged: (value) {
                           setState(() {
                             if (value == 'Male') {
@@ -251,13 +290,16 @@ class ServicesRegisterDetailsPageState
 
                     // FIRST LANGUAGE
                     Container(
+                      decoration: BoxDecoration(
+                        color: primary3,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                       padding: EdgeInsets.symmetric(
                         horizontal: width * 0.0225,
                         vertical: width * 0.0125,
                       ),
-                      decoration: BoxDecoration(
-                        color: primary3,
-                        borderRadius: BorderRadius.circular(12),
+                      margin: EdgeInsets.symmetric(
+                        vertical: 12,
                       ),
                       child: DropdownButton(
                         dropdownColor: primary,
@@ -274,15 +316,17 @@ class ServicesRegisterDetailsPageState
                         ]
                             .map(
                               (e) => DropdownMenuItem(
+                                value: e,
                                 child: Text(e),
                               ),
                             )
                             .toList(),
                         onChanged: (value) {
-                          if (firstLanguage == secondLanguage) {
+                          if (firstLanguage != secondLanguage &&
+                              secondLanguage != null) {
                             return mySnackBar(
                               context,
-                              'First Language cannot be same as Second Language, Pls change it',
+                              'First Language cannot be same as Second Language',
                             );
                           }
                           setState(() {
@@ -294,13 +338,16 @@ class ServicesRegisterDetailsPageState
 
                     // SECOND LANGUAGE
                     Container(
+                      decoration: BoxDecoration(
+                        color: primary3,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                       padding: EdgeInsets.symmetric(
                         horizontal: width * 0.0225,
                         vertical: width * 0.0125,
                       ),
-                      decoration: BoxDecoration(
-                        color: primary3,
-                        borderRadius: BorderRadius.circular(12),
+                      margin: EdgeInsets.symmetric(
+                        vertical: 12,
                       ),
                       child: DropdownButton(
                         dropdownColor: primary,
@@ -317,15 +364,17 @@ class ServicesRegisterDetailsPageState
                         ]
                             .map(
                               (e) => DropdownMenuItem(
+                                value: e,
                                 child: Text(e),
                               ),
                             )
                             .toList(),
                         onChanged: (value) {
-                          if (secondLanguage == firstLanguage) {
+                          if (secondLanguage != firstLanguage &&
+                              firstLanguage != null) {
                             return mySnackBar(
                               context,
-                              'Second Language cannot be same as First Language, Pls change it',
+                              'Second Language cannot be same as First Language',
                             );
                           }
                           setState(() {
