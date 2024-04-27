@@ -19,7 +19,7 @@ class _ServicesPage2State extends State<ServicesPage2> {
           horizontal: MediaQuery.of(context).size.width * 0.0125,
         ),
         child: LayoutBuilder(builder: ((context, constraints) {
-          final width = constraints.maxWidth;
+          // final width = constraints.maxWidth;
 
           return SingleChildScrollView(
             child: Column(

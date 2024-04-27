@@ -70,7 +70,6 @@ class _ServicesMainPageState extends State<ServicesMainPage> {
               if (!auth.currentUser!.emailVerified) {
                 detailsPage = const EmailVerifyPage(
                   mode: 'vendor',
-                  // TODO: Confirm below
                   isLogging: true,
                 );
               } else {

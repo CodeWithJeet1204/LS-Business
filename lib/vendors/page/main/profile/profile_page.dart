@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/select_mode_page.dart';
@@ -128,7 +127,7 @@ class _ProfilePageState extends State<ProfilePage> {
         .collection('Business')
         .doc('Owners')
         .collection('Shops')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .doc(auth.currentUser!.uid)
         .snapshots();
 
     await showDialog(
@@ -221,13 +220,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ],
             ),
-            body: LayoutBuilder(
-              builder: (context, constraints) {
-                final double width = constraints.maxWidth;
+            body: Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: MediaQuery.of(context).size.width * 0.00225,
+              ),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final double width = constraints.maxWidth;
 
-                return SingleChildScrollView(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: width * 0.00225),
+                  return SingleChildScrollView(
                     child: Column(
                       children: [
                         // INFO
@@ -252,7 +253,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   child: CircleAvatar(
                                     radius: width * 0.1195,
                                     backgroundColor: primary2,
-                                    backgroundImage: CachedNetworkImageProvider(
+                                    backgroundImage: NetworkImage(
                                       shopData['Image'] ??
                                           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpFN1Tvo80rYwu-eXsDNNzsuPITOdtyRPlYIsIqKaIbw&s',
                                     ),
@@ -441,9 +442,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ],
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           );
   }
