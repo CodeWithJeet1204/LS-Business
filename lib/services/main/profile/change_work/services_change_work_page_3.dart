@@ -8,26 +8,25 @@ import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class ServicesChoosePage3 extends StatefulWidget {
-  const ServicesChoosePage3({
+class ServicesChangeWorkPage3 extends StatefulWidget {
+  const ServicesChangeWorkPage3({
     super.key,
     required this.category,
     required this.place,
   });
 
-  final List? place;
-  final List? category;
+  final List place;
+  final List category;
 
   @override
-  State<ServicesChoosePage3> createState() => _ServicesChoosePage3State();
+  State<ServicesChangeWorkPage3> createState() =>
+      _ServicesChangeWorkPage3State();
 }
 
-class _ServicesChoosePage3State extends State<ServicesChoosePage3> {
+class _ServicesChangeWorkPage3State extends State<ServicesChangeWorkPage3> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   bool isNext = false;
-  List place = [];
-  List category = [];
   List selectedSubCategories = [];
   List chosenSubCategories = [];
   bool getData = false;
@@ -35,27 +34,7 @@ class _ServicesChoosePage3State extends State<ServicesChoosePage3> {
   // INIT STATE
   @override
   void initState() {
-    if (widget.place == null) {
-      getPlace();
-    }
-    print("Places: ${widget.place ?? place}");
-    print("Categories: ${widget.category ?? category}");
-    if (widget.category == null) {
-      if (widget.place == null) {
-        getCategory(place);
-      } else {
-        getCategory(widget.place!);
-      }
-    }
-    if (widget.place == null && widget.category == null) {
-      getSubCategory(place, category);
-    } else if (widget.place != null && widget.category == null) {
-      getSubCategory(widget.place!, category);
-    } else if (widget.place == null && widget.category != null) {
-      getSubCategory(place, widget.category!);
-    } else {
-      getSubCategory(place, category);
-    }
+    getSubCategory();
     print("SubCategories: $selectedSubCategories");
     setState(() {
       getData = true;
@@ -63,45 +42,11 @@ class _ServicesChoosePage3State extends State<ServicesChoosePage3> {
     super.initState();
   }
 
-  // GET PLACE
-  Future<void> getPlace() async {
-    final serviceSnap =
-        await store.collection('Services').doc(auth.currentUser!.uid).get();
-
-    final serviceData = serviceSnap.data()!;
-
-    final myPlace = serviceData['Place'];
-
-    setState(() {
-      place = myPlace;
-    });
-
-    print("final Places: $myPlace");
-
-    await getCategory(myPlace);
-  }
-
-  // GET CATEGORY
-  Future<void> getCategory(List place) async {
-    final serviceSnap =
-        await store.collection('Services').doc(auth.currentUser!.uid).get();
-
-    final serviceData = serviceSnap.data()!;
-
-    final myCategory = serviceData['Category'];
-
-    setState(() {
-      category = myCategory;
-    });
-
-    getSubCategory(place, myCategory);
-  }
-
   // GET SUBCATEGORIES
-  void getSubCategory(List places, List categories) {
-    places.forEach((place) {
+  void getSubCategory() {
+    widget.place.forEach((place) {
       if (servicesMap.containsKey(place)) {
-        categories.forEach((category) {
+        widget.category.forEach((category) {
           if (servicesMap[place]!.containsKey(category)) {
             selectedSubCategories.addAll(servicesMap[place]![category]!);
           }
@@ -145,7 +90,7 @@ class _ServicesChoosePage3State extends State<ServicesChoosePage3> {
       setState(() {
         isNext = false;
       });
-      mySnackBar(context, 'Select Category');
+      mySnackBar(context, 'Select Sub Category');
     }
   }
 
@@ -202,7 +147,7 @@ class _ServicesChoosePage3State extends State<ServicesChoosePage3> {
 
                       // NEXT
                       MyButton(
-                        text: 'NEXT',
+                        text: 'DONE',
                         onTap: () async {
                           await next();
                         },

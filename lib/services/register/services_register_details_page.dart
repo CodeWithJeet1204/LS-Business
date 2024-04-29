@@ -322,16 +322,17 @@ class ServicesRegisterDetailsPageState
                             )
                             .toList(),
                         onChanged: (value) {
-                          if (firstLanguage != secondLanguage &&
+                          if (value == secondLanguage &&
                               secondLanguage != null) {
                             return mySnackBar(
                               context,
                               'First Language cannot be same as Second Language',
                             );
+                          } else {
+                            setState(() {
+                              firstLanguage = value;
+                            });
                           }
-                          setState(() {
-                            firstLanguage = value;
-                          });
                         },
                       ),
                     ),
@@ -370,16 +371,16 @@ class ServicesRegisterDetailsPageState
                             )
                             .toList(),
                         onChanged: (value) {
-                          if (secondLanguage != firstLanguage &&
-                              firstLanguage != null) {
+                          if (value == firstLanguage && firstLanguage != null) {
                             return mySnackBar(
                               context,
                               'Second Language cannot be same as First Language',
                             );
+                          } else {
+                            setState(() {
+                              secondLanguage = value;
+                            });
                           }
-                          setState(() {
-                            secondLanguage = value;
-                          });
                         },
                       ),
                     ),

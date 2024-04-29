@@ -40,7 +40,7 @@ Map<String, Map<String, List<String>>> servicesMap = {
       'Roof Repair/Replacement',
       'Fence Installation/Repair',
     ],
-    'Miscellaneouss': [
+    'Miscellaneous': [
       'Home Security Installation',
       'HVAC Repair/Installation',
       'Pest Control',

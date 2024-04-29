@@ -1,67 +1,47 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/services/main/services_main_page.dart';
+import 'package:find_easy/services/main/profile/change_work/services_change_work_page_3.dart';
 import 'package:find_easy/services/models/services_image_map.dart';
 import 'package:find_easy/services/models/services_map.dart';
-import 'package:find_easy/services/register/services_choose_page_3.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/select_container.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class ServicesChoosePage2 extends StatefulWidget {
-  const ServicesChoosePage2({
+class ServicesChangeWorkPage2 extends StatefulWidget {
+  const ServicesChangeWorkPage2({
     super.key,
-    this.place,
+    required this.place,
   });
 
-  final List? place;
+  final List place;
 
   @override
-  State<ServicesChoosePage2> createState() => _ServicesChoosePage2State();
+  State<ServicesChangeWorkPage2> createState() =>
+      _ServicesChangeWorkPage2State();
 }
 
-class _ServicesChoosePage2State extends State<ServicesChoosePage2> {
+class _ServicesChangeWorkPage2State extends State<ServicesChangeWorkPage2> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   bool isNext = false;
-  List place = [];
-  List selectedCategories = [];
+  List allCategories = [];
   List chosenCategories = [];
 
   // INIT STATE
   @override
   void initState() {
-    if (widget.place == null) {
-      getPlace();
-    } else {
-      getCategory(widget.place!);
-    }
-    print('Selected Categories: $selectedCategories');
+    getCategory();
+
+    print('Selected Categories: $allCategories');
     super.initState();
   }
 
-  // GET PLACE
-  Future<void> getPlace() async {
-    final serviceSnap =
-        await store.collection('Services').doc(auth.currentUser!.uid).get();
-
-    final serviceData = serviceSnap.data()!;
-
-    final myPlace = serviceData['Place'];
-
-    setState(() {
-      place = myPlace;
-    });
-
-    getCategory(myPlace);
-  }
-
   // GET CATEGORY
-  void getCategory(List places) {
+  void getCategory() {
     setState(() {
-      places.forEach((place) {
-        selectedCategories.addAll(servicesMap[place]!.keys);
+      widget.place.forEach((place) {
+        allCategories.addAll(servicesMap[place]!.keys);
       });
     });
   }
@@ -87,31 +67,20 @@ class _ServicesChoosePage2State extends State<ServicesChoosePage2> {
         'Category': chosenCategories,
       });
 
-      final serviceSnap =
-          await store.collection('Services').doc(auth.currentUser!.uid).get();
-
-      final serviceData = serviceSnap.data()!;
+      print("Chosen Categories: $chosenCategories");
 
       setState(() {
         isNext = false;
       });
 
-      if (serviceData['SubCategory'] == null) {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: ((context) => ServicesChoosePage3(
-                  place: widget.place ?? place,
-                  category: chosenCategories,
-                )),
-          ),
-        );
-      } else {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: ((context) => ServicesMainPage()),
-          ),
-        );
-      }
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: ((context) => ServicesChangeWorkPage3(
+                place: widget.place,
+                category: chosenCategories,
+              )),
+        ),
+      );
     } else {
       setState(() {
         isNext = false;
@@ -147,10 +116,10 @@ class _ServicesChoosePage2State extends State<ServicesChoosePage2> {
                     crossAxisCount: 2,
                     childAspectRatio: 16 / 9,
                   ),
-                  itemCount: selectedCategories.length,
+                  itemCount: allCategories.length,
                   itemBuilder: ((context, index) {
-                    print('Selected Categories: $selectedCategories');
-                    String name = selectedCategories[index];
+                    print('Selected Categories: $allCategories');
+                    String name = allCategories[index];
                     String imageUrl = categoryImageMap[name]!;
 
                     return SelectContainer(

@@ -33,12 +33,18 @@ class _ServicesChoosePage1State extends State<ServicesChoosePage1> {
       isNext = true;
     });
 
+    List selectedPlaces = [];
+
+    if (isHomeSelected) {
+      selectedPlaces.add('Home');
+    } else if (isOfficeSelected) {
+      selectedPlaces.add('Office');
+    } else if (isOutdoorSelected) {
+      selectedPlaces.add('Outdoor');
+    }
+
     await store.collection('Services').doc(auth.currentUser!.uid).update({
-      'Place': isHomeSelected
-          ? 'Home'
-          : isOfficeSelected
-              ? 'Office'
-              : 'Outdoor',
+      'Place': selectedPlaces,
     });
 
     final serviceSnap =
@@ -54,11 +60,7 @@ class _ServicesChoosePage1State extends State<ServicesChoosePage1> {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: ((context) => ServicesChoosePage2(
-                place: isHomeSelected
-                    ? 'Home'
-                    : isOfficeSelected
-                        ? 'Office'
-                        : 'Outdoor',
+                place: selectedPlaces,
               )),
         ),
       );
@@ -66,11 +68,8 @@ class _ServicesChoosePage1State extends State<ServicesChoosePage1> {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: ((context) => ServicesChoosePage3(
-                place: isHomeSelected
-                    ? 'Home'
-                    : isOfficeSelected
-                        ? 'Office'
-                        : 'Outdoor',
+                place: selectedPlaces,
+                category: serviceData['Category'],
               )),
         ),
       );
@@ -111,9 +110,7 @@ class _ServicesChoosePage1State extends State<ServicesChoosePage1> {
                       isSelected: isHomeSelected,
                       onTap: () {
                         setState(() {
-                          isHomeSelected = true;
-                          isOfficeSelected = false;
-                          isOutdoorSelected = false;
+                          isHomeSelected = !isHomeSelected;
                         });
                       },
                     ),
@@ -123,9 +120,7 @@ class _ServicesChoosePage1State extends State<ServicesChoosePage1> {
                       isSelected: isOfficeSelected,
                       onTap: () {
                         setState(() {
-                          isOfficeSelected = true;
-                          isHomeSelected = false;
-                          isOutdoorSelected = false;
+                          isOfficeSelected = !isOfficeSelected;
                         });
                       },
                     ),
@@ -137,9 +132,7 @@ class _ServicesChoosePage1State extends State<ServicesChoosePage1> {
                   isSelected: isOutdoorSelected,
                   onTap: () {
                     setState(() {
-                      isOutdoorSelected = true;
-                      isOfficeSelected = false;
-                      isHomeSelected = false;
+                      isOutdoorSelected = !isOutdoorSelected;
                     });
                   },
                   imageUrl:

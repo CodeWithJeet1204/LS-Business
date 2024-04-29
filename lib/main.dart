@@ -165,7 +165,6 @@ class MyApp extends StatelessWidget {
                         stream: FirebaseAuth.instance.authStateChanges(),
                         builder: (context, authSnapshot) {
                           if (snapshot.hasData) {
-                            print("Data: ${snapshot.data}");
                             if (snapshot.data == 'vendor') {
                               if (authSnapshot.hasData) {
                                 if (authSnapshot.data!.emailVerified) {

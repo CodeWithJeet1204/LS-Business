@@ -21,14 +21,16 @@ Map<String, String> categoryImageMap = {
 };
 
 Map<String, String> subCategoryImageMap = {
-  'Appliance Repair': '',
+  'Appliance Repair':
+      'https://media.istockphoto.com/id/1295274245/photo/random-multicolored-spheres-computer-generated-abstract-form-of-large-and-small-balls-3d.jpg?s=612x612&w=0&k=20&c=q7NOl28YxIIOqKu6em50VlKrg6ISFyVww_nLOCr5W_A=',
   'Plumbing': '',
   'Electrical': '',
   'Cabinetry Repair/Installation': '',
   'Countertop Installation/Repair': '',
   'Flooring Installation/Repair': '',
   'Kitchen Remodeling': '',
-  'Furniture Assembly/Repair': '',
+  'Furniture Assembly/Repair':
+      'https://www.shutterstock.com/image-photo/colorful-candy-circle-copy-space-260nw-23526304.jpg',
   'Closet Organization': '',
   'Painting/Wallpapering': '',
   'Bed Frame Assembly/Repair': '',
