@@ -94,24 +94,27 @@ class _ServicesChoosePage2State extends State<ServicesChoosePage2> {
       setState(() {
         isNext = false;
       });
-
+      print("Places: ${widget.place ?? place}");
+      print("Category: $chosenCategories");
       if (serviceData['SubCategory'] == null) {
         if (mounted) {
-          Navigator.of(context).push(
+          Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder: ((context) => ServicesChoosePage3(
                     place: widget.place ?? place,
                     category: chosenCategories,
                   )),
             ),
+            (route) => false,
           );
         }
       } else {
         if (mounted) {
-          Navigator.of(context).push(
+          Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder: ((context) => const ServicesMainPage()),
             ),
+            (route) => false,
           );
         }
       }

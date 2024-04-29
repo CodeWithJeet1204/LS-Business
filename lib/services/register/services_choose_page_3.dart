@@ -15,8 +15,8 @@ class ServicesChoosePage3 extends StatefulWidget {
     required this.place,
   });
 
-  final List? place;
-  final List? category;
+  final List place;
+  final List category;
 
   @override
   State<ServicesChoosePage3> createState() => _ServicesChoosePage3State();
@@ -26,77 +26,25 @@ class _ServicesChoosePage3State extends State<ServicesChoosePage3> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   bool isNext = false;
-  List place = [];
-  List category = [];
   List selectedSubCategories = [];
-  List chosenSubCategories = [];
+  Map<String, int> chosenSubCategories = {};
   bool getData = false;
 
   // INIT STATE
   @override
   void initState() {
-    if (widget.place == null) {
-      getPlace();
-    }
-    if (widget.category == null) {
-      if (widget.place == null) {
-        getCategory(place);
-      } else {
-        getCategory(widget.place!);
-      }
-    }
-    if (widget.place == null && widget.category == null) {
-      getSubCategory(place, category);
-    } else if (widget.place != null && widget.category == null) {
-      getSubCategory(widget.place!, category);
-    } else if (widget.place == null && widget.category != null) {
-      getSubCategory(place, widget.category!);
-    } else {
-      getSubCategory(place, category);
-    }
+    getSubCategory();
     setState(() {
       getData = true;
     });
     super.initState();
   }
 
-  // GET PLACE
-  Future<void> getPlace() async {
-    final serviceSnap =
-        await store.collection('Services').doc(auth.currentUser!.uid).get();
-
-    final serviceData = serviceSnap.data()!;
-
-    final myPlace = serviceData['Place'];
-
-    setState(() {
-      place = myPlace;
-    });
-
-    await getCategory(myPlace);
-  }
-
-  // GET CATEGORY
-  Future<void> getCategory(List place) async {
-    final serviceSnap =
-        await store.collection('Services').doc(auth.currentUser!.uid).get();
-
-    final serviceData = serviceSnap.data()!;
-
-    final myCategory = serviceData['Category'];
-
-    setState(() {
-      category = myCategory;
-    });
-
-    getSubCategory(place, myCategory);
-  }
-
   // GET SUBCATEGORIES
-  void getSubCategory(List places, List categories) {
-    for (var place in places) {
+  void getSubCategory() {
+    for (var place in widget.place) {
       if (servicesMap.containsKey(place)) {
-        for (var category in categories) {
+        for (var category in widget.category) {
           if (servicesMap[place]!.containsKey(category)) {
             selectedSubCategories.addAll(servicesMap[place]![category]!);
           }
@@ -108,10 +56,12 @@ class _ServicesChoosePage3State extends State<ServicesChoosePage3> {
   // SELECT CATEGORY
   void selectSubCategory(String subCategory) {
     setState(() {
-      if (chosenSubCategories.contains(subCategory)) {
+      if (chosenSubCategories.keys.toList().contains(subCategory)) {
         chosenSubCategories.remove(subCategory);
       } else {
-        chosenSubCategories.add(subCategory);
+        chosenSubCategories.addAll({
+          subCategory: 0,
+        });
       }
     });
   }
@@ -141,7 +91,7 @@ class _ServicesChoosePage3State extends State<ServicesChoosePage3> {
       setState(() {
         isNext = false;
       });
-      mySnackBar(context, 'Select Category');
+      mySnackBar(context, 'Select Sub Category');
     }
   }
 
@@ -154,6 +104,21 @@ class _ServicesChoosePage3State extends State<ServicesChoosePage3> {
         title: const Text('Choose Your Sub Category'),
         automaticallyImplyLeading: false,
       ),
+      bottomSheet: Padding(
+        padding: const EdgeInsets.all(8),
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: 50,
+          child: MyButton(
+            text: 'DONE',
+            onTap: () async {
+              await next();
+            },
+            isLoading: isNext,
+            horizontalPadding: MediaQuery.of(context).size.width * 0.0225,
+          ),
+        ),
+      ),
       body: !getData
           ? const Center(
               child: CircularProgressIndicator(),
@@ -164,48 +129,32 @@ class _ServicesChoosePage3State extends State<ServicesChoosePage3> {
                   horizontal: width * 0.0125,
                   vertical: width * 0.0125,
                 ),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height - 168,
-                        child: GridView.builder(
-                          shrinkWrap: true,
-                          physics: const ClampingScrollPhysics(),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 16 / 9,
-                          ),
-                          itemCount: selectedSubCategories.length,
-                          itemBuilder: ((context, index) {
-                            final String name = selectedSubCategories[index];
-                            final String imageUrl = subCategoryImageMap[name]!;
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height - 168,
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 16 / 9,
+                    ),
+                    itemCount: selectedSubCategories.length,
+                    itemBuilder: ((context, index) {
+                      final String name = selectedSubCategories[index];
+                      final String imageUrl = subCategoryImageMap[name]!;
 
-                            return SelectContainer(
-                              width: width,
-                              text: name,
-                              isSelected: chosenSubCategories.contains(name),
-                              onTap: () {
-                                selectSubCategory(name);
-                              },
-                              imageUrl: imageUrl,
-                            );
-                          }),
-                        ),
-                      ),
-
-                      // NEXT
-                      MyButton(
-                        text: 'NEXT',
-                        onTap: () async {
-                          await next();
+                      return SelectContainer(
+                        width: width,
+                        text: name,
+                        isSelected:
+                            chosenSubCategories.keys.toList().contains(name),
+                        onTap: () {
+                          selectSubCategory(name);
                         },
-                        isLoading: isNext,
-                        horizontalPadding: 0,
-                      ),
-                    ],
+                        imageUrl: imageUrl,
+                      );
+                    }),
                   ),
                 ),
               ),

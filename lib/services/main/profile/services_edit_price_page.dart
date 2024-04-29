@@ -14,7 +14,7 @@ class ServicesEditPricePage extends StatefulWidget {
 class _ServicesEditPricePageState extends State<ServicesEditPricePage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
-  List? subCategories;
+  Map<String, dynamic>? subCategories;
 
   // INIT STATE
   @override
@@ -30,7 +30,7 @@ class _ServicesEditPricePageState extends State<ServicesEditPricePage> {
 
     final serviceData = serviceSnap.data()!;
 
-    final List mySubCategories = serviceData['SubCategory'];
+    final Map<String, dynamic> mySubCategories = serviceData['SubCategory'];
 
     setState(() {
       subCategories = mySubCategories;
@@ -63,11 +63,20 @@ class _ServicesEditPricePageState extends State<ServicesEditPricePage> {
                       physics: const ClampingScrollPhysics(),
                       itemCount: subCategories!.length,
                       itemBuilder: ((context, index) {
-                        final name = subCategories![index];
+                        final sortedEntries = subCategories!.entries.toList();
+
+                        sortedEntries.sort((a, b) => a.key.compareTo(b.key));
+
+                        subCategories = Map.fromEntries(sortedEntries);
+
+                        final name = subCategories!.keys.toList()[index];
+                        final price =
+                            subCategories!.values.toList()[index][0].toString();
                         final imageUrl = subCategoryImageMap[name]!;
 
                         return ServiceEditPriceContainer(
                           name: name,
+                          price: price,
                           imageUrl: imageUrl,
                           width: width,
                         );

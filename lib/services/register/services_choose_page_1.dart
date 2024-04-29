@@ -37,9 +37,11 @@ class _ServicesChoosePage1State extends State<ServicesChoosePage1> {
 
     if (isHomeSelected) {
       selectedPlaces.add('Home');
-    } else if (isOfficeSelected) {
+    }
+    if (isOfficeSelected) {
       selectedPlaces.add('Office');
-    } else if (isOutdoorSelected) {
+    }
+    if (isOutdoorSelected) {
       selectedPlaces.add('Outdoor');
     }
 
@@ -58,23 +60,26 @@ class _ServicesChoosePage1State extends State<ServicesChoosePage1> {
 
     if (serviceData['Category'] == null) {
       if (mounted) {
-        Navigator.of(context).push(
+        print("Places: $selectedPlaces");
+        Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
             builder: ((context) => ServicesChoosePage2(
                   place: selectedPlaces,
                 )),
           ),
+          (route) => false,
         );
       }
     } else if (serviceData['SubCategory'] == null) {
       if (mounted) {
-        Navigator.of(context).push(
+        Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
             builder: ((context) => ServicesChoosePage3(
                   place: selectedPlaces,
                   category: serviceData['Category'],
                 )),
           ),
+          (route) => false,
         );
       }
     } else {
