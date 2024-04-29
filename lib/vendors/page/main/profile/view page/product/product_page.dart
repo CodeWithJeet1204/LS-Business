@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_function_literals_in_foreach_calls
+
 import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -465,7 +467,7 @@ class _ProductPageState extends State<ProductPage> {
           isImageChanging = false;
         });
 
-        if (context.mounted) {
+        if (mounted) {
           Navigator.of(context).pop();
           Navigator.of(context).push(
             MaterialPageRoute(
@@ -479,12 +481,12 @@ class _ProductPageState extends State<ProductPage> {
         setState(() {
           isImageChanging = true;
         });
-        if (context.mounted) {
+        if (mounted) {
           mySnackBar(context, e.toString());
         }
       }
     } else {
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, "Select an Image");
       }
     }
@@ -508,12 +510,12 @@ class _ProductPageState extends State<ProductPage> {
         setState(() {
           isImageChanging = false;
         });
-        if (context.mounted) {
+        if (mounted) {
           mySnackBar(context, e.toString());
         }
       }
     } else {
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, "Select an Image");
       }
     }
@@ -664,7 +666,7 @@ class _ProductPageState extends State<ProductPage> {
       isEditing = true;
     });
     try {
-      if (context.mounted) {
+      if (mounted) {
         Navigator.of(context).pop();
       }
       await store
@@ -684,7 +686,7 @@ class _ProductPageState extends State<ProductPage> {
       for (QueryDocumentSnapshot doc in postSnap.docs) {
         await doc.reference.delete();
       }
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, 'Product Deleted');
       }
       setState(() {
@@ -694,7 +696,7 @@ class _ProductPageState extends State<ProductPage> {
       setState(() {
         isEditing = false;
       });
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, e.toString());
       }
     }
@@ -906,7 +908,7 @@ class _ProductPageState extends State<ProductPage> {
                                               BorderRadius.circular(12),
                                         ),
                                         child: isImageChanging
-                                            ? CircularProgressIndicator()
+                                            ? const CircularProgressIndicator()
                                             : GestureDetector(
                                                 onTap: () {
                                                   Navigator.of(context).push(
@@ -1062,7 +1064,7 @@ class _ProductPageState extends State<ProductPage> {
                             ],
                           ),
 
-                          Divider(),
+                          const Divider(),
 
                           // NAME
                           Row(
@@ -1104,7 +1106,7 @@ class _ProductPageState extends State<ProductPage> {
                             ],
                           ),
 
-                          Divider(),
+                          const Divider(),
 
                           // PRICE
                           Row(
@@ -1321,7 +1323,7 @@ class _ProductPageState extends State<ProductPage> {
                             ],
                           ),
 
-                          Divider(),
+                          const Divider(),
 
                           // AVAILABLE / OUT OF STOCK
                           Padding(
@@ -1429,7 +1431,7 @@ class _ProductPageState extends State<ProductPage> {
                             ),
                           ),
 
-                          Divider(),
+                          const Divider(),
 
                           // DESCRIPTION
                           Padding(
@@ -1490,7 +1492,7 @@ class _ProductPageState extends State<ProductPage> {
                             ),
                           ),
 
-                          Divider(),
+                          const Divider(),
 
                           // CATEGORY
                           category.isNotEmpty
@@ -1600,7 +1602,6 @@ class _ProductPageState extends State<ProductPage> {
                                               ),
                                             );
                                             await getCategoryInfo();
-                                            print('abc');
                                             setState(() {});
                                           },
                                           icon: const Icon(FeatherIcons.edit),
@@ -1644,7 +1645,7 @@ class _ProductPageState extends State<ProductPage> {
                                   // ),
                                   ),
 
-                          Divider(),
+                          const Divider(),
 
                           // BRAND
                           InfoBox(
@@ -1652,7 +1653,7 @@ class _ProductPageState extends State<ProductPage> {
                             value: brand,
                           ),
 
-                          Divider(),
+                          const Divider(),
 
                           // PROPERTY 0
                           propertyName0 != ''
@@ -1780,7 +1781,7 @@ class _ProductPageState extends State<ProductPage> {
                                 )
                               : Container(),
 
-                          Divider(),
+                          const Divider(),
 
                           // TAGS
                           InfoEditBox(
@@ -1799,7 +1800,7 @@ class _ProductPageState extends State<ProductPage> {
                             },
                           ),
 
-                          Divider(),
+                          const Divider(),
 
                           // LIKES & VIEWS
                           Padding(
@@ -1865,7 +1866,8 @@ class _ProductPageState extends State<ProductPage> {
                               onTap: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: ((context) => AnalyticsPage()),
+                                    builder: ((context) =>
+                                        const AnalyticsPage()),
                                   ),
                                 );
                               },

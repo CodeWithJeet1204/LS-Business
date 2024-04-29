@@ -57,28 +57,34 @@ class _ServicesChoosePage1State extends State<ServicesChoosePage1> {
     });
 
     if (serviceData['Category'] == null) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: ((context) => ServicesChoosePage2(
-                place: selectedPlaces,
-              )),
-        ),
-      );
+      if (mounted) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: ((context) => ServicesChoosePage2(
+                  place: selectedPlaces,
+                )),
+          ),
+        );
+      }
     } else if (serviceData['SubCategory'] == null) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: ((context) => ServicesChoosePage3(
-                place: selectedPlaces,
-                category: serviceData['Category'],
-              )),
-        ),
-      );
+      if (mounted) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: ((context) => ServicesChoosePage3(
+                  place: selectedPlaces,
+                  category: serviceData['Category'],
+                )),
+          ),
+        );
+      }
     } else {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: ((context) => ServicesMainPage()),
-        ),
-      );
+      if (mounted) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: ((context) => const ServicesMainPage()),
+          ),
+        );
+      }
     }
   }
 
@@ -88,7 +94,7 @@ class _ServicesChoosePage1State extends State<ServicesChoosePage1> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Choose Your Place'),
+        title: const Text('Choose Your Place'),
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
@@ -139,7 +145,7 @@ class _ServicesChoosePage1State extends State<ServicesChoosePage1> {
                       'https://cdn.pixabay.com/photo/2016/07/07/16/46/dice-1502706_640.jpg',
                 ),
 
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
 
                 // NEXT
                 MyButton(

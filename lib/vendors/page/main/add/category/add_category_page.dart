@@ -54,7 +54,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
 
       for (QueryDocumentSnapshot doc in previousProducts.docs) {
         if (doc['categoryName'] == categoryController.text.toString()) {
-          if (context.mounted) {
+          if (mounted) {
             mySnackBar(
               context,
               "Category with same name already exists",
@@ -113,12 +113,12 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
             }
             await _image!.delete();
             categoryProvider.clearProducts();
-            if (context.mounted) {
+            if (mounted) {
               mySnackBar(context, "Category Added");
               Navigator.of(context).pop();
             }
           } catch (e) {
-            if (context.mounted) {
+            if (mounted) {
               mySnackBar(context, e.toString());
             }
           }
@@ -126,7 +126,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
             isSaving = false;
           });
         } else {
-          if (context.mounted) {
+          if (mounted) {
             mySnackBar(context, "Select an Image");
           }
         }
@@ -142,7 +142,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
         _image = (File(im.path));
       });
     } else {
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, "Select an Image");
       }
     }

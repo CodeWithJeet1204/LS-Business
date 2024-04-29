@@ -41,10 +41,10 @@ class _ServicesEditPricePageState extends State<ServicesEditPricePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Prices'),
+        title: const Text('Edit Prices'),
       ),
       body: subCategories == null
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : Padding(
@@ -55,18 +55,16 @@ class _ServicesEditPricePageState extends State<ServicesEditPricePage> {
               child: LayoutBuilder(
                 builder: ((context, constraints) {
                   final width = constraints.maxWidth;
-                  print("Sub Categories: $subCategories");
 
                   return SizedBox(
                     width: width,
                     child: ListView.builder(
                       shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
+                      physics: const ClampingScrollPhysics(),
                       itemCount: subCategories!.length,
                       itemBuilder: ((context, index) {
                         final name = subCategories![index];
                         final imageUrl = subCategoryImageMap[name]!;
-                        print("$name: $imageUrl");
 
                         return ServiceEditPriceContainer(
                           name: name,

@@ -73,11 +73,11 @@ class _AllPostsPageState extends State<AllPostsPage> {
               'noOfImagePosts': imagePostRemaining + 1,
             });
 
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, "Post Deleted");
       }
     } catch (e) {
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, e.toString());
       }
     }
@@ -114,9 +114,11 @@ class _AllPostsPageState extends State<AllPostsPage> {
             TextButton(
               onPressed: () async {
                 await deletePost(postId, isTextPost);
-                Navigator.of(context).pop();
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                }
               },
-              child: Text(
+              child: const Text(
                 'YES',
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
@@ -307,7 +309,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                           : SizedBox(
                                               width: width * 0.5,
                                               height: width * 0.5,
-                                              child: Center(
+                                              child: const Center(
                                                 child: Text(
                                                   overflow:
                                                       TextOverflow.ellipsis,
@@ -480,7 +482,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                           : SizedBox(
                                               width: width * 0.15,
                                               height: width * 0.15,
-                                              child: Center(
+                                              child: const Center(
                                                 child: Text(
                                                   overflow:
                                                       TextOverflow.ellipsis,

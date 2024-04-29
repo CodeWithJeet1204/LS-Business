@@ -91,12 +91,12 @@ class _AddProductPage1State extends State<AddProductPage1> {
         .collection(shopType)
         .get();
 
-    categorySnap.docs.forEach((categoryData) {
+    for (var categoryData in categorySnap.docs) {
       final categoryName = categoryData['specialCategoryName'];
       final categoryImageUrl = categoryData['specialCategoryImageUrl'];
 
       myCategories[categoryName] = categoryImageUrl;
-    });
+    }
 
     setState(() {
       categories = myCategories;
@@ -113,7 +113,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
         currentImageIndex = _image.length - 1;
       });
     } else {
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, "Select an Image");
       }
     }
@@ -152,7 +152,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
 
         for (QueryDocumentSnapshot doc in previousProducts.docs) {
           if (doc['productName'] == nameController.text.toString()) {
-            if (context.mounted) {
+            if (mounted) {
               mySnackBar(
                 context,
                 "Product with same name already exists",
@@ -198,7 +198,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
           setState(() {
             isSaving = false;
           });
-          if (context.mounted) {
+          if (mounted) {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: ((context) => AddProductPage2(productId: productId)),
@@ -210,7 +210,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
         setState(() {
           isSaving = false;
         });
-        if (context.mounted) {
+        if (mounted) {
           mySnackBar(context, e.toString());
         }
       }
@@ -719,7 +719,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                 ? isGridView
                                     ? GridView.builder(
                                         shrinkWrap: true,
-                                        physics: ClampingScrollPhysics(),
+                                        physics: const ClampingScrollPhysics(),
                                         gridDelegate:
                                             const SliverGridDelegateWithFixedCrossAxisCount(
                                           crossAxisCount: 2,

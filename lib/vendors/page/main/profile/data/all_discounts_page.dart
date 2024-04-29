@@ -89,7 +89,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
           .doc(discountId)
           .delete();
     } catch (e) {
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, e.toString());
       }
     }
@@ -518,7 +518,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                               : SizedBox(
                                                   width: width * 0.15,
                                                   height: width * 0.15,
-                                                  child: Center(
+                                                  child: const Center(
                                                     child: Text(
                                                       overflow:
                                                           TextOverflow.ellipsis,

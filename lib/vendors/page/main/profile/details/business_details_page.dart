@@ -87,7 +87,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
         });
       }
     } else {
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, "Image not selected");
       }
     }
@@ -124,7 +124,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
           isSaving = false;
           isChanging = false;
         });
-        if (context.mounted) {
+        if (mounted) {
           Navigator.of(context).popAndPushNamed('/businessDetails');
         }
       }
@@ -133,7 +133,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
         isSaving = false;
         isChanging = false;
       });
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, e.toString());
       }
     }
@@ -141,7 +141,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
 
   // SHOW IMAGE
   Future<void> showImage() async {
-    final imageStream = await FirebaseFirestore.instance
+    final imageStream = FirebaseFirestore.instance
         .collection('Business')
         .doc('Owners')
         .collection('Shops')

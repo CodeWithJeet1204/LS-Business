@@ -117,7 +117,7 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                           ? GridView.builder(
                               shrinkWrap: true,
                               gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
                                 childAspectRatio: 0.75,
                               ),
@@ -293,7 +293,7 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                                               : SizedBox(
                                                   width: width * 0.15,
                                                   height: width * 0.15,
-                                                  child: Center(
+                                                  child: const Center(
                                                     child: Text(
                                                       overflow:
                                                           TextOverflow.ellipsis,

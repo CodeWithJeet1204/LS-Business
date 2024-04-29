@@ -65,53 +65,59 @@ class _LoginPageState extends State<LoginPage> {
         );
 
         if (user != null) {
-          print("User not null");
           final userExistsSnap = await FirebaseFirestore.instance
               .collection('Users')
               .doc(auth.currentUser!.uid)
               .get();
 
           if (userExistsSnap.exists && widget.mode == 'vendor') {
-            print("UserSnap Data: ${userExistsSnap.data()}");
             await auth.signOut();
-            print(123);
-            return mySnackBar(
-              context,
-              'This account was created in User app, use a different account here',
-            );
+            if (mounted) {
+              return mySnackBar(
+                context,
+                'This account was created in User app, use a different account here',
+              );
+            }
           } else {
-            print('abc');
-            mySnackBar(
-              context,
-              'Signed In',
-            );
+            if (mounted) {
+              mySnackBar(
+                context,
+                'Signed In',
+              );
+            }
             setState(() {
               isEmailLogging = false;
             });
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: ((context) {
-                  if (widget.mode == 'vendor') {
-                    return MainPage();
-                  } else if (widget.mode == 'services') {
-                    return ServicesMainPage();
-                  } else {
-                    // return EventsMainPage();
-                  }
-                  return MainPage();
-                }),
-              ),
-              (route) => false,
-            );
+            if (mounted) {
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: ((context) {
+                    if (widget.mode == 'vendor') {
+                      return const MainPage();
+                    } else if (widget.mode == 'services') {
+                      return const ServicesMainPage();
+                    } else {
+                      // return EventsMainPage();
+                    }
+                    return const MainPage();
+                  }),
+                ),
+                (route) => false,
+              );
+            }
           }
         } else {
-          return mySnackBar(context, 'Some error occurred');
+          if (mounted) {
+            return mySnackBar(context, 'Some error occurred');
+          }
         }
       } catch (e) {
         setState(() {
           isEmailLogging = false;
         });
-        mySnackBar(context, e.toString());
+        if (mounted) {
+          mySnackBar(context, e.toString());
+        }
       }
     }
   }
@@ -153,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                   });
                 },
                 verificationFailed: (e) {
-                  if (context.mounted) {
+                  if (mounted) {
                     mySnackBar(context, e.toString());
                   }
                   setState(() {
@@ -166,13 +172,13 @@ class _LoginPageState extends State<LoginPage> {
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) {
                       if (widget.mode == 'vendor') {
-                        return MainPage();
+                        return const MainPage();
                       } else if (widget.mode == 'services') {
-                        return ServicesMainPage();
+                        return const ServicesMainPage();
                       } else {
                         // return EventsMainPage();
                       }
-                      return MainPage();
+                      return const MainPage();
                     }),
                   );
                   setState(() {
@@ -180,7 +186,7 @@ class _LoginPageState extends State<LoginPage> {
                   });
                 },
                 codeAutoRetrievalTimeout: (e) {
-                  if (context.mounted) {
+                  if (mounted) {
                     mySnackBar(context, e.toString());
                   }
                   isPhoneLogging = false;
@@ -193,12 +199,15 @@ class _LoginPageState extends State<LoginPage> {
             setState(() {
               isPhoneLogging = false;
             });
-            if (context.mounted) {
+            if (mounted) {
               mySnackBar(context, e.toString());
             }
           }
         } else {
-          mySnackBar(context, 'You have not registered with this phone number');
+          if (mounted) {
+            mySnackBar(
+                context, 'You have not registered with this phone number');
+          }
         }
       }
 
@@ -352,12 +361,14 @@ class _LoginPageState extends State<LoginPage> {
                                 setState(() {
                                   isGoogleLogging = false;
                                 });
-                                Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                    builder: ((context) => MainPage()),
-                                  ),
-                                  (route) => false,
-                                );
+                                if (context.mounted) {
+                                  Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                      builder: ((context) => const MainPage()),
+                                    ),
+                                    (route) => false,
+                                  );
+                                }
                               } else {
                                 if (context.mounted) {
                                   mySnackBar(context, "Some error occured!");
@@ -579,7 +590,7 @@ class _LoginPageState extends State<LoginPage> {
                                                         });
                                                       },
                                                       verificationFailed: (e) {
-                                                        if (context.mounted) {
+                                                        if (mounted) {
                                                           mySnackBar(context,
                                                               e.toString());
                                                         }
@@ -619,7 +630,7 @@ class _LoginPageState extends State<LoginPage> {
                                                       },
                                                       codeAutoRetrievalTimeout:
                                                           (e) {
-                                                        if (context.mounted) {
+                                                        if (mounted) {
                                                           mySnackBar(context,
                                                               e.toString());
                                                         }
@@ -635,7 +646,9 @@ class _LoginPageState extends State<LoginPage> {
                                                 });
                                                 if (context.mounted) {
                                                   mySnackBar(
-                                                      context, e.toString());
+                                                    context,
+                                                    e.toString(),
+                                                  );
                                                 }
                                               }
                                             }
@@ -669,13 +682,13 @@ class _LoginPageState extends State<LoginPage> {
                               //             null) {
                               //           setState(() {});
                               //         } else {
-                              //           if (context.mounted) {
+                              //           if (mounted) {
                               //             mySnackBar(
                               //                 context, "Some error occured!");
                               //           }
                               //         }
                               //       } on FirebaseAuthException catch (e) {
-                              //         if (context.mounted) {
+                              //         if (mounted) {
                               //           mySnackBar(context, e.toString());
                               //         }
                               //       }

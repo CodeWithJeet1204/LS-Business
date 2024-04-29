@@ -6,7 +6,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class ShopAnalyticsPage extends StatefulWidget {
-  const ShopAnalyticsPage({Key? key}) : super(key: key);
+  const ShopAnalyticsPage({super.key});
 
   @override
   State<ShopAnalyticsPage> createState() => _ShopAnalyticsPageState();
@@ -17,36 +17,35 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
   final store = FirebaseFirestore.instance;
   String? selectedStringDuration = '7 Days';
   DateTime? selectedDuration = DateTime.now().subtract(
-    Duration(days: 7),
+    const Duration(days: 7),
   );
 
   void selectDate(String date) {
     if (date == '24 Hours') {
       setState(() {
         selectedDuration = DateTime.now().subtract(
-          Duration(days: 1),
+          const Duration(days: 1),
         );
       });
-      print(selectedDuration);
     }
     if (date == '7 Days') {
       setState(() {
         selectedDuration = DateTime.now().subtract(
-          Duration(days: 7),
+          const Duration(days: 7),
         );
       });
     }
     if (date == '28 Days') {
       setState(() {
         selectedDuration = DateTime.now().subtract(
-          Duration(days: 28),
+          const Duration(days: 28),
         );
       });
     }
     if (date == '365 Days') {
       setState(() {
         selectedDuration = DateTime.now().subtract(
-          Duration(days: 365),
+          const Duration(days: 365),
         );
       });
     }
@@ -152,12 +151,12 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                             child: Padding(
                               padding: EdgeInsets.only(left: width * 0.05),
                               child: DropdownButton(
-                                hint: Text(
+                                hint: const Text(
                                   overflow: TextOverflow.ellipsis,
                                   "Select Duration",
                                 ),
                                 value: selectedStringDuration,
-                                underline: SizedBox(),
+                                underline: const SizedBox(),
                                 dropdownColor: primary2,
                                 items: [
                                   '24 Hours',
@@ -167,10 +166,10 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                   'Lifetime'
                                 ]
                                     .map((e) => DropdownMenuItem(
+                                          value: e,
                                           child: Text(
                                               overflow: TextOverflow.ellipsis,
                                               e),
-                                          value: e,
                                         ))
                                     .toList(),
                                 onChanged: (value) {
@@ -191,7 +190,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                       stream: shopStream,
                       builder: (context, snapshot) {
                         if (snapshot.hasError) {
-                          return Center(
+                          return const Center(
                             child: Text(
                               overflow: TextOverflow.ellipsis,
                               'Something went wrong',
@@ -200,7 +199,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                         }
 
                         if (!snapshot.hasData) {
-                          return Center(
+                          return const Center(
                             child: Text(
                               overflow: TextOverflow.ellipsis,
                               'No Data',
@@ -304,7 +303,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                       child: BarChart(
                                         BarChartData(
                                           maxY: viewTimestamps.length * 2,
-                                          gridData: FlGridData(
+                                          gridData: const FlGridData(
                                             drawVerticalLine: false,
                                           ),
                                           titlesData: FlTitlesData(
@@ -314,12 +313,12 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                                 reservedSize: width * 0.0685,
                                               ),
                                             ),
-                                            topTitles: AxisTitles(
+                                            topTitles: const AxisTitles(
                                               sideTitles: SideTitles(
                                                 showTitles: false,
                                               ),
                                             ),
-                                            rightTitles: AxisTitles(
+                                            rightTitles: const AxisTitles(
                                               sideTitles: SideTitles(
                                                 showTitles: false,
                                               ),
@@ -360,7 +359,8 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                                         convertMapToBarChartRodData(
                                                       groupDateTimeIntervals(
                                                         DateTime.now().subtract(
-                                                          Duration(days: 1),
+                                                          const Duration(
+                                                              days: 1),
                                                         ),
                                                         viewTimestamps,
                                                         24,
@@ -381,7 +381,8 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                                           groupDateTimeIntervals(
                                                             DateTime.now()
                                                                 .subtract(
-                                                              Duration(days: 7),
+                                                              const Duration(
+                                                                  days: 7),
                                                             ),
                                                             viewTimestamps,
                                                             7,
@@ -403,7 +404,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                                               groupDateTimeIntervals(
                                                                 DateTime.now()
                                                                     .subtract(
-                                                                  Duration(
+                                                                  const Duration(
                                                                     days: 28,
                                                                   ),
                                                                 ),
@@ -427,7 +428,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                                                   groupDateTimeIntervals(
                                                                     DateTime.now()
                                                                         .subtract(
-                                                                      Duration(
+                                                                      const Duration(
                                                                         days:
                                                                             365,
                                                                       ),
@@ -452,7 +453,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                                                       groupDateTimeIntervals(
                                                                         DateTime.now()
                                                                             .subtract(
-                                                                          Duration(
+                                                                          const Duration(
                                                                             days:
                                                                                 10000,
                                                                           ),
@@ -535,7 +536,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                       child: BarChart(
                                         BarChartData(
                                           maxY: followerTimestamps.length * 2,
-                                          gridData: FlGridData(
+                                          gridData: const FlGridData(
                                             drawVerticalLine: false,
                                           ),
                                           titlesData: FlTitlesData(
@@ -545,12 +546,12 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                                 reservedSize: width * 0.0685,
                                               ),
                                             ),
-                                            topTitles: AxisTitles(
+                                            topTitles: const AxisTitles(
                                               sideTitles: SideTitles(
                                                 showTitles: false,
                                               ),
                                             ),
-                                            rightTitles: AxisTitles(
+                                            rightTitles: const AxisTitles(
                                               sideTitles: SideTitles(
                                                 showTitles: false,
                                               ),
@@ -591,7 +592,8 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                                         convertMapToBarChartRodData(
                                                       groupDateTimeIntervals(
                                                         DateTime.now().subtract(
-                                                          Duration(days: 1),
+                                                          const Duration(
+                                                              days: 1),
                                                         ),
                                                         followerTimestamps,
                                                         24,
@@ -612,7 +614,8 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                                           groupDateTimeIntervals(
                                                             DateTime.now()
                                                                 .subtract(
-                                                              Duration(days: 7),
+                                                              const Duration(
+                                                                  days: 7),
                                                             ),
                                                             followerTimestamps,
                                                             7,
@@ -634,7 +637,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                                               groupDateTimeIntervals(
                                                                 DateTime.now()
                                                                     .subtract(
-                                                                  Duration(
+                                                                  const Duration(
                                                                     days: 28,
                                                                   ),
                                                                 ),
@@ -658,7 +661,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                                                   groupDateTimeIntervals(
                                                                     DateTime.now()
                                                                         .subtract(
-                                                                      Duration(
+                                                                      const Duration(
                                                                         days:
                                                                             365,
                                                                       ),
@@ -683,7 +686,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                                                       groupDateTimeIntervals(
                                                                         DateTime.now()
                                                                             .subtract(
-                                                                          Duration(
+                                                                          const Duration(
                                                                             days:
                                                                                 10000,
                                                                           ),
@@ -713,7 +716,8 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                     text: 'VIEWS',
                                     width: width,
                                     property: shopData['Views'],
-                                    color: Color.fromARGB(255, 163, 255, 166),
+                                    color: const Color.fromARGB(
+                                        255, 163, 255, 166),
                                   ),
 
                                   // ALL FOLLOWERS
@@ -722,7 +726,8 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                     width: width,
                                     property:
                                         (shopData['Followers'] as List).length,
-                                    color: Color.fromARGB(255, 237, 255, 163),
+                                    color: const Color.fromARGB(
+                                        255, 237, 255, 163),
                                   ),
                                 ],
                               ),
@@ -730,7 +735,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                           );
                         }
 
-                        return Center(
+                        return const Center(
                           child: CircularProgressIndicator(),
                         );
                       },

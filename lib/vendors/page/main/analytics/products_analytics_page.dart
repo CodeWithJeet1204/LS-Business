@@ -7,7 +7,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class ProductAnalyticsPage extends StatefulWidget {
-  const ProductAnalyticsPage({Key? key}) : super(key: key);
+  const ProductAnalyticsPage({super.key});
 
   @override
   State<ProductAnalyticsPage> createState() => _ProductAnalyticsPageState();
@@ -18,7 +18,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
   final store = FirebaseFirestore.instance;
   String? selectedStringDuration = '7 Days';
   DateTime? selectedDuration = DateTime.now().subtract(
-    Duration(days: 7),
+    const Duration(days: 7),
   );
 
   // SELECTING DURATION
@@ -26,28 +26,28 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
     if (date == '24 Hours') {
       setState(() {
         selectedDuration = DateTime.now().subtract(
-          Duration(days: 1),
+          const Duration(days: 1),
         );
       });
     }
     if (date == '7 Days') {
       setState(() {
         selectedDuration = DateTime.now().subtract(
-          Duration(days: 7),
+          const Duration(days: 7),
         );
       });
     }
     if (date == '28 Days') {
       setState(() {
         selectedDuration = DateTime.now().subtract(
-          Duration(days: 28),
+          const Duration(days: 28),
         );
       });
     }
     if (date == '365 Days') {
       setState(() {
         selectedDuration = DateTime.now().subtract(
-          Duration(days: 365),
+          const Duration(days: 365),
         );
       });
     }
@@ -102,7 +102,8 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
   List<PieChartSectionData> productWiseData(Map<String, int> productWiseData) {
     List<PieChartSectionData> pieChartSections = [];
 
-    int totalViews = productWiseData.values.reduce((sum, views) => sum + views);
+    int totalViews =
+        productWiseData.values.reduce((summation, views) => summation + views);
 
     productWiseData.forEach((productName, data) {
       int dataCount = data;
@@ -113,9 +114,9 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
         PieChartSectionData section = PieChartSectionData(
           value: value.toDouble(),
           title: productName.length > 8
-              ? productName.substring(0, 8) + '...'
+              ? '${productName.substring(0, 8)}...'
               : productName,
-          titleStyle: TextStyle(
+          titleStyle: const TextStyle(
             color: primaryDark2,
             fontWeight: FontWeight.w500,
           ),
@@ -219,12 +220,12 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                             child: Padding(
                               padding: EdgeInsets.only(left: width * 0.05),
                               child: DropdownButton(
-                                hint: Text(
+                                hint: const Text(
                                   "Select Duration",
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 value: selectedStringDuration,
-                                underline: SizedBox(),
+                                underline: const SizedBox(),
                                 dropdownColor: primary2,
                                 items: [
                                   '24 Hours',
@@ -234,11 +235,11 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                   'Lifetime'
                                 ]
                                     .map((e) => DropdownMenuItem(
+                                          value: e,
                                           child: Text(
                                             overflow: TextOverflow.ellipsis,
                                             e,
                                           ),
-                                          value: e,
                                         ))
                                     .toList(),
                                 onChanged: (value) {
@@ -259,7 +260,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                       stream: productStream,
                       builder: (context, snapshot) {
                         if (snapshot.hasError) {
-                          return Center(
+                          return const Center(
                             child: Text(
                               overflow: TextOverflow.ellipsis,
                               'Something went wrong',
@@ -269,7 +270,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
 
                         if (snapshot.data != null) {
                           if (snapshot.data!.docs.isEmpty) {
-                            return Center(
+                            return const Center(
                               child: Text(
                                 'No Products Added',
                                 overflow: TextOverflow.ellipsis,
@@ -279,7 +280,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                         }
 
                         if (!snapshot.hasData) {
-                          return Center(
+                          return const Center(
                             child: Text(
                               overflow: TextOverflow.ellipsis,
                               'No Data',
@@ -297,7 +298,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                             'wishlists': 0,
                             'shares': 0,
                           };
-                          productSnap.forEach((element) {
+                          for (var element in productSnap) {
                             productData['views'] += element['productViews'];
                             productData['viewsTimestamp'] +=
                                 element['productViewsTimestamp'];
@@ -307,7 +308,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                             productData['wishlists'] +=
                                 element['productWishlist'];
                             productData['shares'] += element['productShares'];
-                          });
+                          }
 
                           List<DateTime> viewTimestamps = [];
                           List<DateTime> likeTimestamps = [];
@@ -340,21 +341,21 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
 
                           Map<String, int> productWiseViews = {};
 
-                          productSnap.forEach((element) {
+                          for (var element in productSnap) {
                             productWiseViews.addAll({
                               element['productName'].toString():
                                   (element['productViews']),
                             });
-                          });
+                          }
 
                           Map<String, int> productWiseLikes = {};
 
-                          productSnap.forEach((element) {
+                          for (var element in productSnap) {
                             productWiseLikes.addAll({
                               element['productName'].toString():
                                   (element['productLikes']),
                             });
-                          });
+                          }
 
                           String maxProductViewsKey = '-';
                           int maxProductViewsValue = 0;
@@ -438,7 +439,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                       child: BarChart(
                                         BarChartData(
                                           maxY: viewTimestamps.length * 2,
-                                          gridData: FlGridData(
+                                          gridData: const FlGridData(
                                             drawVerticalLine: false,
                                           ),
                                           titlesData: FlTitlesData(
@@ -448,12 +449,12 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                 reservedSize: width * 0.0685,
                                               ),
                                             ),
-                                            topTitles: AxisTitles(
+                                            topTitles: const AxisTitles(
                                               sideTitles: SideTitles(
                                                 showTitles: false,
                                               ),
                                             ),
-                                            rightTitles: AxisTitles(
+                                            rightTitles: const AxisTitles(
                                               sideTitles: SideTitles(
                                                 showTitles: false,
                                               ),
@@ -494,7 +495,8 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                         convertMapToBarChartRodData(
                                                       groupDateTimeIntervals(
                                                         DateTime.now().subtract(
-                                                          Duration(days: 1),
+                                                          const Duration(
+                                                              days: 1),
                                                         ),
                                                         viewTimestamps,
                                                         24,
@@ -515,7 +517,8 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                           groupDateTimeIntervals(
                                                             DateTime.now()
                                                                 .subtract(
-                                                              Duration(days: 7),
+                                                              const Duration(
+                                                                  days: 7),
                                                             ),
                                                             viewTimestamps,
                                                             7,
@@ -537,7 +540,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                               groupDateTimeIntervals(
                                                                 DateTime.now()
                                                                     .subtract(
-                                                                  Duration(
+                                                                  const Duration(
                                                                     days: 28,
                                                                   ),
                                                                 ),
@@ -561,7 +564,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                                   groupDateTimeIntervals(
                                                                     DateTime.now()
                                                                         .subtract(
-                                                                      Duration(
+                                                                      const Duration(
                                                                         days:
                                                                             365,
                                                                       ),
@@ -586,7 +589,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                                       groupDateTimeIntervals(
                                                                         DateTime.now()
                                                                             .subtract(
-                                                                          Duration(
+                                                                          const Duration(
                                                                             days:
                                                                                 10000,
                                                                           ),
@@ -668,7 +671,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                       child: BarChart(
                                         BarChartData(
                                           maxY: likeTimestamps.length * 2,
-                                          gridData: FlGridData(
+                                          gridData: const FlGridData(
                                             drawVerticalLine: false,
                                           ),
                                           titlesData: FlTitlesData(
@@ -678,12 +681,12 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                 reservedSize: width * 0.0685,
                                               ),
                                             ),
-                                            topTitles: AxisTitles(
+                                            topTitles: const AxisTitles(
                                               sideTitles: SideTitles(
                                                 showTitles: false,
                                               ),
                                             ),
-                                            rightTitles: AxisTitles(
+                                            rightTitles: const AxisTitles(
                                               sideTitles: SideTitles(
                                                 showTitles: false,
                                               ),
@@ -724,7 +727,8 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                         convertMapToBarChartRodData(
                                                       groupDateTimeIntervals(
                                                         DateTime.now().subtract(
-                                                          Duration(days: 1),
+                                                          const Duration(
+                                                              days: 1),
                                                         ),
                                                         likeTimestamps,
                                                         24,
@@ -745,7 +749,8 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                           groupDateTimeIntervals(
                                                             DateTime.now()
                                                                 .subtract(
-                                                              Duration(days: 7),
+                                                              const Duration(
+                                                                  days: 7),
                                                             ),
                                                             likeTimestamps,
                                                             7,
@@ -767,7 +772,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                               groupDateTimeIntervals(
                                                                 DateTime.now()
                                                                     .subtract(
-                                                                  Duration(
+                                                                  const Duration(
                                                                     days: 28,
                                                                   ),
                                                                 ),
@@ -791,7 +796,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                                   groupDateTimeIntervals(
                                                                     DateTime.now()
                                                                         .subtract(
-                                                                      Duration(
+                                                                      const Duration(
                                                                         days:
                                                                             365,
                                                                       ),
@@ -816,7 +821,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                                       groupDateTimeIntervals(
                                                                         DateTime.now()
                                                                             .subtract(
-                                                                          Duration(
+                                                                          const Duration(
                                                                             days:
                                                                                 10000,
                                                                           ),
@@ -846,7 +851,8 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                     text: 'VIEWS',
                                     width: width,
                                     property: productData['views'],
-                                    color: Color.fromARGB(255, 163, 255, 166),
+                                    color: const Color.fromARGB(
+                                        255, 163, 255, 166),
                                   ),
 
                                   // ALL LIKES
@@ -854,7 +860,8 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                     text: 'LIKES',
                                     width: width,
                                     property: productData['likes'],
-                                    color: Color.fromARGB(255, 237, 255, 163),
+                                    color: const Color.fromARGB(
+                                        255, 237, 255, 163),
                                   ),
                                 ],
                               ),
@@ -873,7 +880,8 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                       text: 'WISHLISTS',
                                       property: productData['wishlists'],
                                       width: width,
-                                      color: Color.fromRGBO(255, 174, 201, 1),
+                                      color: const Color.fromRGBO(
+                                          255, 174, 201, 1),
                                     ),
 
                                     // ALL TIME SHARES
@@ -881,7 +889,8 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                       text: 'SHARES',
                                       property: productData['shares'],
                                       width: width,
-                                      color: Color.fromRGBO(253, 182, 255, 1),
+                                      color: const Color.fromRGBO(
+                                          253, 182, 255, 1),
                                     ),
                                   ],
                                 ),
@@ -926,26 +935,10 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                               child: Text(
                                                 overflow: TextOverflow.ellipsis,
                                                 productData['views'] > 1000000
-                                                    ? productData['views']
-                                                            .toString()
-                                                            .substring(0, 1) +
-                                                        '.' +
-                                                        productData['views']
-                                                            .toString()
-                                                            .substring(1, 4) +
-                                                        'M'
+                                                    ? '${productData['views'].toString().substring(0, 1)}.${productData['views'].toString().substring(1, 4)}M'
                                                     : productData['views'] >
                                                             1000
-                                                        ? productData['views']
-                                                                .toString()
-                                                                .substring(
-                                                                    0, 1) +
-                                                            '.' +
-                                                            productData['views']
-                                                                .toString()
-                                                                .substring(
-                                                                    1, 4) +
-                                                            'k'
+                                                        ? '${productData['views'].toString().substring(0, 1)}.${productData['views'].toString().substring(1, 4)}k'
                                                         : productData['views']
                                                             .toString(),
                                                 style: TextStyle(
@@ -1014,26 +1007,10 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                               child: Text(
                                                 overflow: TextOverflow.ellipsis,
                                                 productData['likes'] > 1000000
-                                                    ? productData['likes']
-                                                            .toString()
-                                                            .substring(0, 1) +
-                                                        '.' +
-                                                        productData['likes']
-                                                            .toString()
-                                                            .substring(1, 4) +
-                                                        'M'
+                                                    ? '${productData['likes'].toString().substring(0, 1)}.${productData['likes'].toString().substring(1, 4)}M'
                                                     : productData['likes'] >
                                                             1000
-                                                        ? productData['likes']
-                                                                .toString()
-                                                                .substring(
-                                                                    0, 1) +
-                                                            '.' +
-                                                            productData['likes']
-                                                                .toString()
-                                                                .substring(
-                                                                    1, 4) +
-                                                            'k'
+                                                        ? '${productData['likes'].toString().substring(0, 1)}.${productData['likes'].toString().substring(1, 4)}k'
                                                         : productData['likes']
                                                             .toString(),
                                                 style: TextStyle(
@@ -1073,7 +1050,8 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                     text: 'Most Viewed',
                                     property: maxProductViewsKey,
                                     width: width,
-                                    color: Color.fromRGBO(255, 135, 175, 1),
+                                    color:
+                                        const Color.fromRGBO(255, 135, 175, 1),
                                   ),
 
                                   // PRODUCT WITH MOST LIKES
@@ -1081,7 +1059,8 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                     text: 'Most Liked',
                                     property: maxProductLikesKey,
                                     width: width,
-                                    color: Color.fromRGBO(251, 135, 255, 1),
+                                    color:
+                                        const Color.fromRGBO(251, 135, 255, 1),
                                   ),
                                 ],
                               ),
@@ -1089,7 +1068,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                           );
                         }
 
-                        return Center(
+                        return const Center(
                           child: CircularProgressIndicator(),
                         );
                       },

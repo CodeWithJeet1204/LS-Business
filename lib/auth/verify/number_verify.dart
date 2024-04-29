@@ -155,7 +155,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                               isOTPVerifying = false;
                             });
                             setState(() {
-                              if (context.mounted) {
+                              if (mounted) {
                                 mySnackBar(context, e.toString());
                               }
                             });

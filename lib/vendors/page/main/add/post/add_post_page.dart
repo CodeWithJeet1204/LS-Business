@@ -51,9 +51,9 @@ class _AddPostPageState extends State<AddPostPage> {
             .get();
 
         for (QueryDocumentSnapshot doc in previousPosts.docs) {
-          postProvider.selectedProducts.forEach((id) {
+          for (var id in postProvider.selectedProducts) {
             if (doc['postProductId'] == id && isTextPost == doc['isTextPost']) {
-              if (context.mounted) {
+              if (mounted) {
                 mySnackBar(
                   context,
                   isTextPost
@@ -63,7 +63,7 @@ class _AddPostPageState extends State<AddPostPage> {
               }
               postDoesntExists = false;
             }
-          });
+          }
         }
 
         if (postDoesntExists) {
@@ -71,13 +71,8 @@ class _AddPostPageState extends State<AddPostPage> {
             isPosting = true;
           });
 
+          // ignore: avoid_function_literals_in_foreach_calls
           postProvider.selectedProducts.forEach((id) async {
-            print(postProvider.selectedProducts.length);
-            print('-');
-            print(isTextPost);
-            print('-');
-            print(postProvider.selectedProducts.length);
-            print('-');
             await store
                 .collection('Business')
                 .doc('Owners')
@@ -134,7 +129,7 @@ class _AddPostPageState extends State<AddPostPage> {
 
           postProvider.clear();
 
-          if (context.mounted) {
+          if (mounted) {
             mySnackBar(context, "Posted");
             Navigator.of(context).pop();
           }
@@ -143,7 +138,7 @@ class _AddPostPageState extends State<AddPostPage> {
         setState(() {
           isPosting = false;
         });
-        if (context.mounted) {
+        if (mounted) {
           mySnackBar(context, e.toString());
         }
       }
@@ -294,7 +289,7 @@ class _AddPostPageState extends State<AddPostPage> {
               Opacity(
                 opacity: textPostRemaining > 0 ? 1 : 0.5,
                 child: MyButton(
-                  text: selectedProducts.length < 1
+                  text: selectedProducts.isEmpty
                       ? "TEXT POST"
                       : selectedProductProvider.isTextPost == true
                           ? "TEXT POSTS: ${selectedProducts.length}"
@@ -323,7 +318,7 @@ class _AddPostPageState extends State<AddPostPage> {
               Opacity(
                 opacity: imagePostRemaining > 0 ? 1 : 0.5,
                 child: MyButton(
-                  text: selectedProducts.length < 1
+                  text: selectedProducts.isEmpty
                       ? "IMAGE POST"
                       : selectedProductProvider.isTextPost == false
                           ? "IMAGE POSTS: ${selectedProducts.length}"

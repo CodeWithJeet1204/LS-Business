@@ -29,8 +29,8 @@ class _ServicesMainPageState extends State<ServicesMainPage> {
   int current = 1;
 
   List<Widget> allPages = [
-    ServicesPage2(),
-    ServicesProfilePage(),
+    const ServicesPage2(),
+    const ServicesProfilePage(),
   ];
 
   // INIT STATE
@@ -48,66 +48,65 @@ class _ServicesMainPageState extends State<ServicesMainPage> {
 
   // DETAILS ADDED
   Future<void> detailsAdded() async {
-    final DocumentSnapshot<Map<String, dynamic>?>? getServicesDetailsAddedSnap =
+    final DocumentSnapshot<Map<String, dynamic>?> getServicesDetailsAddedSnap =
         await store.collection('Services').doc(auth.currentUser!.uid).get();
 
     final Map<String, dynamic>? getServicesDetailsAddedData =
-        getServicesDetailsAddedSnap?.data();
+        getServicesDetailsAddedSnap.data();
 
-    if (getServicesDetailsAddedSnap != null) {
-      if (getServicesDetailsAddedSnap.exists) {
-        if (!(await isPayed())) {
-          detailsPage = const LoginPage(
-            mode: 'vendor',
-          );
-        } else {
-          setState(() {
-            if (getServicesDetailsAddedData!['Email'] == null ||
-                getServicesDetailsAddedData['Phone Number'] == null) {
-              detailsPage = const ServicesRegisterDetailsPage();
-            } else if ((getServicesDetailsAddedData['Phone Number'] != null &&
-                getServicesDetailsAddedData['numberVerified'] != true)) {
-              if (!auth.currentUser!.emailVerified) {
-                detailsPage = const EmailVerifyPage(
-                  mode: 'vendor',
-                  isLogging: true,
+    if (getServicesDetailsAddedSnap.exists) {
+      if (!(await isPayed())) {
+        detailsPage = const LoginPage(
+          mode: 'vendor',
+        );
+      } else {
+        setState(() {
+          if (getServicesDetailsAddedData!['Email'] == null ||
+              getServicesDetailsAddedData['Phone Number'] == null) {
+            detailsPage = const ServicesRegisterDetailsPage();
+          } else if ((getServicesDetailsAddedData['Phone Number'] != null &&
+              getServicesDetailsAddedData['numberVerified'] != true)) {
+            if (!auth.currentUser!.emailVerified) {
+              detailsPage = const EmailVerifyPage(
+                mode: 'vendor',
+                isLogging: true,
+              );
+            } else {
+              if (getServicesDetailsAddedData['Image'] == null ||
+                  getServicesDetailsAddedData['Name'] == null) {
+                detailsPage = const ServicesRegisterDetailsPage();
+              } else if (getServicesDetailsAddedData['Place'] == null) {
+                detailsPage = const ServicesChoosePage1();
+              } else if (getServicesDetailsAddedData['Category'] == null) {
+                detailsPage = const ServicesChoosePage2();
+              } else if (getServicesDetailsAddedData['SubCategory'] == null) {
+                detailsPage = ServicesChoosePage3(
+                  place: getServicesDetailsAddedData['Place'],
+                  category: getServicesDetailsAddedData['Category'],
                 );
               } else {
-                if (getServicesDetailsAddedData['Image'] == null ||
-                    getServicesDetailsAddedData['Name'] == null) {
-                  detailsPage = const ServicesRegisterDetailsPage();
-                } else if (getServicesDetailsAddedData['Place'] == null) {
-                  detailsPage = const ServicesChoosePage1();
-                } else if (getServicesDetailsAddedData['Category'] == null) {
-                  detailsPage = const ServicesChoosePage2();
-                } else if (getServicesDetailsAddedData['SubCategory'] == null) {
-                  detailsPage = ServicesChoosePage3(
-                    place: getServicesDetailsAddedData['Place'],
-                    category: getServicesDetailsAddedData['Category'],
-                  );
-                } else {
-                  detailsPage = null;
-                }
+                detailsPage = null;
               }
-            } else if (getServicesDetailsAddedData['Image'] == null ||
-                getServicesDetailsAddedData['Name'] == null) {
-            } else if (getServicesDetailsAddedData['Place'] == null ||
-                getServicesDetailsAddedData['Category'] == null ||
-                getServicesDetailsAddedData['SubCategory'] == null) {
-              detailsPage = const ServicesChoosePage1();
-            } else {
-              detailsPage = null;
             }
-          });
-        }
-      } /*else {
+          } else if (getServicesDetailsAddedData['Image'] == null ||
+              getServicesDetailsAddedData['Name'] == null) {
+          } else if (getServicesDetailsAddedData['Place'] == null ||
+              getServicesDetailsAddedData['Category'] == null ||
+              getServicesDetailsAddedData['SubCategory'] == null) {
+            detailsPage = const ServicesChoosePage1();
+          } else {
+            detailsPage = null;
+          }
+        });
+      }
+    } /*else {
         await auth.signOut();
         return mySnackBar(
           context,
           'This account was created in User app, use another account to sign in here',
         );
       }*/
-    } /*else {
+    /*} else {
       await auth.signOut();
       return mySnackBar(
         context,
@@ -116,7 +115,6 @@ class _ServicesMainPageState extends State<ServicesMainPage> {
     }*/
 
     setState(() {});
-    print("Details Page: $detailsPage");
   }
 
   // CHANGE PAGE
@@ -150,7 +148,7 @@ class _ServicesMainPageState extends State<ServicesMainPage> {
             ),
             currentIndex: current,
             onTap: changePage,
-            items: [
+            items: const [
               BottomNavigationBarItem(
                 activeIcon: Icon(
                   FeatherIcons.barChart,

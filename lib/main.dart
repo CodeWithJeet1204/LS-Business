@@ -86,18 +86,17 @@ void main() async {
       child: const MyApp(),
     ),
   );
-  if (FirebaseAuth.instance.currentUser != null) {
-    print(FirebaseAuth.instance.currentUser!.email);
-  } else {
-    print("No Current User");
-  }
+  // if (FirebaseAuth.instance.currentUser != null) {
+  //   print(FirebaseAuth.instance.currentUser!.email);
+  // } else {
+  //   print("No Current User");
+  // }
 }
 
-// Function to retrieve the selected mode from SharedPreferences
+// GET SELECTED MODE
 Future<String> getSelectedMode() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   String selectedMode = prefs.getString('selectedText') ?? '';
-  print(1);
   return selectedMode;
 }
 
@@ -217,14 +216,14 @@ class MyApp extends StatelessWidget {
                             return const SelectModePage();
                           }
 
-                          return Scaffold(
+                          return const Scaffold(
                             body: Center(
                               child: CircularProgressIndicator(),
                             ),
                           );
                         },
                       ),
-                ConnectivityNotificationWidget(),
+                const ConnectivityNotificationWidget(),
               ],
             ),
           );

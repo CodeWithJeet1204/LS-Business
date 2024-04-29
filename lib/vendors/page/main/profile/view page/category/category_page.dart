@@ -98,7 +98,6 @@ class _CategoryPageState extends State<CategoryPage> {
   // GET PRODUCTS INFO
   Future<void> getProductsInfo(String type) async {
     Map<String, dynamic> myProducts = {};
-    print("Category Name: ${widget.categoryName}");
     final productsSnap = await store
         .collection('Business')
         .doc('Data')
@@ -107,21 +106,19 @@ class _CategoryPageState extends State<CategoryPage> {
         .orderBy('datetime', descending: true)
         .get();
 
-    productsSnap.docs.forEach((productData) {
+    for (var productData in productsSnap.docs) {
       final id = productData.id;
       final name = productData['productName'];
       final imageUrl = productData['images'][0];
       final price = productData['productPrice'];
-      print("Product Name: $name");
 
       myProducts[id] = [name, imageUrl, price];
-    });
+    }
 
     setState(() {
       products = myProducts;
       getProductsData = true;
     });
-    print("Products: $products");
   }
 
   // SEARCH PRODUCTS
@@ -157,12 +154,12 @@ class _CategoryPageState extends State<CategoryPage> {
   //       setState(() {
   //         isImageChanging = false;
   //       });
-  //       if (context.mounted) {
+  //       if (mounted) {
   //         mySnackBar(context, e.toString());
   //       }
   //     }
   //   } else {
-  //     if (context.mounted) {
+  //     if (mounted) {
   //       mySnackBar(context, "Select an Image");
   //     }
   //   }
@@ -186,11 +183,11 @@ class _CategoryPageState extends State<CategoryPage> {
   //       setState(() {
   //         isChangingName = false;
   //       });
-  //       if (context.mounted) {
+  //       if (mounted) {
   //         Navigator.of(context).pop();
   //       }
   //     } catch (e) {
-  //       if (context.mounted) {
+  //       if (mounted) {
   //         mySnackBar(context, e.toString());
   //       }
   //     }
@@ -687,7 +684,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                       ? GridView.builder(
                                           shrinkWrap: true,
                                           gridDelegate:
-                                              SliverGridDelegateWithFixedCrossAxisCount(
+                                              const SliverGridDelegateWithFixedCrossAxisCount(
                                             crossAxisCount: 2,
                                             childAspectRatio: 0.675,
                                           ),
@@ -840,12 +837,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                                           },
                                                           icon: Icon(
                                                             FeatherIcons.trash,
-                                                            color:
-                                                                Color.fromRGBO(
-                                                                    215,
-                                                                    14,
-                                                                    0,
-                                                                    1),
+                                                            color: const Color
+                                                                .fromRGBO(
+                                                                215, 14, 0, 1),
                                                             size: width * 0.075,
                                                           ),
                                                           tooltip:
@@ -871,7 +865,6 @@ class _CategoryPageState extends State<CategoryPage> {
                                                 .toList()[index][1];
                                             final price = products.values
                                                 .toList()[index][2];
-                                            print("ImageUrl: $imageUrl");
 
                                             return Padding(
                                               padding: EdgeInsets.symmetric(
@@ -964,9 +957,10 @@ class _CategoryPageState extends State<CategoryPage> {
                                   child: isGridView
                                       ? GridView.builder(
                                           shrinkWrap: true,
-                                          physics: ClampingScrollPhysics(),
+                                          physics:
+                                              const ClampingScrollPhysics(),
                                           gridDelegate:
-                                              SliverGridDelegateWithFixedCrossAxisCount(
+                                              const SliverGridDelegateWithFixedCrossAxisCount(
                                             crossAxisCount: 2,
                                             crossAxisSpacing: 0,
                                             mainAxisSpacing: 0,
@@ -988,7 +982,8 @@ class _CategoryPageState extends State<CategoryPage> {
                                         )
                                       : ListView.builder(
                                           shrinkWrap: true,
-                                          physics: ClampingScrollPhysics(),
+                                          physics:
+                                              const ClampingScrollPhysics(),
                                           itemCount: 4,
                                           itemBuilder: (context, index) {
                                             return Padding(

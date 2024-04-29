@@ -52,12 +52,14 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
     }
 
     if (postExists) {
-      mySnackBar(
-        context,
-        widget.isTextPost
-            ? "Text Post Already Exists for one of the product"
-            : "Image Post Already Exists for the product",
-      );
+      if (mounted) {
+        mySnackBar(
+          context,
+          widget.isTextPost
+              ? "Text Post Already Exists for one of the product"
+              : "Image Post Already Exists for the product",
+        );
+      }
     } else {
       setState(() {
         provider.addSelectedProduct(
@@ -67,7 +69,6 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
           context,
         );
       });
-      print(provider.selectedProducts);
     }
   }
 
@@ -161,7 +162,7 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                             ? GridView.builder(
                                 shrinkWrap: true,
                                 gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
                                   childAspectRatio: 0.725,
                                 ),

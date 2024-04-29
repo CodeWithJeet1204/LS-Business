@@ -51,7 +51,7 @@ class _ServicesDetailsPageState extends State<ServicesDetailsPage> {
 
   // SHOW IMAGE
   Future<void> showImage() async {
-    final imageStream = await FirebaseFirestore.instance
+    final imageStream = FirebaseFirestore.instance
         .collection('Services')
         .doc(auth.currentUser!.uid)
         .snapshots();
@@ -188,23 +188,24 @@ class _ServicesDetailsPageState extends State<ServicesDetailsPage> {
         });
       });
     });
-
-    Navigator.of(context).pop();
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: ((context) => ServicesDetailsPage()),
-      ),
-    );
+    if (mounted) {
+      Navigator.of(context).pop();
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: ((context) => const ServicesDetailsPage()),
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your Details'),
+        title: const Text('Your Details'),
       ),
       body: data == null
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : SafeArea(
@@ -220,7 +221,7 @@ class _ServicesDetailsPageState extends State<ServicesDetailsPage> {
                       children: [
                         // IMAGE
                         Padding(
-                          padding: EdgeInsets.symmetric(vertical: 24),
+                          padding: const EdgeInsets.symmetric(vertical: 24),
                           child: Center(
                             child: GestureDetector(
                               onTap: () async {
@@ -308,7 +309,7 @@ class _ServicesDetailsPageState extends State<ServicesDetailsPage> {
                             horizontal: width * 0.0225,
                             vertical: width * 0.0125,
                           ),
-                          margin: EdgeInsets.symmetric(
+                          margin: const EdgeInsets.symmetric(
                             vertical: 12,
                           ),
                           child: DropdownButton(
@@ -319,7 +320,7 @@ class _ServicesDetailsPageState extends State<ServicesDetailsPage> {
                             ),
                             value: (isMale ? 'Male' : 'Female'),
                             underline: Container(),
-                            items: [
+                            items: const [
                               DropdownMenuItem(
                                 value: 'Male',
                                 child: Text('Male'),
@@ -357,7 +358,7 @@ class _ServicesDetailsPageState extends State<ServicesDetailsPage> {
                             horizontal: width * 0.0225,
                             vertical: width * 0.0125,
                           ),
-                          margin: EdgeInsets.symmetric(
+                          margin: const EdgeInsets.symmetric(
                             vertical: 12,
                           ),
                           child: DropdownButton(
@@ -412,7 +413,7 @@ class _ServicesDetailsPageState extends State<ServicesDetailsPage> {
                             horizontal: width * 0.0225,
                             vertical: width * 0.0125,
                           ),
-                          margin: EdgeInsets.symmetric(
+                          margin: const EdgeInsets.symmetric(
                             vertical: 12,
                           ),
                           child: DropdownButton(

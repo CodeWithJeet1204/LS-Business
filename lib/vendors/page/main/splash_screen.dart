@@ -21,13 +21,13 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
 
     Future.delayed(
-      Duration(milliseconds: 1500),
+      const Duration(milliseconds: 1500),
       () {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: ((context) => widget.isLoggedIn
-                ? MainPage()
-                : LoginPage(
+                ? const MainPage()
+                : const LoginPage(
                     mode: 'vendor',
                   )),
           ),
@@ -49,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Container(
         width: double.infinity,
         alignment: Alignment.center,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: RadialGradient(
             colors: [
               primary,

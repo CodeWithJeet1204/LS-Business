@@ -98,12 +98,12 @@ class _BrandPageState extends State<BrandPage> {
         setState(() {
           isImageChanging = false;
         });
-        if (context.mounted) {
+        if (mounted) {
           mySnackBar(context, e.toString());
         }
       }
     } else {
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, "Select an Image");
       }
     }
@@ -141,11 +141,11 @@ class _BrandPageState extends State<BrandPage> {
         setState(() {
           isChangingName = false;
         });
-        if (context.mounted) {
+        if (mounted) {
           Navigator.of(context).pop();
         }
       } catch (e) {
-        if (context.mounted) {
+        if (mounted) {
           mySnackBar(context, e.toString());
         }
       }
@@ -375,10 +375,9 @@ class _BrandPageState extends State<BrandPage> {
   // DELETE BRAND
   Future<void> delete() async {
     try {
-      if (context.mounted) {
+      if (mounted) {
         Navigator.of(context).pop();
       }
-      print('a');
 
       if (widget.imageUrl != null) {
         await FirebaseStorage.instance.refFromURL(widget.imageUrl!).delete();
@@ -407,13 +406,12 @@ class _BrandPageState extends State<BrandPage> {
           .doc(widget.brandId)
           .delete();
 
-      print('b');
-      if (context.mounted) {
+      if (mounted) {
         Navigator.of(context).pop();
         mySnackBar(context, 'Brand Deleted');
       }
     } catch (e) {
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, e.toString());
       }
     }
@@ -458,7 +456,7 @@ class _BrandPageState extends State<BrandPage> {
             onPressed: () async {
               await confirmDelete();
             },
-            icon: Icon(
+            icon: const Icon(
               FeatherIcons.trash,
               color: Colors.red,
             ),
@@ -855,7 +853,7 @@ class _BrandPageState extends State<BrandPage> {
                                             ? GridView.builder(
                                                 shrinkWrap: true,
                                                 gridDelegate:
-                                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                                    const SliverGridDelegateWithFixedCrossAxisCount(
                                                   crossAxisCount: 2,
                                                   childAspectRatio: 0.675,
                                                 ),

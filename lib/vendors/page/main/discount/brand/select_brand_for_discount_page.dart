@@ -118,7 +118,7 @@ class _SelectBrandForDiscountPageState
                           ? GridView.builder(
                               shrinkWrap: true,
                               gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
                                 childAspectRatio: 0.795,
                               ),

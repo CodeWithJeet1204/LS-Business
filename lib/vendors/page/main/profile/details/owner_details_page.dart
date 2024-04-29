@@ -79,12 +79,12 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
         setState(() {
           isChangingImage = false;
         });
-        if (context.mounted) {
+        if (mounted) {
           mySnackBar(context, e.toString());
         }
       }
     } else {
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, "Image not selected");
       }
     }
@@ -190,7 +190,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
         isSaving = false;
       });
     } catch (e) {
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, e.toString());
       }
     }
@@ -198,7 +198,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
 
   // SHOW IMAGE
   Future<void> showImage() async {
-    final imageStream = await FirebaseFirestore.instance
+    final imageStream = FirebaseFirestore.instance
         .collection('Business')
         .doc('Owners')
         .collection('Users')

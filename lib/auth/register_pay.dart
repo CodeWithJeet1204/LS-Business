@@ -72,19 +72,21 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                           isPaying = false;
                         });
                         SystemChannels.textInput.invokeMethod('TextInput.hide');
-                        Navigator.of(context).pop();
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: ((context) => RegisterMethodPage(
-                                  mode: widget.mode,
-                                )),
-                          ),
-                        );
+                        if (context.mounted) {
+                          Navigator.of(context).pop();
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: ((context) => RegisterMethodPage(
+                                    mode: widget.mode,
+                                  )),
+                            ),
+                          );
+                        }
                       } catch (e) {
                         setState(() {
                           isPaying = false;
-                          if (context.mounted) {
-                            if (context.mounted) {
+                          if (mounted) {
+                            if (mounted) {
                               mySnackBar(context, e.toString());
                             }
                           }
@@ -112,14 +114,16 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                         onPressed: () {
                           SystemChannels.textInput
                               .invokeMethod('TextInput.hide');
-                          Navigator.of(context).pop();
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: ((context) => LoginPage(
-                                    mode: 'vendor',
-                                  )),
-                            ),
-                          );
+                          if (context.mounted) {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: ((context) => const LoginPage(
+                                      mode: 'vendor',
+                                    )),
+                              ),
+                            );
+                          }
                         },
                         text: "LOGIN",
                         textColor: buttonColor,
@@ -175,19 +179,21 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                               });
                               SystemChannels.textInput
                                   .invokeMethod('TextInput.hide');
-                              Navigator.of(context).pop();
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: ((context) => RegisterMethodPage(
-                                        mode: widget.mode,
-                                      )),
-                                ),
-                              );
+                              if (context.mounted) {
+                                Navigator.of(context).pop();
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: ((context) => RegisterMethodPage(
+                                          mode: widget.mode,
+                                        )),
+                                  ),
+                                );
+                              }
                             } catch (e) {
                               setState(() {
                                 isPaying = false;
-                                if (context.mounted) {
-                                  if (context.mounted) {
+                                if (mounted) {
+                                  if (mounted) {
                                     mySnackBar(context, e.toString());
                                   }
                                 }

@@ -115,26 +115,14 @@ class _AddProductPage2State extends State<AddProductPage2> {
   // ADD PRODUCT
   Future<void> addProduct(AddProductProvider provider) async {
     if (productKey.currentState!.validate()) {
-      print("PropertyValue0 first: $property0");
-      print("PropertyValue1: $property1");
-      print("PropertyValue2: $property2");
-      print("PropertyValue3: $property3");
-      print("PropertyValue4: $property4");
-      print("PropertyValue5: $property5");
-      print('Property Length 5: ${property5.length}');
-
-      print('Property0 first: $property0');
       if (property0.isEmpty) {
-        print('PropertyController0: ${property0Controller.text}');
         if (getNoOfAnswers(0) == 1) {
-          print('PropertyController0: ${property0Controller.text}');
           if (property0Controller.text.isEmpty ||
               property0Controller.text == null) {
             return mySnackBar(
                 context, "Enter value for ${getPropertiesKeys(0)}");
           }
           property0.add(property0Controller.text.toString().toUpperCase());
-          print('Property0: $property0');
         } else if (getNoOfAnswers(0) == 2) {
           return mySnackBar(context, "Select ${getPropertiesKeys(0)}");
         } else if (getNoOfAnswers(0) == 3) {
@@ -255,7 +243,6 @@ class _AddProductPage2State extends State<AddProductPage2> {
           'propertyInputType5': getPropertiesInputType(5) == TextInputType.text,
         });
 
-        print('Property Value 0 in map: ${properties['propertyValue0']}');
         // await store
         //     .collection('Business')
         //     .doc('Data')
@@ -284,7 +271,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
         setState(() {
           isSaving = false;
         });
-        if (context.mounted) {
+        if (mounted) {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: ((context) => AddProductPage3(
@@ -297,7 +284,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
         setState(() {
           isSaving = false;
         });
-        if (context.mounted) {
+        if (mounted) {
           mySnackBar(context, e.toString());
         }
       }

@@ -156,7 +156,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                       ),
                       child: DropdownButton(
                         autofocus: true,
-                        underline: SizedBox(),
+                        underline: const SizedBox(),
                         borderRadius: BorderRadius.circular(12),
                         hint: Text(
                             overflow: TextOverflow.ellipsis, selectedDuration),
@@ -181,19 +181,19 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                             selectedDuration = value!;
                             if (value == '1 month') {
                               selectedDurationDateTime = DateTime.now().add(
-                                Duration(
+                                const Duration(
                                   days: 28,
                                 ),
                               );
                             } else if (value == '6 months') {
                               selectedDurationDateTime = DateTime.now().add(
-                                Duration(
+                                const Duration(
                                   days: 168,
                                 ),
                               );
                             } else if (value == '1 year') {
                               selectedDurationDateTime = DateTime.now().add(
-                                Duration(
+                                const Duration(
                                   days: 336,
                                 ),
                               );

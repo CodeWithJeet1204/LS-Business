@@ -55,7 +55,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
         _image = (File(im.path));
       });
     } else {
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, "Select an Image");
       }
     }
@@ -91,7 +91,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
           'imageUrl': imageUrl,
           'vendorId': FirebaseAuth.instance.currentUser!.uid,
         });
-        if (context.mounted) {
+        if (mounted) {
           mySnackBar(context, "Brand Added");
         }
 
@@ -111,14 +111,14 @@ class _AddBrandPageState extends State<AddBrandPage> {
         setState(() {
           isSaving = false;
         });
-        if (context.mounted) {
+        if (mounted) {
           Navigator.of(context).pop();
         }
       } catch (e) {
         setState(() {
           isSaving = false;
         });
-        if (context.mounted) {
+        if (mounted) {
           mySnackBar(context, e.toString());
         }
       }

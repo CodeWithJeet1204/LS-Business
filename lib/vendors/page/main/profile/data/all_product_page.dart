@@ -47,7 +47,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
         await doc.reference.delete();
       }
     } catch (e) {
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, e.toString());
       }
     }
@@ -193,7 +193,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                       ? GridView.builder(
                           shrinkWrap: true,
                           gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
+                              const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             childAspectRatio: 0.725,
                           ),

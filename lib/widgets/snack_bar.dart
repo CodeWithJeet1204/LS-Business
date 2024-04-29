@@ -7,7 +7,7 @@ void mySnackBar(BuildContext context, String text) {
     SnackBar(
       content: Text(
         text,
-        style: TextStyle(
+        style: const TextStyle(
           color: primaryDark,
         ),
       ),

@@ -112,14 +112,17 @@ class ServicesRegisterDetailsPageState
         };
 
         await store.collection('Services').doc(auth.currentUser!.uid).set(info);
-
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: ((context) => ServicesChoosePage1()),
-          ),
-        );
+        if (mounted) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: ((context) => const ServicesChoosePage1()),
+            ),
+          );
+        }
       } catch (e) {
-        mySnackBar(context, e.toString());
+        if (mounted) {
+          mySnackBar(context, e.toString());
+        }
       }
     }
   }
@@ -138,8 +141,8 @@ class ServicesRegisterDetailsPageState
             children: [
               // USER DETAILS HEADTEXT
               const SizedBox(height: 100),
-              Center(
-                child: const HeadText(
+              const Center(
+                child: HeadText(
                   text: "USER\nDETAILS",
                 ),
               ),
@@ -253,7 +256,7 @@ class ServicesRegisterDetailsPageState
                         horizontal: width * 0.0225,
                         vertical: width * 0.0125,
                       ),
-                      margin: EdgeInsets.symmetric(
+                      margin: const EdgeInsets.symmetric(
                         vertical: 12,
                       ),
                       child: DropdownButton(
@@ -266,7 +269,7 @@ class ServicesRegisterDetailsPageState
                             ? (isMale! ? 'Male' : 'Female')
                             : null,
                         underline: Container(),
-                        items: [
+                        items: const [
                           DropdownMenuItem(
                             value: 'Male',
                             child: Text('Male'),
@@ -298,7 +301,7 @@ class ServicesRegisterDetailsPageState
                         horizontal: width * 0.0225,
                         vertical: width * 0.0125,
                       ),
-                      margin: EdgeInsets.symmetric(
+                      margin: const EdgeInsets.symmetric(
                         vertical: 12,
                       ),
                       child: DropdownButton(
@@ -347,7 +350,7 @@ class ServicesRegisterDetailsPageState
                         horizontal: width * 0.0225,
                         vertical: width * 0.0125,
                       ),
-                      margin: EdgeInsets.symmetric(
+                      margin: const EdgeInsets.symmetric(
                         vertical: 12,
                       ),
                       child: DropdownButton(

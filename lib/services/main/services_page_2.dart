@@ -12,7 +12,7 @@ class _ServicesPage2State extends State<ServicesPage2> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Random'),
+        title: const Text('Random'),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(
@@ -21,7 +21,7 @@ class _ServicesPage2State extends State<ServicesPage2> {
         child: LayoutBuilder(builder: ((context, constraints) {
           // final width = constraints.maxWidth;
 
-          return SingleChildScrollView(
+          return const SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [],

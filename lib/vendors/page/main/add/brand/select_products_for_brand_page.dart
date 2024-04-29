@@ -90,7 +90,9 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                   await addProductToBrand(productsAddedToBrandProvider);
                 }
               }
-              Navigator.of(context).pop();
+              if (context.mounted) {
+                Navigator.of(context).pop();
+              }
             },
             text: "NEXT",
             textColor: primaryDark,
@@ -166,7 +168,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                       ? GridView.builder(
                           shrinkWrap: true,
                           gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
+                              const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             childAspectRatio: 0.725,
                           ),

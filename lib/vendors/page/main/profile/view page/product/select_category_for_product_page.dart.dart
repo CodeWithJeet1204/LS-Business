@@ -55,20 +55,19 @@ class _ChangeCategoryState extends State<ChangeCategory> {
         .collection(widget.shopType)
         .get();
 
-    specialSnapshot.docs.forEach((specialCategory) {
+    for (var specialCategory in specialSnapshot.docs) {
       final specialCategoryData = specialCategory.data();
 
       final name = specialCategoryData['specialCategoryName'];
       final imageUrl = specialCategoryData['specialCategoryImageUrl'];
 
       myCategory[name] = imageUrl;
-    });
+    }
 
     setState(() {
       categories = myCategory;
       getData = true;
     });
-    print(categories);
   }
 
   @override
@@ -185,7 +184,7 @@ class _ChangeCategoryState extends State<ChangeCategory> {
           return isGridView
               ? GridView.builder(
                   shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 0.75,
                   ),
@@ -287,9 +286,6 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                       final id = categories.keys.toList()[index];
                       final name = categories.keys.toList()[index];
                       final imageUrl = categories.values.toList()[index];
-                      print("ID: $id");
-                      print(
-                          "Selected Category: ${changeCategoryProvider.selectedCategory}");
 
                       return GestureDetector(
                         onTap: () {

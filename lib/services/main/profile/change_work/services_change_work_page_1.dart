@@ -24,7 +24,7 @@ class _ServicesChangeWorkPage1State extends State<ServicesChangeWorkPage1> {
   bool isData = false;
   bool isNext = false;
 
-  late List<bool> initialSelection;
+  List<bool>? initialSelection;
 
   // INIT STATE
   @override
@@ -41,19 +41,15 @@ class _ServicesChangeWorkPage1State extends State<ServicesChangeWorkPage1> {
     final serviceData = serviceSnap.data()!;
 
     final List places = serviceData['Place'];
-    print("Places: $places");
 
     setState(() {
       if (places.contains('Home')) {
-        print("Yes 1");
         isHomeSelected = true;
       }
       if (places.contains('Office')) {
-        print("Yes 2");
         isOfficeSelected = true;
       }
       if (places.contains('Outdoor')) {
-        print("Yes 3");
         isOutdoorSelected = true;
       }
       initialSelection = [isHomeSelected, isOfficeSelected, isOutdoorSelected];
@@ -98,10 +94,6 @@ class _ServicesChangeWorkPage1State extends State<ServicesChangeWorkPage1> {
 
     List selectedPlaces = [];
 
-    print("Home: $isHomeSelected");
-    print("Office: $isOfficeSelected");
-    print("Outdoor: $isOutdoorSelected");
-
     if (isHomeSelected) {
       selectedPlaces.add('Home');
     }
@@ -118,26 +110,25 @@ class _ServicesChangeWorkPage1State extends State<ServicesChangeWorkPage1> {
       'SubCategory': [],
     });
 
-    print("Places: $selectedPlaces");
-
     setState(() {
       isNext = false;
     });
-
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: ((context) => ServicesChangeWorkPage2(
-              place: selectedPlaces,
-            )),
-      ),
-    );
+    if (mounted) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: ((context) => ServicesChangeWorkPage2(
+                place: selectedPlaces,
+              )),
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Change Work'),
+        title: const Text('Change Work'),
       ),
       bottomSheet: hasSelectionChanged()
           ? Padding(
@@ -157,12 +148,12 @@ class _ServicesChangeWorkPage1State extends State<ServicesChangeWorkPage1> {
                 ),
               ),
             )
-          : Container(
+          : const SizedBox(
               width: 0,
               height: 0,
             ),
       body: !isData
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : Padding(
@@ -214,7 +205,7 @@ class _ServicesChangeWorkPage1State extends State<ServicesChangeWorkPage1> {
                           imageUrl:
                               'https://cdn.pixabay.com/photo/2016/07/07/16/46/dice-1502706_640.jpg',
                         ),
-                        SizedBox(height: 24),
+                        const SizedBox(height: 24),
                       ],
                     ),
                   );

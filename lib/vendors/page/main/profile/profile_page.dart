@@ -89,7 +89,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   await auth.signOut().then(
                         (value) => Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
-                            builder: ((context) => SelectModePage()),
+                            builder: ((context) => const SelectModePage()),
                           ),
                           (route) => false,
                         ),
@@ -98,7 +98,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     Navigator.of(context).pop();
                   }
                 } on FirebaseAuthException catch (e) {
-                  mySnackBar(context, e.toString());
+                  if (context.mounted) {
+                    mySnackBar(context, e.toString());
+                  }
                 }
                 await auth.signOut();
                 auth.currentUser!.reload();
@@ -123,7 +125,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   // SHOW IMAGE
   Future<void> showImage() async {
-    final imageStream = await FirebaseFirestore.instance
+    final imageStream = FirebaseFirestore.instance
         .collection('Business')
         .doc('Owners')
         .collection('Shops')
@@ -171,7 +173,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return shopData.isEmpty
-        ? Center(
+        ? const Center(
             child: CircularProgressIndicator(),
           )
         : Scaffold(

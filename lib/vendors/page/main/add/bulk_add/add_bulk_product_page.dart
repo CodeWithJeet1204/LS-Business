@@ -55,7 +55,7 @@ class _AddBulkProductState extends State<AddBulkProduct> {
         }
       });
     } else {
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, "Select an Image");
       }
     }
@@ -168,7 +168,7 @@ class _AddBulkProductState extends State<AddBulkProduct> {
         }
 
         if (productAlreadyExists) {
-          if (context.mounted) {
+          if (mounted) {
             return mySnackBar(
               context,
               "Product 1 with the same name already exists",
@@ -181,319 +181,333 @@ class _AddBulkProductState extends State<AddBulkProduct> {
         setState(() {
           isUploading = false;
         });
-        print("Error - $e");
-        return mySnackBar(context, 'Some error occurred');
+        if (mounted) {
+          return mySnackBar(context, 'Some error occurred');
+        }
       }
     }
 
     // ------------
 
     // PRODUCT 2
-    if (image2 == null &&
-        nameController2.text.isEmpty &&
-        priceController2.text.isEmpty) {
-      null;
-      // image
-    } else if (image2 != null &&
-        nameController2.text.isEmpty &&
-        priceController2.text.isEmpty) {
-      return mySnackBar(context, 'Enter Name & Price for Product 2');
-    } else if (image2 != null &&
-        nameController2.text.isNotEmpty &&
-        priceController2.text.isEmpty) {
-      return mySnackBar(context, 'Enter Price for Product 2');
-    } else if (image2 != null &&
-        nameController2.text.isEmpty &&
-        priceController2.text.isNotEmpty) {
-      return mySnackBar(context, 'Enter Name for Product 2');
-    } else if (double.parse(priceController2.text) > 1000000000 ||
-        double.parse(priceController2.text) < 0.999999999999999) {
-      return mySnackBar(
-          context, 'Price Range is Rs. 1 - 1000000000 (Product 2)');
-    }
-    // name
-    else if (image2 == null &&
-        nameController2.text.isNotEmpty &&
-        priceController2.text.isEmpty) {
-      return mySnackBar(context, 'Select Image and Enter Price for Product 2');
-    } else if (image2 != null &&
-        nameController2.text.isNotEmpty &&
-        priceController2.text.isEmpty) {
-      return mySnackBar(context, 'Enter Price for Product 2');
-    } else if (image2 == null &&
-        nameController2.text.isNotEmpty &&
-        priceController2.text.isNotEmpty) {
-      return mySnackBar(context, 'Select Image for Product 2');
-    } else if (double.parse(priceController2.text) > 1000000000 ||
-        double.parse(priceController2.text) < 0.999999999999999) {
-      return mySnackBar(
-          context, 'Price Range is Rs. 1 - 1000000000 (Product 2)');
-    }
-    // price
-    else if (image2 == null &&
-        nameController2.text.isEmpty &&
-        priceController2.text.isNotEmpty) {
-      return mySnackBar(context, 'Select Image and Enter Name for Product 2');
-    } else if (image2 != null &&
-        nameController2.text.isEmpty &&
-        priceController2.text.isNotEmpty) {
-      return mySnackBar(context, 'Enter Name for Product 2');
-    } else if (image2 == null &&
-        nameController2.text.isNotEmpty &&
-        priceController2.text.isNotEmpty) {
-      return mySnackBar(context, 'Select Image for Product 2');
-    } else if (double.parse(priceController2.text) > 1000000000 ||
-        double.parse(priceController2.text) < 0.999999999999999) {
-      return mySnackBar(
-          context, 'Price Range is Rs. 1 - 1000000000 (Product 2)');
-    } else if (image2 != null &&
-        nameController2.text.isNotEmpty &&
-        priceController2.text.isNotEmpty) {
-      try {
-        final previousProducts = await store
-            .collection('Business')
-            .doc('Data')
-            .collection('Products')
-            .where('vendorId', isEqualTo: auth.currentUser!.uid)
-            .get();
+    if (mounted) {
+      if (image2 == null &&
+          nameController2.text.isEmpty &&
+          priceController2.text.isEmpty) {
+        null;
+        // image
+      } else if (image2 != null &&
+          nameController2.text.isEmpty &&
+          priceController2.text.isEmpty) {
+        return mySnackBar(context, 'Enter Name & Price for Product 2');
+      } else if (image2 != null &&
+          nameController2.text.isNotEmpty &&
+          priceController2.text.isEmpty) {
+        return mySnackBar(context, 'Enter Price for Product 2');
+      } else if (image2 != null &&
+          nameController2.text.isEmpty &&
+          priceController2.text.isNotEmpty) {
+        return mySnackBar(context, 'Enter Name for Product 2');
+      } else if (double.parse(priceController2.text) > 1000000000 ||
+          double.parse(priceController2.text) < 0.999999999999999) {
+        return mySnackBar(
+            context, 'Price Range is Rs. 1 - 1000000000 (Product 2)');
+      }
+      // name
+      else if (image2 == null &&
+          nameController2.text.isNotEmpty &&
+          priceController2.text.isEmpty) {
+        return mySnackBar(
+            context, 'Select Image and Enter Price for Product 2');
+      } else if (image2 != null &&
+          nameController2.text.isNotEmpty &&
+          priceController2.text.isEmpty) {
+        return mySnackBar(context, 'Enter Price for Product 2');
+      } else if (image2 == null &&
+          nameController2.text.isNotEmpty &&
+          priceController2.text.isNotEmpty) {
+        return mySnackBar(context, 'Select Image for Product 2');
+      } else if (double.parse(priceController2.text) > 1000000000 ||
+          double.parse(priceController2.text) < 0.999999999999999) {
+        return mySnackBar(
+            context, 'Price Range is Rs. 1 - 1000000000 (Product 2)');
+      }
+      // price
+      else if (image2 == null &&
+          nameController2.text.isEmpty &&
+          priceController2.text.isNotEmpty) {
+        return mySnackBar(context, 'Select Image and Enter Name for Product 2');
+      } else if (image2 != null &&
+          nameController2.text.isEmpty &&
+          priceController2.text.isNotEmpty) {
+        return mySnackBar(context, 'Enter Name for Product 2');
+      } else if (image2 == null &&
+          nameController2.text.isNotEmpty &&
+          priceController2.text.isNotEmpty) {
+        return mySnackBar(context, 'Select Image for Product 2');
+      } else if (double.parse(priceController2.text) > 1000000000 ||
+          double.parse(priceController2.text) < 0.999999999999999) {
+        return mySnackBar(
+            context, 'Price Range is Rs. 1 - 1000000000 (Product 2)');
+      } else if (image2 != null &&
+          nameController2.text.isNotEmpty &&
+          priceController2.text.isNotEmpty) {
+        try {
+          final previousProducts = await store
+              .collection('Business')
+              .doc('Data')
+              .collection('Products')
+              .where('vendorId', isEqualTo: auth.currentUser!.uid)
+              .get();
 
-        bool productAlreadyExists = false;
+          bool productAlreadyExists = false;
 
-        if (previousProducts.docs.isNotEmpty) {
-          for (QueryDocumentSnapshot doc in previousProducts.docs) {
-            if (doc['productName'] == nameController2.text.toString()) {
-              productAlreadyExists = true;
-              break;
+          if (previousProducts.docs.isNotEmpty) {
+            for (QueryDocumentSnapshot doc in previousProducts.docs) {
+              if (doc['productName'] == nameController2.text.toString()) {
+                productAlreadyExists = true;
+                break;
+              }
             }
           }
-        }
 
-        if (productAlreadyExists) {
-          if (context.mounted) {
-            return mySnackBar(
-              context,
-              "Product 2 with the same name already exists",
-            );
+          if (productAlreadyExists) {
+            if (mounted) {
+              return mySnackBar(
+                context,
+                "Product 2 with the same name already exists",
+              );
+            }
+          } else {
+            await addProduct(2);
           }
-        } else {
-          await addProduct(2);
+        } catch (e) {
+          setState(() {
+            isUploading = false;
+          });
+          if (mounted) {
+            return mySnackBar(context, 'Some error occurred');
+          }
         }
-      } catch (e) {
-        setState(() {
-          isUploading = false;
-        });
-        print("Error - $e");
-        return mySnackBar(context, 'Some error occurred');
       }
     }
 
     // ------------
 
     // PRODUCT 3
-    if (image3 == null &&
-        nameController3.text.isEmpty &&
-        priceController3.text.isEmpty) {
-      null;
-      // image
-    } else if (image3 != null &&
-        nameController3.text.isEmpty &&
-        priceController3.text.isEmpty) {
-      return mySnackBar(context, 'Enter Name & Price for Product 3');
-    } else if (image3 != null &&
-        nameController3.text.isNotEmpty &&
-        priceController3.text.isEmpty) {
-      return mySnackBar(context, 'Enter Price for Product 3');
-    } else if (image3 != null &&
-        nameController3.text.isEmpty &&
-        priceController3.text.isNotEmpty) {
-      return mySnackBar(context, 'Enter Name for Product 3');
-    } else if (double.parse(priceController3.text) > 1000000000 ||
-        double.parse(priceController3.text) < 0.999999999999999) {
-      return mySnackBar(
-          context, 'Price Range is Rs. 1 - 1000000000 (Product 3)');
-    }
-    // name
-    else if (image3 == null &&
-        nameController3.text.isNotEmpty &&
-        priceController3.text.isEmpty) {
-      return mySnackBar(context, 'Select Image and Enter Price for Product 3');
-    } else if (image3 != null &&
-        nameController3.text.isNotEmpty &&
-        priceController3.text.isEmpty) {
-      return mySnackBar(context, 'Enter Price for Product 3');
-    } else if (image3 == null &&
-        nameController3.text.isNotEmpty &&
-        priceController3.text.isNotEmpty) {
-      return mySnackBar(context, 'Select Image for Product 3');
-    } else if (double.parse(priceController3.text) > 1000000000 ||
-        double.parse(priceController3.text) < 0.999999999999999) {
-      return mySnackBar(
-          context, 'Price Range is Rs. 1 - 1000000000 (Product 3)');
-    }
-    // price
-    else if (image3 == null &&
-        nameController3.text.isEmpty &&
-        priceController3.text.isNotEmpty) {
-      return mySnackBar(context, 'Select Image and Enter Name for Product 3');
-    } else if (image3 != null &&
-        nameController3.text.isEmpty &&
-        priceController3.text.isNotEmpty) {
-      return mySnackBar(context, 'Enter Name for Product 3');
-    } else if (image3 == null &&
-        nameController3.text.isNotEmpty &&
-        priceController3.text.isNotEmpty) {
-      return mySnackBar(context, 'Select Image for Product 3');
-    } else if (double.parse(priceController3.text) > 1000000000 ||
-        double.parse(priceController3.text) < 0.999999999999999) {
-      return mySnackBar(
-          context, 'Price Range is Rs. 1 - 1000000000 (Product 3)');
-    } else if (image3 != null &&
-        nameController3.text.isNotEmpty &&
-        priceController3.text.isNotEmpty) {
-      try {
-        final previousProducts = await store
-            .collection('Business')
-            .doc('Data')
-            .collection('Products')
-            .where('vendorId', isEqualTo: auth.currentUser!.uid)
-            .get();
+    if (mounted) {
+      if (image3 == null &&
+          nameController3.text.isEmpty &&
+          priceController3.text.isEmpty) {
+        null;
+        // image
+      } else if (image3 != null &&
+          nameController3.text.isEmpty &&
+          priceController3.text.isEmpty) {
+        return mySnackBar(context, 'Enter Name & Price for Product 3');
+      } else if (image3 != null &&
+          nameController3.text.isNotEmpty &&
+          priceController3.text.isEmpty) {
+        return mySnackBar(context, 'Enter Price for Product 3');
+      } else if (image3 != null &&
+          nameController3.text.isEmpty &&
+          priceController3.text.isNotEmpty) {
+        return mySnackBar(context, 'Enter Name for Product 3');
+      } else if (double.parse(priceController3.text) > 1000000000 ||
+          double.parse(priceController3.text) < 0.999999999999999) {
+        return mySnackBar(
+            context, 'Price Range is Rs. 1 - 1000000000 (Product 3)');
+      }
+      // name
+      else if (image3 == null &&
+          nameController3.text.isNotEmpty &&
+          priceController3.text.isEmpty) {
+        return mySnackBar(
+            context, 'Select Image and Enter Price for Product 3');
+      } else if (image3 != null &&
+          nameController3.text.isNotEmpty &&
+          priceController3.text.isEmpty) {
+        return mySnackBar(context, 'Enter Price for Product 3');
+      } else if (image3 == null &&
+          nameController3.text.isNotEmpty &&
+          priceController3.text.isNotEmpty) {
+        return mySnackBar(context, 'Select Image for Product 3');
+      } else if (double.parse(priceController3.text) > 1000000000 ||
+          double.parse(priceController3.text) < 0.999999999999999) {
+        return mySnackBar(
+            context, 'Price Range is Rs. 1 - 1000000000 (Product 3)');
+      }
+      // price
+      else if (image3 == null &&
+          nameController3.text.isEmpty &&
+          priceController3.text.isNotEmpty) {
+        return mySnackBar(context, 'Select Image and Enter Name for Product 3');
+      } else if (image3 != null &&
+          nameController3.text.isEmpty &&
+          priceController3.text.isNotEmpty) {
+        return mySnackBar(context, 'Enter Name for Product 3');
+      } else if (image3 == null &&
+          nameController3.text.isNotEmpty &&
+          priceController3.text.isNotEmpty) {
+        return mySnackBar(context, 'Select Image for Product 3');
+      } else if (double.parse(priceController3.text) > 1000000000 ||
+          double.parse(priceController3.text) < 0.999999999999999) {
+        return mySnackBar(
+            context, 'Price Range is Rs. 1 - 1000000000 (Product 3)');
+      } else if (image3 != null &&
+          nameController3.text.isNotEmpty &&
+          priceController3.text.isNotEmpty) {
+        try {
+          final previousProducts = await store
+              .collection('Business')
+              .doc('Data')
+              .collection('Products')
+              .where('vendorId', isEqualTo: auth.currentUser!.uid)
+              .get();
 
-        bool productAlreadyExists = false;
+          bool productAlreadyExists = false;
 
-        if (previousProducts.docs.isNotEmpty) {
-          for (QueryDocumentSnapshot doc in previousProducts.docs) {
-            if (doc['productName'] == nameController3.text.toString()) {
-              productAlreadyExists = true;
-              break;
+          if (previousProducts.docs.isNotEmpty) {
+            for (QueryDocumentSnapshot doc in previousProducts.docs) {
+              if (doc['productName'] == nameController3.text.toString()) {
+                productAlreadyExists = true;
+                break;
+              }
             }
           }
-        }
 
-        if (productAlreadyExists) {
-          if (context.mounted) {
-            return mySnackBar(
-              context,
-              "Product 3 with the same name already exists",
-            );
+          if (productAlreadyExists) {
+            if (mounted) {
+              return mySnackBar(
+                context,
+                "Product 3 with the same name already exists",
+              );
+            }
+          } else {
+            await addProduct(3);
           }
-        } else {
-          await addProduct(3);
+        } catch (e) {
+          setState(() {
+            isUploading = false;
+          });
+          if (mounted) {
+            return mySnackBar(context, 'Some error occurred');
+          }
         }
-      } catch (e) {
-        setState(() {
-          isUploading = false;
-        });
-        print("Error - $e");
-        return mySnackBar(context, 'Some error occurred');
       }
     }
 
     // ------------
 
     // PRODUCT 4
-    if (image4 == null &&
-        nameController4.text.isEmpty &&
-        priceController4.text.isEmpty) {
-      null;
-      // image
-    } else if (image4 != null &&
-        nameController4.text.isEmpty &&
-        priceController4.text.isEmpty) {
-      return mySnackBar(context, 'Enter Name & Price for Product 4');
-    } else if (image4 != null &&
-        nameController4.text.isNotEmpty &&
-        priceController4.text.isEmpty) {
-      return mySnackBar(context, 'Enter Price for Product 4');
-    } else if (image4 != null &&
-        nameController4.text.isEmpty &&
-        priceController4.text.isNotEmpty) {
-      return mySnackBar(context, 'Enter Name for Product 4');
-    } else if (double.parse(priceController4.text) > 1000000000 ||
-        double.parse(priceController4.text) < 0.999999999999999) {
-      return mySnackBar(
-          context, 'Price Range is Rs. 1 - 1000000000 (Product 4)');
-    }
-    // name
-    else if (image4 == null &&
-        nameController4.text.isNotEmpty &&
-        priceController4.text.isEmpty) {
-      return mySnackBar(context, 'Select Image and Enter Price for Product 4');
-    } else if (image4 != null &&
-        nameController4.text.isNotEmpty &&
-        priceController4.text.isEmpty) {
-      return mySnackBar(context, 'Enter Price for Product 4');
-    } else if (image4 == null &&
-        nameController4.text.isNotEmpty &&
-        priceController4.text.isNotEmpty) {
-      return mySnackBar(context, 'Select Image for Product 4');
-    } else if (double.parse(priceController4.text) > 1000000000 ||
-        double.parse(priceController4.text) < 0.999999999999999) {
-      return mySnackBar(
-          context, 'Price Range is Rs. 1 - 1000000000 (Product 4)');
-    }
-    // price
-    else if (image4 == null &&
-        nameController4.text.isEmpty &&
-        priceController4.text.isNotEmpty) {
-      return mySnackBar(context, 'Select Image and Enter Name for Product 4');
-    } else if (image4 != null &&
-        nameController4.text.isEmpty &&
-        priceController4.text.isNotEmpty) {
-      return mySnackBar(context, 'Enter Name for Product 4');
-    } else if (image4 == null &&
-        nameController4.text.isNotEmpty &&
-        priceController4.text.isNotEmpty) {
-      return mySnackBar(context, 'Select Image for Product 4');
-    } else if (double.parse(priceController4.text) > 1000000000 ||
-        double.parse(priceController4.text) < 0.999999999999999) {
-      return mySnackBar(
-          context, 'Price Range is Rs. 1 - 1000000000 (Product 4)');
-    } else if (image4 != null &&
-        nameController4.text.isNotEmpty &&
-        priceController4.text.isNotEmpty) {
-      try {
-        final previousProducts = await store
-            .collection('Business')
-            .doc('Data')
-            .collection('Products')
-            .where('vendorId', isEqualTo: auth.currentUser!.uid)
-            .get();
+    if (mounted) {
+      if (image4 == null &&
+          nameController4.text.isEmpty &&
+          priceController4.text.isEmpty) {
+        null;
+        // image
+      } else if (image4 != null &&
+          nameController4.text.isEmpty &&
+          priceController4.text.isEmpty) {
+        return mySnackBar(context, 'Enter Name & Price for Product 4');
+      } else if (image4 != null &&
+          nameController4.text.isNotEmpty &&
+          priceController4.text.isEmpty) {
+        return mySnackBar(context, 'Enter Price for Product 4');
+      } else if (image4 != null &&
+          nameController4.text.isEmpty &&
+          priceController4.text.isNotEmpty) {
+        return mySnackBar(context, 'Enter Name for Product 4');
+      } else if (double.parse(priceController4.text) > 1000000000 ||
+          double.parse(priceController4.text) < 0.999999999999999) {
+        return mySnackBar(
+            context, 'Price Range is Rs. 1 - 1000000000 (Product 4)');
+      }
+      // name
+      else if (image4 == null &&
+          nameController4.text.isNotEmpty &&
+          priceController4.text.isEmpty) {
+        return mySnackBar(
+            context, 'Select Image and Enter Price for Product 4');
+      } else if (image4 != null &&
+          nameController4.text.isNotEmpty &&
+          priceController4.text.isEmpty) {
+        return mySnackBar(context, 'Enter Price for Product 4');
+      } else if (image4 == null &&
+          nameController4.text.isNotEmpty &&
+          priceController4.text.isNotEmpty) {
+        return mySnackBar(context, 'Select Image for Product 4');
+      } else if (double.parse(priceController4.text) > 1000000000 ||
+          double.parse(priceController4.text) < 0.999999999999999) {
+        return mySnackBar(
+            context, 'Price Range is Rs. 1 - 1000000000 (Product 4)');
+      }
+      // price
+      else if (image4 == null &&
+          nameController4.text.isEmpty &&
+          priceController4.text.isNotEmpty) {
+        return mySnackBar(context, 'Select Image and Enter Name for Product 4');
+      } else if (image4 != null &&
+          nameController4.text.isEmpty &&
+          priceController4.text.isNotEmpty) {
+        return mySnackBar(context, 'Enter Name for Product 4');
+      } else if (image4 == null &&
+          nameController4.text.isNotEmpty &&
+          priceController4.text.isNotEmpty) {
+        return mySnackBar(context, 'Select Image for Product 4');
+      } else if (double.parse(priceController4.text) > 1000000000 ||
+          double.parse(priceController4.text) < 0.999999999999999) {
+        return mySnackBar(
+            context, 'Price Range is Rs. 1 - 1000000000 (Product 4)');
+      } else if (image4 != null &&
+          nameController4.text.isNotEmpty &&
+          priceController4.text.isNotEmpty) {
+        try {
+          final previousProducts = await store
+              .collection('Business')
+              .doc('Data')
+              .collection('Products')
+              .where('vendorId', isEqualTo: auth.currentUser!.uid)
+              .get();
 
-        bool productAlreadyExists = false;
+          bool productAlreadyExists = false;
 
-        if (previousProducts.docs.isNotEmpty) {
-          for (QueryDocumentSnapshot doc in previousProducts.docs) {
-            if (doc['productName'] == nameController4.text.toString()) {
-              productAlreadyExists = true;
-              break;
+          if (previousProducts.docs.isNotEmpty) {
+            for (QueryDocumentSnapshot doc in previousProducts.docs) {
+              if (doc['productName'] == nameController4.text.toString()) {
+                productAlreadyExists = true;
+                break;
+              }
             }
           }
-        }
 
-        if (productAlreadyExists) {
-          if (context.mounted) {
-            return mySnackBar(
-              context,
-              "Product 4 with the same name already exists",
-            );
+          if (productAlreadyExists) {
+            if (mounted) {
+              return mySnackBar(
+                context,
+                "Product 4 with the same name already exists",
+              );
+            }
+          } else {
+            await addProduct(4);
           }
-        } else {
-          await addProduct(4);
+        } catch (e) {
+          setState(() {
+            isUploading = false;
+          });
+          if (mounted) {
+            return mySnackBar(context, 'Some error occurred');
+          }
         }
-      } catch (e) {
-        setState(() {
-          isUploading = false;
-        });
-        print("Error - $e");
-        return mySnackBar(context, 'Some error occurred');
       }
     }
 
     setState(() {
       isUploading = false;
     });
-
-    Navigator.of(context).pop();
+    if (mounted) {
+      Navigator.of(context).pop();
+    }
   }
 
   // ADD PRODUCT
@@ -534,7 +548,7 @@ class _AddBulkProductState extends State<AddBulkProduct> {
         });
       });
     } catch (e) {
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, e.toString());
       }
     }
@@ -624,10 +638,10 @@ class _AddBulkProductState extends State<AddBulkProduct> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bulk Add Products'),
+        title: const Text('Bulk Add Products'),
       ),
       bottomSheet: Padding(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
           height: 50,
@@ -701,7 +715,7 @@ class _AddBulkProductState extends State<AddBulkProduct> {
                       },
                       image: image4,
                     ),
-                    SizedBox(height: 72),
+                    const SizedBox(height: 72),
                   ],
                 ),
               );

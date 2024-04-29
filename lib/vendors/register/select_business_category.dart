@@ -101,7 +101,7 @@ class _SelectBusinessCategoryPageState
           //   print('No subcategories found for selected category');
           // }
 
-          if (context.mounted) {
+          if (mounted) {
             Navigator.of(context).pop();
             Navigator.of(context).push(
               MaterialPageRoute(
@@ -109,11 +109,15 @@ class _SelectBusinessCategoryPageState
             );
           }
         } catch (e) {
-          return mySnackBar(context, e.toString());
+          if (mounted) {
+            return mySnackBar(context, e.toString());
+          }
         }
       }
     } else {
-      return mySnackBar(context, "Select Category");
+      if (mounted) {
+        return mySnackBar(context, "Select Category");
+      }
     }
   }
 

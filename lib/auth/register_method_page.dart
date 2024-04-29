@@ -112,9 +112,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
             }
 
             signInMethodProvider.chooseEmail();
-          } else {
-            print('Error - Not Signed In');
-          }
+          } else {}
 
           setState(() {
             isEmailRegistering = false;
@@ -122,7 +120,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
           if (FirebaseAuth.instance.currentUser!.email != null ||
               auth.currentUser!.email != null) {
             SystemChannels.textInput.invokeMethod('TextInput.hide');
-            if (context.mounted) {
+            if (mounted) {
               Navigator.of(context).pop();
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -140,14 +138,14 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
           });
 
           if (e.code == 'email-already-in-use') {
-            if (context.mounted) {
+            if (mounted) {
               mySnackBar(
                 context,
                 'This email is already in use.',
               );
             }
           } else {
-            if (context.mounted) {
+            if (mounted) {
               mySnackBar(
                 context,
                 e.message ?? 'An error occurred.',
@@ -158,7 +156,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
           setState(() {
             isEmailRegistering = false;
           });
-          if (context.mounted) {
+          if (mounted) {
             mySnackBar(context, e.toString());
           }
         }
@@ -177,7 +175,6 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
   Future<void> phoneNumberRegister(
       SignInMethodProvider signInMethodProvider) async {
     if (registerNumberFormKey.currentState!.validate()) {
-      print('b');
       try {
         setState(() {
           isPhoneRegistering = true;
@@ -219,7 +216,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
         // Register with Phone
         signInMethodProvider.chooseNumber();
         if (phoneController.text.contains("+91")) {
-          if (context.mounted) {
+          if (mounted) {
             await authMethods.phoneSignIn(
               context,
               " ${phoneController.text}",
@@ -227,7 +224,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
             );
           }
         } else if (phoneController.text.contains("+91 ")) {
-          if (context.mounted) {
+          if (mounted) {
             await authMethods.phoneSignIn(
               context,
               phoneController.text,
@@ -247,7 +244,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                 });
               },
               verificationFailed: (e) {
-                if (context.mounted) {
+                if (mounted) {
                   mySnackBar(context, e.toString());
                 }
                 setState(() {
@@ -277,7 +274,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                 });
               },
               codeAutoRetrievalTimeout: (e) {
-                if (context.mounted) {
+                if (mounted) {
                   mySnackBar(context, e.toString());
                 }
                 setState(() {
@@ -295,13 +292,11 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
           isPhoneRegistering = false;
           phoneText = "SIGNUP";
         });
-        if (context.mounted) {
+        if (mounted) {
           mySnackBar(context, e.toString());
         }
       }
-    } else {
-      print(1234);
-    }
+    } else {}
   }
 
   @override
@@ -465,7 +460,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                                                 });
                                               },
                                               verificationFailed: (e) {
-                                                if (context.mounted) {
+                                                if (mounted) {
                                                   mySnackBar(
                                                     context,
                                                     e.toString(),
@@ -505,7 +500,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                                                 );
                                               },
                                               codeAutoRetrievalTimeout: (e) {
-                                                if (context.mounted) {
+                                                if (mounted) {
                                                   mySnackBar(
                                                     context,
                                                     e.toString(),
@@ -750,7 +745,6 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                                             );
 
                                             if (auth.currentUser != null) {
-                                              print('abc');
                                               await store
                                                   .collection('Business')
                                                   .doc('Owners')
@@ -789,7 +783,9 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                                               signInMethodProvider
                                                   .chooseEmail();
                                             } else {
-                                              mySnackBar(context, 'abc');
+                                              if (context.mounted) {
+                                                mySnackBar(context, 'abc');
+                                              }
                                             }
 
                                             setState(() {
@@ -957,7 +953,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                         //           'MembershipTime': null,
                         //         });
                         //         SystemChannels.textInput.invokeMethod('TextInput.hide');
-                        //         if (context.mounted) {
+                        //         if (mounted) {
                         //           Navigator.of(context).pop();
                         //           Navigator.of(context).push(
                         //             MaterialPageRoute(
@@ -967,7 +963,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                         //           );
                         //         }
                         //       } else {
-                        //         if (context.mounted) {
+                        //         if (mounted) {
                         //           mySnackBar(
                         //             context,
                         //             "Some error occured\nTry signing with email / phone number",
@@ -981,7 +977,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                         //       setState(() {
                         //         isGoogleRegistering = false;
                         //       });
-                        //       if (context.mounted) {
+                        //       if (mounted) {
                         //         mySnackBar(context, e.toString());
                         //       }
                         //     }

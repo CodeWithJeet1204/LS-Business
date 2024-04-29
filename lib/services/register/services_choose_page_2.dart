@@ -37,7 +37,6 @@ class _ServicesChoosePage2State extends State<ServicesChoosePage2> {
     } else {
       getCategory(widget.place!);
     }
-    print('Selected Categories: $selectedCategories');
     super.initState();
   }
 
@@ -60,9 +59,9 @@ class _ServicesChoosePage2State extends State<ServicesChoosePage2> {
   // GET CATEGORY
   void getCategory(List places) {
     setState(() {
-      places.forEach((place) {
+      for (var place in places) {
         selectedCategories.addAll(servicesMap[place]!.keys);
-      });
+      }
     });
   }
 
@@ -97,20 +96,24 @@ class _ServicesChoosePage2State extends State<ServicesChoosePage2> {
       });
 
       if (serviceData['SubCategory'] == null) {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: ((context) => ServicesChoosePage3(
-                  place: widget.place ?? place,
-                  category: chosenCategories,
-                )),
-          ),
-        );
+        if (mounted) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: ((context) => ServicesChoosePage3(
+                    place: widget.place ?? place,
+                    category: chosenCategories,
+                  )),
+            ),
+          );
+        }
       } else {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: ((context) => ServicesMainPage()),
-          ),
-        );
+        if (mounted) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: ((context) => const ServicesMainPage()),
+            ),
+          );
+        }
       }
     } else {
       setState(() {
@@ -126,7 +129,7 @@ class _ServicesChoosePage2State extends State<ServicesChoosePage2> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Choose Your Category'),
+        title: const Text('Choose Your Category'),
         automaticallyImplyLeading: false,
       ),
       body: Padding(
@@ -142,14 +145,13 @@ class _ServicesChoosePage2State extends State<ServicesChoosePage2> {
                 height: MediaQuery.of(context).size.height - 168,
                 child: GridView.builder(
                   shrinkWrap: true,
-                  physics: ClampingScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  physics: const ClampingScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 16 / 9,
                   ),
                   itemCount: selectedCategories.length,
                   itemBuilder: ((context, index) {
-                    print('Selected Categories: $selectedCategories');
                     String name = selectedCategories[index];
                     String imageUrl = categoryImageMap[name]!;
 

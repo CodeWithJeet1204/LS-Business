@@ -64,7 +64,7 @@ class _ServiceEditPriceContainerState extends State<ServiceEditPriceContainer> {
                   ),
                 ),
               ),
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [],

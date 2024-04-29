@@ -81,7 +81,7 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
                   await auth.signOut().then(
                         (value) => Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
-                            builder: ((context) => SelectModePage()),
+                            builder: ((context) => const SelectModePage()),
                           ),
                           (route) => false,
                         ),
@@ -90,7 +90,9 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
                     Navigator.of(context).pop();
                   }
                 } on FirebaseAuthException catch (e) {
-                  mySnackBar(context, e.toString());
+                  if (context.mounted) {
+                    mySnackBar(context, e.toString());
+                  }
                 }
                 await auth.signOut();
                 auth.currentUser!.reload();
@@ -115,7 +117,7 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
 
   // SHOW IMAGE
   Future<void> showImage() async {
-    final imageStream = await FirebaseFirestore.instance
+    final imageStream = FirebaseFirestore.instance
         .collection('Services')
         .doc(auth.currentUser!.uid)
         .snapshots();
@@ -162,7 +164,7 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: const Text('Profile'),
         actions: [
           IconButton(
             onPressed: () async {
@@ -177,7 +179,7 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
         ],
       ),
       body: !isData
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : LayoutBuilder(builder: ((context, constraints) {
@@ -238,7 +240,8 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
                             onTap: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: ((context) => ServicesDetailsPage()),
+                                  builder: ((context) =>
+                                      const ServicesDetailsPage()),
                                 ),
                               );
                             },
@@ -272,13 +275,13 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                                  Icon(FeatherIcons.settings),
+                                  const Icon(FeatherIcons.settings),
                                 ],
                               ),
                             ),
                           ),
 
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
 
                           // EDIT PRICES
                           GestureDetector(
@@ -286,7 +289,7 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: ((context) =>
-                                      ServicesEditPricePage()),
+                                      const ServicesEditPricePage()),
                                 ),
                               );
                             },
@@ -331,7 +334,7 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
                             ),
                           ),
 
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
 
                           // CHANGE WORK
                           GestureDetector(
@@ -339,7 +342,7 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: ((context) =>
-                                      ServicesChangeWorkPage1()),
+                                      const ServicesChangeWorkPage1()),
                                 ),
                               );
                             },
@@ -373,7 +376,7 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                                  Icon(
+                                  const Icon(
                                     FeatherIcons.grid,
                                   ),
                                 ],

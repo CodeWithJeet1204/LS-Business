@@ -33,16 +33,15 @@ class _ServicesChangeWorkPage2State extends State<ServicesChangeWorkPage2> {
   void initState() {
     getCategory();
 
-    print('Selected Categories: $allCategories');
     super.initState();
   }
 
   // GET CATEGORY
   void getCategory() {
     setState(() {
-      widget.place.forEach((place) {
+      for (var place in widget.place) {
         allCategories.addAll(servicesMap[place]!.keys);
-      });
+      }
     });
   }
 
@@ -67,20 +66,19 @@ class _ServicesChangeWorkPage2State extends State<ServicesChangeWorkPage2> {
         'Category': chosenCategories,
       });
 
-      print("Chosen Categories: $chosenCategories");
-
       setState(() {
         isNext = false;
       });
-
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: ((context) => ServicesChangeWorkPage3(
-                place: widget.place,
-                category: chosenCategories,
-              )),
-        ),
-      );
+      if (mounted) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: ((context) => ServicesChangeWorkPage3(
+                  place: widget.place,
+                  category: chosenCategories,
+                )),
+          ),
+        );
+      }
     } else {
       setState(() {
         isNext = false;
@@ -95,7 +93,7 @@ class _ServicesChangeWorkPage2State extends State<ServicesChangeWorkPage2> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Choose Your Category'),
+        title: const Text('Choose Your Category'),
         automaticallyImplyLeading: false,
       ),
       body: Padding(
@@ -111,14 +109,13 @@ class _ServicesChangeWorkPage2State extends State<ServicesChangeWorkPage2> {
                 height: MediaQuery.of(context).size.height - 168,
                 child: GridView.builder(
                   shrinkWrap: true,
-                  physics: ClampingScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  physics: const ClampingScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 16 / 9,
                   ),
                   itemCount: allCategories.length,
                   itemBuilder: ((context, index) {
-                    print('Selected Categories: $allCategories');
                     String name = allCategories[index];
                     String imageUrl = categoryImageMap[name]!;
 

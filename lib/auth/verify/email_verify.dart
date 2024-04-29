@@ -63,25 +63,25 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
     isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
 
     if (isEmailVerified) {
-      if (context.mounted) {
+      if (mounted) {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: ((context) {
             if (widget.mode == 'vendor') {
               if (widget.isLogging) {
-                return MainPage();
+                return const MainPage();
               } else {
-                return UserRegisterDetailsPage();
+                return const UserRegisterDetailsPage();
               }
             } else if (widget.mode == 'services') {
               if (widget.isLogging) {
                 // return ServicesMainPage();
               } else {
-                return ServicesRegisterDetailsPage();
+                return const ServicesRegisterDetailsPage();
               }
             } else {
               // return EventsMainPage();
             }
-            return MainPage();
+            return const MainPage();
           })),
           (route) => false,
         );
@@ -94,7 +94,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
     try {
       final user = FirebaseAuth.instance.currentUser!;
       await user.sendEmailVerification();
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, "Verification Email Sent");
       }
 
@@ -106,7 +106,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
         canResendEmail = true;
       });
     } catch (e) {
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, e.toString());
       }
     }

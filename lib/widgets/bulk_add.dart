@@ -65,7 +65,7 @@ class _BulkAddState extends State<BulkAdd> {
                       ),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Column(
+                    child: const Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -126,7 +126,7 @@ class _BulkAddState extends State<BulkAdd> {
                   controller: widget.nameController,
                   borderRadius: 12,
                   horizontalPadding: 0,
-                  autoFillHints: [],
+                  autoFillHints: const [],
                 ),
               ),
 
@@ -152,7 +152,7 @@ class _BulkAddState extends State<BulkAdd> {
                         borderRadius: 12,
                         horizontalPadding: 0,
                         keyboardType: TextInputType.number,
-                        autoFillHints: [],
+                        autoFillHints: const [],
                       ),
                     ),
                   ],

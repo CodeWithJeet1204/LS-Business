@@ -80,7 +80,7 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
         .update({
       'products': products.remove(productId),
     });
-    if (context.mounted) {
+    if (mounted) {
       Navigator.of(context).pop();
     }
   }

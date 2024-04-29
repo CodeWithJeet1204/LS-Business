@@ -104,7 +104,7 @@ class _BusinessRegisterDetailsPageState
         });
 
         SystemChannels.textInput.invokeMethod('TextInput.hide');
-        if (context.mounted) {
+        if (mounted) {
           Navigator.of(context).pop();
           Navigator.of(context).push(
             MaterialPageRoute(
@@ -119,7 +119,7 @@ class _BusinessRegisterDetailsPageState
         setState(() {
           isNext = false;
         });
-        if (context.mounted) {
+        if (mounted) {
           mySnackBar(context, e.toString());
         }
       }

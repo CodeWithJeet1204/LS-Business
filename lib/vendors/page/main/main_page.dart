@@ -55,7 +55,7 @@ class _MainPageState extends State<MainPage> {
 
   // DETAILS ADDED
   Future<void> detailsAdded() async {
-    final DocumentSnapshot<Map<String, dynamic>?>? getUserDetailsAddedDatas =
+    final DocumentSnapshot<Map<String, dynamic>> getUserDetailsAddedDatas =
         await store
             .collection('Business')
             .doc('Owners')
@@ -64,9 +64,9 @@ class _MainPageState extends State<MainPage> {
             .get();
 
     final Map<String, dynamic>? getUserDetailsAddedData =
-        getUserDetailsAddedDatas?.data();
+        getUserDetailsAddedDatas.data();
 
-    final DocumentSnapshot<Map<String, dynamic>?>? getBusinessDetailsAdded =
+    final DocumentSnapshot<Map<String, dynamic>> getBusinessDetailsAdded =
         await store
             .collection('Business')
             .doc('Owners')
@@ -93,65 +93,61 @@ class _MainPageState extends State<MainPage> {
     //   }
     // }
 
-    if (getUserDetailsAddedDatas != null) {
-      if (getUserDetailsAddedDatas.exists) {
-        if (!(await isPayed())) {
-          detailsPage = const LoginPage(
-            mode: 'vendor',
-          );
-        } else {
-          if (getUserDetailsAddedData!['Email'] == null ||
-              getUserDetailsAddedData['Phone Number'] == null) {
-            detailsPage = const UserRegisterDetailsPage();
-          } else if ((getUserDetailsAddedData['Phone Number'] != null &&
-              getUserDetailsAddedData['numberVerified'] != true)) {
-            if (!auth.currentUser!.emailVerified) {
-              detailsPage = const EmailVerifyPage(
-                mode: 'vendor',
-                isLogging: true,
-              );
-            } else {
-              detailsPage = null;
-            }
-          } else if ((getUserDetailsAddedData['Image'] == null)) {
-            detailsPage = const UserRegisterDetailsPage();
-          } else if (getUserDetailsAddedData['Image'] != null &&
-              getBusinessDetailsAdded!['GSTNumber'] == null) {
-            detailsPage = const BusinessDetailsPage();
-          } else if (getBusinessDetailsAdded!['GSTNumber'] != null &&
-              getBusinessDetailsAdded['Type'] == null) {
-            detailsPage = SelectBusinessCategoryPage();
-          } /* else if (getBusinessDetailsAdded['Type'] != null &&
-          await getCommonCategories(getBusinessDetailsAdded['Type'])) {
-        detailsPage = SelectBusinessCategoryPage();
-      }*/
-          else if (getUserDetailsAddedData['Image'] != null &&
-              getBusinessDetailsAdded['GSTNumber'] != null &&
-              (getBusinessDetailsAdded['MembershipName'] == null ||
-                  getBusinessDetailsAdded['MembershipEndDateTime'] == null)) {
-            detailsPage = const SelectMembershipPage();
-          } else if (DateTime.now().isAfter(
-              (getBusinessDetailsAdded['MembershipEndDateTime'] as Timestamp)
-                  .toDate())) {
-            mySnackBar(context, 'Your Membership Has Expired');
-            detailsPage = const SelectMembershipPage();
+    if (getUserDetailsAddedDatas.exists) {
+      if (!(await isPayed())) {
+        detailsPage = const LoginPage(
+          mode: 'vendor',
+        );
+      } else {
+        if (getUserDetailsAddedData!['Email'] == null ||
+            getUserDetailsAddedData['Phone Number'] == null) {
+          detailsPage = const UserRegisterDetailsPage();
+        } else if ((getUserDetailsAddedData['Phone Number'] != null &&
+            getUserDetailsAddedData['numberVerified'] != true)) {
+          if (!auth.currentUser!.emailVerified) {
+            detailsPage = const EmailVerifyPage(
+              mode: 'vendor',
+              isLogging: true,
+            );
           } else {
             detailsPage = null;
           }
+        } else if ((getUserDetailsAddedData['Image'] == null)) {
+          detailsPage = const UserRegisterDetailsPage();
+        } else if (getUserDetailsAddedData['Image'] != null &&
+            getBusinessDetailsAdded['GSTNumber'] == null) {
+          detailsPage = const BusinessDetailsPage();
+        } else if (getBusinessDetailsAdded['GSTNumber'] != null &&
+            getBusinessDetailsAdded['Type'] == null) {
+          detailsPage = const SelectBusinessCategoryPage();
+        } /* else if (getBusinessDetailsAdded['Type'] != null &&
+        await getCommonCategories(getBusinessDetailsAdded['Type'])) {
+      detailsPage = SelectBusinessCategoryPage();
+    }*/
+        else if (getUserDetailsAddedData['Image'] != null &&
+            getBusinessDetailsAdded['GSTNumber'] != null &&
+            (getBusinessDetailsAdded['MembershipName'] == null ||
+                getBusinessDetailsAdded['MembershipEndDateTime'] == null)) {
+          detailsPage = const SelectMembershipPage();
+        } else if (DateTime.now().isAfter(
+            (getBusinessDetailsAdded['MembershipEndDateTime'] as Timestamp)
+                .toDate())) {
+          if (mounted) {
+            mySnackBar(context, 'Your Membership Has Expired');
+          }
+          detailsPage = const SelectMembershipPage();
+        } else {
+          detailsPage = null;
         }
-      } else {
-        await auth.signOut();
+      }
+    } else {
+      await auth.signOut();
+      if (mounted) {
         return mySnackBar(
           context,
           'This account was created in User app, use another account to sign in here',
         );
       }
-    } else {
-      await auth.signOut();
-      return mySnackBar(
-        context,
-        'This account was created in User app, use another account to sign in here',
-      );
     }
 
     setState(() {});
@@ -188,7 +184,7 @@ class _MainPageState extends State<MainPage> {
             ),
             currentIndex: current,
             onTap: changePage,
-            items: [
+            items: const [
               BottomNavigationBarItem(
                 activeIcon: Icon(
                   FeatherIcons.barChart,

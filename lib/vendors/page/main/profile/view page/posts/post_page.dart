@@ -70,7 +70,7 @@ class _PostPageState extends State<PostPage> {
   // DELETE POST
   Future<void> deletePost() async {
     try {
-      if (context.mounted) {
+      if (mounted) {
         Navigator.of(context).pop();
       }
       await store
@@ -79,11 +79,11 @@ class _PostPageState extends State<PostPage> {
           .collection('Posts')
           .doc(widget.postId)
           .delete();
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, "Post Deleted");
       }
     } catch (e) {
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, e.toString());
       }
     }
@@ -120,7 +120,9 @@ class _PostPageState extends State<PostPage> {
             TextButton(
               onPressed: () async {
                 await deletePost();
-                Navigator.of(context).pop();
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                }
               },
               child: const Text(
                 overflow: TextOverflow.ellipsis,
@@ -337,7 +339,7 @@ class _PostPageState extends State<PostPage> {
                             ),
                           ),
 
-                          Divider(),
+                          const Divider(),
 
                           // PRICE
                           Padding(
@@ -382,7 +384,7 @@ class _PostPageState extends State<PostPage> {
                                                 text: TextSpan(
                                                   text: price == "" ||
                                                           price == null ||
-                                                          price == 0
+                                                          price == '0'
                                                       ? ''
                                                       : 'Rs. ',
                                                   style: TextStyle(
@@ -394,7 +396,7 @@ class _PostPageState extends State<PostPage> {
                                                     TextSpan(
                                                       text: price == "" ||
                                                               price == null ||
-                                                              price == 0
+                                                              price == '0'
                                                           ? 'N/A (price)'
                                                           : data['isPercent']
                                                               ? '${(double.parse(price) * (100 - (data['discountAmount'])) / 100).toStringAsFixed(2)}  '
@@ -488,7 +490,9 @@ class _PostPageState extends State<PostPage> {
                                     padding: const EdgeInsets.only(left: 10),
                                     child: Text(
                                       overflow: TextOverflow.ellipsis,
-                                      price == "" || price == null || price == 0
+                                      price == "" ||
+                                              price == null ||
+                                              price == '0'
                                           ? 'N/A (price)'
                                           : "Rs. ${postData['postProductPrice']}",
                                       style: const TextStyle(
@@ -500,7 +504,7 @@ class _PostPageState extends State<PostPage> {
                                   ),
                           ),
 
-                          Divider(),
+                          const Divider(),
 
                           // DESCRIPTION
                           Padding(
@@ -533,7 +537,7 @@ class _PostPageState extends State<PostPage> {
                             ),
                           ),
 
-                          Divider(),
+                          const Divider(),
 
                           // BRAND
                           InfoBox(
@@ -541,7 +545,7 @@ class _PostPageState extends State<PostPage> {
                             value: brand,
                           ),
 
-                          Divider(),
+                          const Divider(),
 
                           // LIKES
                           InfoBox(
@@ -566,8 +570,8 @@ class _PostPageState extends State<PostPage> {
                                   text: "COMMENTS",
                                   value: comments.length.toString(),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 8),
+                                const Padding(
+                                  padding: EdgeInsets.only(right: 8),
                                   child: Icon(FeatherIcons.chevronRight),
                                 ),
                               ],

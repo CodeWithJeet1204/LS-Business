@@ -52,14 +52,14 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
         .collection(widget.shopType)
         .get();
 
-    specialSnapshot.docs.forEach((specialCategory) {
+    for (var specialCategory in specialSnapshot.docs) {
       final specialCategoryData = specialCategory.data();
 
       final name = specialCategoryData['specialCategoryName'];
       final imageUrl = specialCategoryData['specialCategoryImageUrl'];
 
       myCategory[name] = imageUrl;
-    });
+    }
 
     setState(() {
       categories = myCategory;
@@ -139,11 +139,11 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                                 child: GridView.builder(
                                   shrinkWrap: true,
                                   gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
                                     childAspectRatio: 0.75,
                                   ),
-                                  physics: ClampingScrollPhysics(),
+                                  physics: const ClampingScrollPhysics(),
                                   itemCount: categories.length,
                                   itemBuilder: ((context, index) {
                                     final name =
@@ -261,7 +261,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                                     child: ListView.builder(
                                       shrinkWrap: true,
                                       itemCount: categories.length,
-                                      physics: ClampingScrollPhysics(),
+                                      physics: const ClampingScrollPhysics(),
                                       itemBuilder: ((context, index) {
                                         final name =
                                             categories.keys.toList()[index];

@@ -59,7 +59,7 @@ class _SelectProductsForCategoryPageState
         isAdding = false;
       });
     }
-    if (context.mounted) {
+    if (mounted) {
       Navigator.of(context).pop();
     }
   }

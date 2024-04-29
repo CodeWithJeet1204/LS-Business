@@ -45,9 +45,7 @@ class _AddProductPage3State extends State<AddProductPage3> {
       setState(() {
         isSaving = true;
       });
-      final List<String> _imageDownloadUrl = [];
-
-      print("Final images: ${provider.productInfo['imageFiles']}");
+      final List<String> imageDownloadUrl = [];
 
       for (File img in (provider.productInfo['imageFiles'] as List<File>)) {
         try {
@@ -58,18 +56,16 @@ class _AddProductPage3State extends State<AddProductPage3> {
           await ref.putFile(img).whenComplete(() async {
             await ref.getDownloadURL().then((value) {
               setState(() {
-                _imageDownloadUrl.add(value);
+                imageDownloadUrl.add(value);
               });
             });
           });
         } catch (e) {
-          if (context.mounted) {
+          if (mounted) {
             mySnackBar(context, e.toString());
           }
         }
       }
-
-      print("Image download url: $_imageDownloadUrl");
 
       provider.add(
         {
@@ -84,7 +80,7 @@ class _AddProductPage3State extends State<AddProductPage3> {
           'deliveryRange': deliveryRange,
           'refundRange': refundRange,
           'replacementRange': replacementRange,
-          'images': _imageDownloadUrl,
+          'images': imageDownloadUrl,
         },
         true,
       );
@@ -96,14 +92,15 @@ class _AddProductPage3State extends State<AddProductPage3> {
           .collection('Products')
           .doc(widget.productId)
           .set(provider.productInfo);
-
-      mySnackBar(context, "Product Added");
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: ((context) => MainPage()),
-        ),
-        (route) => false,
-      );
+      if (mounted) {
+        mySnackBar(context, "Product Added");
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: ((context) => const MainPage()),
+          ),
+          (route) => false,
+        );
+      }
       setState(() {
         isSaving = false;
       });
@@ -111,7 +108,9 @@ class _AddProductPage3State extends State<AddProductPage3> {
       setState(() {
         isSaving = false;
       });
-      mySnackBar(context, e.toString());
+      if (mounted) {
+        mySnackBar(context, e.toString());
+      }
     }
   }
 
@@ -121,7 +120,7 @@ class _AddProductPage3State extends State<AddProductPage3> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           overflow: TextOverflow.ellipsis,
           'SERVICES AVAILABLE',
         ),
@@ -231,7 +230,6 @@ class _AddProductPage3State extends State<AddProductPage3> {
                                 onChanged: ((value) {
                                   setState(() {
                                     isCODAvailable = !isCODAvailable;
-                                    print(isCODAvailable);
                                   });
                                 }),
                               ),
@@ -240,7 +238,7 @@ class _AddProductPage3State extends State<AddProductPage3> {
                         )
                       : Container(),
 
-                  Divider(),
+                  const Divider(),
 
                   // REFUND
                   CheckBoxContainer(
@@ -289,7 +287,7 @@ class _AddProductPage3State extends State<AddProductPage3> {
                         )
                       : Container(),
 
-                  Divider(),
+                  const Divider(),
 
                   // REPLACEMENT
                   CheckBoxContainer(
@@ -298,7 +296,6 @@ class _AddProductPage3State extends State<AddProductPage3> {
                     function: (_) {
                       setState(() {
                         isReplacementAvailable = !isReplacementAvailable;
-                        print(isReplacementAvailable);
                       });
                     },
                     width: width,
@@ -339,7 +336,7 @@ class _AddProductPage3State extends State<AddProductPage3> {
                         )
                       : Container(),
 
-                  Divider(),
+                  const Divider(),
 
                   // GIFT WRAP
                   CheckBoxContainer(
@@ -353,7 +350,7 @@ class _AddProductPage3State extends State<AddProductPage3> {
                     width: width,
                   ),
 
-                  Divider(),
+                  const Divider(),
 
                   // BULK SELL
                   CheckBoxContainer(
@@ -367,7 +364,7 @@ class _AddProductPage3State extends State<AddProductPage3> {
                     width: width,
                   ),
 
-                  Divider(),
+                  const Divider(),
 
                   // GST INVOICE
                   CheckBoxContainer(
@@ -381,7 +378,7 @@ class _AddProductPage3State extends State<AddProductPage3> {
                     width: width,
                   ),
 
-                  Divider(),
+                  const Divider(),
 
                   // MEMBERSHIP
                   Padding(

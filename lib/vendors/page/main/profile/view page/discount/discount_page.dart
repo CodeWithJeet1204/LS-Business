@@ -91,12 +91,12 @@ class DISCOUNT extends State<DiscountPage> {
         setState(() {
           isAddingImage = false;
         });
-        if (context.mounted) {
+        if (mounted) {
           mySnackBar(context, e.toString());
         }
       }
     } else {
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, "Select an Image");
       }
     }
@@ -119,12 +119,12 @@ class DISCOUNT extends State<DiscountPage> {
         setState(() {
           isImageChanging = false;
         });
-        if (context.mounted) {
+        if (mounted) {
           mySnackBar(context, e.toString());
         }
       }
     } else {
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, "Select an Image");
       }
     }
@@ -152,7 +152,7 @@ class DISCOUNT extends State<DiscountPage> {
       setState(() {
         isImageChanging = false;
       });
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, e.toString());
       }
     }
@@ -211,7 +211,7 @@ class DISCOUNT extends State<DiscountPage> {
   // DELETE DISCOUNT
   Future<void> delete(String discountId, String? imageUrl) async {
     try {
-      if (context.mounted) {
+      if (mounted) {
         Navigator.of(context).pop();
       }
       if (imageUrl != null) {
@@ -224,11 +224,11 @@ class DISCOUNT extends State<DiscountPage> {
           .collection('Discounts')
           .doc(discountId)
           .delete();
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, 'Discount Deleted');
       }
     } catch (e) {
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, e.toString());
       }
     }
@@ -253,11 +253,11 @@ class DISCOUNT extends State<DiscountPage> {
         setState(() {
           isChangingName = false;
         });
-        if (context.mounted) {
+        if (mounted) {
           Navigator.of(context).pop();
         }
       } catch (e) {
-        if (context.mounted) {
+        if (mounted) {
           mySnackBar(context, e.toString());
         }
       }
@@ -431,11 +431,11 @@ class DISCOUNT extends State<DiscountPage> {
   //                   'categoryId': '0',
   //                   'categoryName': 'No Category Selected',
   //                 });
-  //                 if (context.mounted) {
+  //                 if (mounted) {
   //                   Navigator.of(context).pop();
   //                 }
   //               } catch (e) {
-  //                 if (context.mounted) {
+  //                 if (mounted) {
   //                   mySnackBar(context, e.toString());
   //                 }
   //               }
@@ -958,7 +958,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                     ? GridView.builder(
                                                         shrinkWrap: true,
                                                         gridDelegate:
-                                                            SliverGridDelegateWithFixedCrossAxisCount(
+                                                            const SliverGridDelegateWithFixedCrossAxisCount(
                                                           crossAxisCount: 2,
                                                           childAspectRatio:
                                                               0.675,
@@ -1440,7 +1440,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                     ? GridView.builder(
                                                         shrinkWrap: true,
                                                         gridDelegate:
-                                                            SliverGridDelegateWithFixedCrossAxisCount(
+                                                            const SliverGridDelegateWithFixedCrossAxisCount(
                                                           crossAxisCount: 2,
                                                           childAspectRatio:
                                                               0.695,

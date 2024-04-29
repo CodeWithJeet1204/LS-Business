@@ -60,11 +60,11 @@ class _AllBrandPageState extends State<AllBrandPage> {
           .doc(brandId)
           .delete();
 
-      if (context.mounted) {
+      if (mounted) {
         Navigator.of(context).pop();
       }
     } catch (e) {
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, e.toString());
       }
     }
@@ -206,7 +206,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
                           shrinkWrap: true,
                           physics: const ClampingScrollPhysics(),
                           gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
+                              const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             childAspectRatio: 0.725,
                           ),
@@ -431,7 +431,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                         : SizedBox(
                                             width: width * 0.15,
                                             height: width * 0.15,
-                                            child: Center(
+                                            child: const Center(
                                               child: Text(
                                                 overflow: TextOverflow.ellipsis,
                                                 'No Image',

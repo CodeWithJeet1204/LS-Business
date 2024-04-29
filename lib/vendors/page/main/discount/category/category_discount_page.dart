@@ -55,7 +55,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
         _image = File(im.path);
       });
     } else {
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, "Select an Image");
       }
     }
@@ -176,7 +176,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
           'vendorId': auth.currentUser!.uid,
         });
         provider.clear();
-        if (context.mounted) {
+        if (mounted) {
           mySnackBar(context, "Discount Added");
           Navigator.of(context).pop();
         }
@@ -187,7 +187,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
         setState(() {
           isUploading = false;
         });
-        if (context.mounted) {
+        if (mounted) {
           mySnackBar(context, e.toString());
         }
       }

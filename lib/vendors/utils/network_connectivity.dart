@@ -38,7 +38,7 @@ class _ConnectivityNotificationWidgetState
         .then((initialResult) async {
       await _updateConnectionStatus(initialResult);
     }).then((_) async {
-      return await Connectivity().onConnectivityChanged.listen(
+      return Connectivity().onConnectivityChanged.listen(
             _updateConnectionStatus,
           );
     });

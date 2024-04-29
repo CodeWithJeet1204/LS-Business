@@ -57,31 +57,36 @@ class _SelectModePageState extends State<SelectModePage> {
     }
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('selectedText', text);
-    print('Selected text saved: $text');
     if (isVendorSelected) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: ((context) => LoginPage(
-                mode: 'vendor',
-              )),
-        ),
-      );
+      if (mounted) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: ((context) => const LoginPage(
+                  mode: 'vendor',
+                )),
+          ),
+        );
+      }
     } else if (isServicesSelected) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: ((context) => LoginPage(
-                mode: 'services',
-              )),
-        ),
-      );
+      if (mounted) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: ((context) => const LoginPage(
+                  mode: 'services',
+                )),
+          ),
+        );
+      }
     } else if (isEventsSelected) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: ((context) => LoginPage(
-                mode: 'events',
-              )),
-        ),
-      );
+      if (mounted) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: ((context) => const LoginPage(
+                  mode: 'events',
+                )),
+          ),
+        );
+      }
     }
   }
 
@@ -91,7 +96,7 @@ class _SelectModePageState extends State<SelectModePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Select Mode"),
+        title: const Text("Select Mode"),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -102,8 +107,8 @@ class _SelectModePageState extends State<SelectModePage> {
               isSelected: isVendorSelected,
               name: 'Vendor',
               onTap: setVendorSelected,
-              selectedTextColor: Color.fromARGB(255, 210, 14, 0),
-              selectedBackgroundColor: Color.fromARGB(255, 255, 238, 237),
+              selectedTextColor: const Color.fromARGB(255, 210, 14, 0),
+              selectedBackgroundColor: const Color.fromARGB(255, 255, 238, 237),
             ),
 
             // SERVICES
@@ -111,19 +116,19 @@ class _SelectModePageState extends State<SelectModePage> {
               isSelected: isServicesSelected,
               name: 'Services',
               onTap: setServicesSelected,
-              selectedTextColor: Color.fromARGB(255, 0, 122, 4),
-              selectedBackgroundColor: Color.fromARGB(255, 240, 255, 240),
+              selectedTextColor: const Color.fromARGB(255, 0, 122, 4),
+              selectedBackgroundColor: const Color.fromARGB(255, 240, 255, 240),
             ),
             // EVENTS
             ModeCard(
               isSelected: isEventsSelected,
               name: 'Events',
               onTap: setEventsSelected,
-              selectedTextColor: Color.fromARGB(255, 0, 131, 225),
-              selectedBackgroundColor: Color.fromARGB(255, 236, 247, 255),
+              selectedTextColor: const Color.fromARGB(255, 0, 131, 225),
+              selectedBackgroundColor: const Color.fromARGB(255, 236, 247, 255),
             ),
 
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
 
             // NEXT
             MyButton(

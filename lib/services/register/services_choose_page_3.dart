@@ -38,8 +38,6 @@ class _ServicesChoosePage3State extends State<ServicesChoosePage3> {
     if (widget.place == null) {
       getPlace();
     }
-    print("Places: ${widget.place ?? place}");
-    print("Categories: ${widget.category ?? category}");
     if (widget.category == null) {
       if (widget.place == null) {
         getCategory(place);
@@ -56,7 +54,6 @@ class _ServicesChoosePage3State extends State<ServicesChoosePage3> {
     } else {
       getSubCategory(place, category);
     }
-    print("SubCategories: $selectedSubCategories");
     setState(() {
       getData = true;
     });
@@ -75,8 +72,6 @@ class _ServicesChoosePage3State extends State<ServicesChoosePage3> {
     setState(() {
       place = myPlace;
     });
-
-    print("final Places: $myPlace");
 
     await getCategory(myPlace);
   }
@@ -99,15 +94,15 @@ class _ServicesChoosePage3State extends State<ServicesChoosePage3> {
 
   // GET SUBCATEGORIES
   void getSubCategory(List places, List categories) {
-    places.forEach((place) {
+    for (var place in places) {
       if (servicesMap.containsKey(place)) {
-        categories.forEach((category) {
+        for (var category in categories) {
           if (servicesMap[place]!.containsKey(category)) {
             selectedSubCategories.addAll(servicesMap[place]![category]!);
           }
-        });
+        }
       }
-    });
+    }
   }
 
   // SELECT CATEGORY
@@ -134,13 +129,14 @@ class _ServicesChoosePage3State extends State<ServicesChoosePage3> {
       setState(() {
         isNext = false;
       });
-
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: ((context) => ServicesMainPage()),
-        ),
-        (route) => false,
-      );
+      if (mounted) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: ((context) => const ServicesMainPage()),
+          ),
+          (route) => false,
+        );
+      }
     } else {
       setState(() {
         isNext = false;
@@ -155,11 +151,11 @@ class _ServicesChoosePage3State extends State<ServicesChoosePage3> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Choose Your Sub Category'),
+        title: const Text('Choose Your Sub Category'),
         automaticallyImplyLeading: false,
       ),
       body: !getData
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : SafeArea(
@@ -176,9 +172,9 @@ class _ServicesChoosePage3State extends State<ServicesChoosePage3> {
                         height: MediaQuery.of(context).size.height - 168,
                         child: GridView.builder(
                           shrinkWrap: true,
-                          physics: ClampingScrollPhysics(),
+                          physics: const ClampingScrollPhysics(),
                           gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
+                              const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             childAspectRatio: 16 / 9,
                           ),

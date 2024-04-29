@@ -54,7 +54,7 @@ class _SelectProductForDiscountPageState
           ),
         ],
         bottom: PreferredSize(
-          preferredSize: Size(double.infinity, 80),
+          preferredSize: const Size(double.infinity, 80),
           child: Padding(
             padding: EdgeInsets.symmetric(
               horizontal: MediaQuery.of(context).size.width * 0.0166,
@@ -114,7 +114,7 @@ class _SelectProductForDiscountPageState
                       ? GridView.builder(
                           shrinkWrap: true,
                           gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
+                              const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             childAspectRatio: 0.725,
                           ),

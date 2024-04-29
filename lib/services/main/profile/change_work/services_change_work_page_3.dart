@@ -35,7 +35,6 @@ class _ServicesChangeWorkPage3State extends State<ServicesChangeWorkPage3> {
   @override
   void initState() {
     getSubCategory();
-    print("SubCategories: $selectedSubCategories");
     setState(() {
       getData = true;
     });
@@ -44,15 +43,15 @@ class _ServicesChangeWorkPage3State extends State<ServicesChangeWorkPage3> {
 
   // GET SUBCATEGORIES
   void getSubCategory() {
-    widget.place.forEach((place) {
+    for (var place in widget.place) {
       if (servicesMap.containsKey(place)) {
-        widget.category.forEach((category) {
+        for (var category in widget.category) {
           if (servicesMap[place]!.containsKey(category)) {
             selectedSubCategories.addAll(servicesMap[place]![category]!);
           }
-        });
+        }
       }
-    });
+    }
   }
 
   // SELECT CATEGORY
@@ -79,13 +78,14 @@ class _ServicesChangeWorkPage3State extends State<ServicesChangeWorkPage3> {
       setState(() {
         isNext = false;
       });
-
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: ((context) => ServicesMainPage()),
-        ),
-        (route) => false,
-      );
+      if (mounted) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: ((context) => const ServicesMainPage()),
+          ),
+          (route) => false,
+        );
+      }
     } else {
       setState(() {
         isNext = false;
@@ -100,11 +100,11 @@ class _ServicesChangeWorkPage3State extends State<ServicesChangeWorkPage3> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Choose Your Sub Category'),
+        title: const Text('Choose Your Sub Category'),
         automaticallyImplyLeading: false,
       ),
       body: !getData
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : SafeArea(
@@ -121,9 +121,9 @@ class _ServicesChangeWorkPage3State extends State<ServicesChangeWorkPage3> {
                         height: MediaQuery.of(context).size.height - 168,
                         child: GridView.builder(
                           shrinkWrap: true,
-                          physics: ClampingScrollPhysics(),
+                          physics: const ClampingScrollPhysics(),
                           gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
+                              const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             childAspectRatio: 16 / 9,
                           ),
