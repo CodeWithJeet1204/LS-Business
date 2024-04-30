@@ -102,12 +102,24 @@ class _ServicesChoosePage1State extends State<ServicesChoosePage1> {
         title: const Text('Choose Your Place'),
         automaticallyImplyLeading: false,
       ),
+      bottomSheet: Padding(
+        padding: const EdgeInsets.all(8),
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: 60,
+          child: MyButton(
+            text: 'NEXT',
+            onTap: () async {
+              await next();
+            },
+            isLoading: isNext,
+            horizontalPadding: MediaQuery.of(context).size.width * 0.0225,
+          ),
+        ),
+      ),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: width * 0.0125,
-            vertical: width * 0.0125,
-          ),
+          padding: EdgeInsets.all(width * 0.0125),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -149,18 +161,7 @@ class _ServicesChoosePage1State extends State<ServicesChoosePage1> {
                   imageUrl:
                       'https://cdn.pixabay.com/photo/2016/07/07/16/46/dice-1502706_640.jpg',
                 ),
-
                 const SizedBox(height: 24),
-
-                // NEXT
-                MyButton(
-                  onTap: () async {
-                    await next();
-                  },
-                  text: 'NEXT',
-                  isLoading: isNext,
-                  horizontalPadding: width * 0.125,
-                ),
               ],
             ),
           ),

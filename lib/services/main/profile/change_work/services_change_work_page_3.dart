@@ -103,58 +103,53 @@ class _ServicesChangeWorkPage3State extends State<ServicesChangeWorkPage3> {
         title: const Text('Choose Your Sub Category'),
         automaticallyImplyLeading: false,
       ),
+      bottomSheet: Padding(
+        padding: const EdgeInsets.all(8),
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: 60,
+          child: MyButton(
+            text: 'DONE',
+            onTap: () async {
+              await next();
+            },
+            isLoading: isNext,
+            horizontalPadding: MediaQuery.of(context).size.width * 0.0225,
+          ),
+        ),
+      ),
       body: !getData
           ? const Center(
               child: CircularProgressIndicator(),
             )
           : SafeArea(
               child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: width * 0.0125,
-                  vertical: width * 0.0125,
-                ),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height - 168,
-                        child: GridView.builder(
-                          shrinkWrap: true,
-                          physics: const ClampingScrollPhysics(),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 16 / 9,
-                          ),
-                          itemCount: selectedSubCategories.length,
-                          itemBuilder: ((context, index) {
-                            final String name = selectedSubCategories[index];
-                            final String imageUrl = subCategoryImageMap[name]!;
+                padding: EdgeInsets.all(width * 0.0125),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 16 / 9,
+                    ),
+                    itemCount: selectedSubCategories.length,
+                    itemBuilder: ((context, index) {
+                      final String name = selectedSubCategories[index];
+                      final String imageUrl = subCategoryImageMap[name]!;
 
-                            return SelectContainer(
-                              width: width,
-                              text: name,
-                              isSelected: chosenSubCategories.contains(name),
-                              onTap: () {
-                                selectSubCategory(name);
-                              },
-                              imageUrl: imageUrl,
-                            );
-                          }),
-                        ),
-                      ),
-
-                      // NEXT
-                      MyButton(
-                        text: 'DONE',
-                        onTap: () async {
-                          await next();
+                      return SelectContainer(
+                        width: width,
+                        text: name,
+                        isSelected: chosenSubCategories.contains(name),
+                        onTap: () {
+                          selectSubCategory(name);
                         },
-                        isLoading: isNext,
-                        horizontalPadding: 0,
-                      ),
-                    ],
+                        imageUrl: imageUrl,
+                      );
+                    }),
                   ),
                 ),
               ),

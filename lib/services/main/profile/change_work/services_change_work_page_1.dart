@@ -137,7 +137,7 @@ class _ServicesChangeWorkPage1State extends State<ServicesChangeWorkPage1> {
               ),
               child: SizedBox(
                 width: MediaQuery.of(context).size.width,
-                height: 50,
+                height: 60,
                 child: MyButton(
                   onTap: () async {
                     await next();
@@ -158,7 +158,7 @@ class _ServicesChangeWorkPage1State extends State<ServicesChangeWorkPage1> {
             )
           : Padding(
               padding: EdgeInsets.all(
-                MediaQuery.of(context).size.width * 0.00625,
+                MediaQuery.of(context).size.width * 0.0125,
               ),
               child: LayoutBuilder(
                 builder: ((context, constraints) {

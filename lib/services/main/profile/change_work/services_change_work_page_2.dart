@@ -96,52 +96,47 @@ class _ServicesChangeWorkPage2State extends State<ServicesChangeWorkPage2> {
         title: const Text('Choose Your Category'),
         automaticallyImplyLeading: false,
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: width * 0.0125,
-          vertical: width * 0.0125,
+      bottomSheet: Padding(
+        padding: const EdgeInsets.all(8),
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: 60,
+          child: MyButton(
+            text: 'NEXT',
+            onTap: () async {
+              await next();
+            },
+            isLoading: isNext,
+            horizontalPadding: MediaQuery.of(context).size.width * 0.0225,
+          ),
         ),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height - 168,
-                child: GridView.builder(
-                  shrinkWrap: true,
-                  physics: const ClampingScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 16 / 9,
-                  ),
-                  itemCount: allCategories.length,
-                  itemBuilder: ((context, index) {
-                    String name = allCategories[index];
-                    String imageUrl = categoryImageMap[name]!;
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(width * 0.0125),
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: GridView.builder(
+            shrinkWrap: true,
+            physics: const ClampingScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 16 / 9,
+            ),
+            itemCount: allCategories.length,
+            itemBuilder: ((context, index) {
+              String name = allCategories[index];
+              String imageUrl = categoryImageMap[name]!;
 
-                    return SelectContainer(
-                      width: width,
-                      text: name,
-                      isSelected: chosenCategories.contains(name),
-                      onTap: () {
-                        selectCategory(name);
-                      },
-                      imageUrl: imageUrl,
-                    );
-                  }),
-                ),
-              ),
-
-              // NEXT
-              MyButton(
-                text: 'NEXT',
-                onTap: () async {
-                  await next();
+              return SelectContainer(
+                width: width,
+                text: name,
+                isSelected: chosenCategories.contains(name),
+                onTap: () {
+                  selectCategory(name);
                 },
-                isLoading: isNext,
-                horizontalPadding: 0,
-              ),
-            ],
+                imageUrl: imageUrl,
+              );
+            }),
           ),
         ),
       ),

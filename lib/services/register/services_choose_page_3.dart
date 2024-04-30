@@ -108,7 +108,7 @@ class _ServicesChoosePage3State extends State<ServicesChoosePage3> {
         padding: const EdgeInsets.all(8),
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
-          height: 50,
+          height: 60,
           child: MyButton(
             text: 'DONE',
             onTap: () async {
@@ -125,12 +125,9 @@ class _ServicesChoosePage3State extends State<ServicesChoosePage3> {
             )
           : SafeArea(
               child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: width * 0.0125,
-                  vertical: width * 0.0125,
-                ),
+                padding: EdgeInsets.all(width * 0.0125),
                 child: SizedBox(
-                  height: MediaQuery.of(context).size.height - 168,
+                  height: MediaQuery.of(context).size.height,
                   child: GridView.builder(
                     shrinkWrap: true,
                     physics: const ClampingScrollPhysics(),
