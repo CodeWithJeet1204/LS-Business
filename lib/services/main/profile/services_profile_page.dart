@@ -22,11 +22,14 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
   String? name;
   String? imageUrl;
   bool isData = false;
+  String duration = '7 Days';
+  int views = 0;
 
   // INIT STATE
   @override
   void initState() {
     getData();
+    getViews();
     super.initState();
   }
 
@@ -44,6 +47,73 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
       name = myName;
       imageUrl = myImageUrl;
       isData = true;
+    });
+  }
+
+  // GET VIEWS
+  Future<void> getViews() async {
+    final serviceSnap =
+        await store.collection('Services').doc(auth.currentUser!.uid).get();
+
+    final serviceData = serviceSnap.data()!;
+
+    final List timestamp = serviceData['ViewsTimestamp'];
+    print(timestamp);
+
+    DateTime currentDate = DateTime.now();
+
+    DateTime sevenDaysAgo = currentDate.subtract(Duration(days: 7));
+
+    List<dynamic> timestampsWithin7Days = timestamp.where((timestamp) {
+      DateTime timestampDateTime = (timestamp as Timestamp).toDate();
+      print("TimestampDate: $timestampDateTime");
+      return timestampDateTime.isAfter(sevenDaysAgo);
+    }).toList();
+    print("timestampsWithin7Days: $timestampsWithin7Days");
+
+    setState(() {
+      views = timestampsWithin7Days.length;
+    });
+  }
+
+  // GET DURATION VIEWS
+  Future<void> getDurationViews(String duration) async {
+    final serviceSnap = await FirebaseFirestore.instance
+        .collection('Services')
+        .doc(auth.currentUser!.uid)
+        .get();
+    final serviceData = serviceSnap.data()!;
+
+    final List<dynamic> timestampList = serviceData['ViewsTimestamp'];
+
+    DateTime currentDate = DateTime.now();
+
+    DateTime startDate;
+
+    switch (duration) {
+      case '7 Days':
+        startDate = currentDate.subtract(Duration(days: 7));
+        break;
+      case '28 Days':
+        startDate = currentDate.subtract(Duration(days: 28));
+        break;
+      case '1 Year':
+        startDate = currentDate.subtract(Duration(days: 365));
+        break;
+      case 'Lifetime':
+        startDate = DateTime(1970);
+        break;
+      default:
+        startDate = currentDate;
+    }
+
+    List<dynamic> timestampsWithinDuration = timestampList.where((timestamp) {
+      DateTime timestampDateTime = (timestamp as Timestamp).toDate();
+      return timestampDateTime.isAfter(startDate);
+    }).toList();
+
+    setState(() {
+      views = timestampsWithinDuration.length;
     });
   }
 
@@ -217,6 +287,8 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
                             ),
                           ),
 
+                          SizedBox(height: 8),
+
                           // NAME
                           SizedBox(
                             width: width * 0.8,
@@ -233,7 +305,7 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
                             ),
                           ),
 
-                          SizedBox(height: width * 0.0275),
+                          SizedBox(height: 8),
 
                           // YOUR DETAILS
                           GestureDetector(
@@ -381,6 +453,82 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
                                   ),
                                 ],
                               ),
+                            ),
+                          ),
+
+                          const SizedBox(height: 8),
+
+                          // VIEWS
+                          Container(
+                            width: width,
+                            decoration: BoxDecoration(
+                              color: primary2.withOpacity(0.25),
+                              border: Border.all(
+                                width: 0.25,
+                                color: primaryDark2.withOpacity(0.25),
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            padding: EdgeInsets.all(width * 0.025),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Views',
+                                      style: TextStyle(
+                                        fontSize: width * 0.04,
+                                      ),
+                                    ),
+                                    Text(
+                                      views.toString(),
+                                      style: TextStyle(
+                                        fontSize: width * 0.06,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: primary,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  padding: EdgeInsets.all(width * 0.0125),
+                                  child: DropdownButton(
+                                    dropdownColor: primary,
+                                    underline: SizedBox(),
+                                    hint: Text('Duration'),
+                                    value: duration,
+                                    items: [
+                                      '7 Days',
+                                      '28 Days',
+                                      '1 Year',
+                                      'Lifetime'
+                                    ]
+                                        .map(
+                                          (e) => DropdownMenuItem(
+                                            value: e,
+                                            child: Text(e),
+                                          ),
+                                        )
+                                        .toList(),
+                                    onChanged: (value) {
+                                      if (value != null) {
+                                        setState(() {
+                                          duration = value;
+                                        });
+                                        getDurationViews(value);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],

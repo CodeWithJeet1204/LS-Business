@@ -109,6 +109,7 @@ class ServicesRegisterDetailsPageState
           'First Langauge': firstLanguage,
           'Second Language': secondLanguage,
           'Image': userPhotoUrl,
+          'ViewsTimestamp': 0,
         };
 
         await store.collection('Services').doc(auth.currentUser!.uid).set(info);

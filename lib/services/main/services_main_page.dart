@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/services/main/services_page_2.dart';
 import 'package:find_easy/services/main/profile/services_profile_page.dart';
 import 'package:find_easy/services/register/services_choose_page_1.dart';
@@ -8,7 +7,6 @@ import 'package:find_easy/services/register/services_choose_page_3.dart';
 import 'package:find_easy/services/register/services_register_details_page.dart';
 import 'package:find_easy/auth/login_page.dart';
 import 'package:find_easy/auth/verify/email_verify.dart';
-import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:find_easy/vendors/utils/is_payed.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -126,50 +124,50 @@ class _ServicesMainPageState extends State<ServicesMainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return detailsPage ??
-        Scaffold(
-          resizeToAvoidBottomInset: false,
-          bottomNavigationBar: BottomNavigationBar(
-            elevation: 0,
-            backgroundColor: white,
-            selectedLabelStyle: const TextStyle(
-              fontWeight: FontWeight.w500,
-              color: primaryDark,
-            ),
-            useLegacyColorScheme: false,
-            type: BottomNavigationBarType.fixed,
-            selectedIconTheme: const IconThemeData(
-              size: 24,
-              color: primaryDark,
-            ),
-            unselectedIconTheme: IconThemeData(
-              size: 24,
-              color: black.withOpacity(0.5),
-            ),
-            currentIndex: current,
-            onTap: changePage,
-            items: const [
-              BottomNavigationBarItem(
-                activeIcon: Icon(
-                  FeatherIcons.barChart,
-                ),
-                icon: Icon(
-                  FeatherIcons.barChart2,
-                ),
-                label: "Analytics",
-              ),
-              BottomNavigationBarItem(
-                activeIcon: Icon(
-                  Icons.person_outline,
-                ),
-                icon: Icon(
-                  FeatherIcons.user,
-                ),
-                label: "Profile",
-              ),
-            ],
-          ),
-          body: allPages[current],
-        );
+    return detailsPage ?? ServicesProfilePage();
+    // Scaffold(
+    //   resizeToAvoidBottomInset: false,
+    //   bottomNavigationBar: BottomNavigationBar(
+    //     elevation: 0,
+    //     backgroundColor: white,
+    //     selectedLabelStyle: const TextStyle(
+    //       fontWeight: FontWeight.w500,
+    //       color: primaryDark,
+    //     ),
+    //     useLegacyColorScheme: false,
+    //     type: BottomNavigationBarType.fixed,
+    //     selectedIconTheme: const IconThemeData(
+    //       size: 24,
+    //       color: primaryDark,
+    //     ),
+    //     unselectedIconTheme: IconThemeData(
+    //       size: 24,
+    //       color: black.withOpacity(0.5),
+    //     ),
+    //     currentIndex: current,
+    //     onTap: changePage,
+    //     items: const [
+    //       BottomNavigationBarItem(
+    //         activeIcon: Icon(
+    //           FeatherIcons.barChart,
+    //         ),
+    //         icon: Icon(
+    //           FeatherIcons.barChart2,
+    //         ),
+    //         label: "Analytics",
+    //       ),
+    //       BottomNavigationBarItem(
+    //         activeIcon: Icon(
+    //           Icons.person_outline,
+    //         ),
+    //         icon: Icon(
+    //           FeatherIcons.user,
+    //         ),
+    //         label: "Profile",
+    //       ),
+    //     ],
+    //   ),
+    //   body: allPages[current],
+    // );
   }
 }
