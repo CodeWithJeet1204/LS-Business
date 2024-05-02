@@ -1,7 +1,7 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/services/register/services_choose_page_1.dart';
+import 'package:find_easy/events/events_main_page.dart';
+import 'package:find_easy/events/register/events_register_details_page_2.dart';
 import 'package:find_easy/vendors/provider/sign_in_method_provider.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
@@ -13,34 +13,34 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class ServicesRegisterDetailsPage extends StatefulWidget {
-  const ServicesRegisterDetailsPage({
+class EventsRegisterDetailsPage1 extends StatefulWidget {
+  const EventsRegisterDetailsPage1({
     super.key,
   });
 
   @override
-  State<ServicesRegisterDetailsPage> createState() =>
-      ServicesRegisterDetailsPageState();
+  State<EventsRegisterDetailsPage1> createState() =>
+      EventsRegisterDetailsPage1State();
 }
 
-class ServicesRegisterDetailsPageState
-    extends State<ServicesRegisterDetailsPage> {
+class EventsRegisterDetailsPage1State
+    extends State<EventsRegisterDetailsPage1> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   final GlobalKey<FormState> userFormKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  final TextEditingController ageController = TextEditingController();
+  final TextEditingController websiteController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   bool isImageSelected = false;
   File? _image;
+  String? type;
+  DateTime? doe;
   bool isNext = false;
-  bool? isMale;
-  String? firstLanguage;
-  String? secondLanguage;
 
   // DISPOSE
   @override
@@ -48,7 +48,7 @@ class ServicesRegisterDetailsPageState
     nameController.dispose();
     emailController.dispose();
     phoneController.dispose();
-    ageController.dispose();
+    websiteController.dispose();
     addressController.dispose();
     super.dispose();
   }
@@ -68,17 +68,34 @@ class ServicesRegisterDetailsPageState
     }
   }
 
+  // SELECT DOE
+  Future<void> selectDoe() async {
+    DateTime? selectedDate = await showDatePicker(
+      context: context,
+      firstDate: DateTime(1970),
+      lastDate: DateTime.now(),
+    );
+
+    if (selectedDate != null) {
+      setState(() {
+        doe = selectedDate;
+      });
+    } else {
+      return mySnackBar(context, 'Select Date Of Establishment');
+    }
+  }
+
   // REGISTER
   Future<void> register(SignInMethodProvider signInMethodProvider) async {
     if (userFormKey.currentState!.validate()) {
       if (_image == null) {
         return mySnackBar(context, 'Select an Image');
       }
-      if (isMale == null) {
-        return mySnackBar(context, 'Select Gender');
+      if (type == null) {
+        return mySnackBar(context, 'Select Type');
       }
-      if (firstLanguage == null) {
-        return mySnackBar(context, 'Select First Language');
+      if (doe == null) {
+        return mySnackBar(context, 'Select Date of Establishment');
       }
 
       String? uploadImagePath;
@@ -91,7 +108,7 @@ class ServicesRegisterDetailsPageState
         uploadImagePath = _image!.path;
         Reference ref = FirebaseStorage.instance
             .ref()
-            .child('Services/Owners')
+            .child('Events/Owners')
             .child(FirebaseAuth.instance.currentUser!.uid);
         await ref.putFile(File(uploadImagePath)).whenComplete(() async {
           await ref.getDownloadURL().then((value) {
@@ -99,26 +116,57 @@ class ServicesRegisterDetailsPageState
           });
         });
 
-        Map<String, dynamic> info = {
-          'Name': nameController.text,
-          'Email': emailController.text,
-          'Phone Number': phoneController.text,
-          'Age': ageController.text,
-          'Address': addressController.text,
-          'Gender': isMale! ? 'Male' : 'Female',
-          'First Langauge': firstLanguage,
-          'Second Language': secondLanguage,
-          'Image': userPhotoUrl,
-          'ViewsTimestamp': 0,
-        };
+        final eventSnap =
+            await store.collection('Events').doc(auth.currentUser!.uid).get();
 
-        await store.collection('Services').doc(auth.currentUser!.uid).set(info);
-        if (mounted) {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: ((context) => const ServicesChoosePage1()),
-            ),
-          );
+        if (eventSnap.exists && eventSnap.data()!['Description'] != null) {
+          Map<String, dynamic> info = {
+            'Name': nameController.text,
+            'Email': emailController.text,
+            'Phone Number': phoneController.text,
+            'Website': websiteController.text,
+            'Address': addressController.text,
+            'Image': userPhotoUrl,
+            'ViewsTimestamp': [],
+            'Type': type,
+            'DOE': DateFormat('d MMM y').format(doe!),
+          };
+
+          await store
+              .collection('Events')
+              .doc(auth.currentUser!.uid)
+              .update(info);
+
+          if (mounted) {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: ((context) => const EventsMainPage()),
+              ),
+              (route) => false,
+            );
+          }
+        } else {
+          Map<String, dynamic> info = {
+            'Name': nameController.text,
+            'Email': emailController.text,
+            'Phone Number': phoneController.text,
+            'Website': websiteController.text,
+            'Address': addressController.text,
+            'Image': userPhotoUrl,
+            'ViewsTimestamp': [],
+            'Type': type,
+            'DOE': DateFormat('d MMM y').format(doe!),
+            'Description': '',
+          };
+
+          await store.collection('Events').doc(auth.currentUser!.uid).set(info);
+          if (mounted) {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: ((context) => const EventsRegisterDetailsPage2()),
+              ),
+            );
+          }
         }
       } catch (e) {
         if (mounted) {
@@ -140,11 +188,11 @@ class ServicesRegisterDetailsPageState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // USER DETAILS HEADTEXT
-              const SizedBox(height: 100),
+              // ORG> DETAILS HEADTEXT
+              const SizedBox(height: 60),
               const Center(
                 child: HeadText(
-                  text: "USER\nDETAILS",
+                  text: "ORG.\nDETAILS",
                 ),
               ),
               const SizedBox(height: 40),
@@ -163,7 +211,7 @@ class ServicesRegisterDetailsPageState
                           IconButton.filledTonal(
                             icon: const Icon(Icons.camera_alt_outlined),
                             iconSize: width * 0.09,
-                            tooltip: "Change User Picture",
+                            tooltip: "Change Organization Picture",
                             onPressed: () async {
                               await selectImage();
                             },
@@ -193,7 +241,7 @@ class ServicesRegisterDetailsPageState
                   children: [
                     // NAME
                     MyTextFormField(
-                      hintText: "Name",
+                      hintText: "Organization Name",
                       controller: nameController,
                       borderRadius: 12,
                       horizontalPadding: width * 0.055,
@@ -216,7 +264,7 @@ class ServicesRegisterDetailsPageState
 
                     // NUMBER
                     MyTextFormField(
-                      hintText: "Phone Number (Personal)",
+                      hintText: "Phone Number",
                       controller: phoneController,
                       borderRadius: 12,
                       horizontalPadding: width * 0.055,
@@ -227,10 +275,10 @@ class ServicesRegisterDetailsPageState
                       ],
                     ),
 
-                    // AGE
+                    // WEBSITE
                     MyTextFormField(
-                      hintText: "Age",
-                      controller: ageController,
+                      hintText: "Website Link (Optional)",
+                      controller: websiteController,
                       borderRadius: 12,
                       horizontalPadding: width * 0.055,
                       verticalPadding: width * 0.033,
@@ -247,7 +295,7 @@ class ServicesRegisterDetailsPageState
                       autoFillHints: const [],
                     ),
 
-                    // GENDER
+                    // PROFIT
                     Container(
                       decoration: BoxDecoration(
                         color: primary3,
@@ -263,129 +311,58 @@ class ServicesRegisterDetailsPageState
                       child: DropdownButton(
                         dropdownColor: primary,
                         hint: const Text(
-                          "Select Gender",
+                          "Type",
                           overflow: TextOverflow.ellipsis,
                         ),
-                        value: isMale != null
-                            ? (isMale! ? 'Male' : 'Female')
-                            : null,
+                        value: type,
                         underline: Container(),
-                        items: const [
-                          DropdownMenuItem(
-                            value: 'Male',
-                            child: Text('Male'),
-                          ),
-                          DropdownMenuItem(
-                            value: 'Female',
-                            child: Text('Female'),
-                          ),
-                        ],
+                        items: [
+                          'For - Profit',
+                          'NGO',
+                          'Government',
+                          'Cooperative',
+                          'Professional Assosciations',
+                        ]
+                            .map(
+                              (e) => DropdownMenuItem(
+                                value: e,
+                                child: Text(e),
+                              ),
+                            )
+                            .toList(),
                         onChanged: (value) {
                           setState(() {
-                            if (value == 'Male') {
-                              isMale = true;
-                            } else {
-                              isMale = false;
-                            }
+                            type = value;
                           });
                         },
                       ),
                     ),
 
-                    // FIRST LANGUAGE
-                    Container(
-                      decoration: BoxDecoration(
-                        color: primary3,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: width * 0.0225,
-                        vertical: width * 0.0125,
-                      ),
-                      margin: const EdgeInsets.symmetric(
-                        vertical: 12,
-                      ),
-                      child: DropdownButton(
-                        dropdownColor: primary,
-                        hint: const Text(
-                          "First Language",
-                          overflow: TextOverflow.ellipsis,
+                    // DATE OF ESTABLISHMENT
+                    GestureDetector(
+                      onTap: () async {
+                        await selectDoe();
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: primary3,
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        value: firstLanguage,
-                        underline: Container(),
-                        items: [
-                          'Hindi',
-                          'English',
-                          'Marathi',
-                        ]
-                            .map(
-                              (e) => DropdownMenuItem(
-                                value: e,
-                                child: Text(e),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (value) {
-                          if (value == secondLanguage &&
-                              secondLanguage != null) {
-                            return mySnackBar(
-                              context,
-                              'First Language cannot be same as Second Language',
-                            );
-                          } else {
-                            setState(() {
-                              firstLanguage = value;
-                            });
-                          }
-                        },
-                      ),
-                    ),
-
-                    // SECOND LANGUAGE
-                    Container(
-                      decoration: BoxDecoration(
-                        color: primary3,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: width * 0.0225,
-                        vertical: width * 0.0125,
-                      ),
-                      margin: const EdgeInsets.symmetric(
-                        vertical: 12,
-                      ),
-                      child: DropdownButton(
-                        dropdownColor: primary,
-                        hint: const Text(
-                          "Second Language",
-                          overflow: TextOverflow.ellipsis,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: width * 0.05,
+                          vertical: width * 0.05,
                         ),
-                        value: secondLanguage,
-                        underline: Container(),
-                        items: [
-                          'Hindi',
-                          'English',
-                          'Marathi',
-                        ]
-                            .map(
-                              (e) => DropdownMenuItem(
-                                value: e,
-                                child: Text(e),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (value) {
-                          if (value == firstLanguage && firstLanguage != null) {
-                            return mySnackBar(
-                              context,
-                              'Second Language cannot be same as First Language',
-                            );
-                          } else {
-                            setState(() {
-                              secondLanguage = value;
-                            });
-                          }
-                        },
+                        margin: const EdgeInsets.symmetric(
+                          vertical: 12,
+                        ),
+                        child: Text(
+                          doe == null
+                              ? 'Select Date Of Establishment'
+                              : DateFormat('d MMM y').format(doe!),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
                       ),
                     ),
 
@@ -400,7 +377,7 @@ class ServicesRegisterDetailsPageState
                           await register(signInMethodProvider);
                         },
                         isLoading: isNext,
-                        horizontalPadding: width * 0.055,
+                        horizontalPadding: width * 0.1,
                       ),
                     ),
                     const SizedBox(height: 12),

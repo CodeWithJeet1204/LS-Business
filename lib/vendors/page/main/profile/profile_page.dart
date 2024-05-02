@@ -209,7 +209,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   //     specialCategories
                   //         .forEach((shopType, subCategories) async {
                   //       await addSpecialCategories(shopType);
-                  //       print(shopType);
                   //     });
                   //   }
                   //   await addAllSpecialCategories();

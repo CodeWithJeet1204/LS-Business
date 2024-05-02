@@ -1,5 +1,8 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:find_easy/events/events_main_page.dart';
+import 'package:find_easy/events/register/events_register_details_page_1.dart';
+import 'package:find_easy/services/main/services_main_page.dart';
 import 'package:find_easy/services/register/services_register_details_page.dart';
 import 'package:find_easy/vendors/firebase/auth_methods.dart';
 import 'package:find_easy/vendors/page/main/main_page.dart';
@@ -74,12 +77,16 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
               }
             } else if (widget.mode == 'services') {
               if (widget.isLogging) {
-                // return ServicesMainPage();
+                return ServicesMainPage();
               } else {
                 return const ServicesRegisterDetailsPage();
               }
-            } else {
-              // return EventsMainPage();
+            } else if (widget.mode == 'events') {
+              if (widget.isLogging) {
+                return EventsMainPage();
+              } else {
+                return const EventsRegisterDetailsPage1();
+              }
             }
             return const MainPage();
           })),

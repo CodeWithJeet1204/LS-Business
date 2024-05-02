@@ -82,10 +82,6 @@ class _MainPageState extends State<MainPage> {
     //       .doc(type)
     //       .get();
 
-    //   print(getCommonCategoriesDetailsAdded);
-
-    //   print(getCommonCategoriesDetailsAdded.data());
-
     //   if (getCommonCategoriesDetailsAdded.data()!.isNotEmpty) {
     //     return false;
     //   } else {

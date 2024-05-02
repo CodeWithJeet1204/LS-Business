@@ -38,7 +38,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
     super.dispose();
   }
 
-  // CHANGE USER IMAGE
+  // CHANGE  IMAGE
   Future<void> changeImage(String previousUrl) async {
     XFile? im = await showImagePickDialog(context);
     String? userPhotoUrl;

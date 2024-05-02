@@ -60,7 +60,6 @@ class _ServicesChoosePage1State extends State<ServicesChoosePage1> {
 
     if (serviceData['Category'] == null) {
       if (mounted) {
-        print("Places: $selectedPlaces");
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
             builder: ((context) => ServicesChoosePage2(

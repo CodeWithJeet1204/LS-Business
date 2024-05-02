@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_null_comparison
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:find_easy/events/events_main_page.dart';
 import 'package:find_easy/services/main/services_main_page.dart';
 import 'package:find_easy/vendors/firebase/auth_methods.dart';
 import 'package:find_easy/vendors/page/main/main_page.dart';
@@ -96,10 +97,11 @@ class _LoginPageState extends State<LoginPage> {
                       return const MainPage();
                     } else if (widget.mode == 'services') {
                       return const ServicesMainPage();
+                    } else if (widget.mode == 'events') {
+                      return EventsMainPage();
                     } else {
-                      // return EventsMainPage();
+                      return MainPage();
                     }
-                    return const MainPage();
                   }),
                 ),
                 (route) => false,

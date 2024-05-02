@@ -94,8 +94,6 @@ class _ServicesChoosePage2State extends State<ServicesChoosePage2> {
       setState(() {
         isNext = false;
       });
-      print("Places: ${widget.place ?? place}");
-      print("Category: $chosenCategories");
       if (serviceData['SubCategory'] == null) {
         if (mounted) {
           Navigator.of(context).pushAndRemoveUntil(

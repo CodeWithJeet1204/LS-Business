@@ -1,3 +1,4 @@
+import 'package:find_easy/events/events_main_page.dart';
 import 'package:find_easy/first_launch_detection.dart';
 import 'package:find_easy/select_mode_page.dart';
 import 'package:find_easy/services/main/services_main_page.dart';
@@ -197,7 +198,7 @@ class MyApp extends StatelessWidget {
                             } else if (snapshot.data == 'events') {
                               if (authSnapshot.hasData) {
                                 if (authSnapshot.data!.emailVerified) {
-                                  // return const MainPage();
+                                  return const EventsMainPage();
                                 } else {
                                   return const EmailVerifyPage(
                                     mode: 'events',
@@ -215,12 +216,6 @@ class MyApp extends StatelessWidget {
                           } else {
                             return const SelectModePage();
                           }
-
-                          return const Scaffold(
-                            body: Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
                         },
                       ),
                 const ConnectivityNotificationWidget(),

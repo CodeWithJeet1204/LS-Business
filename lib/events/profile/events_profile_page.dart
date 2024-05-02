@@ -1,29 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
+import 'package:find_easy/events/profile/events_details_page.dart';
 import 'package:find_easy/select_mode_page.dart';
-import 'package:find_easy/services/main/profile/change_work/services_change_work_page_1.dart';
-import 'package:find_easy/services/main/profile/services_details_page.dart';
-import 'package:find_easy/services/main/profile/services_edit_price_page.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class ServicesProfilePage extends StatefulWidget {
-  const ServicesProfilePage({super.key});
+class EventsProfilePage extends StatefulWidget {
+  const EventsProfilePage({super.key});
 
   @override
-  State<ServicesProfilePage> createState() => _ServicesProfilePageState();
+  State<EventsProfilePage> createState() => _EventsProfilePageState();
 }
 
-class _ServicesProfilePageState extends State<ServicesProfilePage> {
+class _EventsProfilePageState extends State<EventsProfilePage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   String? name;
   String? imageUrl;
-  bool isData = false;
   String duration = '7 Days';
   int views = 0;
+  bool isData = false;
 
   // INIT STATE
   @override
@@ -36,7 +34,7 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
   // GET DATA
   Future<void> getData() async {
     final serviceSnap =
-        await store.collection('Services').doc(auth.currentUser!.uid).get();
+        await store.collection('Events').doc(auth.currentUser!.uid).get();
 
     final serviceData = serviceSnap.data()!;
 
@@ -53,7 +51,7 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
   // GET VIEWS
   Future<void> getViews() async {
     final serviceSnap =
-        await store.collection('Services').doc(auth.currentUser!.uid).get();
+        await store.collection('Events').doc(auth.currentUser!.uid).get();
 
     final serviceData = serviceSnap.data()!;
 
@@ -183,46 +181,19 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
   }
 
   // SHOW IMAGE
-  Future<void> showImage() async {
-    final imageStream = FirebaseFirestore.instance
-        .collection('Services')
-        .doc(auth.currentUser!.uid)
-        .snapshots();
-
+  Future<void> showImage(String imageUrl) async {
     await showDialog(
       barrierDismissible: true,
       context: context,
       builder: ((context) {
-        return StreamBuilder(
-            stream: imageStream,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return const Center(
-                  child: Text(
-                    overflow: TextOverflow.ellipsis,
-                    'Something went wrong',
-                  ),
-                );
-              }
-
-              if (snapshot.hasData) {
-                final userData = snapshot.data!;
-                return Dialog(
-                  elevation: 20,
-                  child: InteractiveViewer(
-                    child: Image.network(
-                      userData['Image'] ??
-                          'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
-                    ),
-                  ),
-                );
-              }
-              return const Center(
-                child: CircularProgressIndicator(
-                  color: primaryDark,
-                ),
-              );
-            });
+        return Dialog(
+          elevation: 20,
+          child: InteractiveViewer(
+            child: Image.network(
+              imageUrl,
+            ),
+          ),
+        );
       }),
     );
   }
@@ -273,7 +244,7 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
                             // IMAGE
                             GestureDetector(
                               onTap: () async {
-                                await showImage();
+                                await showImage(imageUrl!);
                               },
                               child: CircleAvatar(
                                 radius: width * 0.1195,
@@ -311,7 +282,7 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: ((context) =>
-                                        const ServicesDetailsPage()),
+                                        const EventsDetailsPage()),
                                   ),
                                 );
                               },
@@ -346,109 +317,6 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
                                       ),
                                     ),
                                     const Icon(FeatherIcons.settings),
-                                  ],
-                                ),
-                              ),
-                            ),
-
-                            const SizedBox(height: 8),
-
-                            // EDIT PRICES
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: ((context) =>
-                                        const ServicesEditPricePage()),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                width: width,
-                                height: 60,
-                                alignment: Alignment.centerLeft,
-                                decoration: BoxDecoration(
-                                  color: primary2.withOpacity(0.25),
-                                  border: Border.all(
-                                    width: 0.25,
-                                    color: primaryDark2.withOpacity(0.25),
-                                  ),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: width * 0.025,
-                                ),
-                                margin: EdgeInsets.all(
-                                  width * 0.006125,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'Edit Prices',
-                                      style: TextStyle(
-                                        fontSize: width * 0.05,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    Text(
-                                      '\u{20B9}',
-                                      style: TextStyle(
-                                        fontSize: width * 0.075,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-
-                            const SizedBox(height: 8),
-
-                            // CHANGE WORK
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: ((context) =>
-                                        const ServicesChangeWorkPage1()),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                width: width,
-                                height: 60,
-                                alignment: Alignment.centerLeft,
-                                decoration: BoxDecoration(
-                                  color: primary2.withOpacity(0.25),
-                                  border: Border.all(
-                                    width: 0.25,
-                                    color: primaryDark2.withOpacity(0.25),
-                                  ),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: width * 0.025,
-                                ),
-                                margin: EdgeInsets.all(
-                                  width * 0.006125,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'Change Work',
-                                      style: TextStyle(
-                                        fontSize: width * 0.05,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    const Icon(
-                                      FeatherIcons.grid,
-                                    ),
                                   ],
                                 ),
                               ),
