@@ -134,7 +134,7 @@ Map<String, Map<String, List<String>>> servicesMap = {
       'Electronics Purchase',
     ],
   },
-  'Educational Institutions': {
+  'Educational Institutes': {
     'Schools': [
       'Homework Completion',
       'Extracurricular Participation',

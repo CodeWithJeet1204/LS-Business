@@ -3,7 +3,7 @@ Map<String, String> placeImageMap = {
   'Office': '',
   'Outdoor': '',
   'Retail Stores': '',
-  'Educational Institutions': '',
+  'Educational Institutes': '',
 };
 
 Map<String, String> categoryImageMap = {
@@ -127,7 +127,7 @@ Map<String, String> subCategoryImageMap = {
   'Toy Selection': '',
   'Home Goods Shopping': '',
   'Electronics Purchase': '',
-  // Educational Institutions Categories
+  // Educational Institute Categories
   'Homework Completion': '',
   'Extracurricular Participation': '',
   'Library Usage': '',

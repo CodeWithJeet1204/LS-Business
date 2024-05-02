@@ -21,6 +21,8 @@ class _ServicesChangeWorkPage1State extends State<ServicesChangeWorkPage1> {
   bool isHomeSelected = false;
   bool isOfficeSelected = false;
   bool isOutdoorSelected = false;
+  bool isRetailSelected = false;
+  bool isEducationalSelected = false;
   bool isData = false;
   bool isNext = false;
 
@@ -52,7 +54,13 @@ class _ServicesChangeWorkPage1State extends State<ServicesChangeWorkPage1> {
       if (places.contains('Outdoor')) {
         isOutdoorSelected = true;
       }
-      initialSelection = [isHomeSelected, isOfficeSelected, isOutdoorSelected];
+      if (places.contains('Retail Stores')) {
+        isRetailSelected = true;
+      }
+      if (places.contains('Educational Institutes')) {
+        isEducationalSelected = true;
+      }
+      initialSelection = [];
       isData = true;
     });
   }
@@ -102,6 +110,12 @@ class _ServicesChangeWorkPage1State extends State<ServicesChangeWorkPage1> {
     }
     if (isOutdoorSelected) {
       selectedPlaces.add('Outdoor');
+    }
+    if (isRetailSelected) {
+      selectedPlaces.add('Retail Stores');
+    }
+    if (isEducationalSelected) {
+      selectedPlaces.add('Educational Institutes');
     }
 
     await store.collection('Services').doc(auth.currentUser!.uid).update({
@@ -193,19 +207,44 @@ class _ServicesChangeWorkPage1State extends State<ServicesChangeWorkPage1> {
                             ),
                           ],
                         ),
-                        SelectContainer(
-                          width: width,
-                          text: 'Outdoor',
-                          isSelected: isOutdoorSelected,
-                          onTap: () {
-                            setState(() {
-                              isOutdoorSelected = !isOutdoorSelected;
-                            });
-                          },
-                          imageUrl:
-                              'https://cdn.pixabay.com/photo/2016/07/07/16/46/dice-1502706_640.jpg',
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SelectContainer(
+                              width: width,
+                              text: 'Outdoor',
+                              isSelected: isOutdoorSelected,
+                              onTap: () {
+                                setState(() {
+                                  isOutdoorSelected = !isOutdoorSelected;
+                                });
+                              },
+                              imageUrl:
+                                  'https://cdn.pixabay.com/photo/2016/07/07/16/46/dice-1502706_640.jpg',
+                            ),
+                            SelectContainer(
+                              width: width,
+                              text: 'Retail Stores',
+                              isSelected: isRetailSelected,
+                              onTap: () {
+                                setState(() {
+                                  isRetailSelected = !isRetailSelected;
+                                });
+                              },
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 24),
+                            SelectContainer(
+                              width: width,
+                              text: 'Educational Institutes',
+                              isSelected: isEducationalSelected,
+                              onTap: () {
+                                setState(() {
+                                  isEducationalSelected =
+                                      !isEducationalSelected;
+                                });
+                              },
+                            ),
                       ],
                     ),
                   );

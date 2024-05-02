@@ -115,6 +115,7 @@ class _ServicesChangeWorkPage2State extends State<ServicesChangeWorkPage2> {
         padding: EdgeInsets.all(width * 0.0125),
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height - 168,
           child: GridView.builder(
             shrinkWrap: true,
             physics: const ClampingScrollPhysics(),

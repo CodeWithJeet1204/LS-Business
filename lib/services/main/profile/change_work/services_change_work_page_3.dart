@@ -71,8 +71,13 @@ class _ServicesChangeWorkPage3State extends State<ServicesChangeWorkPage3> {
       isNext = true;
     });
     if (chosenSubCategories.isNotEmpty) {
+      final Map chosenSubCategoryMap = {};
+      chosenSubCategories.forEach((subCategory) {
+        chosenSubCategoryMap[subCategory] = ['0', 'Service'];
+      });
+
       await store.collection('Services').doc(auth.currentUser!.uid).update({
-        'SubCategory': chosenSubCategories,
+        'SubCategory': chosenSubCategoryMap,
       });
 
       setState(() {
@@ -127,6 +132,7 @@ class _ServicesChangeWorkPage3State extends State<ServicesChangeWorkPage3> {
                 padding: EdgeInsets.all(width * 0.0125),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height - 168,
                   child: GridView.builder(
                     shrinkWrap: true,
                     physics: const ClampingScrollPhysics(),
