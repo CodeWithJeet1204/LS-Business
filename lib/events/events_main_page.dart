@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:find_easy/events/events_page_2.dart';
+import 'package:find_easy/events/events_add_page.dart';
 import 'package:find_easy/events/profile/events_profile_page.dart';
 import 'package:find_easy/events/register/events_register_details_page_1.dart';
 import 'package:find_easy/events/register/events_register_details_page_2.dart';
@@ -22,7 +22,7 @@ class _EventsMainPageState extends State<EventsMainPage> {
   int current = 1;
 
   List<Widget> pages = [
-    EventsPage2(),
+    EventsAddPage(),
     EventsProfilePage(),
   ];
 
@@ -88,15 +88,17 @@ class _EventsMainPageState extends State<EventsMainPage> {
             items: [
               BottomNavigationBarItem(
                 icon: Icon(
-                  FeatherIcons.arrowDownCircle,
+                  FeatherIcons.plusCircle,
                 ),
-                label: 'Random',
+                label: 'Add',
+                tooltip: "ADD",
               ),
               BottomNavigationBarItem(
                 icon: Icon(
                   FeatherIcons.user,
                 ),
                 label: 'Profile',
+                tooltip: "PROFILE",
               ),
             ],
           ),

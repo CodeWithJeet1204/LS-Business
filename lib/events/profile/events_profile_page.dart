@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
+import 'package:find_easy/events/profile/events_add_event_page_1.dart';
 import 'package:find_easy/events/profile/events_details_page.dart';
 import 'package:find_easy/select_mode_page.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
@@ -299,7 +300,7 @@ class _EventsProfilePageState extends State<EventsProfilePage> {
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 padding: EdgeInsets.symmetric(
-                                  horizontal: width * 0.025,
+                                  horizontal: width * 0.033,
                                 ),
                                 margin: EdgeInsets.all(
                                   width * 0.006125,
@@ -316,13 +317,67 @@ class _EventsProfilePageState extends State<EventsProfilePage> {
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
-                                    const Icon(FeatherIcons.settings),
+                                    Icon(
+                                      FeatherIcons.settings,
+                                      size: width * 0.066,
+                                    ),
                                   ],
                                 ),
                               ),
                             ),
 
                             const SizedBox(height: 8),
+
+                            // ADD EVENT
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: ((context) =>
+                                        const EventsAddEventPage1()),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                width: width,
+                                height: 60,
+                                alignment: Alignment.centerLeft,
+                                decoration: BoxDecoration(
+                                  color: primary2.withOpacity(0.25),
+                                  border: Border.all(
+                                    width: 0.25,
+                                    color: primaryDark2.withOpacity(0.25),
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: width * 0.033,
+                                ),
+                                margin: EdgeInsets.all(
+                                  width * 0.006125,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Add Event',
+                                      style: TextStyle(
+                                        fontSize: width * 0.05,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.event,
+                                      size: width * 0.066,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+
+                            SizedBox(height: 8),
 
                             // VIEWS
                             Container(
@@ -335,7 +390,13 @@ class _EventsProfilePageState extends State<EventsProfilePage> {
                                 ),
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              padding: EdgeInsets.all(width * 0.025),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.033,
+                                vertical: width * 0.0125,
+                              ),
+                              margin: EdgeInsets.all(
+                                width * 0.006125,
+                              ),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,

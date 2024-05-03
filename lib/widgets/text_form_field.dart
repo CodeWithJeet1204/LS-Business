@@ -8,7 +8,7 @@ class MyTextFormField extends StatefulWidget {
     required this.controller,
     required this.borderRadius,
     required this.horizontalPadding,
-    required this.autoFillHints,
+    this.autoFillHints,
     this.verticalPadding = 0,
     this.isPassword = false,
     this.keyboardType = TextInputType.text,
