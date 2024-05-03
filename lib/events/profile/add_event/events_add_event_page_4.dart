@@ -50,6 +50,10 @@ class _EventsAddEventPage4State extends State<EventsAddEventPage4> {
 
     final String eventId = Uuid().v4();
 
+    data.addAll({
+      'eventId': eventId,
+    });
+
     await Future.forEach(_image, (File img) async {
       final String imageId = Uuid().v4();
 

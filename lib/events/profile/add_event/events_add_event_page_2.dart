@@ -1,5 +1,5 @@
 import 'package:feather_icons/feather_icons.dart';
-import 'package:find_easy/events/profile/events_add_event_page_3.dart';
+import 'package:find_easy/events/profile/add_event/events_add_event_page_3.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:find_easy/widgets/text_button.dart';
