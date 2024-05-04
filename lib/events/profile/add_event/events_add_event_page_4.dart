@@ -36,7 +36,7 @@ class _EventsAddEventPage4State extends State<EventsAddEventPage4> {
       isDone = true;
     });
     Map<String, dynamic> data = {
-      'Description': descriptionController.text,
+      'eventDescription': descriptionController.text,
       'organizerName': organizationNameController.text,
       'organizerId': auth.currentUser!.uid,
       'contactHelp': helpContactNumberController.text,

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
+import 'package:find_easy/events/event_page.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:find_easy/widgets/shimmer_skeleton_container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -132,13 +133,22 @@ class Events_AllEventsPageState extends State<EventsAllEventsPage> {
                                   physics: const ClampingScrollPhysics(),
                                   itemCount: events.length,
                                   itemBuilder: ((context, index) {
+                                    final id = events.keys.toList()[index];
                                     final name =
                                         events.values.toList()[index][0];
                                     final imageUrl =
                                         events.values.toList()[index][1];
 
                                     return GestureDetector(
-                                      onTap: () {},
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: ((context) => EventPage(
+                                                  eventId: id,
+                                                )),
+                                          ),
+                                        );
+                                      },
                                       child: Container(
                                         decoration: BoxDecoration(
                                           color: primary2.withOpacity(0.125),

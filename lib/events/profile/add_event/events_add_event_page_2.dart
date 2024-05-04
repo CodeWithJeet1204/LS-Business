@@ -199,7 +199,6 @@ class _EventsAddEventPage2State extends State<EventsAddEventPage2> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // DATE
                   Padding(
                     padding: EdgeInsets.only(left: width * 0.033),
                     child: Text(
@@ -209,15 +208,11 @@ class _EventsAddEventPage2State extends State<EventsAddEventPage2> {
                       ),
                     ),
                   ),
-
                   SizedBox(height: 8),
-
-                  // DATES
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // START DATE
                       Container(
                         height: 100,
                         width: width * 0.45,
@@ -288,8 +283,6 @@ class _EventsAddEventPage2State extends State<EventsAddEventPage2> {
                           ],
                         ),
                       ),
-
-                      // END DATE
                       Container(
                         height: 100,
                         width: width * 0.45,
@@ -362,14 +355,9 @@ class _EventsAddEventPage2State extends State<EventsAddEventPage2> {
                       ),
                     ],
                   ),
-
                   const SizedBox(height: 8),
-
                   Divider(),
-
                   const SizedBox(height: 8),
-
-                  // TIMING
                   Padding(
                     padding: EdgeInsets.only(left: width * 0.033),
                     child: Text(
@@ -379,10 +367,7 @@ class _EventsAddEventPage2State extends State<EventsAddEventPage2> {
                       ),
                     ),
                   ),
-
                   SizedBox(height: 8),
-
-                  // TIMING
                   Center(
                     child: Container(
                       width: width * 0.95,
@@ -482,10 +467,7 @@ class _EventsAddEventPage2State extends State<EventsAddEventPage2> {
                       ),
                     ),
                   ),
-
                   SizedBox(height: 12),
-
-                  // WEEKEND TIMING
                   Center(
                     child: AnimatedSize(
                       duration: Duration(milliseconds: 300),
@@ -637,7 +619,6 @@ class _EventsAddEventPage2State extends State<EventsAddEventPage2> {
                       ),
                     ),
                   ),
-
                   SizedBox(height: 12),
                 ],
               ),
