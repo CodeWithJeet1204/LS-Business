@@ -1,10 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:feather_icons/feather_icons.dart';
-import 'package:find_easy/events/events_add_page.dart';
 import 'package:find_easy/events/profile/events_profile_page.dart';
 import 'package:find_easy/events/register/events_register_details_page_1.dart';
 import 'package:find_easy/events/register/events_register_details_page_2.dart';
-import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -19,12 +16,12 @@ class _EventsMainPageState extends State<EventsMainPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   Widget? detailsPage;
-  int current = 1;
+  // int current = 1;
 
-  List<Widget> pages = [
-    EventsAddPage(),
-    EventsProfilePage(),
-  ];
+  // List<Widget> pages = [
+  //   EventsAddPage(),
+  //   EventsProfilePage(),
+  // ];
 
   // INIT STATE
   @override
@@ -55,53 +52,53 @@ class _EventsMainPageState extends State<EventsMainPage> {
   }
 
   // CHANGE PAGE
-  void changePage(int index) {
-    setState(() {
-      current = index;
-    });
-  }
+  // void changePage(int index) {
+  //   setState(() {
+  //     current = index;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return detailsPage ??
-        Scaffold(
-          body: pages[current],
-          bottomNavigationBar: BottomNavigationBar(
-            elevation: 0,
-            backgroundColor: white,
-            selectedLabelStyle: const TextStyle(
-              fontWeight: FontWeight.w500,
-              color: primaryDark,
-            ),
-            useLegacyColorScheme: false,
-            type: BottomNavigationBarType.fixed,
-            selectedIconTheme: const IconThemeData(
-              size: 24,
-              color: primaryDark,
-            ),
-            unselectedIconTheme: IconThemeData(
-              size: 24,
-              color: black.withOpacity(0.5),
-            ),
-            currentIndex: current,
-            onTap: changePage,
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(
-                  FeatherIcons.plusCircle,
-                ),
-                label: 'Add',
-                tooltip: "ADD",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  FeatherIcons.user,
-                ),
-                label: 'Profile',
-                tooltip: "PROFILE",
-              ),
-            ],
-          ),
-        );
+    return detailsPage ?? EventsProfilePage();
+    // Scaffold(
+    //   body: pages[current],
+    //   bottomNavigationBar: BottomNavigationBar(
+    //     elevation: 0,
+    //     backgroundColor: white,
+    //     selectedLabelStyle: const TextStyle(
+    //       fontWeight: FontWeight.w500,
+    //       color: primaryDark,
+    //     ),
+    //     useLegacyColorScheme: false,
+    //     type: BottomNavigationBarType.fixed,
+    //     selectedIconTheme: const IconThemeData(
+    //       size: 24,
+    //       color: primaryDark,
+    //     ),
+    //     unselectedIconTheme: IconThemeData(
+    //       size: 24,
+    //       color: black.withOpacity(0.5),
+    //     ),
+    //     currentIndex: current,
+    //     onTap: changePage,
+    //     items: [
+    //       BottomNavigationBarItem(
+    //         icon: Icon(
+    //           FeatherIcons.plusCircle,
+    //         ),
+    //         label: 'Add',
+    //         tooltip: "ADD",
+    //       ),
+    //       BottomNavigationBarItem(
+    //         icon: Icon(
+    //           FeatherIcons.user,
+    //         ),
+    //         label: 'Profile',
+    //         tooltip: "PROFILE",
+    //       ),
+    //     ],
+    //   ),
+    // );
   }
 }
