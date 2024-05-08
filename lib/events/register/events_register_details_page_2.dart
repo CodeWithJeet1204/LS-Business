@@ -60,6 +60,7 @@ class _EventsRegisterDetailsPage2State
                 TextFormField(
                   autofocus: true,
                   controller: descriptionController,
+                  onTapOutside: (event) => FocusScope.of(context).unfocus(),
                   minLines: 5,
                   maxLines: 100,
                   decoration: InputDecoration(

@@ -316,6 +316,8 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                       // NAME
                       child: TextFormField(
                         controller: categoryController,
+                        onTapOutside: (event) =>
+                            FocusScope.of(context).unfocus(),
                         autofillHints: null,
                         autofocus: false,
                         decoration: InputDecoration(

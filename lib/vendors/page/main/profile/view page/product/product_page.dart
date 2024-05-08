@@ -127,6 +127,8 @@ class _ProductPageState extends State<ProductPage> {
                                     Expanded(
                                       child: TextFormField(
                                         controller: editController,
+                                        onTapOutside: (event) =>
+                                            FocusScope.of(context).unfocus(),
                                         keyboardType: inputType
                                             ? TextInputType.text
                                             : TextInputType.number,

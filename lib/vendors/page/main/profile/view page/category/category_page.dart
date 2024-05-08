@@ -238,6 +238,8 @@ class _CategoryPageState extends State<CategoryPage> {
   //                       children: [
   //                         TextFormField(
   //                           initialValue: categoryName,
+  // onTapOutside: (event) =>
+  //     FocusScope.of(context).unfocus(),
   //                           decoration: const InputDecoration(
   //                             hintText: "Category Name",
   //                             border: OutlineInputBorder(),
@@ -645,11 +647,12 @@ class _CategoryPageState extends State<CategoryPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              // TEXTFIELD
                               Expanded(
                                 child: TextField(
                                   controller: searchController,
                                   autocorrect: false,
+                                  onTapOutside: (event) =>
+                                      FocusScope.of(context).unfocus(),
                                   decoration: const InputDecoration(
                                     labelText: "Case - Sensitive",
                                     hintText: "Search ...",

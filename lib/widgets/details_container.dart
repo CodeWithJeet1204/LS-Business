@@ -45,6 +45,7 @@ class _DetailsContainerState extends State<DetailsContainer> {
           ? TextField(
               autofocus: false,
               controller: widget.controller,
+              onTapOutside: (event) => FocusScope.of(context).unfocus(),
               decoration: InputDecoration(
                 hintText: "Change ${widget.text}",
                 border: OutlineInputBorder(

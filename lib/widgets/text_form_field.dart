@@ -52,6 +52,7 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
                     obscureText: isShowPassword,
                     maxLines: widget.maxLines,
                     minLines: 1,
+                    onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius:
@@ -96,6 +97,7 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
               keyboardType: widget.keyboardType,
               maxLines: widget.maxLines,
               minLines: 1,
+              onTapOutside: (event) => FocusScope.of(context).unfocus(),
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(widget.borderRadius),

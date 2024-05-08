@@ -305,6 +305,8 @@ class _LoginPageState extends State<LoginPage> {
                                       autofocus: false,
                                       controller: phoneController,
                                       keyboardType: TextInputType.number,
+                                      onTapOutside: (event) =>
+                                          FocusScope.of(context).unfocus(),
                                       maxLines: 1,
                                       minLines: 1,
                                       decoration: InputDecoration(

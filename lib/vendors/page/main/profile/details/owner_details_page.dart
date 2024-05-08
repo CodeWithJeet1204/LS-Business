@@ -346,8 +346,10 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                             ),
                             child: isChangingName
                                 ? TextField(
-                                    autofocus: true,
                                     controller: nameController,
+                                    autofocus: true,
+                                    onTapOutside: (event) =>
+                                        FocusScope.of(context).unfocus(),
                                     decoration: InputDecoration(
                                       hintText: "Change Name",
                                       border: OutlineInputBorder(
@@ -405,8 +407,10 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                             ),
                             child: isChangingNumber
                                 ? TextField(
-                                    autofocus: true,
                                     controller: numberController,
+                                    autofocus: true,
+                                    onTapOutside: (event) =>
+                                        FocusScope.of(context).unfocus(),
                                     decoration: InputDecoration(
                                       hintText: "Change Number",
                                       border: OutlineInputBorder(

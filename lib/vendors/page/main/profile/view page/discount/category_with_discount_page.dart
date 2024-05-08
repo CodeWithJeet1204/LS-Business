@@ -142,6 +142,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
                   child: TextField(
                     controller: searchController,
                     autocorrect: false,
+                    onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     decoration: const InputDecoration(
                       hintText: "Search ...",
                       border: OutlineInputBorder(),

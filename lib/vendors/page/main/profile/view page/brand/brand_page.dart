@@ -196,6 +196,8 @@ class _BrandPageState extends State<BrandPage> {
                         children: [
                           TextFormField(
                             initialValue: brandName,
+                            onTapOutside: (event) =>
+                                FocusScope.of(context).unfocus(),
                             decoration: const InputDecoration(
                               hintText: "Brand Name",
                               border: OutlineInputBorder(),
@@ -800,10 +802,11 @@ class _BrandPageState extends State<BrandPage> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    // TEXTFIELD
                                     Expanded(
                                       child: TextField(
                                         controller: searchController,
+                                        onTapOutside: (event) =>
+                                            FocusScope.of(context).unfocus(),
                                         autocorrect: false,
                                         decoration: const InputDecoration(
                                           labelText: "Case - Sensitive",

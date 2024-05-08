@@ -71,6 +71,7 @@ class _SelectCategoryForDiscountPageState
                 Expanded(
                   child: TextField(
                     autocorrect: false,
+                    onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     decoration: const InputDecoration(
                       hintText: "Search ...",
                       border: OutlineInputBorder(),

@@ -415,6 +415,8 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                 Expanded(
                                   child: TextFormField(
                                     controller: tagController,
+                                    onTapOutside: (event) =>
+                                        FocusScope.of(context).unfocus(),
                                     maxLength: 16,
                                     maxLines: 1,
                                     minLines: 1,
@@ -519,6 +521,8 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                   widget1: getNoOfAnswers(0) == 1
                                       ? TextFormField(
                                           controller: property0Controller,
+                                          onTapOutside: (event) =>
+                                              FocusScope.of(context).unfocus(),
                                           maxLines: getMaxLines(0),
                                           minLines: 1,
                                           keyboardType:
@@ -578,6 +582,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                   child: TextFormField(
                                                     controller:
                                                         property0Controller,
+                                                    onTapOutside: (event) =>
+                                                        FocusScope.of(context)
+                                                            .unfocus(),
                                                     keyboardType:
                                                         getPropertiesInputType(
                                                             0),
@@ -717,6 +724,8 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                   widget1: getNoOfAnswers(1) == 1
                                       ? TextFormField(
                                           controller: property1Controller,
+                                          onTapOutside: (event) =>
+                                              FocusScope.of(context).unfocus(),
                                           maxLines: getMaxLines(1),
                                           minLines: 1,
                                           keyboardType:
@@ -776,6 +785,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                   child: TextFormField(
                                                     controller:
                                                         property1Controller,
+                                                    onTapOutside: (event) =>
+                                                        FocusScope.of(context)
+                                                            .unfocus(),
                                                     keyboardType:
                                                         getPropertiesInputType(
                                                             1),
@@ -915,6 +927,8 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                   widget1: getNoOfAnswers(2) == 1
                                       ? TextFormField(
                                           controller: property2Controller,
+                                          onTapOutside: (event) =>
+                                              FocusScope.of(context).unfocus(),
                                           maxLines: getMaxLines(2),
                                           minLines: 1,
                                           keyboardType:
@@ -974,6 +988,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                   child: TextFormField(
                                                     controller:
                                                         property2Controller,
+                                                    onTapOutside: (event) =>
+                                                        FocusScope.of(context)
+                                                            .unfocus(),
                                                     keyboardType:
                                                         getPropertiesInputType(
                                                             2),
@@ -1113,6 +1130,8 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                   widget1: getNoOfAnswers(3) == 1
                                       ? TextFormField(
                                           controller: property3Controller,
+                                          onTapOutside: (event) =>
+                                              FocusScope.of(context).unfocus(),
                                           maxLines: getMaxLines(3),
                                           minLines: 1,
                                           keyboardType:
@@ -1172,6 +1191,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                   child: TextFormField(
                                                     controller:
                                                         property3Controller,
+                                                    onTapOutside: (event) =>
+                                                        FocusScope.of(context)
+                                                            .unfocus(),
                                                     keyboardType:
                                                         getPropertiesInputType(
                                                             3),
@@ -1311,6 +1333,8 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                   widget1: getNoOfAnswers(4) == 1
                                       ? TextFormField(
                                           controller: property4Controller,
+                                          onTapOutside: (event) =>
+                                              FocusScope.of(context).unfocus(),
                                           maxLines: getMaxLines(4),
                                           minLines: 1,
                                           keyboardType:
@@ -1370,6 +1394,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                   child: TextFormField(
                                                     controller:
                                                         property4Controller,
+                                                    onTapOutside: (event) =>
+                                                        FocusScope.of(context)
+                                                            .unfocus(),
                                                     keyboardType:
                                                         getPropertiesInputType(
                                                             4),
@@ -1509,6 +1536,8 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                   widget1: getNoOfAnswers(5) == 1
                                       ? TextFormField(
                                           controller: property4Controller,
+                                          onTapOutside: (event) =>
+                                              FocusScope.of(context).unfocus(),
                                           maxLines: getMaxLines(5),
                                           minLines: 1,
                                           keyboardType:
@@ -1568,6 +1597,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                   child: TextFormField(
                                                     controller:
                                                         property5Controller,
+                                                    onTapOutside: (event) =>
+                                                        FocusScope.of(context)
+                                                            .unfocus(),
                                                     keyboardType:
                                                         getPropertiesInputType(
                                                             5),
@@ -1713,6 +1745,8 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                     maxLines: 1,
                                     minLines: 1,
                                     keyboardType: TextInputType.text,
+                                    onTapOutside: (event) =>
+                                        FocusScope.of(context).unfocus(),
                                     decoration: const InputDecoration(
                                       hintText: "Property Name",
                                       border: OutlineInputBorder(
@@ -1738,6 +1772,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                               child: TextFormField(
                                                 controller:
                                                     otherInfoValueController,
+                                                onTapOutside: (event) =>
+                                                    FocusScope.of(context)
+                                                        .unfocus(),
                                                 maxLines: 1,
                                                 minLines: 1,
                                                 keyboardType:

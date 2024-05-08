@@ -405,6 +405,8 @@ class _EventsAddEventPage1State extends State<EventsAddEventPage1> {
                               return TextField(
                                 controller: controller,
                                 focusNode: focusNode,
+                                onTapOutside: (event) =>
+                                    FocusScope.of(context).unfocus(),
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8),

@@ -353,6 +353,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                     // NAME
                     TextFormField(
                       controller: nameController,
+                      onTapOutside: (event) => FocusScope.of(context).unfocus(),
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -643,6 +644,8 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                       ),
                       child: TextFormField(
                         controller: discountController,
+                        onTapOutside: (event) =>
+                            FocusScope.of(context).unfocus(),
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(

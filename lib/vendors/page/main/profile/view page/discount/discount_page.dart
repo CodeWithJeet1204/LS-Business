@@ -309,6 +309,8 @@ class DISCOUNT extends State<DiscountPage> {
                         children: [
                           TextFormField(
                             initialValue: discountProperty,
+                            onTapOutside: (event) =>
+                                FocusScope.of(context).unfocus(),
                             decoration: const InputDecoration(
                               hintText: "Discount Name",
                               border: OutlineInputBorder(),
@@ -910,6 +912,9 @@ class DISCOUNT extends State<DiscountPage> {
                                               child: TextField(
                                                 controller: searchController,
                                                 autocorrect: false,
+                                                onTapOutside: (event) =>
+                                                    FocusScope.of(context)
+                                                        .unfocus(),
                                                 decoration:
                                                     const InputDecoration(
                                                   labelText: "Case - Sensitive",
@@ -1392,6 +1397,9 @@ class DISCOUNT extends State<DiscountPage> {
                                               child: TextField(
                                                 controller: searchController,
                                                 autocorrect: false,
+                                                onTapOutside: (event) =>
+                                                    FocusScope.of(context)
+                                                        .unfocus(),
                                                 decoration:
                                                     const InputDecoration(
                                                   labelText: "Case - Sensitive",
@@ -1853,6 +1861,9 @@ class DISCOUNT extends State<DiscountPage> {
                         //                       child: TextField(
                         //                         controller: searchController,
                         //                         autocorrect: false,
+                        // onTapOutside: (event) =>
+                        //     FocusScope.of(context)
+                        //         .unfocus(),
                         //                         decoration:
                         //                             const InputDecoration(
                         //                           labelText: "Case - Sensitive",

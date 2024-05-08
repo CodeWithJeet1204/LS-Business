@@ -179,6 +179,8 @@ class _AddProductPage3State extends State<AddProductPage3> {
                             ),
                             child: TextFormField(
                               keyboardType: TextInputType.number,
+                              onTapOutside: (event) =>
+                                  FocusScope.of(context).unfocus(),
                               decoration: InputDecoration(
                                 hintText: "Range of Delivery (in Km)",
                                 hintStyle: TextStyle(
@@ -268,6 +270,8 @@ class _AddProductPage3State extends State<AddProductPage3> {
                             ),
                             child: TextFormField(
                               keyboardType: TextInputType.number,
+                              onTapOutside: (event) =>
+                                  FocusScope.of(context).unfocus(),
                               decoration: InputDecoration(
                                 hintText: "Days To Return",
                                 hintStyle: TextStyle(
@@ -317,6 +321,8 @@ class _AddProductPage3State extends State<AddProductPage3> {
                             ),
                             child: TextFormField(
                               keyboardType: TextInputType.number,
+                              onTapOutside: (event) =>
+                                  FocusScope.of(context).unfocus(),
                               decoration: InputDecoration(
                                 hintText: "Days To Replace",
                                 hintStyle: TextStyle(

@@ -440,6 +440,8 @@ class _AddProductPage1State extends State<AddProductPage1> {
                         // NAME
                         TextFormField(
                           controller: nameController,
+                          onTapOutside: (event) =>
+                              FocusScope.of(context).unfocus(),
                           maxLength: 60,
                           decoration: const InputDecoration(
                             hintText: "Product Name",
@@ -463,6 +465,8 @@ class _AddProductPage1State extends State<AddProductPage1> {
                         // DESCRIPTION
                         TextFormField(
                           controller: descriptionController,
+                          onTapOutside: (event) =>
+                              FocusScope.of(context).unfocus(),
                           minLines: 1,
                           maxLines: 10,
                           maxLength: 500,
@@ -493,6 +497,8 @@ class _AddProductPage1State extends State<AddProductPage1> {
                         // PRICE
                         TextFormField(
                           controller: priceController,
+                          onTapOutside: (event) =>
+                              FocusScope.of(context).unfocus(),
                           keyboardType: TextInputType.number,
                           decoration: const InputDecoration(
                             hintText: "Price (Optional)",
@@ -682,6 +688,8 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                 child: TextField(
                                   controller: searchController,
                                   autocorrect: false,
+                                  onTapOutside: (event) =>
+                                      FocusScope.of(context).unfocus(),
                                   decoration: const InputDecoration(
                                     labelText: "Case - Sensitive",
                                     hintText: "Search ...",

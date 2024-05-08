@@ -179,6 +179,8 @@ class _EventPageState extends State<EventPage> {
                                 height: 80,
                                 child: TextFormField(
                                   controller: editController,
+                                  onTapOutside: (event) =>
+                                      FocusScope.of(context).unfocus(),
                                   keyboardType: inputType
                                       ? TextInputType.text
                                       : TextInputType.number,
@@ -724,6 +726,9 @@ class _EventPageState extends State<EventPage> {
                                               return TextField(
                                                 controller: controller,
                                                 focusNode: focusNode,
+                                                onTapOutside: (event) =>
+                                                    FocusScope.of(context)
+                                                        .unfocus(),
                                                 decoration: InputDecoration(
                                                   border: OutlineInputBorder(
                                                     borderRadius:

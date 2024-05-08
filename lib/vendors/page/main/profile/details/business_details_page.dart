@@ -294,9 +294,11 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             ),
                             child: isChangingName
                                 ? TextField(
+                                    controller: nameController,
                                     maxLength: 32,
                                     autofocus: true,
-                                    controller: nameController,
+                                    onTapOutside: (event) =>
+                                        FocusScope.of(context).unfocus(),
                                     decoration: InputDecoration(
                                       hintText: "Change Name",
                                       border: OutlineInputBorder(
@@ -357,9 +359,11 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             ),
                             child: isChangingAddress
                                 ? TextField(
+                                    controller: addressController,
                                     maxLength: 32,
                                     autofocus: true,
-                                    controller: addressController,
+                                    onTapOutside: (event) =>
+                                        FocusScope.of(context).unfocus(),
                                     decoration: InputDecoration(
                                       hintText: "Change Address",
                                       border: OutlineInputBorder(
@@ -419,9 +423,11 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             ),
                             child: isChangingSpecialNote
                                 ? TextField(
+                                    controller: specialNoteController,
                                     maxLength: 32,
                                     autofocus: true,
-                                    controller: specialNoteController,
+                                    onTapOutside: (event) =>
+                                        FocusScope.of(context).unfocus(),
                                     decoration: InputDecoration(
                                       hintText: "Change Special Note",
                                       border: OutlineInputBorder(

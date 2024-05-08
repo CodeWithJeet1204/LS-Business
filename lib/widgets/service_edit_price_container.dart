@@ -159,8 +159,10 @@ class _ServiceEditPriceContainerState extends State<ServiceEditPriceContainer> {
                   ? SizedBox(
                       width: widget.width * 0.5,
                       child: TextField(
-                        autofocus: true,
                         controller: priceController,
+                        autofocus: true,
+                        onTapOutside: (event) =>
+                            FocusScope.of(context).unfocus(),
                         keyboardType: TextInputType.number,
                         minLines: 1,
                         maxLines: 1,

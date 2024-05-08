@@ -26,20 +26,27 @@ class _EventsAddEventPage4State extends State<EventsAddEventPage4> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   final descriptionController = TextEditingController();
-  final organizationNameController = TextEditingController();
   final helpContactNumberController = TextEditingController();
   bool isDone = false;
 
   // DONE
   Future<void> done() async {
+    final organizerSnap =
+        await store.collection('Events').doc(auth.currentUser!.uid).get();
+
+    final organizerData = organizerSnap.data()!;
+
+    final name = organizerData['Name'];
+
     setState(() {
       isDone = true;
     });
     Map<String, dynamic> data = {
       'eventDescription': descriptionController.text,
-      'organizerName': organizationNameController.text,
+      'organizerName': name,
       'organizerId': auth.currentUser!.uid,
       'contactHelp': helpContactNumberController.text,
+      'wishlists': [],
     };
 
     data.addAll(widget.data);
@@ -119,6 +126,7 @@ class _EventsAddEventPage4State extends State<EventsAddEventPage4> {
                     // DESCRIPTION
                     TextFormField(
                       controller: descriptionController,
+                      onTapOutside: (event) => FocusScope.of(context).unfocus(),
                       minLines: 5,
                       maxLines: 20,
                       decoration: InputDecoration(
@@ -130,33 +138,6 @@ class _EventsAddEventPage4State extends State<EventsAddEventPage4> {
                         ),
                         hintText: 'Description',
                       ),
-                    ),
-
-                    SizedBox(height: 8),
-
-                    Divider(),
-
-                    SizedBox(height: 8),
-
-                    // ORGANIZER NAME
-                    Padding(
-                      padding: EdgeInsets.only(left: width * 0.025),
-                      child: Text(
-                        'Organizer Person Name',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-
-                    SizedBox(height: 8),
-
-                    // ORGANIZER NAME
-                    MyTextFormField(
-                      hintText: 'Organizer Person Name',
-                      controller: organizationNameController,
-                      borderRadius: 8,
-                      horizontalPadding: 0,
                     ),
 
                     SizedBox(height: 8),
