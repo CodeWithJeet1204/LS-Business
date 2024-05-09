@@ -29,6 +29,7 @@ import 'package:find_easy/vendors/provider/shop_type_provider.dart';
 import 'package:find_easy/vendors/provider/sign_in_method_provider.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:find_easy/vendors/utils/network_connectivity.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -36,16 +37,9 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: const FirebaseOptions(
-      apiKey: 'AIzaSyA-CD3MgDBzAsjmp_FlDbofynMMmW6fPsU',
-      appId: '1:851488762803:android:eb89214a6ee6397b3979c6',
-      messagingSenderId: '851488762803',
-      projectId: 'find-easy-1204',
-      storageBucket: 'find-easy-1204.appspot.com',
-    ),
-  );
+  await WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await FirebaseAppCheck.instance.activate();
 
   runApp(
     MultiProvider(

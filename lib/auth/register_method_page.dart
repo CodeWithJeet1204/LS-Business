@@ -107,7 +107,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
               });
             } else if (widget.mode == 'services') {
               // nothing
-            } else {
+            } else if (widget.mode == 'events') {
               // code for events
             }
 
@@ -450,7 +450,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
 
                                           setState(() {
                                             isPhoneRegistering = true;
-                                            phoneText = "PLEASE WAIT";
+                                            // phoneText = "PLEASE WAIT";
                                           });
 
                                           await auth.verifyPhoneNumber(

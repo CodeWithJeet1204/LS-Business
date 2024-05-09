@@ -34,7 +34,7 @@ class Events_AllEventsPageState extends State<EventsAllEventsPage> {
   Future<void> getData() async {
     Map<String, dynamic> myEvents = {};
     final eventSnap = await store
-        .collection('Event')
+        .collection('Events')
         .where('organizerId', isEqualTo: auth.currentUser!.uid)
         .get();
 

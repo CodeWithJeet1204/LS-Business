@@ -56,7 +56,7 @@ class _EventPageState extends State<EventPage> {
         await ref.putFile(File(im.path)).whenComplete(() async {
           await ref.getDownloadURL().then((value) async {
             images.add(value);
-            await store.collection('Event').doc(widget.eventId).update({
+            await store.collection('Events').doc(widget.eventId).update({
               'imageUrl': images,
             });
           });
@@ -132,7 +132,7 @@ class _EventPageState extends State<EventPage> {
         .refFromURL(images[images.indexOf(e)])
         .delete();
     images.remove(e);
-    await store.collection('Event').doc(widget.eventId).update({
+    await store.collection('Events').doc(widget.eventId).update({
       'imageUrl': images,
     });
   }
@@ -146,7 +146,7 @@ class _EventPageState extends State<EventPage> {
         context: context,
         builder: (context) {
           final eventStream =
-              store.collection('Event').doc(widget.eventId).snapshots();
+              store.collection('Events').doc(widget.eventId).snapshots();
 
           return Dialog(
             shape: RoundedRectangleBorder(
@@ -223,7 +223,7 @@ class _EventPageState extends State<EventPage> {
                                     });
                                     try {
                                       await store
-                                          .collection('Event')
+                                          .collection('Events')
                                           .doc(widget.eventId)
                                           .update({
                                         propertyValue:
@@ -281,7 +281,7 @@ class _EventPageState extends State<EventPage> {
       if (selected.isBefore(startDate) && date == 'endDate') {
         return mySnackBar(context, 'End Date should be after Start Date');
       }
-      await store.collection('Event').doc(widget.eventId).update({
+      await store.collection('Events').doc(widget.eventId).update({
         date: selected,
       });
     }
@@ -314,7 +314,7 @@ class _EventPageState extends State<EventPage> {
     );
 
     if (selected != null) {
-      await store.collection('Event').doc(widget.eventId).update({
+      await store.collection('Events').doc(widget.eventId).update({
         time: selected.toString(),
       });
     }
@@ -383,7 +383,7 @@ class _EventPageState extends State<EventPage> {
   // CHANGE TYPE
   Future<void> changeType() async {
     if (typeController.text.isNotEmpty) {
-      await store.collection('Event').doc(widget.eventId).update({
+      await store.collection('Events').doc(widget.eventId).update({
         'eventType': typeController.text,
       });
       setState(() {
@@ -397,7 +397,7 @@ class _EventPageState extends State<EventPage> {
   @override
   Widget build(BuildContext context) {
     final eventStream =
-        store.collection('Event').doc(widget.eventId).snapshots();
+        store.collection('Events').doc(widget.eventId).snapshots();
 
     return Scaffold(
       appBar: AppBar(
@@ -1318,14 +1318,14 @@ class _EventPageState extends State<EventPage> {
                                     onChanged: (value) async {
                                       if (ticketPrice != null) {
                                         await store
-                                            .collection('Event')
+                                            .collection('Events')
                                             .doc(widget.eventId)
                                             .update({
                                           'ticketPrice': null,
                                         });
                                       } else {
                                         await store
-                                            .collection('Event')
+                                            .collection('Events')
                                             .doc(widget.eventId)
                                             .update({
                                           'ticketPrice': '0',
@@ -1385,14 +1385,14 @@ class _EventPageState extends State<EventPage> {
                                     onChanged: (value) async {
                                       if (ticketGeneralPrice != null) {
                                         await store
-                                            .collection('Event')
+                                            .collection('Events')
                                             .doc(widget.eventId)
                                             .update({
                                           'ticketGeneralPrice': null,
                                         });
                                       } else {
                                         await store
-                                            .collection('Event')
+                                            .collection('Events')
                                             .doc(widget.eventId)
                                             .update({
                                           'ticketGeneralPrice': '0',
@@ -1452,14 +1452,14 @@ class _EventPageState extends State<EventPage> {
                                     onChanged: (value) async {
                                       if (ticketEarlyBirdPrice != null) {
                                         await store
-                                            .collection('Event')
+                                            .collection('Events')
                                             .doc(widget.eventId)
                                             .update({
                                           'ticketEarlyBirdPrice': null,
                                         });
                                       } else {
                                         await store
-                                            .collection('Event')
+                                            .collection('Events')
                                             .doc(widget.eventId)
                                             .update({
                                           'ticketEarlyBirdPrice': '0',
@@ -1519,14 +1519,14 @@ class _EventPageState extends State<EventPage> {
                                     onChanged: (value) async {
                                       if (ticketVIPPrice != null) {
                                         await store
-                                            .collection('Event')
+                                            .collection('Events')
                                             .doc(widget.eventId)
                                             .update({
                                           'ticketVIPPrice': null,
                                         });
                                       } else {
                                         await store
-                                            .collection('Event')
+                                            .collection('Events')
                                             .doc(widget.eventId)
                                             .update({
                                           'ticketVIPPrice': '0',
@@ -1586,14 +1586,14 @@ class _EventPageState extends State<EventPage> {
                                     onChanged: (value) async {
                                       if (ticketGroupPrice != null) {
                                         await store
-                                            .collection('Event')
+                                            .collection('Events')
                                             .doc(widget.eventId)
                                             .update({
                                           'ticketGroupPrice': null,
                                         });
                                       } else {
                                         await store
-                                            .collection('Event')
+                                            .collection('Events')
                                             .doc(widget.eventId)
                                             .update({
                                           'ticketGroupPrice': '0',

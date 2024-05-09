@@ -144,7 +144,6 @@ class _LoginPageState extends State<LoginPage> {
           try {
             setState(() {
               isPhoneLogging = true;
-              phoneText = "PLEASE WAIT";
             });
             // Register with Phone
 

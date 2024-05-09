@@ -32,7 +32,7 @@ class _EventsAddEventPage4State extends State<EventsAddEventPage4> {
   // DONE
   Future<void> done() async {
     final organizerSnap =
-        await store.collection('Events').doc(auth.currentUser!.uid).get();
+        await store.collection('Organizers').doc(auth.currentUser!.uid).get();
 
     final organizerData = organizerSnap.data()!;
 
@@ -79,7 +79,7 @@ class _EventsAddEventPage4State extends State<EventsAddEventPage4> {
 
     data['imageUrl'] = downloadUrls;
 
-    await store.collection('Event').doc(eventId).set(data);
+    await store.collection('Events').doc(eventId).set(data);
 
     setState(() {
       isDone = false;

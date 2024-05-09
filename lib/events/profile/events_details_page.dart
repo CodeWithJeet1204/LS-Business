@@ -44,7 +44,7 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
   // GET DATA
   Future<void> getData() async {
     final serviceSnap =
-        await store.collection('Events').doc(auth.currentUser!.uid).get();
+        await store.collection('Organizers').doc(auth.currentUser!.uid).get();
 
     final serviceData = serviceSnap.data()!;
 
@@ -179,7 +179,7 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
 
   // CHANGE TYPE
   Future<void> changeType(String type) async {
-    await store.collection('Events').doc(auth.currentUser!.uid).update({
+    await store.collection('Organizers').doc(auth.currentUser!.uid).update({
       'Type': type,
     });
   }
@@ -213,7 +213,7 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
           "Image": userPhotoUrl,
         };
         await FirebaseFirestore.instance
-            .collection('Events')
+            .collection('Organizers')
             .doc(auth.currentUser!.uid)
             .update(updatedUserImage);
         setState(() {

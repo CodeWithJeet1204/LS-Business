@@ -116,8 +116,10 @@ class EventsRegisterDetailsPage1State
           });
         });
 
-        final eventSnap =
-            await store.collection('Events').doc(auth.currentUser!.uid).get();
+        final eventSnap = await store
+            .collection('Organizers')
+            .doc(auth.currentUser!.uid)
+            .get();
 
         if (eventSnap.exists && eventSnap.data()!['Description'] != null) {
           Map<String, dynamic> info = {
@@ -133,7 +135,7 @@ class EventsRegisterDetailsPage1State
           };
 
           await store
-              .collection('Events')
+              .collection('Organizers')
               .doc(auth.currentUser!.uid)
               .update(info);
 
@@ -159,7 +161,10 @@ class EventsRegisterDetailsPage1State
             'Description': '',
           };
 
-          await store.collection('Events').doc(auth.currentUser!.uid).set(info);
+          await store
+              .collection('Organizers')
+              .doc(auth.currentUser!.uid)
+              .set(info);
           if (mounted) {
             Navigator.of(context).push(
               MaterialPageRoute(

@@ -26,7 +26,7 @@ class _EventsRegisterDetailsPage2State
       setState(() {
         isDone = true;
       });
-      await store.collection('Events').doc(auth.currentUser!.uid).update({
+      await store.collection('Organizers').doc(auth.currentUser!.uid).update({
         'Description': descriptionController.text,
       });
       setState(() {

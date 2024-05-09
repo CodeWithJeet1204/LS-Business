@@ -36,7 +36,7 @@ class _EventsProfilePageState extends State<EventsProfilePage> {
   // GET DATA
   Future<void> getData() async {
     final serviceSnap =
-        await store.collection('Events').doc(auth.currentUser!.uid).get();
+        await store.collection('Organizers').doc(auth.currentUser!.uid).get();
 
     final serviceData = serviceSnap.data()!;
 
@@ -53,7 +53,7 @@ class _EventsProfilePageState extends State<EventsProfilePage> {
   // GET VIEWS
   Future<void> getViews() async {
     final serviceSnap =
-        await store.collection('Events').doc(auth.currentUser!.uid).get();
+        await store.collection('Organizers').doc(auth.currentUser!.uid).get();
 
     final serviceData = serviceSnap.data()!;
 

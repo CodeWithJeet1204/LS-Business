@@ -33,7 +33,7 @@ class _EventsMainPageState extends State<EventsMainPage> {
   // GET DATA
   Future<void> getData() async {
     final eventSnap =
-        await store.collection('Events').doc(auth.currentUser!.uid).get();
+        await store.collection('Organizers').doc(auth.currentUser!.uid).get();
 
     final eventData = eventSnap.data()!;
 
