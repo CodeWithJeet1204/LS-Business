@@ -1,6 +1,5 @@
 import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class ImageTextContainer extends StatefulWidget {
   const ImageTextContainer({

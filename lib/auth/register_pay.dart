@@ -8,7 +8,6 @@ import 'package:find_easy/widgets/head_text.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:find_easy/widgets/text_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class RegisterPayPage extends StatefulWidget {
   const RegisterPayPage({
