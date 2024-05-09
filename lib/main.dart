@@ -224,8 +224,5 @@ class MyApp extends StatelessWidget {
           );
         });
   }
-}
-
-// TODO: No of Text Posts and Images Post
 // TODO: Shorts
-// TODO: Comments
+}

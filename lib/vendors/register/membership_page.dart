@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_null_comparison
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:find_easy/vendors/models/membership_no_of_plans.dart';
 import 'package:find_easy/vendors/models/membership_pricings.dart';
 import 'package:find_easy/vendors/page/main/main_page.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
@@ -380,9 +381,12 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                             'MembershipDuration': selectedDuration.toString(),
                             'MembershipTime': DateTime.now().toString(),
                             'MembershipEndDateTime': selectedDurationDateTime,
-                            // TODO: Change text and image posts according to duration and membership
-                            'noOfTextPosts': 5,
-                            'noOfImagePosts': 5,
+                            'noOfTextPosts': membershipNoOfPlans[
+                                currentMembership]!['textPost'],
+                            'noOfImagePosts': membershipNoOfPlans[
+                                currentMembership]!['imagePost'],
+                            'noOfShorts': membershipNoOfPlans[
+                                currentMembership]!['shorts'],
                           });
 
                           setState(() {
