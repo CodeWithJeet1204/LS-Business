@@ -125,7 +125,6 @@ class AuthMethods {
           }
         },
         codeSent: (String verificationId, int? resendToken) async {
-          SystemChannels.textInput.invokeMethod('TextInput.hide');
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => NumberVerifyPage(

@@ -5,7 +5,6 @@ import 'package:find_easy/auth/verify/email_verify.dart';
 import 'package:find_easy/auth/verify/number_verify.dart';
 import 'package:find_easy/vendors/provider/sign_in_method_provider.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
-import 'package:find_easy/vendors/utils/size.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/collapse_container.dart';
 import 'package:find_easy/widgets/head_text.dart';
@@ -55,8 +54,8 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
     super.dispose();
   }
 
-  // EMAIL REGISTER
-  Future<void> emailRegister(SignInMethodProvider signInMethodProvider) async {
+  // REGISTER EMAIL
+  Future<void> registerEmail(SignInMethodProvider signInMethodProvider) async {
     if (passwordController.text == confirmPasswordController.text) {
       if (registerEmailFormKey.currentState!.validate()) {
         setState(() {
@@ -105,21 +104,21 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                 'MembershipDuration': null,
                 'MembershipTime': null,
               });
-            } else if (widget.mode == 'services') {
+            } /* else if (widget.mode == 'services') {
               // nothing
             } else if (widget.mode == 'events') {
               // code for events
-            }
+            }*/
 
             signInMethodProvider.chooseEmail();
-          } else {}
+          } else {
+            return mySnackBar(context, 'Some error occured');
+          }
 
           setState(() {
             isEmailRegistering = false;
           });
-          if (FirebaseAuth.instance.currentUser!.email != null ||
-              auth.currentUser!.email != null) {
-            SystemChannels.textInput.invokeMethod('TextInput.hide');
+          if (auth.currentUser!.email != null) {
             if (mounted) {
               Navigator.of(context).pop();
               Navigator.of(context).push(
@@ -132,171 +131,89 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
               );
             }
           }
-        } on FirebaseAuthException catch (e) {
-          setState(() {
-            isEmailRegistering = false;
-          });
-
-          if (e.code == 'email-already-in-use') {
-            if (mounted) {
-              mySnackBar(
-                context,
-                'This email is already in use.',
-              );
-            }
-          } else {
-            if (mounted) {
-              mySnackBar(
-                context,
-                e.message ?? 'An error occurred.',
-              );
-            }
-          }
         } catch (e) {
           setState(() {
             isEmailRegistering = false;
           });
           if (mounted) {
-            mySnackBar(context, e.toString());
+            return mySnackBar(context, e.toString());
           }
         }
-      } else {
-        mySnackBar(context, "Passwords do not match");
       }
     } else {
-      mySnackBar(
+      return mySnackBar(
         context,
-        "Passwords dont match, check again!",
+        "Passwords do not match, check again!",
       );
     }
   }
 
-  // PHONE NUMBER REGISTER
-  Future<void> phoneNumberRegister(
-      SignInMethodProvider signInMethodProvider) async {
+  // REGISTER PHONE
+  Future<void> registerPhone(SignInMethodProvider signInMethodProvider) async {
     if (registerNumberFormKey.currentState!.validate()) {
+      setState(() {
+        isPhoneRegistering = true;
+      });
       try {
-        setState(() {
-          isPhoneRegistering = true;
-          phoneText = "Please Wait";
-        });
-        await store
-            .collection('Business')
-            .doc('Owners')
-            .collection('Users')
-            .doc(auth.currentUser!.uid)
-            .set({
-          'Phone Number': phoneController.text.toString(),
-          'Image': null,
-          'Email': null,
-          'Name': null,
-          'uid': null,
-        });
-
-        await store
-            .collection('Business')
-            .doc('Owners')
-            .collection('Shops')
-            .doc(auth.currentUser!.uid)
-            .set({
-          "Name": null,
-          'Views': null,
-          'Favorites': null,
-          "GSTNumber": null,
-          "Address": null,
-          "Special Note": null,
-          "Industry": null,
-          "Image": null,
-          "Type": null,
-          'MembershipName': null,
-          'MembershipDuration': null,
-          'MembershipTime': null,
-        });
-
-        // Register with Phone
         signInMethodProvider.chooseNumber();
-        if (phoneController.text.contains("+91")) {
-          if (mounted) {
-            await authMethods.phoneSignIn(
-              context,
-              " ${phoneController.text}",
-              widget.mode,
-            );
-          }
-        } else if (phoneController.text.contains("+91 ")) {
-          if (mounted) {
-            await authMethods.phoneSignIn(
-              context,
-              phoneController.text,
-              widget.mode,
-            );
-          }
-        } else {
-          setState(() {
-            isPhoneRegistering = true;
-          });
 
-          await auth.verifyPhoneNumber(
-              phoneNumber: "+91 ${phoneController.text}",
-              verificationCompleted: (_) {
-                setState(() {
-                  isPhoneRegistering = false;
-                });
-              },
-              verificationFailed: (e) {
-                if (mounted) {
-                  mySnackBar(context, e.toString());
-                }
-                setState(() {
-                  isPhoneRegistering = false;
-                  phoneText = "SIGNUP";
-                });
-              },
-              codeSent: (
-                String verificationId,
-                int? token,
-              ) {
-                SystemChannels.textInput.invokeMethod('TextInput.hide');
-                Navigator.of(context).pop();
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => NumberVerifyPage(
-                      verificationId: verificationId,
-                      isLogging: false,
-                      phoneNumber: phoneController.text.toString(),
-                      mode: widget.mode,
-                    ),
-                  ),
-                );
-                setState(() {
-                  isPhoneRegistering = false;
-                  phoneText = "SIGNUP";
-                });
-              },
-              codeAutoRetrievalTimeout: (e) {
-                if (mounted) {
-                  mySnackBar(context, e.toString());
-                }
-                setState(() {
-                  isPhoneRegistering = false;
-                  phoneText = "SIGNUP";
-                });
+        await auth.verifyPhoneNumber(
+            phoneNumber: "+91 ${phoneController.text}",
+            verificationCompleted: (_) {
+              setState(() {
+                isPhoneRegistering = false;
               });
-        }
-        setState(() {
-          isPhoneRegistering = false;
-          phoneText = "SIGNUP";
-        });
+            },
+            verificationFailed: (e) {
+              setState(() {
+                isPhoneRegistering = false;
+              });
+              if (mounted) {
+                mySnackBar(
+                  context,
+                  e.toString(),
+                );
+              }
+            },
+            codeSent: (
+              String verificationId,
+              int? token,
+            ) {
+              setState(() {
+                isPhoneRegistering = false;
+              });
+              Navigator.of(context).pop();
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => NumberVerifyPage(
+                    verificationId: verificationId,
+                    isLogging: false,
+                    phoneNumber: phoneController.text.toString(),
+                    mode: widget.mode,
+                  ),
+                ),
+              );
+            },
+            codeAutoRetrievalTimeout: (e) {
+              setState(() {
+                isPhoneRegistering = false;
+              });
+              if (mounted) {
+                mySnackBar(
+                  context,
+                  e.toString(),
+                );
+              }
+            });
       } catch (e) {
         setState(() {
           isPhoneRegistering = false;
-          phoneText = "SIGNUP";
         });
-        if (mounted) {
-          mySnackBar(context, e.toString());
+        if (context.mounted) {
+          return mySnackBar(context, e.toString());
         }
       }
-    } else {}
+    }
   }
 
   @override
@@ -307,723 +224,608 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: width < screenSize
-            ? SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // REGISTER HEADTEXT
-                    SizedBox(height: width * 0.35),
-                    const HeadText(
-                      text: "REGISTER",
-                    ),
-                    SizedBox(height: width * 0.3),
+        child: /* width < screenSize
+            ?*/
+            SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // REGISTER HEADTEXT
+              SizedBox(height: width * 0.35),
+              const HeadText(
+                text: "REGISTER",
+              ),
+              SizedBox(height: width * 0.3),
 
-                    Column(
-                      children: [
-                        // EMAIL
-                        MyCollapseContainer(
-                          width: MediaQuery.of(context).size.width,
-                          text: "Email",
-                          children: Padding(
-                            padding: EdgeInsets.all(width * 0.0225),
-                            child: Form(
-                              key: registerEmailFormKey,
-                              child: Column(
-                                children: [
-                                  // EMAIL
-                                  MyTextFormField(
-                                    hintText: "Email",
-                                    controller: emailController,
-                                    borderRadius: 16,
-                                    horizontalPadding:
-                                        MediaQuery.of(context).size.width *
-                                            0.066,
-                                    keyboardType: TextInputType.emailAddress,
-                                    autoFillHints: const [AutofillHints.email],
-                                  ),
-                                  const SizedBox(height: 8),
-
-                                  // PASSWORD
-                                  MyTextFormField(
-                                    hintText: "Password",
-                                    controller: passwordController,
-                                    borderRadius: 16,
-                                    horizontalPadding:
-                                        MediaQuery.of(context).size.width *
-                                            0.066,
-                                    isPassword: true,
-                                    autoFillHints: const [
-                                      AutofillHints.newPassword
-                                    ],
-                                  ),
-                                  MyTextFormField(
-                                    hintText: "Confirm Password",
-                                    controller: confirmPasswordController,
-                                    borderRadius: 16,
-                                    horizontalPadding:
-                                        MediaQuery.of(context).size.width *
-                                            0.066,
-                                    verticalPadding: 8,
-                                    isPassword: true,
-                                    autoFillHints: const [
-                                      AutofillHints.newPassword
-                                    ],
-                                  ),
-                                  const SizedBox(height: 8),
-                                  MyButton(
-                                    text: "SIGNUP",
-                                    onTap: () async {
-                                      await emailRegister(signInMethodProvider);
-                                    },
-                                    horizontalPadding: width * 0.066,
-                                    isLoading: isEmailRegistering,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-
-                        // PHONE NUMBER
-                        MyCollapseContainer(
-                          width: MediaQuery.of(context).size.width,
-                          text: "Phone Number",
-                          children: Padding(
-                            padding: EdgeInsets.all(width * 0.0225),
-                            child: Form(
-                              key: registerNumberFormKey,
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: width * 0.07,
-                                    ),
-                                    child: TextFormField(
-                                      autofocus: false,
-                                      controller: phoneController,
-                                      keyboardType: TextInputType.number,
-                                      onTapOutside: (event) =>
-                                          FocusScope.of(context).unfocus(),
-                                      maxLines: 1,
-                                      minLines: 1,
-                                      decoration: InputDecoration(
-                                        prefixText: '+91 ',
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          borderSide: BorderSide(
-                                            color: Colors.cyan.shade700,
-                                          ),
-                                        ),
-                                        hintText: 'Phone Number',
-                                      ),
-                                      validator: (value) {
-                                        if (value != null) {
-                                          if (value.isEmpty) {
-                                            return 'Please enter Phone Number';
-                                          } else {
-                                            if (value.length != 10) {
-                                              return 'Number must be 10 chars long';
-                                            }
-                                          }
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  MyButton(
-                                    text: phoneText,
-                                    onTap: () async {
-                                      if (registerNumberFormKey.currentState!
-                                          .validate()) {
-                                        try {
-                                          setState(() {
-                                            isPhoneRegistering = true;
-                                            phoneText = "Please Wait";
-                                          });
-
-                                          // Register with Phone
-                                          signInMethodProvider.chooseNumber();
-
-                                          setState(() {
-                                            isPhoneRegistering = true;
-                                            // phoneText = "PLEASE WAIT";
-                                          });
-
-                                          await auth.verifyPhoneNumber(
-                                              phoneNumber:
-                                                  "+91 ${phoneController.text}",
-                                              verificationCompleted: (_) {
-                                                setState(() {
-                                                  isPhoneRegistering = false;
-                                                });
-                                              },
-                                              verificationFailed: (e) {
-                                                if (mounted) {
-                                                  mySnackBar(
-                                                    context,
-                                                    e.toString(),
-                                                  );
-                                                }
-                                                setState(() {
-                                                  isPhoneRegistering = false;
-                                                  phoneText = "SIGNUP";
-                                                });
-                                              },
-                                              codeSent: (
-                                                String verificationId,
-                                                int? token,
-                                              ) {
-                                                SystemChannels.textInput
-                                                    .invokeMethod(
-                                                  'TextInput.hide',
-                                                );
-                                                setState(() {
-                                                  isPhoneRegistering = false;
-                                                  phoneText = "SIGNUP";
-                                                });
-                                                Navigator.of(context).pop();
-                                                Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        NumberVerifyPage(
-                                                      verificationId:
-                                                          verificationId,
-                                                      isLogging: false,
-                                                      phoneNumber:
-                                                          phoneController.text
-                                                              .toString(),
-                                                      mode: widget.mode,
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                              codeAutoRetrievalTimeout: (e) {
-                                                if (mounted) {
-                                                  mySnackBar(
-                                                    context,
-                                                    e.toString(),
-                                                  );
-                                                }
-                                                setState(() {
-                                                  isPhoneRegistering = false;
-                                                  phoneText = "SIGNUP";
-                                                });
-                                              });
-
-                                          setState(() {
-                                            isPhoneRegistering = false;
-                                            phoneText = "SIGNUP";
-                                          });
-                                        } catch (e) {
-                                          setState(() {
-                                            isPhoneRegistering = false;
-                                            phoneText = "SIGNUP";
-                                          });
-                                          if (context.mounted) {
-                                            mySnackBar(context, e.toString());
-                                          }
-                                        }
-                                      }
-                                    },
-                                    horizontalPadding:
-                                        MediaQuery.of(context).size.width *
-                                            0.066,
-                                    isLoading: isPhoneRegistering,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-
-                        // GOOGLE
-                        GestureDetector(
-                          onTap: () async {
-                            setState(() {
-                              isGoogleRegistering = true;
-                              googleText = "PLEASE WAIT";
-                            });
-                            try {
-                              // Sign In With Google
-                              signInMethodProvider.chooseGoogle();
-                              await AuthMethods().signInWithGoogle(context);
-                              await auth.currentUser!.reload();
-                              if (FirebaseAuth.instance.currentUser != null) {
-                                await store
-                                    .collection('Business')
-                                    .doc('Owners')
-                                    .collection('Users')
-                                    .doc(auth.currentUser!.uid)
-                                    .set({
-                                  "Email":
-                                      FirebaseAuth.instance.currentUser!.email,
-                                  "Name": FirebaseAuth
-                                      .instance.currentUser!.displayName,
-                                  "uid": FirebaseAuth.instance.currentUser!.uid,
-                                  'Image': null,
-                                  'Phone Number': null,
-                                });
-
-                                await store
-                                    .collection('Business')
-                                    .doc('Owners')
-                                    .collection('Shops')
-                                    .doc(auth.currentUser!.uid)
-                                    .update({
-                                  "Name": null,
-                                  'Views': null,
-                                  'Favorites': null,
-                                  "GSTNumber": null,
-                                  "Address": null,
-                                  "Special Note": null,
-                                  "Industry": null,
-                                  "Image": null,
-                                  "Type": null,
-                                  'MembershipName': null,
-                                  'MembershipDuration': null,
-                                  'MembershipTime': null,
-                                });
-
-                                // SystemChannels.textInput.invokeMethod('TextInput.hide');
-                                if (context.mounted) {
-                                  Navigator.of(context).pop();
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: ((context) =>
-                                          const UserRegisterDetailsPage()),
-                                    ),
-                                  );
-                                }
-                              } else {
-                                if (context.mounted) {
-                                  mySnackBar(
-                                    context,
-                                    "Some error occured\nTry signing with email / phone number",
-                                  );
-                                }
-                              }
-                              setState(() {
-                                isGoogleRegistering = false;
-                              });
-                            } on FirebaseAuthException catch (e) {
-                              setState(() {
-                                isGoogleRegistering = false;
-                              });
-                              if (context.mounted) {
-                                mySnackBar(context, e.toString());
-                              }
-                            }
-                          },
-                          child: Container(
-                            margin: EdgeInsets.fromLTRB(
-                              MediaQuery.of(context).size.width * 0.035,
-                              0,
-                              MediaQuery.of(context).size.width * 0.035,
-                              MediaQuery.of(context).viewInsets.bottom,
-                            ),
-                            padding: EdgeInsets.symmetric(
-                              vertical:
-                                  MediaQuery.of(context).size.width * 0.033,
-                            ),
-                            alignment: Alignment.center,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: primary2.withOpacity(0.75),
-                            ),
-                            child: isGoogleRegistering
-                                ? const CircularProgressIndicator(
-                                    color: primaryDark,
-                                  )
-                                : Text(
-                                    overflow: TextOverflow.ellipsis,
-                                    googleText,
-                                    style: TextStyle(
-                                      color: buttonColor,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize:
-                                          MediaQuery.of(context).size.width *
-                                              0.045,
-                                    ),
-                                  ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              )
-            : Row(
+              Column(
                 children: [
-                  Container(
-                    width: width * 0.66,
-                    alignment: Alignment.center,
-                    child: const HeadText(
-                      text: "REGISTER",
+                  // EMAIL
+                  MyCollapseContainer(
+                    width: MediaQuery.of(context).size.width,
+                    text: "Email",
+                    children: Padding(
+                      padding: EdgeInsets.all(width * 0.0225),
+                      child: Form(
+                        key: registerEmailFormKey,
+                        child: Column(
+                          children: [
+                            // EMAIL
+                            MyTextFormField(
+                              hintText: "Email",
+                              controller: emailController,
+                              borderRadius: 16,
+                              horizontalPadding:
+                                  MediaQuery.of(context).size.width * 0.066,
+                              keyboardType: TextInputType.emailAddress,
+                              autoFillHints: const [AutofillHints.email],
+                            ),
+                            const SizedBox(height: 8),
+
+                            // PASSWORD
+                            MyTextFormField(
+                              hintText: "Password",
+                              controller: passwordController,
+                              borderRadius: 16,
+                              horizontalPadding:
+                                  MediaQuery.of(context).size.width * 0.066,
+                              isPassword: true,
+                              autoFillHints: const [AutofillHints.newPassword],
+                            ),
+                            MyTextFormField(
+                              hintText: "Confirm Password",
+                              controller: confirmPasswordController,
+                              borderRadius: 16,
+                              horizontalPadding:
+                                  MediaQuery.of(context).size.width * 0.066,
+                              verticalPadding: 8,
+                              isPassword: true,
+                              autoFillHints: const [AutofillHints.newPassword],
+                            ),
+                            const SizedBox(height: 8),
+                            MyButton(
+                              text: "SIGNUP",
+                              onTap: () async {
+                                await registerEmail(signInMethodProvider);
+                              },
+                              horizontalPadding: width * 0.066,
+                              isLoading: isEmailRegistering,
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                  Container(
-                    width: width * 0.33,
-                    alignment: Alignment.center,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // EMAIL
-                        MyCollapseContainer(
-                          width: MediaQuery.of(context).size.width,
-                          text: "Email",
-                          children: Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: width < screenSize
-                                  ? width * 0.0125
-                                  : width * 0.0,
-                              vertical: width * 0.025,
-                            ),
-                            child: Form(
-                              key: registerEmailFormKey,
-                              child: Column(
-                                children: [
-                                  // EMAIL
-                                  MyTextFormField(
-                                    hintText: "Email",
-                                    controller: emailController,
-                                    borderRadius: 16,
-                                    horizontalPadding: width < screenSize
-                                        ? width * 0.066
-                                        : width * 0.05,
-                                    keyboardType: TextInputType.emailAddress,
-                                    autoFillHints: const [AutofillHints.email],
+                  const SizedBox(height: 12),
+
+                  // PHONE NUMBER
+                  MyCollapseContainer(
+                    width: MediaQuery.of(context).size.width,
+                    text: "Phone Number",
+                    children: Padding(
+                      padding: EdgeInsets.all(width * 0.0225),
+                      child: Form(
+                        key: registerNumberFormKey,
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.07,
+                              ),
+                              child: TextFormField(
+                                autofocus: false,
+                                controller: phoneController,
+                                keyboardType: TextInputType.number,
+                                onTapOutside: (event) =>
+                                    FocusScope.of(context).unfocus(),
+                                maxLines: 1,
+                                minLines: 1,
+                                decoration: InputDecoration(
+                                  prefixText: '+91 ',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    borderSide: BorderSide(
+                                      color: Colors.cyan.shade700,
+                                    ),
                                   ),
-                                  const SizedBox(height: 8),
-
-                                  // PASSWORD
-                                  MyTextFormField(
-                                    hintText: "Password",
-                                    controller: passwordController,
-                                    borderRadius: 16,
-                                    horizontalPadding: width < screenSize
-                                        ? width * 0.066
-                                        : width * 0.05,
-                                    isPassword: true,
-                                    autoFillHints: const [
-                                      AutofillHints.newPassword
-                                    ],
-                                  ),
-                                  MyTextFormField(
-                                    hintText: "Confirm Password",
-                                    controller: confirmPasswordController,
-                                    borderRadius: 16,
-                                    horizontalPadding: width < screenSize
-                                        ? width * 0.066
-                                        : width * 0.05,
-                                    verticalPadding: 8,
-                                    isPassword: true,
-                                    autoFillHints: const [
-                                      AutofillHints.newPassword
-                                    ],
-                                  ),
-                                  const SizedBox(height: 8),
-                                  MyButton(
-                                    text: "SIGNUP",
-                                    onTap: () async {
-                                      if (passwordController.text ==
-                                          confirmPasswordController.text) {
-                                        if (registerEmailFormKey.currentState!
-                                            .validate()) {
-                                          setState(() {
-                                            isEmailRegistering = true;
-                                          });
-
-                                          try {
-                                            await authMethods.signUpWithEmail(
-                                              email: emailController.text,
-                                              password: passwordController.text,
-                                              context: context,
-                                            );
-
-                                            if (auth.currentUser != null) {
-                                              await store
-                                                  .collection('Business')
-                                                  .doc('Owners')
-                                                  .collection('Users')
-                                                  .doc(auth.currentUser!.uid)
-                                                  .set({
-                                                'Email': emailController.text
-                                                    .toString(),
-                                                'emailVerified': false,
-                                                'Image': null,
-                                                'Name': null,
-                                                'Phone Number': null,
-                                                'uid': null,
-                                              });
-
-                                              await store
-                                                  .collection('Business')
-                                                  .doc('Owners')
-                                                  .collection('Shops')
-                                                  .doc(auth.currentUser!.uid)
-                                                  .set({
-                                                "Name": null,
-                                                'Views': null,
-                                                'Favorites': null,
-                                                "GSTNumber": null,
-                                                "Address": null,
-                                                "Special Note": null,
-                                                "Industry": null,
-                                                "Image": null,
-                                                "Type": null,
-                                                'MembershipName': null,
-                                                'MembershipDuration': null,
-                                                'MembershipTime': null,
-                                              });
-
-                                              signInMethodProvider
-                                                  .chooseEmail();
-                                            } else {
-                                              if (context.mounted) {
-                                                mySnackBar(context, 'abc');
-                                              }
-                                            }
-
-                                            setState(() {
-                                              isEmailRegistering = false;
-                                            });
-                                            if (FirebaseAuth.instance
-                                                        .currentUser!.email !=
-                                                    null ||
-                                                auth.currentUser!.email !=
-                                                    null) {
-                                              SystemChannels.textInput
-                                                  .invokeMethod(
-                                                      'TextInput.hide');
-                                              if (context.mounted) {
-                                                Navigator.of(context).pop();
-                                                Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        EmailVerifyPage(
-                                                      mode: widget.mode,
-                                                      isLogging: false,
-                                                    ),
-                                                  ),
-                                                );
-                                              }
-                                            }
-                                          } on FirebaseAuthException catch (e) {
-                                            setState(() {
-                                              isEmailRegistering = false;
-                                            });
-
-                                            if (e.code ==
-                                                'email-already-in-use') {
-                                              if (context.mounted) {
-                                                mySnackBar(
-                                                  context,
-                                                  'This email is already in use.',
-                                                );
-                                              }
-                                            } else {
-                                              if (context.mounted) {
-                                                mySnackBar(
-                                                  context,
-                                                  e.message ??
-                                                      'An error occurred.',
-                                                );
-                                              }
-                                            }
-                                          } catch (e) {
-                                            setState(() {
-                                              isEmailRegistering = false;
-                                            });
-                                            if (context.mounted) {
-                                              mySnackBar(context, e.toString());
-                                            }
-                                          }
-                                        } else {
-                                          mySnackBar(context,
-                                              "Passwords do not match");
-                                        }
-                                      } else {
-                                        mySnackBar(
-                                          context,
-                                          "Passwords dont match, check again!",
-                                        );
+                                  hintText: 'Phone Number',
+                                ),
+                                validator: (value) {
+                                  if (value != null) {
+                                    if (value.isEmpty) {
+                                      return 'Please enter Phone Number';
+                                    } else {
+                                      if (value.length != 10) {
+                                        return 'Number must be 10 chars long';
                                       }
-                                    },
-                                    horizontalPadding: width < screenSize
-                                        ? width * 0.066
-                                        : width * 0.05,
-                                    isLoading: isEmailRegistering,
-                                  ),
-                                ],
+                                    }
+                                  }
+                                  return null;
+                                },
                               ),
                             ),
-                          ),
+                            const SizedBox(height: 8),
+                            MyButton(
+                              text: phoneText,
+                              onTap: () async {
+                                await registerPhone(signInMethodProvider);
+                              },
+                              horizontalPadding:
+                                  MediaQuery.of(context).size.width * 0.066,
+                              isLoading: isPhoneRegistering,
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 12),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
 
-                        // PHONE NUMBER
-                        MyCollapseContainer(
-                          width: MediaQuery.of(context).size.width,
-                          text: "Phone Number",
-                          children: Padding(
-                            padding: EdgeInsets.all(width * 0.0225),
-                            child: Form(
-                              key: registerNumberFormKey,
-                              child: Column(
-                                children: [
-                                  MyTextFormField(
-                                    hintText: "Phone Number",
-                                    controller: phoneController,
-                                    borderRadius: 16,
-                                    horizontalPadding: width < screenSize
-                                        ? width * 0.066
-                                        : width * 0.05,
-                                    keyboardType: TextInputType.number,
-                                    autoFillHints: const [
-                                      AutofillHints.telephoneNumber
-                                    ],
-                                  ),
-                                  const SizedBox(height: 8),
-                                  MyButton(
-                                    text: phoneText,
-                                    onTap: () async {
-                                      await phoneNumberRegister(
-                                          signInMethodProvider);
-                                    },
-                                    horizontalPadding: width < screenSize
-                                        ? width * 0.066
-                                        : width * 0.05,
-                                    isLoading: isPhoneRegistering,
-                                  ),
-                                ],
+                  // GOOGLE
+                  GestureDetector(
+                    onTap: () async {
+                      setState(() {
+                        isGoogleRegistering = true;
+                      });
+                      try {
+                        signInMethodProvider.chooseGoogle();
+                        await AuthMethods().signInWithGoogle(context);
+                        await auth.currentUser!.reload();
+                        if (FirebaseAuth.instance.currentUser != null) {
+                          await store
+                              .collection('Business')
+                              .doc('Owners')
+                              .collection('Users')
+                              .doc(auth.currentUser!.uid)
+                              .set({
+                            "Email": FirebaseAuth.instance.currentUser!.email,
+                            "Name":
+                                FirebaseAuth.instance.currentUser!.displayName,
+                            "uid": FirebaseAuth.instance.currentUser!.uid,
+                            'Image': null,
+                            'Phone Number': null,
+                          });
+
+                          await store
+                              .collection('Business')
+                              .doc('Owners')
+                              .collection('Shops')
+                              .doc(auth.currentUser!.uid)
+                              .update({
+                            "Name": null,
+                            'Views': null,
+                            'Favorites': null,
+                            "GSTNumber": null,
+                            "Address": null,
+                            "Special Note": null,
+                            "Industry": null,
+                            "Image": null,
+                            "Type": null,
+                            'MembershipName': null,
+                            'MembershipDuration': null,
+                            'MembershipTime': null,
+                          });
+
+                          //
+                          if (context.mounted) {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: ((context) =>
+                                    const UserRegisterDetailsPage()),
+                              ),
+                            );
+                          }
+                        } else {
+                          if (context.mounted) {
+                            mySnackBar(
+                              context,
+                              "Some error occured\nTry signing with email / phone number",
+                            );
+                          }
+                        }
+                        setState(() {
+                          isGoogleRegistering = false;
+                        });
+                      } on FirebaseAuthException catch (e) {
+                        setState(() {
+                          isGoogleRegistering = false;
+                        });
+                        if (context.mounted) {
+                          mySnackBar(context, e.toString());
+                        }
+                      }
+                    },
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(
+                        MediaQuery.of(context).size.width * 0.035,
+                        0,
+                        MediaQuery.of(context).size.width * 0.035,
+                        MediaQuery.of(context).viewInsets.bottom,
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        vertical: MediaQuery.of(context).size.width * 0.033,
+                      ),
+                      alignment: Alignment.center,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: primary2.withOpacity(0.75),
+                      ),
+                      child: isGoogleRegistering
+                          ? const CircularProgressIndicator(
+                              color: primaryDark,
+                            )
+                          : Text(
+                              overflow: TextOverflow.ellipsis,
+                              googleText,
+                              style: TextStyle(
+                                color: buttonColor,
+                                fontWeight: FontWeight.w600,
+                                fontSize:
+                                    MediaQuery.of(context).size.width * 0.045,
                               ),
                             ),
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-
-                        // GOOGLE
-                        // GestureDetector(
-                        //   onTap: () async {
-                        //     setState(() {
-                        //       isGoogleRegistering = true;
-                        //       googleText = "PLEASE WAIT";
-                        //     });
-                        //     try {
-                        // Sign In With Google
-                        //       signInMethodProvider.chooseGoogle();
-                        //       await AuthMethods().signInWithGoogle(context);
-                        //       await _auth.currentUser!.reload();
-                        //       if (FirebaseAuth.instance.currentUser != null) {
-                        //         await store
-                        //             .collection('Business')
-                        //             .doc('Owners')
-                        //             .collection('Users')
-                        //             .doc(_auth.currentUser!.uid)
-                        //             .set({
-                        //           "Email":
-                        //               FirebaseAuth.instance.currentUser!.email,
-                        //           "Name": FirebaseAuth
-                        //               .instance.currentUser!.displayName,
-                        //           "uid": FirebaseAuth.instance.currentUser!.uid,
-                        //           'Image': null,
-                        //           'Phone Number': null,
-                        //         });
-                        //         await store
-                        //             .collection('Business')
-                        //             .doc('Owners')
-                        //             .collection('Shops')
-                        //             .doc(_auth.currentUser!.uid)
-                        //             .update({
-                        //           "Name": null,
-                        //           'Views': null,
-                        //           'Favorites': null,
-                        //           "GSTNumber": null,
-                        //           "Address": null,
-                        //           "Special Note": null,
-                        //           "Industry": null,
-                        //           "Image": null,
-                        //           "Type": null,
-                        //           'MembershipName': null,
-                        //           'MembershipDuration': null,
-                        //           'MembershipTime': null,
-                        //         });
-                        //         SystemChannels.textInput.invokeMethod('TextInput.hide');
-                        //         if (mounted) {
-                        //           Navigator.of(context).pop();
-                        //           Navigator.of(context).push(
-                        //             MaterialPageRoute(
-                        //               builder: ((context) =>
-                        //                   const UserRegisterDetailsPage()),
-                        //             ),
-                        //           );
-                        //         }
-                        //       } else {
-                        //         if (mounted) {
-                        //           mySnackBar(
-                        //             context,
-                        //             "Some error occured\nTry signing with email / phone number",
-                        //           );
-                        //         }
-                        //       }
-                        //       setState(() {
-                        //         isGoogleRegistering = false;
-                        //       });
-                        //     } on FirebaseAuthException catch (e) {
-                        //       setState(() {
-                        //         isGoogleRegistering = false;
-                        //       });
-                        //       if (mounted) {
-                        //         mySnackBar(context, e.toString());
-                        //       }
-                        //     }
-                        //   },
-                        //   child: Container(
-                        //     margin: EdgeInsets.symmetric(
-                        //       horizontal: width < screenSize
-                        //           ? width * 0.035
-                        //           : width * 0.0275,
-                        //     ),
-                        //     padding: EdgeInsets.symmetric(
-                        //       vertical: width < screenSize
-                        //           ? width * 0.033
-                        //           : width * 0.0125,
-                        //     ),
-                        //     alignment: Alignment.center,
-                        //     width: double.infinity,
-                        //     decoration: BoxDecoration(
-                        //       borderRadius: BorderRadius.circular(10),
-                        //       color: primary2.withOpacity(0.75),
-                        //     ),
-                        //     child: isGoogleRegistering
-                        //         ? const Center(
-                        //             child: CircularProgressIndicator(
-                        //               color: primaryDark,
-                        //             ),
-                        //           )
-                        //         : Text(
-                        //             googleText,
-                        //             style: TextStyle(
-                        //               color: buttonColor,
-                        //               fontWeight: FontWeight.w600,
-                        //               fontSize: width < screenSize
-                        //                   ? width * 0.05
-                        //                   : width * 0.025,
-                        //             ),
-                        //           ),
-                        //   ),
-                        // ),
-                      ],
                     ),
                   ),
                 ],
               ),
+            ],
+          ),
+        ),
+        // : Row(
+        //     children: [
+        //       Container(
+        //         width: width * 0.66,
+        //         alignment: Alignment.center,
+        //         child: const HeadText(
+        //           text: "REGISTER",
+        //         ),
+        //       ),
+        //       Container(
+        //         width: width * 0.33,
+        //         alignment: Alignment.center,
+        //         child: Column(
+        //           mainAxisAlignment: MainAxisAlignment.center,
+        //           children: [
+        //             // EMAIL
+        //             MyCollapseContainer(
+        //               width: MediaQuery.of(context).size.width,
+        //               text: "Email",
+        //               children: Padding(
+        //                 padding: EdgeInsets.symmetric(
+        //                   horizontal: width < screenSize
+        //                       ? width * 0.0125
+        //                       : width * 0.0,
+        //                   vertical: width * 0.025,
+        //                 ),
+        //                 child: Form(
+        //                   key: registerEmailFormKey,
+        //                   child: Column(
+        //                     children: [
+        //                       // EMAIL
+        //                       MyTextFormField(
+        //                         hintText: "Email",
+        //                         controller: emailController,
+        //                         borderRadius: 16,
+        //                         horizontalPadding: width < screenSize
+        //                             ? width * 0.066
+        //                             : width * 0.05,
+        //                         keyboardType: TextInputType.emailAddress,
+        //                         autoFillHints: const [AutofillHints.email],
+        //                       ),
+        //                       const SizedBox(height: 8),
+        //                       // PASSWORD
+        //                       MyTextFormField(
+        //                         hintText: "Password",
+        //                         controller: passwordController,
+        //                         borderRadius: 16,
+        //                         horizontalPadding: width < screenSize
+        //                             ? width * 0.066
+        //                             : width * 0.05,
+        //                         isPassword: true,
+        //                         autoFillHints: const [
+        //                           AutofillHints.newPassword
+        //                         ],
+        //                       ),
+        //                       MyTextFormField(
+        //                         hintText: "Confirm Password",
+        //                         controller: confirmPasswordController,
+        //                         borderRadius: 16,
+        //                         horizontalPadding: width < screenSize
+        //                             ? width * 0.066
+        //                             : width * 0.05,
+        //                         verticalPadding: 8,
+        //                         isPassword: true,
+        //                         autoFillHints: const [
+        //                           AutofillHints.newPassword
+        //                         ],
+        //                       ),
+        //                       const SizedBox(height: 8),
+        //                       MyButton(
+        //                         text: "SIGNUP",
+        //                         onTap: () async {
+        //                           if (passwordController.text ==
+        //                               confirmPasswordController.text) {
+        //                             if (registerEmailFormKey.currentState!
+        //                                 .validate()) {
+        //                               setState(() {
+        //                                 isEmailRegistering = true;
+        //                               });
+        //                               try {
+        //                                 await authMethods.signUpWithEmail(
+        //                                   email: emailController.text,
+        //                                   password: passwordController.text,
+        //                                   context: context,
+        //                                 );
+        //                                 if (auth.currentUser != null) {
+        //                                   await store
+        //                                       .collection('Business')
+        //                                       .doc('Owners')
+        //                                       .collection('Users')
+        //                                       .doc(auth.currentUser!.uid)
+        //                                       .set({
+        //                                     'Email': emailController.text
+        //                                         .toString(),
+        //                                     'emailVerified': false,
+        //                                     'Image': null,
+        //                                     'Name': null,
+        //                                     'Phone Number': null,
+        //                                     'uid': null,
+        //                                   });
+        //                                   await store
+        //                                       .collection('Business')
+        //                                       .doc('Owners')
+        //                                       .collection('Shops')
+        //                                       .doc(auth.currentUser!.uid)
+        //                                       .set({
+        //                                     "Name": null,
+        //                                     'Views': null,
+        //                                     'Favorites': null,
+        //                                     "GSTNumber": null,
+        //                                     "Address": null,
+        //                                     "Special Note": null,
+        //                                     "Industry": null,
+        //                                     "Image": null,
+        //                                     "Type": null,
+        //                                     'MembershipName': null,
+        //                                     'MembershipDuration': null,
+        //                                     'MembershipTime': null,
+        //                                   });
+        //                                   signInMethodProvider
+        //                                       .chooseEmail();
+        //                                 } else {
+        //                                   if (context.mounted) {
+        //                                     mySnackBar(context, 'abc');
+        //                                   }
+        //                                 }
+        //                                 setState(() {
+        //                                   isEmailRegistering = false;
+        //                                 });
+        //                                 if (FirebaseAuth.instance
+        //                                             .currentUser!.email !=
+        //                                         null ||
+        //                                     auth.currentUser!.email !=
+        //                                         null) {
+        //                                   if (context.mounted) {
+        //                                     Navigator.of(context).pop();
+        //                                     Navigator.of(context).push(
+        //                                       MaterialPageRoute(
+        //                                         builder: (context) =>
+        //                                             EmailVerifyPage(
+        //                                           mode: widget.mode,
+        //                                           isLogging: false,
+        //                                         ),
+        //                                       ),
+        //                                     );
+        //                                   }
+        //                                 }
+        //                               } on FirebaseAuthException catch (e) {
+        //                                 setState(() {
+        //                                   isEmailRegistering = false;
+        //                                 });
+        //                                 if (e.code ==
+        //                                     'email-already-in-use') {
+        //                                   if (context.mounted) {
+        //                                     mySnackBar(
+        //                                       context,
+        //                                       'This email is already in use.',
+        //                                     );
+        //                                   }
+        //                                 } else {
+        //                                   if (context.mounted) {
+        //                                     mySnackBar(
+        //                                       context,
+        //                                       e.message ??
+        //                                           'An error occurred.',
+        //                                     );
+        //                                   }
+        //                                 }
+        //                               } catch (e) {
+        //                                 setState(() {
+        //                                   isEmailRegistering = false;
+        //                                 });
+        //                                 if (context.mounted) {
+        //                                   mySnackBar(context, e.toString());
+        //                                 }
+        //                               }
+        //                             } else {
+        //                               mySnackBar(context,
+        //                                   "Passwords do not match");
+        //                             }
+        //                           } else {
+        //                             mySnackBar(
+        //                               context,
+        //                               "Passwords dont match, check again!",
+        //                             );
+        //                           }
+        //                         },
+        //                         horizontalPadding: width < screenSize
+        //                             ? width * 0.066
+        //                             : width * 0.05,
+        //                         isLoading: isEmailRegistering,
+        //                       ),
+        //                     ],
+        //                   ),
+        //                 ),
+        //               ),
+        //             ),
+        //             const SizedBox(height: 12),
+        //             // PHONE NUMBER
+        //             MyCollapseContainer(
+        //               width: MediaQuery.of(context).size.width,
+        //               text: "Phone Number",
+        //               children: Padding(
+        //                 padding: EdgeInsets.all(width * 0.0225),
+        //                 child: Form(
+        //                   key: registerNumberFormKey,
+        //                   child: Column(
+        //                     children: [
+        //                       MyTextFormField(
+        //                         hintText: "Phone Number",
+        //                         controller: phoneController,
+        //                         borderRadius: 16,
+        //                         horizontalPadding: width < screenSize
+        //                             ? width * 0.066
+        //                             : width * 0.05,
+        //                         keyboardType: TextInputType.number,
+        //                         autoFillHints: const [
+        //                           AutofillHints.telephoneNumber
+        //                         ],
+        //                       ),
+        //                       const SizedBox(height: 8),
+        //                       MyButton(
+        //                         text: phoneText,
+        //                         onTap: () async {
+        //                           await phoneNumberRegister(
+        //                               signInMethodProvider);
+        //                         },
+        //                         horizontalPadding: width < screenSize
+        //                             ? width * 0.066
+        //                             : width * 0.05,
+        //                         isLoading: isPhoneRegistering,
+        //                       ),
+        //                     ],
+        //                   ),
+        //                 ),
+        //               ),
+        //             ),
+        //             const SizedBox(height: 16),
+        //             // GOOGLE
+        //             // GestureDetector(
+        //             //   onTap: () async {
+        //             //     setState(() {
+        //             //       isGoogleRegistering = true;
+        //             //       googleText = "PLEASE WAIT";
+        //             //     });
+        //             //     try {
+        //             // Sign In With Google
+        //             //       signInMethodProvider.chooseGoogle();
+        //             //       await AuthMethods().signInWithGoogle(context);
+        //             //       await _auth.currentUser!.reload();
+        //             //       if (FirebaseAuth.instance.currentUser != null) {
+        //             //         await store
+        //             //             .collection('Business')
+        //             //             .doc('Owners')
+        //             //             .collection('Users')
+        //             //             .doc(_auth.currentUser!.uid)
+        //             //             .set({
+        //             //           "Email":
+        //             //               FirebaseAuth.instance.currentUser!.email,
+        //             //           "Name": FirebaseAuth
+        //             //               .instance.currentUser!.displayName,
+        //             //           "uid": FirebaseAuth.instance.currentUser!.uid,
+        //             //           'Image': null,
+        //             //           'Phone Number': null,
+        //             //         });
+        //             //         await store
+        //             //             .collection('Business')
+        //             //             .doc('Owners')
+        //             //             .collection('Shops')
+        //             //             .doc(_auth.currentUser!.uid)
+        //             //             .update({
+        //             //           "Name": null,
+        //             //           'Views': null,
+        //             //           'Favorites': null,
+        //             //           "GSTNumber": null,
+        //             //           "Address": null,
+        //             //           "Special Note": null,
+        //             //           "Industry": null,
+        //             //           "Image": null,
+        //             //           "Type": null,
+        //             //           'MembershipName': null,
+        //             //           'MembershipDuration': null,
+        //             //           'MembershipTime': null,
+        //             //         });
+        //             //
+        //             //         if (mounted) {
+        //             //           Navigator.of(context).pop();
+        //             //           Navigator.of(context).push(
+        //             //             MaterialPageRoute(
+        //             //               builder: ((context) =>
+        //             //                   const UserRegisterDetailsPage()),
+        //             //             ),
+        //             //           );
+        //             //         }
+        //             //       } else {
+        //             //         if (mounted) {
+        //             //           mySnackBar(
+        //             //             context,
+        //             //             "Some error occured\nTry signing with email / phone number",
+        //             //           );
+        //             //         }
+        //             //       }
+        //             //       setState(() {
+        //             //         isGoogleRegistering = false;
+        //             //       });
+        //             //     } on FirebaseAuthException catch (e) {
+        //             //       setState(() {
+        //             //         isGoogleRegistering = false;
+        //             //       });
+        //             //       if (mounted) {
+        //             //         mySnackBar(context, e.toString());
+        //             //       }
+        //             //     }
+        //             //   },
+        //             //   child: Container(
+        //             //     margin: EdgeInsets.symmetric(
+        //             //       horizontal: width < screenSize
+        //             //           ? width * 0.035
+        //             //           : width * 0.0275,
+        //             //     ),
+        //             //     padding: EdgeInsets.symmetric(
+        //             //       vertical: width < screenSize
+        //             //           ? width * 0.033
+        //             //           : width * 0.0125,
+        //             //     ),
+        //             //     alignment: Alignment.center,
+        //             //     width: double.infinity,
+        //             //     decoration: BoxDecoration(
+        //             //       borderRadius: BorderRadius.circular(10),
+        //             //       color: primary2.withOpacity(0.75),
+        //             //     ),
+        //             //     child: isGoogleRegistering
+        //             //         ? const Center(
+        //             //             child: CircularProgressIndicator(
+        //             //               color: primaryDark,
+        //             //             ),
+        //             //           )
+        //             //         : Text(
+        //             //             googleText,
+        //             //             style: TextStyle(
+        //             //               color: buttonColor,
+        //             //               fontWeight: FontWeight.w600,
+        //             //               fontSize: width < screenSize
+        //             //                   ? width * 0.05
+        //             //                   : width * 0.025,
+        //             //             ),
+        //             //           ),
+        //             //   ),
+        //             // ),
+        //           ],
+        //         ),
+        //       ),
+        //     ],
+        //   ),
       ),
     );
   }

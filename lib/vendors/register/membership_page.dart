@@ -89,7 +89,6 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
             actions: [
               MyTextButton(
                 onPressed: () {
-                  SystemChannels.textInput.invokeMethod('TextInput.hide');
                   Navigator.of(context).pop();
                 },
                 text: "OK",

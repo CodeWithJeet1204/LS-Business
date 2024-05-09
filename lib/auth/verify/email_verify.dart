@@ -31,7 +31,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final AuthMethods authMethods = AuthMethods();
   final store = FirebaseFirestore.instance;
-  bool checkingEmailVerified = false;
+  bool isCheckingEmailVerified = false;
   bool canResendEmail = false;
   Timer? timer;
   bool isEmailVerified = false;
@@ -50,7 +50,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
   void initState() {
     super.initState();
     sendEmailVerification();
-    isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
+    isEmailVerified = auth.currentUser!.emailVerified;
 
     if (!isEmailVerified) {
       timer = Timer.periodic(const Duration(seconds: 2), (_) async {
@@ -61,9 +61,17 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
 
   // CHECK EMAIL VERIFICATION
   Future<void> checkEmailVerification() async {
-    await FirebaseAuth.instance.currentUser!.reload();
+    setState(() {
+      isCheckingEmailVerified = true;
+    });
 
-    isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
+    await auth.currentUser!.reload();
+
+    isEmailVerified = auth.currentUser!.emailVerified;
+
+    setState(() {
+      isCheckingEmailVerified = false;
+    });
 
     if (isEmailVerified) {
       if (mounted) {
@@ -99,7 +107,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
   // SEND EMAIL VERIFICATION
   Future<void> sendEmailVerification() async {
     try {
-      final user = FirebaseAuth.instance.currentUser!;
+      final user = auth.currentUser!;
       await user.sendEmailVerification();
       if (mounted) {
         mySnackBar(context, "Verification Email Sent");
@@ -150,7 +158,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
               onTap: () async {
                 await checkEmailVerification();
               },
-              isLoading: checkingEmailVerified,
+              isLoading: isCheckingEmailVerified,
               horizontalPadding: MediaQuery.of(context).size.width * 0.066,
             ),
             const SizedBox(height: 20),
@@ -163,9 +171,9 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
                         await sendEmailVerification();
                       }
                     : () {
-                        mySnackBar(context, "Wait for 5 seconds");
+                        return mySnackBar(context, "Wait for 5 seconds");
                       },
-                isLoading: checkingEmailVerified,
+                isLoading: false,
                 horizontalPadding: MediaQuery.of(context).size.width * 0.066,
               ),
             ),

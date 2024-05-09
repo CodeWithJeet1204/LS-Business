@@ -30,7 +30,7 @@ class _ImageTextContainerState extends State<ImageTextContainer> {
       body: GestureDetector(
         onTap: () {
           selectCategory(widget.text);
-          SystemChannels.textInput.invokeMethod('TextInput.hide');
+
           Navigator.of(context).pop();
         },
         child: SizedBox(

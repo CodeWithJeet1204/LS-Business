@@ -138,8 +138,6 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                             setState(() {
                               isOTPVerifying = false;
                             });
-                            SystemChannels.textInput
-                                .invokeMethod('TextInput.hide');
                             if (context.mounted) {
                               Navigator.of(context).pop();
                               Navigator.of(context).push(

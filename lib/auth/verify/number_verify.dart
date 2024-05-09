@@ -1,4 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:find_easy/events/events_main_page.dart';
+import 'package:find_easy/events/register/events_register_details_page_1.dart';
+import 'package:find_easy/services/main/services_main_page.dart';
+import 'package:find_easy/services/register/services_register_details_page.dart';
 import 'package:find_easy/vendors/page/main/main_page.dart';
 import 'package:find_easy/vendors/register/user_register_details.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
@@ -7,7 +11,6 @@ import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:find_easy/widgets/text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class NumberVerifyPage extends StatefulWidget {
   const NumberVerifyPage({
@@ -93,61 +96,79 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                             verificationId: widget.verificationId,
                             smsCode: otpController.text,
                           );
+                          setState(() {
+                            isOTPVerifying = true;
+                          });
                           try {
-                            setState(() {
-                              isOTPVerifying = true;
-                            });
-
                             await auth.signInWithCredential(credential);
+
                             if (!widget.isLogging) {
-                              await FirebaseFirestore.instance
-                                  .collection('Business')
-                                  .doc('Owners')
-                                  .collection('Users')
-                                  .doc(auth.currentUser!.uid)
-                                  .set({
-                                'Phone Number': widget.phoneNumber,
-                                'Image': null,
-                                'Email': null,
-                                'Name': null,
-                                'uid': null,
-                                'numberVerified': true,
-                              });
+                              if (auth.currentUser != null) {
+                                if (widget.mode == 'vendor') {
+                                  await FirebaseFirestore.instance
+                                      .collection('Business')
+                                      .doc('Owners')
+                                      .collection('Users')
+                                      .doc(auth.currentUser!.uid)
+                                      .set({
+                                    'Phone Number': widget.phoneNumber,
+                                    'Image': null,
+                                    'Email': null,
+                                    'Name': null,
+                                    'uid': null,
+                                    'numberVerified': true,
+                                  });
 
-                              await FirebaseFirestore.instance
-                                  .collection('Business')
-                                  .doc('Owners')
-                                  .collection('Shops')
-                                  .doc(auth.currentUser!.uid)
-                                  .set({
-                                "Name": null,
-                                'Views': null,
-                                'Favorites': null,
-                                "GSTNumber": null,
-                                "Address": null,
-                                "Special Note": null,
-                                "Industry": null,
-                                "Image": null,
-                                "Type": null,
-                                'MembershipName': null,
-                                'MembershipDuration': null,
-                                'MembershipTime': null,
-                              });
+                                  await FirebaseFirestore.instance
+                                      .collection('Business')
+                                      .doc('Owners')
+                                      .collection('Shops')
+                                      .doc(auth.currentUser!.uid)
+                                      .set({
+                                    "Name": null,
+                                    'Views': null,
+                                    'Favorites': null,
+                                    "GSTNumber": null,
+                                    "Address": null,
+                                    "Special Note": null,
+                                    "Industry": null,
+                                    "Image": null,
+                                    "Type": null,
+                                    'MembershipName': null,
+                                    'MembershipDuration': null,
+                                    'MembershipTime': null,
+                                  });
+                                }
+                              }
                             }
-
                             setState(() {
                               isOTPVerifying = false;
                             });
-                            SystemChannels.textInput
-                                .invokeMethod('TextInput.hide');
                             if (context.mounted) {
-                              Navigator.of(context).pop();
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: ((context) => widget.isLogging
-                                      ? const MainPage()
-                                      : const UserRegisterDetailsPage()),
-                                ),
+                              Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(builder: ((context) {
+                                  if (widget.mode == 'vendor') {
+                                    if (widget.isLogging) {
+                                      return const MainPage();
+                                    } else {
+                                      return const UserRegisterDetailsPage();
+                                    }
+                                  } else if (widget.mode == 'services') {
+                                    if (widget.isLogging) {
+                                      return ServicesMainPage();
+                                    } else {
+                                      return const ServicesRegisterDetailsPage();
+                                    }
+                                  } else if (widget.mode == 'events') {
+                                    if (widget.isLogging) {
+                                      return EventsMainPage();
+                                    } else {
+                                      return const EventsRegisterDetailsPage1();
+                                    }
+                                  }
+                                  return const MainPage();
+                                })),
+                                (route) => false,
                               );
                             }
                           } catch (e) {

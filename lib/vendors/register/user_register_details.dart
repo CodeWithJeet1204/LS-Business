@@ -239,8 +239,6 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                 setState(() {
                                   isNext = false;
                                 });
-                                SystemChannels.textInput
-                                    .invokeMethod('TextInput.hide');
                                 if (context.mounted) {
                                   Navigator.of(context).pop();
                                   Navigator.of(context).push(
@@ -313,8 +311,6 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                 setState(() {
                                   isNext = false;
                                 });
-                                SystemChannels.textInput
-                                    .invokeMethod('TextInput.hide');
                                 if (context.mounted) {
                                   Navigator.of(context).pop();
                                   Navigator.of(context).push(

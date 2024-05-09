@@ -103,7 +103,6 @@ class _BusinessRegisterDetailsPageState
               : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1fDf705o-VZ3lVxTLh0jLPyFApbnwGoNHhSpwODOC0g&s',
         });
 
-        SystemChannels.textInput.invokeMethod('TextInput.hide');
         if (mounted) {
           Navigator.of(context).pop();
           Navigator.of(context).push(

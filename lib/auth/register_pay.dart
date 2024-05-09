@@ -71,7 +71,7 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                         setState(() {
                           isPaying = false;
                         });
-                        SystemChannels.textInput.invokeMethod('TextInput.hide');
+
                         if (context.mounted) {
                           Navigator.of(context).pop();
                           Navigator.of(context).push(
@@ -112,8 +112,6 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                       ),
                       MyTextButton(
                         onPressed: () {
-                          SystemChannels.textInput
-                              .invokeMethod('TextInput.hide');
                           if (context.mounted) {
                             Navigator.of(context).pop();
                             Navigator.of(context).push(
@@ -177,8 +175,6 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                               setState(() {
                                 isPaying = false;
                               });
-                              SystemChannels.textInput
-                                  .invokeMethod('TextInput.hide');
                               if (context.mounted) {
                                 Navigator.of(context).pop();
                                 Navigator.of(context).push(
