@@ -151,7 +151,7 @@ class _ServicesChoosePage2State extends State<ServicesChoosePage2> {
       body: Padding(
         padding: EdgeInsets.all(width * 0.0125),
         child: SizedBox(
-          height: MediaQuery.of(context).size.height,
+          height: MediaQuery.of(context).size.height - 168,
           child: GridView.builder(
             shrinkWrap: true,
             physics: const ClampingScrollPhysics(),

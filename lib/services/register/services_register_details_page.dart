@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/services/register/services_choose_page_1.dart';
 import 'package:find_easy/vendors/provider/sign_in_method_provider.dart';
@@ -145,7 +144,7 @@ class ServicesRegisterDetailsPageState
               const SizedBox(height: 100),
               const Center(
                 child: HeadText(
-                  text: "USER\nDETAILS",
+                  text: "YOUR\nDETAILS",
                 ),
               ),
               const SizedBox(height: 40),
@@ -233,6 +232,7 @@ class ServicesRegisterDetailsPageState
                       hintText: "Age",
                       controller: ageController,
                       borderRadius: 12,
+                      keyboardType: TextInputType.number,
                       horizontalPadding: width * 0.055,
                       verticalPadding: width * 0.033,
                       autoFillHints: const [],
@@ -249,144 +249,157 @@ class ServicesRegisterDetailsPageState
                     ),
 
                     // GENDER
-                    Container(
-                      decoration: BoxDecoration(
-                        color: primary3,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: width * 0.0225,
-                        vertical: width * 0.0125,
-                      ),
-                      margin: const EdgeInsets.symmetric(
-                        vertical: 12,
-                      ),
-                      child: DropdownButton(
-                        dropdownColor: primary,
-                        hint: const Text(
-                          "Select Gender",
-                          overflow: TextOverflow.ellipsis,
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: primary3,
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        value: isMale != null
-                            ? (isMale! ? 'Male' : 'Female')
-                            : null,
-                        underline: Container(),
-                        items: const [
-                          DropdownMenuItem(
-                            value: 'Male',
-                            child: Text('Male'),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: width * 0.0225,
+                          vertical: width * 0.0125,
+                        ),
+                        margin: EdgeInsets.symmetric(
+                          horizontal: width * 0.05,
+                          vertical: 12,
+                        ),
+                        child: DropdownButton(
+                          dropdownColor: primary,
+                          hint: const Text(
+                            "Select Gender",
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          DropdownMenuItem(
-                            value: 'Female',
-                            child: Text('Female'),
-                          ),
-                        ],
-                        onChanged: (value) {
-                          setState(() {
-                            if (value == 'Male') {
-                              isMale = true;
-                            } else {
-                              isMale = false;
-                            }
-                          });
-                        },
+                          value: isMale != null
+                              ? (isMale! ? 'Male' : 'Female')
+                              : null,
+                          underline: Container(),
+                          items: const [
+                            DropdownMenuItem(
+                              value: 'Male',
+                              child: Text('Male'),
+                            ),
+                            DropdownMenuItem(
+                              value: 'Female',
+                              child: Text('Female'),
+                            ),
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              if (value == 'Male') {
+                                isMale = true;
+                              } else {
+                                isMale = false;
+                              }
+                            });
+                          },
+                        ),
                       ),
                     ),
 
                     // FIRST LANGUAGE
-                    Container(
-                      decoration: BoxDecoration(
-                        color: primary3,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: width * 0.0225,
-                        vertical: width * 0.0125,
-                      ),
-                      margin: const EdgeInsets.symmetric(
-                        vertical: 12,
-                      ),
-                      child: DropdownButton(
-                        dropdownColor: primary,
-                        hint: const Text(
-                          "First Language",
-                          overflow: TextOverflow.ellipsis,
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: primary3,
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        value: firstLanguage,
-                        underline: Container(),
-                        items: [
-                          'Hindi',
-                          'English',
-                          'Marathi',
-                        ]
-                            .map(
-                              (e) => DropdownMenuItem(
-                                value: e,
-                                child: Text(e),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (value) {
-                          if (value == secondLanguage &&
-                              secondLanguage != null) {
-                            return mySnackBar(
-                              context,
-                              'First Language cannot be same as Second Language',
-                            );
-                          } else {
-                            setState(() {
-                              firstLanguage = value;
-                            });
-                          }
-                        },
+                        padding: EdgeInsets.symmetric(
+                          horizontal: width * 0.0225,
+                          vertical: width * 0.0125,
+                        ),
+                        margin: EdgeInsets.symmetric(
+                          horizontal: width * 0.05,
+                          vertical: 12,
+                        ),
+                        child: DropdownButton(
+                          dropdownColor: primary,
+                          hint: const Text(
+                            "First Language",
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: firstLanguage,
+                          underline: Container(),
+                          items: [
+                            'Hindi',
+                            'English',
+                            'Marathi',
+                          ]
+                              .map(
+                                (e) => DropdownMenuItem(
+                                  value: e,
+                                  child: Text(e),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (value) {
+                            if (value == secondLanguage &&
+                                secondLanguage != null) {
+                              return mySnackBar(
+                                context,
+                                'First Language cannot be same as Second Language',
+                              );
+                            } else {
+                              setState(() {
+                                firstLanguage = value;
+                              });
+                            }
+                          },
+                        ),
                       ),
                     ),
 
                     // SECOND LANGUAGE
-                    Container(
-                      decoration: BoxDecoration(
-                        color: primary3,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: width * 0.0225,
-                        vertical: width * 0.0125,
-                      ),
-                      margin: const EdgeInsets.symmetric(
-                        vertical: 12,
-                      ),
-                      child: DropdownButton(
-                        dropdownColor: primary,
-                        hint: const Text(
-                          "Second Language",
-                          overflow: TextOverflow.ellipsis,
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: primary3,
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        value: secondLanguage,
-                        underline: Container(),
-                        items: [
-                          'Hindi',
-                          'English',
-                          'Marathi',
-                        ]
-                            .map(
-                              (e) => DropdownMenuItem(
-                                value: e,
-                                child: Text(e),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (value) {
-                          if (value == firstLanguage && firstLanguage != null) {
-                            return mySnackBar(
-                              context,
-                              'Second Language cannot be same as First Language',
-                            );
-                          } else {
-                            setState(() {
-                              secondLanguage = value;
-                            });
-                          }
-                        },
+                        padding: EdgeInsets.symmetric(
+                          horizontal: width * 0.0225,
+                          vertical: width * 0.0125,
+                        ),
+                        margin: EdgeInsets.symmetric(
+                          horizontal: width * 0.05,
+                          vertical: 12,
+                        ),
+                        child: DropdownButton(
+                          dropdownColor: primary,
+                          hint: const Text(
+                            "Second Language",
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: secondLanguage,
+                          underline: Container(),
+                          items: [
+                            'Hindi',
+                            'English',
+                            'Marathi',
+                          ]
+                              .map(
+                                (e) => DropdownMenuItem(
+                                  value: e,
+                                  child: Text(e),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (value) {
+                            if (value == firstLanguage &&
+                                firstLanguage != null) {
+                              return mySnackBar(
+                                context,
+                                'Second Language cannot be same as First Language',
+                              );
+                            } else {
+                              setState(() {
+                                secondLanguage = value;
+                              });
+                            }
+                          },
+                        ),
                       ),
                     ),
 

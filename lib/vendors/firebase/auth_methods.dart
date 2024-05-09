@@ -1,4 +1,4 @@
-import 'package:find_easy/vendors/register/user_register_details.dart';
+import 'package:find_easy/vendors/register/owner_register_details.dart';
 import 'package:find_easy/auth/verify/number_verify.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';

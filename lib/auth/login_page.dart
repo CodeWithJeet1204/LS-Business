@@ -31,6 +31,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final auth = FirebaseAuth.instance;
+  final store = FirebaseFirestore.instance;
   final GlobalKey<FormState> emailLoginFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> numberLoginFormKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
@@ -51,8 +52,8 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  // LOGIN WITH EMAIL
-  Future<void> loginWithEmail() async {
+  // LOGIN EMAIL
+  Future<void> loginEmail() async {
     if (emailLoginFormKey.currentState!.validate()) {
       try {
         setState(() {
@@ -64,10 +65,8 @@ class _LoginPageState extends State<LoginPage> {
         );
 
         if (user != null) {
-          final userExistsSnap = await FirebaseFirestore.instance
-              .collection('Users')
-              .doc(auth.currentUser!.uid)
-              .get();
+          final userExistsSnap =
+              await store.collection('Users').doc(auth.currentUser!.uid).get();
 
           if (userExistsSnap.exists) {
             await auth.signOut();
@@ -78,6 +77,66 @@ class _LoginPageState extends State<LoginPage> {
               );
             }
           } else {
+            if (widget.mode == 'vendor') {
+              final vendorSnap = await store
+                  .collection('Business')
+                  .doc('Owners')
+                  .collection('Shops')
+                  .doc(auth.currentUser!.uid)
+                  .get();
+
+              if (!vendorSnap.exists) {
+                await auth.signOut();
+                setState(() {
+                  isEmailLogging = false;
+                });
+                if (mounted) {
+                  return mySnackBar(
+                    context,
+                    'This account was created for Services ? Events',
+                  );
+                }
+                return;
+              }
+            } else if (widget.mode == 'services') {
+              final serviceSnap = await store
+                  .collection('Services')
+                  .doc(auth.currentUser!.uid)
+                  .get();
+
+              if (!serviceSnap.exists) {
+                await auth.signOut();
+                setState(() {
+                  isEmailLogging = false;
+                });
+                if (mounted) {
+                  return mySnackBar(
+                    context,
+                    'This account was created for Vendor / Events',
+                  );
+                }
+              }
+              return;
+            } else if (widget.mode == 'events') {
+              final serviceSnap = await store
+                  .collection('Organizers')
+                  .doc(auth.currentUser!.uid)
+                  .get();
+
+              if (!serviceSnap.exists) {
+                await auth.signOut();
+                setState(() {
+                  isEmailLogging = false;
+                });
+                if (mounted) {
+                  return mySnackBar(
+                    context,
+                    'This account was created for Vendor / Services',
+                  );
+                }
+              }
+              return;
+            }
             if (mounted) {
               mySnackBar(
                 context,
@@ -122,10 +181,10 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  // LOGIN WITH PHONE NUMBER
-  Future<void> loginWithPhone() async {
+  // LOGIN PHONE
+  Future<void> loginPhone() async {
     if (numberLoginFormKey.currentState!.validate()) {
-      final phoneSnap = await FirebaseFirestore.instance
+      final phoneSnap = await store
           .collection('Business')
           .doc('Owners')
           .collection('Users')
@@ -137,6 +196,66 @@ class _LoginPageState extends State<LoginPage> {
           isPhoneLogging = true;
         });
         try {
+          if (widget.mode == 'vendor') {
+            final vendorSnap = await store
+                .collection('Business')
+                .doc('Owners')
+                .collection('Shops')
+                .doc(auth.currentUser!.uid)
+                .get();
+
+            if (!vendorSnap.exists) {
+              await auth.signOut();
+              setState(() {
+                isPhoneLogging = false;
+              });
+              if (mounted) {
+                return mySnackBar(
+                  context,
+                  'This account was created for Services ? Events',
+                );
+              }
+              return;
+            }
+          } else if (widget.mode == 'services') {
+            final serviceSnap = await store
+                .collection('Services')
+                .doc(auth.currentUser!.uid)
+                .get();
+
+            if (!serviceSnap.exists) {
+              await auth.signOut();
+              setState(() {
+                isPhoneLogging = false;
+              });
+              if (mounted) {
+                return mySnackBar(
+                  context,
+                  'This account was created for Vendor / Events',
+                );
+              }
+            }
+            return;
+          } else if (widget.mode == 'events') {
+            final serviceSnap = await store
+                .collection('Organizers')
+                .doc(auth.currentUser!.uid)
+                .get();
+
+            if (!serviceSnap.exists) {
+              await auth.signOut();
+              setState(() {
+                isPhoneLogging = false;
+              });
+              if (mounted) {
+                return mySnackBar(
+                  context,
+                  'This account was created for Vendor / Services',
+                );
+              }
+            }
+            return;
+          }
           await auth.verifyPhoneNumber(
               phoneNumber: "+91 ${phoneController.text}",
               timeout: const Duration(seconds: 120),
@@ -202,6 +321,127 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  // LOGIN GOOGLE
+  Future<void> loginGoogle() async {
+    setState(() {
+      isGoogleLogging = true;
+    });
+    try {
+      await AuthMethods().signInWithGoogle(context);
+      if (auth.currentUser != null) {
+        final userExistsSnap =
+            await store.collection('Users').doc(auth.currentUser!.uid).get();
+
+        if (userExistsSnap.exists) {
+          await auth.signOut();
+          if (mounted) {
+            return mySnackBar(
+              context,
+              'This account was created in User app, use a different email here',
+            );
+          }
+        } else {
+          if (widget.mode == 'vendor') {
+            final vendorSnap = await store
+                .collection('Business')
+                .doc('Owners')
+                .collection('Shops')
+                .doc(auth.currentUser!.uid)
+                .get();
+
+            if (!vendorSnap.exists) {
+              await auth.signOut();
+              setState(() {
+                isGoogleLogging = false;
+              });
+              if (mounted) {
+                return mySnackBar(
+                  context,
+                  'This account was created for Services ? Events',
+                );
+              }
+              return;
+            }
+          } else if (widget.mode == 'services') {
+            final serviceSnap = await store
+                .collection('Services')
+                .doc(auth.currentUser!.uid)
+                .get();
+
+            if (!serviceSnap.exists) {
+              await auth.signOut();
+              setState(() {
+                isGoogleLogging = false;
+              });
+              if (mounted) {
+                return mySnackBar(
+                  context,
+                  'This account was created for Vendor / Events',
+                );
+              }
+            }
+            return;
+          } else if (widget.mode == 'events') {
+            final serviceSnap = await store
+                .collection('Organizers')
+                .doc(auth.currentUser!.uid)
+                .get();
+
+            if (!serviceSnap.exists) {
+              await auth.signOut();
+              setState(() {
+                isGoogleLogging = false;
+              });
+              if (mounted) {
+                return mySnackBar(
+                  context,
+                  'This account was created for Vendor / Services',
+                );
+              }
+            }
+            return;
+          }
+          setState(() {
+            isGoogleLogging = false;
+          });
+
+          if (context.mounted) {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: ((context) {
+                  if (widget.mode == 'vendor') {
+                    return const MainPage();
+                  } else if (widget.mode == 'services') {
+                    return const ServicesMainPage();
+                  } else if (widget.mode == 'events') {
+                    return EventsMainPage();
+                  } else {
+                    return MainPage();
+                  }
+                }),
+              ),
+              (route) => false,
+            );
+          }
+        }
+      } else {
+        setState(() {
+          isGoogleLogging = false;
+        });
+        if (context.mounted) {
+          mySnackBar(context, "Some error occured");
+        }
+      }
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        isGoogleLogging = false;
+      });
+      if (context.mounted) {
+        mySnackBar(context, e.toString());
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
@@ -224,181 +464,149 @@ class _LoginPageState extends State<LoginPage> {
                 text: "LOGIN",
               ),
               SizedBox(height: width * 0.3),
-              Column(
-                children: [
-                  // EMAIL
-                  MyCollapseContainer(
-                    width: width,
-                    text: "Email",
-                    children: Form(
-                      key: emailLoginFormKey,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: width * 0.0225,
-                          horizontal: width * 0.01,
+              MyCollapseContainer(
+                width: width,
+                text: "Email",
+                children: Form(
+                  key: emailLoginFormKey,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: width * 0.0225,
+                      horizontal: width * 0.01,
+                    ),
+                    child: Column(
+                      children: [
+                        MyTextFormField(
+                          hintText: "Email",
+                          controller: emailController,
+                          borderRadius: 16,
+                          horizontalPadding: width * 0.066,
+                          keyboardType: TextInputType.emailAddress,
+                          autoFillHints: const [AutofillHints.email],
                         ),
-                        child: Column(
-                          children: [
-                            MyTextFormField(
-                              hintText: "Email",
-                              controller: emailController,
-                              borderRadius: 16,
-                              horizontalPadding: width * 0.066,
-                              keyboardType: TextInputType.emailAddress,
-                              autoFillHints: const [AutofillHints.email],
-                            ),
-                            const SizedBox(height: 8),
-                            MyTextFormField(
-                              hintText: "Password",
-                              controller: passwordController,
-                              borderRadius: 16,
-                              horizontalPadding: width * 0.066,
-                              isPassword: true,
-                              autoFillHints: const [AutofillHints.password],
-                            ),
-                            const SizedBox(height: 8),
-                            MyButton(
-                              text: "LOGIN",
-                              onTap: () async {
-                                await loginWithEmail();
-                              },
-                              horizontalPadding: width * 0.066,
-                              isLoading: isEmailLogging,
-                            ),
-                          ],
+                        const SizedBox(height: 8),
+                        MyTextFormField(
+                          hintText: "Password",
+                          controller: passwordController,
+                          borderRadius: 16,
+                          horizontalPadding: width * 0.066,
+                          isPassword: true,
+                          autoFillHints: const [AutofillHints.password],
                         ),
-                      ),
+                        const SizedBox(height: 8),
+                        MyButton(
+                          text: "LOGIN",
+                          onTap: () async {
+                            await loginEmail();
+                          },
+                          horizontalPadding: width * 0.066,
+                          isLoading: isEmailLogging,
+                        ),
+                      ],
                     ),
                   ),
+                ),
+              ),
 
-                  // PHONE NUMBER
-                  MyCollapseContainer(
-                    width: width,
-                    text: "Phone Number",
-                    children: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: width * 0.0125,
-                        vertical: width * 0.025,
-                      ),
-                      child: Form(
-                        key: numberLoginFormKey,
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: width * 0.07,
-                              ),
-                              child: TextFormField(
-                                autofocus: false,
-                                controller: phoneController,
-                                keyboardType: TextInputType.number,
-                                onTapOutside: (event) =>
-                                    FocusScope.of(context).unfocus(),
-                                maxLines: 1,
-                                minLines: 1,
-                                decoration: InputDecoration(
-                                  prefixText: '+91 ',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide(
-                                      color: Colors.cyan.shade700,
-                                    ),
-                                  ),
-                                  hintText: 'Phone Number',
+              // PHONE NUMBER
+              MyCollapseContainer(
+                width: width,
+                text: "Phone Number",
+                children: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: width * 0.0125,
+                    vertical: width * 0.025,
+                  ),
+                  child: Form(
+                    key: numberLoginFormKey,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: width * 0.07,
+                          ),
+                          child: TextFormField(
+                            autofocus: false,
+                            controller: phoneController,
+                            keyboardType: TextInputType.number,
+                            onTapOutside: (event) =>
+                                FocusScope.of(context).unfocus(),
+                            maxLines: 1,
+                            minLines: 1,
+                            decoration: InputDecoration(
+                              prefixText: '+91 ',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide(
+                                  color: Colors.cyan.shade700,
                                 ),
-                                validator: (value) {
-                                  if (value != null) {
-                                    if (value.isEmpty) {
-                                      return 'Please enter Phone Number';
-                                    } else {
-                                      if (value.length != 10) {
-                                        return 'Number must be 10 chars long';
-                                      }
-                                    }
+                              ),
+                              hintText: 'Phone Number',
+                            ),
+                            validator: (value) {
+                              if (value != null) {
+                                if (value.isEmpty) {
+                                  return 'Please enter Phone Number';
+                                } else {
+                                  if (value.length != 10) {
+                                    return 'Number must be 10 chars long';
                                   }
-                                  return null;
-                                },
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            MyButton(
-                              text: phoneText,
-                              onTap: () async {
-                                await loginWithPhone();
-                              },
-                              horizontalPadding: width * 0.066,
-                              isLoading: isPhoneLogging,
-                            ),
-                          ],
+                                }
+                              }
+                              return null;
+                            },
+                          ),
                         ),
-                      ),
+                        const SizedBox(height: 8),
+                        MyButton(
+                          text: phoneText,
+                          onTap: () async {
+                            await loginPhone();
+                          },
+                          horizontalPadding: width * 0.066,
+                          isLoading: isPhoneLogging,
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(height: width * 0.033),
+                ),
+              ),
+              SizedBox(height: width * 0.033),
 
-                  // SIGN IN WITH GOOGLE
-                  GestureDetector(
-                    onTap: () async {
-                      try {
-                        setState(() {
-                          googleText = "PLEASE WAIT";
-                          isGoogleLogging = true;
-                        });
-                        await AuthMethods().signInWithGoogle(context);
-                        if (auth.currentUser != null) {
-                          setState(() {
-                            isGoogleLogging = false;
-                          });
-                          if (context.mounted) {
-                            Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                builder: ((context) => const MainPage()),
-                              ),
-                              (route) => false,
-                            );
-                          }
-                        } else {
-                          if (context.mounted) {
-                            mySnackBar(context, "Some error occured!");
-                          }
-                        }
-                      } on FirebaseAuthException catch (e) {
-                        if (context.mounted) {
-                          mySnackBar(context, e.toString());
-                        }
-                      }
-                    },
-                    child: Container(
-                      margin: EdgeInsets.symmetric(
-                        horizontal: width * 0.035,
-                      ),
-                      padding: EdgeInsets.symmetric(
-                        vertical: width * 0.033,
-                      ),
-                      alignment: Alignment.center,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: primary2.withOpacity(0.75),
-                      ),
-                      child: isGoogleLogging
-                          ? const Center(
-                              child: CircularProgressIndicator(
-                                color: primaryDark,
-                              ),
-                            )
-                          : Text(
-                              overflow: TextOverflow.ellipsis,
-                              googleText,
-                              style: TextStyle(
-                                color: buttonColor,
-                                fontWeight: FontWeight.w600,
-                                fontSize: width * 0.05,
-                              ),
-                            ),
-                    ),
+              // SIGN IN WITH GOOGLE
+              GestureDetector(
+                onTap: () async {
+                  await loginGoogle();
+                },
+                child: Container(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: width * 0.035,
                   ),
-                ],
+                  padding: EdgeInsets.symmetric(
+                    vertical: width * 0.033,
+                  ),
+                  alignment: Alignment.center,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: primary2.withOpacity(0.75),
+                  ),
+                  child: isGoogleLogging
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: primaryDark,
+                          ),
+                        )
+                      : Text(
+                          overflow: TextOverflow.ellipsis,
+                          googleText,
+                          style: TextStyle(
+                            color: buttonColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: width * 0.05,
+                          ),
+                        ),
+                ),
               ),
               SizedBox(height: width * 0.33),
 
@@ -545,7 +753,6 @@ class _LoginPageState extends State<LoginPage> {
           //                                   try {
           //                                     setState(() {
           //                                       isPhoneLogging = true;
-          //                                       phoneText = "PLEASE WAIT";
           //                                     });
           //                                     // Register with Phone
           //                                     if (phoneController.text
@@ -654,7 +861,6 @@ class _LoginPageState extends State<LoginPage> {
           //                     onTap: () async {
           //                       try {
           //                         setState(() {
-          //                           googleText = "PLEASE WAIT";
           //                           isGoogleLogging = true;
           //                         });
           //                         // Sign In With Google

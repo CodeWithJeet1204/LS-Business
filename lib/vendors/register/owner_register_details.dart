@@ -76,7 +76,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
               // USER DETAILS HEADTEXT
               const SizedBox(height: 100),
               const HeadText(
-                text: "USER\nDETAILS",
+                text: "OWNER\nDETAILS",
               ),
               const SizedBox(height: 40),
 
@@ -93,7 +93,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                         IconButton.filledTonal(
                           icon: const Icon(Icons.camera_alt_outlined),
                           iconSize: width * 0.09,
-                          tooltip: "Change User Picture",
+                          tooltip: "Change Owner Picture",
                           onPressed: () async {
                             await selectImage();
                           },
@@ -176,7 +176,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                 uploadImagePath = _image!.path;
                                 Reference ref = FirebaseStorage.instance
                                     .ref()
-                                    .child('Profile/Owners')
+                                    .child('VendorOwners')
                                     .child(
                                         FirebaseAuth.instance.currentUser!.uid);
                                 await ref

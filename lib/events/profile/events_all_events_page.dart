@@ -4,7 +4,6 @@ import 'package:find_easy/events/event_page.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:find_easy/widgets/shimmer_skeleton_container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class EventsAllEventsPage extends StatefulWidget {
@@ -17,7 +16,6 @@ class EventsAllEventsPage extends StatefulWidget {
 class Events_AllEventsPageState extends State<EventsAllEventsPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
-  final storage = FirebaseStorage.instance;
   final searchController = TextEditingController();
   Map<String, dynamic> events = {};
   bool isGridView = true;

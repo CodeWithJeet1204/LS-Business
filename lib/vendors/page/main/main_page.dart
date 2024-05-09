@@ -9,7 +9,7 @@ import 'package:find_easy/vendors/page/main/profile/profile_page.dart';
 import 'package:find_easy/auth/login_page.dart';
 import 'package:find_easy/vendors/register/membership_page.dart';
 import 'package:find_easy/vendors/register/select_business_category.dart';
-import 'package:find_easy/vendors/register/user_register_details.dart';
+import 'package:find_easy/vendors/register/owner_register_details.dart';
 import 'package:find_easy/auth/verify/email_verify.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:find_easy/vendors/utils/is_payed.dart';

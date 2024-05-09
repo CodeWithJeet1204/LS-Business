@@ -51,7 +51,7 @@ class _EventPageState extends State<EventPage> {
         });
         Reference ref = FirebaseStorage.instance
             .ref()
-            .child('Events/Event/${widget.eventId}')
+            .child('Events/${widget.eventId}')
             .child(const Uuid().v4());
         await ref.putFile(File(im.path)).whenComplete(() async {
           await ref.getDownloadURL().then((value) async {

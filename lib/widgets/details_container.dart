@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +59,7 @@ class _DetailsContainerState extends State<DetailsContainer> {
                   padding: EdgeInsets.only(left: widget.width * 0.05),
                   child: SizedBox(
                     width: widget.width * 0.725,
-                    child: AutoSizeText(
+                    child: Text(
                       widget.value ?? 'N/A',
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,

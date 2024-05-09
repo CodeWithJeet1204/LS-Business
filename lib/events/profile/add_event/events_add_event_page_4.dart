@@ -66,7 +66,7 @@ class _EventsAddEventPage4State extends State<EventsAddEventPage4> {
 
       Reference ref = FirebaseStorage.instance
           .ref()
-          .child('Events/Event/$eventId')
+          .child('Events/$eventId')
           .child(imageId);
 
       await ref.putFile(File(img.path)).then((TaskSnapshot snapshot) async {

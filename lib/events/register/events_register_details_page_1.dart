@@ -108,7 +108,7 @@ class EventsRegisterDetailsPage1State
         uploadImagePath = _image!.path;
         Reference ref = FirebaseStorage.instance
             .ref()
-            .child('Events/Owners')
+            .child('Organizers')
             .child(FirebaseAuth.instance.currentUser!.uid);
         await ref.putFile(File(uploadImagePath)).whenComplete(() async {
           await ref.getDownloadURL().then((value) {

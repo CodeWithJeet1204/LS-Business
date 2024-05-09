@@ -26,6 +26,7 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final phoneController = TextEditingController();
+  final descriptionController = TextEditingController();
   final websiteController = TextEditingController();
   final addressController = TextEditingController();
   String? type;
@@ -43,15 +44,15 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
 
   // GET DATA
   Future<void> getData() async {
-    final serviceSnap =
+    final organizerSnap =
         await store.collection('Organizers').doc(auth.currentUser!.uid).get();
 
-    final serviceData = serviceSnap.data()!;
+    final organizerData = organizerSnap.data()!;
 
     setState(() {
-      type = serviceData['Type'];
-      doe = serviceData['DOE'];
-      data = serviceData;
+      type = organizerData['Type'];
+      doe = organizerData['DOE'];
+      data = organizerData;
     });
   }
 
@@ -121,6 +122,7 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
     'Phone Number': false,
     'Age': false,
     'Address': false,
+    'Description': false,
   };
 
   // EDIT
@@ -153,9 +155,12 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
     } else if (isChanging['Address']!) {
       text = 'Address';
       controller = addressController;
+    } else if (isChanging['Description']!) {
+      text = 'Description';
+      controller = descriptionController;
     }
 
-    await store.collection('Services').doc(auth.currentUser!.uid).update({
+    await store.collection('Organizers').doc(auth.currentUser!.uid).update({
       text!: controller!.text,
     });
 
@@ -198,10 +203,8 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
         Map<String, dynamic> updatedUserImage = {
           "Image": im.path,
         };
-        Reference ref = FirebaseStorage.instance
-            .ref()
-            .child('Events/Owners')
-            .child(auth.currentUser!.uid);
+        Reference ref =
+            storage.ref().child('Organizers').child(auth.currentUser!.uid);
         await ref
             .putFile(File(updatedUserImage['Image']!))
             .whenComplete(() async {
@@ -310,7 +313,7 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
                                           },
                                           icon: Icon(
                                             FeatherIcons.camera,
-                                            size: width * 0.1,
+                                            size: width * 0.09,
                                           ),
                                           tooltip: "Change Photo",
                                         ),
@@ -353,6 +356,18 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
                             edit('Email');
                           },
                           isChanging: isChanging['Email']!,
+                          width: width,
+                        ),
+
+                        // DESCRIPTION
+                        DetailsContainer(
+                          value: data!['Description'],
+                          text: 'Description',
+                          controller: descriptionController,
+                          onTap: () async {
+                            edit('Description');
+                          },
+                          isChanging: isChanging['Description']!,
                           width: width,
                         ),
 
@@ -461,6 +476,7 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
                                 isChanging['Phone Number']! ||
                                 isChanging['Email']! ||
                                 isChanging['Age']! ||
+                                isChanging['Description']! ||
                                 isChanging['Address']!
                             ? Column(
                                 children: [

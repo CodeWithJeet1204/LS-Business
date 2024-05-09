@@ -6,7 +6,7 @@ import 'package:find_easy/services/main/services_main_page.dart';
 import 'package:find_easy/services/register/services_register_details_page.dart';
 import 'package:find_easy/vendors/firebase/auth_methods.dart';
 import 'package:find_easy/vendors/page/main/main_page.dart';
-import 'package:find_easy/vendors/register/user_register_details.dart';
+import 'package:find_easy/vendors/register/owner_register_details.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
@@ -54,24 +54,16 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
 
     if (!isEmailVerified) {
       timer = Timer.periodic(const Duration(seconds: 2), (_) async {
-        await checkEmailVerification();
+        await checkEmailVerification(false);
       });
     }
   }
 
   // CHECK EMAIL VERIFICATION
-  Future<void> checkEmailVerification() async {
-    setState(() {
-      isCheckingEmailVerified = true;
-    });
-
+  Future<void> checkEmailVerification(bool fromButton) async {
     await auth.currentUser!.reload();
 
     isEmailVerified = auth.currentUser!.emailVerified;
-
-    setState(() {
-      isCheckingEmailVerified = false;
-    });
 
     if (isEmailVerified) {
       if (mounted) {
@@ -100,6 +92,10 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
           })),
           (route) => false,
         );
+      }
+    } else {
+      if (fromButton) {
+        return mySnackBar(context, 'Not Verified');
       }
     }
   }
@@ -156,7 +152,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
             MyButton(
               text: "I have Verified my Email",
               onTap: () async {
-                await checkEmailVerification();
+                await checkEmailVerification(true);
               },
               isLoading: isCheckingEmailVerified,
               horizontalPadding: MediaQuery.of(context).size.width * 0.066,

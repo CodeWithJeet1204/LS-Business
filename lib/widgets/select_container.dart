@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -50,7 +51,7 @@ class _SelectContainerState extends State<SelectContainer> {
             padding: EdgeInsets.symmetric(
               horizontal: widget.width * 0.003125,
             ),
-            child: Text(
+            child: AutoSizeText(
               widget.text,
               textAlign: TextAlign.center,
               style: TextStyle(

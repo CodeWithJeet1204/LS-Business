@@ -160,6 +160,7 @@ class _SelectBusinessCategoryPageState
                             onTap: () {
                               setState(() {
                                 isShop = true;
+                                selectedCategory = "Select Category";
                               });
                             },
                             child: SizedBox(
@@ -204,6 +205,7 @@ class _SelectBusinessCategoryPageState
                             onTap: () {
                               setState(() {
                                 isShop = false;
+                                selectedCategory = "Select Category";
                               });
                             },
                             child: SizedBox(

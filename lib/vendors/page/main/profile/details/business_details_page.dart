@@ -59,7 +59,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
 
         Reference ref = FirebaseStorage.instance
             .ref()
-            .child('Profile/Shops')
+            .child('VendorShops')
             .child(auth.currentUser!.uid);
         await ref
             .putFile(File(updatedUserImage['Image']!))
@@ -429,7 +429,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                     onTapOutside: (event) =>
                                         FocusScope.of(context).unfocus(),
                                     decoration: InputDecoration(
-                                      hintText: "Change Special Note",
+                                      hintText: "Change Description",
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(12),
                                       ),
@@ -446,7 +446,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                         child: SizedBox(
                                           width: width * 0.725,
                                           child: AutoSizeText(
-                                            shopData['Special Note'] ?? 'N/A',
+                                            shopData['Description'] ?? 'N/A',
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               fontSize: width * 0.055,
@@ -467,7 +467,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                             });
                                           },
                                           icon: const Icon(FeatherIcons.edit),
-                                          tooltip: "Edit Special Note",
+                                          tooltip: "Edit Description",
                                         ),
                                       ),
                                     ],
@@ -665,7 +665,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                                 } else if (isChangingSpecialNote) {
                                                   await save(
                                                     specialNoteController,
-                                                    "Special Note",
+                                                    "Description",
                                                     isChangingSpecialNote,
                                                   );
                                                 }

@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:find_easy/events/register/events_register_details_page_1.dart';
+import 'package:find_easy/services/register/services_register_details_page.dart';
 import 'package:find_easy/vendors/firebase/auth_methods.dart';
-import 'package:find_easy/vendors/register/user_register_details.dart';
+import 'package:find_easy/vendors/page/main/main_page.dart';
+import 'package:find_easy/vendors/register/owner_register_details.dart';
 import 'package:find_easy/auth/verify/email_verify.dart';
 import 'package:find_easy/auth/verify/number_verify.dart';
 import 'package:find_easy/vendors/provider/sign_in_method_provider.dart';
@@ -95,7 +98,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                 'Favorites': null,
                 "GSTNumber": null,
                 "Address": null,
-                "Special Note": null,
+                "Description": null,
                 "Industry": null,
                 "Image": null,
                 "Type": null,
@@ -215,6 +218,96 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
     }
   }
 
+  // REGISTER GOOGLE
+  Future<void> registerGoogle(SignInMethodProvider signInMethodProvider) async {
+    setState(() {
+      isGoogleRegistering = true;
+    });
+
+    try {
+      await AuthMethods().signInWithGoogle(context);
+      signInMethodProvider.chooseGoogle();
+      await auth.currentUser!.reload();
+      if (auth.currentUser != null) {
+        if (widget.mode == 'vendor') {
+          await store
+              .collection('Business')
+              .doc('Owners')
+              .collection('Users')
+              .doc(auth.currentUser!.uid)
+              .set({
+            'Email': emailController.text.toString(),
+            'emailVerified': false,
+            'Image': null,
+            'Name': null,
+            'Phone Number': null,
+            'uid': null,
+          });
+
+          await store
+              .collection('Business')
+              .doc('Owners')
+              .collection('Shops')
+              .doc(auth.currentUser!.uid)
+              .set({
+            "Name": null,
+            'Views': null,
+            'Favorites': null,
+            "GSTNumber": null,
+            "Address": null,
+            "Description": null,
+            "Industry": null,
+            "Image": null,
+            "Type": null,
+            'MembershipName': null,
+            'MembershipDuration': null,
+            'MembershipTime': null,
+          });
+        } /* else if (widget.mode == 'services') {
+              // nothing
+            } else if (widget.mode == 'events') {
+              // code for events
+            }*/
+      } else {
+        setState(() {
+          isGoogleRegistering = false;
+        });
+        if (context.mounted) {
+          return mySnackBar(
+            context,
+            "Some error occured\nTry signing with email / phone number",
+          );
+        }
+      }
+      if (context.mounted) {
+        print("MODE: ${widget.mode}");
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: ((context) {
+            if (widget.mode == 'vendor') {
+              return const UserRegisterDetailsPage();
+            } else if (widget.mode == 'services') {
+              return const ServicesRegisterDetailsPage();
+            } else if (widget.mode == 'events') {
+              return const EventsRegisterDetailsPage1();
+            }
+            return const MainPage();
+          })),
+          (route) => false,
+        );
+      }
+      setState(() {
+        isGoogleRegistering = false;
+      });
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        isGoogleRegistering = false;
+      });
+      if (context.mounted) {
+        return mySnackBar(context, e.toString());
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final signInMethodProvider = Provider.of<SignInMethodProvider>(context);
@@ -225,214 +318,149 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
       body: SafeArea(
         child: /* width < screenSize
             ?*/
-            SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // REGISTER HEADTEXT
-              SizedBox(height: width * 0.35),
-              const HeadText(
-                text: "REGISTER",
-              ),
-              SizedBox(height: width * 0.3),
+            Padding(
+          padding: EdgeInsets.all(
+            width * 0.006125,
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // REGISTER HEADTEXT
+                SizedBox(height: width * 0.35),
+                const HeadText(
+                  text: "REGISTER",
+                ),
+                SizedBox(height: width * 0.3),
 
-              Column(
-                children: [
-                  // EMAIL
-                  MyCollapseContainer(
-                    width: MediaQuery.of(context).size.width,
-                    text: "Email",
-                    children: Padding(
-                      padding: EdgeInsets.all(width * 0.0225),
-                      child: Form(
-                        key: registerEmailFormKey,
-                        child: Column(
-                          children: [
-                            // EMAIL
-                            MyTextFormField(
-                              hintText: "Email",
-                              controller: emailController,
-                              borderRadius: 16,
-                              horizontalPadding:
-                                  MediaQuery.of(context).size.width * 0.066,
-                              keyboardType: TextInputType.emailAddress,
-                              autoFillHints: const [AutofillHints.email],
-                            ),
-                            const SizedBox(height: 8),
+                MyCollapseContainer(
+                  width: MediaQuery.of(context).size.width,
+                  text: "Email",
+                  children: Padding(
+                    padding: EdgeInsets.all(width * 0.0225),
+                    child: Form(
+                      key: registerEmailFormKey,
+                      child: Column(
+                        children: [
+                          // EMAIL
+                          MyTextFormField(
+                            hintText: "Email",
+                            controller: emailController,
+                            borderRadius: 16,
+                            horizontalPadding:
+                                MediaQuery.of(context).size.width * 0.066,
+                            keyboardType: TextInputType.emailAddress,
+                            autoFillHints: const [AutofillHints.email],
+                          ),
+                          const SizedBox(height: 8),
 
-                            // PASSWORD
-                            MyTextFormField(
-                              hintText: "Password",
-                              controller: passwordController,
-                              borderRadius: 16,
-                              horizontalPadding:
-                                  MediaQuery.of(context).size.width * 0.066,
-                              isPassword: true,
-                              autoFillHints: const [AutofillHints.newPassword],
-                            ),
-                            MyTextFormField(
-                              hintText: "Confirm Password",
-                              controller: confirmPasswordController,
-                              borderRadius: 16,
-                              horizontalPadding:
-                                  MediaQuery.of(context).size.width * 0.066,
-                              verticalPadding: 8,
-                              isPassword: true,
-                              autoFillHints: const [AutofillHints.newPassword],
-                            ),
-                            const SizedBox(height: 8),
-                            MyButton(
-                              text: "SIGNUP",
-                              onTap: () async {
-                                await registerEmail(signInMethodProvider);
-                              },
-                              horizontalPadding: width * 0.066,
-                              isLoading: isEmailRegistering,
-                            ),
-                          ],
-                        ),
+                          // PASSWORD
+                          MyTextFormField(
+                            hintText: "Password",
+                            controller: passwordController,
+                            borderRadius: 16,
+                            horizontalPadding:
+                                MediaQuery.of(context).size.width * 0.066,
+                            isPassword: true,
+                            autoFillHints: const [AutofillHints.newPassword],
+                          ),
+                          MyTextFormField(
+                            hintText: "Confirm Password",
+                            controller: confirmPasswordController,
+                            borderRadius: 16,
+                            horizontalPadding:
+                                MediaQuery.of(context).size.width * 0.066,
+                            verticalPadding: 8,
+                            isPassword: true,
+                            autoFillHints: const [AutofillHints.newPassword],
+                          ),
+                          const SizedBox(height: 8),
+                          MyButton(
+                            text: "SIGNUP",
+                            onTap: () async {
+                              await registerEmail(signInMethodProvider);
+                            },
+                            horizontalPadding: width * 0.066,
+                            isLoading: isEmailRegistering,
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12),
+                ),
+                const SizedBox(height: 12),
 
-                  // PHONE NUMBER
-                  MyCollapseContainer(
-                    width: MediaQuery.of(context).size.width,
-                    text: "Phone Number",
-                    children: Padding(
-                      padding: EdgeInsets.all(width * 0.0225),
-                      child: Form(
-                        key: registerNumberFormKey,
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: width * 0.07,
-                              ),
-                              child: TextFormField(
-                                autofocus: false,
-                                controller: phoneController,
-                                keyboardType: TextInputType.number,
-                                onTapOutside: (event) =>
-                                    FocusScope.of(context).unfocus(),
-                                maxLines: 1,
-                                minLines: 1,
-                                decoration: InputDecoration(
-                                  prefixText: '+91 ',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide(
-                                      color: Colors.cyan.shade700,
-                                    ),
+                // PHONE NUMBER
+                MyCollapseContainer(
+                  width: MediaQuery.of(context).size.width,
+                  text: "Phone Number",
+                  children: Padding(
+                    padding: EdgeInsets.all(width * 0.0225),
+                    child: Form(
+                      key: registerNumberFormKey,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: width * 0.07,
+                            ),
+                            child: TextFormField(
+                              autofocus: false,
+                              controller: phoneController,
+                              keyboardType: TextInputType.number,
+                              onTapOutside: (event) =>
+                                  FocusScope.of(context).unfocus(),
+                              maxLines: 1,
+                              minLines: 1,
+                              decoration: InputDecoration(
+                                prefixText: '+91 ',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(
+                                    color: Colors.cyan.shade700,
                                   ),
-                                  hintText: 'Phone Number',
                                 ),
-                                validator: (value) {
-                                  if (value != null) {
-                                    if (value.isEmpty) {
-                                      return 'Please enter Phone Number';
-                                    } else {
-                                      if (value.length != 10) {
-                                        return 'Number must be 10 chars long';
-                                      }
+                                hintText: 'Phone Number',
+                              ),
+                              validator: (value) {
+                                if (value != null) {
+                                  if (value.isEmpty) {
+                                    return 'Please enter Phone Number';
+                                  } else {
+                                    if (value.length != 10) {
+                                      return 'Number must be 10 chars long';
                                     }
                                   }
-                                  return null;
-                                },
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            MyButton(
-                              text: phoneText,
-                              onTap: () async {
-                                await registerPhone(signInMethodProvider);
+                                }
+                                return null;
                               },
-                              horizontalPadding:
-                                  MediaQuery.of(context).size.width * 0.066,
-                              isLoading: isPhoneRegistering,
                             ),
-                          ],
-                        ),
+                          ),
+                          const SizedBox(height: 8),
+                          MyButton(
+                            text: phoneText,
+                            onTap: () async {
+                              await registerPhone(signInMethodProvider);
+                            },
+                            horizontalPadding:
+                                MediaQuery.of(context).size.width * 0.066,
+                            isLoading: isPhoneRegistering,
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                ),
+                const SizedBox(height: 16),
 
-                  // GOOGLE
-                  GestureDetector(
+                // GOOGLE
+                Padding(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom,
+                  ),
+                  child: GestureDetector(
                     onTap: () async {
-                      setState(() {
-                        isGoogleRegistering = true;
-                      });
-                      try {
-                        signInMethodProvider.chooseGoogle();
-                        await AuthMethods().signInWithGoogle(context);
-                        await auth.currentUser!.reload();
-                        if (FirebaseAuth.instance.currentUser != null) {
-                          await store
-                              .collection('Business')
-                              .doc('Owners')
-                              .collection('Users')
-                              .doc(auth.currentUser!.uid)
-                              .set({
-                            "Email": FirebaseAuth.instance.currentUser!.email,
-                            "Name":
-                                FirebaseAuth.instance.currentUser!.displayName,
-                            "uid": FirebaseAuth.instance.currentUser!.uid,
-                            'Image': null,
-                            'Phone Number': null,
-                          });
-
-                          await store
-                              .collection('Business')
-                              .doc('Owners')
-                              .collection('Shops')
-                              .doc(auth.currentUser!.uid)
-                              .update({
-                            "Name": null,
-                            'Views': null,
-                            'Favorites': null,
-                            "GSTNumber": null,
-                            "Address": null,
-                            "Special Note": null,
-                            "Industry": null,
-                            "Image": null,
-                            "Type": null,
-                            'MembershipName': null,
-                            'MembershipDuration': null,
-                            'MembershipTime': null,
-                          });
-
-                          //
-                          if (context.mounted) {
-                            Navigator.of(context).pop();
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: ((context) =>
-                                    const UserRegisterDetailsPage()),
-                              ),
-                            );
-                          }
-                        } else {
-                          if (context.mounted) {
-                            mySnackBar(
-                              context,
-                              "Some error occured\nTry signing with email / phone number",
-                            );
-                          }
-                        }
-                        setState(() {
-                          isGoogleRegistering = false;
-                        });
-                      } on FirebaseAuthException catch (e) {
-                        setState(() {
-                          isGoogleRegistering = false;
-                        });
-                        if (context.mounted) {
-                          mySnackBar(context, e.toString());
-                        }
-                      }
+                      await registerGoogle(signInMethodProvider);
                     },
                     child: Container(
                       margin: EdgeInsets.fromLTRB(
@@ -466,9 +494,9 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                             ),
                     ),
                   ),
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
         // : Row(
@@ -582,7 +610,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
         //                                     'Favorites': null,
         //                                     "GSTNumber": null,
         //                                     "Address": null,
-        //                                     "Special Note": null,
+        //                                     "Description": null,
         //                                     "Industry": null,
         //                                     "Image": null,
         //                                     "Type": null,
@@ -714,7 +742,6 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
         //             //   onTap: () async {
         //             //     setState(() {
         //             //       isGoogleRegistering = true;
-        //             //       googleText = "PLEASE WAIT";
         //             //     });
         //             //     try {
         //             // Sign In With Google
@@ -747,7 +774,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
         //             //           'Favorites': null,
         //             //           "GSTNumber": null,
         //             //           "Address": null,
-        //             //           "Special Note": null,
+        //             //           "Description": null,
         //             //           "Industry": null,
         //             //           "Image": null,
         //             //           "Type": null,

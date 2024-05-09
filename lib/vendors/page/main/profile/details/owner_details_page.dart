@@ -54,7 +54,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
         };
         Reference ref = FirebaseStorage.instance
             .ref()
-            .child('Profile/Owners')
+            .child('VendorOwners')
             .child(auth.currentUser!.uid);
         await ref
             .putFile(File(updatedUserImage['Image']!))
@@ -475,7 +475,9 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                   child: SizedBox(
                                     width: width * 0.725,
                                     child: AutoSizeText(
-                                      userData['Email'] ?? 'N/A',
+                                      userData['Email'] == ''
+                                          ? auth.currentUser!.email
+                                          : userData['Email'] ?? 'N/A',
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1,
                                       style: TextStyle(

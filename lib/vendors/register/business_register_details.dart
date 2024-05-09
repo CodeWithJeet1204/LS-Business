@@ -30,7 +30,7 @@ class _BusinessRegisterDetailsPageState
   final TextEditingController nameController = TextEditingController();
   final TextEditingController gstController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
-  final TextEditingController specialNoteController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
   bool isNext = false;
   String? selectedIndustrySegment;
   bool isImageSelected = false;
@@ -43,7 +43,7 @@ class _BusinessRegisterDetailsPageState
     nameController.dispose();
     gstController.dispose();
     addressController.dispose();
-    specialNoteController.dispose();
+    descriptionController.dispose();
     super.dispose();
   }
 
@@ -74,7 +74,7 @@ class _BusinessRegisterDetailsPageState
           uploadImagePath = _image!.path;
           Reference ref = FirebaseStorage.instance
               .ref()
-              .child('Profile/Shops')
+              .child('VendorShops')
               .child(FirebaseAuth.instance.currentUser!.uid);
           await ref.putFile(File(uploadImagePath!)).whenComplete(() async {
             await ref.getDownloadURL().then((value) {
@@ -95,7 +95,7 @@ class _BusinessRegisterDetailsPageState
           'followersDateTime': [],
           "GSTNumber": gstController.text.toString(),
           "Address": addressController.text.toString(),
-          "Special Note": specialNoteController.text.toString(),
+          "Description": descriptionController.text.toString(),
           "Industry": selectedIndustrySegment,
           "Image": _image != null
               ? businessPhotoUrl
@@ -233,7 +233,7 @@ class _BusinessRegisterDetailsPageState
                         isDense: false,
                         menuMaxHeight: 700,
                         itemHeight: 48,
-                        dropdownColor: const Color.fromARGB(255, 189, 234, 255),
+                        dropdownColor: primary2,
                         hint: const Text(
                           overflow: TextOverflow.ellipsis,
                           "Select Industry Segment",
@@ -256,8 +256,8 @@ class _BusinessRegisterDetailsPageState
 
                     // SPECIAL NOTE
                     MyTextFormField(
-                      hintText: "Special Note",
-                      controller: specialNoteController,
+                      hintText: "Description",
+                      controller: descriptionController,
                       borderRadius: 12,
                       horizontalPadding:
                           MediaQuery.of(context).size.width * 0.055,

@@ -21,6 +21,8 @@ class _ServicesChoosePage1State extends State<ServicesChoosePage1> {
   bool isHomeSelected = false;
   bool isOfficeSelected = false;
   bool isOutdoorSelected = false;
+  bool isRetailSelected = false;
+  bool isEducationalSelected = false;
   bool isNext = false;
 
   // NEXT
@@ -43,6 +45,12 @@ class _ServicesChoosePage1State extends State<ServicesChoosePage1> {
     }
     if (isOutdoorSelected) {
       selectedPlaces.add('Outdoor');
+    }
+    if (isRetailSelected) {
+      selectedPlaces.add('Retail Stores');
+    }
+    if (isEducationalSelected) {
+      selectedPlaces.add('Educational Institutes');
     }
 
     await store.collection('Services').doc(auth.currentUser!.uid).update({
@@ -148,13 +156,38 @@ class _ServicesChoosePage1State extends State<ServicesChoosePage1> {
                     ),
                   ],
                 ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SelectContainer(
+                      width: width,
+                      text: 'Outdoor',
+                      isSelected: isOutdoorSelected,
+                      onTap: () {
+                        setState(() {
+                          isOutdoorSelected = !isOutdoorSelected;
+                        });
+                      },
+                    ),
+                    SelectContainer(
+                      width: width,
+                      text: 'Retail Stores',
+                      isSelected: isRetailSelected,
+                      onTap: () {
+                        setState(() {
+                          isRetailSelected = !isRetailSelected;
+                        });
+                      },
+                    ),
+                  ],
+                ),
                 SelectContainer(
                   width: width,
-                  text: 'Outdoor',
-                  isSelected: isOutdoorSelected,
+                  text: 'Educational Institutes',
+                  isSelected: isEducationalSelected,
                   onTap: () {
                     setState(() {
-                      isOutdoorSelected = !isOutdoorSelected;
+                      isEducationalSelected = !isEducationalSelected;
                     });
                   },
                   imageUrl:
