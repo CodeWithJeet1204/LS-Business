@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/events/profile/add_event/events_add_event_page_1.dart';
-import 'package:find_easy/events/profile/events_add_work_images_page.dart';
+import 'package:find_easy/events/profile/work_images/events_add_work_images_page.dart';
 import 'package:find_easy/events/profile/events_all_events_page.dart';
 import 'package:find_easy/events/profile/events_details_page.dart';
-import 'package:find_easy/events/profile/events_work_images_page.dart';
+import 'package:find_easy/events/profile/work_images/events_work_images_page.dart';
 import 'package:find_easy/select_mode_page.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
