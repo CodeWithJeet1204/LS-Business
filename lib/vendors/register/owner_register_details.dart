@@ -164,7 +164,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                         bottom: MediaQuery.of(context).viewInsets.bottom,
                       ),
                       child: MyButton(
-                        text: "Next",
+                        text: 'NEXT',
                         onTap: () async {
                           if (userFormKey.currentState!.validate()) {
                             if (_image != null) {

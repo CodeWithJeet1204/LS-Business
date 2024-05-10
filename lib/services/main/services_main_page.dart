@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/services/main/services_page_2.dart';
 import 'package:find_easy/services/main/profile/services_profile_page.dart';
 import 'package:find_easy/services/register/services_choose_page_1.dart';
 import 'package:find_easy/services/register/services_choose_page_2.dart';
@@ -27,7 +26,6 @@ class _ServicesMainPageState extends State<ServicesMainPage> {
   int current = 1;
 
   List<Widget> allPages = [
-    const ServicesPage2(),
     const ServicesProfilePage(),
   ];
 

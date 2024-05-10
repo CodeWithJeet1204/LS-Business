@@ -273,7 +273,7 @@ class _BusinessRegisterDetailsPageState
                         bottom: MediaQuery.of(context).viewInsets.bottom,
                       ),
                       child: MyButton(
-                        text: "Next",
+                        text: 'NEXT',
                         onTap: () async {
                           await uploadDetails();
                         },

@@ -105,11 +105,12 @@ class ServicesRegisterDetailsPageState
           'Age': ageController.text,
           'Address': addressController.text,
           'Gender': isMale! ? 'Male' : 'Female',
-          'First Langauge': firstLanguage,
+          'First Language': firstLanguage,
           'Second Language': secondLanguage,
           'Image': userPhotoUrl,
           'ViewsTimestamp': 0,
           'Followers': [],
+          'workImages': {},
         };
 
         await store.collection('Services').doc(auth.currentUser!.uid).set(info);
@@ -409,7 +410,7 @@ class ServicesRegisterDetailsPageState
                         bottom: MediaQuery.of(context).viewInsets.bottom,
                       ),
                       child: MyButton(
-                        text: "Next",
+                        text: 'NEXT',
                         onTap: () async {
                           await register(signInMethodProvider);
                         },

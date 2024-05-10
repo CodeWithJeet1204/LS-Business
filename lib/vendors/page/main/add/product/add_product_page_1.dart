@@ -217,7 +217,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
     }
   }
 
-  // CHANGE IMAGE FIT
+  // CHANGE FIT
   void changeFit() {
     setState(() {
       isFit = !isFit;

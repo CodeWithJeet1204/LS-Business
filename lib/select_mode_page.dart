@@ -132,7 +132,7 @@ class _SelectModePageState extends State<SelectModePage> {
 
             // NEXT
             MyButton(
-              text: 'Next',
+              text: 'NEXT',
               onTap: isVendorSelected || isServicesSelected || isEventsSelected
                   ? saveSelectedText
                   : null,

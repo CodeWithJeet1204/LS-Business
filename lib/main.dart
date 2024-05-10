@@ -1,4 +1,5 @@
 import 'package:find_easy/events/events_main_page.dart';
+import 'package:find_easy/firebase_options.dart';
 import 'package:find_easy/first_launch_detection.dart';
 import 'package:find_easy/select_mode_page.dart';
 import 'package:find_easy/services/main/services_main_page.dart';
@@ -38,7 +39,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   await WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await FirebaseAppCheck.instance.activate();
 
   runApp(

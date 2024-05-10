@@ -20,7 +20,7 @@ class _ConnectivityNotificationWidgetState
   @override
   void initState() {
     super.initState();
-    connectivityInitialize();
+    // connectivityInitialize();
   }
 
   // DISPOSE
@@ -31,21 +31,21 @@ class _ConnectivityNotificationWidgetState
   }
 
   // CONNECTIVITY INITIALIZE
-  Future<void> connectivityInitialize() async {
-    _connectivitySubscription = await Connectivity()
-        .onConnectivityChanged
-        .first
-        .then((initialResult) async {
-      await _updateConnectionStatus(initialResult);
-    }).then((_) async {
-      return Connectivity().onConnectivityChanged.listen(
-            _updateConnectionStatus,
-          );
-    });
-  }
+  // Future<void> connectivityInitialize() async {
+  //   _connectivitySubscription = await Connectivity()
+  //       .onConnectivityChanged
+  //       .first
+  //       .then((initialResult) async {
+  //     await _updateConnectionStatus(initialResult.first);
+  //   }).then((_) {
+  //     return Connectivity().onConnectivityChanged.listen(
+  //           _updateConnectionStatus,
+  //         );
+  //   });
+  // }
 
   // UPDATE CONNECTION STATUS
-  Future<void> _updateConnectionStatus(ConnectivityResult result) async {
+  Future<void> updateConnectionStatus(ConnectivityResult result) async {
     setState(() {
       _connectionStatus = result;
     });

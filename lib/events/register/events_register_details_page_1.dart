@@ -132,6 +132,7 @@ class EventsRegisterDetailsPage1State
             'ViewsTimestamp': [],
             'Type': type,
             'DOE': DateFormat('d MMM y').format(doe!),
+            'workImages': [],
           };
 
           await store
@@ -300,46 +301,50 @@ class EventsRegisterDetailsPage1State
                       autoFillHints: const [],
                     ),
 
-                    // PROFIT
-                    Container(
-                      decoration: BoxDecoration(
-                        color: primary3,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: width * 0.0225,
-                        vertical: width * 0.0125,
-                      ),
-                      margin: const EdgeInsets.symmetric(
-                        vertical: 12,
-                      ),
-                      child: DropdownButton(
-                        dropdownColor: primary,
-                        hint: const Text(
-                          "Type",
-                          overflow: TextOverflow.ellipsis,
+                    // TYPE
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: primary3,
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        value: type,
-                        underline: Container(),
-                        items: [
-                          'For - Profit',
-                          'NGO',
-                          'Government',
-                          'Cooperative',
-                          'Professional Assosciations',
-                        ]
-                            .map(
-                              (e) => DropdownMenuItem(
-                                value: e,
-                                child: Text(e),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            type = value;
-                          });
-                        },
+                        padding: EdgeInsets.symmetric(
+                          horizontal: width * 0.0225,
+                          vertical: width * 0.0125,
+                        ),
+                        margin: EdgeInsets.symmetric(
+                          horizontal: width * 0.055,
+                          vertical: 12,
+                        ),
+                        child: DropdownButton(
+                          dropdownColor: primary,
+                          hint: const Text(
+                            "Type",
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: type,
+                          underline: Container(),
+                          items: [
+                            'For - Profit',
+                            'NGO',
+                            'Government',
+                            'Cooperative',
+                            'Professional Assosciations',
+                          ]
+                              .map(
+                                (e) => DropdownMenuItem(
+                                  value: e,
+                                  child: Text(e),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              type = value;
+                            });
+                          },
+                        ),
                       ),
                     ),
 
@@ -348,24 +353,28 @@ class EventsRegisterDetailsPage1State
                       onTap: () async {
                         await selectDoe();
                       },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: primary3,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: width * 0.05,
-                          vertical: width * 0.05,
-                        ),
-                        margin: const EdgeInsets.symmetric(
-                          vertical: 12,
-                        ),
-                        child: Text(
-                          doe == null
-                              ? 'Select Date Of Establishment'
-                              : DateFormat('d MMM y').format(doe!),
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: primary3,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: width * 0.05,
+                            vertical: width * 0.05,
+                          ),
+                          margin: EdgeInsets.symmetric(
+                            horizontal: width * 0.055,
+                            vertical: 12,
+                          ),
+                          child: Text(
+                            doe == null
+                                ? 'Select Date Of Establishment'
+                                : DateFormat('d MMM y').format(doe!),
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       ),
@@ -377,7 +386,7 @@ class EventsRegisterDetailsPage1State
                         bottom: MediaQuery.of(context).viewInsets.bottom,
                       ),
                       child: MyButton(
-                        text: "Next",
+                        text: "NEXT",
                         onTap: () async {
                           await register(signInMethodProvider);
                         },

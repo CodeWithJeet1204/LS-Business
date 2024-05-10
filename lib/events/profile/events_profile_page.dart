@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/events/profile/add_event/events_add_event_page_1.dart';
+import 'package:find_easy/events/profile/events_add_work_images_page.dart';
 import 'package:find_easy/events/profile/events_all_events_page.dart';
 import 'package:find_easy/events/profile/events_details_page.dart';
+import 'package:find_easy/events/profile/events_work_images_page.dart';
 import 'package:find_easy/select_mode_page.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:find_easy/widgets/snack_bar.dart';
@@ -232,7 +234,6 @@ class _EventsProfilePageState extends State<EventsProfilePage> {
                     children: [
                       Container(
                         width: width,
-                        // height: width * 0.5625,
                         alignment: Alignment.center,
                         margin: EdgeInsets.only(bottom: width * 0.01),
                         padding: EdgeInsets.symmetric(
@@ -430,6 +431,102 @@ class _EventsProfilePageState extends State<EventsProfilePage> {
                             ),
 
                             SizedBox(height: 8),
+
+                            // ADD WORK IMAGES
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: ((context) =>
+                                        const EventsAddWorkImagesPage()),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                width: width,
+                                height: 60,
+                                alignment: Alignment.centerLeft,
+                                decoration: BoxDecoration(
+                                  color: primary2.withOpacity(0.25),
+                                  border: Border.all(
+                                    width: 0.25,
+                                    color: primaryDark2.withOpacity(0.25),
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: width * 0.025,
+                                ),
+                                margin: EdgeInsets.all(
+                                  width * 0.006125,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Add Work Images',
+                                      style: TextStyle(
+                                        fontSize: width * 0.05,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const Icon(FeatherIcons.camera),
+                                  ],
+                                ),
+                              ),
+                            ),
+
+                            const SizedBox(height: 8),
+
+                            // YOUR WORK IMAGES
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: ((context) =>
+                                        const EventsWorkImagesPage()),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                width: width,
+                                height: 60,
+                                alignment: Alignment.centerLeft,
+                                decoration: BoxDecoration(
+                                  color: primary2.withOpacity(0.25),
+                                  border: Border.all(
+                                    width: 0.25,
+                                    color: primaryDark2.withOpacity(0.25),
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: width * 0.025,
+                                ),
+                                margin: EdgeInsets.all(
+                                  width * 0.006125,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Your Work Images',
+                                      style: TextStyle(
+                                        fontSize: width * 0.05,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const Icon(Icons.photo_outlined),
+                                  ],
+                                ),
+                              ),
+                            ),
+
+                            const SizedBox(height: 8),
 
                             // VIEWS
                             Container(
