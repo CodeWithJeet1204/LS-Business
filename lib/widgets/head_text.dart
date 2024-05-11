@@ -13,9 +13,9 @@ class HeadText extends StatelessWidget {
 
   String textFormat(String text) {
     int length = text.length;
-    String formattedText = "";
+    String formattedText = '';
     for (var i = 0; i < length; i++) {
-      formattedText += "${text[i]} ";
+      formattedText += '${text[i]} ';
     }
     return formattedText;
   }

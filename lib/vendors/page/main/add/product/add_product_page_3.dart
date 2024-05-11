@@ -93,7 +93,7 @@ class _AddProductPage3State extends State<AddProductPage3> {
           .doc(widget.productId)
           .set(provider.productInfo);
       if (mounted) {
-        mySnackBar(context, "Product Added");
+        mySnackBar(context, 'Product Added');
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
             builder: ((context) => const MainPage()),
@@ -182,7 +182,7 @@ class _AddProductPage3State extends State<AddProductPage3> {
                               onTapOutside: (event) =>
                                   FocusScope.of(context).unfocus(),
                               decoration: InputDecoration(
-                                hintText: "Range of Delivery (in Km)",
+                                hintText: 'Range of Delivery (in Km)',
                                 hintStyle: TextStyle(
                                   color: primaryDark2.withOpacity(0.8),
                                 ),
@@ -273,7 +273,7 @@ class _AddProductPage3State extends State<AddProductPage3> {
                               onTapOutside: (event) =>
                                   FocusScope.of(context).unfocus(),
                               decoration: InputDecoration(
-                                hintText: "Days To Return",
+                                hintText: 'Days To Return',
                                 hintStyle: TextStyle(
                                   color: primaryDark2.withOpacity(0.8),
                                 ),
@@ -324,7 +324,7 @@ class _AddProductPage3State extends State<AddProductPage3> {
                               onTapOutside: (event) =>
                                   FocusScope.of(context).unfocus(),
                               decoration: InputDecoration(
-                                hintText: "Days To Replace",
+                                hintText: 'Days To Replace',
                                 hintStyle: TextStyle(
                                   color: primaryDark2.withOpacity(0.8),
                                 ),

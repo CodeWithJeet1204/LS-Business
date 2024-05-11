@@ -47,9 +47,9 @@ class _SelectBusinessCategoryPageState
 
   // UPLOAD DETAILS
   Future<void> uploadDetails() async {
-    if (selectedCategory != "Select Category") {
+    if (selectedCategory != 'Select Category') {
       if (selectedCategory == 'Other' && otherCategoryController.text.isEmpty) {
-        return mySnackBar(context, "Enter Name of Category");
+        return mySnackBar(context, 'Enter Name of Category');
       } else {
         try {
           await store
@@ -116,7 +116,7 @@ class _SelectBusinessCategoryPageState
       }
     } else {
       if (mounted) {
-        return mySnackBar(context, "Select Category");
+        return mySnackBar(context, 'Select Category');
       }
     }
   }
@@ -141,7 +141,7 @@ class _SelectBusinessCategoryPageState
                     // HEAD TEXT
                     SizedBox(height: width * 0.1125),
                     const HeadText(
-                      text: "SELECT\nCATEGORY",
+                      text: 'SELECT\nCATEGORY',
                     ),
                     SizedBox(height: width * 0.1125),
 
@@ -160,7 +160,7 @@ class _SelectBusinessCategoryPageState
                             onTap: () {
                               setState(() {
                                 isShop = true;
-                                selectedCategory = "Select Category";
+                                selectedCategory = 'Select Category';
                               });
                             },
                             child: SizedBox(
@@ -176,7 +176,7 @@ class _SelectBusinessCategoryPageState
                                   children: [
                                     Text(
                                       overflow: TextOverflow.ellipsis,
-                                      "Shop",
+                                      'Shop',
                                       style: TextStyle(
                                         color: primaryDark,
                                         fontSize: width * 0.06,
@@ -205,7 +205,7 @@ class _SelectBusinessCategoryPageState
                             onTap: () {
                               setState(() {
                                 isShop = false;
-                                selectedCategory = "Select Category";
+                                selectedCategory = 'Select Category';
                               });
                             },
                             child: SizedBox(
@@ -221,7 +221,7 @@ class _SelectBusinessCategoryPageState
                                   children: [
                                     Text(
                                       overflow: TextOverflow.ellipsis,
-                                      "Household",
+                                      'Household',
                                       style: TextStyle(
                                         color: primaryDark,
                                         fontSize: width * 0.06,
@@ -283,7 +283,7 @@ class _SelectBusinessCategoryPageState
                     // OTHER CATEGORY TEXTFORMFIELD
                     selectedCategory == 'Other'
                         ? MyTextFormField(
-                            hintText: "Other Category Name",
+                            hintText: 'Other Category Name',
                             controller: otherCategoryController,
                             borderRadius: 12,
                             horizontalPadding: 0,
@@ -302,7 +302,7 @@ class _SelectBusinessCategoryPageState
                         width: width,
                         height: width * 0.15,
                         child: MyButton(
-                          text: "NEXT",
+                          text: 'NEXT',
                           onTap: () async {
                             await uploadDetails();
                           },

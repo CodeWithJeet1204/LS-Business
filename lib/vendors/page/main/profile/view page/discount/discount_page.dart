@@ -97,7 +97,7 @@ class DISCOUNT extends State<DiscountPage> {
       }
     } else {
       if (mounted) {
-        mySnackBar(context, "Select an Image");
+        mySnackBar(context, 'Select an Image');
       }
     }
   }
@@ -125,7 +125,7 @@ class DISCOUNT extends State<DiscountPage> {
       }
     } else {
       if (mounted) {
-        mySnackBar(context, "Select an Image");
+        mySnackBar(context, 'Select an Image');
       }
     }
   }
@@ -165,11 +165,11 @@ class DISCOUNT extends State<DiscountPage> {
       builder: ((context) {
         return AlertDialog(
           title: const Text(
-            "Confirm DELETE",
+            'Confirm DELETE',
             overflow: TextOverflow.ellipsis,
           ),
           content: const Text(
-            "Are you sure you want to delete this Discount\nDiscount will be removed from all the products/categories with this discount",
+            'Are you sure you want to delete this Discount\nDiscount will be removed from all the products/categories with this discount',
             overflow: TextOverflow.ellipsis,
           ),
           actions: [
@@ -312,7 +312,7 @@ class DISCOUNT extends State<DiscountPage> {
                             onTapOutside: (event) =>
                                 FocusScope.of(context).unfocus(),
                             decoration: const InputDecoration(
-                              hintText: "Discount Name",
+                              hintText: 'Discount Name',
                               border: OutlineInputBorder(),
                             ),
                             onChanged: (value) {
@@ -322,12 +322,12 @@ class DISCOUNT extends State<DiscountPage> {
                               if (value != null && value.isNotEmpty) {
                                 return null;
                               } else {
-                                return "Enter Discount Name";
+                                return 'Enter Discount Name';
                               }
                             },
                           ),
                           MyButton(
-                            text: "SAVE",
+                            text: 'SAVE',
                             onTap: () async {
                               await changeDiscount(
                                 discountProperty,
@@ -406,7 +406,7 @@ class DISCOUNT extends State<DiscountPage> {
   //     builder: (context) {
   //       return AlertDialog(
   //         title: Text(
-  //           "Remove $productName",
+  //           'Remove $productName',
   //           overflow: TextOverflow.ellipsis,
   //         ),
   //         content: Text(
@@ -418,7 +418,7 @@ class DISCOUNT extends State<DiscountPage> {
   //             onPressed: () {
   //               Navigator.of(context).pop();
   //             },
-  //             text: "NO",
+  //             text: 'NO',
   //             textColor: Colors.green,
   //           ),
   //           MyTextButton(
@@ -442,7 +442,7 @@ class DISCOUNT extends State<DiscountPage> {
   //                 }
   //               }
   //             },
-  //             text: "YES",
+  //             text: 'YES',
   //             textColor: Colors.red,
   //           ),
   //         ],
@@ -513,7 +513,7 @@ class DISCOUNT extends State<DiscountPage> {
               FeatherIcons.trash,
               color: Colors.red,
             ),
-            tooltip: "End Discount",
+            tooltip: 'End Discount',
           ),
         ],
         bottom: PreferredSize(
@@ -625,7 +625,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                   FeatherIcons.camera,
                                                   size: width * 0.1,
                                                 ),
-                                                tooltip: "Change Image",
+                                                tooltip: 'Change Image',
                                               ),
                                             ),
                                             Padding(
@@ -644,7 +644,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                   FeatherIcons.x,
                                                   size: width * 0.1,
                                                 ),
-                                                tooltip: "Remove Image",
+                                                tooltip: 'Remove Image',
                                               ),
                                             ),
                                           ],
@@ -656,7 +656,7 @@ class DISCOUNT extends State<DiscountPage> {
                                   onPressed: () async {
                                     await addDiscountImage();
                                   },
-                                  text: "Add Image",
+                                  text: 'Add Image',
                                   textColor: primaryDark,
                                 ),
                               ),
@@ -664,7 +664,7 @@ class DISCOUNT extends State<DiscountPage> {
 
                         // NAME
                         InfoEditBox(
-                          head: "NAME",
+                          head: 'NAME',
                           noOfAnswers: 1,
                           content: discountData['discountName'],
                           propertyValue: const [],
@@ -676,7 +676,7 @@ class DISCOUNT extends State<DiscountPage> {
 
                         // AMOUNT
                         InfoEditBox(
-                          head: "AMOUNT",
+                          head: 'AMOUNT',
                           noOfAnswers: 1,
                           content: discountData['discountAmount'].toString(),
                           propertyValue: const [],
@@ -711,7 +711,7 @@ class DISCOUNT extends State<DiscountPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     const Text(
-                                      "Start Date",
+                                      'Start Date',
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         fontWeight: FontWeight.w500,
@@ -744,7 +744,7 @@ class DISCOUNT extends State<DiscountPage> {
                                     FeatherIcons.edit,
                                     color: primaryDark,
                                   ),
-                                  tooltip: "Change Start Date",
+                                  tooltip: 'Change Start Date',
                                 )
                               ],
                             ),
@@ -773,7 +773,7 @@ class DISCOUNT extends State<DiscountPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     const Text(
-                                      "End Date",
+                                      'End Date',
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         fontWeight: FontWeight.w500,
@@ -806,7 +806,7 @@ class DISCOUNT extends State<DiscountPage> {
                                     FeatherIcons.edit,
                                     color: primaryDark,
                                   ),
-                                  tooltip: "Change End Date",
+                                  tooltip: 'Change End Date',
                                 )
                               ],
                             ),
@@ -854,7 +854,7 @@ class DISCOUNT extends State<DiscountPage> {
                                   .collection('Discounts')
                                   .doc(widget.discountId)
                                   .update({
-                                'isPercent': value == "Percent" ? true : false,
+                                'isPercent': value == 'Percent' ? true : false,
                               });
                             },
                           ),
@@ -917,8 +917,8 @@ class DISCOUNT extends State<DiscountPage> {
                                                         .unfocus(),
                                                 decoration:
                                                     const InputDecoration(
-                                                  labelText: "Case - Sensitive",
-                                                  hintText: "Search ...",
+                                                  labelText: 'Case - Sensitive',
+                                                  hintText: 'Search ...',
                                                   border: OutlineInputBorder(),
                                                 ),
                                                 onChanged: (value) {
@@ -938,8 +938,8 @@ class DISCOUNT extends State<DiscountPage> {
                                                     : FeatherIcons.grid,
                                               ),
                                               tooltip: isGridView
-                                                  ? "List View"
-                                                  : "Grid View",
+                                                  ? 'List View'
+                                                  : 'Grid View',
                                             ),
                                           ],
                                         ),
@@ -951,7 +951,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                 child: Text(
                                                   overflow:
                                                       TextOverflow.ellipsis,
-                                                  "Something went wrong",
+                                                  'Something went wrong',
                                                 ),
                                               );
                                             }
@@ -1090,7 +1090,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                                             ),
                                                                             child:
                                                                                 Text(
-                                                                              productData['productPrice'] != "" && productData['productPrice'] != null ? 'Rs. ${productData['productPrice']}' : "N/A",
+                                                                              productData['productPrice'] != '' && productData['productPrice'] != null ? 'Rs. ${productData['productPrice']}' : 'N/A',
                                                                               overflow: TextOverflow.ellipsis,
                                                                               maxLines: 1,
                                                                               style: TextStyle(
@@ -1128,7 +1128,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                                               0.075,
                                                                         ),
                                                                         tooltip:
-                                                                            "Remove Product",
+                                                                            'Remove Product',
                                                                       ),
                                                                     ],
                                                                   ),
@@ -1225,12 +1225,12 @@ class DISCOUNT extends State<DiscountPage> {
                                                                   subtitle:
                                                                       Text(
                                                                     productData['productPrice'] !=
-                                                                                "" &&
+                                                                                '' &&
                                                                             productData['productPrice'] !=
                                                                                 null
                                                                         ? productData[
                                                                             'productPrice']
-                                                                        : "N/A",
+                                                                        : 'N/A',
                                                                     overflow:
                                                                         TextOverflow
                                                                             .ellipsis,
@@ -1270,7 +1270,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                                           0.08,
                                                                     ),
                                                                     tooltip:
-                                                                        "Remove Product",
+                                                                        'Remove Product',
                                                                   ),
                                                                 ),
                                                               ),
@@ -1402,8 +1402,8 @@ class DISCOUNT extends State<DiscountPage> {
                                                         .unfocus(),
                                                 decoration:
                                                     const InputDecoration(
-                                                  labelText: "Case - Sensitive",
-                                                  hintText: "Search ...",
+                                                  labelText: 'Case - Sensitive',
+                                                  hintText: 'Search ...',
                                                   border: OutlineInputBorder(),
                                                 ),
                                                 onChanged: (value) {
@@ -1423,8 +1423,8 @@ class DISCOUNT extends State<DiscountPage> {
                                                     : FeatherIcons.grid,
                                               ),
                                               tooltip: isGridView
-                                                  ? "List View"
-                                                  : "Grid View",
+                                                  ? 'List View'
+                                                  : 'Grid View',
                                             ),
                                           ],
                                         ),
@@ -1434,7 +1434,7 @@ class DISCOUNT extends State<DiscountPage> {
                                             if (snapshot.hasError) {
                                               return const Center(
                                                 child: Text(
-                                                  "Something went wrong",
+                                                  'Something went wrong',
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                 ),
@@ -1594,7 +1594,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                                               0.09,
                                                                         ),
                                                                         tooltip:
-                                                                            "Remove Product",
+                                                                            'Remove Product',
                                                                       ),
                                                                     ],
                                                                   ),
@@ -1692,12 +1692,12 @@ class DISCOUNT extends State<DiscountPage> {
                                                                         TextOverflow
                                                                             .ellipsis,
                                                                     productData['productPrice'] !=
-                                                                                "" &&
+                                                                                '' &&
                                                                             productData['productPrice'] !=
                                                                                 null
                                                                         ? productData[
                                                                             'productPrice']
-                                                                        : "N/A",
+                                                                        : 'N/A',
                                                                     style:
                                                                         TextStyle(
                                                                       fontSize:
@@ -1734,7 +1734,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                                           0.09,
                                                                     ),
                                                                     tooltip:
-                                                                        "Remove Product",
+                                                                        'Remove Product',
                                                                   ),
                                                                 ),
                                                               ),
@@ -1866,8 +1866,8 @@ class DISCOUNT extends State<DiscountPage> {
                         //         .unfocus(),
                         //                         decoration:
                         //                             const InputDecoration(
-                        //                           labelText: "Case - Sensitive",
-                        //                           hintText: "Search ...",
+                        //                           labelText: 'Case - Sensitive',
+                        //                           hintText: 'Search ...',
                         //                           border: OutlineInputBorder(),
                         //                         ),
                         //                         onChanged: (value) {
@@ -1887,8 +1887,8 @@ class DISCOUNT extends State<DiscountPage> {
                         //                             : FeatherIcons.grid,
                         //                       ),
                         //                       tooltip: isGridView
-                        //                           ? "List View"
-                        //                           : "Grid View",
+                        //                           ? 'List View'
+                        //                           : 'Grid View',
                         //                     ),
                         //                   ],
                         //                 ),
@@ -1898,7 +1898,7 @@ class DISCOUNT extends State<DiscountPage> {
                         //                     if (snapshot.hasError) {
                         //                       return const Center(
                         //                         child: Text(
-                        //                           "Something went wrong",
+                        //                           'Something went wrong',
                         //                           overflow:
                         //                               TextOverflow.ellipsis,
                         //                         ),
@@ -2054,7 +2054,7 @@ class DISCOUNT extends State<DiscountPage> {
                         //                                                       0.075,
                         //                                                 ),
                         //                                                 tooltip:
-                        //                                                     "Remove Category",
+                        //                                                     'Remove Category',
                         //                                               ),
                         //                                             ],
                         //                                           ),
@@ -2172,7 +2172,7 @@ class DISCOUNT extends State<DiscountPage> {
                         //                                                   0.09,
                         //                                             ),
                         //                                             tooltip:
-                        //                                                 "Remove Category",
+                        //                                                 'Remove Category',
                         //                                           ),
                         //                                         ),
                         //                                       ),

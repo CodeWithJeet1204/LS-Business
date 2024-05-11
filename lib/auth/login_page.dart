@@ -37,8 +37,8 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  String phoneText = "VERIFY";
-  String googleText = "Sign in with GOOGLE";
+  String phoneText = 'VERIFY';
+  String googleText = 'Sign in with GOOGLE';
   bool isGoogleLogging = false;
   bool isEmailLogging = false;
   bool isPhoneLogging = false;
@@ -257,7 +257,7 @@ class _LoginPageState extends State<LoginPage> {
             return;
           }
           await auth.verifyPhoneNumber(
-              phoneNumber: "+91 ${phoneController.text}",
+              phoneNumber: '+91 ${phoneController.text}',
               timeout: const Duration(seconds: 120),
               verificationCompleted: (PhoneAuthCredential credential) async {
                 await auth.signInWithCredential(credential);
@@ -429,7 +429,7 @@ class _LoginPageState extends State<LoginPage> {
           isGoogleLogging = false;
         });
         if (context.mounted) {
-          mySnackBar(context, "Some error occured");
+          mySnackBar(context, 'Some error occured');
         }
       }
     } on FirebaseAuthException catch (e) {
@@ -461,12 +461,12 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               SizedBox(height: width * 0.35),
               const HeadText(
-                text: "LOGIN",
+                text: 'LOGIN',
               ),
               SizedBox(height: width * 0.3),
               MyCollapseContainer(
                 width: width,
-                text: "Email",
+                text: 'Email',
                 children: Form(
                   key: emailLoginFormKey,
                   child: Padding(
@@ -477,7 +477,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Column(
                       children: [
                         MyTextFormField(
-                          hintText: "Email",
+                          hintText: 'Email',
                           controller: emailController,
                           borderRadius: 16,
                           horizontalPadding: width * 0.066,
@@ -486,7 +486,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         const SizedBox(height: 8),
                         MyTextFormField(
-                          hintText: "Password",
+                          hintText: 'Password',
                           controller: passwordController,
                           borderRadius: 16,
                           horizontalPadding: width * 0.066,
@@ -495,7 +495,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         const SizedBox(height: 8),
                         MyButton(
-                          text: "LOGIN",
+                          text: 'LOGIN',
                           onTap: () async {
                             await loginEmail();
                           },
@@ -511,7 +511,7 @@ class _LoginPageState extends State<LoginPage> {
               // PHONE NUMBER
               MyCollapseContainer(
                 width: width,
-                text: "Phone Number",
+                text: 'Phone Number',
                 children: Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: width * 0.0125,
@@ -617,7 +617,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   const Text(
                     overflow: TextOverflow.ellipsis,
-                    "Don't have an account?",
+                    'Don\'t have an account?',
                   ),
                   MyTextButton(
                     onPressed: () {
@@ -630,7 +630,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       );
                     },
-                    text: "REGISTER",
+                    text: 'REGISTER',
                     textColor: buttonColor,
                   ),
                 ],
@@ -647,7 +647,7 @@ class _LoginPageState extends State<LoginPage> {
           //         alignment: Alignment.center,
           //         width: width * 0.66,
           //         child: const HeadText(
-          //           text: "LOGIN",
+          //           text: 'LOGIN',
           //         ),
           //       ),
           //       Container(
@@ -662,7 +662,7 @@ class _LoginPageState extends State<LoginPage> {
           //                   // EMAIL
           //                   MyCollapseContainer(
           //                     width: width,
-          //                     text: "Email",
+          //                     text: 'Email',
           //                     children: Form(
           //                       key: emailLoginFormKey,
           //                       child: Padding(
@@ -675,7 +675,7 @@ class _LoginPageState extends State<LoginPage> {
           //                         child: Column(
           //                           children: [
           //                             MyTextFormField(
-          //                               hintText: "Email",
+          //                               hintText: 'Email',
           //                               controller: emailController,
           //                               borderRadius: 16,
           //                               horizontalPadding: width < screenSize
@@ -689,7 +689,7 @@ class _LoginPageState extends State<LoginPage> {
           //                             ),
           //                             const SizedBox(height: 8),
           //                             MyTextFormField(
-          //                               hintText: "Password",
+          //                               hintText: 'Password',
           //                               controller: passwordController,
           //                               borderRadius: 16,
           //                               horizontalPadding: width < screenSize
@@ -702,7 +702,7 @@ class _LoginPageState extends State<LoginPage> {
           //                             ),
           //                             const SizedBox(height: 8),
           //                             MyButton(
-          //                               text: "LOGIN",
+          //                               text: 'LOGIN',
           //                               onTap: () async {
           //                                 await loginWithEmail();
           //                               },
@@ -720,7 +720,7 @@ class _LoginPageState extends State<LoginPage> {
           //                   // PHONE NUMBER
           //                   MyCollapseContainer(
           //                     width: width,
-          //                     text: "Phone Number",
+          //                     text: 'Phone Number',
           //                     children: Padding(
           //                       padding: EdgeInsets.symmetric(
           //                         horizontal: width < screenSize
@@ -733,7 +733,7 @@ class _LoginPageState extends State<LoginPage> {
           //                         child: Column(
           //                           children: [
           //                             MyTextFormField(
-          //                               hintText: "Phone Number",
+          //                               hintText: 'Phone Number',
           //                               controller: phoneController,
           //                               borderRadius: 16,
           //                               horizontalPadding: width < screenSize
@@ -756,14 +756,14 @@ class _LoginPageState extends State<LoginPage> {
           //                                     });
           //                                     // Register with Phone
           //                                     if (phoneController.text
-          //                                         .contains("+91")) {
+          //                                         .contains('+91')) {
           //                                       await authMethods.phoneSignIn(
           //                                         context,
-          //                                         " ${phoneController.text}",
+          //                                         ' ${phoneController.text}',
           //                                         widget.mode,
           //                                       );
           //                                     } else if (phoneController.text
-          //                                         .contains("+91 ")) {
+          //                                         .contains('+91 ')) {
           //                                       await authMethods.phoneSignIn(
           //                                         context,
           //                                         phoneController.text,
@@ -775,7 +775,7 @@ class _LoginPageState extends State<LoginPage> {
           //                                       });
           //                                       await auth.verifyPhoneNumber(
           //                                           phoneNumber:
-          //                                               "+91 ${phoneController.text}",
+          //                                               '+91 ${phoneController.text}',
           //                                           verificationCompleted:
           //                                               (_) {
           //                                             setState(() {
@@ -872,7 +872,7 @@ class _LoginPageState extends State<LoginPage> {
           //                         } else {
           //                           if (mounted) {
           //                             mySnackBar(
-          //                                 context, "Some error occured!");
+          //                                 context, 'Some error occured!');
           //                           }
           //                         }
           //                       } on FirebaseAuthException catch (e) {
@@ -930,7 +930,7 @@ class _LoginPageState extends State<LoginPage> {
           //                   crossAxisAlignment: CrossAxisAlignment.center,
           //                   children: [
           //                     const Text(
-          //                       "Don't have an account?",
+          //                       'Don't have an account?',
           //                       overflow: TextOverflow.ellipsis,
           //                     ),
           //                     MyTextButton(
@@ -944,7 +944,7 @@ class _LoginPageState extends State<LoginPage> {
           //                           ),
           //                         );
           //                       },
-          //                       text: "REGISTER",
+          //                       text: 'REGISTER',
           //                       textColor: buttonColor,
           //                       fontSize: width * 0.0125,
           //                     ),

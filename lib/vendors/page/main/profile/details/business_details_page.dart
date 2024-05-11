@@ -54,7 +54,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
         await storage.refFromURL(previousUrl).delete();
 
         Map<String, dynamic> updatedUserImage = {
-          "Image": im.path,
+          'Image': im.path,
         };
 
         Reference ref = FirebaseStorage.instance
@@ -69,7 +69,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
           });
         });
         updatedUserImage = {
-          "Image": businessPhotoUrl,
+          'Image': businessPhotoUrl,
         };
         await FirebaseFirestore.instance
             .collection('Business')
@@ -88,7 +88,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
       }
     } else {
       if (mounted) {
-        mySnackBar(context, "Image not selected");
+        mySnackBar(context, 'Image not selected');
       }
     }
   }
@@ -109,7 +109,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
           isSaving = false;
           isChanging = false;
         });
-        return mySnackBar(context, "Enter $propertyName");
+        return mySnackBar(context, 'Enter $propertyName');
       } else {
         await FirebaseFirestore.instance
             .collection('Business')
@@ -200,7 +200,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
       appBar: AppBar(
         title: const Text(
           overflow: TextOverflow.ellipsis,
-          "Business Details",
+          'Business Details',
         ),
       ),
       body: Padding(
@@ -275,7 +275,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                           FeatherIcons.camera,
                                           size: width * 0.1,
                                         ),
-                                        tooltip: "Change Photo",
+                                        tooltip: 'Change Photo',
                                       ),
                                     ),
                                   ],
@@ -300,7 +300,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                     onTapOutside: (event) =>
                                         FocusScope.of(context).unfocus(),
                                     decoration: InputDecoration(
-                                      hintText: "Change Name",
+                                      hintText: 'Change Name',
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(12),
                                       ),
@@ -339,7 +339,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                             });
                                           },
                                           icon: const Icon(FeatherIcons.edit),
-                                          tooltip: "Edit Name",
+                                          tooltip: 'Edit Name',
                                         ),
                                       ),
                                     ],
@@ -365,7 +365,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                     onTapOutside: (event) =>
                                         FocusScope.of(context).unfocus(),
                                     decoration: InputDecoration(
-                                      hintText: "Change Address",
+                                      hintText: 'Change Address',
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(12),
                                       ),
@@ -403,7 +403,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                             });
                                           },
                                           icon: const Icon(FeatherIcons.edit),
-                                          tooltip: "Edit Addess",
+                                          tooltip: 'Edit Addess',
                                         ),
                                       ),
                                     ],
@@ -429,7 +429,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                     onTapOutside: (event) =>
                                         FocusScope.of(context).unfocus(),
                                     decoration: InputDecoration(
-                                      hintText: "Change Description",
+                                      hintText: 'Change Description',
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(12),
                                       ),
@@ -467,7 +467,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                             });
                                           },
                                           icon: const Icon(FeatherIcons.edit),
-                                          tooltip: "Edit Description",
+                                          tooltip: 'Edit Description',
                                         ),
                                       ),
                                     ],
@@ -563,9 +563,9 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             height: width * 0.16,
                             alignment: Alignment.centerLeft,
                             decoration: BoxDecoration(
-                              color: shopData['MembershipName'] == "PREMIUM"
+                              color: shopData['MembershipName'] == 'PREMIUM'
                                   ? const Color.fromRGBO(202, 226, 238, 1)
-                                  : shopData['MembershipName'] == "GOLD"
+                                  : shopData['MembershipName'] == 'GOLD'
                                       ? const Color.fromRGBO(253, 243, 154, 1)
                                       : const Color.fromRGBO(167, 167, 167, 1),
                               borderRadius: BorderRadius.circular(12),
@@ -648,24 +648,24 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                                 ),
                                               ))
                                           : MyButton(
-                                              text: "SAVE",
+                                              text: 'SAVE',
                                               onTap: () async {
                                                 if (isChangingName) {
                                                   await save(
                                                     nameController,
-                                                    "Name",
+                                                    'Name',
                                                     isChangingName,
                                                   );
                                                 } else if (isChangingAddress) {
                                                   await save(
                                                     addressController,
-                                                    "Address",
+                                                    'Address',
                                                     isChangingAddress,
                                                   );
                                                 } else if (isChangingSpecialNote) {
                                                   await save(
                                                     specialNoteController,
-                                                    "Description",
+                                                    'Description',
                                                     isChangingSpecialNote,
                                                   );
                                                 }
@@ -675,7 +675,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                             ),
                                       const SizedBox(height: 12),
                                       MyButton(
-                                        text: "CANCEL",
+                                        text: 'CANCEL',
                                         onTap: () {
                                           setState(() {
                                             isChangingName = false;

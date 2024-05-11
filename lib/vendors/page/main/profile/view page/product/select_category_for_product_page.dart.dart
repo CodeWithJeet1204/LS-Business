@@ -79,7 +79,7 @@ class _ChangeCategoryState extends State<ChangeCategory> {
       appBar: AppBar(
         title: const Text(
           overflow: TextOverflow.ellipsis,
-          "SELECT CATEGORY",
+          'SELECT CATEGORY',
         ),
         actions: [
           MyTextButton(
@@ -151,8 +151,8 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                         onTapOutside: (event) =>
                             FocusScope.of(context).unfocus(),
                         decoration: const InputDecoration(
-                          labelText: "Case - Sensitive",
-                          hintText: "Search ...",
+                          labelText: 'Case - Sensitive',
+                          hintText: 'Search ...',
                           border: OutlineInputBorder(),
                         ),
                         onChanged: (value) {
@@ -169,7 +169,7 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                       icon: Icon(
                         isGridView ? FeatherIcons.list : FeatherIcons.grid,
                       ),
-                      tooltip: isGridView ? "List View" : "Grid View",
+                      tooltip: isGridView ? 'List View' : 'Grid View',
                     ),
                   ],
                 ),

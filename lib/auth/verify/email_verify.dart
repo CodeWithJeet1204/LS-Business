@@ -106,7 +106,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
       final user = auth.currentUser!;
       await user.sendEmailVerification();
       if (mounted) {
-        mySnackBar(context, "Verification Email Sent");
+        mySnackBar(context, 'Verification Email Sent');
       }
 
       setState(() {
@@ -141,7 +141,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
               ),
             ),
             Text(
-              "An email has been sent to your account, pls click on it\nTo verify your account\n\nIf you want to resend email click below\n\n(It may take some time for email to arrive)",
+              'An email has been sent to your account, pls click on it\nTo verify your account\n\nIf you want to resend email click below\n\n(It may take some time for email to arrive)',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: primaryDark,
@@ -150,7 +150,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
             ),
             const SizedBox(height: 20),
             MyButton(
-              text: "I have Verified my Email",
+              text: 'I have Verified my Email',
               onTap: () async {
                 await checkEmailVerification(true);
               },
@@ -161,13 +161,13 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
             Opacity(
               opacity: canResendEmail ? 1 : 0.5,
               child: MyButton(
-                text: "Resend Email",
+                text: 'Resend Email',
                 onTap: canResendEmail
                     ? () async {
                         await sendEmailVerification();
                       }
                     : () {
-                        return mySnackBar(context, "Wait for 5 seconds");
+                        return mySnackBar(context, 'Wait for 5 seconds');
                       },
                 isLoading: false,
                 horizontalPadding: MediaQuery.of(context).size.width * 0.066,

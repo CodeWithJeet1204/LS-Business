@@ -14,7 +14,7 @@ bool isFirstLaunch = false;
 class SharedPrefState extends State<SharedPref> {
   sharedState() {
     MySharedPreferences.instance
-        .getBooleanValue("isfirstRun")
+        .getBooleanValue('isfirstRun')
         .then((value) => setState(() {
               isFirstLaunch = value;
             }));

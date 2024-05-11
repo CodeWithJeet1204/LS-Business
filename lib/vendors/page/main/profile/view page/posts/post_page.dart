@@ -80,7 +80,7 @@ class _PostPageState extends State<PostPage> {
           .doc(widget.postId)
           .delete();
       if (mounted) {
-        mySnackBar(context, "Post Deleted");
+        mySnackBar(context, 'Post Deleted');
       }
     } catch (e) {
       if (mounted) {
@@ -97,11 +97,11 @@ class _PostPageState extends State<PostPage> {
         return AlertDialog(
           title: const Text(
             overflow: TextOverflow.ellipsis,
-            "Confirm DELETE",
+            'Confirm DELETE',
           ),
           content: const Text(
             overflow: TextOverflow.ellipsis,
-            "Are you sure you want to delete this Post\nProduct of this post will not be deleted",
+            'Are you sure you want to delete this Post\nProduct of this post will not be deleted',
           ),
           actions: [
             TextButton(
@@ -189,7 +189,7 @@ class _PostPageState extends State<PostPage> {
                       return const Center(
                         child: Text(
                           overflow: TextOverflow.ellipsis,
-                          "Something went wrong",
+                          'Something went wrong',
                         ),
                       );
                     }
@@ -382,7 +382,7 @@ class _PostPageState extends State<PostPage> {
                                               child: RichText(
                                                 overflow: TextOverflow.ellipsis,
                                                 text: TextSpan(
-                                                  text: price == "" ||
+                                                  text: price == '' ||
                                                           price == null ||
                                                           price == '0'
                                                       ? ''
@@ -394,7 +394,7 @@ class _PostPageState extends State<PostPage> {
                                                   ),
                                                   children: [
                                                     TextSpan(
-                                                      text: price == "" ||
+                                                      text: price == '' ||
                                                               price == null ||
                                                               price == '0'
                                                           ? 'N/A (price)'
@@ -406,7 +406,7 @@ class _PostPageState extends State<PostPage> {
                                                       ),
                                                     ),
                                                     TextSpan(
-                                                      text: price == ""
+                                                      text: price == ''
                                                           ? 'N/A (price)'
                                                           : price,
                                                       style: TextStyle(
@@ -438,7 +438,7 @@ class _PostPageState extends State<PostPage> {
                                                   ? Text(
                                                       overflow:
                                                           TextOverflow.ellipsis,
-                                                      "${data['discountAmount']}% off",
+                                                      '${data['discountAmount']}% off',
                                                       style: const TextStyle(
                                                         fontWeight:
                                                             FontWeight.w500,
@@ -447,7 +447,7 @@ class _PostPageState extends State<PostPage> {
                                                   : Text(
                                                       overflow:
                                                           TextOverflow.ellipsis,
-                                                      "Save Rs. ${data['discountAmount']}",
+                                                      'Save Rs. ${data['discountAmount']}',
                                                       style: const TextStyle(
                                                         fontWeight:
                                                             FontWeight.w500,
@@ -490,11 +490,11 @@ class _PostPageState extends State<PostPage> {
                                     padding: const EdgeInsets.only(left: 10),
                                     child: Text(
                                       overflow: TextOverflow.ellipsis,
-                                      price == "" ||
+                                      price == '' ||
                                               price == null ||
                                               price == '0'
                                           ? 'N/A (price)'
-                                          : "Rs. ${postData['postProductPrice']}",
+                                          : 'Rs. ${postData['postProductPrice']}',
                                       style: const TextStyle(
                                         color: primaryDark,
                                         fontSize: 22,
@@ -541,7 +541,7 @@ class _PostPageState extends State<PostPage> {
 
                           // BRAND
                           InfoBox(
-                            text: "BRAND",
+                            text: 'BRAND',
                             value: brand,
                           ),
 
@@ -549,13 +549,13 @@ class _PostPageState extends State<PostPage> {
 
                           // LIKES
                           InfoBox(
-                            text: "LIKES",
+                            text: 'LIKES',
                             value: likes.toString(),
                           ),
 
                           // VIEWS
                           InfoBox(
-                            text: "VIEWS",
+                            text: 'VIEWS',
                             value: views.toString(),
                           ),
 
@@ -567,7 +567,7 @@ class _PostPageState extends State<PostPage> {
                               alignment: Alignment.centerRight,
                               children: [
                                 InfoBox(
-                                  text: "COMMENTS",
+                                  text: 'COMMENTS',
                                   value: comments.length.toString(),
                                 ),
                                 const Padding(

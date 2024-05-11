@@ -104,7 +104,7 @@ class _BrandPageState extends State<BrandPage> {
       }
     } else {
       if (mounted) {
-        mySnackBar(context, "Select an Image");
+        mySnackBar(context, 'Select an Image');
       }
     }
   }
@@ -199,7 +199,7 @@ class _BrandPageState extends State<BrandPage> {
                             onTapOutside: (event) =>
                                 FocusScope.of(context).unfocus(),
                             decoration: const InputDecoration(
-                              hintText: "Brand Name",
+                              hintText: 'Brand Name',
                               border: OutlineInputBorder(),
                             ),
                             onChanged: (value) {
@@ -209,12 +209,12 @@ class _BrandPageState extends State<BrandPage> {
                               if (value != null && value.isNotEmpty) {
                                 return null;
                               } else {
-                                return "Enter Brand Name";
+                                return 'Enter Brand Name';
                               }
                             },
                           ),
                           MyButton(
-                            text: "SAVE",
+                            text: 'SAVE',
                             onTap: () async {
                               await changeBrandName(brandName);
                             },
@@ -254,7 +254,7 @@ class _BrandPageState extends State<BrandPage> {
         return AlertDialog(
           title: Text(
             overflow: TextOverflow.ellipsis,
-            "Remove $productName",
+            'Remove $productName',
           ),
           content: Text(
             overflow: TextOverflow.ellipsis,
@@ -265,7 +265,7 @@ class _BrandPageState extends State<BrandPage> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              text: "NO",
+              text: 'NO',
               textColor: Colors.green,
             ),
             MyTextButton(
@@ -277,7 +277,7 @@ class _BrandPageState extends State<BrandPage> {
                       .collection('Products')
                       .doc(productId)
                       .update({
-                    'productBrandId': "0",
+                    'productBrandId': '0',
                     'productBrand': 'No Brand',
                   });
                   if (context.mounted) {
@@ -289,7 +289,7 @@ class _BrandPageState extends State<BrandPage> {
                   }
                 }
               },
-              text: "YES",
+              text: 'YES',
               textColor: Colors.red,
             ),
           ],
@@ -332,11 +332,11 @@ class _BrandPageState extends State<BrandPage> {
         return AlertDialog(
           title: const Text(
             overflow: TextOverflow.ellipsis,
-            "Confirm DELETE",
+            'Confirm DELETE',
           ),
           content: const Text(
             overflow: TextOverflow.ellipsis,
-            "Are you sure you want to delete this Brand\nProducts in this brand will be set as 'No Brand",
+            'Are you sure you want to delete this Brand\nProducts in this brand will be set as \'No Brand\'',
           ),
           actions: [
             TextButton(
@@ -395,8 +395,8 @@ class _BrandPageState extends State<BrandPage> {
       for (final doc in productSnap.docs) {
         await doc.reference.update(
           {
-            'productBrand': "No Brand",
-            "productBrandId": "0",
+            'productBrand': 'No Brand',
+            'productBrandId': '0',
           },
         );
       }
@@ -568,7 +568,7 @@ class _BrandPageState extends State<BrandPage> {
                                                 FeatherIcons.camera,
                                                 size: width * 0.1,
                                               ),
-                                              tooltip: "Change Image",
+                                              tooltip: 'Change Image',
                                             ),
                                           ),
                                           // REMOVE IMAGE
@@ -587,7 +587,7 @@ class _BrandPageState extends State<BrandPage> {
                                                 FeatherIcons.x,
                                                 size: width * 0.1,
                                               ),
-                                              tooltip: "Remove Image",
+                                              tooltip: 'Remove Image',
                                             ),
                                           ),
                                         ],
@@ -599,7 +599,7 @@ class _BrandPageState extends State<BrandPage> {
                                 onPressed: () async {
                                   await changeBrandImage();
                                 },
-                                text: "Add Image",
+                                text: 'Add Image',
                                 textColor: primaryDark2,
                               ),
                             ),
@@ -639,7 +639,7 @@ class _BrandPageState extends State<BrandPage> {
                                 size: width * 0.0725,
                                 color: primaryDark,
                               ),
-                              tooltip: "Change Name",
+                              tooltip: 'Change Name',
                             ),
                           ],
                         ),
@@ -680,14 +680,14 @@ class _BrandPageState extends State<BrandPage> {
                                         child: data['isPercent']
                                             ? Text(
                                                 overflow: TextOverflow.ellipsis,
-                                                "${data['discountAmount']}% off",
+                                                '${data['discountAmount']}% off',
                                                 style: const TextStyle(
                                                   fontWeight: FontWeight.w500,
                                                 ),
                                               )
                                             : Text(
                                                 overflow: TextOverflow.ellipsis,
-                                                "Save Rs. ${data['discountAmount']}",
+                                                'Save Rs. ${data['discountAmount']}',
                                                 style: const TextStyle(
                                                   fontWeight: FontWeight.w500,
                                                 ),
@@ -722,7 +722,7 @@ class _BrandPageState extends State<BrandPage> {
                                         ),
                                         child: const Text(
                                           overflow: TextOverflow.ellipsis,
-                                          "This discount is available to all the products within this brand",
+                                          'This discount is available to all the products within this brand',
                                           style: TextStyle(
                                             color: primaryDark,
                                             fontWeight: FontWeight.w500,
@@ -753,7 +753,7 @@ class _BrandPageState extends State<BrandPage> {
                             ),
                           );
                         },
-                        text: "ADD PRODUCT",
+                        text: 'ADD PRODUCT',
                         isLoading: false,
                         horizontalPadding: 0,
                       ),
@@ -809,8 +809,8 @@ class _BrandPageState extends State<BrandPage> {
                                             FocusScope.of(context).unfocus(),
                                         autocorrect: false,
                                         decoration: const InputDecoration(
-                                          labelText: "Case - Sensitive",
-                                          hintText: "Search ...",
+                                          labelText: 'Case - Sensitive',
+                                          hintText: 'Search ...',
                                           border: OutlineInputBorder(),
                                         ),
                                         onChanged: (value) {
@@ -830,8 +830,8 @@ class _BrandPageState extends State<BrandPage> {
                                             : FeatherIcons.grid,
                                       ),
                                       tooltip: isGridView
-                                          ? "List View"
-                                          : "Grid View",
+                                          ? 'List View'
+                                          : 'Grid View',
                                     ),
                                   ],
                                 ),
@@ -844,7 +844,7 @@ class _BrandPageState extends State<BrandPage> {
                                       return const Center(
                                         child: Text(
                                           overflow: TextOverflow.ellipsis,
-                                          "Something went wrong",
+                                          'Something went wrong',
                                         ),
                                       );
                                     }
@@ -992,10 +992,10 @@ class _BrandPageState extends State<BrandPage> {
                                                                           0.275,
                                                                       child:
                                                                           Text(
-                                                                        productData['productPrice'] != "" &&
+                                                                        productData['productPrice'] != '' &&
                                                                                 productData['productPrice'] != null
                                                                             ? productData['productPrice']
-                                                                            : "N/A",
+                                                                            : 'N/A',
                                                                         overflow:
                                                                             TextOverflow.ellipsis,
                                                                         maxLines:
@@ -1038,7 +1038,7 @@ class _BrandPageState extends State<BrandPage> {
                                                                       0.075,
                                                                 ),
                                                                 tooltip:
-                                                                    "Remove Product",
+                                                                    'Remove Product',
                                                               ),
                                                             ],
                                                           ),
@@ -1123,13 +1123,13 @@ class _BrandPageState extends State<BrandPage> {
                                                           ),
                                                           subtitle: Text(
                                                             productData['productPrice'] !=
-                                                                        "" &&
+                                                                        '' &&
                                                                     productData[
                                                                             'productPrice'] !=
                                                                         null
                                                                 ? productData[
                                                                     'productPrice']
-                                                                : "N/A",
+                                                                : 'N/A',
                                                             overflow:
                                                                 TextOverflow
                                                                     .ellipsis,
@@ -1167,7 +1167,7 @@ class _BrandPageState extends State<BrandPage> {
                                                                   width * 0.08,
                                                             ),
                                                             tooltip:
-                                                                "Remove Product",
+                                                                'Remove Product',
                                                           ),
                                                         ),
                                                       ),

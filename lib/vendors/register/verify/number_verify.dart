@@ -50,7 +50,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
               Expanded(child: Container()),
               Text(
                 overflow: TextOverflow.ellipsis,
-                "An OTP has been sent to your Phone Number\nPls enter the OTP below",
+                'An OTP has been sent to your Phone Number\nPls enter the OTP below',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: primaryDark,
@@ -59,7 +59,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
               ),
               const SizedBox(height: 10),
               MyTextFormField(
-                hintText: "OTP - 6 Digits",
+                hintText: 'OTP - 6 Digits',
                 controller: otpController,
                 borderRadius: 12,
                 horizontalPadding: MediaQuery.of(context).size.width * 0.066,
@@ -85,7 +85,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                       ),
                     )
                   : MyButton(
-                      text: "Verify",
+                      text: 'Verify',
                       onTap: () async {
                         if (otpController.text.length == 6) {
                           final credential = PhoneAuthProvider.credential(
@@ -119,15 +119,14 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                                   .collection('Shops')
                                   .doc(auth.currentUser!.uid)
                                   .set({
-                                "Name": null,
+                                'Name': null,
                                 'Views': null,
-                                'Favorites': null,
-                                "GSTNumber": null,
-                                "Address": null,
-                                "Description": null,
-                                "Industry": null,
-                                "Image": null,
-                                "Type": null,
+                                'GSTNumber': null,
+                                'Address': null,
+                                'Description': null,
+                                'Industry': null,
+                                'Image': null,
+                                'Type': null,
                                 'MembershipName': null,
                                 'MembershipDuration': null,
                                 'MembershipTime': null,
@@ -160,7 +159,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                         } else {
                           mySnackBar(
                             context,
-                            "OTP should be 6 characters long",
+                            'OTP should be 6 characters long',
                           );
                         }
                         return;

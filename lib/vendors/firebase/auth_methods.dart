@@ -39,7 +39,7 @@ class AuthMethods {
   Future<void> sendEmailVerification(BuildContext context) async {
     try {
       _auth.currentUser!.sendEmailVerification();
-      mySnackBar(context, "Email Verification has been sent");
+      mySnackBar(context, 'Email Verification has been sent');
     } on FirebaseAuthException catch (e) {
       if (context.mounted) {
         mySnackBar(context, e.message!);
@@ -69,7 +69,7 @@ class AuthMethods {
 
   // GOOGLE SIGN IN
   final GoogleSignIn googleSignIn = GoogleSignIn(
-    hostedDomain: "",
+    hostedDomain: '',
   );
 
   /*Future<void>*/ signInWithGoogle(BuildContext context) async {

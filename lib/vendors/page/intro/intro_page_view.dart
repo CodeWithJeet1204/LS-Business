@@ -14,7 +14,7 @@ class IntroPageView extends StatefulWidget {
 class _IntroPageViewState extends State<IntroPageView> {
   final PageController controller = PageController();
   int currentIndex = 0;
-  String nextText = "NEXT";
+  String nextText = 'NEXT';
 
   void onSkip() {
     controller.animateToPage(
@@ -25,7 +25,7 @@ class _IntroPageViewState extends State<IntroPageView> {
   }
 
   void onNext() {
-    nextText == "NEXT"
+    nextText == 'NEXT'
         ? controller.animateToPage(
             currentIndex + 1,
             duration: const Duration(seconds: 1),
@@ -48,19 +48,19 @@ class _IntroPageViewState extends State<IntroPageView> {
                 currentIndex = value;
                 if (value != 2) {
                   setState(() {
-                    nextText = "NEXT";
+                    nextText = 'NEXT';
                   });
                 }
                 if (value == 3) {
                   setState(() {
-                    nextText = "OK";
+                    nextText = 'OK';
                   });
                 }
               });
             },
             children: const [
               MyPageView(
-                text: "Why\nFIND EASY ?",
+                text: 'Why\nFIND EASY ?',
                 animation:
                     'https://lottie.host/42f81d17-142d-477a-a114-0e8fd17cf3d1/BtWfHFygeT.json',
                 textColor: Color.fromARGB(255, 12, 0, 104),
@@ -69,14 +69,14 @@ class _IntroPageViewState extends State<IntroPageView> {
               ),
               MyPageView(
                 text:
-                    "Reach new customers in your neighborhood and 27000+ pincodes across India",
+                    'Reach new customers in your neighborhood and 27000+ pincodes across India',
                 animation:
                     'https://lottie.host/42f81d17-142d-477a-a114-0e8fd17cf3d1/BtWfHFygeT.json',
                 textColor: Color.fromARGB(255, 255, 53, 39),
                 backgroundColor: Color.fromARGB(255, 251, 227, 225),
               ),
               MyPageView(
-                text: "Track sales, analyze trends,\nunderstand what works",
+                text: 'Track sales, analyze trends,\nunderstand what works',
                 animation:
                     'https://lottie.host/45111ab9-1b7f-4f96-bda8-3ff1bda7a995/t750Okdqh3.json',
                 textColor: Color.fromARGB(255, 0, 86, 3),
@@ -84,7 +84,7 @@ class _IntroPageViewState extends State<IntroPageView> {
                 fontSize: 24,
               ),
               MyPageView(
-                text: "BUSINESS ON THE GO!\nLets get Started",
+                text: 'BUSINESS ON THE GO!\nLets get Started',
                 animation:
                     'https://lottie.host/958e98ec-395e-435b-b0f2-91e22622d2c6/szwj6ORXWP.json',
                 textColor: Color.fromARGB(255, 0, 59, 107),
@@ -100,7 +100,7 @@ class _IntroPageViewState extends State<IntroPageView> {
               children: [
                 MyTextButton(
                   onPressed: onSkip,
-                  text: "SKIP",
+                  text: 'SKIP',
                   textColor: buttonColor,
                 ),
                 SmoothPageIndicator(

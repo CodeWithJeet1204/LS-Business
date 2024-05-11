@@ -42,14 +42,14 @@ class _SelectProductForDiscountPageState
       appBar: AppBar(
         title: const Text(
           overflow: TextOverflow.ellipsis,
-          "SELECT PRODUCT",
+          'SELECT PRODUCT',
         ),
         actions: [
           MyTextButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            text: "DONE",
+            text: 'DONE',
             textColor: primaryDark,
           ),
         ],
@@ -69,7 +69,7 @@ class _SelectProductForDiscountPageState
                     autocorrect: false,
                     onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     decoration: const InputDecoration(
-                      hintText: "Search ...",
+                      hintText: 'Search ...',
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
@@ -86,7 +86,7 @@ class _SelectProductForDiscountPageState
                   icon: Icon(
                     isGridView ? FeatherIcons.list : FeatherIcons.grid,
                   ),
-                  tooltip: isGridView ? "List View" : "Grid View",
+                  tooltip: isGridView ? 'List View' : 'Grid View',
                 ),
               ],
             ),
@@ -103,7 +103,7 @@ class _SelectProductForDiscountPageState
               if (snapshot.hasError) {
                 return const Center(
                   child: Text(
-                    "Something went wrong",
+                    'Something went wrong',
                     overflow: TextOverflow.ellipsis,
                   ),
                 );
@@ -195,12 +195,12 @@ class _SelectProductForDiscountPageState
                                             0,
                                           ),
                                           child: Text(
-                                            productData['productPrice'] != "" &&
+                                            productData['productPrice'] != '' &&
                                                     productSnap[
                                                             'productPrice'] !=
                                                         null
                                                 ? '''Rs. ${productSnap['productPrice']}'''
-                                                : "N/A",
+                                                : 'N/A',
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
                                             style: TextStyle(
@@ -310,11 +310,11 @@ class _SelectProductForDiscountPageState
                                         ),
                                       ),
                                       subtitle: Text(
-                                        productSnap['productPrice'] != "" &&
+                                        productSnap['productPrice'] != '' &&
                                                 productSnap['productPrice'] !=
                                                     null
                                             ? 'Rs. ${productSnap['productPrice']}'
-                                            : "N/A",
+                                            : 'N/A',
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(

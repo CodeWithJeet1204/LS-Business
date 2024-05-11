@@ -87,7 +87,7 @@ void main() async {
   // if (FirebaseAuth.instance.currentUser != null) {
   //   print(FirebaseAuth.instance.currentUser!.email);
   // } else {
-  //   print("No Current User");
+  //   print('No Current User');
   // }
 }
 

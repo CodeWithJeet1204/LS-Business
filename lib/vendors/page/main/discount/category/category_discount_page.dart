@@ -56,7 +56,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
       });
     } else {
       if (mounted) {
-        mySnackBar(context, "Select an Image");
+        mySnackBar(context, 'Select an Image');
       }
     }
   }
@@ -107,18 +107,18 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
     // End date should be after start date
     if (discountKey.currentState!.validate()) {
       if (startDate == null) {
-        return mySnackBar(context, "Select Start Date");
+        return mySnackBar(context, 'Select Start Date');
       }
       if (endDate == null) {
-        return mySnackBar(context, "Select End Date");
+        return mySnackBar(context, 'Select End Date');
       }
       if (startDateTime!.isAfter(
         endDateTime!,
       )) {
-        return mySnackBar(context, "Start Date should be before End Date");
+        return mySnackBar(context, 'Start Date should be before End Date');
       }
       if (provider.selectedCategories.isEmpty) {
-        return mySnackBar(context, "Select Category");
+        return mySnackBar(context, 'Select Category');
       }
 
       setState(() {
@@ -177,7 +177,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
         });
         provider.clear();
         if (mounted) {
-          mySnackBar(context, "Discount Added");
+          mySnackBar(context, 'Discount Added');
           Navigator.of(context).pop();
         }
         setState(() {
@@ -211,14 +211,14 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
           icon: const Icon(
             FeatherIcons.arrowLeft,
           ),
-          tooltip: "Back",
+          tooltip: 'Back',
         ),
         actions: [
           MyTextButton(
             onPressed: () async {
               await addDiscount(selectedCategoryProvider, selectedCategories);
             },
-            text: "DONE",
+            text: 'DONE',
             textColor: primaryDark,
           ),
         ],
@@ -242,7 +242,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                     // DISCLAIMER
                     const Text(
                       overflow: TextOverflow.ellipsis,
-                      "If your category has ongoing discount, then this discount will be applied, after that discount ends (if this discount ends after that)",
+                      'If your category has ongoing discount, then this discount will be applied, after that discount ends (if this discount ends after that)',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: primaryDark2,
@@ -280,7 +280,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                   ),
                                   Text(
                                     overflow: TextOverflow.ellipsis,
-                                    "Select IMAGE",
+                                    'Select IMAGE',
                                     style: TextStyle(
                                       color: primaryDark,
                                       fontSize: width * 0.08,
@@ -319,7 +319,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                             FeatherIcons.camera,
                                             size: width * 0.115,
                                           ),
-                                          tooltip: "Change Image",
+                                          tooltip: 'Change Image',
                                         ),
                                       ),
                                       Padding(
@@ -334,7 +334,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                             FeatherIcons.x,
                                             size: width * 0.115,
                                           ),
-                                          tooltip: "Remove Image",
+                                          tooltip: 'Remove Image',
                                         ),
                                       ),
                                     ],
@@ -356,7 +356,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                             color: Colors.cyan.shade700,
                           ),
                         ),
-                        hintText: "Discount / Sale Name",
+                        hintText: 'Discount / Sale Name',
                       ),
                       validator: (value) {
                         if (value != null && value.isEmpty) {
@@ -410,7 +410,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                               FeatherIcons.edit,
                                               size: width * 0.075,
                                             ),
-                                            tooltip: "Change Date",
+                                            tooltip: 'Change Date',
                                           )
                                         : Container(),
                                   ],
@@ -421,7 +421,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                       onPressed: () async {
                                         await selectStartDate();
                                       },
-                                      text: "Select Date",
+                                      text: 'Select Date',
                                       textColor: primaryDark,
                                     )
                                   : Padding(
@@ -481,7 +481,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                               FeatherIcons.edit,
                                               size: width * 0.075,
                                             ),
-                                            tooltip: "Change Date",
+                                            tooltip: 'Change Date',
                                           )
                                         : Container(),
                                   ],
@@ -492,7 +492,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                       onPressed: () async {
                                         await selectEndDate();
                                       },
-                                      text: "Select Date",
+                                      text: 'Select Date',
                                       textColor: primaryDark,
                                     )
                                   : Padding(
@@ -520,7 +520,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                     // DISCLAIMER
                     Text(
                       overflow: TextOverflow.ellipsis,
-                      "If you select 1 jan as end date, discount will end at 31 dec 11:59 pm",
+                      'If you select 1 jan as end date, discount will end at 31 dec 11:59 pm',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: primaryDark2,
@@ -533,8 +533,8 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                     // SELECT CATEGORY
                     MyButton(
                       text: selectedCategories.isEmpty
-                          ? "SELECT CATEGORIES"
-                          : "SELECTED CATEGORIES - ${selectedCategories.length}",
+                          ? 'SELECT CATEGORIES'
+                          : 'SELECTED CATEGORIES - ${selectedCategories.length}',
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
@@ -579,7 +579,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Text(
-                                  "PERCENT %",
+                                  'PERCENT %',
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     color: !isPercentSelected
@@ -612,7 +612,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Text(
-                                  "PRICE ₹",
+                                  'PRICE ₹',
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     color: isPercentSelected
@@ -650,7 +650,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                             ),
                           ),
                           hintText:
-                              isPercentSelected ? "eg. 20%" : "eg. Rs. 200 off",
+                              isPercentSelected ? 'eg. 20%' : 'eg. Rs. 200 off',
                         ),
                         validator: (value) {
                           if (value != null && value.isEmpty) {

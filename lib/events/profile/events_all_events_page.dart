@@ -61,7 +61,7 @@ class Events_AllEventsPageState extends State<EventsAllEventsPage> {
       appBar: AppBar(
         title: const Text(
           overflow: TextOverflow.ellipsis,
-          "All Events",
+          'All Events',
         ),
         bottom: PreferredSize(
           preferredSize: Size(
@@ -82,8 +82,8 @@ class Events_AllEventsPageState extends State<EventsAllEventsPage> {
                     autocorrect: false,
                     onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     decoration: const InputDecoration(
-                      labelText: "Case - Sensitive",
-                      hintText: "Search ...",
+                      labelText: 'Case - Sensitive',
+                      hintText: 'Search ...',
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
@@ -100,7 +100,7 @@ class Events_AllEventsPageState extends State<EventsAllEventsPage> {
                   icon: Icon(
                     isGridView ? FeatherIcons.list : FeatherIcons.grid,
                   ),
-                  tooltip: isGridView ? "List View" : "Grid View",
+                  tooltip: isGridView ? 'List View' : 'Grid View',
                 ),
               ],
             ),

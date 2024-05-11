@@ -152,7 +152,7 @@ class _ServicesMainPageState extends State<ServicesMainPage> {
     //         icon: Icon(
     //           FeatherIcons.barChart2,
     //         ),
-    //         label: "Analytics",
+    //         label: 'Analytics',
     //       ),
     //       BottomNavigationBarItem(
     //         activeIcon: Icon(
@@ -161,7 +161,7 @@ class _ServicesMainPageState extends State<ServicesMainPage> {
     //         icon: Icon(
     //           FeatherIcons.user,
     //         ),
-    //         label: "Profile",
+    //         label: 'Profile',
     //       ),
     //     ],
     //   ),

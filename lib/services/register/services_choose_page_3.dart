@@ -27,7 +27,7 @@ class _ServicesChoosePage3State extends State<ServicesChoosePage3> {
   final store = FirebaseFirestore.instance;
   bool isNext = false;
   List selectedSubCategories = [];
-  Map<String, int> chosenSubCategories = {};
+  Map<String, List> chosenSubCategories = {};
   bool getData = false;
 
   // INIT STATE
@@ -60,13 +60,13 @@ class _ServicesChoosePage3State extends State<ServicesChoosePage3> {
         chosenSubCategories.remove(subCategory);
       } else {
         chosenSubCategories.addAll({
-          subCategory: 0,
+          subCategory: [0, 'Service'],
         });
       }
     });
   }
 
-  // NEXT
+  // DONE
   Future<void> next() async {
     setState(() {
       isNext = true;

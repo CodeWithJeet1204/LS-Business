@@ -160,7 +160,7 @@ class _CategoryPageState extends State<CategoryPage> {
   //     }
   //   } else {
   //     if (mounted) {
-  //       mySnackBar(context, "Select an Image");
+  //       mySnackBar(context, 'Select an Image');
   //     }
   //   }
   // }
@@ -241,7 +241,7 @@ class _CategoryPageState extends State<CategoryPage> {
   // onTapOutside: (event) =>
   //     FocusScope.of(context).unfocus(),
   //                           decoration: const InputDecoration(
-  //                             hintText: "Category Name",
+  //                             hintText: 'Category Name',
   //                             border: OutlineInputBorder(),
   //                           ),
   //                           onChanged: (value) {
@@ -251,12 +251,12 @@ class _CategoryPageState extends State<CategoryPage> {
   //                             if (value != null && value.isNotEmpty) {
   //                               return null;
   //                             } else {
-  //                               return "Enter Category Name";
+  //                               return 'Enter Category Name';
   //                             }
   //                           },
   //                         ),
   //                         MyButton(
-  //                           text: "SAVE",
+  //                           text: 'SAVE',
   //                           onTap: () {
   //                             changeCategoryName(categoryName);
   //                           },
@@ -296,7 +296,7 @@ class _CategoryPageState extends State<CategoryPage> {
         return AlertDialog(
           title: Text(
             overflow: TextOverflow.ellipsis,
-            "Remove $productName",
+            'Remove $productName',
           ),
           content: Text(
             overflow: TextOverflow.ellipsis,
@@ -307,7 +307,7 @@ class _CategoryPageState extends State<CategoryPage> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              text: "NO",
+              text: 'NO',
               textColor: Colors.green,
             ),
             MyTextButton(
@@ -331,7 +331,7 @@ class _CategoryPageState extends State<CategoryPage> {
                   }
                 }
               },
-              text: "YES",
+              text: 'YES',
               textColor: Colors.red,
             ),
           ],
@@ -449,7 +449,7 @@ class _CategoryPageState extends State<CategoryPage> {
                     //             FeatherIcons.camera,
                     //             size: width * 0.1,
                     //           ),
-                    //           tooltip: "Change Image",
+                    //           tooltip: 'Change Image',
                     //         ),
                     //       ),
                   ],
@@ -490,7 +490,7 @@ class _CategoryPageState extends State<CategoryPage> {
                       //     size: width * 0.0725,
                       //     color: primaryDark,
                       //   ),
-                      //   tooltip: "Change Name",
+                      //   tooltip: 'Change Name',
                       // ),
                     ],
                   ),
@@ -528,14 +528,14 @@ class _CategoryPageState extends State<CategoryPage> {
                                   child: data['isPercent']
                                       ? Text(
                                           overflow: TextOverflow.ellipsis,
-                                          "${data['discountAmount']}% off",
+                                          '${data['discountAmount']}% off',
                                           style: const TextStyle(
                                             fontWeight: FontWeight.w500,
                                           ),
                                         )
                                       : Text(
                                           overflow: TextOverflow.ellipsis,
-                                          "Save Rs. ${data['discountAmount']}",
+                                          'Save Rs. ${data['discountAmount']}',
                                           style: const TextStyle(
                                             fontWeight: FontWeight.w500,
                                           ),
@@ -568,7 +568,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                   ),
                                   child: const Text(
                                     overflow: TextOverflow.ellipsis,
-                                    "This discount is available to all the products within this category",
+                                    'This discount is available to all the products within this category',
                                     style: TextStyle(
                                       color: primaryDark,
                                       fontWeight: FontWeight.w500,
@@ -599,7 +599,7 @@ class _CategoryPageState extends State<CategoryPage> {
                       ),
                     );
                   },
-                  text: "ADD PRODUCT",
+                  text: 'ADD PRODUCT',
                   isLoading: false,
                   horizontalPadding: 0,
                 ),
@@ -654,8 +654,8 @@ class _CategoryPageState extends State<CategoryPage> {
                                   onTapOutside: (event) =>
                                       FocusScope.of(context).unfocus(),
                                   decoration: const InputDecoration(
-                                    labelText: "Case - Sensitive",
-                                    hintText: "Search ...",
+                                    labelText: 'Case - Sensitive',
+                                    hintText: 'Search ...',
                                     border: OutlineInputBorder(),
                                   ),
                                   onChanged: (value) {
@@ -674,7 +674,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                       ? FeatherIcons.list
                                       : FeatherIcons.grid,
                                 ),
-                                tooltip: isGridView ? "List View" : "Grid View",
+                                tooltip: isGridView ? 'List View' : 'Grid View',
                               ),
                             ],
                           ),
@@ -806,11 +806,11 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                 width: width *
                                                                     0.25,
                                                                 child: Text(
-                                                                  price != "" &&
+                                                                  price != '' &&
                                                                           price !=
                                                                               null
                                                                       ? price
-                                                                      : "N/A",
+                                                                      : 'N/A',
                                                                   overflow:
                                                                       TextOverflow
                                                                           .ellipsis,
@@ -846,7 +846,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                                             size: width * 0.075,
                                                           ),
                                                           tooltip:
-                                                              "Remove Product",
+                                                              'Remove Product',
                                                         ),
                                                       ],
                                                     ),
@@ -920,10 +920,10 @@ class _CategoryPageState extends State<CategoryPage> {
                                                       ),
                                                     ),
                                                     subtitle: Text(
-                                                      price != "" &&
+                                                      price != '' &&
                                                               price != null
                                                           ? price
-                                                          : "N/A",
+                                                          : 'N/A',
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                       style: TextStyle(
@@ -947,7 +947,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                                             215, 14, 0, 1),
                                                         size: width * 0.09,
                                                       ),
-                                                      tooltip: "Remove Product",
+                                                      tooltip: 'Remove Product',
                                                     ),
                                                   ),
                                                 ),

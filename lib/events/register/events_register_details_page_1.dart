@@ -198,7 +198,7 @@ class EventsRegisterDetailsPage1State
               const SizedBox(height: 60),
               const Center(
                 child: HeadText(
-                  text: "ORG.\nDETAILS",
+                  text: 'ORG.\nDETAILS',
                 ),
               ),
               const SizedBox(height: 40),
@@ -217,7 +217,7 @@ class EventsRegisterDetailsPage1State
                           IconButton.filledTonal(
                             icon: const Icon(Icons.camera_alt_outlined),
                             iconSize: width * 0.09,
-                            tooltip: "Change Organization Picture",
+                            tooltip: 'Change Organization Picture',
                             onPressed: () async {
                               await selectImage();
                             },
@@ -247,7 +247,7 @@ class EventsRegisterDetailsPage1State
                   children: [
                     // NAME
                     MyTextFormField(
-                      hintText: "Organization Name",
+                      hintText: 'Organization Name',
                       controller: nameController,
                       borderRadius: 12,
                       horizontalPadding: width * 0.055,
@@ -257,7 +257,7 @@ class EventsRegisterDetailsPage1State
 
                     // EMAIL
                     MyTextFormField(
-                      hintText: "Email",
+                      hintText: 'Email',
                       controller: emailController,
                       borderRadius: 12,
                       horizontalPadding: width * 0.055,
@@ -270,7 +270,7 @@ class EventsRegisterDetailsPage1State
 
                     // NUMBER
                     MyTextFormField(
-                      hintText: "Phone Number",
+                      hintText: 'Phone Number',
                       controller: phoneController,
                       borderRadius: 12,
                       horizontalPadding: width * 0.055,
@@ -283,7 +283,7 @@ class EventsRegisterDetailsPage1State
 
                     // WEBSITE
                     MyTextFormField(
-                      hintText: "Website Link (Optional)",
+                      hintText: 'Website Link (Optional)',
                       controller: websiteController,
                       borderRadius: 12,
                       horizontalPadding: width * 0.055,
@@ -293,7 +293,7 @@ class EventsRegisterDetailsPage1State
 
                     // ADDRESS
                     MyTextFormField(
-                      hintText: "Address",
+                      hintText: 'Address',
                       controller: addressController,
                       borderRadius: 12,
                       horizontalPadding: width * 0.055,
@@ -318,9 +318,9 @@ class EventsRegisterDetailsPage1State
                           vertical: 12,
                         ),
                         child: DropdownButton(
-                          dropdownColor: primary,
+                          dropdownColor: primary2,
                           hint: const Text(
-                            "Type",
+                            'Type',
                             overflow: TextOverflow.ellipsis,
                           ),
                           value: type,
@@ -386,7 +386,7 @@ class EventsRegisterDetailsPage1State
                         bottom: MediaQuery.of(context).viewInsets.bottom,
                       ),
                       child: MyButton(
-                        text: "NEXT",
+                        text: 'NEXT',
                         onTap: () async {
                           await register(signInMethodProvider);
                         },

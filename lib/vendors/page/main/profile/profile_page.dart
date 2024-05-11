@@ -182,7 +182,7 @@ class _ProfilePageState extends State<ProfilePage> {
             appBar: AppBar(
               title: const Text(
                 overflow: TextOverflow.ellipsis,
-                "PROFILE",
+                'PROFILE',
               ),
               actions: [
                 IconButton(
@@ -217,7 +217,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     FeatherIcons.logOut,
                     color: primaryDark,
                   ),
-                  tooltip: "Log Out",
+                  tooltip: 'Log Out',
                 ),
               ],
             ),
@@ -324,7 +324,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Text(
-                                  "Owner Details",
+                                  'Owner Details',
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
                                   style: TextStyle(
@@ -361,7 +361,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Text(
-                                  "Business Details",
+                                  'Business Details',
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
                                   style: TextStyle(

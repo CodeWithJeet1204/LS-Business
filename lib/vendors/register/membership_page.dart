@@ -28,7 +28,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
   bool isGoldSelected = false;
   bool isPremiumSelected = false;
   bool isPaying = false;
-  String selectedDuration = "Duration";
+  String selectedDuration = 'Duration';
   DateTime? selectedDurationDateTime;
 
   String? selectedPrice;
@@ -47,28 +47,28 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
 
   // SHOW PRICES
   String showPrices(String name) {
-    if (selectedDuration != "Duration") {
-      if (name == "BASIC") {
-        return "0";
-      } else if (name == "GOLD") {
-        if (selectedDuration == "1 month") {
+    if (selectedDuration != 'Duration') {
+      if (name == 'BASIC') {
+        return '0';
+      } else if (name == 'GOLD') {
+        if (selectedDuration == '1 month') {
           return membershipPricing[1][0];
-        } else if (selectedDuration == "6 months") {
+        } else if (selectedDuration == '6 months') {
           return membershipPricing[1][1];
         } else {
           return membershipPricing[1][2];
         }
       } else {
-        if (selectedDuration == "1 month") {
+        if (selectedDuration == '1 month') {
           return membershipPricing[2][0];
-        } else if (selectedDuration == "6 months") {
+        } else if (selectedDuration == '6 months') {
           return membershipPricing[2][1];
         } else {
           return membershipPricing[2][2];
         }
       }
     } else {
-      return "--";
+      return '--';
     }
   }
 
@@ -79,18 +79,18 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
       builder: ((context) => AlertDialog(
             title: const Text(
               overflow: TextOverflow.ellipsis,
-              "Select Membership",
+              'Select Membership',
             ),
             content: const Text(
               overflow: TextOverflow.ellipsis,
-              "First select the Duration for which you want the membership\nThen the respective prices will be displayed\nand then select one of them.",
+              'First select the Duration for which you want the membership\nThen the respective prices will be displayed\nand then select one of them.',
             ),
             actions: [
               MyTextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                text: "OK",
+                text: 'OK',
                 textColor: primaryDark,
               ),
             ],
@@ -117,9 +117,9 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
       return selectedPrice!;
     } else {
       setState(() {
-        selectedPrice = "null";
+        selectedPrice = 'null';
       });
-      return "null";
+      return 'null';
     }
   }
 
@@ -135,7 +135,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
             children: [
               SizedBox(height: width * 0.1),
               const HeadText(
-                text: "SELECT\nMEMBERSHIP",
+                text: 'SELECT\nMEMBERSHIP',
               ),
               SizedBox(height: width * 0.1),
               Row(
@@ -167,7 +167,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                           isPremiumSelected = false;
                         },
                         dropdownColor: primary2,
-                        items: ["1 month", "6 months", "1 year"]
+                        items: ['1 month', '6 months', '1 year']
                             .map(
                               (e) => DropdownMenuItem(
                                 value: e,
@@ -224,9 +224,9 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                 isSelected: isBasicSelected,
                 selectedColor: white,
                 selectedBorderColor: Colors.black,
-                name: "BASIC",
+                name: 'BASIC',
                 price: showPrices(
-                  "BASIC",
+                  'BASIC',
                 ),
                 textColor: const Color.fromARGB(255, 61, 60, 60),
                 priceTextColor: const Color.fromARGB(255, 81, 81, 81),
@@ -237,17 +237,17 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                 benefit2: 2,
                 benefit3: 3,
                 storageSize: 100,
-                storageUnit: "MB",
+                storageUnit: 'MB',
                 onTap: () {
-                  if (selectedDuration == "Duration") {
-                    mySnackBar(context, "Please select a Duration first");
+                  if (selectedDuration == 'Duration') {
+                    mySnackBar(context, 'Please select a Duration first');
                   } else {
                     setState(() {
                       isBasicSelected = true;
                       isGoldSelected = false;
                       isPremiumSelected = false;
-                      currentBasicPrice = int.parse(showPrices("BASIC"));
-                      currentMembership = "BASIC";
+                      currentBasicPrice = int.parse(showPrices('BASIC'));
+                      currentMembership = 'BASIC';
                     });
                   }
                 },
@@ -258,9 +258,9 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                 isSelected: isGoldSelected,
                 selectedColor: const Color.fromARGB(255, 253, 243, 154),
                 selectedBorderColor: const Color.fromARGB(255, 93, 76, 0),
-                name: "GOLD",
+                name: 'GOLD',
                 price: showPrices(
-                  "GOLD",
+                  'GOLD',
                 ),
                 textColor: const Color.fromARGB(255, 94, 86, 0),
                 priceTextColor: const Color.fromARGB(255, 102, 92, 0),
@@ -272,15 +272,15 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                 benefit3: 3,
                 storageSize: 2,
                 onTap: () {
-                  if (selectedDuration == "Duration") {
-                    mySnackBar(context, "Please select a Duration first");
+                  if (selectedDuration == 'Duration') {
+                    mySnackBar(context, 'Please select a Duration first');
                   } else {
                     setState(() {
                       isBasicSelected = false;
                       isGoldSelected = true;
                       isPremiumSelected = false;
-                      currentGoldPrice = int.parse(showPrices("GOLD"));
-                      currentMembership = "GOLD";
+                      currentGoldPrice = int.parse(showPrices('GOLD'));
+                      currentMembership = 'GOLD';
                     });
                   }
                 },
@@ -293,9 +293,9 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                     isSelected: isPremiumSelected,
                     selectedColor: const Color.fromARGB(255, 202, 226, 238),
                     selectedBorderColor: Colors.blueGrey.shade600,
-                    name: "PREMIUM",
+                    name: 'PREMIUM',
                     price: showPrices(
-                      "PREMIUM",
+                      'PREMIUM',
                     ),
                     textColor: const Color.fromARGB(255, 43, 72, 87),
                     priceTextColor: const Color.fromARGB(255, 67, 92, 106),
@@ -307,17 +307,17 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                     benefit3: 3,
                     storageSize: 5,
                     onTap: () {
-                      if (selectedDuration == "Duration") {
-                        mySnackBar(context, "Please select a Duration first");
+                      if (selectedDuration == 'Duration') {
+                        mySnackBar(context, 'Please select a Duration first');
                       } else {
                         setState(() {
                           isBasicSelected = false;
                           isGoldSelected = false;
                           isPremiumSelected = true;
                           currentPremiumPrice = int.parse(
-                            showPrices("PREMIUM"),
+                            showPrices('PREMIUM'),
                           );
-                          currentMembership = "PREMIUM";
+                          currentMembership = 'PREMIUM';
                         });
                       }
                     },
@@ -334,9 +334,9 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                               null &&
                           selectPrice(isBasicSelected, isGoldSelected,
                                   isPremiumSelected) !=
-                              "null"
-                      ? "Pay - ${selectPrice(isBasicSelected, isGoldSelected, isPremiumSelected)}"
-                      : "❌❌",
+                              'null'
+                      ? 'Pay - ${selectPrice(isBasicSelected, isGoldSelected, isPremiumSelected)}'
+                      : '❌❌',
                   onTap: () async {
                     if (isGoldSelected && isPremiumSelected ||
                         isPremiumSelected && isBasicSelected ||
@@ -345,21 +345,21 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                             isGoldSelected &&
                             isPremiumSelected &&
                             selectedPrice == null ||
-                        selectedPrice == "null") {
-                      mySnackBar(context, "Please select a Membership");
+                        selectedPrice == 'null') {
+                      mySnackBar(context, 'Please select a Membership');
                     } else {
                       if (currentMembership != null) {
-                        if (currentMembership == "BASIC") {
+                        if (currentMembership == 'BASIC') {
                           setState(() {
-                            selectedPrice = showPrices("BASIC");
+                            selectedPrice = showPrices('BASIC');
                           });
-                        } else if (currentMembership == "GOLD") {
+                        } else if (currentMembership == 'GOLD') {
                           setState(() {
-                            selectedPrice = showPrices("GOLD");
+                            selectedPrice = showPrices('GOLD');
                           });
-                        } else if (currentMembership == "PREMIUM") {
+                        } else if (currentMembership == 'PREMIUM') {
                           setState(() {
-                            selectedPrice = showPrices("PREMIUM");
+                            selectedPrice = showPrices('PREMIUM');
                           });
                         }
                         try {
@@ -409,7 +409,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                           }
                         }
                       } else {
-                        mySnackBar(context, "Please select a Membership");
+                        mySnackBar(context, 'Please select a Membership');
                       }
                     }
                   },

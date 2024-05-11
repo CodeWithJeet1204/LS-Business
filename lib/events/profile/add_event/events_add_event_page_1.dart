@@ -42,7 +42,7 @@ class _EventsAddEventPage1State extends State<EventsAddEventPage1> {
       });
     } else {
       if (mounted) {
-        mySnackBar(context, "Select an Image");
+        mySnackBar(context, 'Select an Image');
       }
     }
   }
@@ -173,12 +173,12 @@ class _EventsAddEventPage1State extends State<EventsAddEventPage1> {
       appBar: AppBar(
         title: const Text(
           overflow: TextOverflow.ellipsis,
-          "Basic Info",
+          'Basic Info',
         ),
         actions: [
           MyTextButton(
             onPressed: next,
-            text: "NEXT",
+            text: 'NEXT',
             textColor: primaryDark2,
           ),
         ],
@@ -251,7 +251,7 @@ class _EventsAddEventPage1State extends State<EventsAddEventPage1> {
                                             FeatherIcons.x,
                                             size: width * 0.1,
                                           ),
-                                          tooltip: "Remove Image",
+                                          tooltip: 'Remove Image',
                                         ),
                                       ),
                                     ],
@@ -361,7 +361,7 @@ class _EventsAddEventPage1State extends State<EventsAddEventPage1> {
                                       ),
                                       SizedBox(height: width * 0.09),
                                       Text(
-                                        "Select Image",
+                                        'Select Image',
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                           fontSize: width * 0.09,
@@ -430,11 +430,16 @@ class _EventsAddEventPage1State extends State<EventsAddEventPage1> {
                         SizedBox(height: 16),
 
                         // ADDRESS
-                        MyTextFormField(
-                          hintText: 'Address',
-                          controller: addressController,
-                          borderRadius: 8,
-                          horizontalPadding: 0,
+                        Padding(
+                          padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom,
+                          ),
+                          child: MyTextFormField(
+                            hintText: 'Address',
+                            controller: addressController,
+                            borderRadius: 8,
+                            horizontalPadding: 0,
+                          ),
                         ),
                       ],
                     ),

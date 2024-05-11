@@ -47,6 +47,8 @@ class _EventsAddEventPage4State extends State<EventsAddEventPage4> {
       'organizerId': auth.currentUser!.uid,
       'contactHelp': helpContactNumberController.text,
       'wishlists': [],
+      'workImages': [],
+      'Followers': [],
     };
 
     data.addAll(widget.data);
@@ -100,7 +102,7 @@ class _EventsAddEventPage4State extends State<EventsAddEventPage4> {
             onPressed: () async {
               await done();
             },
-            text: "DONE",
+            text: 'DONE',
             textColor: primaryDark2,
           ),
         ],

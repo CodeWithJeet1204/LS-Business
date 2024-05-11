@@ -216,7 +216,7 @@ class _EventsProfilePageState extends State<EventsProfilePage> {
               FeatherIcons.logOut,
               color: primaryDark,
             ),
-            tooltip: "Log Out",
+            tooltip: 'Log Out',
           ),
         ],
       ),

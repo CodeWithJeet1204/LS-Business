@@ -67,7 +67,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
       });
     } else {
       if (mounted) {
-        mySnackBar(context, "Select an Image");
+        mySnackBar(context, 'Select an Image');
       }
     }
   }
@@ -118,24 +118,24 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
     // End date should be after start date
     if (discountKey.currentState!.validate()) {
       if (startDate == null) {
-        return mySnackBar(context, "Select Start Date");
+        return mySnackBar(context, 'Select Start Date');
       }
       if (endDate == null) {
-        return mySnackBar(context, "Select End Date");
+        return mySnackBar(context, 'Select End Date');
       }
       if (startDateTime!.isAfter(
         endDateTime!,
       )) {
-        return mySnackBar(context, "Start Date should be before End Date");
+        return mySnackBar(context, 'Start Date should be before End Date');
       }
       if (widget.changeSelectedProductDiscount == null) {
         if (provider.selectedProducts.isEmpty) {
-          return mySnackBar(context, "Select Product");
+          return mySnackBar(context, 'Select Product');
         }
       }
 
       if (isPercentSelected && int.parse(discountController.text) >= 100) {
-        return mySnackBar(context, "Max Discount is 99.99999999999999999999%");
+        return mySnackBar(context, 'Max Discount is 99.99999999999999999999%');
       }
 
       setState(() {
@@ -198,7 +198,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
         });
         provider.clear();
         if (mounted) {
-          mySnackBar(context, "Discount Added");
+          mySnackBar(context, 'Discount Added');
         }
         if (widget.changeSelectedProductDiscount != null) {
           if (mounted) {
@@ -250,14 +250,14 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
           icon: const Icon(
             FeatherIcons.arrowLeft,
           ),
-          tooltip: "Back",
+          tooltip: 'Back',
         ),
         actions: [
           MyTextButton(
             onPressed: () async {
               await addDiscount(selectedProductProvider, selectedProducts);
             },
-            text: "DONE",
+            text: 'DONE',
             textColor: primaryDark,
           ),
         ],
@@ -281,7 +281,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                     // DISCLAIMER
                     Text(
                       overflow: TextOverflow.ellipsis,
-                      "If your selected product/s has ongoing discount, then this discount will be applied, after that discount ends (if this discount ends after that)",
+                      'If your selected product/s has ongoing discount, then this discount will be applied, after that discount ends (if this discount ends after that)',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: primaryDark2,
@@ -319,7 +319,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                   ),
                                   Text(
                                     overflow: TextOverflow.ellipsis,
-                                    "Select Image",
+                                    'Select Image',
                                     style: TextStyle(
                                       color: primaryDark,
                                       fontSize: width * 0.08,
@@ -358,7 +358,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                             FeatherIcons.camera,
                                             size: width * 0.11,
                                           ),
-                                          tooltip: "Change Image",
+                                          tooltip: 'Change Image',
                                         ),
                                       ),
                                       Padding(
@@ -373,7 +373,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                             FeatherIcons.x,
                                             size: width * 0.11,
                                           ),
-                                          tooltip: "Remove Image",
+                                          tooltip: 'Remove Image',
                                         ),
                                       ),
                                     ],
@@ -395,7 +395,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                             color: Colors.cyan.shade700,
                           ),
                         ),
-                        hintText: "Discount / Sale Name",
+                        hintText: 'Discount / Sale Name',
                       ),
                       validator: (value) {
                         if (value != null && value.isEmpty) {
@@ -449,7 +449,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                               FeatherIcons.edit,
                                               size: width * 0.066,
                                             ),
-                                            tooltip: "Change Date",
+                                            tooltip: 'Change Date',
                                           )
                                         : Container(),
                                   ],
@@ -460,7 +460,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                       onPressed: () async {
                                         await selectStartDate();
                                       },
-                                      text: "Select Date",
+                                      text: 'Select Date',
                                       textColor: primaryDark,
                                     )
                                   : Padding(
@@ -520,7 +520,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                               FeatherIcons.edit,
                                               size: width * 0.066,
                                             ),
-                                            tooltip: "Change Date",
+                                            tooltip: 'Change Date',
                                           )
                                         : Container(),
                                   ],
@@ -531,7 +531,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                       onPressed: () async {
                                         await selectEndDate();
                                       },
-                                      text: "Select Date",
+                                      text: 'Select Date',
                                       textColor: primaryDark,
                                     )
                                   : Padding(
@@ -562,7 +562,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                         horizontal: 2,
                       ),
                       child: Text(
-                        "If you select 1 jan as end date, discount will end at 31 dec 11:59 pm",
+                        'If you select 1 jan as end date, discount will end at 31 dec 11:59 pm',
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.center,
                         style: TextStyle(
@@ -579,8 +579,8 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                       text: widget.changeSelectedProductDiscount != null
                           ? widget.changeSelectedProductDiscountName!
                           : selectedProducts.isEmpty
-                              ? "SELECT PRODUCTS"
-                              : "SELECTED PRODUCTS - ${selectedProducts.length}",
+                              ? 'SELECT PRODUCTS'
+                              : 'SELECTED PRODUCTS - ${selectedProducts.length}',
                       onTap: widget.changeSelectedProductDiscount != null
                           ? () {}
                           : () {
@@ -627,7 +627,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Text(
-                                  "PERCENT %",
+                                  'PERCENT %',
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     color: !isPercentSelected
@@ -660,7 +660,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Text(
-                                  "PRICE ₹",
+                                  'PRICE ₹',
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     color: isPercentSelected
@@ -698,7 +698,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                             ),
                           ),
                           hintText:
-                              isPercentSelected ? "eg. 20%" : "eg. Rs. 200 off",
+                              isPercentSelected ? 'eg. 20%' : 'eg. Rs. 200 off',
                         ),
                         validator: (value) {
                           if (value != null && value.isEmpty) {

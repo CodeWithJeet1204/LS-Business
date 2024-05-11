@@ -19,7 +19,7 @@ void selectCategory(text) {
   selectedCategory = text;
 }
 
-String selectedCategory = "Select Category";
+String selectedCategory = 'Select Category';
 
 class _ImageTextContainerState extends State<ImageTextContainer> {
   @override

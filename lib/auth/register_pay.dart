@@ -40,7 +40,7 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
 
                   // PAY HEADTEXT
                   const HeadText(
-                    text: "PAY",
+                    text: 'PAY',
                   ),
                   Expanded(
                     flex: 2,
@@ -50,7 +50,7 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                   // CONTINUE TEXT
                   const Text(
                     overflow: TextOverflow.ellipsis,
-                    "To continue using the app, please pay Rs. 100",
+                    'To continue using the app, please pay Rs. 100',
                     style: TextStyle(
                       color: primaryDark,
                     ),
@@ -59,7 +59,7 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
 
                   // PAY BUTTON
                   MyButton(
-                    text: "Pay",
+                    text: 'Pay',
                     onTap: () async {
                       try {
                         setState(() {
@@ -107,7 +107,7 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                     children: [
                       const Text(
                         overflow: TextOverflow.ellipsis,
-                        "Already have an account?",
+                        'Already have an account?',
                       ),
                       MyTextButton(
                         onPressed: () {
@@ -122,7 +122,7 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                             );
                           }
                         },
-                        text: "LOGIN",
+                        text: 'LOGIN',
                         textColor: buttonColor,
                       ),
                     ],
@@ -138,7 +138,7 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                     alignment: Alignment.center,
                     width: MediaQuery.of(context).size.width * 0.66,
                     child: const HeadText(
-                      text: "PAY",
+                      text: 'PAY',
                     ),
                   ),
                   Container(
@@ -150,7 +150,7 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                         // CONTINUE TEXT
                         Text(
                           overflow: TextOverflow.ellipsis,
-                          "To continue using the app, please pay Rs. 100",
+                          'To continue using the app, please pay Rs. 100',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: primaryDark,
@@ -163,7 +163,7 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
 
                         // PAY BUTTON
                         MyButton(
-                          text: "Pay",
+                          text: 'Pay',
                           onTap: () async {
                             try {
                               setState(() {

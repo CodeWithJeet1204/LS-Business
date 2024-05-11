@@ -36,7 +36,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
         return AlertDialog(
           title: Text(
             overflow: TextOverflow.ellipsis,
-            "Remove $categoryName",
+            'Remove $categoryName',
           ),
           content: Text(
             overflow: TextOverflow.ellipsis,
@@ -47,14 +47,14 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              text: "NO",
+              text: 'NO',
               textColor: Colors.green,
             ),
             MyTextButton(
               onPressed: () async {
                 await remove(categoryName);
               },
-              text: "YES",
+              text: 'YES',
               textColor: Colors.red,
             ),
           ],
@@ -144,7 +144,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
                     autocorrect: false,
                     onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     decoration: const InputDecoration(
-                      hintText: "Search ...",
+                      hintText: 'Search ...',
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
@@ -161,7 +161,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
                   icon: Icon(
                     isGridView ? Icons.list : Icons.grid_view_rounded,
                   ),
-                  tooltip: isGridView ? "List View" : "Grid View",
+                  tooltip: isGridView ? 'List View' : 'Grid View',
                 ),
               ],
             ),
@@ -271,7 +271,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
                                               //     color: Colors.red,
                                               //     size: width * 0.075,
                                               //   ),
-                                              //   tooltip: "Remove",
+                                              //   tooltip: 'Remove',
                                               // ),
                                             ],
                                           ),

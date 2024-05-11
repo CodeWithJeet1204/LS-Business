@@ -42,7 +42,7 @@ class _EventsAddWorkImagesPageState extends State<EventsAddWorkImagesPage> {
       });
     } else {
       if (mounted) {
-        mySnackBar(context, "Select an Image");
+        mySnackBar(context, 'Select an Image');
       }
     }
   }
@@ -192,7 +192,7 @@ class _EventsAddWorkImagesPageState extends State<EventsAddWorkImagesPage> {
                                           FeatherIcons.x,
                                           size: width * 0.1,
                                         ),
-                                        tooltip: "Remove Image",
+                                        tooltip: 'Remove Image',
                                       ),
                                     ),
                                   ],
@@ -302,7 +302,7 @@ class _EventsAddWorkImagesPageState extends State<EventsAddWorkImagesPage> {
                                     ),
                                     SizedBox(height: width * 0.09),
                                     Text(
-                                      "Select Image",
+                                      'Select Image',
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         fontSize: width * 0.09,

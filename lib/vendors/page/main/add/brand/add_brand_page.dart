@@ -56,7 +56,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
       });
     } else {
       if (mounted) {
-        mySnackBar(context, "Select an Image");
+        mySnackBar(context, 'Select an Image');
       }
     }
   }
@@ -92,7 +92,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
           'vendorId': FirebaseAuth.instance.currentUser!.uid,
         });
         if (mounted) {
-          mySnackBar(context, "Brand Added");
+          mySnackBar(context, 'Brand Added');
         }
 
         for (String id in provider.selectedProducts) {
@@ -135,14 +135,14 @@ class _AddBrandPageState extends State<AddBrandPage> {
       appBar: AppBar(
         title: const Text(
           overflow: TextOverflow.ellipsis,
-          "ADD BRAND",
+          'ADD BRAND',
         ),
         actions: [
           MyTextButton(
             onPressed: () async {
               await addBrand(productsAddedToBrandProvider);
             },
-            text: "DONE",
+            text: 'DONE',
             textColor: primaryDark2,
           ),
         ],
@@ -206,7 +206,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
                                     //       FeatherIcons.camera,
                                     //       size: width * 0.1125,
                                     //     ),
-                                    //     tooltip: "Change Image",
+                                    //     tooltip: 'Change Image',
                                     //   ),
                                     // ),
                                     // REMOVE IMAGE
@@ -218,7 +218,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
                                           FeatherIcons.x,
                                           size: width * 0.1125,
                                         ),
-                                        tooltip: "Remove Image",
+                                        tooltip: 'Remove Image',
                                       ),
                                     ),
                                   ],
@@ -254,7 +254,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
                                   const SizedBox(height: 8),
                                   Text(
                                     overflow: TextOverflow.ellipsis,
-                                    "Select Image",
+                                    'Select Image',
                                     style: TextStyle(
                                       fontSize: width * 0.08,
                                       fontWeight: FontWeight.w500,
@@ -268,7 +268,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
 
                     // NAME
                     MyTextFormField(
-                      hintText: "Brand Name",
+                      hintText: 'Brand Name',
                       controller: brandNameController,
                       borderRadius: 12,
                       horizontalPadding: 0,
@@ -282,7 +282,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
                       ),
                       child: MyButton(
                         text:
-                            "Add Products (${productsAddedToBrandProvider.selectedProducts.length})",
+                            'Add Products (${productsAddedToBrandProvider.selectedProducts.length})',
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(

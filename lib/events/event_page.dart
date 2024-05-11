@@ -86,7 +86,7 @@ class _EventPageState extends State<EventPage> {
       }
     } else {
       if (mounted) {
-        mySnackBar(context, "Select an Image");
+        mySnackBar(context, 'Select an Image');
       }
     }
   }
@@ -115,14 +115,14 @@ class _EventPageState extends State<EventPage> {
       }
     } else {
       if (mounted) {
-        mySnackBar(context, "Select an Image");
+        mySnackBar(context, 'Select an Image');
       }
     }
   }
 
   // REMOVE IMAGE
   Future<void> removeImage(String e, List images) async {
-    print("Index: ${images.indexOf(e)}");
+    print('Index: ${images.indexOf(e)}');
     if (images.indexOf(e) == 0) {
       setState(() {
         isFirstImageRemoved = true;
@@ -185,7 +185,7 @@ class _EventPageState extends State<EventPage> {
                                       ? TextInputType.text
                                       : TextInputType.number,
                                   decoration: InputDecoration(
-                                    hintText: "Enter $propertyValue",
+                                    hintText: 'Enter $propertyValue',
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(8),
                                     ),
@@ -195,7 +195,7 @@ class _EventPageState extends State<EventPage> {
                                       if (value != null && value.length >= 2) {
                                         return null;
                                       } else {
-                                        return "Min 2 chars required";
+                                        return 'Min 2 chars required';
                                       }
                                     } else {
                                       if (value == null ||
@@ -215,7 +215,7 @@ class _EventPageState extends State<EventPage> {
                                 ),
                               ),
                               MyButton(
-                                text: "SAVE",
+                                text: 'SAVE',
                                 onTap: () async {
                                   if (editKey.currentState!.validate()) {
                                     setState(() {
@@ -290,7 +290,7 @@ class _EventPageState extends State<EventPage> {
   // GET TIME OF DAY
   String getTimeString(String timeString) {
     String cleanedString =
-        timeString.replaceAll("TimeOfDay(", "").replaceAll(")", "");
+        timeString.replaceAll('TimeOfDay(', '').replaceAll(')', '');
 
     List<String> parts = cleanedString.split(':');
 
@@ -418,7 +418,7 @@ class _EventPageState extends State<EventPage> {
           icon: Icon(
             FeatherIcons.arrowLeft,
           ),
-          tooltip: "Back",
+          tooltip: 'Back',
         ),
       ),
       body: SafeArea(
@@ -464,8 +464,6 @@ class _EventPageState extends State<EventPage> {
                       final String? weekendEndTime = data['weekendEndTime'];
 
                       final String? ticketPrice = data['ticketPrice'];
-                      final String? ticketGeneralPrice =
-                          data['ticketGeneralPrice'];
                       final String? ticketEarlyBirdPrice =
                           data['ticketEarlyBirdPrice'];
                       final String? ticketVIPPrice = data['ticketVIPPrice'];
@@ -549,7 +547,7 @@ class _EventPageState extends State<EventPage> {
                                                         FeatherIcons.camera,
                                                         size: width * 0.1,
                                                       ),
-                                                      tooltip: "Change Image",
+                                                      tooltip: 'Change Image',
                                                     ),
                                                   ),
                                                   Padding(
@@ -572,7 +570,7 @@ class _EventPageState extends State<EventPage> {
                                                         FeatherIcons.x,
                                                         size: width * 0.1,
                                                       ),
-                                                      tooltip: "Remove Image",
+                                                      tooltip: 'Remove Image',
                                                     ),
                                                   ),
                                                 ],
@@ -647,7 +645,7 @@ class _EventPageState extends State<EventPage> {
                                           MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          "Add Image",
+                                          'Add Image',
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         Icon(FeatherIcons.plus),
@@ -692,7 +690,7 @@ class _EventPageState extends State<EventPage> {
                                     FeatherIcons.edit,
                                     size: width * 0.066,
                                   ),
-                                  tooltip: "Edit Name",
+                                  tooltip: 'Edit Name',
                                 ),
                               ],
                             ),
@@ -792,7 +790,7 @@ class _EventPageState extends State<EventPage> {
                                           FeatherIcons.edit,
                                           size: width * 0.066,
                                         ),
-                                        tooltip: "Edit Type",
+                                        tooltip: 'Edit Type',
                                       ),
                                     ],
                                   ),
@@ -831,7 +829,7 @@ class _EventPageState extends State<EventPage> {
                                     FeatherIcons.edit,
                                     size: width * 0.066,
                                   ),
-                                  tooltip: "Edit Name",
+                                  tooltip: 'Edit Name',
                                 ),
                               ],
                             ),
@@ -870,7 +868,7 @@ class _EventPageState extends State<EventPage> {
                                     FeatherIcons.edit,
                                     size: width * 0.066,
                                   ),
-                                  tooltip: "Edit Name",
+                                  tooltip: 'Edit Name',
                                 ),
                               ],
                             ),
@@ -909,7 +907,7 @@ class _EventPageState extends State<EventPage> {
                                     FeatherIcons.edit,
                                     size: width * 0.066,
                                   ),
-                                  tooltip: "Edit Name",
+                                  tooltip: 'Edit Name',
                                 ),
                               ],
                             ),
@@ -975,7 +973,7 @@ class _EventPageState extends State<EventPage> {
                                                 FeatherIcons.edit,
                                                 size: width * 0.066,
                                               ),
-                                              tooltip: "Change Date",
+                                              tooltip: 'Change Date',
                                             ),
                                           ],
                                         ),
@@ -1037,7 +1035,7 @@ class _EventPageState extends State<EventPage> {
                                                 FeatherIcons.edit,
                                                 size: width * 0.066,
                                               ),
-                                              tooltip: "Change Date",
+                                              tooltip: 'Change Date',
                                             ),
                                           ],
                                         ),
@@ -1309,7 +1307,7 @@ class _EventPageState extends State<EventPage> {
                                     FeatherIcons.edit,
                                     size: width * 0.066,
                                   ),
-                                  tooltip: "Edit Base Price",
+                                  tooltip: 'Edit Base Price',
                                 ),
                                 Checkbox(
                                     activeColor: primaryDark,
@@ -1329,73 +1327,6 @@ class _EventPageState extends State<EventPage> {
                                             .doc(widget.eventId)
                                             .update({
                                           'ticketPrice': '0',
-                                        });
-                                      }
-                                    }),
-                              ],
-                            ),
-
-                            Divider(),
-
-                            // GENERAL PRICE
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: width * 0.0225,
-                                  ),
-                                  child: SizedBox(
-                                    width: width * 0.66,
-                                    child: Text(
-                                      ticketGeneralPrice == null
-                                          ? 'General Price - X'
-                                          : 'General Price - Rs. $ticketGeneralPrice',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        color: ticketGeneralPrice == null
-                                            ? darkGrey
-                                            : primaryDark,
-                                        fontSize: width * 0.055,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                IconButton(
-                                  onPressed: ticketGeneralPrice == null
-                                      ? null
-                                      : () async {
-                                          await edit(
-                                            'ticketGeneralPrice',
-                                            true,
-                                          );
-                                        },
-                                  icon: Icon(
-                                    FeatherIcons.edit,
-                                    size: width * 0.066,
-                                  ),
-                                  tooltip: "Edit General Price",
-                                ),
-                                Checkbox(
-                                    activeColor: primaryDark,
-                                    checkColor: white,
-                                    value: ticketGeneralPrice != null,
-                                    onChanged: (value) async {
-                                      if (ticketGeneralPrice != null) {
-                                        await store
-                                            .collection('Events')
-                                            .doc(widget.eventId)
-                                            .update({
-                                          'ticketGeneralPrice': null,
-                                        });
-                                      } else {
-                                        await store
-                                            .collection('Events')
-                                            .doc(widget.eventId)
-                                            .update({
-                                          'ticketGeneralPrice': '0',
                                         });
                                       }
                                     }),
@@ -1443,7 +1374,7 @@ class _EventPageState extends State<EventPage> {
                                     FeatherIcons.edit,
                                     size: width * 0.066,
                                   ),
-                                  tooltip: "Edit Early Bird Price",
+                                  tooltip: 'Edit Early Bird Price',
                                 ),
                                 Checkbox(
                                     activeColor: primaryDark,
@@ -1510,7 +1441,7 @@ class _EventPageState extends State<EventPage> {
                                     FeatherIcons.edit,
                                     size: width * 0.066,
                                   ),
-                                  tooltip: "Edit VIP Price",
+                                  tooltip: 'Edit VIP Price',
                                 ),
                                 Checkbox(
                                     activeColor: primaryDark,
@@ -1577,7 +1508,7 @@ class _EventPageState extends State<EventPage> {
                                     FeatherIcons.edit,
                                     size: width * 0.066,
                                   ),
-                                  tooltip: "Edit Group Price",
+                                  tooltip: 'Edit Group Price',
                                 ),
                                 Checkbox(
                                     activeColor: primaryDark,
@@ -1646,7 +1577,7 @@ class _EventPageState extends State<EventPage> {
                                     FeatherIcons.edit,
                                     size: width * 0.066,
                                   ),
-                                  tooltip: "Edit Name",
+                                  tooltip: 'Edit Name',
                                 ),
                               ],
                             ),

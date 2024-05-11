@@ -56,7 +56,7 @@ class _AddBulkProductState extends State<AddBulkProduct> {
       });
     } else {
       if (mounted) {
-        mySnackBar(context, "Select an Image");
+        mySnackBar(context, 'Select an Image');
       }
     }
   }
@@ -171,7 +171,7 @@ class _AddBulkProductState extends State<AddBulkProduct> {
           if (mounted) {
             return mySnackBar(
               context,
-              "Product 1 with the same name already exists",
+              'Product 1 with the same name already exists',
             );
           }
         } else {
@@ -275,7 +275,7 @@ class _AddBulkProductState extends State<AddBulkProduct> {
             if (mounted) {
               return mySnackBar(
                 context,
-                "Product 2 with the same name already exists",
+                'Product 2 with the same name already exists',
               );
             }
           } else {
@@ -380,7 +380,7 @@ class _AddBulkProductState extends State<AddBulkProduct> {
             if (mounted) {
               return mySnackBar(
                 context,
-                "Product 3 with the same name already exists",
+                'Product 3 with the same name already exists',
               );
             }
           } else {
@@ -485,7 +485,7 @@ class _AddBulkProductState extends State<AddBulkProduct> {
             if (mounted) {
               return mySnackBar(
                 context,
-                "Product 4 with the same name already exists",
+                'Product 4 with the same name already exists',
               );
             }
           } else {

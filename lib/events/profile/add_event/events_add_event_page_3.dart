@@ -18,7 +18,6 @@ class EventsAddEventPage3 extends StatefulWidget {
 
 class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
   final priceController = TextEditingController();
-  final generalPriceController = TextEditingController();
   final vipPriceController = TextEditingController();
   final earlyBirdPriceController = TextEditingController();
   final groupPriceController = TextEditingController();
@@ -28,7 +27,6 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
   final refundDaysController = TextEditingController();
   final promoCodeController = TextEditingController();
   final promoCodePriceController = TextEditingController();
-  bool isGeneral = false;
   bool isVIP = false;
   bool isEarlyBird = false;
   bool isGroup = false;
@@ -42,7 +40,6 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
   void next() {
     Map<String, dynamic> data = {
       'ticketPrice': priceController.text,
-      'ticketGeneralPrice': isGeneral ? generalPriceController.text : null,
       'ticketVIPPrice': isVIP ? vipPriceController.text : null,
       'ticketEarlyBirdPrice':
           isEarlyBird ? earlyBirdPriceController.text : null,
@@ -74,7 +71,7 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
         actions: [
           MyTextButton(
             onPressed: next,
-            text: "NEXT",
+            text: 'NEXT',
             textColor: primaryDark2,
           ),
         ],
@@ -147,71 +144,6 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                     margin: EdgeInsets.all(width * 0.0125),
                     child: Column(
                       children: [
-                        // GENERAL
-                        Container(
-                          width: width,
-                          decoration: BoxDecoration(
-                            color: primary2.withOpacity(0.25),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          padding: EdgeInsets.all(width * 0.0225),
-                          child: !isGeneral
-                              ? Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'General',
-                                    ),
-                                    Checkbox(
-                                        activeColor: primaryDark,
-                                        checkColor: white,
-                                        value: isGeneral,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            isGeneral = !isGeneral;
-                                          });
-                                        }),
-                                  ],
-                                )
-                              : Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'General',
-                                        ),
-                                        Checkbox(
-                                            activeColor: primaryDark,
-                                            checkColor: white,
-                                            value: isGeneral,
-                                            onChanged: (value) {
-                                              setState(() {
-                                                isGeneral = !isGeneral;
-                                              });
-                                            }),
-                                      ],
-                                    ),
-                                    MyTextFormField(
-                                      hintText: 'Price',
-                                      controller: generalPriceController,
-                                      keyboardType: TextInputType.number,
-                                      borderRadius: 8,
-                                      horizontalPadding: 0,
-                                    ),
-                                  ],
-                                ),
-                        ),
-
-                        Divider(
-                          color: primaryDark.withOpacity(0.05),
-                        ),
-
                         // VIP
                         Container(
                           width: width,

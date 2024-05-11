@@ -221,7 +221,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                               padding: EdgeInsets.only(left: width * 0.05),
                               child: DropdownButton(
                                 hint: const Text(
-                                  "Select Duration",
+                                  'Select Duration',
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 value: selectedStringDuration,

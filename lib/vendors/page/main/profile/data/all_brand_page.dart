@@ -43,8 +43,8 @@ class _AllBrandPageState extends State<AllBrandPage> {
       for (final doc in productSnap.docs) {
         await doc.reference.update(
           {
-            'productBrand': "No Brand",
-            "productBrandId": "0",
+            'productBrand': 'No Brand',
+            'productBrandId': '0',
           },
         );
       }
@@ -78,11 +78,11 @@ class _AllBrandPageState extends State<AllBrandPage> {
         return AlertDialog(
           title: const Text(
             overflow: TextOverflow.ellipsis,
-            "Confirm DELETE",
+            'Confirm DELETE',
           ),
           content: const Text(
             overflow: TextOverflow.ellipsis,
-            "Are you sure you want to delete this Brand\nProducts in this brand will be set as 'No Brand",
+            'Are you sure you want to delete this Brand\nProducts in this brand will be set as \'No Brand\'',
           ),
           actions: [
             TextButton(
@@ -135,7 +135,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
       appBar: AppBar(
         title: const Text(
           overflow: TextOverflow.ellipsis,
-          "ALL BRANDS",
+          'ALL BRANDS',
         ),
         bottom: PreferredSize(
           preferredSize: Size(
@@ -156,8 +156,8 @@ class _AllBrandPageState extends State<AllBrandPage> {
                     autocorrect: false,
                     onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     decoration: const InputDecoration(
-                      labelText: "Case - Sensitive",
-                      hintText: "Search ...",
+                      labelText: 'Case - Sensitive',
+                      hintText: 'Search ...',
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
@@ -174,7 +174,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
                   icon: Icon(
                     isGridView ? FeatherIcons.list : FeatherIcons.grid,
                   ),
-                  tooltip: isGridView ? "List View" : "Grid View",
+                  tooltip: isGridView ? 'List View' : 'Grid View',
                 ),
               ],
             ),
@@ -303,7 +303,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                                   child: Text(
                                                     overflow:
                                                         TextOverflow.ellipsis,
-                                                    "No Image",
+                                                    'No Image',
                                                     style: TextStyle(
                                                       color: primaryDark2,
                                                       fontWeight:
@@ -351,7 +351,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                             color: Colors.red,
                                             size: width * 0.08,
                                           ),
-                                          tooltip: "DELETE",
+                                          tooltip: 'DELETE',
                                         ),
                                       ],
                                     ),
@@ -464,7 +464,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                         color: Colors.red,
                                         size: width * 0.075,
                                       ),
-                                      tooltip: "DELETE",
+                                      tooltip: 'DELETE',
                                     ),
                                   ),
                                 ),

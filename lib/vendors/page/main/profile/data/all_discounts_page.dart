@@ -36,10 +36,10 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
         return AlertDialog(
           title: const Text(
             overflow: TextOverflow.ellipsis,
-            "Confirm DELETE",
+            'Confirm DELETE',
           ),
           content: const Text(
-            "Are you sure you want to delete this Discount\nDiscount will be removed from all the products/categories with this discount",
+            'Are you sure you want to delete this Discount\nDiscount will be removed from all the products/categories with this discount',
           ),
           actions: [
             TextButton(
@@ -129,8 +129,8 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                     autocorrect: false,
                     onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     decoration: const InputDecoration(
-                      labelText: "Case - Sensitive",
-                      hintText: "Search ...",
+                      labelText: 'Case - Sensitive',
+                      hintText: 'Search ...',
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
@@ -147,7 +147,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                   icon: Icon(
                     isGridView ? FeatherIcons.list : FeatherIcons.grid,
                   ),
-                  tooltip: isGridView ? "List View" : "Grid View",
+                  tooltip: isGridView ? 'List View' : 'Grid View',
                 ),
               ],
             ),
@@ -270,7 +270,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                     child: Text(
                                                       overflow:
                                                           TextOverflow.ellipsis,
-                                                      "No Image",
+                                                      'No Image',
                                                       style: TextStyle(
                                                         color: primaryDark2,
                                                         fontWeight:
@@ -349,7 +349,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                   const Text(
                                                     overflow:
                                                         TextOverflow.ellipsis,
-                                                    "  ●  ",
+                                                    '  ●  ',
                                                     style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.w100,
@@ -429,7 +429,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                               color: Colors.red,
                                               size: width * 0.1,
                                             ),
-                                            tooltip: "End Discount",
+                                            tooltip: 'End Discount',
                                           ),
                                         ],
                                       ),
@@ -575,7 +575,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                           // DIVIDER
                                           // const Text(
                                           //   overflow: TextOverflow.ellipsis,
-                                          //   "  ●  ",
+                                          //   '  ●  ',
                                           //   style: TextStyle(
                                           //     fontWeight: FontWeight.w100,
                                           //   ),
@@ -651,7 +651,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                           color: Colors.red,
                                           size: width * 0.075,
                                         ),
-                                        tooltip: "Delete Discount",
+                                        tooltip: 'Delete Discount',
                                       ),
                                     ),
                                   ),

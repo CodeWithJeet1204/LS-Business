@@ -114,7 +114,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
       });
     } else {
       if (mounted) {
-        mySnackBar(context, "Select an Image");
+        mySnackBar(context, 'Select an Image');
       }
     }
   }
@@ -131,14 +131,14 @@ class _AddProductPage1State extends State<AddProductPage1> {
       SelectBrandForProductProvider brandProvider) async {
     if (productKey.currentState!.validate()) {
       if (_image.isEmpty) {
-        return mySnackBar(context, "Select atleast 1 image");
+        return mySnackBar(context, 'Select atleast 1 image');
       }
       if (priceController.text.length > 10) {
-        return mySnackBar(context, "Max Price is 100 Cr.");
+        return mySnackBar(context, 'Max Price is 100 Cr.');
       }
       if (priceController.text.isNotEmpty) {
         if (double.parse(priceController.text) <= 0.99999999999999999999) {
-          return mySnackBar(context, "Min Price is 1 Rs.");
+          return mySnackBar(context, 'Min Price is 1 Rs.');
         }
       }
       try {
@@ -155,7 +155,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
             if (mounted) {
               mySnackBar(
                 context,
-                "Product with same name already exists",
+                'Product with same name already exists',
               );
             }
             productDoesntExists = false;
@@ -236,14 +236,14 @@ class _AddProductPage1State extends State<AddProductPage1> {
       appBar: AppBar(
         title: const Text(
           overflow: TextOverflow.ellipsis,
-          "Basic Info",
+          'Basic Info',
         ),
         actions: [
           MyTextButton(
             onPressed: () async {
               await addProduct(addProductProvider, selectBrandProvider);
             },
-            text: "NEXT",
+            text: 'NEXT',
             textColor: primaryDark2,
           ),
         ],
@@ -309,7 +309,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                         FeatherIcons.x,
                                         size: width * 0.1,
                                       ),
-                                      tooltip: "Remove Image",
+                                      tooltip: 'Remove Image',
                                     ),
                                   ),
                                 ],
@@ -419,7 +419,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                   ),
                                   SizedBox(height: width * 0.09),
                                   Text(
-                                    "Select Image",
+                                    'Select Image',
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: width * 0.09,
@@ -444,7 +444,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                               FocusScope.of(context).unfocus(),
                           maxLength: 60,
                           decoration: const InputDecoration(
-                            hintText: "Product Name",
+                            hintText: 'Product Name',
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
                                 color: primaryDark2,
@@ -456,7 +456,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                             if (value != null && value.isNotEmpty) {
                               return null;
                             } else {
-                              return "Enter Name";
+                              return 'Enter Name';
                             }
                           },
                         ),
@@ -472,7 +472,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                           maxLength: 500,
                           keyboardType: TextInputType.multiline,
                           decoration: const InputDecoration(
-                            hintText: "Description",
+                            hintText: 'Description',
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
                                 color: primaryDark2,
@@ -485,10 +485,10 @@ class _AddProductPage1State extends State<AddProductPage1> {
                               if (value.isNotEmpty) {
                                 return null;
                               } else {
-                                return "Description should be atleast 1 chars long";
+                                return 'Description should be atleast 1 chars long';
                               }
                             } else {
-                              return "Enter Description";
+                              return 'Enter Description';
                             }
                           },
                         ),
@@ -501,7 +501,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                               FocusScope.of(context).unfocus(),
                           keyboardType: TextInputType.number,
                           decoration: const InputDecoration(
-                            hintText: "Price (Optional)",
+                            hintText: 'Price (Optional)',
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
                                 color: primaryDark2,
@@ -592,7 +592,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                       children: [
                                         Text(
                                           overflow: TextOverflow.ellipsis,
-                                          "Available",
+                                          'Available',
                                           style: TextStyle(
                                             color: primaryDark,
                                             fontSize: width * 0.06,
@@ -634,7 +634,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                       children: [
                                         Text(
                                           overflow: TextOverflow.ellipsis,
-                                          "Out Of Stock",
+                                          'Out Of Stock',
                                           style: TextStyle(
                                             color: primaryDark,
                                             fontSize: width * 0.06,
@@ -669,7 +669,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                         // SELECT CATEGORY TEXT
                         Text(
                           overflow: TextOverflow.ellipsis,
-                          "Select Category",
+                          'Select Category',
                           style: TextStyle(
                             color: primaryDark,
                             fontSize: width * 0.066,
@@ -691,8 +691,8 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                   onTapOutside: (event) =>
                                       FocusScope.of(context).unfocus(),
                                   decoration: const InputDecoration(
-                                    labelText: "Case - Sensitive",
-                                    hintText: "Search ...",
+                                    labelText: 'Case - Sensitive',
+                                    hintText: 'Search ...',
                                     border: OutlineInputBorder(),
                                   ),
                                   onChanged: (value) {
@@ -711,7 +711,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                       ? FeatherIcons.list
                                       : FeatherIcons.grid,
                                 ),
-                                tooltip: isGridView ? "List View" : "Grid View",
+                                tooltip: isGridView ? 'List View' : 'Grid View',
                               ),
                             ],
                           ),
@@ -753,7 +753,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                               } else {
                                                 setState(() {
                                                   selectedCategory =
-                                                      "No Category Selected";
+                                                      'No Category Selected';
                                                   selectedCategory = '0';
                                                 });
                                               }
@@ -918,7 +918,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                                 } else {
                                                   setState(() {
                                                     selectedCategory =
-                                                        "No Category Selected";
+                                                        'No Category Selected';
                                                     selectedCategory = '0';
                                                   });
                                                 }

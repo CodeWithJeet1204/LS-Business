@@ -56,8 +56,8 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
         mySnackBar(
           context,
           widget.isTextPost
-              ? "Text Post Already Exists for one of the product"
-              : "Image Post Already Exists for the product",
+              ? 'Text Post Already Exists for one of the product'
+              : 'Image Post Already Exists for the product',
         );
       }
     } else {
@@ -92,7 +92,7 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          "SELECT PRODUCTS",
+          'SELECT PRODUCTS',
           overflow: TextOverflow.ellipsis,
         ),
         actions: [
@@ -100,7 +100,7 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            text: "NEXT",
+            text: 'NEXT',
             textColor: primaryDark,
           ),
         ],
@@ -125,7 +125,7 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                         onTapOutside: (event) =>
                             FocusScope.of(context).unfocus(),
                         decoration: const InputDecoration(
-                          hintText: "Search ...",
+                          hintText: 'Search ...',
                           border: OutlineInputBorder(),
                         ),
                         onChanged: (value) {
@@ -142,7 +142,7 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                       icon: Icon(
                         isGridView ? FeatherIcons.list : FeatherIcons.grid,
                       ),
-                      tooltip: isGridView ? "List View" : "Grid View",
+                      tooltip: isGridView ? 'List View' : 'Grid View',
                     ),
                   ],
                 ),
@@ -152,7 +152,7 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                     if (snapshot.hasError) {
                       return const Center(
                         child: Text(
-                          "Something went wrong",
+                          'Something went wrong',
                           overflow: TextOverflow.ellipsis,
                         ),
                       );
@@ -284,12 +284,12 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                                                   width: width * 0.275,
                                                   child: Text(
                                                     productSnap['productPrice'] !=
-                                                                "" &&
+                                                                '' &&
                                                             productSnap[
                                                                     'productPrice'] !=
                                                                 null
                                                         ? '''Rs. ${productSnap['productPrice']}'''
-                                                        : "N/A",
+                                                        : 'N/A',
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                     maxLines: 1,
@@ -411,12 +411,12 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                                             ),
                                             subtitle: Text(
                                               productData['productPrice'] !=
-                                                          "" &&
+                                                          '' &&
                                                       productData[
                                                               'productPrice'] !=
                                                           null
                                                   ? 'Rs. ${productData['productPrice']}'
-                                                  : "N/A",
+                                                  : 'N/A',
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                 fontSize: width * 0.045,

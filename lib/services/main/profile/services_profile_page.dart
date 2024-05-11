@@ -243,7 +243,7 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
               FeatherIcons.logOut,
               color: primaryDark,
             ),
-            tooltip: "Log Out",
+            tooltip: 'Log Out',
           ),
         ],
       ),

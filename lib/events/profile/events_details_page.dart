@@ -201,7 +201,7 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
         await storage.refFromURL(previousUrl).delete();
 
         Map<String, dynamic> updatedUserImage = {
-          "Image": im.path,
+          'Image': im.path,
         };
         Reference ref =
             storage.ref().child('Organizers').child(auth.currentUser!.uid);
@@ -213,7 +213,7 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
           });
         });
         updatedUserImage = {
-          "Image": userPhotoUrl,
+          'Image': userPhotoUrl,
         };
         await FirebaseFirestore.instance
             .collection('Organizers')
@@ -244,7 +244,7 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
       }
     } else {
       if (mounted) {
-        mySnackBar(context, "Image not selected");
+        mySnackBar(context, 'Image not selected');
       }
     }
   }
@@ -315,7 +315,7 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
                                             FeatherIcons.camera,
                                             size: width * 0.09,
                                           ),
-                                          tooltip: "Change Photo",
+                                          tooltip: 'Change Photo',
                                         ),
                                       ),
                                     ],
@@ -414,7 +414,7 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
                             child: DropdownButton(
                               dropdownColor: primary,
                               hint: const Text(
-                                "First Language",
+                                'First Language',
                                 overflow: TextOverflow.ellipsis,
                               ),
                               value: type,
@@ -499,7 +499,7 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
                                             ),
                                           ))
                                       : MyButton(
-                                          text: "SAVE",
+                                          text: 'SAVE',
                                           onTap: () async {
                                             setState(() {
                                               isSaving = true;
@@ -513,7 +513,7 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
 
                                   // CANCEL
                                   MyButton(
-                                    text: "CANCEL",
+                                    text: 'CANCEL',
                                     onTap: () {
                                       setState(() {
                                         setState(() {

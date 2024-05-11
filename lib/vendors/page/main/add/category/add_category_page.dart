@@ -57,7 +57,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
           if (mounted) {
             mySnackBar(
               context,
-              "Category with same name already exists",
+              'Category with same name already exists',
             );
           }
           categoryDoesntExists = false;
@@ -114,7 +114,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
             await _image!.delete();
             categoryProvider.clearProducts();
             if (mounted) {
-              mySnackBar(context, "Category Added");
+              mySnackBar(context, 'Category Added');
               Navigator.of(context).pop();
             }
           } catch (e) {
@@ -127,7 +127,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
           });
         } else {
           if (mounted) {
-            mySnackBar(context, "Select an Image");
+            mySnackBar(context, 'Select an Image');
           }
         }
       }
@@ -143,7 +143,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
       });
     } else {
       if (mounted) {
-        mySnackBar(context, "Select an Image");
+        mySnackBar(context, 'Select an Image');
       }
     }
   }
@@ -176,7 +176,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
       appBar: AppBar(
         title: const Text(
           overflow: TextOverflow.ellipsis,
-          "ADD CATEGORY",
+          'ADD CATEGORY',
         ),
         actions: [
           MyTextButton(
@@ -248,7 +248,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                                           FeatherIcons.camera,
                                           size: width * 0.1125,
                                         ),
-                                        tooltip: "Change Image",
+                                        tooltip: 'Change Image',
                                       ),
                                     ),
                                     // REMOVE IMAGE
@@ -260,7 +260,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                                           FeatherIcons.x,
                                           size: width * 0.1125,
                                         ),
-                                        tooltip: "Remove Image",
+                                        tooltip: 'Remove Image',
                                       ),
                                     ),
                                   ],
@@ -298,7 +298,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                                     SizedBox(height: width * 0.1125),
                                     Text(
                                       overflow: TextOverflow.ellipsis,
-                                      "Select Image",
+                                      'Select Image',
                                       style: TextStyle(
                                         fontSize: width * 0.08,
                                         fontWeight: FontWeight.w500,
@@ -321,7 +321,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                         autofillHints: null,
                         autofocus: false,
                         decoration: InputDecoration(
-                          hintText: "Category Name",
+                          hintText: 'Category Name',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -330,7 +330,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                           if (value != null && value.isNotEmpty) {
                             return null;
                           } else {
-                            return "Enter Category Name";
+                            return 'Enter Category Name';
                           }
                         },
                       ),
@@ -344,7 +344,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                       ),
                       child: MyButton(
                         text:
-                            "Add Products - ${productsAddedToCategoryProvider.selectedProducts.length}",
+                            'Add Products - ${productsAddedToCategoryProvider.selectedProducts.length}',
                         onTap: addProduct,
                         isLoading: false,
                         horizontalPadding: 0,

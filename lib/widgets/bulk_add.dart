@@ -107,7 +107,7 @@ class _BulkAddState extends State<BulkAdd> {
                           FeatherIcons.x,
                           size: widget.width * 0.05,
                         ),
-                        tooltip: "Remove Image",
+                        tooltip: 'Remove Image',
                       ),
                     ),
                   ],

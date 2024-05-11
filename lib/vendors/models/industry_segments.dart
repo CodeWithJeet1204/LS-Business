@@ -1,5 +1,5 @@
 List<String> industrySegments = [
-  "Retailer",
-  "Wholesaler",
-  "Manufacturer",
+  'Retailer',
+  'Wholesaler',
+  'Manufacturer',
 ];

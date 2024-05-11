@@ -50,7 +50,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
         await storage.refFromURL(previousUrl).delete();
 
         Map<String, dynamic> updatedUserImage = {
-          "Image": im.path,
+          'Image': im.path,
         };
         Reference ref = FirebaseStorage.instance
             .ref()
@@ -64,7 +64,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
           });
         });
         updatedUserImage = {
-          "Image": userPhotoUrl,
+          'Image': userPhotoUrl,
         };
         await FirebaseFirestore.instance
             .collection('Business')
@@ -85,7 +85,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
       }
     } else {
       if (mounted) {
-        mySnackBar(context, "Image not selected");
+        mySnackBar(context, 'Image not selected');
       }
     }
   }
@@ -98,14 +98,14 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
       });
       if (isChangingName && !isChangingNumber) {
         if (nameController.text.isEmpty) {
-          mySnackBar(context, "Name should be atleast 1 characters long");
+          mySnackBar(context, 'Name should be atleast 1 characters long');
           setState(() {
             isSaving = false;
           });
           return;
         } else {
           Map<String, dynamic> updatedUserName = {
-            "Name": nameController.text.toString(),
+            'Name': nameController.text.toString(),
           };
           await FirebaseFirestore.instance
               .collection('Business')
@@ -121,14 +121,14 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
         });
       } else if (!isChangingName && isChangingNumber) {
         if (numberController.text.length != 10) {
-          mySnackBar(context, "Number should be 10 characters long");
+          mySnackBar(context, 'Number should be 10 characters long');
           setState(() {
             isSaving = false;
           });
           return;
         } else {
           Map<String, dynamic> updatedUserNumber = {
-            "Phone Number": numberController.text.toString(),
+            'Phone Number': numberController.text.toString(),
           };
           await FirebaseFirestore.instance
               .collection('Business')
@@ -149,18 +149,18 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
           });
           return mySnackBar(
             context,
-            "Name should be atleast 1 characters long",
+            'Name should be atleast 1 characters long',
           );
         }
         if (numberController.text.length != 10) {
           setState(() {
             isSaving = false;
           });
-          return mySnackBar(context, "Number should be 10 characters long");
+          return mySnackBar(context, 'Number should be 10 characters long');
         } else {
           // NAME
           Map<String, dynamic> updatedUserName = {
-            "Name": nameController.text.toString(),
+            'Name': nameController.text.toString(),
           };
           await FirebaseFirestore.instance
               .collection('Business')
@@ -171,7 +171,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
 
           // NUMBER
           Map<String, dynamic> updatedUserNumber = {
-            "Phone Number": numberController.text.toString(),
+            'Phone Number': numberController.text.toString(),
           };
           await FirebaseFirestore.instance
               .collection('Business')
@@ -256,7 +256,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
       appBar: AppBar(
         title: const Text(
           overflow: TextOverflow.ellipsis,
-          "Owner Details",
+          'Owner Details',
         ),
       ),
       body: Padding(
@@ -271,7 +271,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                   if (snapshot.hasError) {
                     return const Center(
                       child: Text(
-                        "Something went wrong",
+                        'Something went wrong',
                         overflow: TextOverflow.ellipsis,
                       ),
                     );
@@ -327,7 +327,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                           FeatherIcons.camera,
                                           size: width * 0.1,
                                         ),
-                                        tooltip: "Change Photo",
+                                        tooltip: 'Change Photo',
                                       ),
                                     ),
                                   ],
@@ -351,7 +351,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                     onTapOutside: (event) =>
                                         FocusScope.of(context).unfocus(),
                                     decoration: InputDecoration(
-                                      hintText: "Change Name",
+                                      hintText: 'Change Name',
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(12),
                                       ),
@@ -387,7 +387,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                             });
                                           },
                                           icon: const Icon(FeatherIcons.edit),
-                                          tooltip: "Edit Name",
+                                          tooltip: 'Edit Name',
                                         ),
                                       ),
                                     ],
@@ -412,7 +412,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                     onTapOutside: (event) =>
                                         FocusScope.of(context).unfocus(),
                                     decoration: InputDecoration(
-                                      hintText: "Change Number",
+                                      hintText: 'Change Number',
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(12),
                                       ),
@@ -449,7 +449,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                             });
                                           },
                                           icon: const Icon(FeatherIcons.edit),
-                                          tooltip: "Edit Phone Number",
+                                          tooltip: 'Edit Phone Number',
                                         ),
                                       ),
                                     ],
@@ -514,7 +514,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                               ),
                                             ))
                                         : MyButton(
-                                            text: "SAVE",
+                                            text: 'SAVE',
                                             onTap: () async {
                                               await save();
                                             },
@@ -525,7 +525,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
 
                                     // CANCEL
                                     MyButton(
-                                      text: "CANCEL",
+                                      text: 'CANCEL',
                                       onTap: () {
                                         setState(() {
                                           isChangingName = false;

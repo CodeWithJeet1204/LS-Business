@@ -25,7 +25,7 @@ class _AnalyticsPageState extends State<AnalyticsPage>
       appBar: AppBar(
         title: const Text(
           overflow: TextOverflow.ellipsis,
-          "ANALYTICS",
+          'ANALYTICS',
         ),
         forceMaterialTransparency: true,
         bottom: PreferredSize(
@@ -63,10 +63,10 @@ class _AnalyticsPageState extends State<AnalyticsPage>
             controller: tabController,
             tabs: const [
               Tab(
-                text: "SHOP",
+                text: 'SHOP',
               ),
               Tab(
-                text: "PRODUCTS",
+                text: 'PRODUCTS',
               ),
             ],
           ),

@@ -74,7 +74,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
             });
 
       if (mounted) {
-        mySnackBar(context, "Post Deleted");
+        mySnackBar(context, 'Post Deleted');
       }
     } catch (e) {
       if (mounted) {
@@ -91,11 +91,11 @@ class _AllPostsPageState extends State<AllPostsPage> {
         return AlertDialog(
           title: const Text(
             overflow: TextOverflow.ellipsis,
-            "Confirm DELETE",
+            'Confirm DELETE',
           ),
           content: const Text(
             overflow: TextOverflow.ellipsis,
-            "Are you sure you want to delete this Post\nProduct of this post will not be deleted",
+            'Are you sure you want to delete this Post\nProduct of this post will not be deleted',
           ),
           actions: [
             TextButton(
@@ -172,8 +172,8 @@ class _AllPostsPageState extends State<AllPostsPage> {
                     autocorrect: false,
                     onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     decoration: const InputDecoration(
-                      labelText: "Case - Sensitive",
-                      hintText: "Search ...",
+                      labelText: 'Case - Sensitive',
+                      hintText: 'Search ...',
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
@@ -190,7 +190,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
                   icon: Icon(
                     isGridView ? FeatherIcons.list : FeatherIcons.grid,
                   ),
-                  tooltip: isGridView ? "List View" : "Grid View",
+                  tooltip: isGridView ? 'List View' : 'Grid View',
                 ),
               ],
             ),
@@ -363,13 +363,13 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                 ),
                                                 child: Text(
                                                   postData['postProductPrice'] !=
-                                                              "" &&
+                                                              '' &&
                                                           postData[
                                                                   'postProductPrice'] !=
                                                               null
                                                       ? postData[
                                                           'postProductPrice']
-                                                      : "N/A",
+                                                      : 'N/A',
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   maxLines: 1,
@@ -393,7 +393,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                               color: Colors.red,
                                               size: width * 0.08,
                                             ),
-                                            tooltip: "Delete Post",
+                                            tooltip: 'Delete Post',
                                           ),
                                         ],
                                       ),
@@ -504,11 +504,11 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                         ),
                                       ),
                                       subtitle: Text(
-                                        postData['postProductPrice'] != "" &&
+                                        postData['postProductPrice'] != '' &&
                                                 postData['postProductPrice'] !=
                                                     null
                                             ? 'Rs. ${postData['postProductPrice']}'
-                                            : "N/A",
+                                            : 'N/A',
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                           fontSize: width * 0.045,
@@ -527,7 +527,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                           color: Colors.red,
                                           size: width * 0.075,
                                         ),
-                                        tooltip: "Delete Post",
+                                        tooltip: 'Delete Post',
                                       ),
                                     ),
                                   ),

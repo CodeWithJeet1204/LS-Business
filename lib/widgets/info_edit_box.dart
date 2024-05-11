@@ -144,7 +144,7 @@ class InfoEditBox extends StatelessWidget {
                                   ),
                                 )
                               : const Text(
-                                  "N/A",
+                                  'N/A',
                                   overflow: TextOverflow.ellipsis,
                                 )
                           : Container(),
@@ -157,7 +157,7 @@ class InfoEditBox extends StatelessWidget {
                     FeatherIcons.edit,
                     color: primaryDark,
                   ),
-                  tooltip: "Edit $head",
+                  tooltip: 'Edit $head',
                 )
               : Container(),
         ],

@@ -82,7 +82,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
         mySnackBar(context, 'This Tag has already been added');
       }
     } else {
-      mySnackBar(context, "Tag should be atleast 2 chars long");
+      mySnackBar(context, 'Tag should be atleast 2 chars long');
     }
   }
 
@@ -101,7 +101,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
       });
       otherInfoValueController.clear();
     } else {
-      mySnackBar(context, "Value length should be greater than 1");
+      mySnackBar(context, 'Value length should be greater than 1');
     }
   }
 
@@ -120,14 +120,14 @@ class _AddProductPage2State extends State<AddProductPage2> {
           if (property0Controller.text.isEmpty ||
               property0Controller.text == null) {
             return mySnackBar(
-                context, "Enter value for ${getPropertiesKeys(0)}");
+                context, 'Enter value for ${getPropertiesKeys(0)}');
           }
           property0.add(property0Controller.text.toString().toUpperCase());
         } else if (getNoOfAnswers(0) == 2) {
-          return mySnackBar(context, "Select ${getPropertiesKeys(0)}");
+          return mySnackBar(context, 'Select ${getPropertiesKeys(0)}');
         } else if (getNoOfAnswers(0) == 3) {
           return mySnackBar(
-              context, "Add atleast one value to ${getPropertiesKeys(0)}");
+              context, 'Add atleast one value to ${getPropertiesKeys(0)}');
         }
       }
       if (property1.isEmpty && getCompulsory(1)) {
@@ -135,14 +135,14 @@ class _AddProductPage2State extends State<AddProductPage2> {
           if (property1Controller.text.isEmpty ||
               property1Controller.text == null) {
             return mySnackBar(
-                context, "Enter value for ${getPropertiesKeys(1)}");
+                context, 'Enter value for ${getPropertiesKeys(1)}');
           }
           property1.add(property1Controller.text.toString().toUpperCase());
         } else if (getNoOfAnswers(1) == 2) {
-          return mySnackBar(context, "Select ${getPropertiesKeys(1)}");
+          return mySnackBar(context, 'Select ${getPropertiesKeys(1)}');
         } else if (getNoOfAnswers(1) == 3) {
           return mySnackBar(
-              context, "Add atleast one value to ${getPropertiesKeys(1)}");
+              context, 'Add atleast one value to ${getPropertiesKeys(1)}');
         }
       }
       if (property2.isEmpty && getCompulsory(2)) {
@@ -150,14 +150,14 @@ class _AddProductPage2State extends State<AddProductPage2> {
           if (property2Controller.text.isEmpty ||
               property2Controller.text == null) {
             return mySnackBar(
-                context, "Enter value for ${getPropertiesKeys(2)}");
+                context, 'Enter value for ${getPropertiesKeys(2)}');
           }
           property2.add(property2Controller.text.toString().toUpperCase());
         } else if (getNoOfAnswers(2) == 2) {
-          return mySnackBar(context, "Select ${getPropertiesKeys(2)}");
+          return mySnackBar(context, 'Select ${getPropertiesKeys(2)}');
         } else if (getNoOfAnswers(2) == 3) {
           return mySnackBar(
-              context, "Add atleast one value to ${getPropertiesKeys(2)}");
+              context, 'Add atleast one value to ${getPropertiesKeys(2)}');
         }
       }
       if (property3.isEmpty && getCompulsory(3)) {
@@ -165,14 +165,14 @@ class _AddProductPage2State extends State<AddProductPage2> {
           if (property3Controller.text.isEmpty ||
               property3Controller.text == null) {
             return mySnackBar(
-                context, "Enter value for ${getPropertiesKeys(3)}");
+                context, 'Enter value for ${getPropertiesKeys(3)}');
           }
           property3.add(property3Controller.text.toString().toUpperCase());
         } else if (getNoOfAnswers(3) == 2) {
-          return mySnackBar(context, "Select ${getPropertiesKeys(3)}");
+          return mySnackBar(context, 'Select ${getPropertiesKeys(3)}');
         } else if (getNoOfAnswers(3) == 3) {
           return mySnackBar(
-              context, "Add atleast one value to ${getPropertiesKeys(3)}");
+              context, 'Add atleast one value to ${getPropertiesKeys(3)}');
         }
       }
       if (property4.isEmpty && getCompulsory(4)) {
@@ -180,14 +180,14 @@ class _AddProductPage2State extends State<AddProductPage2> {
           if (property4Controller.text.isEmpty ||
               property4Controller.text == null) {
             return mySnackBar(
-                context, "Enter value for ${getPropertiesKeys(4)}");
+                context, 'Enter value for ${getPropertiesKeys(4)}');
           }
           property4.add(property4Controller.text.toString().toUpperCase());
         } else if (getNoOfAnswers(4) == 2) {
-          return mySnackBar(context, "Select ${getPropertiesKeys(4)}");
+          return mySnackBar(context, 'Select ${getPropertiesKeys(4)}');
         } else if (getNoOfAnswers(4) == 3) {
           return mySnackBar(
-              context, "Add atleast one value to ${getPropertiesKeys(4)}");
+              context, 'Add atleast one value to ${getPropertiesKeys(4)}');
         }
       }
       if (property5.isEmpty) {
@@ -195,14 +195,14 @@ class _AddProductPage2State extends State<AddProductPage2> {
           if (property5Controller.text.isEmpty ||
               property5Controller.text == null) {
             return mySnackBar(
-                context, "Enter value for ${getPropertiesKeys(5)}");
+                context, 'Enter value for ${getPropertiesKeys(5)}');
           }
           property5.add(property5Controller.text.toString().toUpperCase());
         } else if (getNoOfAnswers(5) == 2) {
-          return mySnackBar(context, "Select ${getPropertiesKeys(5)}");
+          return mySnackBar(context, 'Select ${getPropertiesKeys(5)}');
         } else if (getNoOfAnswers(5) == 3) {
           return mySnackBar(
-              context, "Add atleast one value to ${getPropertiesKeys(5)}");
+              context, 'Add atleast one value to ${getPropertiesKeys(5)}');
         }
       }
 
@@ -394,8 +394,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
                       child: Column(
                         children: [
                           const Text(
+                            '''Properties marked with \' *
+                                \' are compulsory to fill''',
                             overflow: TextOverflow.ellipsis,
-                            "Properties marked with '*' are compulsory to fill",
                             textAlign: TextAlign.center,
                             maxLines: 1,
                             style: TextStyle(
@@ -408,7 +409,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
 
                           // TAGS
                           PropertyBox(
-                            headText: "Tags",
+                            headText: 'Tags',
                             widget1: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
@@ -421,7 +422,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                     maxLines: 1,
                                     minLines: 1,
                                     decoration: const InputDecoration(
-                                      hintText: "Product Tags (Optional)",
+                                      hintText: 'Product Tags (Optional)',
                                       border: OutlineInputBorder(
                                         borderSide: BorderSide(
                                           color: primaryDark2,
@@ -435,7 +436,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                   onPressed: () {
                                     addTag();
                                   },
-                                  text: "Add",
+                                  text: 'Add',
                                   textColor: primaryDark2,
                                 ),
                               ],
@@ -516,7 +517,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                           getPropertiesKeys(0) != ''
                               ? PropertyBox(
                                   headText: getCompulsory(0)
-                                      ? "${getPropertiesKeys(0)}*"
+                                      ? '${getPropertiesKeys(0)}*'
                                       : getPropertiesKeys(0),
                                   widget1: getNoOfAnswers(0) == 1
                                       ? TextFormField(
@@ -548,7 +549,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                 hint: const Text(
                                                   overflow:
                                                       TextOverflow.ellipsis,
-                                                  "Select",
+                                                  'Select',
                                                 ),
                                                 value: propertyValue0,
                                                 underline: Container(),
@@ -611,7 +612,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                           2) {
                                                         return mySnackBar(
                                                           context,
-                                                          "Answer should be greater than 1",
+                                                          'Answer should be greater than 1',
                                                         );
                                                       }
                                                       setState(() {
@@ -626,7 +627,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                       });
                                                     }
                                                   },
-                                                  text: "ADD",
+                                                  text: 'ADD',
                                                   textColor: primaryDark,
                                                 ),
                                               ],
@@ -719,7 +720,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                           getPropertiesKeys(1) != ''
                               ? PropertyBox(
                                   headText: getCompulsory(1)
-                                      ? "${getPropertiesKeys(1)}*"
+                                      ? '${getPropertiesKeys(1)}*'
                                       : getPropertiesKeys(1),
                                   widget1: getNoOfAnswers(1) == 1
                                       ? TextFormField(
@@ -749,7 +750,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                               child: DropdownButton(
                                                 dropdownColor: primary,
                                                 hint: const Text(
-                                                  "Select",
+                                                  'Select',
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                 ),
@@ -814,7 +815,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                           2) {
                                                         return mySnackBar(
                                                           context,
-                                                          "Answer should be greater than 1",
+                                                          'Answer should be greater than 1',
                                                         );
                                                       }
                                                       setState(() {
@@ -829,7 +830,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                       });
                                                     }
                                                   },
-                                                  text: "ADD",
+                                                  text: 'ADD',
                                                   textColor: primaryDark,
                                                 ),
                                               ],
@@ -922,7 +923,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                           getPropertiesKeys(2) != ''
                               ? PropertyBox(
                                   headText: getCompulsory(2)
-                                      ? "${getPropertiesKeys(2)}*"
+                                      ? '${getPropertiesKeys(2)}*'
                                       : getPropertiesKeys(2),
                                   widget1: getNoOfAnswers(2) == 1
                                       ? TextFormField(
@@ -954,7 +955,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                 hint: const Text(
                                                   overflow:
                                                       TextOverflow.ellipsis,
-                                                  "Select",
+                                                  'Select',
                                                 ),
                                                 value: propertyValue2,
                                                 underline: Container(),
@@ -1017,7 +1018,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                           2) {
                                                         return mySnackBar(
                                                           context,
-                                                          "Answer should be greater than 1",
+                                                          'Answer should be greater than 1',
                                                         );
                                                       }
                                                       setState(() {
@@ -1032,7 +1033,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                       });
                                                     }
                                                   },
-                                                  text: "ADD",
+                                                  text: 'ADD',
                                                   textColor: primaryDark,
                                                 ),
                                               ],
@@ -1125,7 +1126,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                           getPropertiesKeys(3) != ''
                               ? PropertyBox(
                                   headText: getCompulsory(3)
-                                      ? "${getPropertiesKeys(3)}*"
+                                      ? '${getPropertiesKeys(3)}*'
                                       : getPropertiesKeys(3),
                                   widget1: getNoOfAnswers(3) == 1
                                       ? TextFormField(
@@ -1157,7 +1158,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                 hint: const Text(
                                                   overflow:
                                                       TextOverflow.ellipsis,
-                                                  "Select",
+                                                  'Select',
                                                 ),
                                                 value: propertyValue3,
                                                 underline: Container(),
@@ -1220,7 +1221,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                           2) {
                                                         return mySnackBar(
                                                           context,
-                                                          "Answer should be greater than 1",
+                                                          'Answer should be greater than 1',
                                                         );
                                                       }
                                                       setState(() {
@@ -1235,7 +1236,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                       });
                                                     }
                                                   },
-                                                  text: "ADD",
+                                                  text: 'ADD',
                                                   textColor: primaryDark,
                                                 ),
                                               ],
@@ -1328,7 +1329,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                           getPropertiesKeys(4) != ''
                               ? PropertyBox(
                                   headText: getCompulsory(4)
-                                      ? "${getPropertiesKeys(4)}*"
+                                      ? '${getPropertiesKeys(4)}*'
                                       : getPropertiesKeys(4),
                                   widget1: getNoOfAnswers(4) == 1
                                       ? TextFormField(
@@ -1360,7 +1361,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                 hint: const Text(
                                                   overflow:
                                                       TextOverflow.ellipsis,
-                                                  "Select",
+                                                  'Select',
                                                 ),
                                                 value: propertyValue4,
                                                 underline: Container(),
@@ -1423,7 +1424,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                           2) {
                                                         return mySnackBar(
                                                           context,
-                                                          "Answer should be greater than 1",
+                                                          'Answer should be greater than 1',
                                                         );
                                                       }
                                                       setState(() {
@@ -1438,7 +1439,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                       });
                                                     }
                                                   },
-                                                  text: "ADD",
+                                                  text: 'ADD',
                                                   textColor: primaryDark,
                                                 ),
                                               ],
@@ -1531,7 +1532,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                           getPropertiesKeys(5) != ''
                               ? PropertyBox(
                                   headText: getCompulsory(5)
-                                      ? "${getPropertiesKeys(5)}*"
+                                      ? '${getPropertiesKeys(5)}*'
                                       : getPropertiesKeys(5),
                                   widget1: getNoOfAnswers(5) == 1
                                       ? TextFormField(
@@ -1563,7 +1564,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                 hint: const Text(
                                                   overflow:
                                                       TextOverflow.ellipsis,
-                                                  "Select",
+                                                  'Select',
                                                 ),
                                                 value: propertyValue5,
                                                 underline: Container(),
@@ -1626,7 +1627,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                           2) {
                                                         return mySnackBar(
                                                           context,
-                                                          "Answer should be greater than 1",
+                                                          'Answer should be greater than 1',
                                                         );
                                                       }
                                                       setState(() {
@@ -1641,7 +1642,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                       });
                                                     }
                                                   },
-                                                  text: "ADD",
+                                                  text: 'ADD',
                                                   textColor: primaryDark,
                                                 ),
                                               ],
@@ -1736,7 +1737,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                               bottom: MediaQuery.of(context).viewInsets.bottom,
                             ),
                             child: PropertyBox(
-                              headText: "Additional Info ?",
+                              headText: 'Additional Info ?',
                               widget1: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
@@ -1748,7 +1749,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                     onTapOutside: (event) =>
                                         FocusScope.of(context).unfocus(),
                                     decoration: const InputDecoration(
-                                      hintText: "Property Name",
+                                      hintText: 'Property Name',
                                       border: OutlineInputBorder(
                                         borderSide: BorderSide(
                                           color: primaryDark2,
@@ -1781,7 +1782,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                     TextInputType.text,
                                                 decoration:
                                                     const InputDecoration(
-                                                  hintText: "Value",
+                                                  hintText: 'Value',
                                                   border: OutlineInputBorder(
                                                     borderSide: BorderSide(
                                                       color: primaryDark2,
@@ -1795,7 +1796,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                               onPressed: () {
                                                 addOtherInfoValue();
                                               },
-                                              text: "Add Value",
+                                              text: 'Add Value',
                                               textColor: primaryDark,
                                             ),
                                           ],

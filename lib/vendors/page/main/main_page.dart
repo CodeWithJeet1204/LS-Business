@@ -188,7 +188,7 @@ class _MainPageState extends State<MainPage> {
                 icon: Icon(
                   FeatherIcons.barChart2,
                 ),
-                label: "Analytics",
+                label: 'Analytics',
               ),
               BottomNavigationBarItem(
                 activeIcon: Icon(
@@ -197,7 +197,7 @@ class _MainPageState extends State<MainPage> {
                 icon: Icon(
                   FeatherIcons.messageCircle,
                 ),
-                label: "Chats",
+                label: 'Chats',
               ),
               BottomNavigationBarItem(
                 activeIcon: Icon(
@@ -206,7 +206,7 @@ class _MainPageState extends State<MainPage> {
                 icon: Icon(
                   FeatherIcons.plusCircle,
                 ),
-                label: "Add",
+                label: 'Add',
               ),
               BottomNavigationBarItem(
                 activeIcon: Icon(
@@ -215,7 +215,7 @@ class _MainPageState extends State<MainPage> {
                 icon: Icon(
                   Icons.percent_rounded,
                 ),
-                label: "Discount",
+                label: 'Discount',
               ),
               BottomNavigationBarItem(
                 activeIcon: Icon(
@@ -224,7 +224,7 @@ class _MainPageState extends State<MainPage> {
                 icon: Icon(
                   FeatherIcons.user,
                 ),
-                label: "Profile",
+                label: 'Profile',
               ),
             ],
           ),

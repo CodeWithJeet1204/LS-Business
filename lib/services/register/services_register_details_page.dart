@@ -145,7 +145,7 @@ class ServicesRegisterDetailsPageState
               const SizedBox(height: 100),
               const Center(
                 child: HeadText(
-                  text: "YOUR\nDETAILS",
+                  text: 'YOUR\nDETAILS',
                 ),
               ),
               const SizedBox(height: 40),
@@ -164,7 +164,7 @@ class ServicesRegisterDetailsPageState
                           IconButton.filledTonal(
                             icon: const Icon(Icons.camera_alt_outlined),
                             iconSize: width * 0.09,
-                            tooltip: "Change User Picture",
+                            tooltip: 'Change User Picture',
                             onPressed: () async {
                               await selectImage();
                             },
@@ -194,7 +194,7 @@ class ServicesRegisterDetailsPageState
                   children: [
                     // NAME
                     MyTextFormField(
-                      hintText: "Name",
+                      hintText: 'Name',
                       controller: nameController,
                       borderRadius: 12,
                       horizontalPadding: width * 0.055,
@@ -204,7 +204,7 @@ class ServicesRegisterDetailsPageState
 
                     // EMAIL
                     MyTextFormField(
-                      hintText: "Email",
+                      hintText: 'Email',
                       controller: emailController,
                       borderRadius: 12,
                       horizontalPadding: width * 0.055,
@@ -217,7 +217,7 @@ class ServicesRegisterDetailsPageState
 
                     // NUMBER
                     MyTextFormField(
-                      hintText: "Phone Number (Personal)",
+                      hintText: 'Phone Number (Personal)',
                       controller: phoneController,
                       borderRadius: 12,
                       horizontalPadding: width * 0.055,
@@ -230,7 +230,7 @@ class ServicesRegisterDetailsPageState
 
                     // AGE
                     MyTextFormField(
-                      hintText: "Age",
+                      hintText: 'Age',
                       controller: ageController,
                       borderRadius: 12,
                       keyboardType: TextInputType.number,
@@ -241,7 +241,7 @@ class ServicesRegisterDetailsPageState
 
                     // ADDRESS
                     MyTextFormField(
-                      hintText: "Address",
+                      hintText: 'Address',
                       controller: addressController,
                       borderRadius: 12,
                       horizontalPadding: width * 0.055,
@@ -268,7 +268,7 @@ class ServicesRegisterDetailsPageState
                         child: DropdownButton(
                           dropdownColor: primary,
                           hint: const Text(
-                            "Select Gender",
+                            'Select Gender',
                             overflow: TextOverflow.ellipsis,
                           ),
                           value: isMale != null
@@ -317,7 +317,7 @@ class ServicesRegisterDetailsPageState
                         child: DropdownButton(
                           dropdownColor: primary,
                           hint: const Text(
-                            "First Language",
+                            'First Language',
                             overflow: TextOverflow.ellipsis,
                           ),
                           value: firstLanguage,
@@ -370,7 +370,7 @@ class ServicesRegisterDetailsPageState
                         child: DropdownButton(
                           dropdownColor: primary,
                           hint: const Text(
-                            "Second Language",
+                            'Second Language',
                             overflow: TextOverflow.ellipsis,
                           ),
                           value: secondLanguage,

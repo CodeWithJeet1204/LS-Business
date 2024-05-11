@@ -88,16 +88,16 @@ class _BusinessRegisterDetailsPageState
             .collection('Shops')
             .doc(FirebaseAuth.instance.currentUser!.uid)
             .update({
-          "Name": nameController.text.toString(),
+          'Name': nameController.text.toString(),
           'Views': 0,
-          'viewsDateTime': [],
+          'viewsTimestamp': [],
           'Followers': [],
           'followersDateTime': [],
-          "GSTNumber": gstController.text.toString(),
-          "Address": addressController.text.toString(),
-          "Description": descriptionController.text.toString(),
-          "Industry": selectedIndustrySegment,
-          "Image": _image != null
+          'GSTNumber': gstController.text.toString(),
+          'Address': addressController.text.toString(),
+          'Description': descriptionController.text.toString(),
+          'Industry': selectedIndustrySegment,
+          'Image': _image != null
               ? businessPhotoUrl
               : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1fDf705o-VZ3lVxTLh0jLPyFApbnwGoNHhSpwODOC0g&s',
         });
@@ -137,7 +137,7 @@ class _BusinessRegisterDetailsPageState
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.875,
                 child: const HeadText(
-                  text: "BUSINESS\nDETAILS",
+                  text: 'BUSINESS\nDETAILS',
                 ),
               ),
               const SizedBox(height: 40),
@@ -154,7 +154,7 @@ class _BusinessRegisterDetailsPageState
                         IconButton.filledTonal(
                           icon: const Icon(Icons.camera_alt_outlined),
                           iconSize: MediaQuery.of(context).size.width * 0.1,
-                          tooltip: "Change Shop Picture",
+                          tooltip: 'Change Shop Picture',
                           onPressed: () async {
                             await selectImage();
                           },
@@ -181,7 +181,7 @@ class _BusinessRegisterDetailsPageState
                   children: [
                     // SHOP NAME
                     MyTextFormField(
-                      hintText: "Shop Name",
+                      hintText: 'Shop Name',
                       controller: nameController,
                       borderRadius: 12,
                       horizontalPadding:
@@ -193,7 +193,7 @@ class _BusinessRegisterDetailsPageState
 
                     // GST NUMBER
                     MyTextFormField(
-                      hintText: "GST Number",
+                      hintText: 'GST Number',
                       controller: gstController,
                       borderRadius: 12,
                       horizontalPadding:
@@ -205,7 +205,7 @@ class _BusinessRegisterDetailsPageState
 
                     // ADDRESS
                     MyTextFormField(
-                      hintText: "Address (Don't include Shop Name)",
+                      hintText: 'Address (Don\'t include Shop Name)',
                       controller: addressController,
                       borderRadius: 12,
                       horizontalPadding:
@@ -236,7 +236,7 @@ class _BusinessRegisterDetailsPageState
                         dropdownColor: primary2,
                         hint: const Text(
                           overflow: TextOverflow.ellipsis,
-                          "Select Industry Segment",
+                          'Select Industry Segment',
                         ),
                         items: industrySegments
                             .map((element) => DropdownMenuItem(
@@ -256,7 +256,7 @@ class _BusinessRegisterDetailsPageState
 
                     // SPECIAL NOTE
                     MyTextFormField(
-                      hintText: "Description",
+                      hintText: 'Description',
                       controller: descriptionController,
                       borderRadius: 12,
                       horizontalPadding:

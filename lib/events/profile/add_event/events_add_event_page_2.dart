@@ -177,7 +177,7 @@ class _EventsAddEventPage2State extends State<EventsAddEventPage2> {
         actions: [
           MyTextButton(
             onPressed: next,
-            text: "NEXT",
+            text: 'NEXT',
             textColor: primaryDark2,
           ),
         ],
@@ -251,7 +251,7 @@ class _EventsAddEventPage2State extends State<EventsAddEventPage2> {
                                             FeatherIcons.edit,
                                             size: width * 0.066,
                                           ),
-                                          tooltip: "Change Date",
+                                          tooltip: 'Change Date',
                                         )
                                       : Container(),
                                 ],
@@ -262,7 +262,7 @@ class _EventsAddEventPage2State extends State<EventsAddEventPage2> {
                                     onPressed: () async {
                                       await selectStartDate();
                                     },
-                                    text: "Select Date",
+                                    text: 'Select Date',
                                     textColor: primaryDark,
                                   )
                                 : Padding(
@@ -321,7 +321,7 @@ class _EventsAddEventPage2State extends State<EventsAddEventPage2> {
                                             FeatherIcons.edit,
                                             size: width * 0.066,
                                           ),
-                                          tooltip: "Change Date",
+                                          tooltip: 'Change Date',
                                         )
                                       : Container(),
                                 ],
@@ -332,7 +332,7 @@ class _EventsAddEventPage2State extends State<EventsAddEventPage2> {
                                     onPressed: () async {
                                       await selectEndDate();
                                     },
-                                    text: "Select Date",
+                                    text: 'Select Date',
                                     textColor: primaryDark,
                                   )
                                 : Padding(
@@ -402,7 +402,7 @@ class _EventsAddEventPage2State extends State<EventsAddEventPage2> {
                                       onPressed: () async {
                                         await selectStartTime();
                                       },
-                                      text: "Select Start Time",
+                                      text: 'Select Start Time',
                                       textColor: primaryDark,
                                     )
                                   : GestureDetector(
@@ -434,7 +434,7 @@ class _EventsAddEventPage2State extends State<EventsAddEventPage2> {
                                       onPressed: () async {
                                         await selectEndTime();
                                       },
-                                      text: "Select End Time",
+                                      text: 'Select End Time',
                                       textColor: primaryDark,
                                     )
                                   : GestureDetector(
@@ -544,7 +544,7 @@ class _EventsAddEventPage2State extends State<EventsAddEventPage2> {
                                               onPressed: () async {
                                                 await selectWeekendStartTime();
                                               },
-                                              text: "Select Start Time",
+                                              text: 'Select Start Time',
                                               textColor: primaryDark,
                                             )
                                           : GestureDetector(
@@ -581,7 +581,7 @@ class _EventsAddEventPage2State extends State<EventsAddEventPage2> {
                                               onPressed: () async {
                                                 await selectWeekendEndTime();
                                               },
-                                              text: "Select End Time",
+                                              text: 'Select End Time',
                                               textColor: primaryDark,
                                             )
                                           : GestureDetector(

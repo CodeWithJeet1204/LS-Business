@@ -57,8 +57,8 @@ class _AddPostPageState extends State<AddPostPage> {
                 mySnackBar(
                   context,
                   isTextPost
-                      ? "Text Post Already Exists for one of the product"
-                      : "Image Post Already Exists for the product",
+                      ? 'Text Post Already Exists for one of the product'
+                      : 'Image Post Already Exists for the product',
                 );
               }
               postDoesntExists = false;
@@ -130,7 +130,7 @@ class _AddPostPageState extends State<AddPostPage> {
           postProvider.clear();
 
           if (mounted) {
-            mySnackBar(context, "Posted");
+            mySnackBar(context, 'Posted');
             Navigator.of(context).pop();
           }
         }
@@ -177,14 +177,14 @@ class _AddPostPageState extends State<AddPostPage> {
       appBar: AppBar(
         title: const Text(
           overflow: TextOverflow.ellipsis,
-          "CREATE POST",
+          'CREATE POST',
         ),
         actions: [
           MyTextButton(
             onPressed: () async {
               if (selectedProducts.isEmpty ||
                   selectedProductProvider.isTextPost == null) {
-                return mySnackBar(context, "Select a Post Type");
+                return mySnackBar(context, 'Select a Post Type');
               } else {
                 await post(
                   selectedProductProvider,
@@ -192,7 +192,7 @@ class _AddPostPageState extends State<AddPostPage> {
                 );
               }
             },
-            text: "DONE",
+            text: 'DONE',
             textColor: primaryDark2,
           ),
         ],
@@ -246,7 +246,7 @@ class _AddPostPageState extends State<AddPostPage> {
                       children: [
                         Text(
                           overflow: TextOverflow.ellipsis,
-                          "Select the type of post you want to create",
+                          'Select the type of post you want to create',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: primaryDark,
@@ -256,7 +256,7 @@ class _AddPostPageState extends State<AddPostPage> {
                         ),
                         Text(
                           overflow: TextOverflow.ellipsis,
-                          "Just select the product you want the post",
+                          'Just select the product you want the post',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: primaryDark,
@@ -265,7 +265,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           ),
                         ),
                         Text(
-                          "Then the product details will automatically be added",
+                          'Then the product details will automatically be added',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: primaryDark,
@@ -290,10 +290,10 @@ class _AddPostPageState extends State<AddPostPage> {
                 opacity: textPostRemaining > 0 ? 1 : 0.5,
                 child: MyButton(
                   text: selectedProducts.isEmpty
-                      ? "TEXT POST"
+                      ? 'TEXT POST'
                       : selectedProductProvider.isTextPost == true
-                          ? "TEXT POSTS: ${selectedProducts.length}"
-                          : "TEXT POST",
+                          ? 'TEXT POSTS: ${selectedProducts.length}'
+                          : 'TEXT POST',
                   onTap: textPostRemaining > 0
                       ? () {
                           selectedProductProvider.changePostType(true);
@@ -319,10 +319,10 @@ class _AddPostPageState extends State<AddPostPage> {
                 opacity: imagePostRemaining > 0 ? 1 : 0.5,
                 child: MyButton(
                   text: selectedProducts.isEmpty
-                      ? "IMAGE POST"
+                      ? 'IMAGE POST'
                       : selectedProductProvider.isTextPost == false
-                          ? "IMAGE POSTS: ${selectedProducts.length}"
-                          : "IMAGE POST",
+                          ? 'IMAGE POSTS: ${selectedProducts.length}'
+                          : 'IMAGE POST',
                   onTap: imagePostRemaining > 0
                       ? () {
                           selectedProductProvider.changePostType(false);

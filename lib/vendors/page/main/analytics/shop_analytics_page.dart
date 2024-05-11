@@ -153,7 +153,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                               child: DropdownButton(
                                 hint: const Text(
                                   overflow: TextOverflow.ellipsis,
-                                  "Select Duration",
+                                  'Select Duration',
                                 ),
                                 value: selectedStringDuration,
                                 underline: const SizedBox(),
@@ -212,7 +212,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                           List<DateTime> viewTimestamps = [];
                           List<DateTime> followerTimestamps = [];
                           for (Timestamp viewDate
-                              in shopData['viewsDateTime']) {
+                              in shopData['viewsTimestamp']) {
                             if (selectedDuration != null) {
                               if (viewDate
                                   .toDate()

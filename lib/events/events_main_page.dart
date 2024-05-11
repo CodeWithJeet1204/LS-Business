@@ -88,14 +88,14 @@ class _EventsMainPageState extends State<EventsMainPage> {
     //           FeatherIcons.plusCircle,
     //         ),
     //         label: 'Add',
-    //         tooltip: "ADD",
+    //         tooltip: 'ADD',
     //       ),
     //       BottomNavigationBarItem(
     //         icon: Icon(
     //           FeatherIcons.user,
     //         ),
     //         label: 'Profile',
-    //         tooltip: "PROFILE",
+    //         tooltip: 'PROFILE',
     //       ),
     //     ],
     //   ),

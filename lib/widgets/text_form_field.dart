@@ -110,21 +110,21 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
               validator: (value) {
                 if (value != null) {
                   if (value.isNotEmpty) {
-                    if (widget.hintText == "Email") {
+                    if (widget.hintText == 'Email') {
                       if (!value.contains('@') || !value.contains('.co')) {
                         return 'Invalid email';
                       }
-                    } else if (widget.hintText == "Phone Number") {
+                    } else if (widget.hintText == 'Phone Number') {
                       if (value.length != 10) {
                         return 'Nnumber should be 10 chars long';
                       }
-                    } else if (widget.hintText == "GST Number") {
+                    } else if (widget.hintText == 'GST Number') {
                       if (value.length < 15) {
                         return 'GST Number should be 15 characters long';
                       }
                     }
                   } else {
-                    return "Pls enter ${widget.hintText}";
+                    return 'Pls enter ${widget.hintText}';
                   }
                 }
                 return null;

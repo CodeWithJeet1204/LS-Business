@@ -96,7 +96,7 @@ class _SelectModePageState extends State<SelectModePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Select Mode"),
+        title: const Text('Select Mode'),
       ),
       body: SingleChildScrollView(
         child: Column(

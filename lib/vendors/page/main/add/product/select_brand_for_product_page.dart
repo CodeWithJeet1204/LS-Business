@@ -40,14 +40,14 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
       appBar: AppBar(
         title: const Text(
           overflow: TextOverflow.ellipsis,
-          "SELECT BRANDS",
+          'SELECT BRANDS',
         ),
         actions: [
           MyTextButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            text: "NEXT",
+            text: 'NEXT',
             textColor: primaryDark,
           ),
         ],
@@ -70,7 +70,7 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                     autocorrect: false,
                     onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     decoration: const InputDecoration(
-                      hintText: "Search ...",
+                      hintText: 'Search ...',
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
@@ -87,7 +87,7 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                   icon: Icon(
                     isGridView ? FeatherIcons.list : FeatherIcons.grid,
                   ),
-                  tooltip: isGridView ? "List View" : "Grid View",
+                  tooltip: isGridView ? 'List View' : 'Grid View',
                 ),
               ],
             ),
@@ -106,7 +106,7 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                   if (snapshot.hasError) {
                     return const Center(
                       child: Text(
-                        "Something went wrong",
+                        'Something went wrong',
                         overflow: TextOverflow.ellipsis,
                       ),
                     );
@@ -184,7 +184,7 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                                                             overflow:
                                                                 TextOverflow
                                                                     .ellipsis,
-                                                            "No Image",
+                                                            'No Image',
                                                             style: TextStyle(
                                                               color:
                                                                   primaryDark2,

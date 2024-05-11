@@ -55,10 +55,10 @@ class _TabBarPageState extends State<TabBarPage> with TickerProviderStateMixin {
           controller: tabController,
           tabs: const [
             Tab(
-              text: "POSTS",
+              text: 'POSTS',
             ),
             Tab(
-              text: "CATEGORIES",
+              text: 'CATEGORIES',
             ),
           ],
         ),

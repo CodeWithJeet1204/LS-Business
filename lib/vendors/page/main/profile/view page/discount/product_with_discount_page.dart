@@ -35,7 +35,7 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
         return AlertDialog(
           title: Text(
             overflow: TextOverflow.ellipsis,
-            "Remove $productName",
+            'Remove $productName',
           ),
           content: Text(
             overflow: TextOverflow.ellipsis,
@@ -46,14 +46,14 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              text: "NO",
+              text: 'NO',
               textColor: Colors.green,
             ),
             MyTextButton(
               onPressed: () async {
                 await remove(productId);
               },
-              text: "YES",
+              text: 'YES',
               textColor: Colors.red,
             ),
           ],
@@ -138,7 +138,7 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
                     autocorrect: false,
                     onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     decoration: const InputDecoration(
-                      hintText: "Search ...",
+                      hintText: 'Search ...',
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
@@ -155,7 +155,7 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
                   icon: Icon(
                     isGridView ? Icons.list : Icons.grid_view_rounded,
                   ),
-                  tooltip: isGridView ? "List View" : "Grid View",
+                  tooltip: isGridView ? 'List View' : 'Grid View',
                 ),
               ],
             ),
@@ -254,7 +254,7 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
                                         //     color: Colors.red,
                                         //     size: width * 0.075,
                                         //   ),
-                                        //   tooltip: "Remove",
+                                        //   tooltip: 'Remove',
                                         // ),
                                       ],
                                     ),

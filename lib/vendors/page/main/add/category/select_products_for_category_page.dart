@@ -89,7 +89,7 @@ class _SelectProductsForCategoryPageState
       appBar: AppBar(
         title: const Text(
           overflow: TextOverflow.ellipsis,
-          "SELECT PRODUCTS",
+          'SELECT PRODUCTS',
         ),
         actions: [
           MyTextButton(
@@ -103,7 +103,7 @@ class _SelectProductsForCategoryPageState
                     );
                     productsAddedToCategoryProvider.clearProducts();
                   },
-            text: "NEXT",
+            text: 'NEXT',
             textColor: primaryDark,
           ),
         ],
@@ -129,8 +129,8 @@ class _SelectProductsForCategoryPageState
                         onTapOutside: (event) =>
                             FocusScope.of(context).unfocus(),
                         decoration: const InputDecoration(
-                          labelText: "Case - Sensitive",
-                          hintText: "Search ...",
+                          labelText: 'Case - Sensitive',
+                          hintText: 'Search ...',
                           border: OutlineInputBorder(),
                         ),
                         onChanged: (value) {
@@ -148,7 +148,7 @@ class _SelectProductsForCategoryPageState
                         isGridView ? FeatherIcons.list : FeatherIcons.grid,
                       ),
                       iconSize: MediaQuery.of(context).size.width * 0.08,
-                      tooltip: isGridView ? "List View" : "Grid View",
+                      tooltip: isGridView ? 'List View' : 'Grid View',
                     ),
                   ],
                 ),
@@ -168,7 +168,7 @@ class _SelectProductsForCategoryPageState
                 return const Center(
                   child: Text(
                     overflow: TextOverflow.ellipsis,
-                    "Something went wrong",
+                    'Something went wrong',
                   ),
                 );
               }
@@ -270,13 +270,13 @@ class _SelectProductsForCategoryPageState
                                                 ),
                                                 child: Text(
                                                   productData['productPrice'] !=
-                                                              "" &&
+                                                              '' &&
                                                           productData[
                                                                   'productPrice'] !=
                                                               null
                                                       ? productData[
                                                           'productPrice']
-                                                      : "N/A",
+                                                      : 'N/A',
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   maxLines: 1,
@@ -386,12 +386,12 @@ class _SelectProductsForCategoryPageState
                                             ),
                                           ),
                                           subtitle: Text(
-                                            productData['productPrice'] != "" &&
+                                            productData['productPrice'] != '' &&
                                                     productData[
                                                             'productPrice'] !=
                                                         null
                                                 ? productData['productPrice']
-                                                : "N/A",
+                                                : 'N/A',
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               fontSize: width * 0.04,

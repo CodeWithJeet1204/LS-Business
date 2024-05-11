@@ -41,14 +41,14 @@ class _SelectBrandForDiscountPageState
       appBar: AppBar(
         title: const Text(
           overflow: TextOverflow.ellipsis,
-          "SELECT BRANDS",
+          'SELECT BRANDS',
         ),
         actions: [
           MyTextButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            text: "DONE",
+            text: 'DONE',
             textColor: primaryDark,
           ),
         ],
@@ -71,7 +71,7 @@ class _SelectBrandForDiscountPageState
                     autocorrect: false,
                     onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     decoration: const InputDecoration(
-                      hintText: "Search ...",
+                      hintText: 'Search ...',
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
@@ -88,7 +88,7 @@ class _SelectBrandForDiscountPageState
                   icon: Icon(
                     isGridView ? FeatherIcons.list : FeatherIcons.grid,
                   ),
-                  tooltip: isGridView ? "List View" : "Grid View",
+                  tooltip: isGridView ? 'List View' : 'Grid View',
                 ),
               ],
             ),
@@ -107,7 +107,7 @@ class _SelectBrandForDiscountPageState
                   if (snapshot.hasError) {
                     return const Center(
                       child: Text(
-                        "Something went wrong",
+                        'Something went wrong',
                         overflow: TextOverflow.ellipsis,
                       ),
                     );

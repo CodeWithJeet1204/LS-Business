@@ -133,7 +133,7 @@ class _ProductPageState extends State<ProductPage> {
                                             ? TextInputType.text
                                             : TextInputType.number,
                                         decoration: InputDecoration(
-                                          hintText: "Enter $propertyValue",
+                                          hintText: 'Enter $propertyValue',
                                           border: OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.circular(8),
@@ -145,7 +145,7 @@ class _ProductPageState extends State<ProductPage> {
                                                 value.length >= 2) {
                                               return null;
                                             } else {
-                                              return "Min 2 chars required";
+                                              return 'Min 2 chars required';
                                             }
                                           } else {
                                             if (value == null ||
@@ -216,7 +216,7 @@ class _ProductPageState extends State<ProductPage> {
                                                 }
                                               }
                                             },
-                                            text: "ADD",
+                                            text: 'ADD',
                                             textColor: primaryDark2,
                                           )
                                         : Container(),
@@ -225,7 +225,7 @@ class _ProductPageState extends State<ProductPage> {
                               ),
                               noOfAnswers != 1 &&
                                       (property as List).isNotEmpty &&
-                                      property[0] != ""
+                                      property[0] != ''
                                   ? SizedBox(
                                       height: 50,
                                       child: ListView.builder(
@@ -336,7 +336,7 @@ class _ProductPageState extends State<ProductPage> {
                                   : Container(),
                               noOfAnswers == 1
                                   ? MyButton(
-                                      text: "SAVE",
+                                      text: 'SAVE',
                                       onTap: () async {
                                         if (editKey.currentState!.validate()) {
                                           setState(() {
@@ -489,7 +489,7 @@ class _ProductPageState extends State<ProductPage> {
       }
     } else {
       if (mounted) {
-        mySnackBar(context, "Select an Image");
+        mySnackBar(context, 'Select an Image');
       }
     }
   }
@@ -518,7 +518,7 @@ class _ProductPageState extends State<ProductPage> {
       }
     } else {
       if (mounted) {
-        mySnackBar(context, "Select an Image");
+        mySnackBar(context, 'Select an Image');
       }
     }
   }
@@ -574,11 +574,11 @@ class _ProductPageState extends State<ProductPage> {
       builder: ((context) {
         return AlertDialog(
           title: const Text(
-            "Confirm DELETE",
+            'Confirm DELETE',
             overflow: TextOverflow.ellipsis,
           ),
           content: const Text(
-            "Are you sure you want to delete this product & all its posts",
+            'Are you sure you want to delete this product & all its posts',
             overflow: TextOverflow.ellipsis,
           ),
           actions: [
@@ -807,7 +807,7 @@ class _ProductPageState extends State<ProductPage> {
               FeatherIcons.trash,
               color: Colors.red,
             ),
-            tooltip: "DELETE",
+            tooltip: 'DELETE',
           ),
         ],
       ),
@@ -962,7 +962,7 @@ class _ProductPageState extends State<ProductPage> {
                                                       FeatherIcons.camera,
                                                       size: width * 0.1,
                                                     ),
-                                                    tooltip: "Change Image",
+                                                    tooltip: 'Change Image',
                                                   ),
                                                 ),
                                                 Padding(
@@ -983,7 +983,7 @@ class _ProductPageState extends State<ProductPage> {
                                                       FeatherIcons.x,
                                                       size: width * 0.1,
                                                     ),
-                                                    tooltip: "Remove Image",
+                                                    tooltip: 'Remove Image',
                                                   ),
                                                 ),
                                               ],
@@ -1055,7 +1055,7 @@ class _ProductPageState extends State<ProductPage> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        "Add Image",
+                                        'Add Image',
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                       Icon(FeatherIcons.plus),
@@ -1103,7 +1103,7 @@ class _ProductPageState extends State<ProductPage> {
                                   FeatherIcons.edit,
                                   size: width * 0.066,
                                 ),
-                                tooltip: "Edit Name",
+                                tooltip: 'Edit Name',
                               ),
                             ],
                           ),
@@ -1148,7 +1148,7 @@ class _ProductPageState extends State<ProductPage> {
                                                 padding: EdgeInsets.symmetric(
                                                   horizontal: width * 0.0225,
                                                 ),
-                                                child: price == "" ||
+                                                child: price == '' ||
                                                         price == 'N/A'
                                                     ? const Text(
                                                         'N/A',
@@ -1207,7 +1207,7 @@ class _ProductPageState extends State<ProductPage> {
                                                 ),
                                                 child: data['isPercent']
                                                     ? Text(
-                                                        "${data['discountAmount']}% off",
+                                                        '${data['discountAmount']}% off',
                                                         overflow: TextOverflow
                                                             .ellipsis,
                                                         style: const TextStyle(
@@ -1216,7 +1216,7 @@ class _ProductPageState extends State<ProductPage> {
                                                         ),
                                                       )
                                                     : Text(
-                                                        "Save Rs. ${data['discountAmount']}",
+                                                        'Save Rs. ${data['discountAmount']}',
                                                         overflow: TextOverflow
                                                             .ellipsis,
                                                         style: const TextStyle(
@@ -1266,9 +1266,9 @@ class _ProductPageState extends State<ProductPage> {
                                             left: width * 0.02775,
                                           ),
                                           child: Text(
-                                            productData['productPrice'] == ""
-                                                ? "N/A"
-                                                : "Rs. ${productData['productPrice']}",
+                                            productData['productPrice'] == ''
+                                                ? 'N/A'
+                                                : 'Rs. ${productData['productPrice']}',
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               color: primaryDark,
@@ -1280,7 +1280,7 @@ class _ProductPageState extends State<ProductPage> {
                                         MyTextButton(
                                           onPressed:
                                               productData['productPrice'] ==
-                                                      "N/A"
+                                                      'N/A'
                                                   ? () {}
                                                   : () async {
                                                       Navigator.of(context)
@@ -1300,7 +1300,7 @@ class _ProductPageState extends State<ProductPage> {
                                                         ),
                                                       );
                                                     },
-                                          text: "Add Discount",
+                                          text: 'Add Discount',
                                           textColor: primaryDark2,
                                         ),
                                       ],
@@ -1320,7 +1320,7 @@ class _ProductPageState extends State<ProductPage> {
                                   FeatherIcons.edit,
                                   color: primaryDark,
                                 ),
-                                tooltip: "Edit Price",
+                                tooltip: 'Edit Price',
                               ),
                             ],
                           ),
@@ -1356,7 +1356,7 @@ class _ProductPageState extends State<ProductPage> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            "Available",
+                                            'Available',
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               color: primaryDark,
@@ -1401,7 +1401,7 @@ class _ProductPageState extends State<ProductPage> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            "Out Of Stock",
+                                            'Out Of Stock',
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               color: primaryDark,
@@ -1487,7 +1487,7 @@ class _ProductPageState extends State<ProductPage> {
                                       );
                                     },
                                     icon: const Icon(FeatherIcons.edit),
-                                    tooltip: "Change Category",
+                                    tooltip: 'Change Category',
                                   ),
                                 ],
                               ),
@@ -1607,7 +1607,7 @@ class _ProductPageState extends State<ProductPage> {
                                             setState(() {});
                                           },
                                           icon: const Icon(FeatherIcons.edit),
-                                          tooltip: "Change Category",
+                                          tooltip: 'Change Category',
                                         ),
                                       ],
                                     ),
@@ -1651,7 +1651,7 @@ class _ProductPageState extends State<ProductPage> {
 
                           // BRAND
                           InfoBox(
-                            text: "Brand",
+                            text: 'Brand',
                             value: brand,
                           ),
 
@@ -1787,7 +1787,7 @@ class _ProductPageState extends State<ProductPage> {
 
                           // TAGS
                           InfoEditBox(
-                            head: "Tags",
+                            head: 'Tags',
                             content: tags,
                             propertyValue: tags,
                             noOfAnswers: 3,
@@ -1893,7 +1893,7 @@ class _ProductPageState extends State<ProductPage> {
                                       SizedBox(
                                         width: width * 0.5,
                                         child: Text(
-                                          "View All Products Insights",
+                                          'View All Products Insights',
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             color: primaryDark2,

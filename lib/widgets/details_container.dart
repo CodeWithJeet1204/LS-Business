@@ -46,7 +46,7 @@ class _DetailsContainerState extends State<DetailsContainer> {
               controller: widget.controller,
               onTapOutside: (event) => FocusScope.of(context).unfocus(),
               decoration: InputDecoration(
-                hintText: "Change ${widget.text}",
+                hintText: 'Change ${widget.text}',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -76,7 +76,7 @@ class _DetailsContainerState extends State<DetailsContainer> {
                   child: IconButton(
                     onPressed: widget.onTap,
                     icon: const Icon(FeatherIcons.edit),
-                    tooltip: "Edit ${widget.text}",
+                    tooltip: 'Edit ${widget.text}',
                   ),
                 ),
               ],

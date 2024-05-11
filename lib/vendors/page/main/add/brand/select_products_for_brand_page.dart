@@ -80,7 +80,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
       appBar: AppBar(
         title: const Text(
           overflow: TextOverflow.ellipsis,
-          "SELECT PRODUCTS",
+          'SELECT PRODUCTS',
         ),
         actions: [
           MyTextButton(
@@ -94,7 +94,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                 Navigator.of(context).pop();
               }
             },
-            text: "NEXT",
+            text: 'NEXT',
             textColor: primaryDark,
           ),
         ],
@@ -120,8 +120,8 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                         onTapOutside: (event) =>
                             FocusScope.of(context).unfocus(),
                         decoration: const InputDecoration(
-                          labelText: "Case - Sensitive",
-                          hintText: "Search ...",
+                          labelText: 'Case - Sensitive',
+                          hintText: 'Search ...',
                           border: OutlineInputBorder(),
                         ),
                         onChanged: (value) {
@@ -139,7 +139,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                         isGridView ? FeatherIcons.list : FeatherIcons.grid,
                       ),
                       iconSize: MediaQuery.of(context).size.width * 0.08,
-                      tooltip: isGridView ? "List View" : "Grid View",
+                      tooltip: isGridView ? 'List View' : 'Grid View',
                     ),
                   ],
                 ),
@@ -159,7 +159,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                 return const Center(
                   child: Text(
                     overflow: TextOverflow.ellipsis,
-                    "Something went wrong",
+                    'Something went wrong',
                   ),
                 );
               }
@@ -247,12 +247,12 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                                             0,
                                           ),
                                           child: Text(
-                                            productData['productPrice'] != "" &&
+                                            productData['productPrice'] != '' &&
                                                     productData[
                                                             'productPrice'] !=
                                                         null
                                                 ? 'Rs. ${productData['productPrice']}'
-                                                : "N/A",
+                                                : 'N/A',
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
@@ -340,11 +340,11 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                                           ),
                                         ),
                                         subtitle: Text(
-                                          productData['productPrice'] != "" &&
+                                          productData['productPrice'] != '' &&
                                                   productData['productPrice'] !=
                                                       null
                                               ? 'Rs. ${productData['productPrice']}'
-                                              : "N/A",
+                                              : 'N/A',
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(

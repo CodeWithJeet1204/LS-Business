@@ -19,7 +19,7 @@ class MembershipCard extends StatefulWidget {
     required this.benefit3,
     required this.storageSize,
     required this.onTap,
-    this.storageUnit = "GB",
+    this.storageUnit = 'GB',
   });
 
   final String name;
@@ -81,7 +81,7 @@ class _MembershipCardState extends State<MembershipCard> {
                       widget.name,
                       style: TextStyle(
                         color: widget.textColor,
-                        fontSize: widget.name == "PREMIUM" ? 32 : 40,
+                        fontSize: widget.name == 'PREMIUM' ? 32 : 40,
                         fontWeight: FontWeight.w800,
                       ),
                     ),
@@ -90,7 +90,7 @@ class _MembershipCardState extends State<MembershipCard> {
                       children: [
                         const Text(
                           overflow: TextOverflow.ellipsis,
-                          "Rs. ",
+                          'Rs. ',
                         ),
                         Text(
                           overflow: TextOverflow.ellipsis,
@@ -131,7 +131,7 @@ class _MembershipCardState extends State<MembershipCard> {
                         padding: const EdgeInsets.only(left: 44),
                         child: Text(
                           overflow: TextOverflow.ellipsis,
-                          "BENEFITS",
+                          'BENEFITS',
                           style: GoogleFonts.josefinSans(
                             color: white,
                             fontSize: 18,
@@ -145,7 +145,7 @@ class _MembershipCardState extends State<MembershipCard> {
                           children: [
                             Text(
                               overflow: TextOverflow.ellipsis,
-                              "• ${widget.benefit1} Text Posts",
+                              '• ${widget.benefit1} Text Posts',
                               style: const TextStyle(
                                 color: white,
                                 fontSize: 16,
@@ -154,7 +154,7 @@ class _MembershipCardState extends State<MembershipCard> {
                             ),
                             Text(
                               overflow: TextOverflow.ellipsis,
-                              "• ${widget.benefit2} Image Posts",
+                              '• ${widget.benefit2} Image Posts',
                               style: const TextStyle(
                                 color: white,
                                 fontSize: 16,
@@ -163,7 +163,7 @@ class _MembershipCardState extends State<MembershipCard> {
                             ),
                             Text(
                               overflow: TextOverflow.ellipsis,
-                              "• ${widget.benefit3} Shorts",
+                              '• ${widget.benefit3} Shorts',
                               style: const TextStyle(
                                 color: white,
                                 fontSize: 16,

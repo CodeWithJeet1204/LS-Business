@@ -315,7 +315,7 @@ class _ServicesDetailsPageState extends State<ServicesDetailsPage> {
                           child: DropdownButton(
                             dropdownColor: primary,
                             hint: const Text(
-                              "Select Gender",
+                              'Select Gender',
                               overflow: TextOverflow.ellipsis,
                             ),
                             value: (isMale ? 'Male' : 'Female'),
@@ -364,7 +364,7 @@ class _ServicesDetailsPageState extends State<ServicesDetailsPage> {
                           child: DropdownButton(
                             dropdownColor: primary,
                             hint: const Text(
-                              "First Language",
+                              'First Language',
                               overflow: TextOverflow.ellipsis,
                             ),
                             value: firstLanguage,
@@ -419,7 +419,7 @@ class _ServicesDetailsPageState extends State<ServicesDetailsPage> {
                           child: DropdownButton(
                             dropdownColor: primary,
                             hint: const Text(
-                              "Second Language",
+                              'Second Language',
                               overflow: TextOverflow.ellipsis,
                             ),
                             value: secondLanguage,
@@ -485,7 +485,7 @@ class _ServicesDetailsPageState extends State<ServicesDetailsPage> {
                                             ),
                                           ))
                                       : MyButton(
-                                          text: "SAVE",
+                                          text: 'SAVE',
                                           onTap: () async {
                                             setState(() {
                                               isSaving = true;
@@ -499,7 +499,7 @@ class _ServicesDetailsPageState extends State<ServicesDetailsPage> {
 
                                   // CANCEL
                                   MyButton(
-                                    text: "CANCEL",
+                                    text: 'CANCEL',
                                     onTap: () {
                                       setState(() {
                                         setState(() {

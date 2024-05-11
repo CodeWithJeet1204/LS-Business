@@ -76,7 +76,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
       appBar: AppBar(
         title: const Text(
           overflow: TextOverflow.ellipsis,
-          "ALL CATEGORIES",
+          'ALL CATEGORIES',
         ),
         bottom: PreferredSize(
           preferredSize: Size(
@@ -97,8 +97,8 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                     autocorrect: false,
                     onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     decoration: const InputDecoration(
-                      labelText: "Case - Sensitive",
-                      hintText: "Search ...",
+                      labelText: 'Case - Sensitive',
+                      hintText: 'Search ...',
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
@@ -115,7 +115,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                   icon: Icon(
                     isGridView ? FeatherIcons.list : FeatherIcons.grid,
                   ),
-                  tooltip: isGridView ? "List View" : "Grid View",
+                  tooltip: isGridView ? 'List View' : 'Grid View',
                 ),
               ],
             ),

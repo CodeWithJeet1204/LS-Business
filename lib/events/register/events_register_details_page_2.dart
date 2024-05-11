@@ -28,6 +28,7 @@ class _EventsRegisterDetailsPage2State
       });
       await store.collection('Organizers').doc(auth.currentUser!.uid).update({
         'Description': descriptionController.text,
+        'workImages': [],
       });
       setState(() {
         isDone = false;
@@ -78,7 +79,7 @@ class _EventsRegisterDetailsPage2State
                       if (value.isNotEmpty) {
                         return null;
                       } else {
-                        return "Pls enter Description";
+                        return 'Pls enter Description';
                       }
                     }
                     return null;

@@ -76,7 +76,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
               // USER DETAILS HEADTEXT
               const SizedBox(height: 100),
               const HeadText(
-                text: "OWNER\nDETAILS",
+                text: 'OWNER\nDETAILS',
               ),
               const SizedBox(height: 40),
 
@@ -93,7 +93,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                         IconButton.filledTonal(
                           icon: const Icon(Icons.camera_alt_outlined),
                           iconSize: width * 0.09,
-                          tooltip: "Change Owner Picture",
+                          tooltip: 'Change Owner Picture',
                           onPressed: () async {
                             await selectImage();
                           },
@@ -122,7 +122,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                   children: [
                     // NAME
                     MyTextFormField(
-                      hintText: "Your Name",
+                      hintText: 'Your Name',
                       controller: nameController,
                       borderRadius: 12,
                       horizontalPadding: width * 0.055,
@@ -134,7 +134,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                     !signInMethodProvider.isNumberChosen
                         ? Container()
                         : MyTextFormField(
-                            hintText: "Email",
+                            hintText: 'Email',
                             controller: emailController,
                             borderRadius: 12,
                             horizontalPadding: width * 0.055,
@@ -147,7 +147,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                     signInMethodProvider.isNumberChosen
                         ? Container()
                         : MyTextFormField(
-                            hintText: "Your Phone Number (Personal)",
+                            hintText: 'Your Phone Number (Personal)',
                             controller: phoneController,
                             borderRadius: 12,
                             horizontalPadding: width * 0.055,
@@ -200,8 +200,8 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                       .collection('Users')
                                       .doc(auth.currentUser!.uid)
                                       .update({
-                                    "Phone Number": phoneController.text,
-                                    "Image": userPhotoUrl,
+                                    'Phone Number': phoneController.text,
+                                    'Image': userPhotoUrl,
                                   });
                                 } else if (getUser['Phone Number'] != null) {
                                   await store
@@ -210,10 +210,10 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                       .collection('Users')
                                       .doc(auth.currentUser!.uid)
                                       .update({
-                                    "uid": uid,
-                                    "Email": emailController.text.toString(),
-                                    "Name": nameController.text.toString(),
-                                    "Image": userPhotoUrl,
+                                    'uid': uid,
+                                    'Email': emailController.text.toString(),
+                                    'Name': nameController.text.toString(),
+                                    'Image': userPhotoUrl,
                                   });
                                 } else if (getUser['Email'] != null &&
                                     getUser['Name'] == null) {
@@ -223,15 +223,15 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                       .collection('Users')
                                       .doc(auth.currentUser!.uid)
                                       .update({
-                                    "uid": uid,
-                                    "Phone Number":
+                                    'uid': uid,
+                                    'Phone Number':
                                         phoneController.text.toString(),
-                                    "Image": userPhotoUrl,
-                                    "Name": nameController.text.toString(),
+                                    'Image': userPhotoUrl,
+                                    'Name': nameController.text.toString(),
                                   });
                                 } else {
                                   if (context.mounted) {
-                                    mySnackBar(context, "Some error occured");
+                                    mySnackBar(context, 'Some error occured');
                                   }
                                 }
 
@@ -274,8 +274,8 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                     .collection('Users')
                                     .doc(auth.currentUser!.uid)
                                     .update({
-                                  "Phone Number": phoneController.text,
-                                  "Image":
+                                  'Phone Number': phoneController.text,
+                                  'Image':
                                       'https://upload.wikimedia.org/wikipedia/commons/a/af/Default_avatar_profile.jpg',
                                 });
                               } else if (getUser['Phone Number'] != null) {
@@ -285,10 +285,10 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                     .collection('Users')
                                     .doc(auth.currentUser!.uid)
                                     .update({
-                                  "uid": uid,
-                                  "Email": emailController.text.toString(),
-                                  "Name": nameController.text.toString(),
-                                  "Image":
+                                  'uid': uid,
+                                  'Email': emailController.text.toString(),
+                                  'Name': nameController.text.toString(),
+                                  'Image':
                                       'https://upload.wikimedia.org/wikipedia/commons/a/af/Default_avatar_profile.jpg',
                                 });
                               } else if (getUser['Email'] != null &&
@@ -299,12 +299,12 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                     .collection('Users')
                                     .doc(auth.currentUser!.uid)
                                     .update({
-                                  "uid": uid,
-                                  "Phone Number":
+                                  'uid': uid,
+                                  'Phone Number':
                                       phoneController.text.toString(),
-                                  "Image":
+                                  'Image':
                                       'https://upload.wikimedia.org/wikipedia/commons/a/af/Default_avatar_profile.jpg',
-                                  "Name": nameController.text.toString(),
+                                  'Name': nameController.text.toString(),
                                 });
 
                                 setState(() {
@@ -321,14 +321,14 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                 }
                               } else {
                                 if (context.mounted) {
-                                  mySnackBar(context, "Some error occured");
+                                  mySnackBar(context, 'Some error occured');
                                 }
                               }
                             }
                           } else {
                             mySnackBar(
                               context,
-                              "Passwords do not match. Check Again!",
+                              'Passwords do not match. Check Again!',
                             );
                           }
                         },

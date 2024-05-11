@@ -61,11 +61,11 @@ class _AllProductsPageState extends State<AllProductsPage> {
         return AlertDialog(
           title: const Text(
             overflow: TextOverflow.ellipsis,
-            "Confirm DELETE",
+            'Confirm DELETE',
           ),
           content: const Text(
             overflow: TextOverflow.ellipsis,
-            "Are you sure you want to delete this product & all its posts",
+            'Are you sure you want to delete this product & all its posts',
           ),
           actions: [
             TextButton(
@@ -123,7 +123,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
       appBar: AppBar(
         title: const Text(
           overflow: TextOverflow.ellipsis,
-          "ALL PRODUCTS",
+          'ALL PRODUCTS',
         ),
         bottom: PreferredSize(
           preferredSize: Size(
@@ -144,8 +144,8 @@ class _AllProductsPageState extends State<AllProductsPage> {
                     autocorrect: false,
                     onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     decoration: const InputDecoration(
-                      labelText: "Case - Sensitive",
-                      hintText: "Search ...",
+                      labelText: 'Case - Sensitive',
+                      hintText: 'Search ...',
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
@@ -162,7 +162,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                   icon: Icon(
                     isGridView ? FeatherIcons.list : FeatherIcons.grid,
                   ),
-                  tooltip: isGridView ? "List View" : "Grid View",
+                  tooltip: isGridView ? 'List View' : 'Grid View',
                 ),
               ],
             ),
@@ -184,7 +184,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                   return const Center(
                     child: Text(
                       overflow: TextOverflow.ellipsis,
-                      "Something went wrong",
+                      'Something went wrong',
                     ),
                   );
                 }
@@ -291,12 +291,12 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                               ),
                                               child: Text(
                                                 productData['productPrice'] !=
-                                                            "" &&
+                                                            '' &&
                                                         productData[
                                                                 'productPrice'] !=
                                                             null
                                                     ? 'Rs. ${productData['productPrice']}'
-                                                    : "N/A",
+                                                    : 'N/A',
                                                 overflow: TextOverflow.ellipsis,
                                                 maxLines: 1,
                                                 style: TextStyle(
@@ -404,11 +404,11 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                       ),
                                     ),
                                     subtitle: Text(
-                                      productData['productPrice'] != "" &&
+                                      productData['productPrice'] != '' &&
                                               productData['productPrice'] !=
                                                   null
                                           ? 'Rs. ${productData['productPrice']}'
-                                          : "N/A",
+                                          : 'N/A',
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(

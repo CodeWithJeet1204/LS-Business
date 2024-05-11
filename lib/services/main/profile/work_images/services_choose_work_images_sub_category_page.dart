@@ -41,7 +41,7 @@ class _ServicesChooseWorkImagesSubCategoryPageState
       subCategories = serviceData['SubCategory'];
       getData = true;
     });
-    print("SubCategories: $subCategories");
+    print('SubCategories: $subCategories');
   }
 
   // SELECT CATEGORY

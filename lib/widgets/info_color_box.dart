@@ -46,7 +46,7 @@ class InfoColorBox extends StatelessWidget {
                 ? Text(
                     overflow: TextOverflow.ellipsis,
                     property > 1000
-                        ? "${(property / 1000).toStringAsFixed(2)}k"
+                        ? '${(property / 1000).toStringAsFixed(2)}k'
                         : property.toString(),
                     style: TextStyle(
                       color: primaryDark,

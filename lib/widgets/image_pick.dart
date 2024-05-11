@@ -14,7 +14,7 @@ Future<XFile?> pickCompressedImage(ImageSource source) async {
     final mb = kb / 1024;
 
     if (kDebugMode) {
-      print("Original: ${mb.toString()}");
+      print('Original: ${mb.toString()}');
     }
 
     final dir = await pp.getTemporaryDirectory();
@@ -33,7 +33,7 @@ Future<XFile?> pickCompressedImage(ImageSource source) async {
     final newMb = newKb / 1024;
 
     if (kDebugMode) {
-      print("Compressed: ${newMb.toString()}");
+      print('Compressed: ${newMb.toString()}');
     }
 
     return result;

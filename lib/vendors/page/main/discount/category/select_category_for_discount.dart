@@ -43,14 +43,14 @@ class _SelectCategoryForDiscountPageState
       appBar: AppBar(
         title: const Text(
           overflow: TextOverflow.ellipsis,
-          "SELECT CATEGORIES",
+          'SELECT CATEGORIES',
         ),
         actions: [
           MyTextButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            text: "DONE",
+            text: 'DONE',
             textColor: primaryDark,
           ),
         ],
@@ -73,7 +73,7 @@ class _SelectCategoryForDiscountPageState
                     autocorrect: false,
                     onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     decoration: const InputDecoration(
-                      hintText: "Search ...",
+                      hintText: 'Search ...',
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
@@ -90,7 +90,7 @@ class _SelectCategoryForDiscountPageState
                   icon: Icon(
                     isGridView ? FeatherIcons.list : FeatherIcons.grid,
                   ),
-                  tooltip: isGridView ? "List View" : "Grid View",
+                  tooltip: isGridView ? 'List View' : 'Grid View',
                 ),
               ],
             ),
@@ -108,7 +108,7 @@ class _SelectCategoryForDiscountPageState
                 return const Center(
                   child: Text(
                     overflow: TextOverflow.ellipsis,
-                    "Something went wrong",
+                    'Something went wrong',
                   ),
                 );
               }
