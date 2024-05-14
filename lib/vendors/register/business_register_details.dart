@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_easy/vendors/models/industry_segments.dart';
-import 'package:find_easy/vendors/register/select_business_category.dart';
+import 'package:find_easy/vendors/register/select_business_category_page.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/head_text.dart';

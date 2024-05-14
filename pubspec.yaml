@@ -60,6 +60,8 @@ dependencies:
   flutter_ffmpeg: ^0.4.2
   video_player: ^2.8.6
   firebase_app_check: ^0.2.2+5
+  video_compress: ^3.1.2
+  flick_video_player: ^0.8.0
 
 dev_dependencies:
   flutter_test:

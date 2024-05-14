@@ -573,7 +573,7 @@ class _AddBulkProductState extends State<AddBulkProduct> {
         'productViews': 0,
         'productViewsTimestamp': [],
         'productLikesId': [],
-        'productLikesLikesTimestamp': [],
+        'productLikesTimestamp': [],
         'productWishlist': 0,
         'productId': productId,
         'images': [
@@ -644,7 +644,7 @@ class _AddBulkProductState extends State<AddBulkProduct> {
         padding: const EdgeInsets.all(8),
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
-          height: 50,
+          height: 60,
           child: MyButton(
             text: 'DONE',
             onTap: () async {

@@ -197,47 +197,19 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
   }
 
   // SHOW IMAGE
-  Future<void> showImage() async {
-    final imageStream = FirebaseFirestore.instance
-        .collection('Business')
-        .doc('Owners')
-        .collection('Users')
-        .doc(auth.currentUser!.uid)
-        .snapshots();
-
+  Future<void> showImage(String imageUrl) async {
     await showDialog(
       barrierDismissible: true,
       context: context,
       builder: ((context) {
-        return StreamBuilder(
-            stream: imageStream,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return const Center(
-                  child: Text(
-                    overflow: TextOverflow.ellipsis,
-                    'Something went wrong',
-                  ),
-                );
-              }
-
-              if (snapshot.hasData) {
-                final userData = snapshot.data!;
-                return Dialog(
-                  elevation: 20,
-                  child: InteractiveViewer(
-                    child: Image.network(
-                      userData['Image'],
-                    ),
-                  ),
-                );
-              }
-              return const Center(
-                child: CircularProgressIndicator(
-                  color: primaryDark,
-                ),
-              );
-            });
+        return Dialog(
+          elevation: 20,
+          child: InteractiveViewer(
+            child: Image.network(
+              imageUrl,
+            ),
+          ),
+        );
       }),
     );
   }
@@ -304,7 +276,10 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                   children: [
                                     GestureDetector(
                                       onTap: () async {
-                                        await showImage();
+                                        await showImage(
+                                          userData['Image'] ??
+                                              'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
+                                        );
                                       },
                                       child: CircleAvatar(
                                         radius: width * 0.15,

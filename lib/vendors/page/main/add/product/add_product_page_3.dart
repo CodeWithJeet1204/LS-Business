@@ -81,6 +81,8 @@ class _AddProductPage3State extends State<AddProductPage3> {
           'refundRange': refundRange,
           'replacementRange': replacementRange,
           'images': imageDownloadUrl,
+          'shortsThumbnail': '',
+          'shortsURL': '',
         },
         true,
       );

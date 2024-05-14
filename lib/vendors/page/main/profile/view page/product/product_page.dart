@@ -47,6 +47,7 @@ class ProductPage extends StatefulWidget {
 class _ProductPageState extends State<ProductPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
+  final storage = FirebaseStorage.instance;
   final GlobalKey<FormState> editKey = GlobalKey<FormState>();
   final TextEditingController editController = TextEditingController();
   bool isDiscount = false;
@@ -779,6 +780,57 @@ class _ProductPageState extends State<ProductPage> {
   //   return blurhash;
   // }
 
+  // CONFIRM DELETE SHORT
+  Future<void> confirmDeleteShort() async {
+    await showDialog(
+      context: context,
+      builder: ((context) {
+        return AlertDialog(
+          title: Text("Delete Short"),
+          content: Text('Are you sure you want to delete this short?'),
+          actions: [
+            MyTextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              text: 'NO',
+              textColor: Colors.green,
+            ),
+            MyTextButton(
+              onPressed: () async {
+                await deleteShort();
+                print(4);
+                Navigator.of(context).pop();
+              },
+              text: 'YES',
+              textColor: Colors.red,
+            ),
+          ],
+        );
+      }),
+    );
+  }
+
+  // DELETE SHORT
+  Future<void> deleteShort() async {
+    await store
+        .collection('Business')
+        .doc('Data')
+        .collection('Products')
+        .doc(widget.productId)
+        .update({
+      'shortsThumbnail': '',
+      'shortsURL': '',
+    });
+
+    print(1);
+
+    await storage.ref('Data/Shorts/${widget.productId}').delete();
+    print(2);
+    await storage.ref('Data/Thumbnails/${widget.productId}').delete();
+    print(3);
+  }
+
   @override
   Widget build(BuildContext context) {
     final productStream = store
@@ -845,6 +897,15 @@ class _ProductPageState extends State<ProductPage> {
                       final int views = productData['productViews'];
                       final int wishList = productData['productWishlist'];
 
+                      final String shortsThumbnail =
+                          productData['shortsThumbnail'];
+
+                      final String shortsURL = productData['shortsURL'];
+
+                      if (shortsThumbnail != '') {
+                        images.insert(0, shortsThumbnail);
+                      }
+
                       bool isAvailable = productData['isAvailable'];
 
                       final Map<String, dynamic> properties =
@@ -897,96 +958,205 @@ class _ProductPageState extends State<ProductPage> {
                             items: images
                                 .map(
                                   (e) => Stack(
-                                    alignment: Alignment.topCenter,
+                                    alignment: Alignment.center,
                                     children: [
-                                      Container(
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: primaryDark2,
-                                            width: 2,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        child: isImageChanging
-                                            ? const CircularProgressIndicator()
-                                            : GestureDetector(
-                                                onTap: () {
-                                                  Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                      builder: ((context) =>
-                                                          ImageView(
-                                                            imagesUrl: images,
-                                                          )),
-                                                    ),
-                                                  );
-                                                },
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                    12,
-                                                  ),
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                        image: NetworkImage(e),
-                                                        fit: BoxFit.contain,
+                                      Stack(
+                                        alignment: Alignment.topCenter,
+                                        children: [
+                                          Container(
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: primaryDark2,
+                                                width: 2,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                            child: isImageChanging
+                                                ? const CircularProgressIndicator()
+                                                : GestureDetector(
+                                                    onTap: () {
+                                                      images.remove(
+                                                        shortsThumbnail,
+                                                      );
+                                                      images.insert(
+                                                        0,
+                                                        shortsURL,
+                                                      );
+
+                                                      Navigator.of(context)
+                                                          .push(
+                                                        MaterialPageRoute(
+                                                          builder: ((context) =>
+                                                              ImageView(
+                                                                imagesUrl:
+                                                                    images,
+                                                                shortsThumbnail:
+                                                                    shortsThumbnail,
+                                                                shortsURL:
+                                                                    shortsURL,
+                                                              )),
+                                                        ),
+                                                      )
+                                                          .then((value) {
+                                                        images.remove(
+                                                          shortsURL,
+                                                        );
+                                                        images.insert(
+                                                          0,
+                                                          shortsThumbnail,
+                                                        );
+                                                      });
+                                                    },
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                        12,
+                                                      ),
+                                                      child: Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          image:
+                                                              DecorationImage(
+                                                            image:
+                                                                NetworkImage(e),
+                                                            fit: BoxFit.contain,
+                                                          ),
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
+                                          ),
+                                          isImageChanging
+                                              ? Container()
+                                              : Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    e == shortsThumbnail
+                                                        ? SizedBox(
+                                                            width: 1,
+                                                            height: 1,
+                                                          )
+                                                        : Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                              left: width *
+                                                                  0.0125,
+                                                              top: width *
+                                                                  0.0125,
+                                                            ),
+                                                            child: IconButton
+                                                                .filledTonal(
+                                                              onPressed:
+                                                                  () async {
+                                                                await changeProductImage(
+                                                                  e,
+                                                                  images
+                                                                      .indexOf(
+                                                                          e),
+                                                                  images,
+                                                                );
+                                                              },
+                                                              icon: Icon(
+                                                                FeatherIcons
+                                                                    .camera,
+                                                                size:
+                                                                    width * 0.1,
+                                                              ),
+                                                              tooltip:
+                                                                  'Change Image',
+                                                            ),
+                                                          ),
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                        right: width * 0.0125,
+                                                        top: width * 0.0125,
+                                                      ),
+                                                      child: IconButton
+                                                          .filledTonal(
+                                                        onPressed: images
+                                                                    .last !=
+                                                                e
+                                                            ? e == shortsThumbnail
+                                                                ? () async {
+                                                                    await confirmDeleteShort();
+                                                                  }
+                                                                : () async {
+                                                                    await removeProductImages(
+                                                                      e,
+                                                                      images,
+                                                                    );
+                                                                  }
+                                                            : null,
+                                                        icon: Icon(
+                                                          FeatherIcons.x,
+                                                          size: width * 0.1,
+                                                        ),
+                                                        tooltip: e ==
+                                                                shortsThumbnail
+                                                            ? 'Remove Short'
+                                                            : 'Remove Image',
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                        ],
+                                      ),
+                                      e != shortsThumbnail
+                                          ? SizedBox(
+                                              width: 1,
+                                              height: 1,
+                                            )
+                                          : GestureDetector(
+                                              onTap: () {
+                                                images.remove(
+                                                  shortsThumbnail,
+                                                );
+                                                images.insert(
+                                                  0,
+                                                  shortsURL,
+                                                );
+
+                                                Navigator.of(context)
+                                                    .push(
+                                                  MaterialPageRoute(
+                                                    builder: ((context) =>
+                                                        ImageView(
+                                                          imagesUrl: images,
+                                                          shortsThumbnail:
+                                                              shortsThumbnail,
+                                                          shortsURL: shortsURL,
+                                                        )),
+                                                  ),
+                                                )
+                                                    .then((value) {
+                                                  images.remove(
+                                                    shortsURL,
+                                                  );
+                                                  images.insert(
+                                                    0,
+                                                    shortsThumbnail,
+                                                  );
+                                                });
+                                              },
+                                              child: Container(
+                                                width: width * 0.2,
+                                                height: width * 0.2,
+                                                decoration: BoxDecoration(
+                                                  color: white.withOpacity(0.5),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100),
+                                                ),
+                                                child: Icon(
+                                                  Icons.play_arrow_rounded,
+                                                  color: white,
+                                                  size: width * 0.2,
                                                 ),
                                               ),
-                                      ),
-                                      isImageChanging
-                                          ? Container()
-                                          : Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                    left: width * 0.0125,
-                                                    top: width * 0.0125,
-                                                  ),
-                                                  child: IconButton.filledTonal(
-                                                    onPressed: () async {
-                                                      await changeProductImage(
-                                                        e,
-                                                        images.indexOf(e),
-                                                        images,
-                                                      );
-                                                    },
-                                                    icon: Icon(
-                                                      FeatherIcons.camera,
-                                                      size: width * 0.1,
-                                                    ),
-                                                    tooltip: 'Change Image',
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                    right: width * 0.0125,
-                                                    top: width * 0.0125,
-                                                  ),
-                                                  child: IconButton.filledTonal(
-                                                    onPressed: images.last != e
-                                                        ? () async {
-                                                            await removeProductImages(
-                                                              e,
-                                                              images,
-                                                            );
-                                                          }
-                                                        : null,
-                                                    icon: Icon(
-                                                      FeatherIcons.x,
-                                                      size: width * 0.1,
-                                                    ),
-                                                    tooltip: 'Remove Image',
-                                                  ),
-                                                ),
-                                              ],
                                             ),
                                     ],
                                   ),

@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:find_easy/vendors/page/main/add/shorts/confirm_shorts_page.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
+import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
-// import 'package:camera/camera.dart';
 import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
-import 'package:video_player/video_player.dart';
-// import 'package:video_player/video_player.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddShortsPage extends StatefulWidget {
   const AddShortsPage({Key? key});
@@ -152,58 +152,185 @@ class AddShortsPageState extends State<AddShortsPage> {
     });
   }
 
+  // SHOW OPTIONS DIALOG
+  Future<void> showOptionsDialog(BuildContext context, double width) async {
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              GestureDetector(
+                onTap: () async {
+                  await pickVideo(ImageSource.camera, context);
+                },
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  width: double.infinity,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: primaryDark2,
+                      width: 1,
+                    ),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(27),
+                      topRight: Radius.circular(27),
+                    ),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.only(left: 12),
+                    child: Text(
+                      overflow: TextOverflow.ellipsis,
+                      'Choose Camera',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () async {
+                  await pickVideo(ImageSource.gallery, context);
+                },
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  width: double.infinity,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: primaryDark2,
+                      width: 1,
+                    ),
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(27),
+                      bottomRight: Radius.circular(27),
+                    ),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.only(left: 12),
+                    child: Text(
+                      overflow: TextOverflow.ellipsis,
+                      'Choose from Gallery',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  // PICK VIDEO
+  Future<void> pickVideo(ImageSource src, BuildContext context) async {
+    final video = await ImagePicker().pickVideo(source: src);
+
+    if (video != null) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => ConfirmShortsPage(
+            videoFile: File(video.path),
+            videoPath: video.path,
+          ),
+        ),
+      );
+    } else {
+      return mySnackBar(context, 'Select Video');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Video Recorder'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            GestureDetector(
+      // body: Center(
+      //   child: Column(
+      //     mainAxisAlignment: MainAxisAlignment.center,
+      //     children: <Widget>[
+      //       GestureDetector(
+      //         onTap: () async {
+      //           await selectVideo();
+      //         },
+      //         child: Container(
+      //           decoration: BoxDecoration(
+      //             color: primary2,
+      //             borderRadius: BorderRadius.circular(12),
+      //           ),
+      //           padding: EdgeInsets.all(
+      //             MediaQuery.of(context).size.width * 0.033,
+      //           ),
+      //           child: Text(
+      //             selectedVideo != null ? 'abc' : 'Select Video',
+      //             style: TextStyle(
+      //               fontSize: MediaQuery.of(context).size.width * 0.05,
+      //               fontWeight: FontWeight.w500,
+      //             ),
+      //           ),
+      //         ),
+      //       ),
+      //       SizedBox(height: 20),
+      //       selectedVideo != null
+      //           ? AspectRatio(
+      //               aspectRatio: 16 / 9,
+      //               child: FutureBuilder(
+      //                 future: VideoPlayerController.file(selectedVideo!)
+      //                     .initialize(),
+      //                 builder: (context, snapshot) {
+      //                   if (snapshot.connectionState == ConnectionState.done) {
+      //                     return VideoPlayer(
+      //                       VideoPlayerController.file(selectedVideo!),
+      //                     );
+      //                   } else {
+      //                     return CircularProgressIndicator();
+      //                   }
+      //                 },
+      //               ),
+      //             )
+      //           : SizedBox(),
+      //     ],
+      //   ),
+      // ),
+      body: Padding(
+        padding: EdgeInsets.all(
+          MediaQuery.of(context).size.width * 0.006125,
+        ),
+        child: LayoutBuilder(builder: (context, constraints) {
+          final width = constraints.maxWidth;
+
+          return Center(
+            child: GestureDetector(
               onTap: () async {
-                await selectVideo();
+                await showOptionsDialog(context, width);
               },
               child: Container(
+                width: 190,
+                height: 50,
+                alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: primary2,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                padding: EdgeInsets.all(
-                  MediaQuery.of(context).size.width * 0.033,
-                ),
                 child: Text(
-                  selectedVideo != null ? 'abc' : 'Select Video',
+                  'Add Video',
                   style: TextStyle(
-                    fontSize: MediaQuery.of(context).size.width * 0.05,
+                    color: black,
                     fontWeight: FontWeight.w500,
+                    fontSize: width * 0.055,
                   ),
                 ),
               ),
             ),
-            SizedBox(height: 20),
-            selectedVideo != null
-                ? AspectRatio(
-                    aspectRatio: 16 / 9,
-                    child: FutureBuilder(
-                      future: VideoPlayerController.file(selectedVideo!)
-                          .initialize(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done) {
-                          return VideoPlayer(
-                            VideoPlayerController.file(selectedVideo!),
-                          );
-                        } else {
-                          return CircularProgressIndicator();
-                        }
-                      },
-                    ),
-                  )
-                : SizedBox(),
-          ],
-        ),
+          );
+        }),
       ),
     );
   }

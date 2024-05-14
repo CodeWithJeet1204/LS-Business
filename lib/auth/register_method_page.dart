@@ -3,7 +3,7 @@ import 'package:find_easy/events/register/events_register_details_page_1.dart';
 import 'package:find_easy/services/register/services_register_details_page.dart';
 import 'package:find_easy/vendors/firebase/auth_methods.dart';
 import 'package:find_easy/vendors/page/main/main_page.dart';
-import 'package:find_easy/vendors/register/owner_register_details.dart';
+import 'package:find_easy/vendors/register/owner_register_details_page.dart';
 import 'package:find_easy/auth/verify/email_verify.dart';
 import 'package:find_easy/auth/verify/number_verify.dart';
 import 'package:find_easy/vendors/provider/sign_in_method_provider.dart';
@@ -113,6 +113,9 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
 
             signInMethodProvider.chooseEmail();
           } else {
+            setState(() {
+              isEmailRegistering = false;
+            });
             return mySnackBar(context, 'Some error occured');
           }
 

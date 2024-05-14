@@ -4,7 +4,7 @@ import 'package:find_easy/events/register/events_register_details_page_1.dart';
 import 'package:find_easy/services/main/services_main_page.dart';
 import 'package:find_easy/services/register/services_register_details_page.dart';
 import 'package:find_easy/vendors/page/main/main_page.dart';
-import 'package:find_easy/vendors/register/owner_register_details.dart';
+import 'package:find_easy/vendors/register/owner_register_details_page.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/snack_bar.dart';

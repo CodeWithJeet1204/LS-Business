@@ -26,7 +26,7 @@ class _ConnectivityNotificationWidgetState
   // DISPOSE
   @override
   void dispose() {
-    _connectivitySubscription.cancel();
+    // _connectivitySubscription.cancel();
     super.dispose();
   }
 
