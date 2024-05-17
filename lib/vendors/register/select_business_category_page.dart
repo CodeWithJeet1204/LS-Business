@@ -72,7 +72,7 @@ class _SelectBusinessCategoryPageState
           subCategories.forEach((subcategoryName, imageUrl) async {
             await specialCategoriesCollection.doc(subcategoryName).set({
               'specialCategoryName': subcategoryName,
-              'imageUrl': imageUrl,
+              'specialCategoryImageUrl': imageUrl,
               'vendorId': [auth.currentUser!.uid],
             });
           });

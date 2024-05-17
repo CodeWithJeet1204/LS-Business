@@ -5,6 +5,7 @@ import 'package:find_easy/vendors/page/main/main_page.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:video_player/video_player.dart';
@@ -28,7 +29,7 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
   final store = FirebaseFirestore.instance;
   final storage = FirebaseStorage.instance;
   final nameController = TextEditingController();
-  late VideoPlayerController controller;
+  late FlickManager flickManager;
   bool isDone = false;
   List? data;
 
@@ -36,20 +37,20 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
   @override
   void initState() {
     super.initState();
-    setState(() {
-      controller = VideoPlayerController.file(widget.videoFile);
-    });
-    controller.initialize();
-    controller.play();
-    controller.setVolume(1);
-    controller.setLooping(true);
+    flickManager = FlickManager(
+      videoPlayerController: VideoPlayerController.networkUrl(
+        Uri.file(
+          widget.videoFile.path,
+        ),
+      ),
+    );
   }
 
   // DISPOSE
   @override
   void dispose() {
     nameController.dispose();
-    controller.dispose();
+    flickManager.dispose();
     super.dispose();
   }
 
@@ -70,8 +71,8 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
       await compressVideo(videoPath),
     );
 
-    TaskSnapshot shortsSnao = await uploadShortsTask;
-    String shortsDownloadUrl = await shortsSnao.ref.getDownloadURL();
+    TaskSnapshot shortsSnap = await uploadShortsTask;
+    String shortsDownloadUrl = await shortsSnap.ref.getDownloadURL();
 
     Reference thumbnailRef =
         await storage.ref().child('Data/Thumbnails').child(productId);
@@ -91,6 +92,18 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
         .update({
       'shortsURL': shortsDownloadUrl,
       'shortsThumbnail': thumbnailDownloadUrl,
+    });
+
+    await store
+        .collection('Business')
+        .doc('Data')
+        .collection('Shorts')
+        .doc(productId)
+        .set({
+      'datetime': DateTime.now(),
+      'vendorId': auth.currentUser!.uid,
+      'productId': productId,
+      'shortsURL': shortsDownloadUrl,
     });
 
     setState(() {
@@ -136,7 +149,12 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
             SizedBox(
               width: width,
               height: height / 1.5,
-              child: VideoPlayer(controller),
+              child: AspectRatio(
+                aspectRatio: 9 / 16,
+                child: FlickVideoPlayer(
+                  flickManager: flickManager,
+                ),
+              ),
             ),
             SizedBox(height: 30),
             SingleChildScrollView(

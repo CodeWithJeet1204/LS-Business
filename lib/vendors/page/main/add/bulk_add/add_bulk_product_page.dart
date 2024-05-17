@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:find_easy/vendors/page/main/add/bulk_add/select_brand_for_bulk_products_page.dart';
+import 'package:find_easy/vendors/page/main/add/bulk_add/select_category_for_bulk_products_page.dart';
 import 'package:find_easy/widgets/bulk_add.dart';
 import 'package:find_easy/widgets/button.dart';
 import 'package:find_easy/widgets/image_pick_dialog.dart';
@@ -33,10 +35,9 @@ class _AddBulkProductState extends State<AddBulkProduct> {
   File? image2;
   File? image3;
   File? image4;
-  // String imageUrl1 = '';
-  // String imageUrl2 = '';
-  // String imageUrl3 = '';
-  // String imageUrl4 = '';
+  String? selectedCategory;
+  String? selectedBrandId;
+  String? selectedBrandName;
   bool isUploading = false;
 
   // ADD PRODUCT IMAGE
@@ -565,8 +566,8 @@ class _AddBulkProductState extends State<AddBulkProduct> {
         'productName': nameController.text,
         'productPrice': priceController.text,
         'productDescription': '',
-        'productBrand': 'No Brand',
-        'productBrandId': '0',
+        'productBrand': selectedBrandName ?? 'No Brand',
+        'productBrandId': selectedBrandId ?? '0',
         'productLikes': 0,
         'productDislikes': 0,
         'productShares': 0,
@@ -579,11 +580,13 @@ class _AddBulkProductState extends State<AddBulkProduct> {
         'images': [
           imageUrl,
         ],
+        'shortsThumbnail': '',
+        'shortsURL': '',
         'datetime': Timestamp.fromMillisecondsSinceEpoch(
           DateTime.now().millisecondsSinceEpoch,
         ),
         'isAvailable': true,
-        'categoryName': '0',
+        'categoryName': selectedCategory ?? '0',
         'vendorId': auth.currentUser!.uid,
         'ratings': {},
         'Properties': {
@@ -667,6 +670,55 @@ class _AddBulkProductState extends State<AddBulkProduct> {
               return SingleChildScrollView(
                 child: Column(
                   children: [
+                    // SELECT CATEGORY
+                    MyButton(
+                      text: selectedCategory ?? 'Select Category',
+                      onTap: () {
+                        Navigator.of(context)
+                            .push(
+                          MaterialPageRoute(
+                            builder: ((context) =>
+                                SelectCategoryForBulkProductsPage()),
+                          ),
+                        )
+                            .then((value) {
+                          if (value != null || value != '') {
+                            setState(() {
+                              selectedCategory = value;
+                            });
+                          }
+                        });
+                      },
+                      isLoading: false,
+                      horizontalPadding: width * 0.0125,
+                    ),
+                    SizedBox(height: 8),
+
+                    // SELECT BRAND
+                    MyButton(
+                      text: selectedBrandName ?? 'Select Brand',
+                      onTap: () {
+                        Navigator.of(context)
+                            .push(
+                          MaterialPageRoute(
+                            builder: ((context) =>
+                                SelectBrandForBulkProductsPage()),
+                          ),
+                        )
+                            .then((value) {
+                          if (value != null || value.isNotEmpty) {
+                            setState(() {
+                              selectedBrandId = value[0];
+                              selectedBrandName = value[1];
+                            });
+                          }
+                        });
+                      },
+                      isLoading: false,
+                      horizontalPadding: width * 0.0125,
+                    ),
+                    SizedBox(height: 8),
+
                     BulkAdd(
                       width: width,
                       nameController: nameController1,

@@ -19,7 +19,8 @@ class SelectBrandForProductProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void reset() {
+  void clear() {
+    _selectedBrandId = '0';
     _selectedBrandName = 'No Brand';
   }
 }

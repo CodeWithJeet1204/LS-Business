@@ -1,33 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:find_easy/vendors/page/main/profile/view%20page/product/product_page.dart';
 import 'package:find_easy/vendors/provider/change_category_provider.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
+import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:find_easy/widgets/text_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ChangeCategory extends StatefulWidget {
-  const ChangeCategory({
+class SelectCategoryForBulkProductsPage extends StatefulWidget {
+  const SelectCategoryForBulkProductsPage({
     super.key,
-    required this.productId,
-    required this.shopType,
-    required this.productName,
   });
 
-  final String productId;
-  final String productName;
-  final String shopType;
-
   @override
-  State<ChangeCategory> createState() => _ChangeCategoryState();
+  State<SelectCategoryForBulkProductsPage> createState() =>
+      _SelectCategoryForBulkProductsPageState();
 }
 
-class _ChangeCategoryState extends State<ChangeCategory> {
+class _SelectCategoryForBulkProductsPageState
+    extends State<SelectCategoryForBulkProductsPage> {
+  final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   final searchController = TextEditingController();
   bool isGridView = true;
-  bool isAdding = false;
   Map<String, dynamic> categories = {};
   bool getData = false;
 
@@ -47,12 +43,23 @@ class _ChangeCategoryState extends State<ChangeCategory> {
 
   // GET COMMON CATEGORIES
   Future<void> getCommonCategories() async {
+    final vendorSnap = await store
+        .collection('Business')
+        .doc('Owners')
+        .collection('Shops')
+        .doc(auth.currentUser!.uid)
+        .get();
+
+    final vendorData = vendorSnap.data()!;
+
+    final type = vendorData['Type'];
+
     Map<String, dynamic> myCategory = {};
 
     final specialSnapshot = await store
         .collection('Business')
         .doc('Special Categories')
-        .collection(widget.shopType)
+        .collection(type)
         .get();
 
     for (var specialCategory in specialSnapshot.docs) {
@@ -84,47 +91,16 @@ class _ChangeCategoryState extends State<ChangeCategory> {
         actions: [
           MyTextButton(
             onPressed: () async {
-              setState(() {
-                isAdding = true;
-              });
-              if (changeCategoryProvider.selectedCategory.isEmpty) {
-                await FirebaseFirestore.instance
-                    .collection('Business')
-                    .doc('Data')
-                    .collection('Products')
-                    .doc(widget.productId)
-                    .update({
-                  'categoryId': '0',
-                  'categoryName': 'No Category Selected',
-                });
+              if (changeCategoryProvider.selectedCategory != '') {
+                if (context.mounted) {
+                  Navigator.of(context).pop(
+                    changeCategoryProvider.selectedCategory,
+                  );
+                  changeCategoryProvider.clear();
+                }
               } else {
-                await FirebaseFirestore.instance
-                    .collection('Business')
-                    .doc('Data')
-                    .collection('Products')
-                    .doc(widget.productId)
-                    .update({
-                  'categoryId': changeCategoryProvider.selectedCategory,
-                  'categoryName': changeCategoryProvider.selectedCategory,
-                });
-                changeCategoryProvider.clear();
+                return mySnackBar(context, 'Select Category');
               }
-              setState(() {
-                isAdding = false;
-              });
-              if (context.mounted) {
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => ProductPage(
-                      productId: widget.productId,
-                      productName: widget.productId,
-                    ),
-                  ),
-                );
-              }
-              changeCategoryProvider.clear();
             },
             text: 'DONE',
             textColor: primaryDark2,
@@ -133,13 +109,13 @@ class _ChangeCategoryState extends State<ChangeCategory> {
         bottom: PreferredSize(
           preferredSize: Size(
             double.infinity,
-            isAdding ? 90 : 80,
+            80,
           ),
           child: Column(
             children: [
               Padding(
                 padding: EdgeInsets.symmetric(
-                  horizontal: 6,
+                  horizontal: MediaQuery.of(context).size.width * 0.0166,
                   vertical: MediaQuery.of(context).size.width * 0.0225,
                 ),
                 child: Row(
@@ -175,7 +151,6 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                   ],
                 ),
               ),
-              isAdding ? const LinearProgressIndicator() : Container(),
             ],
           ),
         ),
@@ -198,15 +173,12 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                       ),
                       itemCount: categories.length,
                       itemBuilder: (context, index) {
-                        final id = categories.keys.toList()[index];
                         final name = categories.keys.toList()[index];
                         final imageUrl = categories.values.toList()[index];
 
                         return GestureDetector(
                           onTap: () {
-                            changeCategoryProvider.changeCategory(
-                              id,
-                            );
+                            changeCategoryProvider.changeCategory(name);
                           },
                           child: Stack(
                             alignment: Alignment.topRight,
@@ -263,7 +235,7 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                                   ],
                                 ),
                               ),
-                              changeCategoryProvider.selectedCategory == id
+                              changeCategoryProvider.selectedCategory == name
                                   ? Container(
                                       padding: EdgeInsets.all(
                                         width * 0.00625,
@@ -292,15 +264,12 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                         shrinkWrap: true,
                         itemCount: categories.length,
                         itemBuilder: ((context, index) {
-                          final id = categories.keys.toList()[index];
                           final name = categories.keys.toList()[index];
                           final imageUrl = categories.values.toList()[index];
 
                           return GestureDetector(
                             onTap: () {
-                              changeCategoryProvider.changeCategory(
-                                id,
-                              );
+                              changeCategoryProvider.changeCategory(name);
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -338,7 +307,8 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                                       ),
                                     ),
                                   ),
-                                  changeCategoryProvider.selectedCategory == id
+                                  changeCategoryProvider.selectedCategory ==
+                                          name
                                       ? Container(
                                           padding: EdgeInsets.all(
                                             width * 0.00625,

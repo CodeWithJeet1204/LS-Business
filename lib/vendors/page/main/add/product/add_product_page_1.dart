@@ -192,9 +192,12 @@ class _AddProductPage1State extends State<AddProductPage1> {
               'categoryName': selectedCategory,
               'vendorId': auth.currentUser!.uid,
               'ratings': {},
+              'shortsThumbnail': '',
+              'shortsURL': '',
             },
             false,
           );
+          brandProvider.clear();
           setState(() {
             isSaving = false;
           });

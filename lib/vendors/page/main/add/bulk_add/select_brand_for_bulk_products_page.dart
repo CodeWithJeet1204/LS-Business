@@ -3,20 +3,22 @@ import 'package:feather_icons/feather_icons.dart';
 import 'package:find_easy/vendors/provider/select_brand_for_product_provider.dart';
 import 'package:find_easy/vendors/utils/colors.dart';
 import 'package:find_easy/widgets/shimmer_skeleton_container.dart';
+import 'package:find_easy/widgets/snack_bar.dart';
 import 'package:find_easy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SelectBrandForProductPage extends StatefulWidget {
-  const SelectBrandForProductPage({super.key});
+class SelectBrandForBulkProductsPage extends StatefulWidget {
+  const SelectBrandForBulkProductsPage({super.key});
 
   @override
-  State<SelectBrandForProductPage> createState() =>
-      _SelectBrandForProductPageState();
+  State<SelectBrandForBulkProductsPage> createState() =>
+      _SelectBrandForBulkProductsPageState();
 }
 
-class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
+class _SelectBrandForBulkProductsPageState
+    extends State<SelectBrandForBulkProductsPage> {
   bool isGridView = true;
   String? searchedBrand;
 
@@ -45,9 +47,16 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
         actions: [
           MyTextButton(
             onPressed: () {
-              Navigator.of(context).pop();
+              if (selectBrandProvider.selectedBrandId != '0') {
+                Navigator.of(context).pop([
+                  selectBrandProvider.selectedBrandId,
+                  selectBrandProvider.selectedBrandName,
+                ]);
+              } else {
+                return mySnackBar(context, 'Select Brand');
+              }
             },
-            text: 'NEXT',
+            text: 'DONE',
             textColor: primaryDark,
           ),
         ],

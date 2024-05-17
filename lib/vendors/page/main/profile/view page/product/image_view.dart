@@ -23,7 +23,6 @@ class ImageView extends StatefulWidget {
 
 class _ImageViewState extends State<ImageView> {
   final controller = CarouselController();
-  // late VideoPlayerController videoController;
   late FlickManager flickManager;
   int currentIndex = 0;
 
@@ -31,11 +30,6 @@ class _ImageViewState extends State<ImageView> {
   @override
   void initState() {
     super.initState();
-    // videoController =
-    //     VideoPlayerController.networkUrl(Uri.parse(widget.shortsURL!));
-    // videoController.initialize();
-    // videoController.play();
-    // videoController.setLooping(true);
 
     flickManager = FlickManager(
       videoPlayerController: VideoPlayerController.networkUrl(
