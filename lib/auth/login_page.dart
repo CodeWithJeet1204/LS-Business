@@ -1,19 +1,19 @@
 // ignore_for_file: unnecessary_null_comparison
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/events/events_main_page.dart';
-import 'package:find_easy/select_mode_page.dart';
-import 'package:find_easy/services/main/services_main_page.dart';
-import 'package:find_easy/vendors/firebase/auth_methods.dart';
-import 'package:find_easy/vendors/page/main/main_page.dart';
-import 'package:find_easy/auth/register_pay.dart';
-import 'package:find_easy/vendors/utils/colors.dart';
-import 'package:find_easy/widgets/button.dart';
-import 'package:find_easy/widgets/collapse_container.dart';
-import 'package:find_easy/widgets/head_text.dart';
-import 'package:find_easy/widgets/snack_bar.dart';
-import 'package:find_easy/widgets/text_button.dart';
-import 'package:find_easy/widgets/text_form_field.dart';
+import 'package:localy/events/events_main_page.dart';
+import 'package:localy/select_mode_page.dart';
+import 'package:localy/services/main/services_main_page.dart';
+import 'package:localy/vendors/firebase/auth_methods.dart';
+import 'package:localy/vendors/page/main/main_page.dart';
+import 'package:localy/auth/register_pay.dart';
+import 'package:localy/vendors/utils/colors.dart';
+import 'package:localy/widgets/button.dart';
+import 'package:localy/widgets/collapse_container.dart';
+import 'package:localy/widgets/head_text.dart';
+import 'package:localy/widgets/snack_bar.dart';
+import 'package:localy/widgets/text_button.dart';
+import 'package:localy/widgets/text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

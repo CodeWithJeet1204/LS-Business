@@ -1,6 +1,6 @@
-import 'package:find_easy/vendors/page/main/analytics/products_analytics_page.dart';
-import 'package:find_easy/vendors/page/main/analytics/shop_analytics_page.dart';
-import 'package:find_easy/vendors/utils/colors.dart';
+import 'package:localy/vendors/page/main/analytics/products_analytics_page.dart';
+import 'package:localy/vendors/page/main/analytics/shop_analytics_page.dart';
+import 'package:localy/vendors/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class AnalyticsPage extends StatefulWidget {

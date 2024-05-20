@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:feather_icons/feather_icons.dart';
-import 'package:find_easy/vendors/utils/colors.dart';
-import 'package:find_easy/widgets/text_form_field.dart';
+import 'package:localy/vendors/utils/colors.dart';
+import 'package:localy/widgets/text_form_field.dart';
 import 'package:flutter/material.dart';
 
 class BulkAdd extends StatefulWidget {

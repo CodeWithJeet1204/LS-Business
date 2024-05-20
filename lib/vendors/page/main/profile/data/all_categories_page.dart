@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:find_easy/vendors/page/main/profile/view%20page/category/category_page.dart';
-import 'package:find_easy/vendors/utils/colors.dart';
-import 'package:find_easy/widgets/shimmer_skeleton_container.dart';
+import 'package:localy/vendors/page/main/profile/view%20page/category/category_page.dart';
+import 'package:localy/vendors/utils/colors.dart';
+import 'package:localy/widgets/shimmer_skeleton_container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';

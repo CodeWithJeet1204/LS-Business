@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/events/events_main_page.dart';
-import 'package:find_easy/widgets/button.dart';
+import 'package:localy/events/events_main_page.dart';
+import 'package:localy/widgets/button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

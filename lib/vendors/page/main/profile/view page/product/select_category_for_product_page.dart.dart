@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:find_easy/vendors/page/main/profile/view%20page/product/product_page.dart';
-import 'package:find_easy/vendors/provider/change_category_provider.dart';
-import 'package:find_easy/vendors/utils/colors.dart';
-import 'package:find_easy/widgets/text_button.dart';
+import 'package:localy/vendors/page/main/profile/view%20page/product/product_page.dart';
+import 'package:localy/vendors/provider/change_category_provider.dart';
+import 'package:localy/vendors/utils/colors.dart';
+import 'package:localy/widgets/text_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

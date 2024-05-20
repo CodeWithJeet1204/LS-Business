@@ -1,6 +1,6 @@
-import 'package:find_easy/vendors/page/main/main_page.dart';
-import 'package:find_easy/auth/login_page.dart';
-import 'package:find_easy/vendors/utils/colors.dart';
+import 'package:localy/vendors/page/main/main_page.dart';
+import 'package:localy/auth/login_page.dart';
+import 'package:localy/vendors/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -61,13 +61,13 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'files/FInd Easy Transparent.png',
+              'files/Localy Transparent.png',
               width: width * 0.5,
             ),
             SizedBox(height: width * 0.25),
             Text(
               overflow: TextOverflow.ellipsis,
-              'Find Easy',
+              'Localy',
               style: TextStyle(
                 color: primaryDark2,
                 fontSize: width * 0.08875,

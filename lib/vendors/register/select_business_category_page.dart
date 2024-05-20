@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/vendors/models/special_categories.dart';
-import 'package:find_easy/vendors/register/membership_page.dart';
-import 'package:find_easy/vendors/utils/colors.dart';
-import 'package:find_easy/widgets/button.dart';
-import 'package:find_easy/widgets/head_text.dart';
-import 'package:find_easy/widgets/image_container.dart';
-import 'package:find_easy/widgets/image_text_container.dart';
-import 'package:find_easy/widgets/snack_bar.dart';
-import 'package:find_easy/widgets/text_form_field.dart';
+import 'package:localy/vendors/models/special_categories.dart';
+import 'package:localy/vendors/register/membership_page.dart';
+import 'package:localy/vendors/utils/colors.dart';
+import 'package:localy/widgets/button.dart';
+import 'package:localy/widgets/head_text.dart';
+import 'package:localy/widgets/image_container.dart';
+import 'package:localy/widgets/image_text_container.dart';
+import 'package:localy/widgets/snack_bar.dart';
+import 'package:localy/widgets/text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

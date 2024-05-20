@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/services/main/profile/change_work/services_change_work_page_2.dart';
-import 'package:find_easy/widgets/button.dart';
-import 'package:find_easy/widgets/select_container.dart';
+import 'package:localy/services/main/profile/change_work/services_change_work_page_2.dart';
+import 'package:localy/widgets/button.dart';
+import 'package:localy/widgets/select_container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -234,17 +234,16 @@ class _ServicesChangeWorkPage1State extends State<ServicesChangeWorkPage1> {
                             ),
                           ],
                         ),
-                            SelectContainer(
-                              width: width,
-                              text: 'Educational Institutes',
-                              isSelected: isEducationalSelected,
-                              onTap: () {
-                                setState(() {
-                                  isEducationalSelected =
-                                      !isEducationalSelected;
-                                });
-                              },
-                            ),
+                        SelectContainer(
+                          width: width,
+                          text: 'Educational Institutes',
+                          isSelected: isEducationalSelected,
+                          onTap: () {
+                            setState(() {
+                              isEducationalSelected = !isEducationalSelected;
+                            });
+                          },
+                        ),
                       ],
                     ),
                   );

@@ -1,10 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:find_easy/vendors/page/main/add/bulk_add/add_bulk_product_page.dart';
-import 'package:find_easy/vendors/page/main/add/post/add_post_page.dart';
-import 'package:find_easy/vendors/page/main/add/product/add_product_page_1.dart';
-import 'package:find_easy/vendors/page/main/add/shorts/add_shorts_page.dart';
-import 'package:find_easy/vendors/utils/colors.dart';
+import 'package:localy/vendors/page/main/add/bulk_add/add_bulk_product_page.dart';
+import 'package:localy/vendors/page/main/add/post/add_post_page.dart';
+import 'package:localy/vendors/page/main/add/product/add_product_page_1.dart';
+import 'package:localy/vendors/page/main/add/shorts/add_shorts_page.dart';
+import 'package:localy/vendors/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class AddPage extends StatefulWidget {

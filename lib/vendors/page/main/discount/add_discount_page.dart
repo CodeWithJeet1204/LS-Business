@@ -1,8 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:find_easy/vendors/page/main/discount/brand/brand_discount_page.dart';
-import 'package:find_easy/vendors/page/main/discount/products/product_discount_page.dart';
-import 'package:find_easy/vendors/utils/colors.dart';
+import 'package:localy/vendors/page/main/discount/brand/brand_discount_page.dart';
+import 'package:localy/vendors/page/main/discount/products/product_discount_page.dart';
+import 'package:localy/vendors/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class AddDiscountPage extends StatefulWidget {

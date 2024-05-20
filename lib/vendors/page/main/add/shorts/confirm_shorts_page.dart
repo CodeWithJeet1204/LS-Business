@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/vendors/page/main/add/shorts/select_product_for_shorts_page.dart';
-import 'package:find_easy/vendors/page/main/main_page.dart';
-import 'package:find_easy/widgets/button.dart';
+import 'package:localy/vendors/page/main/add/shorts/select_product_for_shorts_page.dart';
+import 'package:localy/vendors/page/main/main_page.dart';
+import 'package:localy/widgets/button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flick_video_player/flick_video_player.dart';

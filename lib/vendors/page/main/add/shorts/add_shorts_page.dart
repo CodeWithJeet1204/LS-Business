@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
-import 'package:find_easy/vendors/page/main/add/shorts/confirm_shorts_page.dart';
-import 'package:find_easy/vendors/utils/colors.dart';
-import 'package:find_easy/widgets/snack_bar.dart';
+import 'package:localy/vendors/page/main/add/shorts/confirm_shorts_page.dart';
+import 'package:localy/vendors/utils/colors.dart';
+import 'package:localy/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 import 'package:image_picker/image_picker.dart';

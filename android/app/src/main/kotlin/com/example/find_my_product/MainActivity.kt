@@ -1,4 +1,4 @@
-package com.mycompany.findeasy
+package com.mycompany.localy
 
 import io.flutter.embedding.android.FlutterActivity
 

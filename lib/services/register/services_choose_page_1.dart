@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/services/main/services_main_page.dart';
-import 'package:find_easy/services/register/services_choose_page_2.dart';
-import 'package:find_easy/services/register/services_choose_page_3.dart';
-import 'package:find_easy/widgets/button.dart';
-import 'package:find_easy/widgets/select_container.dart';
-import 'package:find_easy/widgets/snack_bar.dart';
+import 'package:localy/services/main/services_main_page.dart';
+import 'package:localy/services/register/services_choose_page_2.dart';
+import 'package:localy/services/register/services_choose_page_3.dart';
+import 'package:localy/widgets/button.dart';
+import 'package:localy/widgets/select_container.dart';
+import 'package:localy/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

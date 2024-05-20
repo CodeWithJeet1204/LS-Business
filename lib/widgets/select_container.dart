@@ -1,5 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:find_easy/vendors/utils/colors.dart';
+import 'package:localy/vendors/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class SelectContainer extends StatefulWidget {

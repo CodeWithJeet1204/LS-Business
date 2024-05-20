@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:find_easy/events/events_main_page.dart';
+import 'package:localy/events/events_main_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/vendors/utils/colors.dart';
-import 'package:find_easy/widgets/text_button.dart';
-import 'package:find_easy/widgets/text_form_field.dart';
+import 'package:localy/vendors/utils/colors.dart';
+import 'package:localy/widgets/text_button.dart';
+import 'package:localy/widgets/text_form_field.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';

@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_easy/vendors/page/main/add/bulk_add/select_brand_for_bulk_products_page.dart';
-import 'package:find_easy/vendors/page/main/add/bulk_add/select_category_for_bulk_products_page.dart';
-import 'package:find_easy/widgets/bulk_add.dart';
-import 'package:find_easy/widgets/button.dart';
-import 'package:find_easy/widgets/image_pick_dialog.dart';
-import 'package:find_easy/widgets/snack_bar.dart';
+import 'package:localy/vendors/page/main/add/bulk_add/select_brand_for_bulk_products_page.dart';
+import 'package:localy/vendors/page/main/add/bulk_add/select_category_for_bulk_products_page.dart';
+import 'package:localy/widgets/bulk_add.dart';
+import 'package:localy/widgets/button.dart';
+import 'package:localy/widgets/image_pick_dialog.dart';
+import 'package:localy/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';

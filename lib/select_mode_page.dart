@@ -1,6 +1,6 @@
-import 'package:find_easy/auth/login_page.dart';
-import 'package:find_easy/widgets/button.dart';
-import 'package:find_easy/widgets/mode_card.dart';
+import 'package:localy/auth/login_page.dart';
+import 'package:localy/widgets/button.dart';
+import 'package:localy/widgets/mode_card.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

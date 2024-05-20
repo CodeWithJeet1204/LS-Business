@@ -1,4 +1,4 @@
-import 'package:find_easy/widgets/snack_bar.dart';
+import 'package:localy/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
 
 class SelectProductForDiscountProvider with ChangeNotifier {

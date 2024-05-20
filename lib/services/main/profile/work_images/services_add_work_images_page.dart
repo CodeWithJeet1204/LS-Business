@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:find_easy/services/main/profile/work_images/services_choose_work_images_sub_category_page.dart';
-import 'package:find_easy/vendors/utils/colors.dart';
-import 'package:find_easy/widgets/image_pick_dialog.dart';
-import 'package:find_easy/widgets/snack_bar.dart';
-import 'package:find_easy/widgets/text_button.dart';
+import 'package:localy/services/main/profile/work_images/services_choose_work_images_sub_category_page.dart';
+import 'package:localy/vendors/utils/colors.dart';
+import 'package:localy/widgets/image_pick_dialog.dart';
+import 'package:localy/widgets/snack_bar.dart';
+import 'package:localy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';

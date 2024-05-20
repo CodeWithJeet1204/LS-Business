@@ -1,12 +1,12 @@
-import 'package:find_easy/auth/login_page.dart';
-import 'package:find_easy/auth/register_method_page.dart';
-import 'package:find_easy/vendors/utils/colors.dart';
-import 'package:find_easy/vendors/utils/is_payed.dart';
-import 'package:find_easy/vendors/utils/size.dart';
-import 'package:find_easy/widgets/button.dart';
-import 'package:find_easy/widgets/head_text.dart';
-import 'package:find_easy/widgets/snack_bar.dart';
-import 'package:find_easy/widgets/text_button.dart';
+import 'package:localy/auth/login_page.dart';
+import 'package:localy/auth/register_method_page.dart';
+import 'package:localy/vendors/utils/colors.dart';
+import 'package:localy/vendors/utils/is_payed.dart';
+import 'package:localy/vendors/utils/size.dart';
+import 'package:localy/widgets/button.dart';
+import 'package:localy/widgets/head_text.dart';
+import 'package:localy/widgets/snack_bar.dart';
+import 'package:localy/widgets/text_button.dart';
 import 'package:flutter/material.dart';
 
 class RegisterPayPage extends StatefulWidget {
