@@ -91,7 +91,6 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                 .doc(categoryId)
                 .set({
               'categoryName': categoryName,
-              'categoryId': categoryId,
               'imageUrl': imageUrl,
               'datetime': Timestamp.fromMillisecondsSinceEpoch(
                 DateTime.now().millisecondsSinceEpoch,
@@ -108,7 +107,6 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                   .doc(element)
                   .update({
                 'categoryName': categoryName,
-                'categoryId': categoryId,
               });
             }
             await _image!.delete();

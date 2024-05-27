@@ -92,7 +92,7 @@ class _SelectBusinessCategoryPageState
           //         .set({
           //       'vendorId': auth.currentUser!.uid,
           //       'subCategoryName': subCategory[0],
-          //       'categoryId': subCategoryId,
+          //       'categoryName': subCategoryId,
           //       'imageUrl': subCategory[1],
           //       'special': true,
           //     });

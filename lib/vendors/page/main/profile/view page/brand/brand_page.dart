@@ -326,7 +326,7 @@ class _BrandPageState extends State<BrandPage> {
 
   // CONFIRM DELETE
   Future<void> confirmDelete() async {
-    showDialog(
+    await showDialog(
       context: context,
       builder: ((context) {
         return AlertDialog(

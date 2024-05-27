@@ -25,17 +25,54 @@ class AddProductsToBrandPage extends StatefulWidget {
 }
 
 class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
+  final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   final searchController = TextEditingController();
+  Map<String, Map<String, dynamic>> currentProducts = {};
+  Map<String, Map<String, dynamic>> allProducts = {};
   bool isGridView = true;
   bool isAdding = false;
-  String? searchedProduct;
+  bool isData = false;
+
+  // INIT STATE
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
 
   // DISPOSE
   @override
   void dispose() {
     searchController.dispose();
     super.dispose();
+  }
+
+  // TODO: DELETE SHORTS AFTER PRODUCT DELETED
+
+  // GET DATA
+  Future<void> getData() async {
+    Map<String, Map<String, dynamic>> myProducts = {};
+    final productSnap = await store
+        .collection('Business')
+        .doc('Data')
+        .collection('Products')
+        .where('vendorId', isEqualTo: auth.currentUser!.uid)
+        .get();
+
+    productSnap.docs.forEach((product) {
+      final productId = product.id;
+
+      final productData = product.data();
+
+      myProducts[productId] = productData;
+    });
+
+    setState(() {
+      currentProducts = myProducts;
+      allProducts = myProducts;
+      isData = true;
+    });
   }
 
   // ADD PRODUCT TO BRAND
@@ -57,23 +94,10 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
     final productsAddedToBrandProvider =
         Provider.of<ProductAddedToBrandProvider>(context);
-
-    final Stream<QuerySnapshot> allProductStream = FirebaseFirestore.instance
-        .collection('Business')
-        .doc('Data')
-        .collection('Products')
-        .where(
-          'vendorId',
-          isEqualTo: FirebaseAuth.instance.currentUser!.uid,
-        )
-        .orderBy('productName')
-        .where('productName',
-            isGreaterThanOrEqualTo: searchController.text.toString())
-        .where('productName', isLessThan: '${searchController.text}\uf8ff')
-        .orderBy('datetime', descending: true)
-        .snapshots();
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -149,287 +173,308 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
           ),
         ),
       ),
-      body: LayoutBuilder(
-        builder: ((context, constraints) {
-          final double width = constraints.maxWidth;
-          return StreamBuilder(
-            stream: allProductStream,
-            builder: ((context, snapshot) {
-              if (snapshot.hasError) {
-                return const Center(
-                  child: Text(
-                    overflow: TextOverflow.ellipsis,
-                    'Something went wrong',
-                  ),
-                );
-              }
-
-              if (snapshot.hasData) {
-                return SafeArea(
-                  child: isGridView
-                      ? GridView.builder(
-                          shrinkWrap: true,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 0.725,
-                          ),
-                          itemCount: snapshot.data!.docs.length,
-                          itemBuilder: (context, index) {
-                            final productData = snapshot.data!.docs[index];
-
-                            return GestureDetector(
-                              onTap: () {
-                                productsAddedToBrandProvider.addProduct(
-                                  productData['productId'],
-                                );
-                              },
-                              child: Stack(
-                                alignment: Alignment.topRight,
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: primary2.withOpacity(0.125),
-                                      border: Border.all(
-                                        width: 0.25,
-                                        color: primaryDark,
-                                      ),
-                                      borderRadius: BorderRadius.circular(2),
-                                    ),
-                                    margin: EdgeInsets.all(width * 0.00625),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.all(
-                                            width * 0.00625,
-                                          ),
-                                          child: Center(
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                2,
-                                              ),
-                                              child: Image.network(
-                                                productData['images'][0],
-                                                height: width * 0.5,
-                                                width: width * 0.5,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.fromLTRB(
-                                            width * 0.0125,
-                                            width * 0.0125,
-                                            width * 0.0125,
-                                            0,
-                                          ),
-                                          child: SizedBox(
-                                            width: width * 0.5,
-                                            child: Text(
-                                              productData['productName'],
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                fontSize: width * 0.05,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.fromLTRB(
-                                            width * 0.0125,
-                                            0,
-                                            width * 0.0125,
-                                            0,
-                                          ),
-                                          child: Text(
-                                            productData['productPrice'] != '' &&
-                                                    productData[
-                                                            'productPrice'] !=
-                                                        null
-                                                ? 'Rs. ${productData['productPrice']}'
-                                                : 'N/A',
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontSize: width * 0.045,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  productsAddedToBrandProvider.selectedProducts
-                                          .contains(productData['productId'])
-                                      ? Padding(
-                                          padding: EdgeInsets.only(
-                                            right: width * 0.01,
-                                            top: width * 0.01,
-                                          ),
-                                          child: Container(
-                                            padding: const EdgeInsets.all(2),
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: primaryDark2,
-                                            ),
-                                            child: Icon(
-                                              FeatherIcons.check,
-                                              color: Colors.white,
-                                              size: width * 0.1,
-                                            ),
-                                          ),
-                                        )
-                                      : Container()
-                                ],
-                              ),
-                            );
-                          })
-                      : SizedBox(
-                          width: width,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: snapshot.data!.docs.length,
-                            itemBuilder: ((context, index) {
-                              final productData = snapshot.data!.docs[index];
-
-                              return GestureDetector(
-                                onTap: () {
-                                  productsAddedToBrandProvider.addProduct(
-                                    productData['productId'],
-                                  );
-                                },
-                                child: Stack(
-                                  alignment: Alignment.centerRight,
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: white,
-                                        border: Border.all(
-                                          width: 0.5,
-                                          color: primaryDark,
-                                        ),
-                                        borderRadius: BorderRadius.circular(2),
-                                      ),
-                                      margin: EdgeInsets.all(
-                                        width * 0.0125,
-                                      ),
-                                      child: ListTile(
-                                        visualDensity: VisualDensity.standard,
-                                        leading: ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                            2,
-                                          ),
-                                          child: Image.network(
-                                            productData['images'][0],
-                                            width: width * 0.15,
-                                            height: width * 0.15,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                        title: Text(
-                                          productData['productName'],
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: width * 0.05,
-                                          ),
-                                        ),
-                                        subtitle: Text(
-                                          productData['productPrice'] != '' &&
-                                                  productData['productPrice'] !=
-                                                      null
-                                              ? 'Rs. ${productData['productPrice']}'
-                                              : 'N/A',
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: width * 0.045,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    productsAddedToBrandProvider
-                                            .selectedProducts
-                                            .contains(productData['productId'])
-                                        ? Padding(
-                                            padding: EdgeInsets.only(
-                                              right: width * 0.01,
-                                            ),
-                                            child: Container(
-                                              padding: EdgeInsets.all(
-                                                width * 0.005,
-                                              ),
-                                              decoration: const BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: primaryDark2,
-                                              ),
-                                              child: Icon(
-                                                FeatherIcons.check,
-                                                color: Colors.white,
-                                                size: width * 0.1,
-                                              ),
-                                            ),
-                                          )
-                                        : Container()
-                                  ],
-                                ),
-                              );
-                            }),
-                          ),
-                        ),
-                );
-              }
-
-              return SafeArea(
-                child: isGridView
-                    ? GridView.builder(
-                        shrinkWrap: true,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 0,
-                          mainAxisSpacing: 0,
-                          childAspectRatio: width * 0.5 / width * 1.6,
-                        ),
-                        itemCount: 4,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.all(
-                              width * 0.02,
-                            ),
-                            child: GridViewSkeleton(
-                              width: width,
-                              isPrice: true,
-                            ),
-                          );
-                        },
-                      )
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: 4,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.all(
-                              width * 0.02,
-                            ),
-                            child: ListViewSkeleton(
-                              width: width,
-                              isPrice: true,
-                              height: 30,
-                            ),
-                          );
-                        },
+      body: !isData
+          ? SafeArea(
+              child: isGridView
+                  ? GridView.builder(
+                      shrinkWrap: true,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 0,
+                        mainAxisSpacing: 0,
+                        childAspectRatio: width * 0.5 / width * 1.6,
                       ),
-              );
-            }),
-          );
-        }),
-      ),
+                      itemCount: 4,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.all(
+                            width * 0.02,
+                          ),
+                          child: GridViewSkeleton(
+                            width: width,
+                            isPrice: true,
+                          ),
+                        );
+                      },
+                    )
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: 4,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.all(
+                            width * 0.02,
+                          ),
+                          child: ListViewSkeleton(
+                            width: width,
+                            isPrice: true,
+                            height: 30,
+                          ),
+                        );
+                      },
+                    ),
+            )
+          : currentProducts.isEmpty
+              ? Center(
+                  child: Text('No Products'),
+                )
+              : SafeArea(
+                  child: Padding(
+                    padding: EdgeInsets.all(width * 0.006125),
+                    child: LayoutBuilder(
+                      builder: ((context, constraints) {
+                        final double width = constraints.maxWidth;
+
+                        return SafeArea(
+                          child: isGridView
+                              ? GridView.builder(
+                                  shrinkWrap: true,
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    childAspectRatio: 0.725,
+                                  ),
+                                  itemCount: currentProducts.length,
+                                  itemBuilder: (context, index) {
+                                    final productData = currentProducts[
+                                        currentProducts.keys.toList()[index]]!;
+
+                                    return GestureDetector(
+                                      onTap: () {
+                                        productsAddedToBrandProvider.addProduct(
+                                          productData['productId'],
+                                        );
+                                      },
+                                      child: Stack(
+                                        alignment: Alignment.topRight,
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  primary2.withOpacity(0.125),
+                                              border: Border.all(
+                                                width: 0.25,
+                                                color: primaryDark,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(2),
+                                            ),
+                                            margin:
+                                                EdgeInsets.all(width * 0.00625),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Padding(
+                                                  padding: EdgeInsets.all(
+                                                    width * 0.00625,
+                                                  ),
+                                                  child: Center(
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                        2,
+                                                      ),
+                                                      child: Image.network(
+                                                        productData['images']
+                                                            [0],
+                                                        height: width * 0.5,
+                                                        width: width * 0.5,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                    width * 0.0125,
+                                                    width * 0.0125,
+                                                    width * 0.0125,
+                                                    0,
+                                                  ),
+                                                  child: SizedBox(
+                                                    width: width * 0.5,
+                                                    child: Text(
+                                                      productData[
+                                                          'productName'],
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                        fontSize: width * 0.05,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                    width * 0.0125,
+                                                    0,
+                                                    width * 0.0125,
+                                                    0,
+                                                  ),
+                                                  child: Text(
+                                                    productData['productPrice'] !=
+                                                                '' &&
+                                                            productData[
+                                                                    'productPrice'] !=
+                                                                null
+                                                        ? 'Rs. ${productData['productPrice']}'
+                                                        : 'N/A',
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      fontSize: width * 0.045,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          productsAddedToBrandProvider
+                                                  .selectedProducts
+                                                  .contains(
+                                                      productData['productId'])
+                                              ? Padding(
+                                                  padding: EdgeInsets.only(
+                                                    right: width * 0.01,
+                                                    top: width * 0.01,
+                                                  ),
+                                                  child: Container(
+                                                    padding:
+                                                        const EdgeInsets.all(2),
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: primaryDark2,
+                                                    ),
+                                                    child: Icon(
+                                                      FeatherIcons.check,
+                                                      color: Colors.white,
+                                                      size: width * 0.1,
+                                                    ),
+                                                  ),
+                                                )
+                                              : Container()
+                                        ],
+                                      ),
+                                    );
+                                  })
+                              : SizedBox(
+                                  width: width,
+                                  child: ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: currentProducts.length,
+                                      itemBuilder: (context, index) {
+                                        final productData = currentProducts[
+                                            currentProducts.keys
+                                                .toList()[index]]!;
+
+                                        return GestureDetector(
+                                          onTap: () {
+                                            productsAddedToBrandProvider
+                                                .addProduct(
+                                              productData['productId'],
+                                            );
+                                          },
+                                          child: Stack(
+                                            alignment: Alignment.centerRight,
+                                            children: [
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  color: white,
+                                                  border: Border.all(
+                                                    width: 0.5,
+                                                    color: primaryDark,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(2),
+                                                ),
+                                                margin: EdgeInsets.all(
+                                                  width * 0.0125,
+                                                ),
+                                                child: ListTile(
+                                                  visualDensity:
+                                                      VisualDensity.standard,
+                                                  leading: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      2,
+                                                    ),
+                                                    child: Image.network(
+                                                      productData['images'][0],
+                                                      width: width * 0.15,
+                                                      height: width * 0.15,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                  title: Text(
+                                                    productData['productName'],
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      fontSize: width * 0.05,
+                                                    ),
+                                                  ),
+                                                  subtitle: Text(
+                                                    productData['productPrice'] !=
+                                                                '' &&
+                                                            productData[
+                                                                    'productPrice'] !=
+                                                                null
+                                                        ? 'Rs. ${productData['productPrice']}'
+                                                        : 'N/A',
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      fontSize: width * 0.045,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              productsAddedToBrandProvider
+                                                      .selectedProducts
+                                                      .contains(productData[
+                                                          'productId'])
+                                                  ? Padding(
+                                                      padding: EdgeInsets.only(
+                                                        right: width * 0.01,
+                                                      ),
+                                                      child: Container(
+                                                        padding: EdgeInsets.all(
+                                                          width * 0.005,
+                                                        ),
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          color: primaryDark2,
+                                                        ),
+                                                        child: Icon(
+                                                          FeatherIcons.check,
+                                                          color: Colors.white,
+                                                          size: width * 0.1,
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : Container()
+                                            ],
+                                          ),
+                                        );
+                                      }),
+                                ),
+                        );
+                      }),
+                    ),
+                  ),
+                ),
     );
   }
 }

@@ -110,7 +110,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
               (List<DocumentSnapshot<Map<String, dynamic>>> snapshots) =>
                   snapshots
                       .map((snapshot) => {
-                            'categoryId': snapshot.id,
+                            'categoryName': snapshot.id,
                             'categoryName':
                                 snapshot.data()!['categoryName'] as String,
                             'imageUrl': snapshot.data()!['imageUrl'] as String,
@@ -260,7 +260,7 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
                                               //   onPressed: () {
                                               //     confirmRemove(
                                               //       categories[index]
-                                              //           ['categoryId']!,
+                                              //           ['categoryName']!,
                                               //       categories[index]
                                               //           ['categoryName']!,
                                               //     );

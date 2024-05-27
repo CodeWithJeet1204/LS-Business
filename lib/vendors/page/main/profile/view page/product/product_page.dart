@@ -79,7 +79,7 @@ class _ProductPageState extends State<ProductPage> {
     bool isProperty,
     bool inputType,
   ) async {
-    showDialog(
+    await showDialog(
         context: context,
         builder: (context) {
           final propertyStream = store

@@ -94,7 +94,7 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                     .collection('Products')
                     .doc(widget.productId)
                     .update({
-                  'categoryId': '0',
+                  'categoryName': '0',
                   'categoryName': 'No Category Selected',
                 });
               } else {
@@ -104,7 +104,7 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                     .collection('Products')
                     .doc(widget.productId)
                     .update({
-                  'categoryId': changeCategoryProvider.selectedCategory,
+                  'categoryName': changeCategoryProvider.selectedCategory,
                   'categoryName': changeCategoryProvider.selectedCategory,
                 });
                 changeCategoryProvider.clear();

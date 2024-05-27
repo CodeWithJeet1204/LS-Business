@@ -319,6 +319,8 @@ class _PostPageState extends State<PostPage> {
                                   : Container()
                               : Container(),
 
+                          images.isEmpty ? Container() : Divider(),
+
                           // NAME
                           Padding(
                             padding: EdgeInsets.symmetric(
@@ -504,38 +506,40 @@ class _PostPageState extends State<PostPage> {
                                   ),
                           ),
 
-                          const Divider(),
+                          description.isEmpty ? Container() : const Divider(),
 
                           // DESCRIPTION
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: width * 0.0166,
-                              horizontal: width * 0.0166,
-                            ),
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                vertical: width * 0.0225,
-                                horizontal: width * 0.0225,
-                              ),
-                              decoration: BoxDecoration(
-                                color: primary.withOpacity(0.3),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: SizedBox(
-                                width: width * 0.75,
-                                child: Text(
-                                  description,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 20,
-                                  style: TextStyle(
-                                    color: primaryDark,
-                                    fontSize: width * 0.0575,
-                                    fontWeight: FontWeight.w500,
+                          description.isEmpty
+                              ? Container()
+                              : Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: width * 0.0166,
+                                    horizontal: width * 0.0166,
+                                  ),
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: width * 0.0225,
+                                      horizontal: width * 0.0225,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: primary.withOpacity(0.3),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: SizedBox(
+                                      width: width * 0.75,
+                                      child: Text(
+                                        description,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 20,
+                                        style: TextStyle(
+                                          color: primaryDark,
+                                          fontSize: width * 0.0575,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          ),
 
                           const Divider(),
 

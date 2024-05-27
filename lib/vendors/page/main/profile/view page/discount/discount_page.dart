@@ -430,7 +430,7 @@ class DISCOUNT extends State<DiscountPage> {
   //                     .collection('Products')
   //                     .doc(productId)
   //                     .update({
-  //                   'categoryId': '0',
+  //                   'categoryName': '0',
   //                   'categoryName': 'No Category Selected',
   //                 });
   //                 if (mounted) {
@@ -830,13 +830,17 @@ class DISCOUNT extends State<DiscountPage> {
                               fontWeight: FontWeight.w600,
                               fontSize: width * 0.055,
                             ),
-                            dropdownColor: primary,
+                            dropdownColor: primary2,
                             hint: Text(
                               discountData['isPercent']
                                   ? 'Percent %'
                                   : 'Price Rs.',
-                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: primaryDark,
+                              ),
                             ),
+                            iconEnabledColor: primaryDark,
+                            iconDisabledColor: primaryDark,
                             underline: const SizedBox(),
                             items: ['Percent', 'Price']
                                 .map((e) => DropdownMenuItem(

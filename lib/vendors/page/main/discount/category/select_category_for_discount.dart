@@ -137,7 +137,7 @@ class _SelectCategoryForDiscountPageState
                               child: GestureDetector(
                                 onTap: () {
                                   selectCategoryProvider.selectCategory(
-                                    categoryDataMap['categoryId'],
+                                    categoryDataMap['categoryName'],
                                   );
                                 },
                                 child: Stack(
@@ -203,7 +203,7 @@ class _SelectCategoryForDiscountPageState
                                     ),
                                     selectCategoryProvider.selectedCategories
                                             .contains(
-                                      categoryDataMap['categoryId'],
+                                      categoryDataMap['categoryName'],
                                     )
                                         ? Container(
                                             margin: EdgeInsets.all(
@@ -251,7 +251,7 @@ class _SelectCategoryForDiscountPageState
                                       child: ListTile(
                                         onTap: () {
                                           selectCategoryProvider.selectCategory(
-                                            categoryDataMap['categoryId'],
+                                            categoryDataMap['categoryName'],
                                           );
                                         },
                                         leading: Padding(
@@ -293,7 +293,7 @@ class _SelectCategoryForDiscountPageState
                                     ),
                                     selectCategoryProvider.selectedCategories
                                             .contains(
-                                      categoryDataMap['categoryId'],
+                                      categoryDataMap['categoryName'],
                                     )
                                         ? Padding(
                                             padding: EdgeInsets.only(

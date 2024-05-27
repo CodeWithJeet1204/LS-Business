@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:localy/vendors/page/main/discount/products/select_products_for_discount.dart';
+import 'package:localy/vendors/page/main/discount/products/select_products_for_discount_page.dart';
 import 'package:localy/vendors/page/main/profile/view%20page/product/product_page.dart';
 import 'package:localy/vendors/provider/discount_products_provider.dart';
 import 'package:localy/vendors/utils/colors.dart';
@@ -292,7 +292,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                     const SizedBox(height: 8),
 
                     // IMAGE
-                    GestureDetector(
+                    InkWell(
                       onTap: _image == null
                           ? () async {
                               await addDiscountImage();

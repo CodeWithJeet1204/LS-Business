@@ -52,7 +52,6 @@ class _SelectProductsForCategoryPageState
           .collection('Products')
           .doc(products[i])
           .update({
-        'categoryId': widget.categoryId,
         'categoryName': widget.categoryName,
       });
       setState(() {

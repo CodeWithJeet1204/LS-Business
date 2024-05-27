@@ -142,7 +142,7 @@ class _EventPageState extends State<EventPage> {
     String propertyValue,
     bool inputType,
   ) async {
-    showDialog(
+    await showDialog(
         context: context,
         builder: (context) {
           final eventStream =

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:localy/vendors/provider/discount_brand_provider.dart';
+import 'package:localy/vendors/provider/discount_products_provider.dart';
 import 'package:localy/vendors/utils/colors.dart';
 import 'package:localy/widgets/shimmer_skeleton_container.dart';
 import 'package:localy/widgets/text_button.dart';
@@ -8,22 +8,22 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SelectBrandForDiscountPage extends StatefulWidget {
-  const SelectBrandForDiscountPage({super.key});
+class SelectProductForDiscountPage extends StatefulWidget {
+  const SelectProductForDiscountPage({super.key});
 
   @override
-  State<SelectBrandForDiscountPage> createState() =>
-      _SelectBrandForDiscountPageState();
+  State<SelectProductForDiscountPage> createState() =>
+      _SelectProductForDiscountPageState();
 }
 
-class _SelectBrandForDiscountPageState
-    extends State<SelectBrandForDiscountPage> {
+class _SelectProductForDiscountPageState
+    extends State<SelectProductForDiscountPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
-  Map<String, Map<String, dynamic>> currentBrands = {};
-  Map<String, Map<String, dynamic>> allBrands = {};
   bool isGridView = true;
-  String? searchedBrand;
+  Map<String, Map<String, dynamic>> currentProducts = {};
+  Map<String, Map<String, dynamic>> allProducts = {};
+  String? searchedProduct;
   bool isData = false;
 
   // INIT STATE
@@ -35,26 +35,25 @@ class _SelectBrandForDiscountPageState
 
   // GET DATA
   Future<void> getData() async {
-    Map<String, Map<String, dynamic>> myBrands = {};
-
-    final brandSnap = await store
+    Map<String, Map<String, dynamic>> myProducts = {};
+    final productSnap = await store
         .collection('Business')
         .doc('Data')
-        .collection('Brands')
+        .collection('Products')
         .where('vendorId', isEqualTo: auth.currentUser!.uid)
         .get();
 
-    brandSnap.docs.forEach((brand) {
-      final brandId = brand.id;
+    productSnap.docs.forEach((product) {
+      final productId = product.id;
 
-      final brandData = brand.data();
+      final productData = product.data();
 
-      myBrands[brandId] = brandData;
+      myProducts[productId] = productData;
     });
 
     setState(() {
-      currentBrands = myBrands;
-      allBrands = myBrands;
+      currentProducts = myProducts;
+      allProducts = myProducts;
       isData = true;
     });
   }
@@ -63,15 +62,15 @@ class _SelectBrandForDiscountPageState
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    final selectBrandProvider =
-        Provider.of<SelectBrandForDiscountProvider>(context);
+    final selectedProductsProvider =
+        Provider.of<SelectProductForDiscountProvider>(context);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
           overflow: TextOverflow.ellipsis,
-          'SELECT BRANDS',
+          'SELECT PRODUCT',
         ),
         actions: [
           MyTextButton(
@@ -83,10 +82,7 @@ class _SelectBrandForDiscountPageState
           ),
         ],
         bottom: PreferredSize(
-          preferredSize: Size(
-            MediaQuery.of(context).size.width,
-            80,
-          ),
+          preferredSize: const Size(double.infinity, 80),
           child: Padding(
             padding: EdgeInsets.symmetric(
               horizontal: MediaQuery.of(context).size.width * 0.0166,
@@ -105,7 +101,7 @@ class _SelectBrandForDiscountPageState
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
-                      searchedBrand = value;
+                      searchedProduct = value;
                     },
                   ),
                 ),
@@ -144,7 +140,7 @@ class _SelectBrandForDiscountPageState
                           ),
                           child: GridViewSkeleton(
                             width: width,
-                            isPrice: false,
+                            isPrice: true,
                           ),
                         );
                       },
@@ -159,16 +155,16 @@ class _SelectBrandForDiscountPageState
                           ),
                           child: ListViewSkeleton(
                             width: width,
-                            isPrice: false,
+                            isPrice: true,
                             height: 30,
                           ),
                         );
                       },
                     ),
             )
-          : currentBrands.isEmpty
+          : currentProducts.isEmpty
               ? Center(
-                  child: Text('No Brands'),
+                  child: Text('No Products'),
                 )
               : SafeArea(
                   child: Padding(
@@ -184,18 +180,21 @@ class _SelectBrandForDiscountPageState
                                   gridDelegate:
                                       const SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
-                                    childAspectRatio: 0.795,
+                                    childAspectRatio: 0.725,
                                   ),
-                                  itemCount: currentBrands.length,
+                                  itemCount: currentProducts.length,
                                   itemBuilder: (context, index) {
-                                    final brandData = currentBrands[
-                                        currentBrands.keys.toList()[index]]!;
+                                    final Map<String, dynamic> productData =
+                                        currentProducts[currentProducts.keys
+                                            .toList()[index]]!;
 
                                     // CARD
                                     return GestureDetector(
                                       onTap: () {
-                                        selectBrandProvider.selectBrands(
-                                          brandData['brandId'],
+                                        selectedProductsProvider.selectProduct(
+                                          productData['productId'],
+                                          productData['productPrice'],
+                                          context,
                                         );
                                       },
                                       child: Stack(
@@ -228,7 +227,8 @@ class _SelectBrandForDiscountPageState
                                                           BorderRadius.circular(
                                                               2),
                                                       child: Image.network(
-                                                        brandData['imageUrl'],
+                                                        productData['images']
+                                                            [0],
                                                         width: width * 0.5,
                                                         height: width * 0.5,
                                                         fit: BoxFit.cover,
@@ -246,40 +246,63 @@ class _SelectBrandForDiscountPageState
                                                   child: SizedBox(
                                                     width: width * 0.275,
                                                     child: Text(
-                                                      brandData['brandName'],
+                                                      productData[
+                                                          'productName'],
+                                                      maxLines: 1,
                                                       overflow:
                                                           TextOverflow.ellipsis,
-                                                      maxLines: 1,
                                                       style: TextStyle(
-                                                        fontSize: width * 0.055,
-                                                        fontWeight:
-                                                            FontWeight.w500,
+                                                        fontSize: width * 0.05,
                                                       ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                    width * 0.0125,
+                                                    0,
+                                                    width * 0.0125,
+                                                    0,
+                                                  ),
+                                                  child: Text(
+                                                    productData['productPrice'] !=
+                                                                '' &&
+                                                            productData[
+                                                                    'productPrice'] !=
+                                                                null
+                                                        ? '''Rs. ${productData['productPrice']}'''
+                                                        : 'N/A',
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 1,
+                                                    style: TextStyle(
+                                                      fontSize: width * 0.045,
+                                                      fontWeight:
+                                                          FontWeight.w600,
                                                     ),
                                                   ),
                                                 ),
                                               ],
                                             ),
                                           ),
-                                          selectBrandProvider.selectedBrands
+                                          selectedProductsProvider
+                                                  .selectedProducts
                                                   .contains(
-                                            brandData['brandId'],
+                                            productData['productId'],
                                           )
                                               ? Container(
-                                                  margin: EdgeInsets.all(
-                                                    width * 0.01,
+                                                  padding: EdgeInsets.all(
+                                                    width * 0.006125,
                                                   ),
-                                                  padding:
-                                                      const EdgeInsets.all(2),
                                                   decoration:
                                                       const BoxDecoration(
                                                     shape: BoxShape.circle,
                                                     color: primaryDark2,
                                                   ),
                                                   child: Icon(
-                                                    FeatherIcons.check,
+                                                    Icons.check,
                                                     color: Colors.white,
-                                                    size: width * 0.1,
+                                                    size: width * 0.09,
                                                   ),
                                                 )
                                               : Container()
@@ -291,10 +314,10 @@ class _SelectBrandForDiscountPageState
                                   width: width,
                                   child: ListView.builder(
                                       shrinkWrap: true,
-                                      itemCount: currentBrands.length,
+                                      itemCount: currentProducts.length,
                                       itemBuilder: (context, index) {
-                                        final brandData = currentBrands[
-                                            currentBrands.keys
+                                        final Map<String, dynamic> productData =
+                                            currentProducts[currentProducts.keys
                                                 .toList()[index]]!;
 
                                         return Stack(
@@ -317,13 +340,15 @@ class _SelectBrandForDiscountPageState
                                                 visualDensity:
                                                     VisualDensity.standard,
                                                 onTap: () {
-                                                  selectBrandProvider
-                                                      .selectBrands(
-                                                    brandData['brandId'],
+                                                  selectedProductsProvider
+                                                      .selectProduct(
+                                                    productData['productId'],
+                                                    productData['productPrice'],
+                                                    context,
                                                   );
                                                 },
                                                 // leading: CachedNetworkImage(
-                                                //   imageUrl: brandData['imageUrl'],
+                                                //   imageUrl: productData['images'][0],
                                                 //   imageBuilder:
                                                 //       (context, imageProvider) {
                                                 //     return ClipRRect(
@@ -332,8 +357,8 @@ class _SelectBrandForDiscountPageState
                                                 //         4,
                                                 //       ),
                                                 //       child: Container(
-                                                //         width: width * 0.155,
-                                                //         height: width * 0.175,
+                                                //         width: width * 0.166,
+                                                //         height: width * 0.166,
                                                 //         decoration: BoxDecoration(
                                                 //           image: DecorationImage(
                                                 //             image: imageProvider,
@@ -350,35 +375,51 @@ class _SelectBrandForDiscountPageState
                                                     2,
                                                   ),
                                                   child: Image.network(
-                                                    brandData['imageUrl'],
+                                                    productData['images'][0],
                                                     width: width * 0.15,
                                                     height: width * 0.15,
                                                     fit: BoxFit.cover,
                                                   ),
                                                 ),
                                                 title: Text(
-                                                  brandData['brandName'],
+                                                  productData['productName'],
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   style: TextStyle(
                                                     fontSize: width * 0.05,
-                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                                subtitle: Text(
+                                                  productData['productPrice'] !=
+                                                              '' &&
+                                                          productData[
+                                                                  'productPrice'] !=
+                                                              null
+                                                      ? 'Rs. ${productData['productPrice']}'
+                                                      : 'N/A',
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                    fontSize: width * 0.045,
+                                                    fontWeight: FontWeight.w600,
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                            selectBrandProvider.selectedBrands
+                                            selectedProductsProvider
+                                                    .selectedProducts
                                                     .contains(
-                                              brandData['brandId'],
+                                              productData['productId'],
                                             )
                                                 ? Padding(
                                                     padding: EdgeInsets.only(
                                                       right: width * 0.025,
                                                     ),
                                                     child: Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              2),
+                                                      padding: EdgeInsets.all(
+                                                        width * 0.00625,
+                                                      ),
                                                       decoration:
                                                           const BoxDecoration(
                                                         shape: BoxShape.circle,
