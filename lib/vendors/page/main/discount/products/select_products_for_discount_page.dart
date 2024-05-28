@@ -101,7 +101,38 @@ class _SelectProductForDiscountPageState
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
-                      searchedProduct = value;
+                      setState(() {
+                        if (value.isEmpty) {
+                          currentProducts =
+                              Map<String, Map<String, dynamic>>.from(
+                            allProducts,
+                          );
+                        } else {
+                          Map<String, Map<String, dynamic>> filteredProducts =
+                              Map<String, Map<String, dynamic>>.from(
+                            allProducts,
+                          );
+                          List<String> keysToRemove = [];
+
+                          filteredProducts.forEach((key, productData) {
+                            if (!productData['productName']
+                                .toString()
+                                .toLowerCase()
+                                .contains(value.toLowerCase().trim())) {
+                              keysToRemove.add(key);
+                            }
+                          });
+
+                          keysToRemove.forEach((key) {
+                            filteredProducts.remove(key);
+                          });
+
+                          currentProducts = filteredProducts;
+                        }
+
+                        print("All Posts: $allProducts");
+                        print("Current Posts: $currentProducts");
+                      });
                     },
                   ),
                 ),

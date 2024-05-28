@@ -335,7 +335,6 @@ class _ServicesAddWorkImagesPageState extends State<ServicesAddWorkImagesPage> {
                     // CHOOSE SUB CATEGORY
                     GestureDetector(
                       onTap: () {
-                        print(1);
                         Navigator.of(context)
                             .push(
                           MaterialPageRoute(

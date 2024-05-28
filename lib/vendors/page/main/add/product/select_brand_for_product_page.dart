@@ -21,7 +21,7 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
   final store = FirebaseFirestore.instance;
   Map<String, Map<String, dynamic>> allBrands = {};
   Map<String, Map<String, dynamic>> currentBrands = {};
-  String? searchedBrand;
+  final searchController = TextEditingController();
   bool isGridView = true;
   bool isData = false;
 
@@ -96,6 +96,7 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                 // SEARCH
                 Expanded(
                   child: TextField(
+                    controller: searchController,
                     autocorrect: false,
                     onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     decoration: const InputDecoration(
@@ -103,7 +104,38 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
-                      searchedBrand = value;
+                      setState(() {
+                        if (value.isEmpty) {
+                          currentBrands =
+                              Map<String, Map<String, dynamic>>.from(
+                            allBrands,
+                          );
+                        } else {
+                          Map<String, Map<String, dynamic>> filteredBrands =
+                              Map<String, Map<String, dynamic>>.from(
+                            allBrands,
+                          );
+                          List<String> keysToRemove = [];
+
+                          filteredBrands.forEach((key, brandData) {
+                            if (!brandData['brandName']
+                                .toString()
+                                .toLowerCase()
+                                .contains(value.toLowerCase().trim())) {
+                              keysToRemove.add(key);
+                            }
+                          });
+
+                          keysToRemove.forEach((key) {
+                            filteredBrands.remove(key);
+                          });
+
+                          currentBrands = filteredBrands;
+                        }
+
+                        print("All Posts: $allBrands");
+                        print("Current Posts: $currentBrands");
+                      });
                     },
                   ),
                 ),
@@ -236,30 +268,25 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                                                         ),
                                                       ),
                                                     )
-                                                  : Column(
-                                                      children: [
-                                                        SizedBox(
-                                                          width: width,
-                                                          height: width * 0.375,
-                                                          child: const Center(
-                                                            child: Text(
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              'No Image',
-                                                              style: TextStyle(
-                                                                color:
-                                                                    primaryDark2,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                              ),
-                                                            ),
+                                                  : SizedBox(
+                                                      width: width,
+                                                      height: width * 0.525,
+                                                      child: const Center(
+                                                        child: Text(
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          'No Image',
+                                                          style: TextStyle(
+                                                            color: primaryDark2,
+                                                            fontWeight:
+                                                                FontWeight.w500,
                                                           ),
                                                         ),
-                                                        const Divider(),
-                                                      ],
+                                                      ),
                                                     ),
+                                              const Divider(
+                                                height: 0,
+                                              ),
                                               Padding(
                                                 padding: EdgeInsets.fromLTRB(
                                                   width * 0.0125,

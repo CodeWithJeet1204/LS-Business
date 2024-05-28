@@ -95,7 +95,6 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                     .doc(widget.productId)
                     .update({
                   'categoryName': '0',
-                  'categoryName': 'No Category Selected',
                 });
               } else {
                 await FirebaseFirestore.instance
@@ -104,7 +103,6 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                     .collection('Products')
                     .doc(widget.productId)
                     .update({
-                  'categoryName': changeCategoryProvider.selectedCategory,
                   'categoryName': changeCategoryProvider.selectedCategory,
                 });
                 changeCategoryProvider.clear();

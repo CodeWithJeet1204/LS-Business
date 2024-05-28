@@ -59,6 +59,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
 
     setState(() {
       allPosts = myPosts;
+      print("all posts: $allPosts");
       currentPosts = myPosts;
       isData = true;
     });
@@ -202,13 +203,32 @@ class _AllPostsPageState extends State<AllPostsPage> {
                     ),
                     onChanged: (value) {
                       setState(() {
-                        currentPosts.values.forEach((postData) {
-                          if (!postData['postProductName']
-                              .toString()
-                              .contains(value)) {
-                            currentPosts.remove('postId');
-                          }
-                        });
+                        if (value.isEmpty) {
+                          currentPosts =
+                              Map<String, Map<String, dynamic>>.from(allPosts);
+                        } else {
+                          Map<String, Map<String, dynamic>> filteredPosts =
+                              Map<String, Map<String, dynamic>>.from(allPosts);
+                          List<String> keysToRemove = [];
+
+                          filteredPosts.forEach((key, postData) {
+                            if (!postData['postProductName']
+                                .toString()
+                                .toLowerCase()
+                                .contains(value.toLowerCase().trim())) {
+                              keysToRemove.add(key);
+                            }
+                          });
+
+                          keysToRemove.forEach((key) {
+                            filteredPosts.remove(key);
+                          });
+
+                          currentPosts = filteredPosts;
+                        }
+
+                        print("All Posts: $allPosts");
+                        print("Current Posts: $currentPosts");
                       });
                     },
                   ),

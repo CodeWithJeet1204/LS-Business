@@ -186,7 +186,38 @@ class _AllBrandPageState extends State<AllBrandPage> {
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
-                      setState(() {});
+                      setState(() {
+                        if (value.isEmpty) {
+                          currentBrands =
+                              Map<String, Map<String, dynamic>>.from(
+                            allBrands,
+                          );
+                        } else {
+                          Map<String, Map<String, dynamic>> filteredBrands =
+                              Map<String, Map<String, dynamic>>.from(
+                            allBrands,
+                          );
+                          List<String> keysToRemove = [];
+
+                          filteredBrands.forEach((key, brandData) {
+                            if (!brandData['brandName']
+                                .toString()
+                                .toLowerCase()
+                                .contains(value.toLowerCase().trim())) {
+                              keysToRemove.add(key);
+                            }
+                          });
+
+                          keysToRemove.forEach((key) {
+                            filteredBrands.remove(key);
+                          });
+
+                          currentBrands = filteredBrands;
+                        }
+
+                        print("All Posts: $allBrands");
+                        print("Current Posts: $currentBrands");
+                      });
                     },
                   ),
                 ),

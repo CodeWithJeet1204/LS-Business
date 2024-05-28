@@ -6,7 +6,6 @@ import 'package:localy/vendors/page/main/comments/all_comments_screen.dart';
 import 'package:localy/vendors/page/main/discount/add_discount_page.dart';
 import 'package:localy/vendors/page/main/profile/details/business_details_page.dart';
 import 'package:localy/vendors/page/main/profile/profile_page.dart';
-import 'package:localy/auth/login_page.dart';
 import 'package:localy/vendors/register/membership_page.dart';
 import 'package:localy/vendors/register/select_business_category_page.dart';
 import 'package:localy/vendors/register/owner_register_details_page.dart';
@@ -90,52 +89,52 @@ class _MainPageState extends State<MainPage> {
     // }
 
     if (getUserDetailsAddedDatas.exists) {
-      if (!(await isPayed())) {
+      /*if (!(await isPayed())) {
         detailsPage = const LoginPage(
           mode: 'vendor',
-        );
-      } else {
-        if (getUserDetailsAddedData!['Email'] == null ||
-            getUserDetailsAddedData['Phone Number'] == null) {
-          detailsPage = const UserRegisterDetailsPage();
-        } else if ((getUserDetailsAddedData['Phone Number'] != null &&
-            getUserDetailsAddedData['numberVerified'] != true)) {
-          if (!auth.currentUser!.emailVerified) {
-            detailsPage = const EmailVerifyPage(
-              mode: 'vendor',
-              isLogging: true,
-            );
-          } else {
-            detailsPage = null;
-          }
-        } else if ((getUserDetailsAddedData['Image'] == null)) {
-          detailsPage = const UserRegisterDetailsPage();
-        } else if (getUserDetailsAddedData['Image'] != null &&
-            getBusinessDetailsAdded['GSTNumber'] == null) {
-          detailsPage = const BusinessDetailsPage();
-        } else if (getBusinessDetailsAdded['GSTNumber'] != null &&
-            getBusinessDetailsAdded['Type'] == null) {
-          detailsPage = const SelectBusinessCategoryPage();
-        } /* else if (getBusinessDetailsAdded['Type'] != null &&
-        await getCommonCategories(getBusinessDetailsAdded['Type'])) {
-      detailsPage = SelectBusinessCategoryPage();
-    }*/
-        else if (getUserDetailsAddedData['Image'] != null &&
-            getBusinessDetailsAdded['GSTNumber'] != null &&
-            (getBusinessDetailsAdded['MembershipName'] == null ||
-                getBusinessDetailsAdded['MembershipEndDateTime'] == null)) {
-          detailsPage = const SelectMembershipPage();
-        } else if (DateTime.now().isAfter(
-            (getBusinessDetailsAdded['MembershipEndDateTime'] as Timestamp)
-                .toDate())) {
-          if (mounted) {
-            mySnackBar(context, 'Your Membership Has Expired');
-          }
-          detailsPage = const SelectMembershipPage();
+        );*/
+      // } else {
+      if (getUserDetailsAddedData!['Email'] == null ||
+          getUserDetailsAddedData['Phone Number'] == null) {
+        detailsPage = const UserRegisterDetailsPage();
+      } else if ((getUserDetailsAddedData['Phone Number'] != null &&
+          getUserDetailsAddedData['numberVerified'] != true)) {
+        if (!auth.currentUser!.emailVerified) {
+          detailsPage = const EmailVerifyPage(
+            mode: 'vendor',
+            isLogging: true,
+          );
         } else {
           detailsPage = null;
         }
+      } else if ((getUserDetailsAddedData['Image'] == null)) {
+        detailsPage = const UserRegisterDetailsPage();
+      } else if (getUserDetailsAddedData['Image'] != null &&
+          getBusinessDetailsAdded['GSTNumber'] == null) {
+        detailsPage = const BusinessDetailsPage();
+      } else if (getBusinessDetailsAdded['GSTNumber'] != null &&
+          getBusinessDetailsAdded['Type'] == null) {
+        detailsPage = const SelectBusinessCategoryPage();
+      } /* else if (getBusinessDetailsAdded['Type'] != null &&
+        await getCommonCategories(getBusinessDetailsAdded['Type'])) {
+      detailsPage = SelectBusinessCategoryPage();
+    }*/
+      else if (getUserDetailsAddedData['Image'] != null &&
+          getBusinessDetailsAdded['GSTNumber'] != null &&
+          (getBusinessDetailsAdded['MembershipName'] == null ||
+              getBusinessDetailsAdded['MembershipEndDateTime'] == null)) {
+        detailsPage = const SelectMembershipPage();
+      } else if (DateTime.now().isAfter(
+          (getBusinessDetailsAdded['MembershipEndDateTime'] as Timestamp)
+              .toDate())) {
+        if (mounted) {
+          mySnackBar(context, 'Your Membership Has Expired');
+        }
+        detailsPage = const SelectMembershipPage();
+      } else {
+        detailsPage = null;
       }
+      // }
     } else {
       await auth.signOut();
       if (mounted) {

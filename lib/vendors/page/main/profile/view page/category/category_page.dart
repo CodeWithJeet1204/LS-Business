@@ -34,7 +34,8 @@ class _CategoryPageState extends State<CategoryPage> {
   String type = '';
   String categoryName = '';
   String categoryImageUrl = '';
-  Map<String, dynamic> products = {};
+  Map<String, dynamic> currentProducts = {};
+  Map<String, dynamic> allProducts = {};
   bool getProductsData = false;
 
   // INIT STATE
@@ -121,7 +122,8 @@ class _CategoryPageState extends State<CategoryPage> {
     print(456);
 
     setState(() {
-      products = myProducts;
+      allProducts = myProducts;
+      currentProducts = myProducts;
       getProductsData = true;
     });
   }
@@ -130,7 +132,7 @@ class _CategoryPageState extends State<CategoryPage> {
   void searchProducts(String searchText) {
     setState(() {
       Map<String, dynamic> searchedProducts = {};
-      products.forEach((id, value) {
+      currentProducts.forEach((id, value) {
         if (value[0]
             .toString()
             .toUpperCase()
@@ -624,8 +626,9 @@ class _CategoryPageState extends State<CategoryPage> {
                     ),
                   ),
                   title: Text(
-                    overflow: TextOverflow.ellipsis,
                     'Products',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: width * 0.06,
                       fontWeight: FontWeight.w600,
@@ -655,7 +658,41 @@ class _CategoryPageState extends State<CategoryPage> {
                                     border: OutlineInputBorder(),
                                   ),
                                   onChanged: (value) {
-                                    setState(() {});
+                                    setState(() {
+                                      if (value.isEmpty) {
+                                        currentProducts = Map<String,
+                                            Map<String, dynamic>>.from(
+                                          allProducts,
+                                        );
+                                      } else {
+                                        Map<String, Map<String, dynamic>>
+                                            filteredProducts = Map<String,
+                                                Map<String, dynamic>>.from(
+                                          allProducts,
+                                        );
+                                        List<String> keysToRemove = [];
+
+                                        filteredProducts
+                                            .forEach((key, productData) {
+                                          if (!productData['productName']
+                                              .toString()
+                                              .toLowerCase()
+                                              .contains(
+                                                  value.toLowerCase().trim())) {
+                                            keysToRemove.add(key);
+                                          }
+                                        });
+
+                                        keysToRemove.forEach((key) {
+                                          filteredProducts.remove(key);
+                                        });
+
+                                        currentProducts = filteredProducts;
+                                      }
+
+                                      print("All Posts: $allProducts");
+                                      print("Current Posts: $currentProducts");
+                                    });
                                   },
                                 ),
                               ),
@@ -679,7 +716,7 @@ class _CategoryPageState extends State<CategoryPage> {
 
                           // PRODUCTS
                           getProductsData
-                              ? products.isEmpty
+                              ? currentProducts.isEmpty
                                   ? SizedBox(
                                       height: 60,
                                       child: Center(
@@ -697,15 +734,18 @@ class _CategoryPageState extends State<CategoryPage> {
                                                 crossAxisCount: 2,
                                                 childAspectRatio: 0.675,
                                               ),
-                                              itemCount: products.length,
+                                              itemCount: currentProducts.length,
                                               itemBuilder: (context, index) {
-                                                final id = products.keys
+                                                final id = currentProducts.keys
                                                     .toList()[index];
-                                                final name = products.values
+                                                final name = currentProducts
+                                                    .values
                                                     .toList()[index][0];
-                                                final imageUrl = products.values
+                                                final imageUrl = currentProducts
+                                                    .values
                                                     .toList()[index][1];
-                                                final price = products.values
+                                                final price = currentProducts
+                                                    .values
                                                     .toList()[index][2];
 
                                                 return GestureDetector(
@@ -880,15 +920,18 @@ class _CategoryPageState extends State<CategoryPage> {
                                           : ListView.builder(
                                               shrinkWrap: true,
                                               physics: ClampingScrollPhysics(),
-                                              itemCount: products.length,
+                                              itemCount: currentProducts.length,
                                               itemBuilder: ((context, index) {
-                                                final id = products.keys
+                                                final id = currentProducts.keys
                                                     .toList()[index];
-                                                final name = products.values
+                                                final name = currentProducts
+                                                    .values
                                                     .toList()[index][0];
-                                                final imageUrl = products.values
+                                                final imageUrl = currentProducts
+                                                    .values
                                                     .toList()[index][1];
-                                                final price = products.values
+                                                final price = currentProducts
+                                                    .values
                                                     .toList()[index][2];
 
                                                 return Padding(

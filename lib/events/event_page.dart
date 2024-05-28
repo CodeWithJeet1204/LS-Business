@@ -122,7 +122,6 @@ class _EventPageState extends State<EventPage> {
 
   // REMOVE IMAGE
   Future<void> removeImage(String e, List images) async {
-    print('Index: ${images.indexOf(e)}');
     if (images.indexOf(e) == 0) {
       setState(() {
         isFirstImageRemoved = true;

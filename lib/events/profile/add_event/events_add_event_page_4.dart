@@ -4,6 +4,7 @@ import 'package:localy/events/events_main_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:localy/vendors/utils/colors.dart';
+import 'package:localy/widgets/snack_bar.dart';
 import 'package:localy/widgets/text_button.dart';
 import 'package:localy/widgets/text_form_field.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -75,7 +76,7 @@ class _EventsAddEventPage4State extends State<EventsAddEventPage4> {
         String downloadUrl = await snapshot.ref.getDownloadURL();
         downloadUrls.add(downloadUrl);
       }).catchError((error) {
-        print('Error uploading image: $error');
+        mySnackBar(context, error.toString());
       });
     });
 

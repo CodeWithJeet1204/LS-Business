@@ -14,7 +14,7 @@ class ConnectivityNotificationWidget extends StatefulWidget {
 class _ConnectivityNotificationWidgetState
     extends State<ConnectivityNotificationWidget> {
   ConnectivityResult _connectionStatus = ConnectivityResult.none;
-  late StreamSubscription<ConnectivityResult> _connectivitySubscription;
+  // late StreamSubscription<ConnectivityResult> _connectivitySubscription;
 
   // INIT STATE
   @override

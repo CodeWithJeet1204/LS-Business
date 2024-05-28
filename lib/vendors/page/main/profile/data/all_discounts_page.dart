@@ -165,7 +165,38 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
-                      setState(() {});
+                      setState(() {
+                        if (value.isEmpty) {
+                          currentDiscounts =
+                              Map<String, Map<String, dynamic>>.from(
+                            allDiscounts,
+                          );
+                        } else {
+                          Map<String, Map<String, dynamic>> filteredDiscounts =
+                              Map<String, Map<String, dynamic>>.from(
+                            allDiscounts,
+                          );
+                          List<String> keysToRemove = [];
+
+                          filteredDiscounts.forEach((key, discountData) {
+                            if (!discountData['discountName']
+                                .toString()
+                                .toLowerCase()
+                                .contains(value.toLowerCase().trim())) {
+                              keysToRemove.add(key);
+                            }
+                          });
+
+                          keysToRemove.forEach((key) {
+                            filteredDiscounts.remove(key);
+                          });
+
+                          currentDiscounts = filteredDiscounts;
+                        }
+
+                        print("All Posts: $allDiscounts");
+                        print("Current Posts: $currentDiscounts");
+                      });
                     },
                   ),
                 ),

@@ -111,8 +111,6 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
                   snapshots
                       .map((snapshot) => {
                             'categoryName': snapshot.id,
-                            'categoryName':
-                                snapshot.data()!['categoryName'] as String,
                             'imageUrl': snapshot.data()!['imageUrl'] as String,
                           })
                       .toList()

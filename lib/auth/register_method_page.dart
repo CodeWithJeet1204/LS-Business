@@ -281,7 +281,6 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
         }
       }
       if (context.mounted) {
-        print('MODE: ${widget.mode}');
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: ((context) {
             if (widget.mode == 'vendor') {

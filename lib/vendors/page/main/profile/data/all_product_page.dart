@@ -84,9 +84,20 @@ class _AllProductsPageState extends State<AllProductsPage> {
       for (QueryDocumentSnapshot doc in postSnap.docs) {
         await doc.reference.delete();
       }
+
+      final shortsSnap = await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Shorts')
+          .where('postProductId', isEqualTo: productId)
+          .get();
+
+      for (QueryDocumentSnapshot doc in postSnap.docs) {
+        await doc.reference.delete();
+      }
     } catch (e) {
       if (mounted) {
-        mySnackBar(context, e.toString());
+        return mySnackBar(context, e.toString());
       }
     }
   }
@@ -175,13 +186,36 @@ class _AllProductsPageState extends State<AllProductsPage> {
                     ),
                     onChanged: (value) {
                       setState(() {
-                        currentProducts.values.forEach((postData) {
-                          if (!postData['productName']
-                              .toString()
-                              .contains(value)) {
-                            currentProducts.remove('productId');
-                          }
-                        });
+                        if (value.isEmpty) {
+                          currentProducts =
+                              Map<String, Map<String, dynamic>>.from(
+                            allProducts,
+                          );
+                        } else {
+                          Map<String, Map<String, dynamic>> filteredProducts =
+                              Map<String, Map<String, dynamic>>.from(
+                            allProducts,
+                          );
+                          List<String> keysToRemove = [];
+
+                          filteredProducts.forEach((key, productData) {
+                            if (!productData['productName']
+                                .toString()
+                                .toLowerCase()
+                                .contains(value.toLowerCase().trim())) {
+                              keysToRemove.add(key);
+                            }
+                          });
+
+                          keysToRemove.forEach((key) {
+                            filteredProducts.remove(key);
+                          });
+
+                          currentProducts = filteredProducts;
+                        }
+
+                        print("All Posts: $allProducts");
+                        print("Current Posts: $currentProducts");
                       });
                     },
                   ),

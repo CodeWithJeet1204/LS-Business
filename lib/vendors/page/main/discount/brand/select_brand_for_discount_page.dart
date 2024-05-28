@@ -105,7 +105,38 @@ class _SelectBrandForDiscountPageState
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
-                      searchedBrand = value;
+                      setState(() {
+                        if (value.isEmpty) {
+                          currentBrands =
+                              Map<String, Map<String, dynamic>>.from(
+                            allBrands,
+                          );
+                        } else {
+                          Map<String, Map<String, dynamic>> filteredBrands =
+                              Map<String, Map<String, dynamic>>.from(
+                            allBrands,
+                          );
+                          List<String> keysToRemove = [];
+
+                          filteredBrands.forEach((key, brandData) {
+                            if (!brandData['brandName']
+                                .toString()
+                                .toLowerCase()
+                                .contains(value.toLowerCase().trim())) {
+                              keysToRemove.add(key);
+                            }
+                          });
+
+                          keysToRemove.forEach((key) {
+                            filteredBrands.remove(key);
+                          });
+
+                          currentBrands = filteredBrands;
+                        }
+
+                        print("All Posts: $allBrands");
+                        print("Current Posts: $currentBrands");
+                      });
                     },
                   ),
                 ),
@@ -218,23 +249,50 @@ class _SelectBrandForDiscountPageState
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Padding(
-                                                  padding: EdgeInsets.all(
-                                                    width * 0.00625,
-                                                  ),
-                                                  child: Center(
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              2),
-                                                      child: Image.network(
-                                                        brandData['imageUrl'],
-                                                        width: width * 0.5,
-                                                        height: width * 0.5,
-                                                        fit: BoxFit.cover,
+                                                brandData['imageUrl'] != null
+                                                    ? Padding(
+                                                        padding: EdgeInsets.all(
+                                                          width * 0.006125,
+                                                        ),
+                                                        child: Center(
+                                                          child: ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        2),
+                                                            child:
+                                                                Image.network(
+                                                              brandData[
+                                                                  'imageUrl'],
+                                                              width:
+                                                                  width * 0.5,
+                                                              height:
+                                                                  width * 0.5,
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : SizedBox(
+                                                        height: width * 0.5125,
+                                                        child: const Center(
+                                                          child: Text(
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            'No Image',
+                                                            style: TextStyle(
+                                                              color:
+                                                                  primaryDark2,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                            ),
+                                                          ),
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ),
+                                                Divider(
+                                                  height: 0,
                                                 ),
                                                 Padding(
                                                   padding: EdgeInsets.fromLTRB(

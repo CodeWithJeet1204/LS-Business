@@ -24,6 +24,7 @@ class AddBrandPage extends StatefulWidget {
 }
 
 class _AddBrandPageState extends State<AddBrandPage> {
+  final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   final storage = FirebaseStorage.instance;
   final brandKey = GlobalKey<FormState>();
@@ -67,52 +68,77 @@ class _AddBrandPageState extends State<AddBrandPage> {
         setState(() {
           isSaving = true;
         });
-        final String brandId = const Uuid().v4();
-        if (_image != null) {
-          Reference ref = storage.ref().child('Data/Brand').child(brandId);
 
-          await ref.putFile(_image!).whenComplete(() async {
-            await ref.getDownloadURL().then((value) {
-              setState(() {
-                imageUrl = value;
-              });
-            });
-          });
-        }
-
-        await store
+        bool brandDoesntExists = true;
+        final previousProducts = await store
             .collection('Business')
             .doc('Data')
             .collection('Brands')
-            .doc(brandId)
-            .set({
-          'brandId': brandId,
-          'brandName': brandNameController.text.toString(),
-          'imageUrl': imageUrl,
-          'vendorId': FirebaseAuth.instance.currentUser!.uid,
-        });
-        if (mounted) {
-          mySnackBar(context, 'Brand Added');
+            .where('vendorId', isEqualTo: auth.currentUser!.uid)
+            .get();
+
+        for (QueryDocumentSnapshot doc in previousProducts.docs) {
+          if (doc['brandName'] == brandNameController.text.toString()) {
+            if (mounted) {
+              mySnackBar(
+                context,
+                'Product with same name already exists',
+              );
+            }
+            brandDoesntExists = false;
+          }
         }
 
-        for (String id in provider.selectedProducts) {
+        if (brandDoesntExists) {
+          final String brandId = const Uuid().v4();
+          if (_image != null) {
+            Reference ref = storage.ref().child('Data/Brand').child(brandId);
+
+            await ref.putFile(_image!).whenComplete(() async {
+              await ref.getDownloadURL().then((value) {
+                setState(() {
+                  imageUrl = value;
+                });
+              });
+            });
+          }
+
           await store
               .collection('Business')
               .doc('Data')
-              .collection('Products')
-              .doc(id)
-              .update({
-            'productBrandId': brandId,
-            'productBrand': brandNameController.text..toString(),
+              .collection('Brands')
+              .doc(brandId)
+              .set({
+            'brandId': brandId,
+            'brandName': brandNameController.text.toString(),
+            'imageUrl': imageUrl,
+            'vendorId': FirebaseAuth.instance.currentUser!.uid,
           });
-        }
+          if (mounted) {
+            mySnackBar(context, 'Brand Added');
+          }
 
-        provider.clearProducts();
-        setState(() {
-          isSaving = false;
-        });
-        if (mounted) {
-          Navigator.of(context).pop();
+          for (String id in provider.selectedProducts) {
+            await store
+                .collection('Business')
+                .doc('Data')
+                .collection('Products')
+                .doc(id)
+                .update({
+              'productBrandId': brandId,
+              'productBrand': brandNameController.text..toString(),
+            });
+          }
+
+          provider.clearProducts();
+          setState(() {
+            isSaving = false;
+          });
+          if (mounted) {
+            Navigator.of(context).pop();
+          }
+        } else {
+          return mySnackBar(context, 'Brand with same name alreadye exists!');
         }
       } catch (e) {
         setState(() {
