@@ -66,14 +66,14 @@ class _ServicesWorkImagesPageState extends State<ServicesWorkImagesPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your Work Images'),
+        title: const Text('Your Work Images'),
       ),
       body: !isData
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : workSubCategories.isEmpty
-              ? Center(
+              ? const Center(
                   child: Text('No Images'),
                 )
               : SafeArea(
@@ -86,7 +86,7 @@ class _ServicesWorkImagesPageState extends State<ServicesWorkImagesPage> {
                       height: MediaQuery.of(context).size.height,
                       child: ListView.builder(
                         shrinkWrap: true,
-                        physics: ClampingScrollPhysics(),
+                        physics: const ClampingScrollPhysics(),
                         itemCount: workSubCategories.length,
                         itemBuilder: ((context, index) {
                           final subCategory = workSubCategories[index];
@@ -117,13 +117,13 @@ class _ServicesWorkImagesPageState extends State<ServicesWorkImagesPage> {
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                SizedBox(height: 8),
+                                const SizedBox(height: 8),
                                 SizedBox(
                                   width: width,
                                   height: width * 0.33,
                                   child: ListView.builder(
                                     shrinkWrap: true,
-                                    physics: ClampingScrollPhysics(),
+                                    physics: const ClampingScrollPhysics(),
                                     scrollDirection: Axis.horizontal,
                                     itemCount: images.length,
                                     itemBuilder: ((context, index) {

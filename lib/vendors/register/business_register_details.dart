@@ -71,21 +71,24 @@ class _BusinessRegisterDetailsPageState
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
 
     if (!serviceEnabled) {
-      mySnackBar(context, 'Turn ON Location Services to Continue');
+      if (mounted) {
+        mySnackBar(context, 'Turn ON Location Services to Continue');
+      }
       return null;
     } else {
       LocationPermission permission = await Geolocator.checkPermission();
 
       // LOCATION PERMISSION GIVEN
       Future<Position> locationPermissionGiven() async {
-        print('Permission given');
         return await Geolocator.getCurrentPosition();
       }
 
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
-          mySnackBar(context, 'Pls give Location Permission to Continue');
+          if (mounted) {
+            mySnackBar(context, 'Pls give Location Permission to Continue');
+          }
         }
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
@@ -98,7 +101,9 @@ class _BusinessRegisterDetailsPageState
           setState(() {
             isGettingAddress = false;
           });
-          mySnackBar(context, 'Sorry, without location we can\'t Continue');
+          if (mounted) {
+            mySnackBar(context, 'Sorry, without location we can\'t Continue');
+          }
         } else {
           return await locationPermissionGiven();
         }
@@ -111,13 +116,11 @@ class _BusinessRegisterDetailsPageState
 
   // GET ADDRESS
   Future<void> getAddress(double lat, double long) async {
-    print('Getting address');
     List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
     setState(() {
       address =
           '${placemarks[0].name}, ${placemarks[0].locality}, ${placemarks[0].administrativeArea}';
     });
-    print('address got');
   }
 
   // UPLOAD DETAILS
@@ -267,7 +270,7 @@ class _BusinessRegisterDetailsPageState
                       autoFillHints: null,
                     ),
 
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
 
                     // LOCATION
                     GestureDetector(
@@ -305,7 +308,7 @@ class _BusinessRegisterDetailsPageState
                           margin:
                               EdgeInsets.symmetric(horizontal: width * 0.05),
                           child: isGettingAddress
-                              ? Center(
+                              ? const Center(
                                   child: CircularProgressIndicator(),
                                 )
                               : Text(
@@ -320,7 +323,7 @@ class _BusinessRegisterDetailsPageState
                       ),
                     ),
 
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
 
                     // INDUSTRY SEGMENT
                     Padding(

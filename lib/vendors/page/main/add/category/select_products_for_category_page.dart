@@ -61,7 +61,7 @@ class _SelectProductsForCategoryPageState
         .collection('Products')
         .get();
 
-    productSnap.docs.forEach((product) {
+    for (var product in productSnap.docs) {
       final productId = product.id;
 
       final productData = product.data();
@@ -69,7 +69,7 @@ class _SelectProductsForCategoryPageState
       if (productData['vendorId'] == auth.currentUser!.uid) {
         myProducts[productId] = productData;
       }
-    });
+    }
 
     setState(() {
       allProducts = myProducts;
@@ -181,15 +181,12 @@ class _SelectProductsForCategoryPageState
                                 }
                               });
 
-                              keysToRemove.forEach((key) {
+                              for (var key in keysToRemove) {
                                 filteredProducts.remove(key);
-                              });
+                              }
 
                               currentProducts = filteredProducts;
                             }
-
-                            print('All Posts: $allProducts');
-                            print('Current Posts: $currentProducts');
                           });
                         },
                       ),
@@ -256,7 +253,7 @@ class _SelectProductsForCategoryPageState
                     ),
             )
           : currentProducts.isEmpty
-              ? SizedBox(
+              ? const SizedBox(
                   height: 60,
                   child: Center(
                     child: Text('No Products'),
@@ -274,7 +271,7 @@ class _SelectProductsForCategoryPageState
                               ? GridView.builder(
                                   shrinkWrap: true,
                                   gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
                                     crossAxisSpacing: 0,
                                     mainAxisSpacing: 0,

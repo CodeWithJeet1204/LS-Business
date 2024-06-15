@@ -1,10 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 
-Future<void> handleBackgroundMessage(RemoteMessage message) async {
-  print('Title: ${message.notification?.title}');
-  print('Body: ${message.notification?.body}');
-  print('Payload: ${message.data}');
-}
+Future<void> handleBackgroundMessage(RemoteMessage message) async {}
 
 class Messaging {
   final messaging = FirebaseMessaging.instance;
@@ -13,10 +10,11 @@ class Messaging {
     try {
       await messaging.requestPermission();
     } catch (e) {
-      print('Permission error: $e');
+      if (kDebugMode) {
+        print(e);
+      }
     }
-    final token = await messaging.getToken();
-    print('Token: $token');
+    // final token = await messaging.getToken();
     FirebaseMessaging.onBackgroundMessage((message) {
       return handleBackgroundMessage(message);
     });

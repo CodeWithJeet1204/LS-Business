@@ -41,7 +41,6 @@ class _ServicesChooseWorkImagesSubCategoryPageState
       subCategories = serviceData['SubCategory'];
       getData = true;
     });
-    print('SubCategories: $subCategories');
   }
 
   // SELECT CATEGORY
@@ -49,7 +48,6 @@ class _ServicesChooseWorkImagesSubCategoryPageState
     setState(() {
       if (chosenSubCategory == subCategory) {
         chosenSubCategory = null;
-        ;
       } else {
         chosenSubCategory = subCategory;
       }
@@ -73,7 +71,7 @@ class _ServicesChooseWorkImagesSubCategoryPageState
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Select Sub Category'),
+        title: const Text('Select Sub Category'),
       ),
       bottomSheet: Padding(
         padding: const EdgeInsets.all(8),

@@ -122,7 +122,7 @@ class _ServicesMainPageState extends State<ServicesMainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return detailsPage ?? ServicesProfilePage();
+    return detailsPage ?? const ServicesProfilePage();
     // Scaffold(
     //   resizeToAvoidBottomInset: false,
     //   bottomNavigationBar: BottomNavigationBar(

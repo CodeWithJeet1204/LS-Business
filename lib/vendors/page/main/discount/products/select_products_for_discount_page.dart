@@ -43,13 +43,13 @@ class _SelectProductForDiscountPageState
         .where('vendorId', isEqualTo: auth.currentUser!.uid)
         .get();
 
-    productSnap.docs.forEach((product) {
+    for (var product in productSnap.docs) {
       final productId = product.id;
 
       final productData = product.data();
 
       myProducts[productId] = productData;
-    });
+    }
 
     setState(() {
       currentProducts = myProducts;
@@ -123,15 +123,12 @@ class _SelectProductForDiscountPageState
                             }
                           });
 
-                          keysToRemove.forEach((key) {
+                          for (var key in keysToRemove) {
                             filteredProducts.remove(key);
-                          });
+                          }
 
                           currentProducts = filteredProducts;
                         }
-
-                        print('All Posts: $allProducts');
-                        print('Current Posts: $currentProducts');
                       });
                     },
                   ),
@@ -194,7 +191,7 @@ class _SelectProductForDiscountPageState
                     ),
             )
           : currentProducts.isEmpty
-              ? Center(
+              ? const Center(
                   child: Text('No Products'),
                 )
               : SafeArea(

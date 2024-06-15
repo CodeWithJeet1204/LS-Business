@@ -51,15 +51,14 @@ class _AllPostsPageState extends State<AllPostsPage> {
         .where('postVendorId', isEqualTo: auth.currentUser!.uid)
         .get();
 
-    postsSnap.docs.forEach((postData) {
+    for (var postData in postsSnap.docs) {
       final postId = postData.id;
 
       myPosts[postId] = postData.data();
-    });
+    }
 
     setState(() {
       allPosts = myPosts;
-      print('all posts: $allPosts');
       currentPosts = myPosts;
       isData = true;
     });
@@ -220,15 +219,12 @@ class _AllPostsPageState extends State<AllPostsPage> {
                             }
                           });
 
-                          keysToRemove.forEach((key) {
+                          for (var key in keysToRemove) {
                             filteredPosts.remove(key);
-                          });
+                          }
 
                           currentPosts = filteredPosts;
                         }
-
-                        print('All Posts: $allPosts');
-                        print('Current Posts: $currentPosts');
                       });
                     },
                   ),
@@ -293,7 +289,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
                     ),
             )
           : currentPosts.isEmpty
-              ? Center(
+              ? const Center(
                   child: Text('No Posts'),
                 )
               : Padding(

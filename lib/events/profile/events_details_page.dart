@@ -222,18 +222,20 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
         setState(() {
           isChangingImage = false;
         });
-        Navigator.of(context).pop();
-        Navigator.of(context).pop();
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: ((context) => EventsMainPage()),
-          ),
-        );
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: ((context) => EventsDetailsPage()),
-          ),
-        );
+        if (mounted) {
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: ((context) => const EventsMainPage()),
+            ),
+          );
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: ((context) => const EventsDetailsPage()),
+            ),
+          );
+        }
       } catch (e) {
         setState(() {
           isChangingImage = false;
@@ -464,7 +466,7 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
                               doe == null
                                   ? 'Select Date Of Establishment'
                                   : doe!,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -530,7 +532,7 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
                               )
                             : Container(),
 
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                       ],
                     ),
                   );

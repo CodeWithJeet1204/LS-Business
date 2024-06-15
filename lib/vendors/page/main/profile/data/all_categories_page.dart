@@ -110,12 +110,10 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                             allCategories,
                           );
                         } else {
-                          print(111);
                           Map<String, dynamic> filteredCategories =
                               Map<String, dynamic>.from(
                             allCategories,
                           );
-                          print(222);
                           List<String> keysToRemove = [];
 
                           filteredCategories.forEach((key, imageUrl) {
@@ -126,19 +124,13 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                               keysToRemove.add(key);
                             }
                           });
-                          print(333);
 
-                          keysToRemove.forEach((key) {
+                          for (var key in keysToRemove) {
                             filteredCategories.remove(key);
-                          });
-                          print(555);
+                          }
 
                           currentCategories = filteredCategories;
                         }
-                        print(666);
-
-                        print('All Posts: $allCategories');
-                        print('Current Posts: $currentCategories');
                       });
                     },
                   ),
@@ -161,7 +153,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
       ),
       body: getData
           ? currentCategories.isEmpty
-              ? SizedBox(
+              ? const SizedBox(
                   height: 60,
                   child: Center(
                     child: Text('No Categories'),

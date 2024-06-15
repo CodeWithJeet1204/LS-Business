@@ -9,7 +9,7 @@ import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddShortsPage extends StatefulWidget {
-  const AddShortsPage({Key? key});
+  const AddShortsPage({super.key});
 
   @override
   AddShortsPageState createState() => AddShortsPageState();
@@ -117,25 +117,17 @@ class AddShortsPageState extends State<AddShortsPage> {
       double durationDouble = double.parse(format['duration']);
       int durationInSeconds = durationDouble.toInt();
 
-      print('Video duration: $durationInSeconds seconds');
-
       if (durationInSeconds > 15) {
-        print(123);
         await trimVideo();
       } else {
-        print(789);
         String directory = '/storage/emulated/0/MyAppVideos';
 
         Directory(directory).createSync(recursive: true);
 
         String outputPath = '$directory/trimmed_video.mp4';
-        print(789);
         setState(() {
           selectedVideo = File(outputPath);
         });
-        print(789);
-
-        print('abc$selectedVideo');
       }
     }
   }
@@ -233,16 +225,20 @@ class AddShortsPageState extends State<AddShortsPage> {
     final video = await ImagePicker().pickVideo(source: src);
 
     if (video != null) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => ConfirmShortsPage(
-            videoFile: File(video.path),
-            videoPath: video.path,
+      if (context.mounted) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => ConfirmShortsPage(
+              videoFile: File(video.path),
+              videoPath: video.path,
+            ),
           ),
-        ),
-      );
+        );
+      }
     } else {
-      return mySnackBar(context, 'Select Video');
+      if (context.mounted) {
+        return mySnackBar(context, 'Select Video');
+      }
     }
   }
 
@@ -250,7 +246,7 @@ class AddShortsPageState extends State<AddShortsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Video Recorder'),
+        title: const Text('Video Recorder'),
       ),
       // body: Center(
       //   child: Column(

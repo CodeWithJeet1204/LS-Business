@@ -49,11 +49,11 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
         .collection('Products')
         .get();
 
-    productSnap.docs.forEach((productData) {
+    for (var productData in productSnap.docs) {
       final productId = productData.id;
 
       myProducts[productId] = productData.data();
-    });
+    }
 
     setState(() {
       allProducts = myProducts;
@@ -174,15 +174,12 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                             }
                           });
 
-                          keysToRemove.forEach((key) {
+                          for (var key in keysToRemove) {
                             filteredProducts.remove(key);
-                          });
+                          }
 
                           currentProducts = filteredProducts;
                         }
-
-                        print('All Posts: $allProducts');
-                        print('Current Posts: $currentProducts');
                       });
                     },
                   ),
@@ -245,7 +242,7 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                     ),
             )
           : currentProducts.isEmpty
-              ? Center(
+              ? const Center(
                   child: Text('No Products'),
                 )
               : SafeArea(
@@ -266,7 +263,6 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                                   ),
                                   itemCount: currentProducts.length,
                                   itemBuilder: (context, index) {
-                                    print('Current Products: $currentProducts');
                                     final productData = currentProducts[
                                         currentProducts.keys.toList()[index]]!;
 

@@ -92,14 +92,11 @@ class _CategoryPageState extends State<CategoryPage> {
       categoryImageUrl = imageUrl;
     });
 
-    print(999);
-
     await getProductsInfo(type);
   }
 
   // GET PRODUCTS INFO
   Future<void> getProductsInfo(String type) async {
-    print(000);
     Map<String, dynamic> myProducts = {};
     final productsSnap = await store
         .collection('Business')
@@ -107,8 +104,6 @@ class _CategoryPageState extends State<CategoryPage> {
         .collection('Products')
         .where('categoryName', isEqualTo: widget.categoryName)
         .get();
-
-    print(123);
 
     for (var productData in productsSnap.docs) {
       final id = productData.id;
@@ -118,8 +113,6 @@ class _CategoryPageState extends State<CategoryPage> {
 
       myProducts[id] = [name, imageUrl, price];
     }
-
-    print(456);
 
     setState(() {
       allProducts = myProducts;
@@ -683,15 +676,12 @@ class _CategoryPageState extends State<CategoryPage> {
                                           }
                                         });
 
-                                        keysToRemove.forEach((key) {
+                                        for (var key in keysToRemove) {
                                           filteredProducts.remove(key);
-                                        });
+                                        }
 
                                         currentProducts = filteredProducts;
                                       }
-
-                                      print('All Posts: $allProducts');
-                                      print('Current Posts: $currentProducts');
                                     });
                                   },
                                 ),
@@ -712,12 +702,12 @@ class _CategoryPageState extends State<CategoryPage> {
                             ],
                           ),
 
-                          SizedBox(height: 4),
+                          const SizedBox(height: 4),
 
                           // PRODUCTS
                           getProductsData
                               ? currentProducts.isEmpty
-                                  ? SizedBox(
+                                  ? const SizedBox(
                                       height: 60,
                                       child: Center(
                                         child: Text('No Products'),
@@ -728,7 +718,8 @@ class _CategoryPageState extends State<CategoryPage> {
                                           // PRODUCTS IN GRIDVIEW
                                           ? GridView.builder(
                                               shrinkWrap: true,
-                                              physics: ClampingScrollPhysics(),
+                                              physics:
+                                                  const ClampingScrollPhysics(),
                                               gridDelegate:
                                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                                 crossAxisCount: 2,
@@ -919,7 +910,8 @@ class _CategoryPageState extends State<CategoryPage> {
                                           // PRODUCTS IN LISTVIEW
                                           : ListView.builder(
                                               shrinkWrap: true,
-                                              physics: ClampingScrollPhysics(),
+                                              physics:
+                                                  const ClampingScrollPhysics(),
                                               itemCount: currentProducts.length,
                                               itemBuilder: ((context, index) {
                                                 final id = currentProducts.keys

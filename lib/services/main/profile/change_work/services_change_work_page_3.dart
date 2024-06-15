@@ -72,9 +72,9 @@ class _ServicesChangeWorkPage3State extends State<ServicesChangeWorkPage3> {
     });
     if (chosenSubCategories.isNotEmpty) {
       final Map chosenSubCategoryMap = {};
-      chosenSubCategories.forEach((subCategory) {
+      for (var subCategory in chosenSubCategories) {
         chosenSubCategoryMap[subCategory] = ['0', 'Service'];
-      });
+      }
 
       await store.collection('Services').doc(auth.currentUser!.uid).update({
         'SubCategory': chosenSubCategoryMap,

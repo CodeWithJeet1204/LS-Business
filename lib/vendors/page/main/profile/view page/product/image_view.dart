@@ -30,7 +30,6 @@ class _ImageViewState extends State<ImageView> {
   @override
   void initState() {
     super.initState();
-    print("Shorts URL: ${widget.shortsURL}");
 
     if (widget.shortsURL != null) {
       flickManager = FlickManager(
@@ -41,8 +40,6 @@ class _ImageViewState extends State<ImageView> {
         ),
       );
     }
-
-    print('def');
   }
 
   // DISPOSE
@@ -138,7 +135,6 @@ class _ImageViewState extends State<ImageView> {
                         padding: const EdgeInsets.symmetric(horizontal: 4),
                         child: GestureDetector(
                           onTap: () {
-                            print('Index: $index');
                             setState(() {
                               controller.animateToPage(index);
                             });

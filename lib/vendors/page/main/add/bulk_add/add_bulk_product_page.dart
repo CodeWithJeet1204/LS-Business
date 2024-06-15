@@ -744,7 +744,7 @@ class _AddBulkProductState extends State<AddBulkProduct> {
                             .push(
                           MaterialPageRoute(
                             builder: ((context) =>
-                                SelectCategoryForBulkProductsPage()),
+                                const SelectCategoryForBulkProductsPage()),
                           ),
                         )
                             .then((value) {
@@ -758,7 +758,7 @@ class _AddBulkProductState extends State<AddBulkProduct> {
                       isLoading: false,
                       horizontalPadding: width * 0.0125,
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
 
                     // SELECT BRAND
                     MyButton(
@@ -768,7 +768,7 @@ class _AddBulkProductState extends State<AddBulkProduct> {
                             .push(
                           MaterialPageRoute(
                             builder: ((context) =>
-                                SelectBrandForBulkProductsPage()),
+                                const SelectBrandForBulkProductsPage()),
                           ),
                         )
                             .then((value) {
@@ -783,7 +783,7 @@ class _AddBulkProductState extends State<AddBulkProduct> {
                       isLoading: false,
                       horizontalPadding: width * 0.0125,
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
 
                     BulkAdd(
                       width: width,

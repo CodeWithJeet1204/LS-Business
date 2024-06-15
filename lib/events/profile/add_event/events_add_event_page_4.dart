@@ -54,18 +54,18 @@ class _EventsAddEventPage4State extends State<EventsAddEventPage4> {
 
     data.addAll(widget.data);
 
-    List<File> _image = data['imageUrl'];
+    List<File> image = data['imageUrl'];
 
     List<String> downloadUrls = [];
 
-    final String eventId = Uuid().v4();
+    final String eventId = const Uuid().v4();
 
     data.addAll({
       'eventId': eventId,
     });
 
-    await Future.forEach(_image, (File img) async {
-      final String imageId = Uuid().v4();
+    await Future.forEach(image, (File img) async {
+      final String imageId = const Uuid().v4();
 
       Reference ref = FirebaseStorage.instance
           .ref()
@@ -87,11 +87,12 @@ class _EventsAddEventPage4State extends State<EventsAddEventPage4> {
     setState(() {
       isDone = false;
     });
-
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => EventsMainPage()),
-      (route) => false,
-    );
+    if (mounted) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => const EventsMainPage()),
+        (route) => false,
+      );
+    }
   }
 
   @override
@@ -143,16 +144,16 @@ class _EventsAddEventPage4State extends State<EventsAddEventPage4> {
                       ),
                     ),
 
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
 
-                    Divider(),
+                    const Divider(),
 
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
 
                     // CONTACT HELP
                     Padding(
                       padding: EdgeInsets.only(left: width * 0.025),
-                      child: Text(
+                      child: const Text(
                         'Help Contact Number',
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
@@ -160,7 +161,7 @@ class _EventsAddEventPage4State extends State<EventsAddEventPage4> {
                       ),
                     ),
 
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
 
                     // CONTACT HELP
                     MyTextFormField(

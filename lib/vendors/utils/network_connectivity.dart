@@ -88,7 +88,7 @@ class _ConnectivityNotificationWidgetState
               ),
               onPressed: () async {
                 final currentStatus = await Connectivity().checkConnectivity();
-                if (currentStatus != ConnectivityResult.none) {
+                if (currentStatus.last != ConnectivityResult.none) {
                   // Internet is back, dismiss dialog
                   if (context.mounted) {
                     Navigator.pop(context);

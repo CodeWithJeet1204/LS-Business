@@ -64,8 +64,7 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
       isDone = true;
     });
 
-    Reference shortsRef =
-        await storage.ref().child('Data/Shorts').child(productId);
+    Reference shortsRef = storage.ref().child('Data/Shorts').child(productId);
 
     UploadTask uploadShortsTask = shortsRef.putFile(
       await compressVideo(videoPath),
@@ -75,7 +74,7 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
     String shortsDownloadUrl = await shortsSnap.ref.getDownloadURL();
 
     Reference thumbnailRef =
-        await storage.ref().child('Data/Thumbnails').child(productId);
+        storage.ref().child('Data/Thumbnails').child(productId);
 
     UploadTask uploadThumbnailTask = thumbnailRef.putFile(
       await getThumbnail(videoPath),
@@ -109,14 +108,15 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
     setState(() {
       isDone = false;
     });
-
-    Navigator.of(context).pop();
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(
-        builder: ((context) => MainPage()),
-      ),
-      (route) => false,
-    );
+    if (mounted) {
+      Navigator.of(context).pop();
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: ((context) => const MainPage()),
+        ),
+        (route) => false,
+      );
+    }
   }
 
   // COMPRESS VIDEO
@@ -145,7 +145,7 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             SizedBox(
               width: width,
               height: height / 1.5,
@@ -156,7 +156,7 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
                 ),
               ),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Column(
@@ -182,7 +182,7 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
                     isLoading: false,
                     horizontalPadding: width * 0.025,
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   data == null
                       ? Container()
                       : MyButton(

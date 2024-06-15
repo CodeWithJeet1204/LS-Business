@@ -107,11 +107,10 @@ class _ServicesAddWorkImagesPageState extends State<ServicesAddWorkImagesPage> {
         .keys
         .toList()
         .contains(chosenSubCategory)) {
-      ((serviceData['workImages'] as Map<String, dynamic>)[chosenSubCategory]
-              as List)
-          .forEach((subCategory) {
+      for (var subCategory in ((serviceData['workImages']
+          as Map<String, dynamic>)[chosenSubCategory] as List)) {
         imageDownloadUrl.add(subCategory);
-      });
+      }
     }
 
     Map<String, dynamic> workImages = serviceData['workImages'];
@@ -126,14 +125,16 @@ class _ServicesAddWorkImagesPageState extends State<ServicesAddWorkImagesPage> {
     setState(() {
       isDone = false;
     });
-    Navigator.of(context).pop();
+    if (mounted) {
+      Navigator.of(context).pop();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Work Images'),
+        title: const Text('Add Work Images'),
         actions: [
           MyTextButton(
             onPressed: () async {
@@ -330,7 +331,7 @@ class _ServicesAddWorkImagesPageState extends State<ServicesAddWorkImagesPage> {
                             ),
                           ),
 
-                    SizedBox(height: 12),
+                    const SizedBox(height: 12),
 
                     // CHOOSE SUB CATEGORY
                     GestureDetector(
@@ -339,7 +340,7 @@ class _ServicesAddWorkImagesPageState extends State<ServicesAddWorkImagesPage> {
                             .push(
                           MaterialPageRoute(
                             builder: ((context) =>
-                                ServicesChooseWorkImagesSubCategoryPage()),
+                                const ServicesChooseWorkImagesSubCategoryPage()),
                           ),
                         )
                             .then((value) {
@@ -368,7 +369,7 @@ class _ServicesAddWorkImagesPageState extends State<ServicesAddWorkImagesPage> {
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                            Icon(FeatherIcons.chevronRight),
+                            const Icon(FeatherIcons.chevronRight),
                           ],
                         ),
                       ),

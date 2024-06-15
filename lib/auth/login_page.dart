@@ -155,9 +155,9 @@ class _LoginPageState extends State<LoginPage> {
                     } else if (widget.mode == 'services') {
                       return const ServicesMainPage();
                     } else if (widget.mode == 'events') {
-                      return EventsMainPage();
+                      return const EventsMainPage();
                     } else {
-                      return MainPage();
+                      return const MainPage();
                     }
                   }),
                 ),
@@ -286,7 +286,7 @@ class _LoginPageState extends State<LoginPage> {
                     } else if (widget.mode == 'services') {
                       return const ServicesMainPage();
                     } else if (widget.mode == 'events') {
-                      return EventsMainPage();
+                      return const EventsMainPage();
                     } else {
                       mySnackBar(context, 'Some error occured, try again');
                       return const SelectModePage();
@@ -405,7 +405,7 @@ class _LoginPageState extends State<LoginPage> {
             isGoogleLogging = false;
           });
 
-          if (context.mounted) {
+          if (mounted) {
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                 builder: ((context) {
@@ -414,9 +414,9 @@ class _LoginPageState extends State<LoginPage> {
                   } else if (widget.mode == 'services') {
                     return const ServicesMainPage();
                   } else if (widget.mode == 'events') {
-                    return EventsMainPage();
+                    return const EventsMainPage();
                   } else {
-                    return MainPage();
+                    return const MainPage();
                   }
                 }),
               ),
@@ -428,7 +428,7 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           isGoogleLogging = false;
         });
-        if (context.mounted) {
+        if (mounted) {
           mySnackBar(context, 'Some error occured');
         }
       }
@@ -436,7 +436,7 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         isGoogleLogging = false;
       });
-      if (context.mounted) {
+      if (mounted) {
         mySnackBar(context, e.toString());
       }
     }

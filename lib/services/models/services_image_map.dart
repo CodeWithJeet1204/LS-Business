@@ -1,4 +1,4 @@
-Map<String, String> PlaceImageMap = {
+Map<String, String> placeImageMap = {
   'Home':
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZn-52v40KKbJo4U1xW7Rg3XqKGtSPEFcrhrBG0kvOFg&s',
   'Office':

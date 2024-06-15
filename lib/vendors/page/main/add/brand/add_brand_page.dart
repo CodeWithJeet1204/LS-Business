@@ -138,7 +138,9 @@ class _AddBrandPageState extends State<AddBrandPage> {
             Navigator.of(context).pop();
           }
         } else {
-          return mySnackBar(context, 'Brand with same name alreadye exists!');
+          if (mounted) {
+            return mySnackBar(context, 'Brand with same name alreadye exists!');
+          }
         }
       } catch (e) {
         setState(() {
@@ -193,7 +195,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
                 key: brandKey,
                 child: Column(
                   children: [
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     // IMAGE
                     _image != null
                         ? Center(

@@ -100,9 +100,9 @@ class _EventsAddWorkImagesPageState extends State<EventsAddWorkImagesPage> {
 
     List workImages = eventData['workImages'];
 
-    imageDownloadUrl.forEach((downloadUrl) {
+    for (var downloadUrl in imageDownloadUrl) {
       workImages.insert(0, downloadUrl);
-    });
+    }
 
     await store.collection('Organizers').doc(auth.currentUser!.uid).update({
       'workImages': workImages,
@@ -111,14 +111,16 @@ class _EventsAddWorkImagesPageState extends State<EventsAddWorkImagesPage> {
     setState(() {
       isDone = false;
     });
-    Navigator.of(context).pop();
+    if (mounted) {
+      Navigator.of(context).pop();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Work Images'),
+        title: const Text('Add Work Images'),
         actions: [
           MyTextButton(
             onPressed: () async {

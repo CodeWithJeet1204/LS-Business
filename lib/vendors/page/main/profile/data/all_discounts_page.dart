@@ -49,13 +49,13 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
         .where('vendorId', isEqualTo: auth.currentUser!.uid)
         .get();
 
-    discountSnap.docs.forEach((discount) {
+    for (var discount in discountSnap.docs) {
       final discountData = discount.data();
 
       final discountId = discount.id;
 
       myDiscounts[discountId] = discountData;
-    });
+    }
 
     setState(() {
       currentDiscounts = myDiscounts;
@@ -187,15 +187,12 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                             }
                           });
 
-                          keysToRemove.forEach((key) {
+                          for (var key in keysToRemove) {
                             filteredDiscounts.remove(key);
-                          });
+                          }
 
                           currentDiscounts = filteredDiscounts;
                         }
-
-                        print('All Posts: $allDiscounts');
-                        print('Current Posts: $currentDiscounts');
                       });
                     },
                   ),
@@ -221,7 +218,8 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
               child: isGridView
                   ? GridView.builder(
                       shrinkWrap: true,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 1,
                         crossAxisSpacing: 0,
                         mainAxisSpacing: 0,
@@ -260,7 +258,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                     ),
             )
           : currentDiscounts.isEmpty
-              ? Center(
+              ? const Center(
                   child: Text('No Discounts'),
                 )
               : SafeArea(

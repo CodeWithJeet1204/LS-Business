@@ -77,13 +77,13 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
               }
             } else if (widget.mode == 'services') {
               if (widget.isLogging) {
-                return ServicesMainPage();
+                return const ServicesMainPage();
               } else {
                 return const ServicesRegisterDetailsPage();
               }
             } else if (widget.mode == 'events') {
               if (widget.isLogging) {
-                return EventsMainPage();
+                return const EventsMainPage();
               } else {
                 return const EventsRegisterDetailsPage1();
               }
@@ -95,7 +95,9 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
       }
     } else {
       if (fromButton) {
-        return mySnackBar(context, 'Not Verified');
+        if (mounted) {
+          return mySnackBar(context, 'Not Verified');
+        }
       }
     }
   }

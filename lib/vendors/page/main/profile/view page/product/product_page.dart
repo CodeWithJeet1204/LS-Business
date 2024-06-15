@@ -786,8 +786,8 @@ class _ProductPageState extends State<ProductPage> {
       context: context,
       builder: ((context) {
         return AlertDialog(
-          title: Text('Delete Short'),
-          content: Text('Are you sure you want to delete this short?'),
+          title: const Text('Delete Short'),
+          content: const Text('Are you sure you want to delete this short?'),
           actions: [
             MyTextButton(
               onPressed: () {
@@ -799,8 +799,9 @@ class _ProductPageState extends State<ProductPage> {
             MyTextButton(
               onPressed: () async {
                 await deleteShort();
-                print(4);
-                Navigator.of(context).pop();
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                }
               },
               text: 'YES',
               textColor: Colors.red,
@@ -823,12 +824,8 @@ class _ProductPageState extends State<ProductPage> {
       'shortsURL': '',
     });
 
-    print(1);
-
     await storage.ref('Data/Shorts/${widget.productId}').delete();
-    print(2);
     await storage.ref('Data/Thumbnails/${widget.productId}').delete();
-    print(3);
   }
 
   @override
@@ -897,12 +894,12 @@ class _ProductPageState extends State<ProductPage> {
                       final int views = productData['productViews'];
                       final int wishList = productData['productWishlist'];
 
-                      final String shortsThumbnail =
+                      final String? shortsThumbnail =
                           productData['shortsThumbnail'];
 
-                      final String shortsURL = productData['shortsURL'];
+                      final String? shortsURL = productData['shortsURL'];
 
-                      if (shortsThumbnail != '') {
+                      if (shortsThumbnail != null && shortsThumbnail != '') {
                         images.insert(0, shortsThumbnail);
                       }
 
@@ -977,13 +974,21 @@ class _ProductPageState extends State<ProductPage> {
                                                 ? const CircularProgressIndicator()
                                                 : GestureDetector(
                                                     onTap: () {
-                                                      images.remove(
-                                                        shortsThumbnail,
-                                                      );
-                                                      images.insert(
-                                                        0,
-                                                        shortsURL,
-                                                      );
+                                                      if (shortsThumbnail !=
+                                                              null &&
+                                                          shortsThumbnail !=
+                                                              '') {
+                                                        images.remove(
+                                                          shortsThumbnail,
+                                                        );
+                                                      }
+                                                      if (shortsURL != null &&
+                                                          shortsURL != '') {
+                                                        images.insert(
+                                                          0,
+                                                          shortsURL,
+                                                        );
+                                                      }
 
                                                       Navigator.of(context)
                                                           .push(
@@ -1000,13 +1005,21 @@ class _ProductPageState extends State<ProductPage> {
                                                         ),
                                                       )
                                                           .then((value) {
-                                                        images.remove(
-                                                          shortsURL,
-                                                        );
-                                                        images.insert(
-                                                          0,
-                                                          shortsThumbnail,
-                                                        );
+                                                        if (shortsURL != null &&
+                                                            shortsURL != '') {
+                                                          images.remove(
+                                                            shortsURL,
+                                                          );
+                                                        }
+                                                        if (shortsThumbnail !=
+                                                                null &&
+                                                            shortsThumbnail !=
+                                                                '') {
+                                                          images.insert(
+                                                            0,
+                                                            shortsThumbnail,
+                                                          );
+                                                        }
                                                       });
                                                     },
                                                     child: ClipRRect(
@@ -1105,7 +1118,7 @@ class _ProductPageState extends State<ProductPage> {
                                         ],
                                       ),
                                       e != shortsThumbnail
-                                          ? SizedBox(
+                                          ? const SizedBox(
                                               width: 1,
                                               height: 1,
                                             )

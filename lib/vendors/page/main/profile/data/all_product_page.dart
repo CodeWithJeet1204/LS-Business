@@ -47,7 +47,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
         .collection('Products')
         .get();
 
-    productSnap.docs.forEach((product) {
+    for (var product in productSnap.docs) {
       final productId = product.id;
 
       final productData = product.data();
@@ -55,7 +55,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
       if (productData['vendorId'] == auth.currentUser!.uid) {
         myProducts[productId] = productData;
       }
-    });
+    }
 
     setState(() {
       allProducts = myProducts;
@@ -92,6 +92,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
           .where('postProductId', isEqualTo: productId)
           .get();
 
+      // ignore: avoid_function_literals_in_foreach_calls
       shortsSnap.docs.forEach((short) async {
         await short.reference.delete();
       });
@@ -211,15 +212,12 @@ class _AllProductsPageState extends State<AllProductsPage> {
                             }
                           });
 
-                          keysToRemove.forEach((key) {
+                          for (var key in keysToRemove) {
                             filteredProducts.remove(key);
-                          });
+                          }
 
                           currentProducts = filteredProducts;
                         }
-
-                        print('All Posts: $allProducts');
-                        print('Current Posts: $currentProducts');
                       });
                     },
                   ),
@@ -284,7 +282,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                     ),
             )
           : currentProducts.isEmpty
-              ? Center(
+              ? const Center(
                   child: Text('No Products'),
                 )
               : SafeArea(

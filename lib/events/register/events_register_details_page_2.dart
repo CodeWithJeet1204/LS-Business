@@ -33,13 +33,14 @@ class _EventsRegisterDetailsPage2State
       setState(() {
         isDone = false;
       });
-
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: ((context) => EventsMainPage()),
-        ),
-        (route) => false,
-      );
+      if (mounted) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: ((context) => const EventsMainPage()),
+          ),
+          (route) => false,
+        );
+      }
     }
   }
 
@@ -47,7 +48,7 @@ class _EventsRegisterDetailsPage2State
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Description'),
+        title: const Text('Description'),
       ),
       body: Padding(
         padding: EdgeInsets.all(
@@ -86,7 +87,7 @@ class _EventsRegisterDetailsPage2State
                   },
                 ),
 
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
 
                 // DONE
                 MyButton(

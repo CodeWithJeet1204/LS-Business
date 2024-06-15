@@ -319,7 +319,7 @@ class _PostPageState extends State<PostPage> {
                                   : Container()
                               : Container(),
 
-                          images.isEmpty ? Container() : Divider(),
+                          images.isEmpty ? Container() : const Divider(),
 
                           // NAME
                           Padding(

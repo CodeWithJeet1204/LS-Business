@@ -516,7 +516,7 @@ class _ServicesDetailsPageState extends State<ServicesDetailsPage> {
                               )
                             : Container(),
 
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                       ],
                     ),
                   );

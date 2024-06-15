@@ -116,7 +116,9 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
             setState(() {
               isEmailRegistering = false;
             });
-            return mySnackBar(context, 'Some error occured');
+            if (mounted) {
+              return mySnackBar(context, 'Some error occured');
+            }
           }
 
           setState(() {
@@ -213,7 +215,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
         setState(() {
           isPhoneRegistering = false;
         });
-        if (context.mounted) {
+        if (mounted) {
           return mySnackBar(context, e.toString());
         }
       }
@@ -273,14 +275,14 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
         setState(() {
           isGoogleRegistering = false;
         });
-        if (context.mounted) {
+        if (mounted) {
           return mySnackBar(
             context,
             'Some error occured\nTry signing with email / phone number',
           );
         }
       }
-      if (context.mounted) {
+      if (mounted) {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: ((context) {
             if (widget.mode == 'vendor') {
@@ -302,7 +304,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
       setState(() {
         isGoogleRegistering = false;
       });
-      if (context.mounted) {
+      if (mounted) {
         return mySnackBar(context, e.toString());
       }
     }

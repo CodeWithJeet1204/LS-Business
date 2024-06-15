@@ -102,7 +102,6 @@ class _AddProductPage1State extends State<AddProductPage1> {
     setState(() {
       allCategories = myCategories;
       currentCategories = myCategories;
-      print(allCategories);
       getCategoryData = true;
     });
   }
@@ -709,13 +708,11 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                           allCategories,
                                         );
                                       } else {
-                                        print(111);
                                         Map<String, dynamic>
                                             filteredCategories =
                                             Map<String, dynamic>.from(
                                           allCategories,
                                         );
-                                        print(222);
                                         List<String> keysToRemove = [];
 
                                         filteredCategories
@@ -727,20 +724,13 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                             keysToRemove.add(key);
                                           }
                                         });
-                                        print(333);
 
-                                        keysToRemove.forEach((key) {
+                                        for (var key in keysToRemove) {
                                           filteredCategories.remove(key);
-                                        });
-                                        print(555);
+                                        }
 
                                         currentCategories = filteredCategories;
                                       }
-                                      print(666);
-
-                                      print('All Posts: $allCategories');
-                                      print(
-                                          'Current Posts: $currentCategories');
                                     });
                                   },
                                 ),
@@ -770,7 +760,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                             width: width,
                             child: getCategoryData
                                 ? currentCategories.isEmpty
-                                    ? SizedBox(
+                                    ? const SizedBox(
                                         height: 60,
                                         child: Center(
                                           child: Text('No Categories'),
@@ -968,7 +958,8 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                             width: width,
                                             child: ListView.builder(
                                               shrinkWrap: true,
-                                              physics: ClampingScrollPhysics(),
+                                              physics:
+                                                  const ClampingScrollPhysics(),
                                               itemCount:
                                                   currentCategories.length,
                                               itemBuilder: ((context, index) {

@@ -49,12 +49,12 @@ class _AllBrandPageState extends State<AllBrandPage> {
         .where('vendorId', isEqualTo: auth.currentUser!.uid)
         .get();
 
-    brandSnap.docs.forEach((brand) {
+    for (var brand in brandSnap.docs) {
       final brandId = brand.id;
       final brandData = brand.data();
 
       myBrands[brandId] = brandData;
-    });
+    }
 
     setState(() {
       currentBrands = myBrands;
@@ -208,15 +208,12 @@ class _AllBrandPageState extends State<AllBrandPage> {
                             }
                           });
 
-                          keysToRemove.forEach((key) {
+                          for (var key in keysToRemove) {
                             filteredBrands.remove(key);
-                          });
+                          }
 
                           currentBrands = filteredBrands;
                         }
-
-                        print('All Posts: $allBrands');
-                        print('Current Posts: $currentBrands');
                       });
                     },
                   ),
@@ -281,7 +278,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
                     ),
             )
           : currentBrands.isEmpty
-              ? Center(
+              ? const Center(
                   child: Text('No Brands'),
                 )
               : SafeArea(

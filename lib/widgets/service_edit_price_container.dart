@@ -191,7 +191,7 @@ class _ServiceEditPriceContainerState extends State<ServiceEditPriceContainer> {
                       ),
                       padding: EdgeInsets.all(widget.width * 0.0225),
                       child: Text(
-                        widget.price == '0' ? '--' : 'Rs. ${currentPrice}',
+                        widget.price == '0' ? '--' : 'Rs. $currentPrice',
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: widget.width * 0.05,
@@ -239,7 +239,7 @@ class _ServiceEditPriceContainerState extends State<ServiceEditPriceContainer> {
                                 width: widget.width * 0.255,
                                 child: DropdownButton(
                                   dropdownColor: primary,
-                                  underline: SizedBox(),
+                                  underline: const SizedBox(),
                                   hint: Text(currentPriceMethod!),
                                   value: currentPriceMethod,
                                   items: ['Service', 'Hour', 'Day']

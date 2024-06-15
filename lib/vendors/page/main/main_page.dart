@@ -74,10 +74,6 @@ class _MainPageState extends State<MainPage> {
             .doc(auth.currentUser!.uid)
             .get();
 
-    print(1);
-    print("BUSINESS DATA: ${getBusinessDetailsAdded.data()}");
-    print(2);
-
     // Future<bool> getCommonCategories(String type) async {
     //   final getCommonCategoriesDetailsAdded = await store
     //       .collection('Business')
@@ -94,7 +90,6 @@ class _MainPageState extends State<MainPage> {
     // }
 
     if (getUserDetailsAdded.exists && getBusinessDetailsAdded.exists) {
-      print('Yes it exists');
       /*if (!(await isPayed())) {
         detailsPage = const LoginPage(
           mode: 'vendor',
@@ -102,11 +97,9 @@ class _MainPageState extends State<MainPage> {
       // } else {
       if (getUserDetailsAddedData!['Email'] == null ||
           getUserDetailsAddedData['Phone Number'] == null) {
-        print(1);
         detailsPage = const UserRegisterDetailsPage();
       } else if (getUserDetailsAddedData['Phone Number'] != null &&
           getUserDetailsAddedData['numberVerified'] != true) {
-        print(2);
         if (!auth.currentUser!.emailVerified) {
           detailsPage = const EmailVerifyPage(
             mode: 'vendor',
@@ -114,20 +107,16 @@ class _MainPageState extends State<MainPage> {
           );
         } else {
           if (getUserDetailsAddedData['Image'] == null) {
-            print(3);
             detailsPage = const UserRegisterDetailsPage();
           } else if (getUserDetailsAddedData['Image'] != null &&
               getBusinessDetailsAdded['GSTNumber'] == null) {
-            print(4);
             detailsPage = const BusinessRegisterDetailsPage();
           } else if (getBusinessDetailsAdded['Name'] == null ||
-              getBusinessDetailsAdded['Address'] == null ||
+              getBusinessDetailsAdded['Latitute'] == null ||
               getBusinessDetailsAdded['Description'] == null) {
-            print(5);
-            detailsPage = BusinessRegisterDetailsPage();
+            detailsPage = const BusinessRegisterDetailsPage();
           } else if (getBusinessDetailsAdded['GSTNumber'] != null &&
               getBusinessDetailsAdded['Type'] == null) {
-            print(6);
             detailsPage = const SelectBusinessCategoryPage();
           } /* else if (getBusinessDetailsAdded['Type'] != null &&
         await getCommonCategories(getBusinessDetailsAdded['Type'])) {
@@ -137,36 +126,29 @@ class _MainPageState extends State<MainPage> {
               getBusinessDetailsAdded['GSTNumber'] != null &&
               (getBusinessDetailsAdded['MembershipName'] == null ||
                   getBusinessDetailsAdded['MembershipEndDateTime'] == null)) {
-            print(7);
             detailsPage = const SelectMembershipPage();
           } else if (DateTime.now().isAfter(
               (getBusinessDetailsAdded['MembershipEndDateTime'] as Timestamp)
                   .toDate())) {
-            print(8);
             if (mounted) {
               mySnackBar(context, 'Your Membership Has Expired');
             }
             detailsPage = const SelectMembershipPage();
           } else {
-            print(9);
             detailsPage = null;
           }
         }
       } else if (getUserDetailsAddedData['Image'] == null) {
-        print(3);
         detailsPage = const UserRegisterDetailsPage();
       } else if (getUserDetailsAddedData['Image'] != null &&
           getBusinessDetailsAdded['GSTNumber'] == null) {
-        print(4);
         detailsPage = const BusinessRegisterDetailsPage();
       } else if (getBusinessDetailsAdded['Name'] == null ||
-          getBusinessDetailsAdded['Address'] == null ||
+          getBusinessDetailsAdded['Latitude'] == null ||
           getBusinessDetailsAdded['Description'] == null) {
-        print(5);
-        detailsPage = BusinessRegisterDetailsPage();
+        detailsPage = const BusinessRegisterDetailsPage();
       } else if (getBusinessDetailsAdded['GSTNumber'] != null &&
           getBusinessDetailsAdded['Type'] == null) {
-        print(6);
         detailsPage = const SelectBusinessCategoryPage();
       } /* else if (getBusinessDetailsAdded['Type'] != null &&
         await getCommonCategories(getBusinessDetailsAdded['Type'])) {
@@ -176,18 +158,15 @@ class _MainPageState extends State<MainPage> {
           getBusinessDetailsAdded['GSTNumber'] != null &&
           (getBusinessDetailsAdded['MembershipName'] == null ||
               getBusinessDetailsAdded['MembershipEndDateTime'] == null)) {
-        print(7);
         detailsPage = const SelectMembershipPage();
       } else if (DateTime.now().isAfter(
           (getBusinessDetailsAdded['MembershipEndDateTime'] as Timestamp)
               .toDate())) {
-        print(8);
         if (mounted) {
           mySnackBar(context, 'Your Membership Has Expired');
         }
         detailsPage = const SelectMembershipPage();
       } else {
-        print(9);
         detailsPage = null;
       }
       // }

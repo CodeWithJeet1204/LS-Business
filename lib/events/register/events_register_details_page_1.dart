@@ -81,7 +81,9 @@ class EventsRegisterDetailsPage1State
         doe = selectedDate;
       });
     } else {
-      return mySnackBar(context, 'Select Date Of Establishment');
+      if (mounted) {
+        return mySnackBar(context, 'Select Date Of Establishment');
+      }
     }
   }
 
@@ -372,7 +374,7 @@ class EventsRegisterDetailsPage1State
                             doe == null
                                 ? 'Select Date Of Establishment'
                                 : DateFormat('d MMM y').format(doe!),
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontWeight: FontWeight.w500,
                             ),
                           ),

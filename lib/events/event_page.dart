@@ -234,8 +234,9 @@ class _EventPageState extends State<EventPage> {
                                       setState(() {
                                         isEditing = false;
                                       });
-
-                                      Navigator.of(context).pop();
+                                      if (context.mounted) {
+                                        Navigator.of(context).pop();
+                                      }
                                     } catch (e) {
                                       setState(() {
                                         isEditing = false;
@@ -278,7 +279,9 @@ class _EventPageState extends State<EventPage> {
 
     if (selected != null) {
       if (selected.isBefore(startDate) && date == 'endDate') {
-        return mySnackBar(context, 'End Date should be after Start Date');
+        if (mounted) {
+          return mySnackBar(context, 'End Date should be after Start Date');
+        }
       }
       await store.collection('Events').doc(widget.eventId).update({
         date: selected,
@@ -407,14 +410,14 @@ class _EventPageState extends State<EventPage> {
                   Navigator.of(context).pop();
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: ((context) => EventsAllEventsPage()),
+                      builder: ((context) => const EventsAllEventsPage()),
                     ),
                   );
                 }
               : () {
                   Navigator.of(context).pop();
                 },
-          icon: Icon(
+          icon: const Icon(
             FeatherIcons.arrowLeft,
           ),
           tooltip: 'Back',
@@ -433,7 +436,7 @@ class _EventPageState extends State<EventPage> {
                   stream: eventStream,
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
-                      return Center(
+                      return const Center(
                         child: Text('Something went wrong'),
                       );
                     }
@@ -694,11 +697,11 @@ class _EventPageState extends State<EventPage> {
                               ],
                             ),
 
-                            Divider(),
+                            const Divider(),
 
                             // TYPE
                             isChangingType
-                                ? Container(
+                                ? SizedBox(
                                     width: width,
                                     height: 60,
                                     child: Row(
@@ -794,7 +797,7 @@ class _EventPageState extends State<EventPage> {
                                     ],
                                   ),
 
-                            Divider(),
+                            const Divider(),
 
                             // ADDRESS
                             Row(
@@ -833,7 +836,7 @@ class _EventPageState extends State<EventPage> {
                               ],
                             ),
 
-                            Divider(),
+                            const Divider(),
 
                             // CONTACT HELP
                             Row(
@@ -872,7 +875,7 @@ class _EventPageState extends State<EventPage> {
                               ],
                             ),
 
-                            Divider(),
+                            const Divider(),
 
                             // ORGANIZER NAME
                             Row(
@@ -911,7 +914,7 @@ class _EventPageState extends State<EventPage> {
                               ],
                             ),
 
-                            Divider(),
+                            const Divider(),
 
                             // DATE
                             Row(
@@ -1045,7 +1048,7 @@ class _EventPageState extends State<EventPage> {
                               ],
                             ),
 
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
 
                             // TIMING
                             Center(
@@ -1055,7 +1058,7 @@ class _EventPageState extends State<EventPage> {
                                   color: primary3,
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                   horizontal: 12,
                                   vertical: 8,
                                 ),
@@ -1072,7 +1075,7 @@ class _EventPageState extends State<EventPage> {
                                         fontSize: width * 0.04,
                                       ),
                                     ),
-                                    SizedBox(height: 8),
+                                    const SizedBox(height: 8),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -1098,7 +1101,7 @@ class _EventPageState extends State<EventPage> {
                                                 ),
                                               ),
                                               SizedBox(width: width * 0.05),
-                                              Icon(
+                                              const Icon(
                                                 FeatherIcons.edit,
                                               ),
                                             ],
@@ -1128,7 +1131,7 @@ class _EventPageState extends State<EventPage> {
                                                 ),
                                               ),
                                               SizedBox(width: width * 0.05),
-                                              Icon(
+                                              const Icon(
                                                 FeatherIcons.edit,
                                               ),
                                             ],
@@ -1143,14 +1146,15 @@ class _EventPageState extends State<EventPage> {
 
                             weekendStartTime == null || weekendEndTime == null
                                 ? Container()
-                                : SizedBox(height: 8),
+                                : const SizedBox(height: 8),
 
                             // WEEKEND TIMING
                             weekendStartTime == null || weekendEndTime == null
                                 ? Container()
                                 : Center(
                                     child: AnimatedSize(
-                                      duration: Duration(milliseconds: 300),
+                                      duration:
+                                          const Duration(milliseconds: 300),
                                       child: Container(
                                         width: width * 0.95,
                                         decoration: BoxDecoration(
@@ -1176,7 +1180,7 @@ class _EventPageState extends State<EventPage> {
                                                 fontSize: width * 0.04,
                                               ),
                                             ),
-                                            SizedBox(height: 8),
+                                            const SizedBox(height: 8),
                                             Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
@@ -1210,7 +1214,7 @@ class _EventPageState extends State<EventPage> {
                                                       SizedBox(
                                                         width: width * 0.05,
                                                       ),
-                                                      Icon(
+                                                      const Icon(
                                                         FeatherIcons.edit,
                                                       ),
                                                     ],
@@ -1242,7 +1246,7 @@ class _EventPageState extends State<EventPage> {
                                                       SizedBox(
                                                         width: width * 0.05,
                                                       ),
-                                                      Icon(
+                                                      const Icon(
                                                         FeatherIcons.edit,
                                                       ),
                                                     ],
@@ -1261,7 +1265,7 @@ class _EventPageState extends State<EventPage> {
                             // TICKETS
                             Padding(
                               padding: EdgeInsets.only(left: width * 0.0225),
-                              child: Text(
+                              child: const Text(
                                 'Tickets',
                                 style: TextStyle(),
                               ),
@@ -1332,7 +1336,7 @@ class _EventPageState extends State<EventPage> {
                               ],
                             ),
 
-                            Divider(),
+                            const Divider(),
 
                             // EARLY BIRD PRICE
                             Row(
@@ -1399,7 +1403,7 @@ class _EventPageState extends State<EventPage> {
                               ],
                             ),
 
-                            Divider(),
+                            const Divider(),
 
                             // VIP PRICE
                             Row(
@@ -1466,7 +1470,7 @@ class _EventPageState extends State<EventPage> {
                               ],
                             ),
 
-                            Divider(),
+                            const Divider(),
 
                             // GROUP PRICE
                             Row(
@@ -1533,12 +1537,12 @@ class _EventPageState extends State<EventPage> {
                               ],
                             ),
 
-                            Divider(),
+                            const Divider(),
 
                             // DESCRIPTION
                             Padding(
                               padding: EdgeInsets.only(left: width * 0.0225),
-                              child: Text(
+                              child: const Text(
                                 'Description',
                                 style: TextStyle(),
                               ),
@@ -1581,13 +1585,13 @@ class _EventPageState extends State<EventPage> {
                               ],
                             ),
 
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                           ],
                         ),
                       );
                     }
 
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(),
                     );
                   });

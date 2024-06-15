@@ -7,7 +7,7 @@ class EventsAddPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add'),
+        title: const Text('Add'),
       ),
     );
   }

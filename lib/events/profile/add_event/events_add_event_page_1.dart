@@ -387,10 +387,10 @@ class _EventsAddEventPage1State extends State<EventsAddEventPage1> {
                           horizontalPadding: 0,
                         ),
 
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
 
                         // TYPE
-                        Container(
+                        SizedBox(
                           width: width,
                           height: 60,
                           child: TypeAheadField(
@@ -427,7 +427,7 @@ class _EventsAddEventPage1State extends State<EventsAddEventPage1> {
                           ),
                         ),
 
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
 
                         // ADDRESS
                         Padding(

@@ -67,7 +67,7 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ticket Pricing'),
+        title: const Text('Ticket Pricing'),
         actions: [
           MyTextButton(
             onPressed: next,
@@ -96,7 +96,7 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                   // BASE PRICE
                   Padding(
                     padding: EdgeInsets.only(left: width * 0.025),
-                    child: Text(
+                    child: const Text(
                       'Price',
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
@@ -104,7 +104,7 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                     ),
                   ),
 
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
 
                   // BASE PRICE
                   MyTextFormField(
@@ -115,16 +115,16 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                     horizontalPadding: 0,
                   ),
 
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
 
-                  Divider(),
+                  const Divider(),
 
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
 
                   // TICKET TYPE
                   Padding(
                     padding: EdgeInsets.only(left: width * 0.025),
-                    child: Text(
+                    child: const Text(
                       'Ticket Types',
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
@@ -132,7 +132,7 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                     ),
                   ),
 
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
 
                   // TICKET TYPES
                   Container(
@@ -158,7 +158,7 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                                       MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text(
+                                    const Text(
                                       'VIP',
                                     ),
                                     Checkbox(
@@ -180,7 +180,7 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        Text(
+                                        const Text(
                                           'VIP',
                                         ),
                                         Checkbox(
@@ -223,7 +223,7 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                                       MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text(
+                                    const Text(
                                       'Early Bird',
                                     ),
                                     Checkbox(
@@ -245,7 +245,7 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        Text(
+                                        const Text(
                                           'Early Bird',
                                         ),
                                         Checkbox(
@@ -288,7 +288,7 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                                       MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text(
+                                    const Text(
                                       'Group',
                                     ),
                                     Checkbox(
@@ -310,7 +310,7 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        Text(
+                                        const Text(
                                           'Group',
                                         ),
                                         Checkbox(
@@ -338,16 +338,16 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                     ),
                   ),
 
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
 
-                  Divider(),
+                  const Divider(),
 
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
 
                   // NUMBER OF TICKET
                   Padding(
                     padding: EdgeInsets.only(left: width * 0.025),
-                    child: Text(
+                    child: const Text(
                       'Number of Tickets for Sale',
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
@@ -355,7 +355,7 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                     ),
                   ),
 
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
 
                   // NUMBER OF TICKETS
                   MyTextFormField(
@@ -366,16 +366,16 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                     keyboardType: TextInputType.number,
                   ),
 
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
 
-                  Divider(),
+                  const Divider(),
 
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
 
                   // TICKET BUYING OPTION
                   Padding(
                     padding: EdgeInsets.only(left: width * 0.025),
-                    child: Text(
+                    child: const Text(
                       'Ticket Buying Options',
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
@@ -383,7 +383,7 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                     ),
                   ),
 
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
 
                   // TICKET BUYING OPTIONS
                   Container(
@@ -397,8 +397,8 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                     child: Column(
                       children: [
                         AnimatedSize(
-                          duration: Duration(milliseconds: 200),
-                          child: Container(
+                          duration: const Duration(milliseconds: 200),
+                          child: SizedBox(
                             width: width,
                             child: !isOnlineTicket
                                 ? Row(
@@ -407,7 +407,7 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Text(
+                                      const Text(
                                         'Online',
                                       ),
                                       Checkbox(
@@ -429,7 +429,7 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: [
-                                          Text(
+                                          const Text(
                                             'Online',
                                           ),
                                           Checkbox(
@@ -458,8 +458,8 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                           color: primaryDark.withOpacity(0.05),
                         ),
                         AnimatedSize(
-                          duration: Duration(milliseconds: 200),
-                          child: Container(
+                          duration: const Duration(milliseconds: 200),
+                          child: SizedBox(
                             width: width,
                             child: !isOfflineTicket
                                 ? Row(
@@ -468,7 +468,7 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Text(
+                                      const Text(
                                         'Offline',
                                       ),
                                       Checkbox(
@@ -491,7 +491,7 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: [
-                                          Text(
+                                          const Text(
                                             'Offline',
                                           ),
                                           Checkbox(
@@ -520,16 +520,16 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                     ),
                   ),
 
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
 
-                  Divider(),
+                  const Divider(),
 
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
 
                   // REFUND
                   Padding(
                     padding: EdgeInsets.only(left: width * 0.025),
-                    child: Text(
+                    child: const Text(
                       'Refund',
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
@@ -537,11 +537,11 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                     ),
                   ),
 
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
 
                   // REFUND
                   AnimatedSize(
-                    duration: Duration(milliseconds: 200),
+                    duration: const Duration(milliseconds: 200),
                     child: Container(
                       width: width,
                       decoration: BoxDecoration(
@@ -555,7 +555,7 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text(
+                                const Text(
                                   'Refund',
                                 ),
                                 Checkbox(
@@ -576,7 +576,7 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                                       MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text(
+                                    const Text(
                                       'Refund',
                                     ),
                                     Checkbox(
@@ -601,16 +601,16 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                     ),
                   ),
 
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
 
-                  Divider(),
+                  const Divider(),
 
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
 
                   // PROMO CODE
                   Padding(
                     padding: EdgeInsets.only(left: width * 0.025),
-                    child: Text(
+                    child: const Text(
                       'Promotional Codes',
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
@@ -618,11 +618,11 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                     ),
                   ),
 
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
 
                   // PROMO CODES
                   AnimatedSize(
-                    duration: Duration(milliseconds: 200),
+                    duration: const Duration(milliseconds: 200),
                     child: Container(
                       width: width,
                       decoration: BoxDecoration(
@@ -636,7 +636,7 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text(
+                                const Text(
                                   'Promo Codes',
                                 ),
                                 Checkbox(
@@ -657,7 +657,7 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                                       MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text(
+                                    const Text(
                                       'Promo Codes',
                                     ),
                                     Checkbox(
@@ -677,7 +677,7 @@ class _EventsAddEventPage3State extends State<EventsAddEventPage3> {
                                   borderRadius: 8,
                                   horizontalPadding: 0,
                                 ),
-                                SizedBox(height: 4),
+                                const SizedBox(height: 4),
                                 MyTextFormField(
                                   hintText: 'Discount (Rs.)',
                                   controller: promoCodePriceController,

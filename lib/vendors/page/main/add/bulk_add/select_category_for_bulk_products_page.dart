@@ -108,7 +108,7 @@ class _SelectCategoryForBulkProductsPageState
           ),
         ],
         bottom: PreferredSize(
-          preferredSize: Size(
+          preferredSize: const Size(
             double.infinity,
             80,
           ),

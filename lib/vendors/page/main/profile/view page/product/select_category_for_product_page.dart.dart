@@ -183,7 +183,7 @@ class _ChangeCategoryState extends State<ChangeCategory> {
           final double width = constraints.maxWidth;
 
           return !getData
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(),
                 )
               : isGridView

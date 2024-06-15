@@ -394,8 +394,8 @@ class _AddProductPage2State extends State<AddProductPage2> {
                       child: Column(
                         children: [
                           const Text(
-                            '''Properties marked with \' *
-                                \' are compulsory to fill''',
+                            '''Properties marked with ' *
+                                ' are compulsory to fill''',
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.center,
                             maxLines: 1,

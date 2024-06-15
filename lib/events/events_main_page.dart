@@ -42,9 +42,9 @@ class _EventsMainPageState extends State<EventsMainPage> {
           eventData['Name'] == null ||
           eventData['Type'] == null ||
           eventData['Image'] == null) {
-        detailsPage = EventsRegisterDetailsPage1();
+        detailsPage = const EventsRegisterDetailsPage1();
       } else if (eventData['Description'] == null) {
-        detailsPage = EventsRegisterDetailsPage2();
+        detailsPage = const EventsRegisterDetailsPage2();
       } else {
         detailsPage = null;
       }
@@ -60,7 +60,7 @@ class _EventsMainPageState extends State<EventsMainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return detailsPage ?? EventsProfilePage();
+    return detailsPage ?? const EventsProfilePage();
     // Scaffold(
     //   body: pages[current],
     //   bottomNavigationBar: BottomNavigationBar(

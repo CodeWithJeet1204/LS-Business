@@ -10,10 +10,10 @@ class EventsAllEventsPage extends StatefulWidget {
   const EventsAllEventsPage({super.key});
 
   @override
-  State<EventsAllEventsPage> createState() => Events_AllEventsPageState();
+  State<EventsAllEventsPage> createState() => EventsAllEventsPageState();
 }
 
-class Events_AllEventsPageState extends State<EventsAllEventsPage> {
+class EventsAllEventsPageState extends State<EventsAllEventsPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   final searchController = TextEditingController();
@@ -36,7 +36,7 @@ class Events_AllEventsPageState extends State<EventsAllEventsPage> {
         .where('organizerId', isEqualTo: auth.currentUser!.uid)
         .get();
 
-    eventSnap.docs.forEach((event) {
+    for (var event in eventSnap.docs) {
       final eventData = event.data();
 
       final String eventId = eventData['eventId'];
@@ -44,7 +44,7 @@ class Events_AllEventsPageState extends State<EventsAllEventsPage> {
       final String eventImageUrl = eventData['imageUrl'][0];
 
       myEvents[eventId] = [eventName, eventImageUrl];
-    });
+    }
 
     setState(() {
       events = myEvents;

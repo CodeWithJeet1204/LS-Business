@@ -120,7 +120,7 @@ class _SelectBrandForBulkProductsPageState
                     final brandLength = snapshot.data!.docs.length;
 
                     if (brandLength == 0) {
-                      return SizedBox(
+                      return const SizedBox(
                         height: 80,
                         child: Center(
                           child: Text('No Brands'),

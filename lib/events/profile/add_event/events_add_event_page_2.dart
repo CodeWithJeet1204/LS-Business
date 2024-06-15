@@ -173,7 +173,7 @@ class _EventsAddEventPage2State extends State<EventsAddEventPage2> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Date & Timings'),
+        title: const Text('Date & Timings'),
         actions: [
           MyTextButton(
             onPressed: next,
@@ -201,14 +201,14 @@ class _EventsAddEventPage2State extends State<EventsAddEventPage2> {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(left: width * 0.033),
-                    child: Text(
+                    child: const Text(
                       'Dates',
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -356,18 +356,18 @@ class _EventsAddEventPage2State extends State<EventsAddEventPage2> {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  Divider(),
+                  const Divider(),
                   const SizedBox(height: 8),
                   Padding(
                     padding: EdgeInsets.only(left: width * 0.033),
-                    child: Text(
+                    child: const Text(
                       'Timings',
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Center(
                     child: Container(
                       width: width * 0.95,
@@ -375,7 +375,7 @@ class _EventsAddEventPage2State extends State<EventsAddEventPage2> {
                         color: primary3,
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         horizontal: 12,
                         vertical: 8,
                       ),
@@ -392,7 +392,7 @@ class _EventsAddEventPage2State extends State<EventsAddEventPage2> {
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -423,7 +423,7 @@ class _EventsAddEventPage2State extends State<EventsAddEventPage2> {
                                             ),
                                           ),
                                           SizedBox(width: width * 0.05),
-                                          Icon(
+                                          const Icon(
                                             FeatherIcons.edit,
                                           ),
                                         ],
@@ -455,7 +455,7 @@ class _EventsAddEventPage2State extends State<EventsAddEventPage2> {
                                             ),
                                           ),
                                           SizedBox(width: width * 0.05),
-                                          Icon(
+                                          const Icon(
                                             FeatherIcons.edit,
                                           ),
                                         ],
@@ -467,10 +467,10 @@ class _EventsAddEventPage2State extends State<EventsAddEventPage2> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   Center(
                     child: AnimatedSize(
-                      duration: Duration(milliseconds: 300),
+                      duration: const Duration(milliseconds: 300),
                       child: Container(
                         width: width * 0.95,
                         decoration: BoxDecoration(
@@ -570,7 +570,7 @@ class _EventsAddEventPage2State extends State<EventsAddEventPage2> {
                                                   SizedBox(
                                                     width: width * 0.05,
                                                   ),
-                                                  Icon(
+                                                  const Icon(
                                                     FeatherIcons.edit,
                                                   ),
                                                 ],
@@ -606,7 +606,7 @@ class _EventsAddEventPage2State extends State<EventsAddEventPage2> {
                                                   SizedBox(
                                                     width: width * 0.05,
                                                   ),
-                                                  Icon(
+                                                  const Icon(
                                                     FeatherIcons.edit,
                                                   ),
                                                 ],
@@ -619,7 +619,7 @@ class _EventsAddEventPage2State extends State<EventsAddEventPage2> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
                 ],
               ),
             );

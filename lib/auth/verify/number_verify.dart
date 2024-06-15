@@ -154,13 +154,13 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                                     }
                                   } else if (widget.mode == 'services') {
                                     if (widget.isLogging) {
-                                      return ServicesMainPage();
+                                      return const ServicesMainPage();
                                     } else {
                                       return const ServicesRegisterDetailsPage();
                                     }
                                   } else if (widget.mode == 'events') {
                                     if (widget.isLogging) {
-                                      return EventsMainPage();
+                                      return const EventsMainPage();
                                     } else {
                                       return const EventsRegisterDetailsPage1();
                                     }

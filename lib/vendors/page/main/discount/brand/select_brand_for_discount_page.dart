@@ -44,13 +44,13 @@ class _SelectBrandForDiscountPageState
         .where('vendorId', isEqualTo: auth.currentUser!.uid)
         .get();
 
-    brandSnap.docs.forEach((brand) {
+    for (var brand in brandSnap.docs) {
       final brandId = brand.id;
 
       final brandData = brand.data();
 
       myBrands[brandId] = brandData;
-    });
+    }
 
     setState(() {
       currentBrands = myBrands;
@@ -127,15 +127,12 @@ class _SelectBrandForDiscountPageState
                             }
                           });
 
-                          keysToRemove.forEach((key) {
+                          for (var key in keysToRemove) {
                             filteredBrands.remove(key);
-                          });
+                          }
 
                           currentBrands = filteredBrands;
                         }
-
-                        print('All Posts: $allBrands');
-                        print('Current Posts: $currentBrands');
                       });
                     },
                   ),
@@ -198,7 +195,7 @@ class _SelectBrandForDiscountPageState
                     ),
             )
           : currentBrands.isEmpty
-              ? Center(
+              ? const Center(
                   child: Text('No Brands'),
                 )
               : SafeArea(
@@ -291,7 +288,7 @@ class _SelectBrandForDiscountPageState
                                                           ),
                                                         ),
                                                       ),
-                                                Divider(
+                                                const Divider(
                                                   height: 0,
                                                 ),
                                                 Padding(

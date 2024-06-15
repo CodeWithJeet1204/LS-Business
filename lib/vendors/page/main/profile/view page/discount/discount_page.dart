@@ -835,7 +835,7 @@ class DISCOUNT extends State<DiscountPage> {
                               discountData['isPercent']
                                   ? 'Percent %'
                                   : 'Price Rs.',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: primaryDark,
                               ),
                             ),

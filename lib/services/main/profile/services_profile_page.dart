@@ -63,7 +63,7 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
 
     DateTime currentDate = DateTime.now();
 
-    DateTime sevenDaysAgo = currentDate.subtract(Duration(days: 7));
+    DateTime sevenDaysAgo = currentDate.subtract(const Duration(days: 7));
 
     List<dynamic> timestampsWithin7Days = timestamp.where((timestamp) {
       DateTime timestampDateTime = (timestamp as Timestamp).toDate();
@@ -91,13 +91,13 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
 
     switch (duration) {
       case '7 Days':
-        startDate = currentDate.subtract(Duration(days: 7));
+        startDate = currentDate.subtract(const Duration(days: 7));
         break;
       case '28 Days':
-        startDate = currentDate.subtract(Duration(days: 28));
+        startDate = currentDate.subtract(const Duration(days: 28));
         break;
       case '1 Year':
-        startDate = currentDate.subtract(Duration(days: 365));
+        startDate = currentDate.subtract(const Duration(days: 365));
         break;
       case 'Lifetime':
         startDate = DateTime(1970);
@@ -286,7 +286,7 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
                               ),
                             ),
 
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
 
                             // NAME
                             SizedBox(
@@ -304,7 +304,7 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
                               ),
                             ),
 
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
 
                             // YOUR DETAILS
                             GestureDetector(
@@ -599,8 +599,8 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
                                     padding: EdgeInsets.all(width * 0.0125),
                                     child: DropdownButton(
                                       dropdownColor: primary,
-                                      underline: SizedBox(),
-                                      hint: Text('Duration'),
+                                      underline: const SizedBox(),
+                                      hint: const Text('Duration'),
                                       value: duration,
                                       items: [
                                         '7 Days',

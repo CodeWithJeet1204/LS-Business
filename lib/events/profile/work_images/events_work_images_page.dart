@@ -62,14 +62,14 @@ class _EventsWorkImagesPageState extends State<EventsWorkImagesPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Work Images'),
+        title: const Text('Work Images'),
       ),
       body: !isData
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : workImages.isEmpty
-              ? Center(
+              ? const Center(
                   child: Text('No Images'),
                 )
               : SafeArea(
@@ -82,8 +82,9 @@ class _EventsWorkImagesPageState extends State<EventsWorkImagesPage> {
                       height: MediaQuery.of(context).size.height,
                       child: GridView.builder(
                         shrinkWrap: true,
-                        physics: ClampingScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        physics: const ClampingScrollPhysics(),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3,
                           childAspectRatio: 1,
                         ),
