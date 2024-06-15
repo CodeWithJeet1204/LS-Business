@@ -35,6 +35,7 @@ class _BusinessRegisterDetailsPageState
   bool isNext = false;
   String? selectedIndustrySegment;
   bool isImageSelected = false;
+  bool isGettingAddress = false;
   File? _image;
   double? latitude;
   double? longitude;
@@ -92,6 +93,10 @@ class _BusinessRegisterDetailsPageState
             latitude = 0;
             longitude = 0;
             address = 'NONE';
+          });
+
+          setState(() {
+            isGettingAddress = false;
           });
           mySnackBar(context, 'Sorry, without location we can\'t Continue');
         } else {
@@ -267,6 +272,10 @@ class _BusinessRegisterDetailsPageState
                     // LOCATION
                     GestureDetector(
                       onTap: () async {
+                        setState(() {
+                          isGettingAddress = true;
+                        });
+
                         await getLocation().then((value) async {
                           if (value != null) {
                             setState(() {
@@ -279,6 +288,10 @@ class _BusinessRegisterDetailsPageState
                             }
                           }
                         });
+
+                        setState(() {
+                          isGettingAddress = false;
+                        });
                       },
                       child: Align(
                         alignment: Alignment.center,
@@ -289,14 +302,20 @@ class _BusinessRegisterDetailsPageState
                             borderRadius: BorderRadius.circular(24),
                           ),
                           padding: EdgeInsets.all(width * 0.025),
-                          child: Text(
-                            address ?? 'Get Location',
-                            style: TextStyle(
-                              fontSize: width * 0.045,
-                              color: primaryDark2,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
+                          margin:
+                              EdgeInsets.symmetric(horizontal: width * 0.05),
+                          child: isGettingAddress
+                              ? Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : Text(
+                                  address ?? 'Get Location',
+                                  style: TextStyle(
+                                    fontSize: width * 0.045,
+                                    color: primaryDark2,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
                         ),
                       ),
                     ),

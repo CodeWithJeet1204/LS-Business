@@ -30,14 +30,17 @@ class _ImageViewState extends State<ImageView> {
   @override
   void initState() {
     super.initState();
+    print("Shorts URL: ${widget.shortsURL}");
 
-    flickManager = FlickManager(
-      videoPlayerController: VideoPlayerController.networkUrl(
-        Uri.parse(
-          widget.shortsURL!,
+    if (widget.shortsURL != null) {
+      flickManager = FlickManager(
+        videoPlayerController: VideoPlayerController.networkUrl(
+          Uri.parse(
+            widget.shortsURL!,
+          ),
         ),
-      ),
-    );
+      );
+    }
 
     print('def');
   }
@@ -57,6 +60,15 @@ class _ImageViewState extends State<ImageView> {
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           double width = constraints.maxWidth;
+
+          if (widget.shortsURL == '' || widget.shortsURL == null) {
+            if (widget.imagesUrl.contains(widget.shortsURL)) {
+              widget.imagesUrl.remove(widget.shortsURL);
+            }
+            if (widget.imagesUrl.contains(widget.shortsThumbnail)) {
+              widget.imagesUrl.remove(widget.shortsThumbnail);
+            }
+          }
 
           return Column(
             children: [

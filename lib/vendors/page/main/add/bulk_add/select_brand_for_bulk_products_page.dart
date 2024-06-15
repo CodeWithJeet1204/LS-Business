@@ -3,7 +3,6 @@ import 'package:feather_icons/feather_icons.dart';
 import 'package:localy/vendors/provider/select_brand_for_product_provider.dart';
 import 'package:localy/vendors/utils/colors.dart';
 import 'package:localy/widgets/shimmer_skeleton_container.dart';
-import 'package:localy/widgets/snack_bar.dart';
 import 'package:localy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -42,19 +41,15 @@ class _SelectBrandForBulkProductsPageState
       appBar: AppBar(
         title: const Text(
           overflow: TextOverflow.ellipsis,
-          'SELECT BRANDS',
+          'SELECT BRAND',
         ),
         actions: [
           MyTextButton(
             onPressed: () {
-              if (selectBrandProvider.selectedBrandId != '0') {
-                Navigator.of(context).pop([
-                  selectBrandProvider.selectedBrandId,
-                  selectBrandProvider.selectedBrandName,
-                ]);
-              } else {
-                return mySnackBar(context, 'Select Brand');
-              }
+              Navigator.of(context).pop([
+                selectBrandProvider.selectedBrandId,
+                selectBrandProvider.selectedBrandName,
+              ]);
             },
             text: 'DONE',
             textColor: primaryDark,
@@ -122,6 +117,17 @@ class _SelectBrandForBulkProductsPageState
                   }
 
                   if (snapshot.hasData) {
+                    final brandLength = snapshot.data!.docs.length;
+
+                    if (brandLength == 0) {
+                      return SizedBox(
+                        height: 80,
+                        child: Center(
+                          child: Text('No Brands'),
+                        ),
+                      );
+                    }
+
                     return SafeArea(
                       child: isGridView
                           ? GridView.builder(

@@ -496,33 +496,33 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   // CHANGE IMAGE
-  Future<void> changeProductImage(String e, int index, List images) async {
-    final XFile? im = await showImagePickDialog(context);
-    if (im != null) {
-      try {
-        setState(() {
-          isImageChanging = true;
-        });
-        Reference ref = FirebaseStorage.instance.refFromURL(images[index]);
-        await images.removeAt(index);
-        await ref.putFile(File(im.path));
-        setState(() {
-          isImageChanging = false;
-        });
-      } catch (e) {
-        setState(() {
-          isImageChanging = false;
-        });
-        if (mounted) {
-          mySnackBar(context, e.toString());
-        }
-      }
-    } else {
-      if (mounted) {
-        mySnackBar(context, 'Select an Image');
-      }
-    }
-  }
+  // Future<void> changeProductImage(String e, int index, List images) async {
+  //   final XFile? im = await showImagePickDialog(context);
+  //   if (im != null) {
+  //     try {
+  //       setState(() {
+  //         isImageChanging = true;
+  //       });
+  //       Reference ref = FirebaseStorage.instance.refFromURL(images[index]);
+  //       await images.removeAt(index);
+  //       await ref.putFile(File(im.path));
+  //       setState(() {
+  //         isImageChanging = false;
+  //       });
+  //     } catch (e) {
+  //       setState(() {
+  //         isImageChanging = false;
+  //       });
+  //       if (mounted) {
+  //         mySnackBar(context, e.toString());
+  //       }
+  //     }
+  //   } else {
+  //     if (mounted) {
+  //       mySnackBar(context, 'Select an Image');
+  //     }
+  //   }
+  // }
 
   // REMOVE IMAGES
   Future<void> removeProductImages(String e, List images) async {
@@ -1032,44 +1032,43 @@ class _ProductPageState extends State<ProductPage> {
                                               ? Container()
                                               : Row(
                                                   mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
+                                                      MainAxisAlignment.end,
                                                   children: [
-                                                    e == shortsThumbnail
-                                                        ? SizedBox(
-                                                            width: 1,
-                                                            height: 1,
-                                                          )
-                                                        : Padding(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                              left: width *
-                                                                  0.0125,
-                                                              top: width *
-                                                                  0.0125,
-                                                            ),
-                                                            child: IconButton
-                                                                .filledTonal(
-                                                              onPressed:
-                                                                  () async {
-                                                                await changeProductImage(
-                                                                  e,
-                                                                  images
-                                                                      .indexOf(
-                                                                          e),
-                                                                  images,
-                                                                );
-                                                              },
-                                                              icon: Icon(
-                                                                FeatherIcons
-                                                                    .camera,
-                                                                size:
-                                                                    width * 0.1,
-                                                              ),
-                                                              tooltip:
-                                                                  'Change Image',
-                                                            ),
-                                                          ),
+                                                    // e == shortsThumbnail
+                                                    //     ? SizedBox(
+                                                    //         width: 1,
+                                                    //         height: 1,
+                                                    //       )
+                                                    //     : Padding(
+                                                    //         padding:
+                                                    //             EdgeInsets.only(
+                                                    //           left: width *
+                                                    //               0.0125,
+                                                    //           top: width *
+                                                    //               0.0125,
+                                                    //         ),
+                                                    //         child: IconButton
+                                                    //             .filledTonal(
+                                                    //           onPressed:
+                                                    //               () async {
+                                                    //             await changeProductImage(
+                                                    //               e,
+                                                    //               images
+                                                    //                   .indexOf(
+                                                    //                       e),
+                                                    //               images,
+                                                    //             );
+                                                    //           },
+                                                    //           icon: Icon(
+                                                    //             FeatherIcons
+                                                    //                 .camera,
+                                                    //             size:
+                                                    //                 width * 0.1,
+                                                    //           ),
+                                                    //           tooltip:
+                                                    //               'Change Image',
+                                                    //         ),
+                                                    //       ),
                                                     Padding(
                                                       padding: EdgeInsets.only(
                                                         right: width * 0.0125,
