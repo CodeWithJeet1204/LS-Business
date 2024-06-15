@@ -126,7 +126,7 @@ class _ImageViewState extends State<ImageView> {
                         padding: const EdgeInsets.symmetric(horizontal: 4),
                         child: GestureDetector(
                           onTap: () {
-                            print("Index: $index");
+                            print('Index: $index');
                             setState(() {
                               controller.animateToPage(index);
                             });

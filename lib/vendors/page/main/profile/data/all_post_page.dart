@@ -59,7 +59,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
 
     setState(() {
       allPosts = myPosts;
-      print("all posts: $allPosts");
+      print('all posts: $allPosts');
       currentPosts = myPosts;
       isData = true;
     });
@@ -227,8 +227,8 @@ class _AllPostsPageState extends State<AllPostsPage> {
                           currentPosts = filteredPosts;
                         }
 
-                        print("All Posts: $allPosts");
-                        print("Current Posts: $currentPosts");
+                        print('All Posts: $allPosts');
+                        print('Current Posts: $currentPosts');
                       });
                     },
                   ),

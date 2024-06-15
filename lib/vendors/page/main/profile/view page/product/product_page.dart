@@ -786,7 +786,7 @@ class _ProductPageState extends State<ProductPage> {
       context: context,
       builder: ((context) {
         return AlertDialog(
-          title: Text("Delete Short"),
+          title: Text('Delete Short'),
           content: Text('Are you sure you want to delete this short?'),
           actions: [
             MyTextButton(

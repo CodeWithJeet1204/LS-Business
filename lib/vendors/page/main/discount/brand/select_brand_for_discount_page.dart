@@ -134,8 +134,8 @@ class _SelectBrandForDiscountPageState
                           currentBrands = filteredBrands;
                         }
 
-                        print("All Posts: $allBrands");
-                        print("Current Posts: $currentBrands");
+                        print('All Posts: $allBrands');
+                        print('Current Posts: $currentBrands');
                       });
                     },
                   ),

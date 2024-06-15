@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:localy/vendors/register/business_register_details.dart';
 import 'package:localy/vendors/provider/sign_in_method_provider.dart';

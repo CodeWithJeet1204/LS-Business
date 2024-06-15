@@ -137,8 +137,8 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                         }
                         print(666);
 
-                        print("All Posts: $allCategories");
-                        print("Current Posts: $currentCategories");
+                        print('All Posts: $allCategories');
+                        print('Current Posts: $currentCategories');
                       });
                     },
                   ),

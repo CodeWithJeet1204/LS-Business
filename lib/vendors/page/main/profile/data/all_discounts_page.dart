@@ -194,8 +194,8 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                           currentDiscounts = filteredDiscounts;
                         }
 
-                        print("All Posts: $allDiscounts");
-                        print("Current Posts: $currentDiscounts");
+                        print('All Posts: $allDiscounts');
+                        print('Current Posts: $currentDiscounts');
                       });
                     },
                   ),

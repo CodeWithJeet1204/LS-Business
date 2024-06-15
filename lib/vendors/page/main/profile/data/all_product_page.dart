@@ -92,6 +92,10 @@ class _AllProductsPageState extends State<AllProductsPage> {
           .where('postProductId', isEqualTo: productId)
           .get();
 
+      shortsSnap.docs.forEach((short) async {
+        await short.reference.delete();
+      });
+
       for (QueryDocumentSnapshot doc in postSnap.docs) {
         await doc.reference.delete();
       }
@@ -214,8 +218,8 @@ class _AllProductsPageState extends State<AllProductsPage> {
                           currentProducts = filteredProducts;
                         }
 
-                        print("All Posts: $allProducts");
-                        print("Current Posts: $currentProducts");
+                        print('All Posts: $allProducts');
+                        print('Current Posts: $currentProducts');
                       });
                     },
                   ),

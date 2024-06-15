@@ -181,8 +181,8 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                           currentProducts = filteredProducts;
                         }
 
-                        print("All Posts: $allProducts");
-                        print("Current Posts: $currentProducts");
+                        print('All Posts: $allProducts');
+                        print('Current Posts: $currentProducts');
                       });
                     },
                   ),
@@ -266,7 +266,7 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                                   ),
                                   itemCount: currentProducts.length,
                                   itemBuilder: (context, index) {
-                                    print("Current Products: $currentProducts");
+                                    print('Current Products: $currentProducts');
                                     final productData = currentProducts[
                                         currentProducts.keys.toList()[index]]!;
 

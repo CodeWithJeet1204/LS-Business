@@ -130,8 +130,8 @@ class _SelectProductForDiscountPageState
                           currentProducts = filteredProducts;
                         }
 
-                        print("All Posts: $allProducts");
-                        print("Current Posts: $currentProducts");
+                        print('All Posts: $allProducts');
+                        print('Current Posts: $currentProducts');
                       });
                     },
                   ),

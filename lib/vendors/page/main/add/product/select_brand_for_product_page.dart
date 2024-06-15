@@ -133,8 +133,8 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                           currentBrands = filteredBrands;
                         }
 
-                        print("All Posts: $allBrands");
-                        print("Current Posts: $currentBrands");
+                        print('All Posts: $allBrands');
+                        print('Current Posts: $currentBrands');
                       });
                     },
                   ),

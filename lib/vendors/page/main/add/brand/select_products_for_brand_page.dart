@@ -179,8 +179,8 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                               currentProducts = filteredProducts;
                             }
 
-                            print("All Posts: $allProducts");
-                            print("Current Posts: $currentProducts");
+                            print('All Posts: $allProducts');
+                            print('Current Posts: $currentProducts');
                           });
                         },
                       ),

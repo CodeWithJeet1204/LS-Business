@@ -738,9 +738,9 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                       }
                                       print(666);
 
-                                      print("All Posts: $allCategories");
+                                      print('All Posts: $allCategories');
                                       print(
-                                          "Current Posts: $currentCategories");
+                                          'Current Posts: $currentCategories');
                                     });
                                   },
                                 ),

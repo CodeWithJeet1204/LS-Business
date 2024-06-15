@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:localy/vendors/models/industry_segments.dart';
 import 'package:localy/vendors/register/select_business_category_page.dart';
 import 'package:localy/vendors/utils/colors.dart';
@@ -29,12 +31,14 @@ class _BusinessRegisterDetailsPageState
   final GlobalKey<FormState> businessFormKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController gstController = TextEditingController();
-  final TextEditingController addressController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   bool isNext = false;
   String? selectedIndustrySegment;
   bool isImageSelected = false;
   File? _image;
+  double? latitude;
+  double? longitude;
+  String? address;
   String? uploadImagePath;
 
   // DISPOSE
@@ -42,7 +46,6 @@ class _BusinessRegisterDetailsPageState
   void dispose() {
     nameController.dispose();
     gstController.dispose();
-    addressController.dispose();
     descriptionController.dispose();
     super.dispose();
   }
@@ -62,9 +65,62 @@ class _BusinessRegisterDetailsPageState
     }
   }
 
+  // GET LOCATION
+  Future<Position?> getLocation() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+
+    if (!serviceEnabled) {
+      mySnackBar(context, 'Turn ON Location Services to Continue');
+      return null;
+    } else {
+      LocationPermission permission = await Geolocator.checkPermission();
+
+      // LOCATION PERMISSION GIVEN
+      Future<Position> locationPermissionGiven() async {
+        print('Permission given');
+        return await Geolocator.getCurrentPosition();
+      }
+
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          mySnackBar(context, 'Pls give Location Permission to Continue');
+        }
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          setState(() {
+            latitude = 0;
+            longitude = 0;
+            address = 'NONE';
+          });
+          mySnackBar(context, 'Sorry, without location we can\'t Continue');
+        } else {
+          return await locationPermissionGiven();
+        }
+      } else {
+        return await locationPermissionGiven();
+      }
+    }
+    return null;
+  }
+
+  // GET ADDRESS
+  Future<void> getAddress(double lat, double long) async {
+    print('Getting address');
+    List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
+    setState(() {
+      address =
+          '${placemarks[0].name}, ${placemarks[0].locality}, ${placemarks[0].administrativeArea}';
+    });
+    print('address got');
+  }
+
   // UPLOAD DETAILS
   Future<void> uploadDetails() async {
     if (businessFormKey.currentState!.validate()) {
+      if (address == null) {
+        return mySnackBar(context, 'Get Location');
+      }
       try {
         String? businessPhotoUrl;
         setState(() {
@@ -90,11 +146,12 @@ class _BusinessRegisterDetailsPageState
             .update({
           'Name': nameController.text.toString(),
           'Views': 0,
+          'Latitude': latitude,
+          'Longitude': longitude,
           'viewsTimestamp': [],
           'Followers': [],
           'followersDateTime': [],
           'GSTNumber': gstController.text.toString(),
-          'Address': addressController.text.toString(),
           'Description': descriptionController.text.toString(),
           'Industry': selectedIndustrySegment,
           'Image': _image != null
@@ -126,6 +183,8 @@ class _BusinessRegisterDetailsPageState
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
@@ -203,18 +262,46 @@ class _BusinessRegisterDetailsPageState
                       autoFillHints: null,
                     ),
 
-                    // ADDRESS
-                    MyTextFormField(
-                      hintText: 'Address (Don\'t include Shop Name)',
-                      controller: addressController,
-                      borderRadius: 12,
-                      horizontalPadding:
-                          MediaQuery.of(context).size.width * 0.055,
-                      verticalPadding:
-                          MediaQuery.of(context).size.width * 0.033,
-                      keyboardType: TextInputType.streetAddress,
-                      autoFillHints: const [AutofillHints.streetAddressLevel2],
+                    SizedBox(height: 8),
+
+                    // LOCATION
+                    GestureDetector(
+                      onTap: () async {
+                        await getLocation().then((value) async {
+                          if (value != null) {
+                            setState(() {
+                              latitude = value.latitude;
+                              longitude = value.longitude;
+                            });
+
+                            if (latitude != null && longitude != null) {
+                              await getAddress(latitude!, longitude!);
+                            }
+                          }
+                        });
+                      },
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: primary2,
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                          padding: EdgeInsets.all(width * 0.025),
+                          child: Text(
+                            address ?? 'Get Location',
+                            style: TextStyle(
+                              fontSize: width * 0.045,
+                              color: primaryDark2,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
+
+                    SizedBox(height: 8),
 
                     // INDUSTRY SEGMENT
                     Padding(

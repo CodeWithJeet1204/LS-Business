@@ -48,7 +48,7 @@ class _SelectProductForShortsPageState
           'vendorId',
           isEqualTo: FirebaseAuth.instance.currentUser!.uid,
         )
-        .where("shortsURL", isEqualTo: "")
+        .where('shortsURL', isEqualTo: '')
         .orderBy('datetime', descending: true)
         .snapshots();
 
