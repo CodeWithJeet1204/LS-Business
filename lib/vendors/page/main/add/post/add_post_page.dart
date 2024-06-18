@@ -18,7 +18,8 @@ class AddPostPage extends StatefulWidget {
 }
 
 class _AddPostPageState extends State<AddPostPage> {
-  final FirebaseFirestore store = FirebaseFirestore.instance;
+  final auth = FirebaseAuth.instance;
+  final store = FirebaseFirestore.instance;
   bool isFit = false;
   int currentImageIndex = 0;
   bool isPosting = false;
@@ -46,8 +47,7 @@ class _AddPostPageState extends State<AddPostPage> {
             .collection('Business')
             .doc('Data')
             .collection('Posts')
-            .where('postVendorId',
-                isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+            .where('postVendorId', isEqualTo: auth.currentUser!.uid)
             .get();
 
         for (QueryDocumentSnapshot doc in previousPosts.docs) {
@@ -77,7 +77,7 @@ class _AddPostPageState extends State<AddPostPage> {
                 .collection('Business')
                 .doc('Owners')
                 .collection('Shops')
-                .doc(FirebaseAuth.instance.currentUser!.uid)
+                .doc(auth.currentUser!.uid)
                 .update({
               'noOfTextPosts': isTextPost
                   ? textPostRemaining - postProvider.selectedProducts.length
@@ -156,7 +156,7 @@ class _AddPostPageState extends State<AddPostPage> {
         .collection('Business')
         .doc('Owners')
         .collection('Shops')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .doc(auth.currentUser!.uid)
         .get();
 
     setState(() {

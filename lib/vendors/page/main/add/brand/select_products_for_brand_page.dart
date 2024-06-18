@@ -48,8 +48,6 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
     super.dispose();
   }
 
-  // TODO: DELETE SHORTS AFTER PRODUCT DELETED
-
   // GET DATA
   Future<void> getData() async {
     Map<String, Map<String, dynamic>> myProducts = {};

@@ -672,6 +672,21 @@ class _ProductPageState extends State<ProductPage> {
       if (mounted) {
         Navigator.of(context).pop();
       }
+      final productSnap = await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Products')
+          .doc(widget.productId)
+          .get();
+
+      final productData = productSnap.data()!;
+
+      final List images = productData['images'];
+
+      images.forEach((image) async {
+        await storage.refFromURL(image).delete();
+      });
+
       await store
           .collection('Business')
           .doc('Data')
@@ -689,6 +704,20 @@ class _ProductPageState extends State<ProductPage> {
       for (QueryDocumentSnapshot doc in postSnap.docs) {
         await doc.reference.delete();
       }
+
+      final shortsSnap = await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Shorts')
+          .where('productId', isEqualTo: widget.productId)
+          .get();
+
+      for (QueryDocumentSnapshot doc in shortsSnap.docs) {
+        await doc.reference.delete();
+      }
+
+      await storage.ref().child('Data/Shorts').child(widget.productId).delete();
+
       if (mounted) {
         mySnackBar(context, 'Product Deleted');
       }

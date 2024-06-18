@@ -68,17 +68,52 @@ class _PostPageState extends State<PostPage> {
   }
 
   // DELETE POST
-  Future<void> deletePost() async {
+  Future<void> deletePost(bool isTextPost) async {
     try {
       if (mounted) {
         Navigator.of(context).pop();
       }
+
+      int textPostRemaining = 0;
+      int imagePostRemaining = 0;
+
+      final productData = await store
+          .collection('Business')
+          .doc('Owners')
+          .collection('Shops')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get();
+
+      setState(() {
+        textPostRemaining = productData['noOfTextPosts'];
+        imagePostRemaining = productData['noOfImagePosts'];
+      });
+
       await store
           .collection('Business')
           .doc('Data')
           .collection('Posts')
           .doc(widget.postId)
           .delete();
+
+      isTextPost
+          ? await store
+              .collection('Business')
+              .doc('Owners')
+              .collection('Shops')
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .update({
+              'noOfTextPosts': textPostRemaining + 1,
+            })
+          : await store
+              .collection('Business')
+              .doc('Owners')
+              .collection('Shops')
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .update({
+              'noOfImagePosts': imagePostRemaining + 1,
+            });
+
       if (mounted) {
         mySnackBar(context, 'Post Deleted');
       }
@@ -90,7 +125,7 @@ class _PostPageState extends State<PostPage> {
   }
 
   // CONFIRM DELETE
-  Future<void> confirmDelete() async {
+  Future<void> confirmDelete(bool isTextPost) async {
     await showDialog(
       context: context,
       builder: ((context) {
@@ -119,7 +154,7 @@ class _PostPageState extends State<PostPage> {
             ),
             TextButton(
               onPressed: () async {
-                await deletePost();
+                await deletePost(isTextPost);
                 if (context.mounted) {
                   Navigator.of(context).pop();
                 }
@@ -137,6 +172,25 @@ class _PostPageState extends State<PostPage> {
         );
       }),
     );
+  }
+
+  // GET IS TEXT POST
+  Future<bool> getIsTextPost() async {
+    bool isTextPost = false;
+    final postSnap = await store
+        .collection('Business')
+        .doc('Data')
+        .collection('Posts')
+        .doc(widget.postId)
+        .get();
+
+    final postData = postSnap.data();
+
+    if (postData != null) {
+      isTextPost = postData['isTextPost'];
+    }
+
+    return isTextPost;
   }
 
   @override
@@ -159,15 +213,27 @@ class _PostPageState extends State<PostPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         actions: [
-          IconButton(
-            onPressed: () async {
-              await confirmDelete();
-            },
-            icon: const Icon(
-              FeatherIcons.trash,
-              color: Colors.red,
-            ),
-          ),
+          FutureBuilder(
+              future: getIsTextPost(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Container();
+                }
+
+                if (snapshot.hasData) {
+                  return IconButton(
+                    onPressed: () async {
+                      await confirmDelete(snapshot.data!);
+                    },
+                    icon: const Icon(
+                      FeatherIcons.trash,
+                      color: Colors.red,
+                    ),
+                  );
+                }
+
+                return Container();
+              }),
         ],
       ),
       body: Padding(
