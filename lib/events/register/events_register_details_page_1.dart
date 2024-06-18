@@ -180,6 +180,7 @@ class EventsRegisterDetailsPage1State
             'Type': type,
             'DOE': DateFormat('d MMM y').format(doe!),
             'Description': '',
+            'Followers': [],
           };
 
           await store

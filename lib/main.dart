@@ -31,7 +31,6 @@ import 'package:localy/vendors/provider/shop_type_provider.dart';
 import 'package:localy/vendors/provider/sign_in_method_provider.dart';
 import 'package:localy/vendors/utils/colors.dart';
 import 'package:localy/vendors/utils/firebase_messaging.dart';
-import 'package:localy/vendors/utils/network_connectivity.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -222,7 +221,7 @@ class MyApp extends StatelessWidget {
                           }
                         },
                       ),
-                const ConnectivityNotificationWidget(),
+                // const ConnectivityNotificationWidget(),
               ],
             ),
           );

@@ -49,7 +49,6 @@ class _EventsAddEventPage4State extends State<EventsAddEventPage4> {
       'contactHelp': helpContactNumberController.text,
       'wishlists': [],
       'workImages': [],
-      'Followers': [],
     };
 
     data.addAll(widget.data);
