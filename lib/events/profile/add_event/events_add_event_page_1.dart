@@ -2,8 +2,10 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:localy/events/profile/add_event/events_add_event_page_2.dart';
+import 'package:localy/events/provider/picked_location_provider.dart';
 import 'package:localy/vendors/utils/colors.dart';
 import 'package:localy/widgets/image_pick_dialog.dart';
+import 'package:localy/widgets/pick_location.dart';
 import 'package:localy/widgets/snack_bar.dart';
 import 'package:localy/widgets/text_button.dart';
 import 'package:localy/widgets/text_form_field.dart';
@@ -11,6 +13,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class EventsAddEventPage1 extends StatefulWidget {
   const EventsAddEventPage1({super.key});
@@ -23,11 +26,14 @@ class _EventsAddEventPage1State extends State<EventsAddEventPage1> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   final nameController = TextEditingController();
-  final addressController = TextEditingController();
   final typeController = TextEditingController();
   final List<File> _image = [];
   int currentImageIndex = 0;
   bool isFit = false;
+  double? latitude;
+  double? longitude;
+  Map<String, dynamic>? address;
+  bool gettingLocation = false;
 
   String? type;
   bool isNext = false;
@@ -139,8 +145,8 @@ class _EventsAddEventPage1State extends State<EventsAddEventPage1> {
     if (typeController.text.isEmpty) {
       return mySnackBar(context, 'Enter Event Type');
     }
-    if (addressController.text.isEmpty) {
-      return mySnackBar(context, 'Enter Event Address');
+    if (latitude == null || longitude == null) {
+      return mySnackBar(context, 'Select Location');
     }
 
     setState(() {
@@ -150,7 +156,8 @@ class _EventsAddEventPage1State extends State<EventsAddEventPage1> {
     Map<String, dynamic> data = {
       'eventName': nameController.text,
       'eventType': typeController.text,
-      'eventAddress': addressController.text,
+      'eventLatitude': latitude,
+      'eventLongitude': longitude,
       'imageUrl': _image,
     };
 
@@ -169,6 +176,8 @@ class _EventsAddEventPage1State extends State<EventsAddEventPage1> {
 
   @override
   Widget build(BuildContext context) {
+    final pickLocationProvider = Provider.of<PickLocationProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -429,18 +438,54 @@ class _EventsAddEventPage1State extends State<EventsAddEventPage1> {
 
                         const SizedBox(height: 16),
 
-                        // ADDRESS
-                        Padding(
-                          padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).viewInsets.bottom,
-                          ),
-                          child: MyTextFormField(
-                            hintText: 'Address',
-                            controller: addressController,
-                            borderRadius: 8,
-                            horizontalPadding: 0,
+                        // LOCATION
+                        GestureDetector(
+                          onTap: () async {
+                            setState(() {});
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: ((context) => PickLocationPage()),
+                              ),
+                            );
+                            setState(() {
+                              latitude = pickLocationProvider.latitude;
+                              longitude = pickLocationProvider.longitude;
+                              address = pickLocationProvider.address;
+                            });
+                            setState(() {});
+                          },
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: primary2,
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                              padding: EdgeInsets.all(width * 0.025),
+                              margin: EdgeInsets.symmetric(
+                                horizontal: width * 0.025,
+                              ),
+                              child: gettingLocation
+                                  ? Center(
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  : Text(
+                                      address == null
+                                          ? 'Get Location'
+                                          : '${address!['road'] != null ? address!['road'] : ''}${address!['road'] != null ? ',' : ''} ${address!['neighbourhood'] != null ? address!['neighbourhood'] : ''}${address!['neighbourhood'] != null ? ',' : ''} ${address!['city'] != null ? address!['city'] : ''}',
+                                      maxLines: 3,
+                                      style: TextStyle(
+                                        fontSize: width * 0.045,
+                                        color: primaryDark2,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                            ),
                           ),
                         ),
+
+                        const SizedBox(height: 8),
                       ],
                     ),
                   ],

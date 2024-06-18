@@ -1,4 +1,5 @@
 import 'package:localy/events/events_main_page.dart';
+import 'package:localy/events/provider/picked_location_provider.dart';
 import 'package:localy/firebase_options.dart';
 import 'package:localy/first_launch_detection.dart';
 import 'package:localy/select_mode_page.dart';
@@ -82,6 +83,9 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (_) => SelectBrandForProductProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => PickLocationProvider(),
         ),
       ],
       child: const MyApp(),

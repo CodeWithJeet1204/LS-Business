@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:localy/events/events_main_page.dart';
 import 'package:localy/events/register/events_register_details_page_2.dart';
 import 'package:localy/vendors/provider/sign_in_method_provider.dart';
@@ -7,6 +8,7 @@ import 'package:localy/vendors/utils/colors.dart';
 import 'package:localy/widgets/button.dart';
 import 'package:localy/widgets/head_text.dart';
 import 'package:localy/widgets/image_pick_dialog.dart';
+import 'package:localy/widgets/pick_location.dart';
 import 'package:localy/widgets/snack_bar.dart';
 import 'package:localy/widgets/text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -35,11 +37,14 @@ class EventsRegisterDetailsPage1State
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController websiteController = TextEditingController();
-  final TextEditingController addressController = TextEditingController();
   bool isImageSelected = false;
   File? _image;
   String? type;
   DateTime? doe;
+  double? latitude;
+  double? longitude;
+  String? address;
+  bool gettingLocation = false;
   bool isNext = false;
 
   // DISPOSE
@@ -49,7 +54,6 @@ class EventsRegisterDetailsPage1State
     emailController.dispose();
     phoneController.dispose();
     websiteController.dispose();
-    addressController.dispose();
     super.dispose();
   }
 
@@ -66,6 +70,15 @@ class EventsRegisterDetailsPage1State
         isImageSelected = true;
       });
     }
+  }
+
+  // GET ADDRESS
+  Future<void> getAddress(double lat, double long) async {
+    List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
+    setState(() {
+      address =
+          '${placemarks[0].name}, ${placemarks[0].locality}, ${placemarks[0].administrativeArea}';
+    });
   }
 
   // SELECT DOE
@@ -99,6 +112,9 @@ class EventsRegisterDetailsPage1State
       if (doe == null) {
         return mySnackBar(context, 'Select Date of Establishment');
       }
+      if (latitude == null || longitude == null) {
+        return mySnackBar(context, 'Select Location');
+      }
 
       String? uploadImagePath;
       String? userPhotoUrl;
@@ -129,7 +145,8 @@ class EventsRegisterDetailsPage1State
             'Email': emailController.text,
             'Phone Number': phoneController.text,
             'Website': websiteController.text,
-            'Address': addressController.text,
+            'Latitude': latitude,
+            'Longitude': longitude,
             'Image': userPhotoUrl,
             'ViewsTimestamp': [],
             'Type': type,
@@ -156,7 +173,8 @@ class EventsRegisterDetailsPage1State
             'Email': emailController.text,
             'Phone Number': phoneController.text,
             'Website': websiteController.text,
-            'Address': addressController.text,
+            'Latitude': latitude,
+            'Longitude': longitude,
             'Image': userPhotoUrl,
             'ViewsTimestamp': [],
             'Type': type,
@@ -283,25 +301,59 @@ class EventsRegisterDetailsPage1State
                       ],
                     ),
 
-                    // WEBSITE
-                    MyTextFormField(
-                      hintText: 'Website Link (Optional)',
-                      controller: websiteController,
-                      borderRadius: 12,
-                      horizontalPadding: width * 0.055,
-                      verticalPadding: width * 0.033,
-                      autoFillHints: const [],
+                    // LOCATION
+                    GestureDetector(
+                      onTap: () async {
+                        setState(() {
+                          gettingLocation = true;
+                        });
+                        Navigator.of(context)
+                            .push(
+                          MaterialPageRoute(
+                            builder: ((context) => PickLocationPage()),
+                          ),
+                        )
+                            .then((value) {
+                          print('Value: $value');
+                          setState(() {
+                            latitude = value[0];
+                            longitude = value[1];
+                            address = value[2];
+                          });
+                        });
+                        setState(() {
+                          gettingLocation = false;
+                        });
+                      },
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: primary2,
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                          padding: EdgeInsets.all(width * 0.025),
+                          margin: EdgeInsets.symmetric(
+                            horizontal: width * 0.025,
+                          ),
+                          child: gettingLocation
+                              ? Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : Text(
+                                  address ?? 'Get Location',
+                                  style: TextStyle(
+                                    fontSize: width * 0.045,
+                                    color: primaryDark2,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                        ),
+                      ),
                     ),
 
-                    // ADDRESS
-                    MyTextFormField(
-                      hintText: 'Address',
-                      controller: addressController,
-                      borderRadius: 12,
-                      horizontalPadding: width * 0.055,
-                      verticalPadding: width * 0.033,
-                      autoFillHints: const [],
-                    ),
+                    const SizedBox(height: 8),
 
                     // TYPE
                     Align(

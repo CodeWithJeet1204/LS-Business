@@ -17,5 +17,7 @@ class SelectCategoryForDiscountProvider with ChangeNotifier {
 
   void clear() {
     _selectedCategories = [];
+
+    notifyListeners();
   }
 }

@@ -2,11 +2,13 @@ import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:localy/events/profile/events_all_events_page.dart';
 import 'package:localy/vendors/page/main/profile/view%20page/product/image_view.dart';
 import 'package:localy/vendors/utils/colors.dart';
 import 'package:localy/widgets/button.dart';
 import 'package:localy/widgets/image_pick_dialog.dart';
+import 'package:localy/widgets/pick_location.dart';
 import 'package:localy/widgets/snack_bar.dart';
 import 'package:localy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -268,6 +270,13 @@ class _EventPageState extends State<EventPage> {
         });
   }
 
+  // GET ADDRESS
+  Future<String> getAddress(double lat, double long) async {
+    print('started');
+    List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
+    return '${placemarks[0].name}, ${placemarks[0].locality}, ${placemarks[0].administrativeArea}';
+  }
+
   // CHANGE DATE
   Future<void> changeDate(DateTime startDate, String date) async {
     DateTime? selected = await showDatePicker(
@@ -450,7 +459,8 @@ class _EventPageState extends State<EventPage> {
 
                       final String type = data['eventType'];
 
-                      final String address = data['eventAddress'];
+                      final double eventLatitude = data['eventLatitude'];
+                      final double eventLongitude = data['eventLongitude'];
 
                       final String contactHelp = data['contactHelp'];
 
@@ -809,22 +819,45 @@ class _EventPageState extends State<EventPage> {
                                   ),
                                   child: SizedBox(
                                     width: width * 0.785,
-                                    child: Text(
-                                      address,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        color: primaryDark,
-                                        fontSize: width * 0.055,
-                                      ),
-                                    ),
+                                    child: FutureBuilder(
+                                        future: getAddress(
+                                          eventLatitude,
+                                          eventLongitude,
+                                        ),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.hasError) {
+                                            return Text(
+                                              'Something went wrong with address',
+                                            );
+                                          }
+
+                                          if (snapshot.hasData) {
+                                            return Text(
+                                              snapshot.data!,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                color: primaryDark,
+                                                fontSize: width * 0.055,
+                                              ),
+                                            );
+                                          }
+
+                                          return Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        }),
                                   ),
                                 ),
                                 IconButton(
                                   onPressed: () async {
-                                    await edit(
-                                      'eventName',
-                                      true,
+                                    Navigator.of(context).pop();
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: ((context) => PickLocationPage(
+                                              eventId: widget.eventId,
+                                            )),
+                                      ),
                                     );
                                   },
                                   icon: Icon(
@@ -839,43 +872,46 @@ class _EventPageState extends State<EventPage> {
                             const Divider(),
 
                             // CONTACT HELP
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: width * 0.0225,
-                                  ),
-                                  child: SizedBox(
-                                    width: width * 0.785,
-                                    child: Text(
-                                      contactHelp,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        color: primaryDark,
-                                        fontSize: width * 0.055,
+                            contactHelp == ''
+                                ? Container()
+                                : Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: width * 0.0225,
+                                        ),
+                                        child: SizedBox(
+                                          width: width * 0.785,
+                                          child: Text(
+                                            contactHelp,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              color: primaryDark,
+                                              fontSize: width * 0.055,
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      IconButton(
+                                        onPressed: () async {
+                                          await edit(
+                                            'contactHelp',
+                                            true,
+                                          );
+                                        },
+                                        icon: Icon(
+                                          FeatherIcons.edit,
+                                          size: width * 0.066,
+                                        ),
+                                        tooltip: 'Edit Name',
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                IconButton(
-                                  onPressed: () async {
-                                    await edit(
-                                      'contactHelp',
-                                      true,
-                                    );
-                                  },
-                                  icon: Icon(
-                                    FeatherIcons.edit,
-                                    size: width * 0.066,
-                                  ),
-                                  tooltip: 'Edit Name',
-                                ),
-                              ],
-                            ),
 
-                            const Divider(),
+                            contactHelp == '' ? Container() : const Divider(),
 
                             // ORGANIZER NAME
                             Row(
@@ -1559,7 +1595,9 @@ class _EventPageState extends State<EventPage> {
                                   child: SizedBox(
                                     width: width * 0.785,
                                     child: Text(
-                                      description,
+                                      description == ''
+                                          ? '<Empty>'
+                                          : description,
                                       maxLines: 10,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(

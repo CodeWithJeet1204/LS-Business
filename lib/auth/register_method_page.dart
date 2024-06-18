@@ -80,7 +80,6 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                   .doc(auth.currentUser!.uid)
                   .set({
                 'Email': emailController.text.toString(),
-                'emailVerified': false,
                 'Image': null,
                 'Name': null,
                 'Phone Number': null,
@@ -241,7 +240,6 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
               .doc(auth.currentUser!.uid)
               .set({
             'Email': emailController.text.toString(),
-            'emailVerified': false,
             'Image': null,
             'Name': null,
             'Phone Number': null,
@@ -595,7 +593,6 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
         //                                       .set({
         //                                     'Email': emailController.text
         //                                         .toString(),
-        //                                     'emailVerified': false,
         //                                     'Image': null,
         //                                     'Name': null,
         //                                     'Phone Number': null,
