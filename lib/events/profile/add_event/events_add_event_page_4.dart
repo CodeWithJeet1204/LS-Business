@@ -153,7 +153,7 @@ class _EventsAddEventPage4State extends State<EventsAddEventPage4> {
                     Padding(
                       padding: EdgeInsets.only(left: width * 0.025),
                       child: const Text(
-                        'Help Contact Number',
+                        'Contact No. for Help',
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                         ),
@@ -164,7 +164,7 @@ class _EventsAddEventPage4State extends State<EventsAddEventPage4> {
 
                     // CONTACT HELP
                     MyTextFormField(
-                      hintText: 'Help Contact Number',
+                      hintText: 'Contact No. for Help',
                       controller: helpContactNumberController,
                       keyboardType: TextInputType.number,
                       borderRadius: 8,

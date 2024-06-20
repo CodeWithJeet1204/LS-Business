@@ -303,9 +303,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                                         child: Image.file(
                                           _image!,
                                           width: width,
-                                          fit: isFit
-                                              ? BoxFit.cover
-                                              : BoxFit.contain,
+                                          fit: isFit ? null : BoxFit.cover,
                                         ),
                                       ),
                                     ),

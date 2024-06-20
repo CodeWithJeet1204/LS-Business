@@ -383,7 +383,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             ),
                             const SizedBox(height: 14),
 
-                            // ADDRESS
+                            // LOCATION
                             GestureDetector(
                               onTap: shopData['Latitude'] != 0 &&
                                       shopData['Longitude'] != 0

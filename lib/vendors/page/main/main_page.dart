@@ -112,7 +112,7 @@ class _MainPageState extends State<MainPage> {
               getBusinessDetailsAdded['GSTNumber'] == null) {
             detailsPage = const BusinessRegisterDetailsPage();
           } else if (getBusinessDetailsAdded['Name'] == null ||
-              getBusinessDetailsAdded['Latitute'] == null ||
+              getBusinessDetailsAdded['Latitude'] == null ||
               getBusinessDetailsAdded['Description'] == null) {
             detailsPage = const BusinessRegisterDetailsPage();
           } else if (getBusinessDetailsAdded['GSTNumber'] != null &&

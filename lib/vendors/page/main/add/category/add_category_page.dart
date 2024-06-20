@@ -226,7 +226,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                                       borderRadius: BorderRadius.circular(18),
                                       child: Image(
                                         image: FileImage(_image!),
-                                        fit: isFit ? BoxFit.cover : null,
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
                                   ),

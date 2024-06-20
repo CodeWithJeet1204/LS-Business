@@ -226,7 +226,7 @@ class _EventsAddEventPage1State extends State<EventsAddEventPage1> {
                                               width: 3,
                                             ),
                                             image: DecorationImage(
-                                              fit: isFit ? BoxFit.cover : null,
+                                              fit: isFit ? null : BoxFit.cover,
                                               image: FileImage(
                                                 _image[currentImageIndex],
                                               ),
@@ -468,7 +468,7 @@ class _EventsAddEventPage1State extends State<EventsAddEventPage1> {
                                     )
                                   : Text(
                                       address == null
-                                          ? 'Get Location'
+                                          ? 'Pick Location'
                                           : '${address!['road'] != null ? address!['road'] : ''}${address!['road'] != null ? ',' : ''} ${address!['neighbourhood'] != null ? address!['neighbourhood'] : ''}${address!['neighbourhood'] != null ? ',' : ''} ${address!['city'] != null ? address!['city'] : ''}',
                                       maxLines: 3,
                                       style: TextStyle(

@@ -43,6 +43,7 @@ class _EventPageState extends State<EventPage> {
 
   final List<String> suggestions = [
     'Conference',
+    'Competitions',
     'Seminars',
     'Workshops',
     'Trade Shows/Exhibitions',
@@ -444,11 +445,11 @@ class _EventPageState extends State<EventPage> {
                     if (snapshot.hasData) {
                       final data = snapshot.data!;
 
-                      final List images = data['imageUrl'];
+                      final List imageUrl = data['imageUrl'];
 
-                      final String name = data['eventName'];
+                      final String eventName = data['eventName'];
 
-                      final String type = data['eventType'];
+                      final String eventType = data['eventType'];
 
                       final double eventLatitude = data['eventLatitude'];
                       final double eventLongitude = data['eventLongitude'];
@@ -466,13 +467,25 @@ class _EventPageState extends State<EventPage> {
                       final String? weekendStartTime = data['weekendStartTime'];
                       final String? weekendEndTime = data['weekendEndTime'];
 
+                      final String? ticketNoOfTickets =
+                          data['ticketNoOfTickets'];
+
                       final String? ticketPrice = data['ticketPrice'];
                       final String? ticketEarlyBirdPrice =
                           data['ticketEarlyBirdPrice'];
                       final String? ticketVIPPrice = data['ticketVIPPrice'];
                       final String? ticketGroupPrice = data['ticketGroupPrice'];
 
-                      final String description = data['eventDescription'];
+                      final String? ticketAddress = data['ticketAddress'];
+                      final String? ticketWebsite = data['ticketWebsite'];
+
+                      final String? ticketPromoCode = data['ticketPromoCode'];
+                      final String? ticketPromoCodePrice =
+                          data['ticketPromoCodePrice'];
+
+                      final String eventDescription = data['eventDescription'];
+
+                      final List wishlists = data['wishlists'];
 
                       return SingleChildScrollView(
                         child: Column(
@@ -480,7 +493,7 @@ class _EventPageState extends State<EventPage> {
                           children: [
                             // IMAGES
                             CarouselSlider(
-                              items: images
+                              items: imageUrl
                                   .map(
                                     (e) => Stack(
                                       alignment: Alignment.topCenter,
@@ -503,7 +516,8 @@ class _EventPageState extends State<EventPage> {
                                                       MaterialPageRoute(
                                                         builder: ((context) =>
                                                             ImageView(
-                                                              imagesUrl: images,
+                                                              imagesUrl:
+                                                                  imageUrl,
                                                             )),
                                                       ),
                                                     );
@@ -542,8 +556,8 @@ class _EventPageState extends State<EventPage> {
                                                       onPressed: () async {
                                                         await changeImage(
                                                           e,
-                                                          images.indexOf(e),
-                                                          images,
+                                                          imageUrl.indexOf(e),
+                                                          imageUrl,
                                                         );
                                                       },
                                                       icon: Icon(
@@ -561,11 +575,11 @@ class _EventPageState extends State<EventPage> {
                                                     child:
                                                         IconButton.filledTonal(
                                                       onPressed:
-                                                          images.last != e
+                                                          imageUrl.last != e
                                                               ? () async {
                                                                   await removeImage(
                                                                     e,
-                                                                    images,
+                                                                    imageUrl,
                                                                   );
                                                                 }
                                                               : null,
@@ -584,7 +598,7 @@ class _EventPageState extends State<EventPage> {
                                   .toList(),
                               options: CarouselOptions(
                                 enableInfiniteScroll:
-                                    images.length > 1 ? true : false,
+                                    imageUrl.length > 1 ? true : false,
                                 aspectRatio: 1.2,
                                 enlargeCenterPage: true,
                                 onPageChanged: (index, reason) {
@@ -600,7 +614,7 @@ class _EventPageState extends State<EventPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const SizedBox(),
-                                images.length > 1
+                                imageUrl.length > 1
                                     ? Padding(
                                         padding: EdgeInsets.symmetric(
                                           vertical: width * 0.033,
@@ -610,8 +624,8 @@ class _EventPageState extends State<EventPage> {
                                               MainAxisAlignment.center,
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
-                                          children: (images).map((e) {
-                                            int index = images.indexOf(e);
+                                          children: (imageUrl).map((e) {
+                                            int index = imageUrl.indexOf(e);
 
                                             return Container(
                                               width: _currentIndex == index
@@ -634,7 +648,7 @@ class _EventPageState extends State<EventPage> {
                                     : const SizedBox(height: 40),
                                 GestureDetector(
                                   onTap: () async {
-                                    await addImage(images);
+                                    await addImage(imageUrl);
                                   },
                                   child: Container(
                                     width: width * 0.275,
@@ -672,7 +686,7 @@ class _EventPageState extends State<EventPage> {
                                   child: SizedBox(
                                     width: width * 0.785,
                                     child: Text(
-                                      name,
+                                      eventName,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
@@ -719,7 +733,7 @@ class _EventPageState extends State<EventPage> {
                                           vertical: 4,
                                         ),
                                         child: DropdownButton(
-                                          value: type,
+                                          value: eventType,
                                           hint: const Text(
                                             'Select Type',
                                             style: TextStyle(
@@ -762,7 +776,7 @@ class _EventPageState extends State<EventPage> {
                                         child: SizedBox(
                                           width: width * 0.785,
                                           child: Text(
-                                            type,
+                                            eventType,
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
@@ -930,7 +944,9 @@ class _EventPageState extends State<EventPage> {
                               ],
                             ),
 
-                            const Divider(),
+                            const Divider(
+                              thickness: 2,
+                            ),
 
                             // DATE
                             Row(
@@ -1276,7 +1292,9 @@ class _EventPageState extends State<EventPage> {
                                     ),
                                   ),
 
-                            const Divider(),
+                            const Divider(
+                              thickness: 2,
+                            ),
 
                             // TICKETS
                             Padding(
@@ -1286,6 +1304,52 @@ class _EventPageState extends State<EventPage> {
                                 style: TextStyle(),
                               ),
                             ),
+
+                            // NO OF TICKETS
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: width * 0.0225,
+                                  ),
+                                  child: SizedBox(
+                                    width: width * 0.66,
+                                    child: Text(
+                                      ticketNoOfTickets == null
+                                          ? 'No. Of Tickets - N/A'
+                                          : 'No. Of Tickets - $ticketNoOfTickets',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color: ticketPrice == null
+                                            ? darkGrey
+                                            : primaryDark,
+                                        fontSize: width * 0.055,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: ticketPrice == null
+                                      ? null
+                                      : () async {
+                                          await edit(
+                                            'ticketNoOfTickets',
+                                            true,
+                                          );
+                                        },
+                                  icon: Icon(
+                                    FeatherIcons.edit,
+                                    size: width * 0.066,
+                                  ),
+                                  tooltip: 'Edit No. Of Tickets',
+                                ),
+                              ],
+                            ),
+
+                            const Divider(),
 
                             // BASE PRICE
                             Row(
@@ -1555,6 +1619,192 @@ class _EventPageState extends State<EventPage> {
 
                             const Divider(),
 
+                            // TICKET ADDRESS
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: width * 0.0225,
+                                  ),
+                                  child: SizedBox(
+                                    width: width * 0.8,
+                                    child: Text(
+                                      ticketNoOfTickets == null
+                                          ? 'Ticket Address - N/A'
+                                          : 'Ticket Address - $ticketAddress',
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color: ticketPrice == null
+                                            ? darkGrey
+                                            : primaryDark,
+                                        fontSize: width * 0.055,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: ticketPrice == null
+                                      ? null
+                                      : () async {
+                                          await edit(
+                                            'ticketAddress',
+                                            true,
+                                          );
+                                        },
+                                  icon: Icon(
+                                    FeatherIcons.edit,
+                                    size: width * 0.066,
+                                  ),
+                                  tooltip: 'Edit Ticket Address',
+                                ),
+                              ],
+                            ),
+
+                            const Divider(),
+
+                            // TICKET WEBSITE
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: width * 0.0225,
+                                  ),
+                                  child: SizedBox(
+                                    width: width * 0.8,
+                                    child: Text(
+                                      ticketNoOfTickets == null
+                                          ? 'Ticket Website - N/A'
+                                          : 'Ticket Website - $ticketWebsite',
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color: ticketPrice == null
+                                            ? darkGrey
+                                            : primaryDark,
+                                        fontSize: width * 0.055,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: ticketPrice == null
+                                      ? null
+                                      : () async {
+                                          await edit(
+                                            'ticketWebsite',
+                                            true,
+                                          );
+                                        },
+                                  icon: Icon(
+                                    FeatherIcons.edit,
+                                    size: width * 0.066,
+                                  ),
+                                  tooltip: 'Edit Ticket Website',
+                                ),
+                              ],
+                            ),
+
+                            const Divider(),
+
+                            // TICKET PROMO CODE
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: width * 0.0225,
+                                  ),
+                                  child: SizedBox(
+                                    width: width * 0.8,
+                                    child: Text(
+                                      ticketNoOfTickets == null
+                                          ? 'Ticket Promo Code - N/A'
+                                          : 'Ticket Promo Code - $ticketPromoCode',
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color: ticketPrice == null
+                                            ? darkGrey
+                                            : primaryDark,
+                                        fontSize: width * 0.055,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: ticketPrice == null
+                                      ? null
+                                      : () async {
+                                          await edit(
+                                            'ticketPromoCode',
+                                            true,
+                                          );
+                                        },
+                                  icon: Icon(
+                                    FeatherIcons.edit,
+                                    size: width * 0.066,
+                                  ),
+                                  tooltip: 'Edit Promo Code',
+                                ),
+                              ],
+                            ),
+
+                            const Divider(),
+
+                            // TICKET PROMO CODE PRICE
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: width * 0.0225,
+                                  ),
+                                  child: SizedBox(
+                                    width: width * 0.8,
+                                    child: Text(
+                                      ticketNoOfTickets == null
+                                          ? 'Ticket Promo Code Discount - N/A'
+                                          : 'Ticket Promo Code Discount - Rs. $ticketPromoCodePrice',
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color: ticketPrice == null
+                                            ? darkGrey
+                                            : primaryDark,
+                                        fontSize: width * 0.055,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: ticketPrice == null
+                                      ? null
+                                      : () async {
+                                          await edit(
+                                            'ticketPromoCodePrice',
+                                            true,
+                                          );
+                                        },
+                                  icon: Icon(
+                                    FeatherIcons.edit,
+                                    size: width * 0.066,
+                                  ),
+                                  tooltip: 'Edit Ticket Promo Code Discount',
+                                ),
+                              ],
+                            ),
+
+                            const Divider(
+                              thickness: 2,
+                            ),
+
                             // DESCRIPTION
                             Padding(
                               padding: EdgeInsets.only(left: width * 0.0225),
@@ -1575,9 +1825,9 @@ class _EventPageState extends State<EventPage> {
                                   child: SizedBox(
                                     width: width * 0.785,
                                     child: Text(
-                                      description == ''
+                                      eventDescription == ''
                                           ? '<Empty>'
-                                          : description,
+                                          : eventDescription,
                                       maxLines: 10,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
@@ -1601,6 +1851,44 @@ class _EventPageState extends State<EventPage> {
                                   tooltip: 'Edit Name',
                                 ),
                               ],
+                            ),
+
+                            const Divider(
+                              thickness: 2,
+                            ),
+
+                            // WISHLISTS
+                            Container(
+                              width: width,
+                              decoration: BoxDecoration(
+                                color: Colors.pink.shade100,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.035,
+                                vertical: width * 0.025,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Wishlists',
+                                    style: TextStyle(
+                                      fontSize: width * 0.055,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  Text(
+                                    wishlists.length.toString(),
+                                    style: TextStyle(
+                                      fontSize: width * 0.0575,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
 
                             const SizedBox(height: 8),

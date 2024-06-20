@@ -416,7 +416,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                           image: NetworkImage(
                                             categoryImageUrl,
                                           ),
-                                          fit: isFit ? BoxFit.cover : null,
+                                          fit: isFit ? null : BoxFit.cover,
                                         ),
                                       ),
                                     ),

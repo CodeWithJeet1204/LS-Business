@@ -182,7 +182,7 @@ class _ServicesAddWorkImagesPageState extends State<ServicesAddWorkImagesPage> {
                                             width: 3,
                                           ),
                                           image: DecorationImage(
-                                            fit: isFit ? BoxFit.cover : null,
+                                            fit: isFit ? null : BoxFit.cover,
                                             image: FileImage(
                                               _image[currentImageIndex],
                                             ),

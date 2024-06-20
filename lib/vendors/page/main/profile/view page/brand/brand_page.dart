@@ -529,8 +529,8 @@ class _BrandPageState extends State<BrandPage> {
                                                         image: DecorationImage(
                                                           image: imageProvider,
                                                           fit: isFit
-                                                              ? BoxFit.cover
-                                                              : null,
+                                                              ? null
+                                                              : BoxFit.cover,
                                                         ),
                                                       ),
                                                     ),
@@ -541,7 +541,7 @@ class _BrandPageState extends State<BrandPage> {
                                           ),
                                           // child: Image.network(
                                           //   brandData['imageUrl'],
-                                          //   fit: isFit ? BoxFit.cover : null,
+                                          //   fit: BoxFit.cover,
                                           //   width: width,
                                           //   height: width,
                                           // ),

@@ -591,8 +591,8 @@ class DISCOUNT extends State<DiscountPage> {
                                                               'discountImageUrl'],
                                                         ),
                                                         fit: isFit
-                                                            ? BoxFit.cover
-                                                            : null,
+                                                            ? null
+                                                            : BoxFit.cover,
                                                       ),
                                                     ),
                                                   ),

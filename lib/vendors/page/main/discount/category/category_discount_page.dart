@@ -298,9 +298,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                         child: Image.file(
                                           _image!,
                                           width: width,
-                                          fit: isFit
-                                              ? BoxFit.cover
-                                              : BoxFit.contain,
+                                          fit: isFit ? null : BoxFit.cover,
                                         ),
                                       ),
                                     ),

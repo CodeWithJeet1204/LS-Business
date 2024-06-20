@@ -227,7 +227,10 @@ class MyApp extends StatelessWidget {
                 // const ConnectivityNotificationWidget(),
               ],
             ),
+            // home: BusinessRegisterDetailsPage(),
           );
         });
   }
 }
+
+// Idea: Paper print that available on Localy

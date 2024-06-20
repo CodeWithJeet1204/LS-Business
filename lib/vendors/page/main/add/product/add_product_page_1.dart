@@ -288,7 +288,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                           width: 3,
                                         ),
                                         image: DecorationImage(
-                                          fit: isFit ? BoxFit.cover : null,
+                                          fit: isFit ? null : BoxFit.cover,
                                           image: FileImage(
                                             _image[currentImageIndex],
                                           ),
