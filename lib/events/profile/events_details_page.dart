@@ -35,6 +35,15 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
   bool isChangingImage = false;
   bool isSaving = false;
 
+  Map<String, bool> isChanging = {
+    'Name': false,
+    'Email': false,
+    'Phone Number': false,
+    'Website': false,
+    'Address': false,
+    'Description': false,
+  };
+
   // INIT STATE
   @override
   void initState() {
@@ -75,57 +84,6 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
   }
 
   // EDIT
-  // void edit(bool isChanging) {
-  //   setState(() {
-  //     if (isChanging == isChangingName) {
-  //       isChangingName = true;
-  //       isChangingAddress = false;
-  //       isChangingAge = false;
-  //       isChangingEmail = false;
-  //       isChangingPhone = false;
-  //       return;
-  //     } else if (isChanging == isChangingAddress) {
-  //       isChangingAddress = true;
-  //       isChangingName = false;
-  //       isChangingAge = false;
-  //       isChangingEmail = false;
-  //       isChangingPhone = false;
-  //       return;
-  //     } else if (isChanging == isChangingAge) {
-  //       isChangingAge = true;
-  //       isChangingName = false;
-  //       isChangingAddress = false;
-  //       isChangingEmail = false;
-  //       isChangingPhone = false;
-  //       return;
-  //     } else if (isChanging == isChangingEmail) {
-  //       isChangingEmail = true;
-  //       isChangingName = false;
-  //       isChangingAge = false;
-  //       isChangingAddress = false;
-  //       isChangingPhone = false;
-  //       return;
-  //     } else if (isChanging == isChangingPhone) {
-  //       isChangingPhone = true;
-  //       isChangingName = false;
-  //       isChangingAge = false;
-  //       isChangingEmail = false;
-  //       isChangingAddress = false;
-  //       return;
-  //     }
-  //   });
-  // }
-
-  Map<String, bool> isChanging = {
-    'Name': false,
-    'Email': false,
-    'Phone Number': false,
-    'Age': false,
-    'Address': false,
-    'Description': false,
-  };
-
-  // EDIT
   void edit(String key) {
     setState(() {
       isChanging.forEach((key, value) {
@@ -149,8 +107,8 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
     } else if (isChanging['Phone Number']!) {
       text = 'Phone Number';
       controller = phoneController;
-    } else if (isChanging['Age']!) {
-      text = 'Age';
+    } else if (isChanging['Website']!) {
+      text = 'Website';
       controller = websiteController;
     } else if (isChanging['Address']!) {
       text = 'Address';
@@ -275,54 +233,46 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
                         // IMAGE
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 24),
-                          child: Center(
-                            child: isChangingImage
-                                ? Container(
-                                    width: width * 0.3,
-                                    height: width * 0.3,
-                                    decoration: BoxDecoration(
-                                      color: primary,
-                                      borderRadius: BorderRadius.circular(100),
+                          child: isChangingImage
+                              ? const SizedBox(
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      color: primaryDark,
                                     ),
-                                    child: const Center(
-                                      child: CircularProgressIndicator(
-                                        color: primaryDark,
-                                      ),
-                                    ),
-                                  )
-                                : Stack(
-                                    alignment: Alignment.bottomRight,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () async {
-                                          await showImage(data!['Image']);
-                                        },
-                                        child: CircleAvatar(
-                                          radius: width * 0.1195,
-                                          backgroundColor: primary2,
-                                          backgroundImage: NetworkImage(
-                                            data!['Image'] ??
-                                                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpFN1Tvo80rYwu-eXsDNNzsuPITOdtyRPlYIsIqKaIbw&s',
-                                          ),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        right: -(width * 0.0015),
-                                        bottom: -(width * 0.0015),
-                                        child: IconButton.filledTonal(
-                                          onPressed: () async {
-                                            await changeImage(data!['Image']);
-                                          },
-                                          icon: Icon(
-                                            FeatherIcons.camera,
-                                            size: width * 0.09,
-                                          ),
-                                          tooltip: 'Change Photo',
-                                        ),
-                                      ),
-                                    ],
                                   ),
-                          ),
+                                )
+                              : Stack(
+                                  alignment: Alignment.bottomRight,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () async {
+                                        await showImage(data!['Image']);
+                                      },
+                                      child: CircleAvatar(
+                                        radius: width * 0.1195,
+                                        backgroundColor: primary2,
+                                        backgroundImage: NetworkImage(
+                                          data!['Image'] ??
+                                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpFN1Tvo80rYwu-eXsDNNzsuPITOdtyRPlYIsIqKaIbw&s',
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      right: -(width * 0.0055),
+                                      bottom: -(width * 0.0055),
+                                      child: IconButton.filledTonal(
+                                        onPressed: () async {
+                                          await changeImage(data!['Image']);
+                                        },
+                                        icon: Icon(
+                                          FeatherIcons.camera,
+                                          size: width * 0.08,
+                                        ),
+                                        tooltip: 'Change Image',
+                                      ),
+                                    ),
+                                  ],
+                                ),
                         ),
 
                         // NAME
@@ -381,7 +331,7 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
                           onTap: () async {
                             edit('Website');
                           },
-                          isChanging: isChanging['Age']!,
+                          isChanging: isChanging['Website']!,
                           width: width,
                         ),
 
@@ -397,7 +347,7 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
                           width: width,
                         ),
 
-                        // FIRST LANGUAGE
+                        // TYPE
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Container(
@@ -447,7 +397,7 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
                           ),
                         ),
 
-                        // SECOND LANGUAGE
+                        // DOE
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Container(
@@ -463,9 +413,7 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
                               vertical: 12,
                             ),
                             child: Text(
-                              doe == null
-                                  ? 'Select Date Of Establishment'
-                                  : doe!,
+                              'DOE: ${doe!}',
                               style: const TextStyle(
                                 fontWeight: FontWeight.w500,
                               ),
@@ -477,7 +425,7 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
                         isChanging['Name']! ||
                                 isChanging['Phone Number']! ||
                                 isChanging['Email']! ||
-                                isChanging['Age']! ||
+                                isChanging['Website']! ||
                                 isChanging['Description']! ||
                                 isChanging['Address']!
                             ? Column(

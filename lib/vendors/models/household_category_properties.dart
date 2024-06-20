@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 
-final Map<String, List<List<dynamic>>> businessCategoryProperties = {
+// TODO: Remove this household error
+final Map<String, List<List<dynamic>>> householdCategoryProperties = {
   // Name, Hint Text, No of Answers, DropDown Items, TextInputType, Max Lines, Mandatory Info
   'Storage & Organisation': [
     [

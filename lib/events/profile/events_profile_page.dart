@@ -229,390 +229,374 @@ class _EventsProfilePageState extends State<EventsProfilePage> {
                 final width = constraints.maxWidth;
 
                 return SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: width,
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(bottom: width * 0.01),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: width * 0.0225,
-                          vertical: width * 0.01125,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: width * 0.0225,
+                      vertical: width * 0.01125,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        // IMAGE
+                        GestureDetector(
+                          onTap: () async {
+                            await showImage(imageUrl!);
+                          },
+                          child: CircleAvatar(
+                            radius: width * 0.1195,
+                            backgroundColor: primary2,
+                            backgroundImage: NetworkImage(
+                              imageUrl ??
+                                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpFN1Tvo80rYwu-eXsDNNzsuPITOdtyRPlYIsIqKaIbw&s',
+                            ),
+                          ),
                         ),
-                        color: primary,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            // IMAGE
-                            GestureDetector(
-                              onTap: () async {
-                                await showImage(imageUrl!);
-                              },
-                              child: CircleAvatar(
-                                radius: width * 0.1195,
-                                backgroundColor: primary2,
-                                backgroundImage: NetworkImage(
-                                  imageUrl ??
-                                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpFN1Tvo80rYwu-eXsDNNzsuPITOdtyRPlYIsIqKaIbw&s',
-                                ),
-                              ),
+
+                        const SizedBox(height: 8),
+
+                        // NAME
+                        SizedBox(
+                          width: width * 0.8,
+                          child: Text(
+                            name ?? 'Name: N/A',
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: width * 0.07,
+                              fontWeight: FontWeight.w600,
+                              color: primaryDark.withBlue(5),
                             ),
+                          ),
+                        ),
 
-                            const SizedBox(height: 8),
+                        const SizedBox(height: 8),
 
-                            // NAME
-                            SizedBox(
-                              width: width * 0.8,
-                              child: Text(
-                                name ?? 'N/A',
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: width * 0.07,
-                                  fontWeight: FontWeight.w700,
-                                  color: primaryDark.withBlue(5),
-                                ),
+                        // YOUR DETAILS
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: ((context) =>
+                                    const EventsDetailsPage()),
                               ),
+                            );
+                          },
+                          child: Container(
+                            width: width,
+                            height: 60,
+                            alignment: Alignment.centerLeft,
+                            decoration: BoxDecoration(
+                              color: primary2.withOpacity(0.25),
+                              border: Border.all(
+                                width: 0.25,
+                                color: primaryDark2.withOpacity(0.25),
+                              ),
+                              borderRadius: BorderRadius.circular(12),
                             ),
-
-                            const SizedBox(height: 8),
-
-                            // YOUR DETAILS
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: ((context) =>
-                                        const EventsDetailsPage()),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                width: width,
-                                height: 60,
-                                alignment: Alignment.centerLeft,
-                                decoration: BoxDecoration(
-                                  color: primary2.withOpacity(0.25),
-                                  border: Border.all(
-                                    width: 0.25,
-                                    color: primaryDark2.withOpacity(0.25),
-                                  ),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: width * 0.033,
-                                ),
-                                margin: EdgeInsets.all(
-                                  width * 0.006125,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'Your Details',
-                                      style: TextStyle(
-                                        fontSize: width * 0.05,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    Icon(
-                                      FeatherIcons.settings,
-                                      size: width * 0.066,
-                                    ),
-                                  ],
-                                ),
-                              ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: width * 0.033,
                             ),
-
-                            const SizedBox(height: 8),
-
-                            // ADD EVENT
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: ((context) =>
-                                        const EventsAddEventPage1()),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                width: width,
-                                height: 60,
-                                alignment: Alignment.centerLeft,
-                                decoration: BoxDecoration(
-                                  color: primary2.withOpacity(0.25),
-                                  border: Border.all(
-                                    width: 0.25,
-                                    color: primaryDark2.withOpacity(0.25),
-                                  ),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: width * 0.033,
-                                ),
-                                margin: EdgeInsets.all(
-                                  width * 0.006125,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'Add Event',
-                                      style: TextStyle(
-                                        fontSize: width * 0.05,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    Icon(
-                                      Icons.event_outlined,
-                                      size: width * 0.066,
-                                    ),
-                                  ],
-                                ),
-                              ),
+                            margin: EdgeInsets.all(
+                              width * 0.006125,
                             ),
-
-                            const SizedBox(height: 8),
-
-                            // ALL EVENTS
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: ((context) =>
-                                        const EventsAllEventsPage()),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Your Details',
+                                  style: TextStyle(
+                                    fontSize: width * 0.05,
+                                    fontWeight: FontWeight.w500,
                                   ),
-                                );
-                              },
-                              child: Container(
-                                width: width,
-                                height: 60,
-                                alignment: Alignment.centerLeft,
-                                decoration: BoxDecoration(
-                                  color: primary2.withOpacity(0.25),
-                                  border: Border.all(
-                                    width: 0.25,
-                                    color: primaryDark2.withOpacity(0.25),
-                                  ),
-                                  borderRadius: BorderRadius.circular(12),
                                 ),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: width * 0.033,
+                                Icon(
+                                  FeatherIcons.settings,
+                                  size: width * 0.066,
                                 ),
-                                margin: EdgeInsets.all(
-                                  width * 0.006125,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'View Your Events',
-                                      style: TextStyle(
-                                        fontSize: width * 0.05,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    Icon(
-                                      Icons.event_note_outlined,
-                                      size: width * 0.066,
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              ],
                             ),
+                          ),
+                        ),
 
-                            const SizedBox(height: 8),
+                        const SizedBox(height: 8),
 
-                            // ADD WORK IMAGES
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: ((context) =>
-                                        const EventsAddWorkImagesPage()),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                width: width,
-                                height: 60,
-                                alignment: Alignment.centerLeft,
-                                decoration: BoxDecoration(
-                                  color: primary2.withOpacity(0.25),
-                                  border: Border.all(
-                                    width: 0.25,
-                                    color: primaryDark2.withOpacity(0.25),
-                                  ),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: width * 0.025,
-                                ),
-                                margin: EdgeInsets.all(
-                                  width * 0.006125,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'Add Work Images',
-                                      style: TextStyle(
-                                        fontSize: width * 0.05,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    const Icon(FeatherIcons.camera),
-                                  ],
-                                ),
+                        // ADD EVENT
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: ((context) =>
+                                    const EventsAddEventPage1()),
                               ),
+                            );
+                          },
+                          child: Container(
+                            width: width,
+                            height: 60,
+                            alignment: Alignment.centerLeft,
+                            decoration: BoxDecoration(
+                              color: primary2.withOpacity(0.25),
+                              border: Border.all(
+                                width: 0.25,
+                                color: primaryDark2.withOpacity(0.25),
+                              ),
+                              borderRadius: BorderRadius.circular(12),
                             ),
-
-                            const SizedBox(height: 8),
-
-                            // YOUR WORK IMAGES
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: ((context) =>
-                                        const EventsWorkImagesPage()),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                width: width,
-                                height: 60,
-                                alignment: Alignment.centerLeft,
-                                decoration: BoxDecoration(
-                                  color: primary2.withOpacity(0.25),
-                                  border: Border.all(
-                                    width: 0.25,
-                                    color: primaryDark2.withOpacity(0.25),
-                                  ),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: width * 0.025,
-                                ),
-                                margin: EdgeInsets.all(
-                                  width * 0.006125,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'Your Work Images',
-                                      style: TextStyle(
-                                        fontSize: width * 0.05,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    const Icon(Icons.photo_outlined),
-                                  ],
-                                ),
-                              ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: width * 0.033,
                             ),
-
-                            const SizedBox(height: 8),
-
-                            // VIEWS
-                            Container(
-                              width: width,
-                              decoration: BoxDecoration(
-                                color: primary2.withOpacity(0.25),
-                                border: Border.all(
-                                  width: 0.25,
-                                  color: primaryDark2.withOpacity(0.25),
+                            margin: EdgeInsets.all(
+                              width * 0.006125,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Add Event',
+                                  style: TextStyle(
+                                    fontSize: width * 0.05,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
-                                borderRadius: BorderRadius.circular(12),
+                                Icon(
+                                  Icons.event_outlined,
+                                  size: width * 0.066,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 8),
+
+                        // ALL EVENTS
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: ((context) =>
+                                    const EventsAllEventsPage()),
                               ),
-                              padding: EdgeInsets.symmetric(
-                                horizontal: width * 0.033,
-                                vertical: width * 0.0125,
+                            );
+                          },
+                          child: Container(
+                            width: width,
+                            height: 60,
+                            alignment: Alignment.centerLeft,
+                            decoration: BoxDecoration(
+                              color: primary2.withOpacity(0.25),
+                              border: Border.all(
+                                width: 0.25,
+                                color: primaryDark2.withOpacity(0.25),
                               ),
-                              margin: EdgeInsets.all(
-                                width * 0.006125,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: width * 0.033,
+                            ),
+                            margin: EdgeInsets.all(
+                              width * 0.006125,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'View Your Events',
+                                  style: TextStyle(
+                                    fontSize: width * 0.05,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.event_note_outlined,
+                                  size: width * 0.066,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 8),
+
+                        // ADD WORK IMAGES
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: ((context) =>
+                                    const EventsAddWorkImagesPage()),
                               ),
-                              child: Row(
+                            );
+                          },
+                          child: Container(
+                            width: width,
+                            height: 60,
+                            alignment: Alignment.centerLeft,
+                            decoration: BoxDecoration(
+                              color: primary2.withOpacity(0.25),
+                              border: Border.all(
+                                width: 0.25,
+                                color: primaryDark2.withOpacity(0.25),
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: width * 0.025,
+                            ),
+                            margin: EdgeInsets.all(
+                              width * 0.006125,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Add Work Images',
+                                  style: TextStyle(
+                                    fontSize: width * 0.05,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                const Icon(FeatherIcons.camera),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 8),
+
+                        // YOUR WORK IMAGES
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: ((context) =>
+                                    const EventsWorkImagesPage()),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            width: width,
+                            height: 60,
+                            alignment: Alignment.centerLeft,
+                            decoration: BoxDecoration(
+                              color: primary2.withOpacity(0.25),
+                              border: Border.all(
+                                width: 0.25,
+                                color: primaryDark2.withOpacity(0.25),
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: width * 0.025,
+                            ),
+                            margin: EdgeInsets.all(
+                              width * 0.006125,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Your Work Images',
+                                  style: TextStyle(
+                                    fontSize: width * 0.05,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                const Icon(Icons.photo_outlined),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 8),
+
+                        // VIEWS
+                        Container(
+                          width: width,
+                          decoration: BoxDecoration(
+                            color: primary2.withOpacity(0.25),
+                            border: Border.all(
+                              width: 0.25,
+                              color: primaryDark2.withOpacity(0.25),
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: width * 0.033,
+                            vertical: width * 0.0125,
+                          ),
+                          margin: EdgeInsets.all(
+                            width * 0.006125,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Column(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Views',
-                                        style: TextStyle(
-                                          fontSize: width * 0.04,
-                                        ),
-                                      ),
-                                      Text(
-                                        views.toString(),
-                                        style: TextStyle(
-                                          fontSize: width * 0.06,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: primary,
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    padding: EdgeInsets.all(width * 0.0125),
-                                    child: DropdownButton(
-                                      dropdownColor: primary,
-                                      underline: const SizedBox(),
-                                      hint: const Text('Duration'),
-                                      value: duration,
-                                      items: [
-                                        '7 Days',
-                                        '28 Days',
-                                        '1 Year',
-                                        'Lifetime'
-                                      ]
-                                          .map(
-                                            (e) => DropdownMenuItem(
-                                              value: e,
-                                              child: Text(e),
-                                            ),
-                                          )
-                                          .toList(),
-                                      onChanged: (value) {
-                                        if (value != null) {
-                                          setState(() {
-                                            duration = value;
-                                          });
-                                          getDurationViews(value);
-                                        }
-                                      },
+                                  Text(
+                                    'Views',
+                                    style: TextStyle(
+                                      fontSize: width * 0.04,
                                     ),
                                   ),
+                                  Text(
+                                    views.toString(),
+                                    style: TextStyle(
+                                      fontSize: width * 0.06,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  )
                                 ],
                               ),
-                            ),
-                          ],
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: primary,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                padding: EdgeInsets.all(width * 0.0125),
+                                child: DropdownButton(
+                                  dropdownColor: primary,
+                                  underline: const SizedBox(),
+                                  hint: const Text('Duration'),
+                                  value: duration,
+                                  items: [
+                                    '7 Days',
+                                    '28 Days',
+                                    '1 Year',
+                                    'Lifetime'
+                                  ]
+                                      .map(
+                                        (e) => DropdownMenuItem(
+                                          value: e,
+                                          child: Text(e),
+                                        ),
+                                      )
+                                      .toList(),
+                                  onChanged: (value) {
+                                    if (value != null) {
+                                      setState(() {
+                                        duration = value;
+                                      });
+                                      getDurationViews(value);
+                                    }
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 );
               }),

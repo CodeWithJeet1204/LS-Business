@@ -1,4 +1,3 @@
-// TODO: SET NO OF FOR EACH PLAN
 Map<String, Map<String, int>> membershipNoOfPlans = {
   'BASIC': {
     'textPost': 1,

@@ -302,6 +302,16 @@ class EventsRegisterDetailsPage1State
                       ],
                     ),
 
+                    // WEBSITE
+                    MyTextFormField(
+                      hintText: 'Website',
+                      controller: websiteController,
+                      borderRadius: 12,
+                      horizontalPadding: width * 0.055,
+                      verticalPadding: width * 0.033,
+                      autoFillHints: const [],
+                    ),
+
                     // LOCATION
                     GestureDetector(
                       onTap: () async {

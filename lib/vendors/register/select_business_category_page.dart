@@ -77,30 +77,6 @@ class _SelectBusinessCategoryPageState
             });
           });
 
-          // final subCategoryId = Uuid().v4();
-          // final List<List<String>>? subCategories =
-          //     commonCategories[selectedCategory];
-          // if (subCategories != null) {
-          //   for (final subCategory in subCategories) {
-          //     await store
-          //         .collection('Business')
-          //         .doc('Data')
-          //         .collection('Category')
-          //         .doc(selectedCategory)
-          //         .collection(subCategory[0])
-          //         .doc(auth.currentUser!.uid)
-          //         .set({
-          //       'vendorId': auth.currentUser!.uid,
-          //       'subCategoryName': subCategory[0],
-          //       'categoryName': subCategoryId,
-          //       'imageUrl': subCategory[1],
-          //       'special': true,
-          //     });
-          //   }
-          // } else {
-          //   print('No subcategories found for selected category');
-          // }
-
           if (mounted) {
             Navigator.of(context).pop();
             Navigator.of(context).push(

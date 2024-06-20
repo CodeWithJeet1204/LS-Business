@@ -29,12 +29,11 @@ class _DetailsContainerState extends State<DetailsContainer> {
   Widget build(BuildContext context) {
     return Container(
       width: widget.width,
-      height: widget.isChanging ? widget.width * 0.2775 : widget.width * 0.175,
       alignment: Alignment.center,
       decoration: BoxDecoration(
         color: primary2.withOpacity(0.125),
         border: Border.all(
-          width: widget.isChanging ? 2 : 0.5,
+          width: widget.isChanging ? 1 : 0.5,
           color: primaryDark.withOpacity(0.5),
         ),
         borderRadius: BorderRadius.circular(12),
@@ -48,36 +47,50 @@ class _DetailsContainerState extends State<DetailsContainer> {
               decoration: InputDecoration(
                 hintText: 'Change ${widget.text}',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
             )
-          : Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: widget.width * 0.05),
-                  child: SizedBox(
-                    width: widget.width * 0.725,
-                    child: Text(
-                      widget.value ?? 'N/A',
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: TextStyle(
-                        fontSize: widget.width * 0.06,
-                      ),
-                    ),
+                  padding: EdgeInsets.all(widget.width * 0.0175),
+                  child: Text(
+                    widget.text,
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    right: widget.width * 0.03,
-                  ),
-                  child: IconButton(
-                    onPressed: widget.onTap,
-                    icon: const Icon(FeatherIcons.edit),
-                    tooltip: 'Edit ${widget.text}',
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: widget.width * 0.025),
+                      child: SizedBox(
+                        width: widget.width * 0.725,
+                        child: Text(
+                          widget.value == null || widget.value == ''
+                              ? 'N/A'
+                              : widget.value!,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontSize: widget.width * 0.06,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        right: widget.width * 0.03,
+                      ),
+                      child: IconButton(
+                        onPressed: widget.onTap,
+                        icon: const Icon(FeatherIcons.edit),
+                        tooltip: 'Edit ${widget.text}',
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
