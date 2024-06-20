@@ -196,7 +196,6 @@ class _AllPostsPageState extends State<AllPostsPage> {
                     autocorrect: false,
                     onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     decoration: const InputDecoration(
-                      labelText: 'Case - Sensitive',
                       hintText: 'Search ...',
                       border: OutlineInputBorder(),
                     ),

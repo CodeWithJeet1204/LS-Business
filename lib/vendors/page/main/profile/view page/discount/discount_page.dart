@@ -921,7 +921,6 @@ class DISCOUNT extends State<DiscountPage> {
                                                         .unfocus(),
                                                 decoration:
                                                     const InputDecoration(
-                                                  labelText: 'Case - Sensitive',
                                                   hintText: 'Search ...',
                                                   border: OutlineInputBorder(),
                                                 ),
@@ -1406,7 +1405,6 @@ class DISCOUNT extends State<DiscountPage> {
                                                         .unfocus(),
                                                 decoration:
                                                     const InputDecoration(
-                                                  labelText: 'Case - Sensitive',
                                                   hintText: 'Search ...',
                                                   border: OutlineInputBorder(),
                                                 ),
@@ -1870,7 +1868,7 @@ class DISCOUNT extends State<DiscountPage> {
                         //         .unfocus(),
                         //                         decoration:
                         //                             const InputDecoration(
-                        //                           labelText: 'Case - Sensitive',
+                        //
                         //                           hintText: 'Search ...',
                         //                           border: OutlineInputBorder(),
                         //                         ),

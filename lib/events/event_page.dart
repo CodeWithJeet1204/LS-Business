@@ -10,11 +10,9 @@ import 'package:localy/widgets/button.dart';
 import 'package:localy/widgets/image_pick_dialog.dart';
 import 'package:localy/widgets/pick_location.dart';
 import 'package:localy/widgets/snack_bar.dart';
-import 'package:localy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
@@ -42,6 +40,59 @@ class _EventPageState extends State<EventPage> {
   bool isImageChanging = false;
   bool isChangingType = false;
   bool isFirstImageRemoved = false;
+
+  final List<String> suggestions = [
+    'Conference',
+    'Seminars',
+    'Workshops',
+    'Trade Shows/Exhibitions',
+    'Networking Events',
+    'Product Launches',
+    'Corporate Meetings',
+    'Party',
+    'Weddings',
+    'Receptions',
+    'Galas',
+    'Concerts',
+    'Festivals',
+    'Movie Screenings',
+    'Live Performances',
+    'Comedy Shows',
+    'Classes',
+    'Lectures',
+    'Educational Workshops',
+    'Training Sessions',
+    'Webinars',
+    'Academic Conferences',
+    'Sports Tournaments',
+    'Marathons',
+    'Fitness Classes',
+    'Yoga Retreats',
+    'Cycling Events',
+    'Fitness Competitions',
+    'Art Exhibitions',
+    'Museum Tours',
+    'Cultural Festivals',
+    'Heritage Events',
+    'Food and Drink Festivals',
+    'Music and Dance Performances',
+    'Charity Galas',
+    'Fundraising Dinners',
+    'Auctions',
+    'Charity Runs/Walks',
+    'Benefit Concerts',
+    'Parades',
+    'Street Fairs',
+    'Farmers Markets',
+    'Community Clean-up Events',
+    'Neighborhood Block Parties',
+    'Volunteer Events',
+    'Worship Services',
+    'Religious Festivals',
+    'Spiritual Retreats',
+    'Meditation Sessions',
+    'Religious Conferences',
+  ];
 
   // ADD IMAGE
   Future<void> addImage(List images) async {
@@ -329,66 +380,6 @@ class _EventPageState extends State<EventPage> {
         time: selected.toString(),
       });
     }
-  }
-
-  // GET SUGGESTIONS
-  List<String> getSuggestions(String pattern) {
-    final List<String> suggestions = [
-      'Conference',
-      'Seminars',
-      'Workshops',
-      'Trade Shows/Exhibitions',
-      'Networking Events',
-      'Product Launches',
-      'Corporate Meetings',
-      'Party',
-      'Weddings',
-      'Receptions',
-      'Galas',
-      'Concerts',
-      'Festivals',
-      'Movie Screenings',
-      'Live Performances',
-      'Comedy Shows',
-      'Classes',
-      'Lectures',
-      'Educational Workshops',
-      'Training Sessions',
-      'Webinars',
-      'Academic Conferences',
-      'Sports Tournaments',
-      'Marathons',
-      'Fitness Classes',
-      'Yoga Retreats',
-      'Cycling Events',
-      'Fitness Competitions',
-      'Art Exhibitions',
-      'Museum Tours',
-      'Cultural Festivals',
-      'Heritage Events',
-      'Food and Drink Festivals',
-      'Music and Dance Performances',
-      'Charity Galas',
-      'Fundraising Dinners',
-      'Auctions',
-      'Charity Runs/Walks',
-      'Benefit Concerts',
-      'Parades',
-      'Street Fairs',
-      'Farmers Markets',
-      'Community Clean-up Events',
-      'Neighborhood Block Parties',
-      'Volunteer Events',
-      'Worship Services',
-      'Religious Festivals',
-      'Spiritual Retreats',
-      'Meditation Sessions',
-      'Religious Conferences',
-    ];
-
-    return suggestions
-        .where((item) => item.toLowerCase().contains(pattern.toLowerCase()))
-        .toList();
   }
 
   // CHANGE TYPE
@@ -711,64 +702,53 @@ class _EventPageState extends State<EventPage> {
 
                             // TYPE
                             isChangingType
-                                ? SizedBox(
-                                    width: width,
-                                    height: 60,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        SizedBox(
-                                          width: width * 0.75,
-                                          child: TypeAheadField(
-                                            controller: typeController,
-                                            onSelected: (value) {
-                                              typeController.text =
-                                                  value.toString();
-                                            },
-                                            suggestionsCallback: (pattern) {
-                                              return getSuggestions(pattern);
-                                            },
-                                            builder: (context, controller,
-                                                focusNode) {
-                                              return TextField(
-                                                controller: controller,
-                                                focusNode: focusNode,
-                                                onTapOutside: (event) =>
-                                                    FocusScope.of(context)
-                                                        .unfocus(),
-                                                decoration: InputDecoration(
-                                                  border: OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                    borderSide: BorderSide(
-                                                      width: 1,
-                                                      color:
-                                                          Colors.cyan.shade700,
-                                                    ),
-                                                  ),
-                                                  hintText: 'Type',
-                                                ),
-                                              );
-                                            },
-                                            itemBuilder: (context, value) {
-                                              return ListTile(
-                                                title: Text(value.toString()),
-                                              );
-                                            },
+                                ? Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 2,
+                                      ),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: primary3,
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 10,
+                                          vertical: 4,
+                                        ),
+                                        child: DropdownButton(
+                                          value: type,
+                                          hint: const Text(
+                                            'Select Type',
+                                            style: TextStyle(
+                                              color: primaryDark2,
+                                            ),
                                           ),
-                                        ),
-                                        MyTextButton(
-                                          onPressed: () async {
-                                            await changeType();
+                                          underline: const SizedBox(),
+                                          iconEnabledColor: primaryDark,
+                                          dropdownColor: primary2,
+                                          items: suggestions
+                                              .map((e) => DropdownMenuItem(
+                                                    value: e,
+                                                    child: Text(e),
+                                                  ))
+                                              .toList(),
+                                          onChanged: (value) async {
+                                            await store
+                                                .collection('Events')
+                                                .doc(widget.eventId)
+                                                .update({
+                                              'eventType': value,
+                                            });
+
+                                            setState(() {
+                                              isChangingType = false;
+                                            });
                                           },
-                                          text: 'Save',
-                                          textColor: primaryDark,
                                         ),
-                                      ],
+                                      ),
                                     ),
                                   )
                                 : Row(

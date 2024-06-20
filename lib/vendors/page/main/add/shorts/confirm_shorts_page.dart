@@ -139,65 +139,62 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 30),
-            SizedBox(
-              width: width,
-              height: height / 1.5,
-              child: AspectRatio(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              AspectRatio(
                 aspectRatio: 9 / 16,
                 child: FlickVideoPlayer(
                   flickManager: flickManager,
                 ),
               ),
-            ),
-            const SizedBox(height: 30),
-            SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  MyButton(
-                    text: data != null ? data![1]! : 'Select Product',
-                    onTap: () async {
-                      Navigator.of(context)
-                          .push(
-                        MaterialPageRoute(
-                          builder: ((context) => SelectProductForShortsPage(
-                                selectedProduct: data?[0],
-                              )),
-                        ),
-                      )
-                          .then((value) {
-                        setState(() {
-                          data = value;
+              const SizedBox(height: 30),
+              SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    MyButton(
+                      text: data != null ? data![1]! : 'Select Product',
+                      onTap: () async {
+                        Navigator.of(context)
+                            .push(
+                          MaterialPageRoute(
+                            builder: ((context) => SelectProductForShortsPage(
+                                  selectedProduct: data?[0],
+                                )),
+                          ),
+                        )
+                            .then((value) {
+                          setState(() {
+                            data = value;
+                          });
                         });
-                      });
-                    },
-                    isLoading: false,
-                    horizontalPadding: width * 0.025,
-                  ),
-                  const SizedBox(height: 10),
-                  data == null
-                      ? Container()
-                      : MyButton(
-                          text: 'DONE',
-                          onTap: () async {
-                            await uploadVideo(
-                                data![0], data![0], widget.videoPath);
-                          },
-                          isLoading: isDone,
-                          horizontalPadding: width * 0.025,
-                        ),
-                ],
+                      },
+                      isLoading: false,
+                      horizontalPadding: width * 0.025,
+                    ),
+                    const SizedBox(height: 10),
+                    data == null
+                        ? Container()
+                        : MyButton(
+                            text: 'DONE',
+                            onTap: () async {
+                              await uploadVideo(
+                                  data![0], data![0], widget.videoPath);
+                            },
+                            isLoading: isDone,
+                            horizontalPadding: width * 0.025,
+                          ),
+                    const SizedBox(height: 12),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

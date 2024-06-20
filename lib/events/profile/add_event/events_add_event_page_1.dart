@@ -11,7 +11,6 @@ import 'package:localy/widgets/text_button.dart';
 import 'package:localy/widgets/text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -34,9 +33,62 @@ class _EventsAddEventPage1State extends State<EventsAddEventPage1> {
   double? longitude;
   Map<String, dynamic>? address;
   bool gettingLocation = false;
-
   String? type;
   bool isNext = false;
+
+  final List<String> suggestions = [
+    'Conference',
+    'Competitions',
+    'Seminars',
+    'Workshops',
+    'Trade Shows/Exhibitions',
+    'Networking Events',
+    'Product Launches',
+    'Corporate Meetings',
+    'Party',
+    'Weddings',
+    'Receptions',
+    'Galas',
+    'Concerts',
+    'Festivals',
+    'Movie Screenings',
+    'Live Performances',
+    'Comedy Shows',
+    'Classes',
+    'Lectures',
+    'Educational Workshops',
+    'Training Sessions',
+    'Webinars',
+    'Academic Conferences',
+    'Sports Tournaments',
+    'Marathons',
+    'Fitness Classes',
+    'Yoga Retreats',
+    'Cycling Events',
+    'Fitness Competitions',
+    'Art Exhibitions',
+    'Museum Tours',
+    'Cultural Festivals',
+    'Heritage Events',
+    'Food and Drink Festivals',
+    'Music and Dance Performances',
+    'Charity Galas',
+    'Fundraising Dinners',
+    'Auctions',
+    'Charity Runs/Walks',
+    'Benefit Concerts',
+    'Parades',
+    'Street Fairs',
+    'Farmers Markets',
+    'Community Clean-up Events',
+    'Neighborhood Block Parties',
+    'Volunteer Events',
+    'Worship Services',
+    'Religious Festivals',
+    'Spiritual Retreats',
+    'Meditation Sessions',
+    'Religious Conferences',
+  ];
 
   // ADD EVENT IMAGE
   Future<void> addEventImages() async {
@@ -72,66 +124,6 @@ class _EventsAddEventPage1State extends State<EventsAddEventPage1> {
     setState(() {
       type = currentType;
     });
-  }
-
-  // GET SUGGESTIONS
-  List<String> getSuggestions(String pattern) {
-    final List<String> suggestions = [
-      'Conference',
-      'Seminars',
-      'Workshops',
-      'Trade Shows/Exhibitions',
-      'Networking Events',
-      'Product Launches',
-      'Corporate Meetings',
-      'Party',
-      'Weddings',
-      'Receptions',
-      'Galas',
-      'Concerts',
-      'Festivals',
-      'Movie Screenings',
-      'Live Performances',
-      'Comedy Shows',
-      'Classes',
-      'Lectures',
-      'Educational Workshops',
-      'Training Sessions',
-      'Webinars',
-      'Academic Conferences',
-      'Sports Tournaments',
-      'Marathons',
-      'Fitness Classes',
-      'Yoga Retreats',
-      'Cycling Events',
-      'Fitness Competitions',
-      'Art Exhibitions',
-      'Museum Tours',
-      'Cultural Festivals',
-      'Heritage Events',
-      'Food and Drink Festivals',
-      'Music and Dance Performances',
-      'Charity Galas',
-      'Fundraising Dinners',
-      'Auctions',
-      'Charity Runs/Walks',
-      'Benefit Concerts',
-      'Parades',
-      'Street Fairs',
-      'Farmers Markets',
-      'Community Clean-up Events',
-      'Neighborhood Block Parties',
-      'Volunteer Events',
-      'Worship Services',
-      'Religious Festivals',
-      'Spiritual Retreats',
-      'Meditation Sessions',
-      'Religious Conferences',
-    ];
-
-    return suggestions
-        .where((item) => item.toLowerCase().contains(pattern.toLowerCase()))
-        .toList();
   }
 
   // NEXT
@@ -399,43 +391,47 @@ class _EventsAddEventPage1State extends State<EventsAddEventPage1> {
                         const SizedBox(height: 16),
 
                         // TYPE
-                        SizedBox(
-                          width: width,
-                          height: 60,
-                          child: TypeAheadField(
-                            controller: typeController,
-                            onSelected: (value) {
-                              typeController.text = value.toString();
-                            },
-                            suggestionsCallback: (pattern) {
-                              return getSuggestions(pattern);
-                            },
-                            builder: (context, controller, focusNode) {
-                              return TextField(
-                                controller: controller,
-                                focusNode: focusNode,
-                                onTapOutside: (event) =>
-                                    FocusScope.of(context).unfocus(),
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    borderSide: BorderSide(
-                                      width: 1,
-                                      color: Colors.cyan.shade700,
-                                    ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 2,
+                            ),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: primary3,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 4,
+                              ),
+                              child: DropdownButton(
+                                value: type,
+                                hint: const Text(
+                                  'Select Type',
+                                  style: TextStyle(
+                                    color: primaryDark2,
                                   ),
-                                  hintText: 'Type',
                                 ),
-                              );
-                            },
-                            itemBuilder: (context, value) {
-                              return ListTile(
-                                title: Text(value.toString()),
-                              );
-                            },
+                                underline: const SizedBox(),
+                                iconEnabledColor: primaryDark,
+                                dropdownColor: primary2,
+                                items: suggestions
+                                    .map((e) => DropdownMenuItem(
+                                          value: e,
+                                          child: Text(e),
+                                        ))
+                                    .toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    type = value;
+                                  });
+                                },
+                              ),
+                            ),
                           ),
                         ),
-
                         const SizedBox(height: 16),
 
                         // LOCATION

@@ -1536,7 +1536,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                       : getPropertiesKeys(5),
                                   widget1: getNoOfAnswers(5) == 1
                                       ? TextFormField(
-                                          controller: property4Controller,
+                                          controller: property5Controller,
                                           onTapOutside: (event) =>
                                               FocusScope.of(context).unfocus(),
                                           maxLines: getMaxLines(5),

@@ -42,6 +42,14 @@ class _LoginPageState extends State<LoginPage> {
   bool isGoogleLogging = false;
   bool isEmailLogging = false;
   bool isPhoneLogging = false;
+  String? mode;
+
+  // INIT STATE
+  @override
+  void initState() {
+    mode = widget.mode;
+    super.initState();
+  }
 
   // DISPOSE
   @override
@@ -77,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
               );
             }
           } else {
-            if (widget.mode == 'vendor') {
+            if (mode == 'vendor') {
               final vendorSnap = await store
                   .collection('Business')
                   .doc('Owners')
@@ -98,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                 }
                 return;
               }
-            } else if (widget.mode == 'services') {
+            } else if (mode == 'services') {
               final serviceSnap = await store
                   .collection('Services')
                   .doc(auth.currentUser!.uid)
@@ -117,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                 }
               }
               return;
-            } else if (widget.mode == 'events') {
+            } else if (mode == 'events') {
               final serviceSnap = await store
                   .collection('Organizers')
                   .doc(auth.currentUser!.uid)
@@ -150,11 +158,11 @@ class _LoginPageState extends State<LoginPage> {
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
                   builder: ((context) {
-                    if (widget.mode == 'vendor') {
+                    if (mode == 'vendor') {
                       return const MainPage();
-                    } else if (widget.mode == 'services') {
+                    } else if (mode == 'services') {
                       return const ServicesMainPage();
-                    } else if (widget.mode == 'events') {
+                    } else if (mode == 'events') {
                       return const EventsMainPage();
                     } else {
                       return const MainPage();
@@ -196,7 +204,7 @@ class _LoginPageState extends State<LoginPage> {
           isPhoneLogging = true;
         });
         try {
-          if (widget.mode == 'vendor') {
+          if (mode == 'vendor') {
             final vendorSnap = await store
                 .collection('Business')
                 .doc('Owners')
@@ -217,7 +225,7 @@ class _LoginPageState extends State<LoginPage> {
               }
               return;
             }
-          } else if (widget.mode == 'services') {
+          } else if (mode == 'services') {
             final serviceSnap = await store
                 .collection('Services')
                 .doc(auth.currentUser!.uid)
@@ -236,7 +244,7 @@ class _LoginPageState extends State<LoginPage> {
               }
             }
             return;
-          } else if (widget.mode == 'events') {
+          } else if (mode == 'events') {
             final serviceSnap = await store
                 .collection('Organizers')
                 .doc(auth.currentUser!.uid)
@@ -281,11 +289,11 @@ class _LoginPageState extends State<LoginPage> {
                 Navigator.of(context).pop();
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) {
-                    if (widget.mode == 'vendor') {
+                    if (mode == 'vendor') {
                       return const MainPage();
-                    } else if (widget.mode == 'services') {
+                    } else if (mode == 'services') {
                       return const ServicesMainPage();
-                    } else if (widget.mode == 'events') {
+                    } else if (mode == 'events') {
                       return const EventsMainPage();
                     } else {
                       mySnackBar(context, 'Some error occured, try again');
@@ -341,7 +349,7 @@ class _LoginPageState extends State<LoginPage> {
             );
           }
         } else {
-          if (widget.mode == 'vendor') {
+          if (mode == 'vendor') {
             final vendorSnap = await store
                 .collection('Business')
                 .doc('Owners')
@@ -362,7 +370,7 @@ class _LoginPageState extends State<LoginPage> {
               }
               return;
             }
-          } else if (widget.mode == 'services') {
+          } else if (mode == 'services') {
             final serviceSnap = await store
                 .collection('Services')
                 .doc(auth.currentUser!.uid)
@@ -381,7 +389,7 @@ class _LoginPageState extends State<LoginPage> {
               }
             }
             return;
-          } else if (widget.mode == 'events') {
+          } else if (mode == 'events') {
             final serviceSnap = await store
                 .collection('Organizers')
                 .doc(auth.currentUser!.uid)
@@ -409,11 +417,11 @@ class _LoginPageState extends State<LoginPage> {
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                 builder: ((context) {
-                  if (widget.mode == 'vendor') {
+                  if (mode == 'vendor') {
                     return const MainPage();
-                  } else if (widget.mode == 'services') {
+                  } else if (mode == 'services') {
                     return const ServicesMainPage();
-                  } else if (widget.mode == 'events') {
+                  } else if (mode == 'events') {
                     return const EventsMainPage();
                   } else {
                     return const MainPage();
@@ -459,7 +467,55 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: width * 0.35),
+              SizedBox(height: width * 0.033),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: MyTextButton(
+                  onPressed: () async {
+                    await showMenu(
+                      context: context,
+                      position: RelativeRect.fromSize(
+                        Rect.largest,
+                        Size(
+                          width * 0.25,
+                          100,
+                        ),
+                      ),
+                      elevation: 0,
+                      color: primary2,
+                      items: [
+                        PopupMenuItem(
+                          onTap: () {
+                            setState(() {
+                              mode = 'vendor';
+                            });
+                          },
+                          child: Text('Vendor'),
+                        ),
+                        PopupMenuItem(
+                          onTap: () {
+                            setState(() {
+                              mode = 'events';
+                            });
+                          },
+                          child: Text('Events'),
+                        ),
+                        PopupMenuItem(
+                          onTap: () {
+                            setState(() {
+                              mode = 'services';
+                            });
+                          },
+                          child: Text('Services'),
+                        ),
+                      ],
+                    );
+                  },
+                  text: '${mode} ↓',
+                  textColor: primaryDark2,
+                ),
+              ),
+              SizedBox(height: width * 0.135),
               const HeadText(
                 text: 'LOGIN',
               ),
@@ -625,7 +681,7 @@ class _LoginPageState extends State<LoginPage> {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: ((context) => RegisterPayPage(
-                                mode: widget.mode,
+                                mode: mode!,
                               )),
                         ),
                       );
@@ -760,14 +816,14 @@ class _LoginPageState extends State<LoginPage> {
           //                                       await authMethods.phoneSignIn(
           //                                         context,
           //                                         ' ${phoneController.text}',
-          //                                         widget.mode,
+          //                                         mode,
           //                                       );
           //                                     } else if (phoneController.text
           //                                         .contains('+91 ')) {
           //                                       await authMethods.phoneSignIn(
           //                                         context,
           //                                         phoneController.text,
-          //                                         widget.mode,
+          //                                         mode,
           //                                       );
           //                                     } else {
           //                                       setState(() {
@@ -810,7 +866,7 @@ class _LoginPageState extends State<LoginPage> {
           //                                                       phoneController
           //                                                           .text
           //                                                           .toString(),
-          //                                                   mode: widget.mode,
+          //                                                   mode: mode,
           //                                                 ),
           //                                               ),
           //                                             );
@@ -939,7 +995,7 @@ class _LoginPageState extends State<LoginPage> {
           //                         Navigator.of(context).push(
           //                           MaterialPageRoute(
           //                             builder: ((context) => RegisterPayPage(
-          //                                   mode: widget.mode,
+          //                                   mode: mode,
           //                                 )),
           //                           ),
           //                         );

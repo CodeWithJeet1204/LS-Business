@@ -129,7 +129,6 @@ class _SelectCategoryForBulkProductsPageState
                         onTapOutside: (event) =>
                             FocusScope.of(context).unfocus(),
                         decoration: const InputDecoration(
-                          labelText: 'Case - Sensitive',
                           hintText: 'Search ...',
                           border: OutlineInputBorder(),
                         ),

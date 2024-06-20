@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:localy/vendors/page/main/add/add_page.dart';
 import 'package:localy/vendors/page/main/analytics/analytics_page.dart';
-import 'package:localy/vendors/page/main/comments/all_comments_screen.dart';
 import 'package:localy/vendors/page/main/discount/add_discount_page.dart';
 import 'package:localy/vendors/page/main/profile/profile_page.dart';
 import 'package:localy/vendors/register/business_register_details.dart';
@@ -29,11 +28,11 @@ class _MainPageState extends State<MainPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   Widget? detailsPage;
-  int current = 4;
+  int current = 3;
 
   List<Widget> allPages = [
     const AnalyticsPage(),
-    const AllCommentPage(),
+    // const AllCommentPage(),
     const AddPage(),
     const AddDiscountPage(),
     const ProfilePage(),
@@ -43,7 +42,6 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     detailsAdded();
-
     super.initState();
   }
 
@@ -102,6 +100,7 @@ class _MainPageState extends State<MainPage> {
           getUserDetailsAddedData['numberVerified'] != true) {
         if (auth.currentUser!.email != null &&
             !auth.currentUser!.emailVerified) {
+          print(123);
           detailsPage = const EmailVerifyPage(
             mode: 'vendor',
             isLogging: true,
@@ -224,15 +223,6 @@ class _MainPageState extends State<MainPage> {
                   FeatherIcons.barChart2,
                 ),
                 label: 'Analytics',
-              ),
-              BottomNavigationBarItem(
-                activeIcon: Icon(
-                  FeatherIcons.messageSquare,
-                ),
-                icon: Icon(
-                  FeatherIcons.messageCircle,
-                ),
-                label: 'Chats',
               ),
               BottomNavigationBarItem(
                 activeIcon: Icon(

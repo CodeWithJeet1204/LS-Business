@@ -809,7 +809,6 @@ class _BrandPageState extends State<BrandPage> {
                                             FocusScope.of(context).unfocus(),
                                         autocorrect: false,
                                         decoration: const InputDecoration(
-                                          labelText: 'Case - Sensitive',
                                           hintText: 'Search ...',
                                           border: OutlineInputBorder(),
                                         ),

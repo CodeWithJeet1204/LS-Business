@@ -30,7 +30,6 @@ import 'package:localy/vendors/provider/select_product_for_post_provider.dart';
 import 'package:localy/vendors/provider/shop_type_provider.dart';
 import 'package:localy/vendors/provider/sign_in_method_provider.dart';
 import 'package:localy/vendors/utils/colors.dart';
-import 'package:localy/vendors/utils/firebase_messaging.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -44,7 +43,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  await Messaging().initNotifications();
+  // await Messaging().initNotifications();
   await FirebaseAppCheck.instance.activate();
 
   runApp(
@@ -185,13 +184,17 @@ class MyApp extends StatelessWidget {
                               }
                             } else if (snapshot.data == 'services') {
                               if (authSnapshot.hasData) {
-                                if (authSnapshot.data!.emailVerified) {
-                                  return const ServicesMainPage();
+                                if (authSnapshot.data!.email != null) {
+                                  if (authSnapshot.data!.emailVerified) {
+                                    return const ServicesMainPage();
+                                  } else {
+                                    return const EmailVerifyPage(
+                                      mode: 'services',
+                                      isLogging: true,
+                                    );
+                                  }
                                 } else {
-                                  return const EmailVerifyPage(
-                                    mode: 'services',
-                                    isLogging: true,
-                                  );
+                                  return const LoginPage(mode: 'services');
                                 }
                               } else {
                                 return const LoginPage(
