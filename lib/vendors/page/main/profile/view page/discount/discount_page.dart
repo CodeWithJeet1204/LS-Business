@@ -166,11 +166,9 @@ class DISCOUNT extends State<DiscountPage> {
         return AlertDialog(
           title: const Text(
             'Confirm DELETE',
-            overflow: TextOverflow.ellipsis,
           ),
           content: const Text(
             'Are you sure you want to delete this Discount\nDiscount will be removed from all the products/categories with this discount',
-            overflow: TextOverflow.ellipsis,
           ),
           actions: [
             TextButton(

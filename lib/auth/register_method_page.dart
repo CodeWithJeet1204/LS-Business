@@ -35,11 +35,10 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
   final store = FirebaseFirestore.instance;
   final GlobalKey<FormState> registerEmailFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> registerNumberFormKey = GlobalKey<FormState>();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+  final phoneController = TextEditingController();
   String phoneText = 'SIGNUP';
   String googleText = 'Signup With GOOGLE';
   bool isGoogleRegistering = false;
@@ -93,7 +92,6 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                   .doc(auth.currentUser!.uid)
                   .set({
                 'Name': null,
-                'Views': null,
                 'GSTNumber': null,
                 'Address': null,
                 'Description': null,
@@ -253,7 +251,6 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
               .doc(auth.currentUser!.uid)
               .set({
             'Name': null,
-            'Views': null,
             'GSTNumber': null,
             'Address': null,
             'Description': null,
@@ -605,7 +602,6 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
         //                                       .doc(auth.currentUser!.uid)
         //                                       .set({
         //                                     'Name': null,
-        //                                     'Views': null,
         //                                     'GSTNumber': null,
         //                                     'Address': null,
         //                                     'Description': null,
@@ -768,7 +764,6 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
         //             //             .doc(_auth.currentUser!.uid)
         //             //             .update({
         //             //           'Name': null,
-        //             //           'Views': null,
         //             //           'GSTNumber': null,
         //             //           'Address': null,
         //             //           'Description': null,

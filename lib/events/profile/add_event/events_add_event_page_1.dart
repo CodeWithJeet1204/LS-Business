@@ -151,6 +151,7 @@ class _EventsAddEventPage1State extends State<EventsAddEventPage1> {
       'eventLatitude': latitude,
       'eventLongitude': longitude,
       'imageUrl': _image,
+      'eventComments': {},
     };
 
     setState(() {

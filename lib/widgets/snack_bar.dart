@@ -1,5 +1,5 @@
-import 'package:localy/vendors/utils/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:localy/vendors/utils/colors.dart';
 
 void mySnackBar(BuildContext context, String text) {
   ScaffoldMessenger.of(context).clearSnackBars();
@@ -11,7 +11,11 @@ void mySnackBar(BuildContext context, String text) {
           color: primaryDark,
         ),
       ),
-      backgroundColor: primary,
+      elevation: 2,
+      backgroundColor: const Color.fromARGB(255, 240, 252, 255),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
       dismissDirection: DismissDirection.down,
       behavior: SnackBarBehavior.floating,
     ),

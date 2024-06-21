@@ -71,7 +71,6 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
       builder: ((context) {
         return AlertDialog(
           title: const Text(
-            overflow: TextOverflow.ellipsis,
             'Confirm DELETE',
           ),
           content: const Text(

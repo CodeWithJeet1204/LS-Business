@@ -121,7 +121,7 @@ class _ServicesChangeWorkPage1State extends State<ServicesChangeWorkPage1> {
     await store.collection('Services').doc(auth.currentUser!.uid).update({
       'Place': selectedPlaces,
       'Category': [],
-      'SubCategory': [],
+      'SubCategory': {},
     });
 
     setState(() {

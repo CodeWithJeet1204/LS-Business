@@ -27,18 +27,17 @@ class _AddProductPage2State extends State<AddProductPage2> {
   late String shopTypes = '';
   Map<String, dynamic> properties = {};
   final GlobalKey<FormState> productKey = GlobalKey<FormState>();
-  final TextEditingController tagController = TextEditingController();
-  final TextEditingController otherInfoController = TextEditingController();
-  final TextEditingController otherInfoValueController =
-      TextEditingController();
+  final tagController = TextEditingController();
+  final otherInfoController = TextEditingController();
+  final otherInfoValueController = TextEditingController();
   String? otherInfo;
 
-  final TextEditingController property0Controller = TextEditingController();
-  final TextEditingController property1Controller = TextEditingController();
-  final TextEditingController property2Controller = TextEditingController();
-  final TextEditingController property3Controller = TextEditingController();
-  final TextEditingController property4Controller = TextEditingController();
-  final TextEditingController property5Controller = TextEditingController();
+  final property0Controller = TextEditingController();
+  final property1Controller = TextEditingController();
+  final property2Controller = TextEditingController();
+  final property3Controller = TextEditingController();
+  final property4Controller = TextEditingController();
+  final property5Controller = TextEditingController();
   List<String> tagList = [];
   List<String> property0 = [];
   List<String> property1 = [];

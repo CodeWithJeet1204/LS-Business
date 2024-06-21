@@ -22,8 +22,8 @@ class OwnerDetailsPage extends StatefulWidget {
 class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final storage = FirebaseStorage.instance;
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController numberController = TextEditingController();
+  final nameController = TextEditingController();
+  final numberController = TextEditingController();
   bool isChangingName = false;
   bool isChangingNumber = false;
   bool isChangingImage = false;

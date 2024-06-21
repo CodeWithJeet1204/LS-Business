@@ -28,7 +28,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore store = FirebaseFirestore.instance;
   final GlobalKey<FormState> categoryKey = GlobalKey<FormState>();
-  final TextEditingController categoryController = TextEditingController();
+  final categoryController = TextEditingController();
   bool isSaving = false;
   File? _image;
   bool isFit = false;

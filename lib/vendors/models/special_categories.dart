@@ -113,19 +113,29 @@ Map<String, Map<String, String>> specialCategories = {
         'https://img.freepik.com/free-photo/flip-flop-beach-shoes-yellow-isolated-white-background_1101-2037.jpg?t=st=1718876031~exp=1718879631~hmac=3559e060837bdd95e3160fb6111aca9647e7082a175bb5ab6e60bc7830e9503f&w=1800',
   },
   'Restaurant & Cafes': {
-    'Appetizers': '',
-    'Soups': '',
-    'Salads': '',
-    'Sides': '',
-    'Desserts': '',
-    'Beverages': '',
-    'Dips': '',
-    'Western': '',
+    'Appetizers':
+        'https://img.freepik.com/free-vector/asian-food-set_1284-12965.jpg?t=st=1718961934~exp=1718965534~hmac=8eecfb3df917f794cb949cc5cd2b273122e6dbd63a99075f42e0ac24c46978b0&w=1800',
+    'Soups':
+        'https://img.freepik.com/free-vector/bowls-soups-set-tomato-gazpacho-with-red-hot-pepper-broccoli-green-puree-curry-with-mushrooms-traditional-borscht-cooking-vegetables-cream-soup-eating-healthy-food_74855-8248.jpg?t=st=1718961997~exp=1718965597~hmac=285ed360f639b876a446a530e7fa896ee7177d2fee53ca49c03a788e39b7f773&w=1800',
+    'Salads':
+        'https://img.freepik.com/free-vector/fruit-salad-bowls-assortment_23-2148494288.jpg?t=st=1718962064~exp=1718965664~hmac=faad83792f308113160fc6c110740c589df4cacc4ce160ab9508c94a13aebdbe&w=1800',
+    'Sides':
+        'https://img.freepik.com/free-vector/panettone-concept-flat-design_23-2148759971.jpg?t=st=1718962168~exp=1718965768~hmac=37c2cf22846e9250be43491da0fb29fb989ae4ea234fdb133123bebe3a9fc72d&w=1800',
+    'Desserts':
+        'https://img.freepik.com/free-vector/watercolor-clipart-set-cakes-cake-slices-lemon-strawberry-cherry_191095-4029.jpg?t=st=1718962399~exp=1718965999~hmac=8adfe9308aa9c47c214d976d918761099237afb869b6884d881f7035a45c69c9&w=1800',
+    'Beverages':
+        'https://img.freepik.com/free-vector/set-watercolor-kiwi-pineapple-orange-blueberry-cocktails-with-slice-fruits_191095-6900.jpg?t=st=1718962901~exp=1718966501~hmac=8e751df31d5bc7cd8045c02b4e6c455e04af3c69da45891994839dc91da60203&w=1800',
+    'Dips':
+        'https://img.freepik.com/free-vector/sauce-packaging-realistic-composition_1284-64772.jpg?t=st=1718962894~exp=1718966494~hmac=1c16340d7698b6d0c34e8cbb28d9427f6eadd7914c0de128ca11a4612502fb23&w=1800',
+    'Western':
+        'https://img.freepik.com/free-vector/coloured-fast-food-collection_1308-285.jpg?t=st=1718963636~exp=1718967236~hmac=69fc629052153c615065a1e3c5b8d12bc71d0bb8c4877a63b1e326a6ad2c474a&w=1800',
     'Chinese': '',
-    'Indian': '',
+    'Indian':
+        'https://img.freepik.com/free-vector/hand-drawn-indian-cuisine-illustration_23-2149323580.jpg?t=st=1718964898~exp=1718968498~hmac=3dff883ba2fbf788f4282f8a31aba3a438f90d7f502c5bb9ad9760989795e0e5&w=1800',
   },
   'Beauty and Cosmetics': {
-    'Skin Care': '',
+    'Skin Care':
+        'https://img.freepik.com/free-vector/organic-cosmetics-set_1284-19247.jpg?t=st=1718964585~exp=1718968185~hmac=c18c765f810e16c2fe352f84bd418e0bddb0ea9440d1524f820a49d19f98256e&w=1800',
     'Hair Care': '',
     'Nail Care': '',
     'Oral Hygiene': '',

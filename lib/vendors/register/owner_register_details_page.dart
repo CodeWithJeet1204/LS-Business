@@ -26,9 +26,9 @@ class UserRegisterDetailsPage extends StatefulWidget {
 
 class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
   final GlobalKey<FormState> userFormKey = GlobalKey<FormState>();
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final phoneController = TextEditingController();
   bool isImageSelected = false;
   File? _image;
   bool isNext = false;

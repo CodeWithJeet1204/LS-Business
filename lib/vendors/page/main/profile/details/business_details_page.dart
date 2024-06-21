@@ -1,9 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:localy/vendors/utils/colors.dart';
 import 'package:localy/widgets/button.dart';
@@ -14,6 +14,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 
 class BusinessDetailsPage extends StatefulWidget {
   const BusinessDetailsPage({super.key});
@@ -28,12 +29,12 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
   final storage = FirebaseStorage.instance;
   final nameController = TextEditingController();
   final addressController = TextEditingController();
-  final specialNoteController = TextEditingController();
+  final descriptionController = TextEditingController();
   double? latitude;
   double? longitude;
   bool isChangingName = false;
   bool isChangingAddress = false;
-  bool isChangingSpecialNote = false;
+  bool isChangingDescription = false;
   bool isChangingImage = false;
   bool isGettingAddress = false;
   bool isSaving = false;
@@ -43,7 +44,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
   void dispose() {
     nameController.dispose();
     addressController.dispose();
-    specialNoteController.dispose();
+    descriptionController.dispose();
     super.dispose();
   }
 
@@ -146,8 +147,26 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
 
   // GET ADDRESS
   Future<String> getAddress(double lat, double long) async {
-    List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
-    return '${placemarks[0].name}, ${placemarks[0].locality}, ${placemarks[0].administrativeArea}';
+    const apiKey = 'AIzaSyCTzhOTUtdVUx0qpAbcXdn1TQKSmqtJbZM';
+    final apiUrl =
+        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$long&key=$apiKey';
+
+    try {
+      final response = await http.get(Uri.parse(apiUrl));
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['status'] == 'OK') {
+          return data['results'][0]['formatted_address'];
+        } else {
+          throw Exception('Failed to get location');
+        }
+      } else {
+        throw Exception('Failed to load data');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
   }
 
   // SAVE
@@ -353,7 +372,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                           child: SizedBox(
                                             width: width * 0.725,
                                             child: AutoSizeText(
-                                              shopData['Name'] ?? 'N/A',
+                                              shopData['Name'] ?? 'Name: N/A',
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 1,
                                               style: TextStyle(
@@ -371,7 +390,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                               setState(() {
                                                 isChangingName = true;
                                                 isChangingAddress = false;
-                                                isChangingSpecialNote = false;
+                                                isChangingDescription = false;
                                               });
                                             },
                                             icon: const Icon(FeatherIcons.edit),
@@ -403,6 +422,9 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                             longitude = value.longitude;
                                           });
 
+                                          print("Shop latitude: $latitude");
+                                          print("Shop longitude: $longitude");
+
                                           await store
                                               .collection('Users')
                                               .doc(FirebaseAuth
@@ -433,8 +455,36 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: isChangingAddress
-                                    ? const Center(
-                                        child: CircularProgressIndicator(),
+                                    ? Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: width * 0.0125),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                SizedBox(
+                                                  width: width * 0.8,
+                                                  child: const Text(
+                                                      'Getting Location'),
+                                                ),
+                                                const Text('-- km'),
+                                              ],
+                                            ),
+                                            IconButton(
+                                              onPressed: () {},
+                                              icon: const Icon(
+                                                  FeatherIcons.mapPin),
+                                            ),
+                                          ],
+                                        ),
                                       )
                                     : Row(
                                         mainAxisAlignment:
@@ -461,7 +511,8 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                                   builder: (context, snapshot) {
                                                     if (snapshot.hasError) {
                                                       return Text(
-                                                        'Some error occured',
+                                                        snapshot.error
+                                                            .toString(),
                                                         style: TextStyle(
                                                           fontSize:
                                                               width * 0.045,
@@ -562,19 +613,19 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             ),
                             const SizedBox(height: 14),
 
-                            // SPECIAL NOTE
+                            // DESCRIPTION
                             Container(
                               width: width,
-                              height: isChangingSpecialNote
+                              height: isChangingDescription
                                   ? width * 0.2775
                                   : width * 0.175,
                               decoration: BoxDecoration(
                                 color: primary2.withOpacity(0.9),
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              child: isChangingSpecialNote
+                              child: isChangingDescription
                                   ? TextField(
-                                      controller: specialNoteController,
+                                      controller: descriptionController,
                                       maxLength: 32,
                                       autofocus: true,
                                       onTapOutside: (event) =>
@@ -598,7 +649,8 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                           child: SizedBox(
                                             width: width * 0.725,
                                             child: AutoSizeText(
-                                              shopData['Description'] ?? 'N/A',
+                                              shopData['Description'] ??
+                                                  'Description: N/A',
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                 fontSize: width * 0.055,
@@ -615,7 +667,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                               setState(() {
                                                 isChangingName = false;
                                                 isChangingAddress = false;
-                                                isChangingSpecialNote = true;
+                                                isChangingDescription = true;
                                               });
                                             },
                                             icon: const Icon(FeatherIcons.edit),
@@ -643,7 +695,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                 child: SizedBox(
                                   width: width * 0.875,
                                   child: AutoSizeText(
-                                    shopData['Type'] ?? 'N/A',
+                                    shopData['Type'] ?? 'Type: N/A',
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: width * 0.055,
@@ -670,7 +722,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                 child: SizedBox(
                                   width: width * 0.875,
                                   child: AutoSizeText(
-                                    shopData['GSTNumber'] ?? 'N/A',
+                                    shopData['GSTNumber'] ?? 'GST Number: N/A',
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
                                       fontSize: 18,
@@ -697,7 +749,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                 child: SizedBox(
                                   width: width * 0.725,
                                   child: Text(
-                                    shopData['Industry'] ?? 'N/A',
+                                    shopData['Industry'] ?? 'Industry: N/A',
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: width * 0.055,
@@ -776,7 +828,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                               ),
                               child: isChangingName ||
                                       isChangingAddress ||
-                                      isChangingSpecialNote
+                                      isChangingDescription
                                   ? Column(
                                       children: [
                                         isSaving
@@ -816,11 +868,11 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                                       'Address',
                                                       isChangingAddress,
                                                     );
-                                                  } else if (isChangingSpecialNote) {
+                                                  } else if (isChangingDescription) {
                                                     await save(
-                                                      specialNoteController,
+                                                      descriptionController,
                                                       'Description',
-                                                      isChangingSpecialNote,
+                                                      isChangingDescription,
                                                     );
                                                   }
                                                 },

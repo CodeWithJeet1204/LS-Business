@@ -49,7 +49,7 @@ class _ProductPageState extends State<ProductPage> {
   final store = FirebaseFirestore.instance;
   final storage = FirebaseStorage.instance;
   final GlobalKey<FormState> editKey = GlobalKey<FormState>();
-  final TextEditingController editController = TextEditingController();
+  final editController = TextEditingController();
   bool isDiscount = false;
   int _currentIndex = 0;
   bool isEditing = false;
@@ -576,11 +576,9 @@ class _ProductPageState extends State<ProductPage> {
         return AlertDialog(
           title: const Text(
             'Confirm DELETE',
-            overflow: TextOverflow.ellipsis,
           ),
           content: const Text(
             'Are you sure you want to delete this product & all its posts',
-            overflow: TextOverflow.ellipsis,
           ),
           actions: [
             TextButton(

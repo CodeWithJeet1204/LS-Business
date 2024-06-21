@@ -31,7 +31,7 @@ class NumberVerifyPage extends StatefulWidget {
 }
 
 class _NumberVerifyPageState extends State<NumberVerifyPage> {
-  final TextEditingController otpController = TextEditingController();
+  final otpController = TextEditingController();
   bool isOTPVerifying = false;
 
   // DISPOSE
@@ -126,7 +126,6 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                                       .doc(auth.currentUser!.uid)
                                       .set({
                                     'Name': null,
-                                    'Views': null,
                                     'GSTNumber': null,
                                     'Address': null,
                                     'Description': null,

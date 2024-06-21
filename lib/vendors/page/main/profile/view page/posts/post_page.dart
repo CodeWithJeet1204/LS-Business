@@ -131,11 +131,9 @@ class _PostPageState extends State<PostPage> {
       builder: ((context) {
         return AlertDialog(
           title: const Text(
-            overflow: TextOverflow.ellipsis,
             'Confirm DELETE',
           ),
           content: const Text(
-            overflow: TextOverflow.ellipsis,
             'Are you sure you want to delete this Post\nProduct of this post will not be deleted',
           ),
           actions: [

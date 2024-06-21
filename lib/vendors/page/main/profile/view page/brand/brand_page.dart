@@ -331,11 +331,9 @@ class _BrandPageState extends State<BrandPage> {
       builder: ((context) {
         return AlertDialog(
           title: const Text(
-            overflow: TextOverflow.ellipsis,
             'Confirm DELETE',
           ),
           content: const Text(
-            overflow: TextOverflow.ellipsis,
             'Are you sure you want to delete this Brand\nProducts in this brand will be set as \'No Brand\'',
           ),
           actions: [

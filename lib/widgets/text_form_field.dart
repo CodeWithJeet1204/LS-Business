@@ -25,7 +25,7 @@ class MyTextFormField extends StatefulWidget {
   final double verticalPadding;
   final int? maxLines;
   final TextInputType? keyboardType;
-  final TextEditingController controller;
+  final controller;
 
   @override
   State<MyTextFormField> createState() => _MyTextFormFieldState();

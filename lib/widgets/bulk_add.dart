@@ -17,8 +17,8 @@ class BulkAdd extends StatefulWidget {
   });
 
   final double width;
-  final TextEditingController nameController;
-  final TextEditingController priceController;
+  final nameController;
+  final priceController;
   final void Function() onTap;
   final void Function() onRemove;
   final File? image;

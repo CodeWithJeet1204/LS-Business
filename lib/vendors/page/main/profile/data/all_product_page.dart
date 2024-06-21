@@ -114,11 +114,9 @@ class _AllProductsPageState extends State<AllProductsPage> {
       builder: ((context) {
         return AlertDialog(
           title: const Text(
-            overflow: TextOverflow.ellipsis,
             'Confirm DELETE',
           ),
           content: const Text(
-            overflow: TextOverflow.ellipsis,
             'Are you sure you want to delete this product & all its posts',
           ),
           actions: [

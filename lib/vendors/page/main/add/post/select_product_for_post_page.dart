@@ -27,7 +27,7 @@ class SelectProductForPostPage extends StatefulWidget {
 class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
   final store = FirebaseFirestore.instance;
   bool isGridView = true;
-  final TextEditingController searchController = TextEditingController();
+  final searchController = TextEditingController();
   Map<String, Map<String, dynamic>> allProducts = {};
   Map<String, Map<String, dynamic>> currentProducts = {};
   bool isData = false;

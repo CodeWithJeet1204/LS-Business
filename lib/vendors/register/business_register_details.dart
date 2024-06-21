@@ -29,9 +29,9 @@ class _BusinessRegisterDetailsPageState
     extends State<BusinessRegisterDetailsPage> {
   final store = FirebaseFirestore.instance;
   final GlobalKey<FormState> businessFormKey = GlobalKey<FormState>();
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController gstController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
+  final nameController = TextEditingController();
+  final gstController = TextEditingController();
+  final descriptionController = TextEditingController();
   bool isNext = false;
   String? selectedIndustrySegment;
   bool isImageSelected = false;
@@ -153,9 +153,9 @@ class _BusinessRegisterDetailsPageState
             .doc(FirebaseAuth.instance.currentUser!.uid)
             .update({
           'Name': nameController.text.toString(),
-          'Views': 0,
           'Latitude': latitude,
           'Longitude': longitude,
+          'Open': true,
           'viewsTimestamp': [],
           'Followers': [],
           'followersDateTime': [],
@@ -363,7 +363,7 @@ class _BusinessRegisterDetailsPageState
                     ),
                     const SizedBox(height: 20),
 
-                    // SPECIAL NOTE
+                    // DESCRIPTION
                     MyTextFormField(
                       hintText: 'Description',
                       controller: descriptionController,

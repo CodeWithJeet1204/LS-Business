@@ -33,10 +33,10 @@ class EventsRegisterDetailsPage1State
   final FirebaseAuth auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   final GlobalKey<FormState> userFormKey = GlobalKey<FormState>();
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
-  final TextEditingController websiteController = TextEditingController();
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final phoneController = TextEditingController();
+  final websiteController = TextEditingController();
   bool isImageSelected = false;
   File? _image;
   String? type;

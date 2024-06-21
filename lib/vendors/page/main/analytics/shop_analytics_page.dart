@@ -715,9 +715,9 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                   InfoColorBox(
                                     text: 'VIEWS',
                                     width: width,
-                                    property: shopData['Views'],
+                                    property: shopData['viewsTimestamp'].length,
                                     color: const Color.fromARGB(
-                                        255, 163, 255, 166),
+                                        255, 163, 255, 166,),
                                   ),
 
                                   // ALL FOLLOWERS

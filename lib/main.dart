@@ -135,7 +135,7 @@ class MyApp extends StatelessWidget {
               ),
               iconButtonTheme: const IconButtonThemeData(
                 style: ButtonStyle(
-                  iconColor: MaterialStatePropertyAll(
+                  iconColor: WidgetStatePropertyAll(
                     primaryDark,
                   ),
                 ),
