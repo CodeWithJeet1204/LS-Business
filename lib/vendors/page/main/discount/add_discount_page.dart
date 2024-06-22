@@ -1,5 +1,6 @@
 import 'package:feather_icons/feather_icons.dart';
 import 'package:localy/vendors/page/main/discount/brand/brand_discount_page.dart';
+import 'package:localy/vendors/page/main/discount/category/category_discount_page.dart';
 import 'package:localy/vendors/page/main/discount/products/product_discount_page.dart';
 import 'package:localy/vendors/utils/colors.dart';
 import 'package:flutter/material.dart';
@@ -64,19 +65,19 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                   ),
 
                   // CATEGORY
-                  // addBox(
-                  //   context: context,
-                  //   width: width,
-                  //   icon: FeatherIcons.box,
-                  //   label: 'CATEGORY',
-                  //   onTap: () {
-                  //     Navigator.of(context).push(
-                  //       MaterialPageRoute(
-                  //         builder: (context) => const CategoryDiscountPage(),
-                  //       ),
-                  //     );
-                  //   },
-                  // ),
+                  addBox(
+                    context: context,
+                    width: width,
+                    icon: FeatherIcons.box,
+                    label: 'CATEGORY',
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const CategoryDiscountPage(),
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             );

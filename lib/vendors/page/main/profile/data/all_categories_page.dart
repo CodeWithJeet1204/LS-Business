@@ -174,12 +174,12 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                                     width: width,
                                     child: GridView.builder(
                                       shrinkWrap: true,
+                                      physics: const ClampingScrollPhysics(),
                                       gridDelegate:
                                           const SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 2,
                                         childAspectRatio: 0.75,
                                       ),
-                                      physics: const ClampingScrollPhysics(),
                                       itemCount: currentCategories.length,
                                       itemBuilder: ((context, index) {
                                         final name = currentCategories.keys

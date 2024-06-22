@@ -165,6 +165,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
         throw Exception('Failed to load data');
       }
     } catch (e) {
+      print(e.toString());
       throw Exception(e.toString());
     }
   }
@@ -235,6 +236,8 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
     final shopStream = store
         .collection('Business')
         .doc('Owners')
@@ -253,7 +256,8 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * 0.025,
+            horizontal: width * 0.025,
+            vertical: width * 0.006125,
           ),
           child: LayoutBuilder(
             builder: ((context, constraints) {
@@ -761,6 +765,57 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             ),
                             const SizedBox(height: 14),
 
+                            // OPEN / CLOSED
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 2,
+                                ),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: shopData['Open']
+                                        ? Colors.green.shade50
+                                        : Colors.red.shade50,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: width * 0.025,
+                                    vertical: 4,
+                                  ),
+                                  child: DropdownButton(
+                                    value: shopData['Open'] ? "Open" : "Closed",
+                                    hint: const Text(
+                                      'Open / Closed',
+                                      style: TextStyle(
+                                        color: primaryDark2,
+                                      ),
+                                    ),
+                                    underline: const SizedBox(),
+                                    iconEnabledColor: primaryDark,
+                                    dropdownColor: primary2,
+                                    items: ['Open', 'Closed']
+                                        .map((e) => DropdownMenuItem(
+                                              value: e,
+                                              child: Text(e),
+                                            ))
+                                        .toList(),
+                                    onChanged: (value) async {
+                                      await store
+                                          .collection('Business')
+                                          .doc('Owners')
+                                          .collection('Shops')
+                                          .doc(auth.currentUser!.uid)
+                                          .update({
+                                        'Open': value == "Open" ? true : false,
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+
                             // MEMBERSHIP
                             Container(
                               width: width,
@@ -817,7 +872,6 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                 ),
                               ),
                             ),
-
                             const SizedBox(height: 18),
 
                             // SAVE & CANCEL BUTTON

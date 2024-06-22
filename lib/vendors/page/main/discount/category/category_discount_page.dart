@@ -102,8 +102,10 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
   }
 
   // ADD DISCOUNT
-  Future<void> addDiscount(SelectCategoryForDiscountProvider provider,
-      List<String> categoryIdList) async {
+  Future<void> addDiscount(
+    SelectCategoryForDiscountProvider provider,
+    List<String> categoryNameList,
+  ) async {
     // End date should be after start date
     if (discountKey.currentState!.validate()) {
       if (startDate == null) {
@@ -140,15 +142,25 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
           });
         }
 
-        for (String id in categoryIdList) {
+        final vendorSnap = await store
+            .collection('Business')
+            .doc('Owners')
+            .collection('Shops')
+            .doc(auth.currentUser!.uid)
+            .get();
+
+        final vendorData = vendorSnap.data()!;
+
+        final type = vendorData['Type'];
+
+        for (String categoryName in categoryNameList) {
           await store
               .collection('Business')
-              .doc('Data')
-              .collection('Category')
-              .doc(id)
+              .doc('Special Categories')
+              .collection(type)
+              .doc(categoryName)
               .update({
             'discountId': discountId,
-            'discountEndDate': endDate,
           });
         }
 
@@ -164,14 +176,12 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
           'isBrands': false,
           'discountName': nameController.text.toString(),
           'discountAmount': double.parse(discountController.text),
-          'discountStartDate': startDate,
-          'discountEndDate': endDate,
           'discountStartDateTime': startDateTime,
           'discountEndDateTime': endDateTime,
           'discountId': discountId,
           'discountImageUrl': imageUrl,
           'products': [],
-          'categories': categoryIdList,
+          'categories': categoryNameList,
           'brands': [],
           'vendorId': auth.currentUser!.uid,
         });
@@ -241,7 +251,6 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                   children: [
                     // DISCLAIMER
                     const Text(
-                      overflow: TextOverflow.ellipsis,
                       'If your category has ongoing discount, then this discount will be applied, after that discount ends (if this discount ends after that)',
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -253,7 +262,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                     const SizedBox(height: 8),
 
                     // IMAGE
-                    GestureDetector(
+                    InkWell(
                       onTap: _image == null
                           ? () async {
                               await addDiscountImage();
@@ -280,7 +289,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                   ),
                                   Text(
                                     overflow: TextOverflow.ellipsis,
-                                    'Select IMAGE',
+                                    'SELECT IMAGE',
                                     style: TextStyle(
                                       color: primaryDark,
                                       fontSize: width * 0.08,
@@ -581,7 +590,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     color: !isPercentSelected
-                                        ? white
+                                        ? primaryDark.withOpacity(0.33)
                                         : primaryDark.withOpacity(0.9),
                                     fontSize: width * 0.055,
                                     fontWeight: isPercentSelected

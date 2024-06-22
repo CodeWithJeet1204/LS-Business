@@ -15,9 +15,10 @@ Widget addBox({
     decoration: BoxDecoration(
       gradient: LinearGradient(
         colors: [
-          Color.fromRGBO(227, 242, 253, 1),
           Color.fromRGBO(194, 236, 255, 1),
-          Color.fromRGBO(255, 235, 238, 1),
+          Color.fromRGBO(227, 242, 253, 1),
+          Color.fromRGBO(241, 249, 255, 1),
+          Color.fromRGBO(255, 241, 244, 1),
         ],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,

@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:localy/vendors/provider/discount_category_provider.dart';
@@ -19,24 +18,64 @@ class SelectCategoryForDiscountPage extends StatefulWidget {
 
 class _SelectCategoryForDiscountPageState
     extends State<SelectCategoryForDiscountPage> {
-  bool isGridView = true;
+  final auth = FirebaseAuth.instance;
+  final store = FirebaseFirestore.instance;
+  Map<String, dynamic> allCategories = {};
+  Map<String, dynamic> currentCategories = {};
   String? searchedCategory;
+  bool isGridView = true;
+  bool isData = false;
+
+  // INIT STATE
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  // GET DATA
+  Future<void> getData() async {
+    Map<String, dynamic> myCategories = {};
+
+    final vendorSnap = await store
+        .collection('Business')
+        .doc('Owners')
+        .collection('Shops')
+        .doc(auth.currentUser!.uid)
+        .get();
+
+    final vendorData = vendorSnap.data()!;
+
+    final type = vendorData['Type'];
+
+    final categorySnap = await store
+        .collection('Business')
+        .doc('Special Categories')
+        .collection(type)
+        .get();
+
+    categorySnap.docs.forEach((category) {
+      final categoryData = category.data();
+
+      final categoryName = categoryData['specialCategoryName'];
+      final imageUrl = categoryData['specialCategoryImageUrl'];
+
+      myCategories[categoryName] = imageUrl;
+    });
+
+    setState(() {
+      allCategories = myCategories;
+      currentCategories = myCategories;
+      isData = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
     final selectCategoryProvider =
         Provider.of<SelectCategoryForDiscountProvider>(context);
-
-    final Stream<QuerySnapshot> allCategoryStream = FirebaseFirestore.instance
-        .collection('Business')
-        .doc('Data')
-        .collection('Category')
-        .where(
-          'vendorId',
-          isEqualTo: FirebaseAuth.instance.currentUser!.uid,
-        )
-        .orderBy('datetime', descending: true)
-        .snapshots();
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -77,7 +116,33 @@ class _SelectCategoryForDiscountPageState
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
-                      searchedCategory = value;
+                      if (value.isEmpty) {
+                        currentCategories =
+                            Map<String, Map<String, dynamic>>.from(
+                          allCategories,
+                        );
+                      } else {
+                        Map<String, Map<String, dynamic>> filteredCategories =
+                            Map<String, Map<String, dynamic>>.from(
+                          allCategories,
+                        );
+                        List<String> keysToRemove = [];
+
+                        filteredCategories.forEach((key, categoryData) {
+                          if (!key
+                              .toString()
+                              .toLowerCase()
+                              .contains(value.toLowerCase().trim())) {
+                            keysToRemove.add(key);
+                          }
+                        });
+
+                        for (var key in keysToRemove) {
+                          filteredCategories.remove(key);
+                        }
+
+                        currentCategories = filteredCategories;
+                      }
                     },
                   ),
                 ),
@@ -97,275 +162,259 @@ class _SelectCategoryForDiscountPageState
           ),
         ),
       ),
-      body: LayoutBuilder(
-        builder: ((context, constraints) {
-          final double width = constraints.maxWidth;
-
-          return StreamBuilder(
-            stream: allCategoryStream,
-            builder: ((context, snapshot) {
-              if (snapshot.hasError) {
-                return const Center(
-                  child: Text(
-                    overflow: TextOverflow.ellipsis,
-                    'Something went wrong',
-                  ),
-                );
-              }
-
-              if (snapshot.hasData) {
-                return SafeArea(
-                  child: isGridView
-                      ? GridView.builder(
-                          shrinkWrap: true,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 0,
-                            mainAxisSpacing: 0,
-                            childAspectRatio: width * 0.5 / width * 1.725,
+      body: !isData
+          ? SafeArea(
+              child: isGridView
+                  ? GridView.builder(
+                      shrinkWrap: true,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 0,
+                        mainAxisSpacing: 0,
+                        childAspectRatio: width * 0.5 / width * 1.6,
+                      ),
+                      itemCount: 4,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.all(
+                            width * 0.02,
                           ),
-                          itemCount: snapshot.data!.docs.length,
-                          itemBuilder: (context, index) {
-                            final categoryData = snapshot.data!.docs[index];
-                            final categoryDataMap =
-                                categoryData.data() as Map<String, dynamic>;
+                          child: GridViewSkeleton(
+                            width: width,
+                            isPrice: false,
+                          ),
+                        );
+                      },
+                    )
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: 4,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.all(
+                            width * 0.02,
+                          ),
+                          child: ListViewSkeleton(
+                            width: width,
+                            isPrice: false,
+                            height: 30,
+                          ),
+                        );
+                      },
+                    ),
+            )
+          : SafeArea(
+              child: Padding(
+                padding: EdgeInsets.all(width * 0.0125),
+                child: LayoutBuilder(
+                  builder: ((context, constraints) {
+                    final double width = constraints.maxWidth;
 
-                            // CARD
-                            return Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: GestureDetector(
-                                onTap: () {
-                                  selectCategoryProvider.selectCategory(
-                                    categoryDataMap['categoryName'],
-                                  );
-                                },
-                                child: Stack(
-                                  alignment: Alignment.topRight,
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: primary2.withOpacity(0.5),
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(4),
+                    return SafeArea(
+                      child: isGridView
+                          ? GridView.builder(
+                              shrinkWrap: true,
+                              physics: ClampingScrollPhysics(),
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 0,
+                                mainAxisSpacing: 0,
+                                childAspectRatio: 0.75,
+                              ),
+                              itemCount: currentCategories.length,
+                              itemBuilder: (context, index) {
+                                final categoryName =
+                                    currentCategories.keys.toList()[index];
+                                final categoryImageUrl =
+                                    currentCategories.values.toList()[index];
+
+                                return GestureDetector(
+                                  onTap: () {
+                                    selectCategoryProvider.selectCategory(
+                                      categoryName,
+                                    );
+                                  },
+                                  child: Stack(
+                                    alignment: Alignment.topRight,
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: primary2.withOpacity(0.125),
+                                          border: Border.all(
+                                            width: 0.25,
+                                            color: primaryDark,
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            2,
+                                          ),
+                                        ),
+                                        margin: EdgeInsets.all(width * 0.00625),
                                         child: Column(
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                              CrossAxisAlignment.center,
                                           children: [
-                                            const SizedBox(height: 2),
-                                            CachedNetworkImage(
-                                              imageUrl:
-                                                  categoryData['imageUrl'],
-                                              imageBuilder:
-                                                  (context, imageProvider) {
-                                                return Center(
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                      12,
-                                                    ),
-                                                    child: Container(
-                                                      width: width * 0.4,
-                                                      height: width * 0.4,
-                                                      decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                          image: imageProvider,
-                                                          fit: BoxFit.cover,
+                                            Padding(
+                                              padding: EdgeInsets.all(
+                                                width * 0.0125,
+                                              ),
+                                              child: Center(
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    2,
+                                                  ),
+                                                  child: Container(
+                                                    width: width * 0.5,
+                                                    height: width * 0.5,
+                                                    decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                        image: NetworkImage(
+                                                          categoryImageUrl,
                                                         ),
+                                                        fit: BoxFit.cover,
                                                       ),
                                                     ),
                                                   ),
-                                                );
-                                              },
+                                                ),
+                                              ),
                                             ),
                                             Padding(
-                                              padding: EdgeInsets.fromLTRB(
-                                                width * 0.025,
-                                                width * 0.0125,
-                                                width * 0.0125,
-                                                0,
+                                              padding: EdgeInsets.symmetric(
+                                                vertical: width * 0.0125,
                                               ),
-                                              child: Text(
-                                                categoryData['categoryName'],
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 1,
-                                                style: TextStyle(
-                                                  fontSize: width * 0.06,
-                                                  fontWeight: FontWeight.bold,
+                                              child: SizedBox(
+                                                width: width * 0.5,
+                                                child: Text(
+                                                  categoryName,
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontSize: width * 0.06,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ],
                                         ),
                                       ),
-                                    ),
-                                    selectCategoryProvider.selectedCategories
-                                            .contains(
-                                      categoryDataMap['categoryName'],
-                                    )
-                                        ? Container(
-                                            margin: EdgeInsets.all(
-                                              width * 0.01,
-                                            ),
-                                            padding: const EdgeInsets.all(2),
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: primaryDark2,
-                                            ),
-                                            child: Icon(
-                                              Icons.check,
-                                              color: Colors.white,
-                                              size: width * 0.1,
-                                            ),
-                                          )
-                                        : Container()
-                                  ],
-                                ),
-                              ),
-                            );
-                          })
-                      : SizedBox(
-                          width: width,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: snapshot.data!.docs.length,
-                            itemBuilder: ((context, index) {
-                              final categoryData = snapshot.data!.docs[index];
-                              final categoryDataMap =
-                                  categoryData.data() as Map<String, dynamic>;
-                              return Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: width * 0.0166,
-                                  vertical: width * 0.0225,
-                                ),
-                                child: Stack(
-                                  alignment: Alignment.centerRight,
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: primary2.withOpacity(0.5),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: ListTile(
-                                        onTap: () {
-                                          selectCategoryProvider.selectCategory(
-                                            categoryDataMap['categoryName'],
-                                          );
-                                        },
-                                        leading: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                            vertical: width * 0.0125,
-                                          ),
-                                          child: CachedNetworkImage(
-                                            imageUrl: categoryData['imageUrl'],
-                                            imageBuilder:
-                                                (context, imageProvider) {
-                                              return ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                  4,
-                                                ),
-                                                child: Container(
-                                                  width: width * 0.155,
-                                                  height: width * 0.166,
-                                                  decoration: BoxDecoration(
-                                                    image: DecorationImage(
-                                                      image: imageProvider,
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                        title: Text(
-                                          categoryData['categoryName'],
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: width * 0.055,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    selectCategoryProvider.selectedCategories
-                                            .contains(
-                                      categoryDataMap['categoryName'],
-                                    )
-                                        ? Padding(
-                                            padding: EdgeInsets.only(
-                                              right: width * 0.025,
-                                            ),
-                                            child: Container(
+                                      selectCategoryProvider.selectedCategories
+                                              .contains(
+                                        categoryName,
+                                      )
+                                          ? Container(
+                                              margin: EdgeInsets.all(
+                                                width * 0.01,
+                                              ),
                                               padding: const EdgeInsets.all(2),
                                               decoration: const BoxDecoration(
                                                 shape: BoxShape.circle,
                                                 color: primaryDark2,
                                               ),
                                               child: Icon(
-                                                FeatherIcons.check,
+                                                Icons.check,
                                                 color: Colors.white,
                                                 size: width * 0.1,
                                               ),
-                                            ),
-                                          )
-                                        : Container()
-                                  ],
-                                ),
-                              );
-                            }),
-                          ),
-                        ),
-                );
-              }
+                                            )
+                                          : Container()
+                                    ],
+                                  ),
+                                );
+                              })
+                          : SizedBox(
+                              width: width,
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                physics: ClampingScrollPhysics(),
+                                itemCount: currentCategories.length,
+                                itemBuilder: ((context, index) {
+                                  final categoryName =
+                                      currentCategories.keys.toList()[index];
+                                  final categoryImageUrl =
+                                      currentCategories.values.toList()[index];
 
-              return SafeArea(
-                child: isGridView
-                    ? GridView.builder(
-                        shrinkWrap: true,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 0,
-                          mainAxisSpacing: 0,
-                          childAspectRatio: width * 0.5 / width * 1.6,
-                        ),
-                        itemCount: 4,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.all(
-                              width * 0.02,
+                                  return Stack(
+                                    alignment: Alignment.centerRight,
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: white,
+                                          border: Border.all(
+                                            width: 0.5,
+                                            color: primaryDark,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(2),
+                                        ),
+                                        margin: EdgeInsets.all(
+                                          width * 0.0125,
+                                        ),
+                                        child: ListTile(
+                                          visualDensity: VisualDensity.standard,
+                                          onTap: () {
+                                            selectCategoryProvider
+                                                .selectCategory(
+                                              categoryName,
+                                            );
+                                          },
+                                          leading: ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              2,
+                                            ),
+                                            child: Image.network(
+                                              categoryImageUrl,
+                                              width: width * 0.15,
+                                              height: width * 0.15,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          title: Text(
+                                            categoryName,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: width * 0.05,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      selectCategoryProvider.selectedCategories
+                                              .contains(
+                                        categoryName,
+                                      )
+                                          ? Padding(
+                                              padding: EdgeInsets.only(
+                                                right: width * 0.025,
+                                              ),
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.all(2),
+                                                decoration: const BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: primaryDark2,
+                                                ),
+                                                child: Icon(
+                                                  FeatherIcons.check,
+                                                  color: Colors.white,
+                                                  size: width * 0.1,
+                                                ),
+                                              ),
+                                            )
+                                          : Container()
+                                    ],
+                                  );
+                                }),
+                              ),
                             ),
-                            child: GridViewSkeleton(
-                              width: width,
-                              isPrice: false,
-                            ),
-                          );
-                        },
-                      )
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: 4,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.all(
-                              width * 0.02,
-                            ),
-                            child: ListViewSkeleton(
-                              width: width,
-                              isPrice: false,
-                              height: 30,
-                            ),
-                          );
-                        },
-                      ),
-              );
-            }),
-          );
-        }),
-      ),
+                    );
+                  }),
+                ),
+              ),
+            ),
     );
   }
 }

@@ -100,12 +100,12 @@ class _CategoryWithDiscountPageState extends State<CategoryWithDiscountPage> {
       } else {
         return []; // Return an empty list if categories data is not present or not of the correct type
       }
-    }).switchMap((categoryIds) => Rx.combineLatest(
-              categoryIds.map((categoryId) => store
+    }).switchMap((categoryNames) => Rx.combineLatest(
+              categoryNames.map((categoryName) => store
                   .collection('Business')
                   .doc('Data')
                   .collection('Category')
-                  .doc(categoryId)
+                  .doc(categoryName)
                   .snapshots()),
               (List<DocumentSnapshot<Map<String, dynamic>>> snapshots) =>
                   snapshots

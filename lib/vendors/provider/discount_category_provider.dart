@@ -5,11 +5,11 @@ class SelectCategoryForDiscountProvider with ChangeNotifier {
 
   List<String> get selectedCategories => _selectedCategories;
 
-  void selectCategory(String id) {
-    if (_selectedCategories.contains(id)) {
-      _selectedCategories.remove(id);
+  void selectCategory(String name) {
+    if (_selectedCategories.contains(name)) {
+      _selectedCategories.remove(name);
     } else {
-      _selectedCategories.add(id);
+      _selectedCategories.add(name);
     }
 
     notifyListeners();

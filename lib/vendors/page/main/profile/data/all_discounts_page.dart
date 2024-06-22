@@ -94,6 +94,12 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
               onPressed: () async {
                 Navigator.of(context).pop();
                 await delete(discountId, imageUrl);
+                if (mounted) {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => AllDiscountPage()),
+                  );
+                }
               },
               child: const Text(
                 'YES',
@@ -142,13 +148,13 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
         ),
         bottom: PreferredSize(
           preferredSize: Size(
-            MediaQuery.of(context).size.width,
-            MediaQuery.of(context).size.width * 0.2,
+            width,
+            width * 0.2,
           ),
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.0166,
-              vertical: MediaQuery.of(context).size.width * 0.0225,
+              horizontal: width * 0.0166,
+              vertical: width * 0.0225,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -269,6 +275,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                         return isGridView
                             ? GridView.builder(
                                 shrinkWrap: true,
+                                physics: ClampingScrollPhysics(),
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 1,
@@ -543,6 +550,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                 width: width,
                                 child: ListView.builder(
                                   shrinkWrap: true,
+                                  physics: ClampingScrollPhysics(),
                                   itemCount: currentDiscounts.length,
                                   itemBuilder: ((context, index) {
                                     final discountData = currentDiscounts[
@@ -577,31 +585,6 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                         ),
                                         child: ListTile(
                                           visualDensity: VisualDensity.standard,
-                                          // leading: CachedNetworkImage(
-                                          //   imageUrl:
-                                          //       discountData['discountImageUrl'],
-                                          //   imageBuilder: (context, imageProvider) {
-                                          //     return Padding(
-                                          //       padding: EdgeInsets.symmetric(
-                                          //         vertical: width * 0.0125,
-                                          //       ),
-                                          //       child: ClipRRect(
-                                          //         borderRadius:
-                                          //             BorderRadius.circular(4),
-                                          //         child: Container(
-                                          //           width: width * 0.2366,
-                                          //           height: width * 0.1566,
-                                          //           decoration: BoxDecoration(
-                                          //             image: DecorationImage(
-                                          //               image: imageProvider,
-                                          //               fit: BoxFit.cover,
-                                          //             ),
-                                          //           ),
-                                          //         ),
-                                          //       ),
-                                          //     );
-                                          //   },
-                                          // ),
                                           leading: discountData[
                                                       'discountImageUrl'] !=
                                                   null
@@ -646,9 +629,9 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                           ),
 
                                           // DISCOUNT &  TIME
-                                          subtitle: Column(
+                                          subtitle: Row(
                                             crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                                CrossAxisAlignment.center,
                                             children: [
                                               // DISCOUNT
                                               Padding(
@@ -676,13 +659,14 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                               ),
 
                                               // DIVIDER
-                                              // const Text(
-                                              //   overflow: TextOverflow.ellipsis,
-                                              //   '  ●  ',
-                                              //   style: TextStyle(
-                                              //     fontWeight: FontWeight.w100,
-                                              //   ),
-                                              // ),
+                                              const Text(
+                                                overflow: TextOverflow.ellipsis,
+                                                ' ● ',
+                                                style: TextStyle(
+                                                  color: primaryDark2,
+                                                  fontWeight: FontWeight.w100,
+                                                ),
+                                              ),
 
                                               // TIME
                                               Padding(
@@ -742,8 +726,8 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
 
                                           // DELETE
                                           trailing: IconButton(
-                                            onPressed: () {
-                                              confirmDelete(
+                                            onPressed: () async {
+                                              await confirmDelete(
                                                 discountData['discountId'],
                                                 discountData[
                                                     'discountImageUrl'],

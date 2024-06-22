@@ -13,11 +13,9 @@ class SelectProductsForCategoryPage extends StatefulWidget {
   const SelectProductsForCategoryPage({
     super.key,
     required this.fromAddCategoryPage,
-    this.categoryId,
     this.categoryName,
   });
 
-  final String? categoryId;
   final String? categoryName;
   final bool fromAddCategoryPage;
 

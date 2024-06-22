@@ -459,6 +459,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                 width: width,
                                 child: ListView.builder(
                                   shrinkWrap: true,
+                                  physics: const ClampingScrollPhysics(),
                                   itemCount: currentBrands.length,
                                   itemBuilder: ((context, index) {
                                     final brandData = currentBrands[

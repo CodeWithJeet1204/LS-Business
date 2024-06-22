@@ -165,7 +165,6 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
               .doc(id)
               .update({
             'discountId': discountId,
-            'discountEndDate': endDate,
           });
         }
 
@@ -181,8 +180,6 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
           'isBrands': false,
           'discountName': nameController.text.toString(),
           'discountAmount': double.parse(discountController.text),
-          'discountStartDate': startDate,
-          'discountEndDate': endDate,
           'discountStartDateTime': startDateTime,
           'discountEndDateTime': endDateTime,
           'discountId': discountId,
@@ -280,7 +277,6 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                   children: [
                     // DISCLAIMER
                     Text(
-                      overflow: TextOverflow.ellipsis,
                       'If your selected product/s has ongoing discount, then this discount will be applied, after that discount ends (if this discount ends after that)',
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -629,7 +625,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     color: !isPercentSelected
-                                        ? white
+                                        ? primaryDark.withOpacity(0.33)
                                         : primaryDark.withOpacity(0.9),
                                     fontSize: width * 0.055,
                                     fontWeight: isPercentSelected

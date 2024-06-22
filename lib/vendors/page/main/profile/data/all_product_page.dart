@@ -294,6 +294,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                         return isGridView
                             ? GridView.builder(
                                 shrinkWrap: true,
+                                physics: ClampingScrollPhysics(),
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
@@ -438,6 +439,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                 width: width,
                                 child: ListView.builder(
                                     shrinkWrap: true,
+                                    physics: ClampingScrollPhysics(),
                                     itemCount: currentProducts.length,
                                     itemBuilder: (context, index) {
                                       final productData = currentProducts[

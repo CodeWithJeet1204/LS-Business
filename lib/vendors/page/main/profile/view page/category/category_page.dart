@@ -583,7 +583,6 @@ class _CategoryPageState extends State<CategoryPage> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: ((context) => SelectProductsForCategoryPage(
-                              categoryId: widget.categoryName,
                               categoryName: widget.categoryName,
                               fromAddCategoryPage: false,
                             )),

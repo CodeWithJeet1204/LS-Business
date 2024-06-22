@@ -658,6 +658,7 @@ class _ProductPageState extends State<ProductPage> {
         category.add(imageUrl);
         category.add(shopType);
       });
+      print("Category info: $category");
     }
   }
 
@@ -780,21 +781,20 @@ class _ProductPageState extends State<ProductPage> {
       }
 
       // categories
-      // if (data['isCategories'] &&
-      //     (data['categories'] as List).contains(widget.categoryName)) {
-      //   // Check if the discount is active
-      //   if ((data['discountEndDateTime'] as Timestamp)
-      //           .toDate()
-      //           .isAfter(DateTime.now()) &&
-      //       !(data['discountStartDateTime'] as Timestamp)
-      //           .toDate()
-      //           .isAfter(DateTime.now())) {
-      //     setState(() {
-      //       isDiscount = true;
-      //     });
-      //     return;
-      //   }
-      // }
+      if (data['isCategories'] &&
+          (data['categories'] as List).contains(widget.categoryName)) {
+        if ((data['discountEndDateTime'] as Timestamp)
+                .toDate()
+                .isAfter(DateTime.now()) &&
+            !(data['discountStartDateTime'] as Timestamp)
+                .toDate()
+                .isAfter(DateTime.now())) {
+          setState(() {
+            isDiscount = true;
+          });
+          return;
+        }
+      }
     }
   }
 
@@ -1706,8 +1706,9 @@ class _ProductPageState extends State<ProductPage> {
                           const Divider(),
 
                           // CATEGORY
-                          category.isNotEmpty
-                              ? Padding(
+                          category.isEmpty
+                              ? Container()
+                              : Padding(
                                   padding: EdgeInsets.symmetric(
                                     vertical: width * 0.0166,
                                     horizontal: width * 0.0166,
@@ -1821,40 +1822,7 @@ class _ProductPageState extends State<ProductPage> {
                                       ],
                                     ),
                                   ),
-                                )
-                              : Container(
-                                  // width: width,
-                                  // height: width * 0.2,
-                                  // alignment: Alignment.center,
-                                  // padding: EdgeInsets.all(width * 0.0225),
-                                  // decoration: BoxDecoration(
-                                  //   color: Colors.grey.shade200,
-                                  //   borderRadius: BorderRadius.circular(12),
-                                  // ),
-                                  // child: Row(
-                                  //   mainAxisAlignment:
-                                  //       MainAxisAlignment.spaceBetween,
-                                  //   children: [
-                                  //     Row(
-                                  //       children: [
-                                  //         SkeletonContainer(
-                                  //           width: width * 0.15,
-                                  //           height: width * 0.15,
-                                  //         ),
-                                  //         SizedBox(width: width * 0.0225),
-                                  //         SkeletonContainer(
-                                  //           width: width * 0.3,
-                                  //           height: width * 0.05,
-                                  //         ),
-                                  //       ],
-                                  //     ),
-                                  //     SkeletonContainer(
-                                  //       width: width * 0.1,
-                                  //       height: width * 0.1,
-                                  //     ),
-                                  //   ],
-                                  // ),
-                                  ),
+                                ),
 
                           const Divider(),
 
@@ -1992,7 +1960,14 @@ class _ProductPageState extends State<ProductPage> {
                                 )
                               : Container(),
 
-                          const Divider(),
+                          propertyName0 != '' ||
+                                  propertyName1 != '' ||
+                                  propertyName2 != '' ||
+                                  propertyName3 != '' ||
+                                  propertyName4 != '' ||
+                                  propertyName5 != ''
+                              ? const Divider()
+                              : Container(),
 
                           // TAGS
                           InfoEditBox(

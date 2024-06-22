@@ -123,12 +123,12 @@ class EventsAllEventsPageState extends State<EventsAllEventsPage> {
                                 width: width,
                                 child: GridView.builder(
                                   shrinkWrap: true,
+                                  physics: const ClampingScrollPhysics(),
                                   gridDelegate:
                                       const SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
                                     childAspectRatio: 0.75,
                                   ),
-                                  physics: const ClampingScrollPhysics(),
                                   itemCount: events.length,
                                   itemBuilder: ((context, index) {
                                     final id = events.keys.toList()[index];
@@ -219,16 +219,26 @@ class EventsAllEventsPageState extends State<EventsAllEventsPage> {
                                     width: width,
                                     child: ListView.builder(
                                       shrinkWrap: true,
-                                      itemCount: events.length,
                                       physics: const ClampingScrollPhysics(),
+                                      itemCount: events.length,
                                       itemBuilder: ((context, index) {
+                                        final id = events.keys.toList()[index];
                                         final name =
                                             events.keys.toList()[index];
                                         final imageUrl =
                                             events.values.toList()[index];
 
                                         return GestureDetector(
-                                          onTap: () {},
+                                          onTap: () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: ((context) =>
+                                                    EventPage(
+                                                      eventId: id,
+                                                    )),
+                                              ),
+                                            );
+                                          },
                                           child: Container(
                                             decoration: BoxDecoration(
                                               color: white,
