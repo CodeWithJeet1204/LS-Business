@@ -778,7 +778,7 @@ class _BrandPageState extends State<BrandPage> {
 
                       // PRODUCTS IN BRAND
                       ExpansionTile(
-                        initiallyExpanded: false,
+                        initiallyExpanded: true,
                         tilePadding: const EdgeInsets.symmetric(horizontal: 8),
                         backgroundColor: primary2.withOpacity(0.25),
                         collapsedBackgroundColor: primary2.withOpacity(0.33),

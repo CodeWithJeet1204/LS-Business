@@ -7,6 +7,7 @@ import 'package:localy/services/main/services_main_page.dart';
 import 'package:localy/vendors/firebase/auth_methods.dart';
 import 'package:localy/vendors/page/main/main_page.dart';
 import 'package:localy/auth/register_pay.dart';
+import 'package:localy/vendors/register/forgot_password_page.dart';
 import 'package:localy/vendors/utils/colors.dart';
 import 'package:localy/widgets/button.dart';
 import 'package:localy/widgets/collapse_container.dart';
@@ -548,6 +549,26 @@ class _LoginPageState extends State<LoginPage> {
                           horizontalPadding: width * 0.066,
                           isPassword: true,
                           autoFillHints: const [AutofillHints.password],
+                        ),
+                        const SizedBox(height: 8),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              left: width * 0.05,
+                            ),
+                            child: MyTextButton(
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ForgotPasswordPage()),
+                                );
+                              },
+                              text: 'Forgot Password?',
+                              textColor: primaryDark2,
+                            ),
+                          ),
                         ),
                         const SizedBox(height: 8),
                         MyButton(
