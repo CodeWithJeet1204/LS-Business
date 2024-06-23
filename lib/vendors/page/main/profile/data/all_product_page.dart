@@ -424,6 +424,14 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                                   await confirmDelete(
                                                     productData['productId'],
                                                   );
+                                                  if (context.mounted) {
+                                                    Navigator.of(context).pop();
+                                                    Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              AllProductsPage()),
+                                                    );
+                                                  }
                                                 },
                                                 icon: Icon(
                                                   FeatherIcons.trash,
@@ -543,6 +551,14 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                                 await confirmDelete(
                                                   productData['productId'],
                                                 );
+                                                if (context.mounted) {
+                                                  Navigator.of(context).pop();
+                                                  Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            AllProductsPage()),
+                                                  );
+                                                }
                                               },
                                               icon: Icon(
                                                 FeatherIcons.trash,

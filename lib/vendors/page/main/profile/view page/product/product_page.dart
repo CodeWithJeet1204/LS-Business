@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:localy/vendors/page/main/analytics/analytics_page.dart';
 import 'package:localy/vendors/page/main/discount/products/product_discount_page.dart';
+import 'package:localy/vendors/page/main/profile/data/all_product_page.dart';
 import 'package:localy/vendors/page/main/profile/view%20page/category/category_page.dart';
 import 'package:localy/vendors/page/main/profile/view%20page/product/select_category_for_product_page.dart.dart';
 import 'package:localy/vendors/page/main/profile/view%20page/product/image_view.dart';
@@ -881,6 +882,13 @@ class _ProductPageState extends State<ProductPage> {
           IconButton(
             onPressed: () async {
               await confirmDelete();
+              if (mounted) {
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => AllProductsPage()),
+                );
+              }
             },
             icon: const Icon(
               FeatherIcons.trash,

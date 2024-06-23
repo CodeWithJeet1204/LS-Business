@@ -153,12 +153,12 @@ class _CategoryPageState extends State<CategoryPage> {
         return AlertDialog(
           title: Text(
             'Remove $productName',
-            maxLines: 1,
+            maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
           content: Text(
             'Are you sure you want to remove \'$productName\'\nfrom $categoryName',
-            maxLines: 1,
+            maxLines: 3,
             overflow: TextOverflow.ellipsis,
           ),
           actions: [
@@ -182,6 +182,14 @@ class _CategoryPageState extends State<CategoryPage> {
                   });
                   if (context.mounted) {
                     Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => CategoryPage(
+                          categoryName: widget.categoryName,
+                        ),
+                      ),
+                    );
                   }
                 } catch (e) {
                   if (context.mounted) {
@@ -598,7 +606,8 @@ class _CategoryPageState extends State<CategoryPage> {
                                                       ),
                                                       borderRadius:
                                                           BorderRadius.circular(
-                                                              2),
+                                                        2,
+                                                      ),
                                                     ),
                                                     padding: EdgeInsets.all(
                                                       width * 0.00625,
@@ -677,13 +686,16 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                   ),
                                                                 ),
                                                                 Padding(
-                                                                  padding: EdgeInsets.fromLTRB(
-                                                                      width *
-                                                                          0.025,
-                                                                      0,
-                                                                      width *
-                                                                          0.0125,
-                                                                      0),
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .fromLTRB(
+                                                                    width *
+                                                                        0.025,
+                                                                    0,
+                                                                    width *
+                                                                        0.0125,
+                                                                    0,
+                                                                  ),
                                                                   child:
                                                                       SizedBox(
                                                                     width:
@@ -692,7 +704,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                     child: Text(
                                                                       price != '' &&
                                                                               price != null
-                                                                          ? price
+                                                                          ? 'Rs. $price'
                                                                           : 'N/A',
                                                                       overflow:
                                                                           TextOverflow
@@ -723,14 +735,14 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                 );
                                                               },
                                                               icon: Icon(
-                                                                FeatherIcons
-                                                                    .trash,
+                                                                FeatherIcons.x,
                                                                 color: const Color
                                                                     .fromRGBO(
-                                                                    215,
-                                                                    14,
-                                                                    0,
-                                                                    1),
+                                                                  215,
+                                                                  14,
+                                                                  0,
+                                                                  1,
+                                                                ),
                                                                 size: width *
                                                                     0.075,
                                                               ),
@@ -785,11 +797,17 @@ class _CategoryPageState extends State<CategoryPage> {
                                                     },
                                                     child: Container(
                                                       decoration: BoxDecoration(
-                                                        color: primary2
-                                                            .withOpacity(0.5),
+                                                        color: white,
+                                                        border: Border.all(
+                                                          width: 0.5,
+                                                          color: primaryDark,
+                                                        ),
                                                         borderRadius:
                                                             BorderRadius
-                                                                .circular(8),
+                                                                .circular(2),
+                                                      ),
+                                                      margin: EdgeInsets.all(
+                                                        width * 0.0125,
                                                       ),
                                                       child: ListTile(
                                                         leading: ClipRRect(
@@ -821,7 +839,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                                         subtitle: Text(
                                                           price != '' &&
                                                                   price != null
-                                                              ? price
+                                                              ? 'Rs. $price'
                                                               : 'N/A',
                                                           overflow: TextOverflow
                                                               .ellipsis,
@@ -842,10 +860,14 @@ class _CategoryPageState extends State<CategoryPage> {
                                                             );
                                                           },
                                                           icon: Icon(
-                                                            FeatherIcons.trash,
+                                                            FeatherIcons.x,
                                                             color: const Color
                                                                 .fromRGBO(
-                                                                215, 14, 0, 1),
+                                                              215,
+                                                              14,
+                                                              0,
+                                                              1,
+                                                            ),
                                                             size: width * 0.09,
                                                           ),
                                                           tooltip:

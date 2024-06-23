@@ -537,6 +537,12 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                     discountData[
                                                         'discountImageUrl'],
                                                   );
+                                                  Navigator.of(context).pop();
+                                                  Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            AllDiscountPage()),
+                                                  );
                                                 },
                                                 icon: Icon(
                                                   FeatherIcons.trash,

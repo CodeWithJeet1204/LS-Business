@@ -443,6 +443,14 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                                     brandData['brandId'],
                                                     brandData['imageUrl'],
                                                   );
+                                                  if (context.mounted) {
+                                                    Navigator.of(context).pop();
+                                                    Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              AllBrandPage()),
+                                                    );
+                                                  }
                                                 },
                                                 icon: Icon(
                                                   FeatherIcons.trash,
@@ -564,6 +572,14 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                                 brandData['brandId'],
                                                 brandData['imageUrl'],
                                               );
+                                              if (context.mounted) {
+                                                Navigator.of(context).pop();
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          AllBrandPage()),
+                                                );
+                                              }
                                             },
                                             icon: Icon(
                                               FeatherIcons.trash,

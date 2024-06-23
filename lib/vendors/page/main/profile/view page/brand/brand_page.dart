@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:localy/vendors/page/main/add/brand/select_products_for_brand_page.dart';
+import 'package:localy/vendors/page/main/profile/data/all_brand_page.dart';
 import 'package:localy/vendors/page/main/profile/view%20page/product/product_page.dart';
 import 'package:localy/vendors/utils/colors.dart';
 import 'package:localy/widgets/button.dart';
@@ -460,6 +461,13 @@ class _BrandPageState extends State<BrandPage> {
           IconButton(
             onPressed: () async {
               await confirmDelete();
+              if (mounted) {
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => AllBrandPage()),
+                );
+              }
             },
             icon: const Icon(
               FeatherIcons.trash,
