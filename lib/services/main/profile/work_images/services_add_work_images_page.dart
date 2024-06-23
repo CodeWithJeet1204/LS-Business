@@ -319,6 +319,7 @@ class _ServicesAddWorkImagesPageState extends State<ServicesAddWorkImagesPage> {
                                     SizedBox(height: width * 0.09),
                                     Text(
                                       'Select Image',
+                                      maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         fontSize: width * 0.09,

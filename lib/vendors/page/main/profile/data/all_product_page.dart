@@ -125,8 +125,9 @@ class _AllProductsPageState extends State<AllProductsPage> {
                 Navigator.of(context).pop();
               },
               child: const Text(
-                overflow: TextOverflow.ellipsis,
                 'NO',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.green,
                   fontWeight: FontWeight.bold,
@@ -139,8 +140,9 @@ class _AllProductsPageState extends State<AllProductsPage> {
                 await delete(productId);
               },
               child: const Text(
-                overflow: TextOverflow.ellipsis,
                 'YES',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.w500,
@@ -161,8 +163,9 @@ class _AllProductsPageState extends State<AllProductsPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          overflow: TextOverflow.ellipsis,
           'ALL PRODUCTS',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         bottom: PreferredSize(
           preferredSize: Size(

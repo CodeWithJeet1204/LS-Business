@@ -386,6 +386,7 @@ class EventsRegisterDetailsPage1State
                           dropdownColor: primary2,
                           hint: const Text(
                             'Type',
+                            maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                           value: type,

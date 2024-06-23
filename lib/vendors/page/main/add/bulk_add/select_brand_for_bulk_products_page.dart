@@ -40,8 +40,9 @@ class _SelectBrandForBulkProductsPageState
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          overflow: TextOverflow.ellipsis,
           'SELECT BRAND',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         actions: [
           MyTextButton(
@@ -111,6 +112,7 @@ class _SelectBrandForBulkProductsPageState
                     return const Center(
                       child: Text(
                         'Something went wrong',
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                     );

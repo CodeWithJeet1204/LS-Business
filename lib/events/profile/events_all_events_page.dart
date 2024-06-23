@@ -60,8 +60,9 @@ class EventsAllEventsPageState extends State<EventsAllEventsPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          overflow: TextOverflow.ellipsis,
           'All Events',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         bottom: PreferredSize(
           preferredSize: Size(

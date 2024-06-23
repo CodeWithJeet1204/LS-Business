@@ -56,13 +56,14 @@ class _ModeCardState extends State<ModeCard> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  overflow: TextOverflow.ellipsis,
                   widget.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: widget.isSelected
                         ? widget.selectedTextColor
                         : primaryDark,
-                    fontSize: widget.isSelected ? 36 : 32,
+                    fontSize: widget.isSelected ? width * 0.1 : width * 0.088,
                     fontWeight: FontWeight.w800,
                   ),
                 ),

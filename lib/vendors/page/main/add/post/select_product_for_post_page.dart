@@ -117,6 +117,7 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
       appBar: AppBar(
         title: const Text(
           'SELECT PRODUCTS',
+          maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
         actions: [

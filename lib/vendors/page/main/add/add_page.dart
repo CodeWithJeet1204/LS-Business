@@ -24,8 +24,9 @@ class _AddPageState extends State<AddPage> {
       backgroundColor: primary,
       appBar: AppBar(
         title: const Text(
-          overflow: TextOverflow.ellipsis,
           'ADD',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         elevation: 0,
         shadowColor: primary2,

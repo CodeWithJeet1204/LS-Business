@@ -81,8 +81,9 @@ class _SelectCategoryForDiscountPageState
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          overflow: TextOverflow.ellipsis,
           'SELECT CATEGORIES',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         actions: [
           MyTextButton(
@@ -374,6 +375,7 @@ class _SelectCategoryForDiscountPageState
                                           ),
                                           title: Text(
                                             categoryName,
+                                            maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               fontSize: width * 0.05,

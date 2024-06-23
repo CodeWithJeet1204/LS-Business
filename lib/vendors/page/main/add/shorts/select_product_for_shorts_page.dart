@@ -77,6 +77,7 @@ class _SelectProductForShortsPageState
       appBar: AppBar(
         title: const Text(
           'SELECT PRODUCT',
+          maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
         actions: [
@@ -264,8 +265,8 @@ class _SelectProductForShortsPageState
                                               width: width * 0.5,
                                               child: Text(
                                                 productData['productName'],
+                                                maxLines: 2,
                                                 overflow: TextOverflow.ellipsis,
-                                                maxLines: 1,
                                                 style: TextStyle(
                                                   fontSize: width * 0.05,
                                                   fontWeight: FontWeight.bold,
@@ -290,8 +291,8 @@ class _SelectProductForShortsPageState
                                                             null
                                                     ? '''Rs. ${productData['productPrice']}'''
                                                     : 'N/A',
-                                                overflow: TextOverflow.ellipsis,
                                                 maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
                                                   fontSize: width * 0.045,
                                                   fontWeight: FontWeight.w600,
@@ -411,7 +412,7 @@ class _SelectProductForShortsPageState
                                         ),
                                         title: Text(
                                           productData['productName'],
-                                          maxLines: 1,
+                                          maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             fontSize: width * 0.05,
@@ -423,6 +424,7 @@ class _SelectProductForShortsPageState
                                                       null
                                               ? 'Rs. ${productData['productPrice']}'
                                               : 'N/A',
+                                          maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             fontSize: width * 0.045,

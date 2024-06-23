@@ -23,8 +23,9 @@ class HeadText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutoSizeText(
-      overflow: TextOverflow.ellipsis,
       textFormat(text),
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
       textAlign: TextAlign.center,
       style: GoogleFonts.josefinSans(
         fontSize: MediaQuery.of(context).size.width < screenSize

@@ -78,12 +78,14 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
       context: context,
       builder: ((context) => AlertDialog(
             title: const Text(
-              overflow: TextOverflow.ellipsis,
               'Select Membership',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
             content: const Text(
-              overflow: TextOverflow.ellipsis,
               'First select the Duration for which you want the membership\nThen the respective prices will be displayed\nand then select one of them.',
+              maxLines: 6,
+              overflow: TextOverflow.ellipsis,
             ),
             actions: [
               MyTextButton(
@@ -158,7 +160,10 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                         underline: const SizedBox(),
                         borderRadius: BorderRadius.circular(12),
                         hint: Text(
-                            overflow: TextOverflow.ellipsis, selectedDuration),
+                          selectedDuration,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         elevation: 1,
                         onTap: () {
@@ -171,7 +176,11 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                             .map(
                               (e) => DropdownMenuItem(
                                 value: e,
-                                child: Text(overflow: TextOverflow.ellipsis, e),
+                                child: Text(
+                                  e,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             )
                             .toList(),

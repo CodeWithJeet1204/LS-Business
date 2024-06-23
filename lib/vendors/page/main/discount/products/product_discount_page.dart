@@ -314,8 +314,9 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                     size: width * 0.35,
                                   ),
                                   Text(
+                                    'SELECT IMAGE',
+                                    maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
-                                    'Select Image',
                                     style: TextStyle(
                                       color: primaryDark,
                                       fontSize: width * 0.08,
@@ -426,8 +427,9 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Text(
-                                      overflow: TextOverflow.ellipsis,
                                       'Start Date',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         color: primaryDark2,
                                         fontSize: width * 0.04,
@@ -463,8 +465,9 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                         bottom: width * 0.025,
                                       ),
                                       child: Text(
-                                        overflow: TextOverflow.ellipsis,
                                         startDate!,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                           color: primaryDark,
                                           fontSize: width * 0.07,
@@ -497,8 +500,9 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Text(
-                                      overflow: TextOverflow.ellipsis,
                                       'End Date',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         color: primaryDark2,
                                         fontSize: width * 0.04,
@@ -534,8 +538,9 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                         bottom: width * 0.025,
                                       ),
                                       child: Text(
-                                        overflow: TextOverflow.ellipsis,
                                         endDate!,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                           color: primaryDark,
                                           fontSize: width * 0.07,
@@ -557,6 +562,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                       ),
                       child: Text(
                         'If you select 1 jan as end date, discount will end at 31 dec 11:59 pm',
+                        maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.center,
                         style: TextStyle(
@@ -622,6 +628,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                 ),
                                 child: Text(
                                   'PERCENT %',
+                                  maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     color: !isPercentSelected
@@ -655,6 +662,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                 ),
                                 child: Text(
                                   'PRICE ₹',
+                                  maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     color: isPercentSelected

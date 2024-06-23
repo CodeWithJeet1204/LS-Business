@@ -36,8 +36,9 @@ class _CheckBoxContainerState extends State<CheckBoxContainer> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            overflow: TextOverflow.ellipsis,
             widget.text,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
               color: primaryDark,
               fontWeight: FontWeight.w500,

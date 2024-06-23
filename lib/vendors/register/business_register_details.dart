@@ -344,14 +344,18 @@ class _BusinessRegisterDetailsPageState
                         itemHeight: 48,
                         dropdownColor: primary2,
                         hint: const Text(
-                          overflow: TextOverflow.ellipsis,
                           'Select Industry Segment',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         items: industrySegments
                             .map((element) => DropdownMenuItem(
                                   value: element,
                                   child: Text(
-                                      overflow: TextOverflow.ellipsis, element),
+                                    element,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ))
                             .toList(),
                         onChanged: (value) {

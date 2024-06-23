@@ -68,8 +68,9 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          overflow: TextOverflow.ellipsis,
           'SELECT BRANDS',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         actions: [
           MyTextButton(

@@ -63,19 +63,24 @@
 //       builder: (BuildContext context) {
 //         return AlertDialog(
 //           title: const Text(
-//             overflow: TextOverflow.ellipsis,
 //             'No Internet Connection',
+                                              // maxLines: 2,
+                                              // overflow: TextOverflow.ellipsis,
 //           ),
 //           content: const SingleChildScrollView(
 //             child: ListBody(
 //               children: <Widget>[
 //                 Text(
-//                   overflow: TextOverflow.ellipsis,
 //                   'You are currently offline.',
+
+                                              // maxLines: 2,
+                                              // overflow: TextOverflow.ellipsis,
 //                 ),
 //                 Text(
-//                   overflow: TextOverflow.ellipsis,
 //                   'Connect to network to continue using the app',
+
+                                              // maxLines: 3,
+                                              // overflow: TextOverflow.ellipsis,
 //                 ),
 //               ],
 //             ),
@@ -83,8 +88,10 @@
 //           actions: <Widget>[
 //             TextButton(
 //               child: const Text(
-//                 overflow: TextOverflow.ellipsis,
 //                 'Retry',
+
+                                              // maxLines: 1,
+                                              // overflow: TextOverflow.ellipsis,
 //               ),
 //               onPressed: () async {
 //                 final currentStatus = await Connectivity().checkConnectivity();

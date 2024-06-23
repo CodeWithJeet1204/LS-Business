@@ -77,8 +77,9 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          overflow: TextOverflow.ellipsis,
           'ALL CATEGORIES',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         bottom: PreferredSize(
           preferredSize: Size(

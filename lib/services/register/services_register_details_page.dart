@@ -269,6 +269,7 @@ class ServicesRegisterDetailsPageState
                           dropdownColor: primary,
                           hint: const Text(
                             'Select Gender',
+                            maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                           value: isMale != null
@@ -318,6 +319,7 @@ class ServicesRegisterDetailsPageState
                           dropdownColor: primary,
                           hint: const Text(
                             'First Language',
+                            maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                           value: firstLanguage,
@@ -371,6 +373,7 @@ class ServicesRegisterDetailsPageState
                           dropdownColor: primary,
                           hint: const Text(
                             'Second Language',
+                            maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                           value: secondLanguage,

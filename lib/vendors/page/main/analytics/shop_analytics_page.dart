@@ -132,8 +132,9 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                         children: [
                           // TITLE
                           Text(
-                            overflow: TextOverflow.ellipsis,
                             'SHOP DATA',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               color: primaryDark,
                               fontWeight: FontWeight.w500,
@@ -152,8 +153,9 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                               padding: EdgeInsets.only(left: width * 0.05),
                               child: DropdownButton(
                                 hint: const Text(
-                                  overflow: TextOverflow.ellipsis,
                                   'Select Duration',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                                 value: selectedStringDuration,
                                 underline: const SizedBox(),
@@ -168,8 +170,10 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                     .map((e) => DropdownMenuItem(
                                           value: e,
                                           child: Text(
-                                              overflow: TextOverflow.ellipsis,
-                                              e),
+                                            e,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
                                         ))
                                     .toList(),
                                 onChanged: (value) {
@@ -192,8 +196,9 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                         if (snapshot.hasError) {
                           return const Center(
                             child: Text(
-                              overflow: TextOverflow.ellipsis,
                               'Something went wrong',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           );
                         }
@@ -201,8 +206,9 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                         if (!snapshot.hasData) {
                           return const Center(
                             child: Text(
-                              overflow: TextOverflow.ellipsis,
                               'No Data',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           );
                         }
@@ -269,8 +275,9 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                         children: [
                                           // PROPERTY
                                           Text(
-                                            overflow: TextOverflow.ellipsis,
                                             'Shop Views',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               color: primaryDark2,
                                               fontWeight: FontWeight.w500,
@@ -279,13 +286,14 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                           ),
                                           // VALUE
                                           Text(
-                                            overflow: TextOverflow.ellipsis,
                                             viewTimestamps.length > 1000000
                                                 ? '${viewTimestamps.length.toString().substring(0)}.${viewTimestamps.length.toString().substring(1, 3)}M'
                                                 : viewTimestamps.length > 1000
                                                     ? '${viewTimestamps.length.toString().substring(0)}.${viewTimestamps.length.toString().substring(1, 3)}k'
                                                     : viewTimestamps.length
                                                         .toString(),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               color: primaryDark,
                                               fontWeight: FontWeight.w600,
@@ -501,8 +509,9 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                         children: [
                                           // PROPERTY
                                           Text(
-                                            overflow: TextOverflow.ellipsis,
                                             'Shop Followers',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               color: primaryDark2,
                                               fontWeight: FontWeight.w500,
@@ -511,7 +520,6 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                           ),
                                           // VALUE
                                           Text(
-                                            overflow: TextOverflow.ellipsis,
                                             followerTimestamps.length > 1000000
                                                 ? '${followerTimestamps.length.toString().substring(0)}.${followerTimestamps.length.toString().substring(1, 3)}M'
                                                 : followerTimestamps.length >
@@ -519,6 +527,8 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                                     ? '${followerTimestamps.length.toString().substring(0)}.${followerTimestamps.length.toString().substring(1, 3)}k'
                                                     : followerTimestamps.length
                                                         .toString(),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               color: primaryDark,
                                               fontWeight: FontWeight.w600,
@@ -717,7 +727,11 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                     width: width,
                                     property: shopData['viewsTimestamp'].length,
                                     color: const Color.fromARGB(
-                                        255, 163, 255, 166,),
+                                      255,
+                                      163,
+                                      255,
+                                      166,
+                                    ),
                                   ),
 
                                   // ALL FOLLOWERS

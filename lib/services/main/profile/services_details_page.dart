@@ -66,8 +66,9 @@ class _ServicesDetailsPageState extends State<ServicesDetailsPage> {
               if (snapshot.hasError) {
                 return const Center(
                   child: Text(
-                    overflow: TextOverflow.ellipsis,
                     'Something went wrong',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 );
               }
@@ -316,6 +317,7 @@ class _ServicesDetailsPageState extends State<ServicesDetailsPage> {
                             dropdownColor: primary,
                             hint: const Text(
                               'Select Gender',
+                              maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
                             value: (isMale ? 'Male' : 'Female'),
@@ -365,6 +367,7 @@ class _ServicesDetailsPageState extends State<ServicesDetailsPage> {
                             dropdownColor: primary,
                             hint: const Text(
                               'First Language',
+                              maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
                             value: firstLanguage,
@@ -420,6 +423,7 @@ class _ServicesDetailsPageState extends State<ServicesDetailsPage> {
                             dropdownColor: primary,
                             hint: const Text(
                               'Second Language',
+                              maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
                             value: secondLanguage,

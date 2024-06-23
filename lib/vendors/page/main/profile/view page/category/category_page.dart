@@ -37,12 +37,13 @@ class _CategoryPageState extends State<CategoryPage> {
   Map<String, dynamic> currentProducts = {};
   Map<String, dynamic> allProducts = {};
   bool getProductsData = false;
+  bool isDiscount = false;
 
   // INIT STATE
   @override
   void initState() {
     getVendorType();
-    // ifDiscount();
+    ifDiscount();
     super.initState();
   }
 
@@ -136,146 +137,6 @@ class _CategoryPageState extends State<CategoryPage> {
     });
   }
 
-  // CHANGE CATEGORY IMAGE
-  // void changeCategoryImage(String imageUrl) async {
-  //   final XFile? im = await showImagePickDialog(context);
-  //   if (im != null) {
-  //     try {
-  //       setState(() {
-  //         isImageChanging = true;
-  //       });
-  //       Reference ref = FirebaseStorage.instance.refFromURL(imageUrl);
-  //       await ref.putFile(File(im.path));
-  //       setState(() {
-  //         isImageChanging = false;
-  //       });
-  //       // Navigator.of(context).pop();
-  //     } catch (e) {
-  //       setState(() {
-  //         isImageChanging = false;
-  //       });
-  //       if (mounted) {
-  //         mySnackBar(context, e.toString());
-  //       }
-  //     }
-  //   } else {
-  //     if (mounted) {
-  //       mySnackBar(context, 'Select an Image');
-  //     }
-  //   }
-  // }
-
-  // CATEGORY NAME CHANGE BACKEND
-  // void changeCategoryName(String newName) async {
-  //   if (categoryNameKey.currentState!.validate()) {
-  //     try {
-  //       setState(() {
-  //         isChangingName = true;
-  //       });
-  //       await store
-  //           .collection('Business')
-  //           .doc('Data')
-  //           .collection('Category')
-  //           .doc(widget.categoryId)
-  //           .update({
-  //         'categoryName': newName,
-  //       });
-  //       setState(() {
-  //         isChangingName = false;
-  //       });
-  //       if (mounted) {
-  //         Navigator.of(context).pop();
-  //       }
-  //     } catch (e) {
-  //       if (mounted) {
-  //         mySnackBar(context, e.toString());
-  //       }
-  //     }
-  //   }
-  // }
-
-  // CATEGORY NAME CHANGE
-  // void changeName() {
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) {
-  //       final propertyStream = FirebaseFirestore.instance
-  //           .collection('Business')
-  //           .doc('Data')
-  //           .collection('Category')
-  //           .doc(widget.categoryId)
-  //           .snapshots();
-  //       return Dialog(
-  //         shape: RoundedRectangleBorder(
-  //           borderRadius: BorderRadius.circular(8),
-  //         ),
-  //         alignment: Alignment.center,
-  //         child: SizedBox(
-  //           height: 180,
-  //           child: StreamBuilder(
-  //             stream: propertyStream,
-  //             builder: (context, snapshot) {
-  //               if (snapshot.hasError) {
-  //                 return const Center(
-  //                   child: Text(
-  //                     overflow: TextOverflow.ellipsis,
-  //                     'Something went wrong',
-  //                   ),
-  //                 );
-  //               }
-  //               if (snapshot.hasData) {
-  //                 final categoryData = snapshot.data!;
-  //                 String categoryName = categoryData['categoryName'];
-  //                 return Form(
-  //                   key: categoryNameKey,
-  //                   child: Padding(
-  //                     padding: const EdgeInsets.symmetric(horizontal: 12),
-  //                     child: Column(
-  //                       mainAxisAlignment: MainAxisAlignment.spaceAround,
-  //                       children: [
-  //                         TextFormField(
-  //                           initialValue: categoryName,
-  // onTapOutside: (event) =>
-  //     FocusScope.of(context).unfocus(),
-  //                           decoration: const InputDecoration(
-  //                             hintText: 'Category Name',
-  //                             border: OutlineInputBorder(),
-  //                           ),
-  //                           onChanged: (value) {
-  //                             categoryName = value;
-  //                           },
-  //                           validator: (value) {
-  //                             if (value != null && value.isNotEmpty) {
-  //                               return null;
-  //                             } else {
-  //                               return 'Enter Category Name';
-  //                             }
-  //                           },
-  //                         ),
-  //                         MyButton(
-  //                           text: 'SAVE',
-  //                           onTap: () {
-  //                             changeCategoryName(categoryName);
-  //                           },
-  //                           isLoading: isChangingName,
-  //                           horizontalPadding: 0,
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ),
-  //                 );
-  //               }
-  //               return const Center(
-  //                 child: CircularProgressIndicator(),
-  //               );
-  //             },
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
-
   // IMAGE FIT CHANGE
   void changeFit() {
     setState(() {
@@ -291,12 +152,14 @@ class _CategoryPageState extends State<CategoryPage> {
       builder: (context) {
         return AlertDialog(
           title: Text(
-            overflow: TextOverflow.ellipsis,
             'Remove $productName',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
           content: Text(
-            overflow: TextOverflow.ellipsis,
             'Are you sure you want to remove \'$productName\'\nfrom $categoryName',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
           actions: [
             MyTextButton(
@@ -336,39 +199,40 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   // IF DISCOUNT
-  // Future<void> ifDiscount() async {
-  //   final discount = await store
-  //       .collection('Business')
-  //       .doc('Data')
-  //       .collection('Discounts')
-  //       .where('vendorId', isEqualTo: auth.currentUser!.uid)
-  //       .get();
-  //   for (QueryDocumentSnapshot<Map<String, dynamic>> doc in discount.docs) {
-  //     final data = doc.data();
-  //     if ((data['categories'] as List).contains(widget.categoryName)) {
-  //       if ((data['discountEndDateTime'] as Timestamp)
-  //               .toDate()
-  //               .isAfter(DateTime.now()) &&
-  //           !(data['discountStartDateTime'] as Timestamp)
-  //               .toDate()
-  //               .isAfter(DateTime.now())) {
-  //         setState(() {
-  //           isDiscount = true;
-  //         });
-  //       }
-  //     }
-  //   }
-  // }
+  Future<void> ifDiscount() async {
+    final discount = await store
+        .collection('Business')
+        .doc('Data')
+        .collection('Discounts')
+        .where('vendorId', isEqualTo: auth.currentUser!.uid)
+        .get();
+
+    for (QueryDocumentSnapshot<Map<String, dynamic>> doc in discount.docs) {
+      final data = doc.data();
+      if ((data['categories'] as List).contains(widget.categoryName)) {
+        if ((data['discountEndDateTime'] as Timestamp)
+                .toDate()
+                .isAfter(DateTime.now()) &&
+            !(data['discountStartDateTime'] as Timestamp)
+                .toDate()
+                .isAfter(DateTime.now())) {
+          setState(() {
+            isDiscount = true;
+          });
+        }
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     // DISCOUNT STREAM
-    // final discountPriceStream = store
-    //     .collection('Business')
-    //     .doc('Data')
-    //     .collection('Discounts')
-    //     .where('vendorId', isEqualTo: auth.currentUser!.uid)
-    //     .snapshots();
+    final discountPriceStream = store
+        .collection('Business')
+        .doc('Data')
+        .collection('Discounts')
+        .where('vendorId', isEqualTo: auth.currentUser!.uid)
+        .snapshots();
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -425,27 +289,6 @@ class _CategoryPageState extends State<CategoryPage> {
                               ),
                             ),
                     ),
-                    // IMAGE CHANGING INDICATOR
-                    // isImageChanging
-                    //     ? Container()
-                    //     : Padding(
-                    //         padding: EdgeInsets.only(
-                    //           right: width * 0.0125,
-                    //           top: width * 0.0125,
-                    //         ),
-                    //         child: IconButton.filledTonal(
-                    //           onPressed: () {
-                    //             changeCategoryImage(
-                    //               categoryData['imageUrl'],
-                    //             );
-                    //           },
-                    //           icon: Icon(
-                    //             FeatherIcons.camera,
-                    //             size: width * 0.1,
-                    //           ),
-                    //           tooltip: 'Change Image',
-                    //         ),
-                    //       ),
                   ],
                 ),
                 const SizedBox(height: 40),
@@ -467,114 +310,110 @@ class _CategoryPageState extends State<CategoryPage> {
                     children: [
                       Text(
                         categoryName,
-                        overflow: TextOverflow.ellipsis,
                         maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           color: primaryDark,
                           fontSize: width * 0.0725,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      // IconButton(
-                      //   onPressed: () {
-                      //     changeName();
-                      //   },
-                      //   icon: Icon(
-                      //     FeatherIcons.edit,
-                      //     size: width * 0.0725,
-                      //     color: primaryDark,
-                      //   ),
-                      //   tooltip: 'Change Name',
-                      // ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 4),
 
                 // DISCOUNT
-                // isDiscount
-                //     ? StreamBuilder(
-                //         stream: discountPriceStream,
-                //         builder: (context, snapshot) {
-                //           if (snapshot.hasError) {
-                //             return const Center(
-                //               child: Text(
-                //                 overflow: TextOverflow.ellipsis,
-                //                 'Something went wrong',
-                //               ),
-                //             );
-                //           }
-                //           if (snapshot.hasData) {
-                //             final priceSnap = snapshot.data!;
-                //             Map<String, dynamic> data = {};
-                //             for (QueryDocumentSnapshot<Map<String, dynamic>> doc
-                //                 in priceSnap.docs) {
-                //               data = doc.data();
-                //             }
-                //             return Column(
-                //               mainAxisAlignment: MainAxisAlignment.center,
-                //               crossAxisAlignment: CrossAxisAlignment.start,
-                //               children: [
-                //                 Padding(
-                //                   padding: EdgeInsets.only(left: width * 0.01),
-                //                   child: data['isPercent']
-                //                       ? Text(
-                //                           overflow: TextOverflow.ellipsis,
-                //                           '${data['discountAmount']}% off',
-                //                           style: const TextStyle(
-                //                             fontWeight: FontWeight.w500,
-                //                           ),
-                //                         )
-                //                       : Text(
-                //                           overflow: TextOverflow.ellipsis,
-                //                           'Save Rs. ${data['discountAmount']}',
-                //                           style: const TextStyle(
-                //                             fontWeight: FontWeight.w500,
-                //                           ),
-                //                         ),
-                //                 ),
-                //                 Padding(
-                //                   padding: EdgeInsets.symmetric(
-                //                     horizontal: width * 0.01,
-                //                     vertical: width * 0.00625,
-                //                   ),
-                //                   child: Text(
-                //                     overflow: TextOverflow.ellipsis,
-                //                     (data['discountEndDateTime'] as Timestamp)
-                //                                 .toDate()
-                //                                 .difference(DateTime.now())
-                //                                 .inHours <
-                //                             24
-                //                         ? '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inHours} Hours Left'''
-                //                         : '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inDays} Days Left''',
-                //                     style: const TextStyle(
-                //                       color: Colors.red,
-                //                       fontWeight: FontWeight.w500,
-                //                     ),
-                //                   ),
-                //                 ),
-                //                 Padding(
-                //                   padding: EdgeInsets.only(
-                //                     left: width * 0.01,
-                //                     top: width * 0.025,
-                //                   ),
-                //                   child: const Text(
-                //                     overflow: TextOverflow.ellipsis,
-                //                     'This discount is available to all the products within this category',
-                //                     style: TextStyle(
-                //                       color: primaryDark,
-                //                       fontWeight: FontWeight.w500,
-                //                     ),
-                //                   ),
-                //                 ),
-                //               ],
-                //             );
-                //           }
-                //           return const Center(
-                //             child: CircularProgressIndicator(),
-                //           );
-                //         })
-                //     : Container(),
+                isDiscount
+                    ? StreamBuilder(
+                        stream: discountPriceStream,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return const Center(
+                              child: Text(
+                                'Something went wrong',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            );
+                          }
+
+                          if (snapshot.hasData) {
+                            final priceSnap = snapshot.data!;
+                            Map<String, dynamic> data = {};
+                            for (QueryDocumentSnapshot<Map<String, dynamic>> doc
+                                in priceSnap.docs) {
+                              data = doc.data();
+                            }
+
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: width * 0.01),
+                                  child: data['isPercent']
+                                      ? Text(
+                                          '${data['discountAmount']}% off',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        )
+                                      : Text(
+                                          'Save Rs. ${data['discountAmount']}',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: width * 0.01,
+                                    vertical: width * 0.00625,
+                                  ),
+                                  child: Text(
+                                    (data['discountEndDateTime'] as Timestamp)
+                                                .toDate()
+                                                .difference(DateTime.now())
+                                                .inHours <
+                                            24
+                                        ? '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inHours} Hours Left'''
+                                        : '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inDays} Days Left''',
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    left: width * 0.01,
+                                    top: width * 0.025,
+                                  ),
+                                  child: const Text(
+                                    'This discount is available to all the products within this category',
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: primaryDark,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        })
+                    : Container(),
                 const SizedBox(height: 28),
 
                 // ADD PRODUCTS

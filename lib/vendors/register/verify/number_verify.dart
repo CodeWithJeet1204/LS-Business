@@ -49,8 +49,9 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
             children: [
               Expanded(child: Container()),
               Text(
-                overflow: TextOverflow.ellipsis,
                 'An OTP has been sent to your Phone Number\nPls enter the OTP below',
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: primaryDark,

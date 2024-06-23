@@ -142,8 +142,9 @@ class _PostPageState extends State<PostPage> {
                 Navigator.of(context).pop();
               },
               child: const Text(
-                overflow: TextOverflow.ellipsis,
                 'NO',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.green,
                   fontWeight: FontWeight.bold,
@@ -158,8 +159,9 @@ class _PostPageState extends State<PostPage> {
                 }
               },
               child: const Text(
-                overflow: TextOverflow.ellipsis,
                 'YES',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.w500,
@@ -252,8 +254,9 @@ class _PostPageState extends State<PostPage> {
                     if (snapshot.hasError) {
                       return const Center(
                         child: Text(
-                          overflow: TextOverflow.ellipsis,
                           'Something went wrong',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       );
                     }
@@ -394,8 +397,8 @@ class _PostPageState extends State<PostPage> {
                               width: width * 0.785,
                               child: Text(
                                 name,
+                                maxLines: 10,
                                 overflow: TextOverflow.ellipsis,
-                                maxLines: 20,
                                 style: TextStyle(
                                   color: primaryDark,
                                   fontSize: width * 0.06,
@@ -419,8 +422,9 @@ class _PostPageState extends State<PostPage> {
                                       if (snapshot.hasError) {
                                         return const Center(
                                           child: Text(
-                                            overflow: TextOverflow.ellipsis,
                                             'Something went wrong',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                           ),
                                         );
                                       }
@@ -446,6 +450,7 @@ class _PostPageState extends State<PostPage> {
                                                 horizontal: width * 0.028,
                                               ),
                                               child: RichText(
+                                                maxLines: 2,
                                                 overflow: TextOverflow.ellipsis,
                                                 text: TextSpan(
                                                   text: price == '' ||
@@ -491,7 +496,6 @@ class _PostPageState extends State<PostPage> {
                                                     ),
                                                   ],
                                                 ),
-                                                maxLines: 1,
                                               ),
                                             ),
 
@@ -528,7 +532,6 @@ class _PostPageState extends State<PostPage> {
                                                 vertical: width * 0.00625,
                                               ),
                                               child: Text(
-                                                overflow: TextOverflow.ellipsis,
                                                 (data['discountEndDateTime']
                                                                 as Timestamp)
                                                             .toDate()
@@ -538,6 +541,8 @@ class _PostPageState extends State<PostPage> {
                                                         24
                                                     ? '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inHours} Hours Left'''
                                                     : '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inDays} Days Left''',
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
                                                 style: const TextStyle(
                                                   color: Colors.red,
                                                   fontWeight: FontWeight.w500,
@@ -555,12 +560,13 @@ class _PostPageState extends State<PostPage> {
                                 : Padding(
                                     padding: const EdgeInsets.only(left: 10),
                                     child: Text(
-                                      overflow: TextOverflow.ellipsis,
                                       price == '' ||
                                               price == null ||
                                               price == '0'
                                           ? 'N/A (price)'
                                           : 'Rs. ${postData['postProductPrice']}',
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
                                         color: primaryDark,
                                         fontSize: 22,
@@ -593,8 +599,8 @@ class _PostPageState extends State<PostPage> {
                                       width: width * 0.75,
                                       child: Text(
                                         description,
-                                        overflow: TextOverflow.ellipsis,
                                         maxLines: 20,
+                                        overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                           color: primaryDark,
                                           fontSize: width * 0.0575,

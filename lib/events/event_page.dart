@@ -987,10 +987,11 @@ class _EventPageState extends State<EventPage> {
                                               CrossAxisAlignment.center,
                                           children: [
                                             Text(
-                                              overflow: TextOverflow.ellipsis,
                                               DateFormat('d MMM yy')
                                                   .format(startDate.toDate())
                                                   .toString(),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                 color: primaryDark2,
                                                 fontSize: width * 0.05,
@@ -1049,10 +1050,11 @@ class _EventPageState extends State<EventPage> {
                                               CrossAxisAlignment.center,
                                           children: [
                                             Text(
-                                              overflow: TextOverflow.ellipsis,
                                               DateFormat('d MMM yy')
                                                   .format(endDate.toDate())
                                                   .toString(),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                 color: primaryDark2,
                                                 fontSize: width * 0.05,
@@ -1100,8 +1102,8 @@ class _EventPageState extends State<EventPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      overflow: TextOverflow.ellipsis,
                                       'Timing',
+                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         color: primaryDark2,
                                         fontSize: width * 0.04,
@@ -1123,9 +1125,10 @@ class _EventPageState extends State<EventPage> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                overflow: TextOverflow.ellipsis,
                                                 getTimeString(startTime)
                                                     .toString(),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
                                                   color: primaryDark,
                                                   fontSize: width * 0.055,
@@ -1153,9 +1156,9 @@ class _EventPageState extends State<EventPage> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                overflow: TextOverflow.ellipsis,
                                                 getTimeString(endTime)
                                                     .toString(),
+                                                overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
                                                   color: primaryDark,
                                                   fontSize: width * 0.055,
@@ -1205,8 +1208,9 @@ class _EventPageState extends State<EventPage> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              overflow: TextOverflow.ellipsis,
                                               'Weekend Timing',
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                 color: primaryDark2,
                                                 fontSize: width * 0.04,
@@ -1321,8 +1325,8 @@ class _EventPageState extends State<EventPage> {
                                           ? 'No. Of Tickets - N/A'
                                           : 'No. Of Tickets - $ticketNoOfTickets',
                                       maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
+                                        overflow: TextOverflow.ellipsis,
                                         color: ticketPrice == null
                                             ? darkGrey
                                             : primaryDark,

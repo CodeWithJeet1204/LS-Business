@@ -240,8 +240,9 @@ class _AddProductPage1State extends State<AddProductPage1> {
       backgroundColor: primary,
       appBar: AppBar(
         title: const Text(
-          overflow: TextOverflow.ellipsis,
           'Basic Info',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         actions: [
           MyTextButton(
@@ -425,6 +426,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                   SizedBox(height: width * 0.09),
                                   Text(
                                     'Select Image',
+                                    maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: width * 0.09,
@@ -550,6 +552,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                           'No Brand'
                                       ? 'Select Brand'
                                       : selectBrandProvider.selectedBrandName!,
+                                  maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     color: primaryDark,
@@ -596,8 +599,9 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          overflow: TextOverflow.ellipsis,
                                           'Available',
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             color: primaryDark,
                                             fontSize: width * 0.06,
@@ -638,8 +642,9 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          overflow: TextOverflow.ellipsis,
                                           'Out Of Stock',
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             color: primaryDark,
                                             fontSize: width * 0.06,
@@ -673,8 +678,9 @@ class _AddProductPage1State extends State<AddProductPage1> {
 
                         // SELECT CATEGORY TEXT
                         Text(
-                          overflow: TextOverflow.ellipsis,
                           'Select Category',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             color: primaryDark,
                             fontSize: width * 0.066,

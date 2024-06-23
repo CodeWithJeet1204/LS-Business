@@ -147,7 +147,7 @@ class _ServiceEditPriceContainerState extends State<ServiceEditPriceContainer> {
                 width: widget.width * 0.5,
                 child: Text(
                   widget.name,
-                  maxLines: 1,
+                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: widget.width * 0.06,

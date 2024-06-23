@@ -227,8 +227,9 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          overflow: TextOverflow.ellipsis,
           'Owner Details',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
       ),
       body: Padding(
@@ -244,6 +245,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                     return const Center(
                       child: Text(
                         'Something went wrong',
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                     );
@@ -343,8 +345,8 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                           width: width * 0.725,
                                           child: AutoSizeText(
                                             userData['Name'] ?? 'N/A',
-                                            overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               fontSize: width * 0.06,
                                             ),
@@ -405,8 +407,8 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                           width: width * 0.725,
                                           child: AutoSizeText(
                                             userData['Phone Number'] ?? 'N/A',
-                                            overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               fontSize: width * 0.055,
                                             ),
@@ -453,8 +455,8 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                       userData['Email'] == ''
                                           ? auth.currentUser!.email
                                           : userData['Email'] ?? 'N/A',
-                                      overflow: TextOverflow.ellipsis,
                                       maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         fontSize: width * 0.055,
                                       ),

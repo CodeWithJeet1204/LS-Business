@@ -27,8 +27,9 @@ class _MyCollapseContainerState extends State<MyCollapseContainer> {
       ),
       child: ExpansionTile(
         title: Text(
-          overflow: TextOverflow.ellipsis,
           widget.text,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: widget.width < screenSize

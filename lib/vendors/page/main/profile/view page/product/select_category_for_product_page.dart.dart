@@ -78,8 +78,9 @@ class _ChangeCategoryState extends State<ChangeCategory> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          overflow: TextOverflow.ellipsis,
           'SELECT CATEGORY',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         actions: [
           MyTextButton(

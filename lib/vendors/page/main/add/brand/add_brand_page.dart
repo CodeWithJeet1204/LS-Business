@@ -162,8 +162,9 @@ class _AddBrandPageState extends State<AddBrandPage> {
       backgroundColor: primary,
       appBar: AppBar(
         title: const Text(
-          overflow: TextOverflow.ellipsis,
           'ADD BRAND',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         actions: [
           MyTextButton(
@@ -285,6 +286,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
                                     SizedBox(height: width * 0.09),
                                     Text(
                                       'Select Image',
+                                      maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         fontSize: width * 0.09,

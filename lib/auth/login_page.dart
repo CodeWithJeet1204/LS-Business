@@ -654,8 +654,8 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         )
                       : Text(
-                          overflow: TextOverflow.ellipsis,
                           googleText,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             color: buttonColor,
                             fontWeight: FontWeight.w600,
@@ -672,8 +672,8 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Text(
-                    overflow: TextOverflow.ellipsis,
                     'Don\'t have an account?',
+                    overflow: TextOverflow.ellipsis,
                   ),
                   MyTextButton(
                     onPressed: () {

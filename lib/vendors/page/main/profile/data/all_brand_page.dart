@@ -111,8 +111,9 @@ class _AllBrandPageState extends State<AllBrandPage> {
       builder: ((context) {
         return AlertDialog(
           title: const Text(
-            overflow: TextOverflow.ellipsis,
             'Confirm DELETE',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
           content: const Text(
             'Are you sure you want to delete this Brand\nProducts in this brand will be set as \'No Brand\'',
@@ -123,8 +124,9 @@ class _AllBrandPageState extends State<AllBrandPage> {
                 Navigator.of(context).pop();
               },
               child: const Text(
-                overflow: TextOverflow.ellipsis,
                 'NO',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.green,
                   fontWeight: FontWeight.bold,
@@ -136,8 +138,9 @@ class _AllBrandPageState extends State<AllBrandPage> {
                 await delete(brandId, imageUrl);
               },
               child: const Text(
-                overflow: TextOverflow.ellipsis,
                 'YES',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.w500,
@@ -158,8 +161,9 @@ class _AllBrandPageState extends State<AllBrandPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          overflow: TextOverflow.ellipsis,
           'ALL BRANDS',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         bottom: PreferredSize(
           preferredSize: Size(

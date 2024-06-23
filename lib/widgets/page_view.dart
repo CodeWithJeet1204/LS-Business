@@ -38,14 +38,15 @@ class MyPageView extends StatelessWidget {
             ),
             const SizedBox(height: 36),
             Text(
-              overflow: TextOverflow.ellipsis,
               text,
-              textAlign: TextAlign.center,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: textColor,
                 fontSize: fontSize,
                 fontWeight: FontWeight.bold,
               ),
+              textAlign: TextAlign.center,
             )
           ],
         ),

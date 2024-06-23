@@ -151,8 +151,9 @@ class _SelectBusinessCategoryPageState
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      overflow: TextOverflow.ellipsis,
                                       'Shop',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         color: primaryDark,
                                         fontSize: width * 0.06,
@@ -196,8 +197,9 @@ class _SelectBusinessCategoryPageState
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      overflow: TextOverflow.ellipsis,
                                       'Household',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         color: primaryDark,
                                         fontSize: width * 0.06,
@@ -244,8 +246,9 @@ class _SelectBusinessCategoryPageState
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          overflow: TextOverflow.ellipsis,
                           selectedCategory,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             color: primaryDark,
                             fontSize: width * 0.06,

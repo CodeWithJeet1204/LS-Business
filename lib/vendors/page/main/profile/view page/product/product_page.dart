@@ -103,6 +103,7 @@ class _ProductPageState extends State<ProductPage> {
                       return const Center(
                         child: Text(
                           'Something went wrong',
+                          maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                       );
@@ -587,6 +588,7 @@ class _ProductPageState extends State<ProductPage> {
               },
               child: const Text(
                 'NO',
+                maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.green,
@@ -601,6 +603,7 @@ class _ProductPageState extends State<ProductPage> {
               },
               child: const Text(
                 'YES',
+                maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.red,
@@ -901,6 +904,7 @@ class _ProductPageState extends State<ProductPage> {
                       return const Center(
                         child: Text(
                           'Something went wrong',
+                          maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                       );
@@ -1265,6 +1269,7 @@ class _ProductPageState extends State<ProductPage> {
                                     children: [
                                       Text(
                                         'Add Image',
+                                        maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                       Icon(FeatherIcons.plus),
@@ -1289,8 +1294,8 @@ class _ProductPageState extends State<ProductPage> {
                                   width: width * 0.785,
                                   child: Text(
                                     name,
+                                    maxLines: 10,
                                     overflow: TextOverflow.ellipsis,
-                                    maxLines: 20,
                                     style: TextStyle(
                                       color: primaryDark,
                                       fontSize: width * 0.06,
@@ -1333,6 +1338,7 @@ class _ProductPageState extends State<ProductPage> {
                                           return const Center(
                                             child: Text(
                                               'Something went wrong',
+                                              maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           );
@@ -1478,6 +1484,7 @@ class _ProductPageState extends State<ProductPage> {
                                             productData['productPrice'] == ''
                                                 ? 'N/A'
                                                 : 'Rs. ${productData['productPrice']}',
+                                            maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               color: primaryDark,
@@ -1566,6 +1573,7 @@ class _ProductPageState extends State<ProductPage> {
                                         children: [
                                           Text(
                                             'Available',
+                                            maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               color: primaryDark,
@@ -1611,6 +1619,7 @@ class _ProductPageState extends State<ProductPage> {
                                         children: [
                                           Text(
                                             'Out Of Stock',
+                                            maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               color: primaryDark,
@@ -1676,8 +1685,8 @@ class _ProductPageState extends State<ProductPage> {
                                                   '0'
                                           ? productData['productDescription']
                                           : 'No Description',
-                                      overflow: TextOverflow.ellipsis,
                                       maxLines: 20,
+                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         color: primaryDark,
                                         fontSize: width * 0.0575,
@@ -2078,6 +2087,7 @@ class _ProductPageState extends State<ProductPage> {
                                         width: width * 0.5,
                                         child: Text(
                                           'View All Products Insights',
+                                          maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             color: primaryDark2,

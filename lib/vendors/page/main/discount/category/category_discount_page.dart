@@ -288,8 +288,9 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                     size: width * 0.35,
                                   ),
                                   Text(
-                                    overflow: TextOverflow.ellipsis,
                                     'SELECT IMAGE',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       color: primaryDark,
                                       fontSize: width * 0.08,
@@ -400,8 +401,9 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Text(
-                                      overflow: TextOverflow.ellipsis,
                                       'Start Date',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         color: primaryDark2,
                                         fontSize: width * 0.04,
@@ -437,8 +439,9 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                         bottom: width * 0.025,
                                       ),
                                       child: Text(
-                                        overflow: TextOverflow.ellipsis,
                                         startDate!,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                           color: primaryDark,
                                           fontSize: width * 0.07,
@@ -471,8 +474,9 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Text(
-                                      overflow: TextOverflow.ellipsis,
                                       'End Date',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         color: primaryDark2,
                                         fontSize: width * 0.04,
@@ -508,8 +512,9 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                         bottom: width * 0.025,
                                       ),
                                       child: Text(
-                                        overflow: TextOverflow.ellipsis,
                                         endDate!,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                           color: primaryDark,
                                           fontSize: width * 0.07,
@@ -526,14 +531,15 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
 
                     // DISCLAIMER
                     Text(
-                      overflow: TextOverflow.ellipsis,
                       'If you select 1 jan as end date, discount will end at 31 dec 11:59 pm',
-                      textAlign: TextAlign.center,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: primaryDark2,
                         fontSize: width * 0.04,
                         fontWeight: FontWeight.w500,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 20),
 
@@ -587,6 +593,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                 ),
                                 child: Text(
                                   'PERCENT %',
+                                  maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     color: !isPercentSelected
@@ -620,6 +627,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                 ),
                                 child: Text(
                                   'PRICE ₹',
+                                  maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     color: isPercentSelected

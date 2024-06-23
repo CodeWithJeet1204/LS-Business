@@ -21,8 +21,9 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
       backgroundColor: primary,
       appBar: AppBar(
         title: const Text(
-          overflow: TextOverflow.ellipsis,
           'DISCOUNTS',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
       ),
       body: Padding(

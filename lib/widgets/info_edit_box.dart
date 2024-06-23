@@ -41,13 +41,13 @@ class InfoEditBox extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                overflow: TextOverflow.ellipsis,
                 head,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontWeight: FontWeight.w500,
                   color: primaryDark2,
                 ),
-                maxLines: maxLines,
               ),
               noOfAnswers == 1
                   ? Text(
@@ -63,6 +63,7 @@ class InfoEditBox extends StatelessWidget {
                   : noOfAnswers == 2
                       ? Text(
                           content,
+                          maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: width * 0.05833,
@@ -145,6 +146,7 @@ class InfoEditBox extends StatelessWidget {
                                 )
                               : const Text(
                                   'N/A',
+                                  maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 )
                           : Container(),

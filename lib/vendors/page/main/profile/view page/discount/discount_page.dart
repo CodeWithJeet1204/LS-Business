@@ -178,6 +178,7 @@ class DISCOUNT extends State<DiscountPage> {
               },
               child: const Text(
                 'NO',
+                maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.green,
@@ -194,6 +195,7 @@ class DISCOUNT extends State<DiscountPage> {
               },
               child: const Text(
                 'YES',
+                maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.red,
@@ -363,6 +365,7 @@ class DISCOUNT extends State<DiscountPage> {
                   return const Center(
                     child: Text(
                       'Something went wrong',
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                   );
@@ -935,6 +938,7 @@ class DISCOUNT extends State<DiscountPage> {
                                 ),
                                 title: Text(
                                   'Products',
+                                  maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     fontSize: width * 0.06,
@@ -964,8 +968,9 @@ class DISCOUNT extends State<DiscountPage> {
                                         if (snapshot.hasError) {
                                           return const Center(
                                             child: Text(
-                                              overflow: TextOverflow.ellipsis,
                                               'Something went wrong',
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
                                             ),
                                           );
                                         }

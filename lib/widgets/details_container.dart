@@ -72,8 +72,8 @@ class _DetailsContainerState extends State<DetailsContainer> {
                           widget.value == null || widget.value == ''
                               ? 'N/A'
                               : widget.value!,
-                          overflow: TextOverflow.ellipsis,
                           maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: widget.width * 0.06,
                           ),

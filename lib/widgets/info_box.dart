@@ -31,24 +31,24 @@ class InfoBox extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  overflow: TextOverflow.ellipsis,
                   text,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: primaryDark2,
                     fontSize: MediaQuery.of(context).size.width * 0.04,
                     fontWeight: FontWeight.w500,
                   ),
-                  maxLines: 1,
                 ),
                 Text(
-                  overflow: TextOverflow.ellipsis,
                   value,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: primaryDark,
                     fontSize: MediaQuery.of(context).size.width * 0.0666,
                     fontWeight: FontWeight.w600,
                   ),
-                  maxLines: 1,
                 ),
               ],
             ),

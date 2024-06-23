@@ -72,9 +72,13 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
         return AlertDialog(
           title: const Text(
             'Confirm DELETE',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
           content: const Text(
             'Are you sure you want to delete this Discount\nDiscount will be removed from all the products/categories with this discount',
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
           ),
           actions: [
             TextButton(
@@ -83,6 +87,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
               },
               child: const Text(
                 'NO',
+                maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.green,
@@ -103,6 +108,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
               },
               child: const Text(
                 'YES',
+                maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.red,
@@ -143,8 +149,9 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          overflow: TextOverflow.ellipsis,
           'ALL DISCOUNTS',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         bottom: PreferredSize(
           preferredSize: Size(
@@ -660,8 +667,9 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
 
                                               // DIVIDER
                                               const Text(
-                                                overflow: TextOverflow.ellipsis,
                                                 ' ● ',
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
                                                   color: primaryDark2,
                                                   fontWeight: FontWeight.w100,

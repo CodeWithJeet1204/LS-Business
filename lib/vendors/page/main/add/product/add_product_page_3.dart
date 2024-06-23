@@ -123,8 +123,9 @@ class _AddProductPage3State extends State<AddProductPage3> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          overflow: TextOverflow.ellipsis,
           'SERVICES AVAILABLE',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         actions: [
           MyTextButton(
@@ -219,8 +220,9 @@ class _AddProductPage3State extends State<AddProductPage3> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                overflow: TextOverflow.ellipsis,
                                 'Cash On Delivery',
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   color: primaryDark2,
                                   fontWeight: FontWeight.w500,

@@ -173,8 +173,9 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          overflow: TextOverflow.ellipsis,
           'ADD CATEGORY',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         actions: [
           MyTextButton(
@@ -295,8 +296,9 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                                     ),
                                     SizedBox(height: width * 0.1125),
                                     Text(
-                                      overflow: TextOverflow.ellipsis,
                                       'Select Image',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         fontSize: width * 0.08,
                                         fontWeight: FontWeight.w500,

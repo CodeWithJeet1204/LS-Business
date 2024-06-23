@@ -41,6 +41,7 @@ class SmallTextContainer extends StatelessWidget {
             padding: EdgeInsets.only(left: width * 0.05),
             child: Text(
               text,
+              maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: primaryDark,

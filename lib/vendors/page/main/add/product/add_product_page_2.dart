@@ -358,8 +358,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          overflow: TextOverflow.ellipsis,
           'Additional Info',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         actions: [
           MyTextButton(
@@ -395,14 +396,14 @@ class _AddProductPage2State extends State<AddProductPage2> {
                           const Text(
                             '''Properties marked with ' *
                                 ' are compulsory to fill''',
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.center,
                             maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               color: primaryDark2,
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
                             ),
+                            textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 4),
 

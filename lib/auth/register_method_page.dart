@@ -480,8 +480,8 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                               color: primaryDark,
                             )
                           : Text(
-                              overflow: TextOverflow.ellipsis,
                               googleText,
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 color: buttonColor,
                                 fontWeight: FontWeight.w600,

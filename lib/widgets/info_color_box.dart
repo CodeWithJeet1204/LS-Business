@@ -34,8 +34,9 @@ class InfoColorBox extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              overflow: TextOverflow.ellipsis,
               text,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: primaryDark2,
                 fontSize: width * 0.04,
@@ -44,10 +45,11 @@ class InfoColorBox extends StatelessWidget {
             ),
             property.runtimeType == int
                 ? Text(
-                    overflow: TextOverflow.ellipsis,
                     property > 1000
                         ? '${(property / 1000).toStringAsFixed(2)}k'
                         : property.toString(),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       color: primaryDark,
                       fontSize: width * 0.12,
@@ -61,9 +63,8 @@ class InfoColorBox extends StatelessWidget {
                       alignment: Alignment.center,
                       child: AutoSizeText(
                         property.toString(),
+                        maxLines: 3,
                         overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                        maxLines: 1,
                         minFontSize: 12,
                         maxFontSize: 80,
                         style: TextStyle(
@@ -71,6 +72,7 @@ class InfoColorBox extends StatelessWidget {
                           fontSize: width * 0.12,
                           fontWeight: FontWeight.w600,
                         ),
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ),

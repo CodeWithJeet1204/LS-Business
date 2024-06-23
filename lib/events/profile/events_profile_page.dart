@@ -259,8 +259,8 @@ class _EventsProfilePageState extends State<EventsProfilePage> {
                           width: width * 0.8,
                           child: Text(
                             name ?? 'Name: N/A',
-                            overflow: TextOverflow.ellipsis,
                             maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: width * 0.07,

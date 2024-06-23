@@ -176,8 +176,9 @@ class _AddPostPageState extends State<AddPostPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          overflow: TextOverflow.ellipsis,
           'CREATE POST',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         actions: [
           MyTextButton(
@@ -221,8 +222,9 @@ class _AddPostPageState extends State<AddPostPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      overflow: TextOverflow.ellipsis,
                       'Remaining Text Post - $textPostRemaining',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: primaryDark,
                         fontWeight: FontWeight.w500,
@@ -230,8 +232,9 @@ class _AddPostPageState extends State<AddPostPage> {
                       ),
                     ),
                     Text(
-                      overflow: TextOverflow.ellipsis,
                       'Remaining Image Post - $imagePostRemaining',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: primaryDark,
                         fontWeight: FontWeight.w500,
@@ -245,8 +248,9 @@ class _AddPostPageState extends State<AddPostPage> {
                   ? Column(
                       children: [
                         Text(
-                          overflow: TextOverflow.ellipsis,
                           'Select the type of post you want to create',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: primaryDark,
@@ -255,8 +259,9 @@ class _AddPostPageState extends State<AddPostPage> {
                           ),
                         ),
                         Text(
-                          overflow: TextOverflow.ellipsis,
                           'Just select the product you want the post',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: primaryDark,
@@ -266,6 +271,8 @@ class _AddPostPageState extends State<AddPostPage> {
                         ),
                         Text(
                           'Then the product details will automatically be added',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: primaryDark,
@@ -276,8 +283,9 @@ class _AddPostPageState extends State<AddPostPage> {
                       ],
                     )
                   : Text(
-                      overflow: TextOverflow.ellipsis,
                       'Your no of Text & Image Posts has reached 0\nYou cannot post another post until your current memberhsip ends',
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: primaryDark,

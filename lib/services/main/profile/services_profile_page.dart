@@ -123,12 +123,14 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
       builder: ((context) {
         return AlertDialog(
           title: const Text(
-            overflow: TextOverflow.ellipsis,
             'Sign Out?',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
           content: const Text(
-            overflow: TextOverflow.ellipsis,
             'Are you sure\nYou want to Sign Out?',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
           actions: [
             TextButton(
@@ -136,8 +138,9 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
                 Navigator.of(context).pop();
               },
               child: const Text(
-                overflow: TextOverflow.ellipsis,
                 'NO',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.green,
                   fontWeight: FontWeight.bold,
@@ -170,8 +173,9 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
                 }
               },
               child: const Text(
-                overflow: TextOverflow.ellipsis,
                 'YES',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.w500,
@@ -201,8 +205,9 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
               if (snapshot.hasError) {
                 return const Center(
                   child: Text(
-                    overflow: TextOverflow.ellipsis,
                     'Something went wrong',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 );
               }
@@ -293,8 +298,8 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
                               width: width * 0.8,
                               child: Text(
                                 name ?? 'N/A',
-                                overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: width * 0.07,

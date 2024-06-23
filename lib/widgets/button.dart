@@ -47,8 +47,9 @@ class MyButton extends StatelessWidget {
                 ),
               )
             : Text(
-                overflow: TextOverflow.ellipsis,
                 text,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: white,
                   fontSize: MediaQuery.of(context).size.width < screenSize

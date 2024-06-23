@@ -34,12 +34,14 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
       builder: (context) {
         return AlertDialog(
           title: Text(
-            overflow: TextOverflow.ellipsis,
             'Remove $productName',
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
           content: Text(
-            overflow: TextOverflow.ellipsis,
             'Are you sure you want to remove $productName from Discount?',
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
           actions: [
             MyTextButton(
@@ -116,8 +118,9 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          overflow: TextOverflow.ellipsis,
           'PRODUCTS',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         bottom: PreferredSize(
           preferredSize: Size(
@@ -172,8 +175,9 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
               if (snapshot.hasError) {
                 return const Center(
                   child: Text(
-                    overflow: TextOverflow.ellipsis,
                     'Something went wrong',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 );
               }
@@ -228,14 +232,13 @@ class _ProductWithDiscountPageState extends State<ProductWithDiscountPage> {
                                           width: width * 0.45,
                                           height: width * 0.1,
                                           child: Text(
-                                            overflow: TextOverflow.ellipsis,
                                             products[index]['productName']!,
-                                            maxLines: 1,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               color: primaryDark,
                                               fontSize: width * 0.06,
                                               fontWeight: FontWeight.w500,
-                                              overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
                                         ),

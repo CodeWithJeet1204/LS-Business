@@ -62,10 +62,12 @@ class _ProfilePageState extends State<ProfilePage> {
       builder: ((context) {
         return AlertDialog(
           title: const Text(
+            maxLines: 1,
             overflow: TextOverflow.ellipsis,
             'Sign Out?',
           ),
           content: const Text(
+            maxLines: 1,
             overflow: TextOverflow.ellipsis,
             'Are you sure\nYou want to Sign Out?',
           ),
@@ -75,6 +77,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Navigator.of(context).pop();
               },
               child: const Text(
+                maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 'NO',
                 style: TextStyle(
@@ -109,6 +112,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 }
               },
               child: const Text(
+                maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 'YES',
                 style: TextStyle(
@@ -152,6 +156,7 @@ class _ProfilePageState extends State<ProfilePage> {
             backgroundColor: primary,
             appBar: AppBar(
               title: const Text(
+                maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 'PROFILE',
               ),
@@ -241,20 +246,21 @@ class _ProfilePageState extends State<ProfilePage> {
                                   width: width * 0.8,
                                   child: Text(
                                     shopData['Name'] ?? 'N/A',
-                                    overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
-                                    textAlign: TextAlign.center,
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: width * 0.07,
                                       fontWeight: FontWeight.w700,
                                       color: primaryDark.withBlue(5),
                                     ),
+                                    textAlign: TextAlign.center,
                                   ),
                                 ),
                                 SizedBox(
                                   width: width * 0.8,
                                   child: Text(
                                     shopData['Type'] ?? 'N/A',
+                                    maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: width * 0.0425,
@@ -299,8 +305,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                                 child: Text(
                                   'Owner Details',
-                                  overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     fontSize: width * 0.05,
                                     color: primaryDark,
@@ -336,8 +342,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                                 child: Text(
                                   'Business Details',
-                                  overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     fontSize: width * 0.05,
                                     color: primaryDark,

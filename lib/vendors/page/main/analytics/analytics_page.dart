@@ -24,8 +24,9 @@ class _AnalyticsPageState extends State<AnalyticsPage>
       backgroundColor: primary,
       appBar: AppBar(
         title: const Text(
-          overflow: TextOverflow.ellipsis,
           'ANALYTICS',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         forceMaterialTransparency: true,
         bottom: PreferredSize(

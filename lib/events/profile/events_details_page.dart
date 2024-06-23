@@ -367,6 +367,7 @@ class _EventsDetailsPageState extends State<EventsDetailsPage> {
                               dropdownColor: primary,
                               hint: const Text(
                                 'First Language',
+                                maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
                               value: type,

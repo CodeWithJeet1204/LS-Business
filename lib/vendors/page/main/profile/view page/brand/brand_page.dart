@@ -177,8 +177,9 @@ class _BrandPageState extends State<BrandPage> {
                 if (snapshot.hasError) {
                   return const Center(
                     child: Text(
-                      overflow: TextOverflow.ellipsis,
                       'Something went wrong',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   );
                 }
@@ -253,12 +254,14 @@ class _BrandPageState extends State<BrandPage> {
       builder: (context) {
         return AlertDialog(
           title: Text(
-            overflow: TextOverflow.ellipsis,
             'Remove $productName',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
           content: Text(
-            overflow: TextOverflow.ellipsis,
             'Are you sure you want to remove $productName from $brandName',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
           actions: [
             MyTextButton(
@@ -342,8 +345,9 @@ class _BrandPageState extends State<BrandPage> {
                 Navigator.of(context).pop();
               },
               child: const Text(
-                overflow: TextOverflow.ellipsis,
                 'NO',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.green,
                   fontWeight: FontWeight.bold,
@@ -358,8 +362,9 @@ class _BrandPageState extends State<BrandPage> {
                 }
               },
               child: const Text(
-                overflow: TextOverflow.ellipsis,
                 'YES',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.w500,
@@ -473,8 +478,9 @@ class _BrandPageState extends State<BrandPage> {
               if (snapshot.hasError) {
                 return const Center(
                   child: Text(
-                    overflow: TextOverflow.ellipsis,
                     'Something went wrong',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 );
               }
@@ -620,8 +626,8 @@ class _BrandPageState extends State<BrandPage> {
                           children: [
                             Text(
                               brandData['brandName'],
-                              overflow: TextOverflow.ellipsis,
                               maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 color: primaryDark,
                                 fontSize: width * 0.0725,
@@ -652,8 +658,9 @@ class _BrandPageState extends State<BrandPage> {
                                 if (snapshot.hasError) {
                                   return const Center(
                                     child: Text(
-                                      overflow: TextOverflow.ellipsis,
                                       'Something went wrong',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   );
                                 }
@@ -677,15 +684,17 @@ class _BrandPageState extends State<BrandPage> {
                                             EdgeInsets.only(left: width * 0.01),
                                         child: data['isPercent']
                                             ? Text(
-                                                overflow: TextOverflow.ellipsis,
                                                 '${data['discountAmount']}% off',
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
                                                 style: const TextStyle(
                                                   fontWeight: FontWeight.w500,
                                                 ),
                                               )
                                             : Text(
-                                                overflow: TextOverflow.ellipsis,
                                                 'Save Rs. ${data['discountAmount']}',
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
                                                 style: const TextStyle(
                                                   fontWeight: FontWeight.w500,
                                                 ),
@@ -697,7 +706,6 @@ class _BrandPageState extends State<BrandPage> {
                                           vertical: width * 0.00625,
                                         ),
                                         child: Text(
-                                          overflow: TextOverflow.ellipsis,
                                           (data['discountEndDateTime']
                                                           as Timestamp)
                                                       .toDate()
@@ -707,6 +715,8 @@ class _BrandPageState extends State<BrandPage> {
                                                   24
                                               ? '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inHours} Hours Left'''
                                               : '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inDays} Days Left''',
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(
                                             color: Colors.red,
                                             fontWeight: FontWeight.w500,
@@ -719,8 +729,9 @@ class _BrandPageState extends State<BrandPage> {
                                           top: width * 0.025,
                                         ),
                                         child: const Text(
-                                          overflow: TextOverflow.ellipsis,
                                           'This discount is available to all the products within this brand',
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             color: primaryDark,
                                             fontWeight: FontWeight.w500,
@@ -780,8 +791,9 @@ class _BrandPageState extends State<BrandPage> {
                           ),
                         ),
                         title: Text(
-                          overflow: TextOverflow.ellipsis,
                           'Products',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: width * 0.06,
                             fontWeight: FontWeight.w600,
@@ -840,8 +852,9 @@ class _BrandPageState extends State<BrandPage> {
                                     if (snapshot.hasError) {
                                       return const Center(
                                         child: Text(
-                                          overflow: TextOverflow.ellipsis,
                                           'Something went wrong',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       );
                                     }

@@ -135,8 +135,9 @@ class _AllPostsPageState extends State<AllPostsPage> {
                 Navigator.of(context).pop();
               },
               child: const Text(
-                overflow: TextOverflow.ellipsis,
                 'NO',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.green,
                   fontWeight: FontWeight.bold,
@@ -152,6 +153,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
               },
               child: const Text(
                 'YES',
+                maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.red,
@@ -173,8 +175,9 @@ class _AllPostsPageState extends State<AllPostsPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          overflow: TextOverflow.ellipsis,
           'ALL POSTS',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         bottom: PreferredSize(
           preferredSize: Size(
@@ -598,6 +601,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                       null
                                               ? 'Rs. ${postData['postProductPrice']}'
                                               : 'N/A',
+                                          maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             fontSize: width * 0.045,

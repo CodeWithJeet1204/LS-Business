@@ -249,8 +249,9 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          overflow: TextOverflow.ellipsis,
           'Business Details',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
       ),
       body: SafeArea(
@@ -270,6 +271,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                       return const Center(
                         child: Text(
                           'Something went wrong',
+                          maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                       );
@@ -377,8 +379,8 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                             width: width * 0.725,
                                             child: AutoSizeText(
                                               shopData['Name'] ?? 'Name: N/A',
-                                              overflow: TextOverflow.ellipsis,
                                               maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                 fontSize: width * 0.06,
                                               ),
@@ -655,6 +657,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                             child: AutoSizeText(
                                               shopData['Description'] ??
                                                   'Description: N/A',
+                                              maxLines: 10,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                 fontSize: width * 0.055,
@@ -700,6 +703,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                   width: width * 0.875,
                                   child: AutoSizeText(
                                     shopData['Type'] ?? 'Type: N/A',
+                                    maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: width * 0.055,
@@ -727,6 +731,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                   width: width * 0.875,
                                   child: AutoSizeText(
                                     shopData['GSTNumber'] ?? 'GST Number: N/A',
+                                    maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
                                       fontSize: 18,
@@ -754,6 +759,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                   width: width * 0.725,
                                   child: Text(
                                     shopData['Industry'] ?? 'Industry: N/A',
+                                    maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: width * 0.055,
@@ -836,6 +842,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                   width: width * 0.725,
                                   child: AutoSizeText(
                                     shopData['MembershipName'] ?? 'N/A',
+                                    maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: width * 0.055,
