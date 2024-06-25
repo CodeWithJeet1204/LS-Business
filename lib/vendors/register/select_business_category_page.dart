@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:localy/vendors/models/special_categories.dart';
+import 'package:localy/vendors/models/special_categories_images.dart';
 import 'package:localy/vendors/register/membership_page.dart';
 import 'package:localy/vendors/utils/colors.dart';
 import 'package:localy/widgets/button.dart';
@@ -64,7 +64,7 @@ class _SelectBusinessCategoryPageState
           Map<String, String> subCategories =
               specialCategories[selectedCategory]!;
 
-          final CollectionReference specialCategoriesCollection = store
+          final specialCategoriesCollection = store
               .collection('Business')
               .doc('Special Categories')
               .collection(selectedCategory);

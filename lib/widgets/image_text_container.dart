@@ -29,7 +29,6 @@ class _ImageTextContainerState extends State<ImageTextContainer> {
       body: GestureDetector(
         onTap: () {
           selectCategory(widget.text);
-
           Navigator.of(context).pop();
         },
         child: SizedBox(
