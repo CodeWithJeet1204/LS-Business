@@ -150,6 +150,7 @@ class _EventsAddEventPage1State extends State<EventsAddEventPage1> {
       'eventType': typeController.text,
       'eventLatitude': latitude,
       'eventLongitude': longitude,
+      'eventViewsTimestamp': [],
       'imageUrl': _image,
       'eventComments': {},
     };
