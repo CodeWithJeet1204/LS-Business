@@ -1590,9 +1590,11 @@ class DISCOUNT extends State<DiscountPage> {
                                       isGridView = !isGridView;
                                     });
                                   },
-                                  icon: Icon(isGridView
-                                      ? FeatherIcons.list
-                                      : FeatherIcons.grid,),
+                                  icon: Icon(
+                                    isGridView
+                                        ? FeatherIcons.list
+                                        : FeatherIcons.grid,
+                                  ),
                                   tooltip: isGridView ? "List" : "Grid",
                                 ),
                                 children: [

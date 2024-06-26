@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:localy/vendors/models/special_categories_images.dart';
+import 'package:localy/vendors/models/business_special_categories_images.dart';
+import 'package:localy/vendors/models/household_special_categories_images.dart';
 import 'package:localy/vendors/register/membership_page.dart';
 import 'package:localy/vendors/utils/colors.dart';
 import 'package:localy/widgets/button.dart';
@@ -60,9 +61,13 @@ class _SelectBusinessCategoryPageState
               .update({
             'Type': selectedCategory,
           });
+          print(111);
 
-          Map<String, String> subCategories =
-              specialCategories[selectedCategory]!;
+          Map<String, String> subCategories = isShop
+              ? businessSpecialCategories[selectedCategory]!
+              : householdSpecialCategories[selectedCategory]!;
+
+          print(222);
 
           final specialCategoriesCollection = store
               .collection('Business')
@@ -86,6 +91,7 @@ class _SelectBusinessCategoryPageState
           }
         } catch (e) {
           if (mounted) {
+            print("Error: ${e.toString()}");
             return mySnackBar(context, e.toString());
           }
         }
@@ -229,7 +235,9 @@ class _SelectBusinessCategoryPageState
                     // SELECT CATEGORY BUTTON
                     GestureDetector(
                       onTap: () async {
+                        print("Showing");
                         await showCategoryDialog();
+                        print('Done');
                       },
                       child: Container(
                         width: width,

@@ -4,7 +4,7 @@ List<List<String>> householdCategories = [
     'https://img.freepik.com/free-vector/summer-clothes-set_74855-446.jpg?w=2000&t=st=1718869923~exp=1718870523~hmac=97e04a8138e75ef843ac83c9736247c4795a7ecdea011e9b00862ce93af27b7e',
   ],
   [
-    'Weaving,',
+    'Weaving',
     'https://img.freepik.com/free-vector/vintage-hand-loom-illustration-vector-remixed-from-artwork-by-alfred-h-smith_53876-144138.jpg?t=st=1718869957~exp=1718873557~hmac=84f7e354b117c8fdd8285442a69d2ef2e7df65fcb002521dbacb5417cd1702cd&w=2000',
   ],
   [

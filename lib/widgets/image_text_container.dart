@@ -28,7 +28,9 @@ class _ImageTextContainerState extends State<ImageTextContainer> {
       resizeToAvoidBottomInset: false,
       body: GestureDetector(
         onTap: () {
+          print("Widget text: ${widget.text}");
           selectCategory(widget.text);
+          print("Selected Category: $selectedCategory");
           Navigator.of(context).pop();
         },
         child: SizedBox(

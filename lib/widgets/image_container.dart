@@ -26,6 +26,12 @@ class ImageContainer extends StatelessWidget {
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2),
           itemBuilder: ((context, index) {
+            print("IsShop: $isShop");
+            print('1: ${businessCategories[index][1]}');
+            print('2: ${householdCategories[index][1]}');
+            print('3: ${businessCategories[index][0]}');
+            print('4: ${householdCategories[index][0]}');
+
             return ImageTextContainer(
               imageUrl: isShop
                   ? businessCategories[index][1]

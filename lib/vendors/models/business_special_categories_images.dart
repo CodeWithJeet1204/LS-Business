@@ -1,4 +1,4 @@
-Map<String, Map<String, String>> specialCategories = {
+Map<String, Map<String, String>> businessSpecialCategories = {
   'Grocery': {
     'Fruits':
         'https://www.google.com/imgres?q=png%20images%20grocery%20images%20free%20download&imgurl=https%3A%2F%2Fw7.pngwing.com%2Fpngs%2F669%2F488%2Fpng-transparent-shopping-cart-fruit-vegetable-supermarket-shopping-cart-natural-foods-food-supermarket-thumbnail.png&imgrefurl=https%3A%2F%2Fwww.pngwing.com%2Fen%2Fsearch%3Fq%3Dsupermarket&docid=1Az4al4kbsUdhM&tbnid=pTdK0CH9YXaubM&vet=12ahUKEwjSvv33wreFAxUvQ2cHHeh8BVIQM3oECHsQAA..i&w=360&h=383&hcb=2&ved=2ahUKEwjSvv33wreFAxUvQ2cHHeh8BVIQM3oECHsQAA',

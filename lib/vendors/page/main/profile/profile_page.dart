@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:localy/select_mode_page.dart';
+import 'package:localy/vendors/models/business_special_categories_images.dart';
+import 'package:localy/vendors/models/household_special_categories_images.dart';
 import 'package:localy/vendors/page/main/profile/data/all_categories_page.dart';
 import 'package:localy/vendors/utils/colors.dart';
 import 'package:localy/widgets/small_text_container.dart';
@@ -162,33 +164,74 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               actions: [
                 IconButton(
-                  onPressed: () async {
-                    await signOut();
-                  },
                   // onPressed: () async {
-                  //   Future<void> addSpecialCategories(String shopType) async {
-                  //     final subCategories = specialCategories[shopType];
-                  //     final CollectionReference<Map<String, dynamic>>
-                  //         specialCategoriesCollection = store
-                  //             .collection('Business')
-                  //             .doc('Special Categories')
-                  //             .collection(shopType);
-                  //     subCategories!.forEach((subcategory, imageUrl) {
-                  //       specialCategoriesCollection.doc(subcategory).set({
-                  //         'specialCategoryName': subcategory,
-                  //         'specialCategoryImageUrl': imageUrl,
-                  //         'vendorIds': [],
-                  //       });
-                  //     });
-                  //   }
-                  //   Future<void> addAllSpecialCategories() async {
-                  //     specialCategories
-                  //         .forEach((shopType, subCategories) async {
-                  //       await addSpecialCategories(shopType);
-                  //     });
-                  //   }
-                  //   await addAllSpecialCategories();
+                  //   await signOut();
                   // },
+                  onPressed: () async {
+                    Future<void> addBusinessSpecialCategories(
+                        String shopType) async {
+                      print("Shop Type: $shopType");
+
+                      final businessSubCategories =
+                          businessSpecialCategories[shopType];
+
+                      final CollectionReference<Map<String, dynamic>>
+                          specialCategoriesCollection = FirebaseFirestore
+                              .instance
+                              .collection('Business')
+                              .doc('Special Categories')
+                              .collection(shopType);
+
+                      businessSubCategories!
+                          .forEach((subcategory, imageUrl) async {
+                        await specialCategoriesCollection.doc(subcategory).set({
+                          'specialCategoryName': subcategory,
+                          'specialCategoryImageUrl': imageUrl,
+                          'vendorIds': [],
+                        });
+                      });
+                    }
+
+                    Future<void> addHouseholdSpecialCategories(
+                        String shopType) async {
+                      print("Shop Type: $shopType");
+
+                      final householdSubCategories =
+                          householdSpecialCategories[shopType];
+
+                      final CollectionReference<Map<String, dynamic>>
+                          specialCategoriesCollection = FirebaseFirestore
+                              .instance
+                              .collection('Business')
+                              .doc('Special Categories')
+                              .collection(shopType);
+
+                      householdSubCategories!
+                          .forEach((subcategory, imageUrl) async {
+                        await specialCategoriesCollection.doc(subcategory).set({
+                          'specialCategoryName': subcategory,
+                          'specialCategoryImageUrl': imageUrl,
+                          'vendorIds': [],
+                        });
+                      });
+                    }
+
+                    Future<void> addAllSpecialCategories() async {
+                      await Future.forEach(businessSpecialCategories.keys,
+                          (shopType) async {
+                        await addBusinessSpecialCategories(shopType);
+                      });
+
+                      await Future.forEach(householdSpecialCategories.keys,
+                          (shopType) async {
+                        await addHouseholdSpecialCategories(shopType);
+                      });
+                    }
+
+                    await addAllSpecialCategories();
+                    print("All special categories added successfully.");
+                  },
+
                   icon: const Icon(
                     FeatherIcons.logOut,
                     color: primaryDark,
