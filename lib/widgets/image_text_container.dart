@@ -28,16 +28,12 @@ class _ImageTextContainerState extends State<ImageTextContainer> {
       resizeToAvoidBottomInset: false,
       body: GestureDetector(
         onTap: () {
-          print("Widget text: ${widget.text}");
           selectCategory(widget.text);
-          print("Selected Category: $selectedCategory");
           Navigator.of(context).pop();
         },
         child: SizedBox(
           height: double.infinity,
           child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-            width: double.infinity,
             decoration: BoxDecoration(
               border: Border.all(
                 color: primary2,
@@ -45,26 +41,29 @@ class _ImageTextContainerState extends State<ImageTextContainer> {
               ),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
+            margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+            child: Stack(
               children: [
-                Image.network(
-                  widget.imageUrl,
-                  height: 60,
-                ),
-                const SizedBox(height: 24),
-                Text(
-                  widget.text,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w800,
-                    color: primaryDark,
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(11),
+                  child: Image.network(
+                    widget.imageUrl,
+                    width: double.infinity,
                   ),
                 ),
-                const SizedBox(height: 3),
+                Padding(
+                  padding: EdgeInsets.all(2),
+                  child: Text(
+                    widget.text,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w700,
+                      color: primaryDark,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

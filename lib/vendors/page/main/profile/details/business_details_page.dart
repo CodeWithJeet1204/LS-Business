@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:localy/vendors/page/main/profile/details/change_timings_page.dart';
 import 'package:localy/vendors/utils/colors.dart';
 import 'package:localy/widgets/button.dart';
 import 'package:localy/widgets/image_pick_dialog.dart';
@@ -751,20 +752,18 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                 color: primary2.withOpacity(0.9),
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                  left: width * 0.055,
-                                ),
-                                child: SizedBox(
-                                  width: width * 0.725,
-                                  child: Text(
-                                    shopData['Industry'] ?? 'Industry: N/A',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: width * 0.055,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                              padding: EdgeInsets.only(
+                                left: width * 0.055,
+                              ),
+                              child: SizedBox(
+                                width: width * 0.725,
+                                child: Text(
+                                  shopData['Industry'] ?? 'Industry: N/A',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: width * 0.055,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
                               ),
@@ -863,23 +862,64 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                 color: const Color.fromARGB(255, 255, 130, 121),
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                  left: width * 0.055,
-                                ),
-                                child: SizedBox(
-                                  width: width * 0.875,
-                                  child: Text(
-                                    'Membership Expiry Date - ${DateFormat('dd/M/yy').format((shopData['MembershipEndDateTime'] as Timestamp).toDate())}',
-                                    style: TextStyle(
-                                      fontSize: width * 0.055,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                              padding: EdgeInsets.only(
+                                left: width * 0.055,
+                              ),
+                              child: SizedBox(
+                                width: width * 0.875,
+                                child: Text(
+                                  'Membership Expiry Date - ${DateFormat('dd/M/yy').format((shopData['MembershipEndDateTime'] as Timestamp).toDate())}',
+                                  style: TextStyle(
+                                    fontSize: width * 0.055,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
                               ),
                             ),
                             const SizedBox(height: 18),
+
+                            // TIMINGS
+                            InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ChangeTimingsPage()),
+                                );
+                              },
+                              customBorder: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Container(
+                                width: width,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: primary2.withOpacity(0.9),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding: EdgeInsets.all(width * 0.0125),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Timings',
+                                      style: TextStyle(
+                                        color: primaryDark,
+                                        fontSize: width * 0.05,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    Icon(
+                                      FeatherIcons.chevronRight,
+                                      color: primaryDark,
+                                      size: width * 0.09,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
 
                             // SAVE & CANCEL BUTTON
                             Padding(
@@ -957,6 +997,8 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                     )
                                   : Container(),
                             ),
+
+                            SizedBox(height: 12),
                           ],
                         ),
                       );

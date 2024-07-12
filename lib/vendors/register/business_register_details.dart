@@ -27,6 +27,7 @@ class BusinessRegisterDetailsPage extends StatefulWidget {
 
 class _BusinessRegisterDetailsPageState
     extends State<BusinessRegisterDetailsPage> {
+  final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   final GlobalKey<FormState> businessFormKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
@@ -139,7 +140,7 @@ class _BusinessRegisterDetailsPageState
           Reference ref = FirebaseStorage.instance
               .ref()
               .child('VendorShops')
-              .child(FirebaseAuth.instance.currentUser!.uid);
+              .child(auth.currentUser!.uid);
           await ref.putFile(File(uploadImagePath!)).whenComplete(() async {
             await ref.getDownloadURL().then((value) {
               businessPhotoUrl = value;
@@ -150,7 +151,7 @@ class _BusinessRegisterDetailsPageState
             .collection('Business')
             .doc('Owners')
             .collection('Shops')
-            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .doc(auth.currentUser!.uid)
             .update({
           'Name': nameController.text.toString(),
           'Latitude': latitude,
@@ -158,7 +159,7 @@ class _BusinessRegisterDetailsPageState
           'Open': true,
           'viewsTimestamp': [],
           'Followers': [],
-          'followersDateTime': [],
+          'followersTimestamp': [],
           'GSTNumber': gstController.text.toString(),
           'Description': descriptionController.text.toString(),
           'Industry': selectedIndustrySegment,

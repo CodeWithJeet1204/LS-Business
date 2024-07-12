@@ -170,8 +170,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   onPressed: () async {
                     Future<void> addBusinessSpecialCategories(
                         String shopType) async {
-                      print("Shop Type: $shopType");
-
                       final businessSubCategories =
                           businessSpecialCategories[shopType];
 

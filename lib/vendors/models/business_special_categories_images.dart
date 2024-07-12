@@ -1,8 +1,11 @@
 Map<String, Map<String, String>> businessSpecialCategories = {
   'Grocery': {
+    // //
     'Fruits':
-        'https://www.google.com/imgres?q=png%20images%20grocery%20images%20free%20download&imgurl=https%3A%2F%2Fw7.pngwing.com%2Fpngs%2F669%2F488%2Fpng-transparent-shopping-cart-fruit-vegetable-supermarket-shopping-cart-natural-foods-food-supermarket-thumbnail.png&imgrefurl=https%3A%2F%2Fwww.pngwing.com%2Fen%2Fsearch%3Fq%3Dsupermarket&docid=1Az4al4kbsUdhM&tbnid=pTdK0CH9YXaubM&vet=12ahUKEwjSvv33wreFAxUvQ2cHHeh8BVIQM3oECHsQAA..i&w=360&h=383&hcb=2&ved=2ahUKEwjSvv33wreFAxUvQ2cHHeh8BVIQM3oECHsQAA',
-    'Vegetables': '',
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FGrocery%2FFruits.png?alt=media&token=79ff80f8-c362-4cf0-9d69-12f0a1e65e08',
+    // //
+    'Vegetables':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FGrocery%2FVegetables.png?alt=media&token=6b0ff17c-c962-423d-ba97-fdcfed305b7a',
     'Baked':
         'https://www.google.com/imgres?q=png%203d%20images%20baked%20itoms%20images%20free%20download&imgurl=https%3A%2F%2Fpng.pngtree.com%2Fpng-vector%2F20190123%2Fourmid%2Fpngtree-cartoon-birthday-cake-cake-cupcake-hand-painted-birthday-cake-png-image_542262.jpg&imgrefurl=https%3A%2F%2Fpngtree.com%2Fso%2Fbaked-goods&docid=50McUMI04qHahM&tbnid=aPDBabO5A34YXM&vet=12ahUKEwjBwojExbeFAxUuXmwGHYBxD4oQM3oECFMQAA..i&w=360&h=360&hcb=2&ved=2ahUKEwjBwojExbeFAxUuXmwGHYBxD4oQM3oECFMQAA',
     'Canned':
@@ -13,8 +16,9 @@ Map<String, Map<String, String>> businessSpecialCategories = {
         'https://www.google.com/imgres?q=transparant%20background%20png%203d%20images%20candies%20itoms%20images%20free%20download&imgurl=https%3A%2F%2Fimages.creativefabrica.com%2Fproducts%2Fpreviews%2F2023%2F10%2F27%2FvWfI3vbJZ%2F2XMsm9taovAIafngUJ5iYAvqMrD-mobile.jpg&imgrefurl=https%3A%2F%2Fwww.creativefabrica.com%2Fprod%2Fcolorful-candy-jar-with-assorted-sweet-treats-png-vWfI3vbJZ%2F&docid=zmehihZBpRfduM&tbnid=3VetugCBUnsjFM&vet=12ahUKEwjBnZbtybeFAxUjd2wGHZwvCvQQM3oECCkQAA..i&w=552&h=552&hcb=2&ved=2ahUKEwjBnZbtybeFAxUjd2wGHZwvCvQQM3oECCkQAA',
     'Snacks':
         'https://www.google.com/imgres?q=transparant%20background%203d%20images%20snacks%20itoms%20images%20free%20download&imgurl=https%3A%2F%2Fstatic.vecteezy.com%2Fsystem%2Fresources%2Fthumbnails%2F025%2F065%2F315%2Fsmall_2x%2Ffast-food-meal-with-ai-generated-free-png.png&imgrefurl=https%3A%2F%2Fwww.vecteezy.com%2Ffree-png%2Ffood&docid=42UKLvLEmiaAqM&tbnid=YqHUgmTJORfq_M&vet=12ahUKEwivsKyhzLeFAxWzV2wGHcPQBEw4ChAzegQIIBAA..i&w=788&h=400&hcb=2&ved=2ahUKEwivsKyhzLeFAxWzV2wGHcPQBEw4ChAzegQIIBAA',
+    // //
     'Frozen':
-        'https://www.google.com/imgres?q=3d%20model%20transparent%20background%203d%20images%20frozen%20food%20items%20images%20free%20download&imgurl=https%3A%2F%2Fmedia.sketchfab.com%2Fmodels%2F914ab4c2d96849c2b3e30c5a6495bb7c%2Fthumbnails%2F99b57ef7dd1e486e8c7449dd05bebb2c%2F41d712f612dc456db6453304478e1703.jpeg&imgrefurl=https%3A%2F%2Fsketchfab.com%2F3d-models%2Ffrozen-food-aisle-right-side-914ab4c2d96849c2b3e30c5a6495bb7c&docid=NzDnFJK5dU020M&tbnid=AEEo11zR-kOPBM&vet=12ahUKEwiL2c_2z7eFAxU_R2wGHVZDDEEQM3oECGcQAA..i&w=1920&h=1080&hcb=2&ved=2ahUKEwiL2c_2z7eFAxU_R2wGHVZDDEEQM3oECGcQAA',
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FGrocery%2FFrozen.png?alt=media&token=8d8787c1-33a5-4a6b-8b92-d4557074c546',
     'Rice & Cereal':
         'https://www.google.com/imgres?q=whole%20grains%20transparent%20background%203d%20images%20rice%20and%20cereal%20packets%20items%20images%20free%20download&imgurl=https%3A%2F%2Fw7.pngwing.com%2Fpngs%2F212%2F294%2Fpng-transparent-whole-grain-whole-food-cereal-whole-wheat-bread-brown-rice-rice-natural-foods-food-eating.png&imgrefurl=https%3A%2F%2Fwww.pngwing.com%2Fen%2Ffree-png-zwrrl&docid=7gKgCTOn-vKGXM&tbnid=2_gLeAVM28kPBM&vet=12ahUKEwiv24CS0beFAxWcR2wGHQ5hCtUQM3oECGQQAA..i&w=920&h=602&hcb=2&ved=2ahUKEwiv24CS0beFAxWcR2wGHQ5hCtUQM3oECGQQAA',
   },
@@ -47,60 +51,82 @@ Map<String, Map<String, String>> businessSpecialCategories = {
         'https://img.freepik.com/free-vector/watercolor-first-aid-kit-collection-element_23-2151344656.jpg?t=st=1718872195~exp=1718875795~hmac=f49fb0a8ecbd434e9ff182f897a06e939d69a87304511496cd73dadfb8b4b3fb&w=1800',
   },
   'Electronics': {
+    //
     'Mobile':
         'https://img.freepik.com/free-vector/realistic-white-smartphone-design-with-three-cameras_23-2148374059.jpg?t=st=1718872323~exp=1718875923~hmac=cbec94f4458e720189c0766da77d1e13c59028049db04c3ff25adb2992819046&w=1800',
-    'Tabs':
-        'https://img.freepik.com/free-vector/blank-screen-smartphone-tablet-icon-isolated-white-background_1308-51514.jpg?t=st=1718872396~exp=1718875996~hmac=fb1386c13d98d626a0429f7d31127c1ea6236258ecd1e88530a14f5ed5187470&w=1800',
+    //
+    'Tabs': '',
     'Televisions':
-        'https://img.freepik.com/free-vector/vector-vintage-old-photo-realistic-crt-tv-white_1284-46707.jpg?t=st=1718872431~exp=1718876031~hmac=ae6ced52eced6355af8d031838656614f6c502a0715ede310909612fb522326a&w=2000',
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FElectronics%2FTelevisions.png?alt=media&token=18895bff-7f81-4783-b1a4-6b3e281d06fe',
     'Headphones':
-        'https://img.freepik.com/free-vector/headphones-background-design_1063-131.jpg?t=st=1718872448~exp=1718876048~hmac=7cedbb32f8bf90665e7693c4b36e9d60715ecae73f1720273299c6a4fddfc870&w=1800',
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FElectronics%2FHeadphones.png?alt=media&token=7e000836-a6a0-4a19-9c0f-1cc9cb355704',
     'Cameras':
-        'https://img.freepik.com/free-vector/vector-compact-photo-camera-top-view-isolated-white-background_1284-45522.jpg?t=st=1718872464~exp=1718876064~hmac=79723ca05f5016f6277aa38fd284230baebf71d47d764d5b37a0a9c568e1faa2&w=1800',
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FElectronics%2FCameras.png?alt=media&token=a64d8000-afe9-414c-9ce1-d0d95e34ed86',
     'Gaming':
-        'https://img.freepik.com/free-vector/realistic-set-various-models-controllers-video-game-console-white-background-isolated-vector-illustration_1284-68538.jpg?t=st=1718872503~exp=1718876103~hmac=68e1db9bad3130c43084a5c73130039cbb5c557284f9fce5d3df284d63d569eb&w=2000',
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FElectronics%2FGaming.png?alt=media&token=d5ce0248-3882-4024-81ce-dcb57d9c4804',
     'Air Conditioners':
-        'https://img.freepik.com/free-vector/white-air-conditioner-climate-control-office-3d-home-summer-air-conditioning-system-conditioner-ventilation-air-illustration_1284-51588.jpg?t=st=1718872547~exp=1718876147~hmac=acec49ad7efb30f66506bc1c33f01ba70338599639b796dbaae33b22c6c104d7&w=2000',
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FElectronics%2FAir%20Conditioners.png?alt=media&token=6f4ec5d2-35a0-47d3-814b-af1641c4df77',
     'Refrigerators':
-        'https://img.freepik.com/free-vector/red-black-open-refrigerator-with-products_1284-23311.jpg?t=st=1718872571~exp=1718876171~hmac=ca12ae1445310787717dcdf701d2131dc080d657c584ef03810ce2369abd0561&w=1800',
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FElectronics%2FRefrigerators.png?alt=media&token=15c3cfd8-2732-4f9b-b57a-4f143ca5c048',
     'Washing Machines':
-        'https://img.freepik.com/free-vector/washing-machine-with-front-door_1308-74400.jpg?t=st=1718872649~exp=1718876249~hmac=1cad59740182c213cfe1db4a21b3bff2dcfba7c3d0c122766fc6e4b0f1085703&w=1480',
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FElectronics%2FWashing%20Machines.png?alt=media&token=e87b70e9-9fe1-4b76-82fa-0f2f59a11e0f',
     'Speakers':
-        'https://img.freepik.com/free-vector/set-realistic-speakers-various-size-center-audio-device-isolated-illustration_1284-31275.jpg?t=st=1718872672~exp=1718876272~hmac=ab0f2a33a59f1a49a2cc37306b19a2e0f26dcd41582c2a6bcc321ceb90b46239&w=1800',
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FElectronics%2FSpeakers.png?alt=media&token=0271c3e6-558e-4c09-a40f-3680a48a9e4a',
     'Screen Protectors':
-        'https://img.freepik.com/free-vector/new-modern-realistic-front-view-black-iphone-mockup-isolated-white-mobile-template-vector_90220-957.jpg?t=st=1718872707~exp=1718876307~hmac=242f9a4b36f1a472e2919eead55a8674c8d2e7aa93036bd8894b3cccfce61594&w=1800',
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FElectronics%2FScreen%20Protectors.png?alt=media&token=4a83d185-2aae-4b89-888a-e8e3ffe65fe3',
     'Power Banks':
-        'https://img.freepik.com/free-vector/portable-charger-3d-vector-illustration-wireless-device-charging-phones-tablets-cartoon-style-isolated-white-background-modern-technology-smart-home-concept_778687-727.jpg?t=st=1718872755~exp=1718876355~hmac=8ff6c6590c29f50dfbdfa7577358f50c61321c2ec9d8578a0cd98b8a0f29f4f5&w=1800',
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FElectronics%2FPower%20Banks.png?alt=media&token=b9a51008-33bf-46c9-a60a-cb4d8a119d35',
     'Software':
-        'https://img.freepik.com/free-vector/new-app-development-desktop_23-2148684987.jpg?t=st=1718872776~exp=1718876376~hmac=71e2f5f2b1afb37666a6001c9e7710251b6e11ed0765e3cd69f653acc6f88bdd&w=1800',
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FElectronics%2FSoftware.png?alt=media&token=78e86654-f09d-4e1a-bd4a-4a264db692e3',
     'Laptops':
-        'https://img.freepik.com/free-vector/laptop-realistic_78370-511.jpg?t=st=1718872813~exp=1718876413~hmac=b45a52bcaaeb4db64d3798ad48963ee162696c0a625fc5d87db2fc93f8a316ad&w=1800',
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FElectronics%2FLaptops.png?alt=media&token=20c39252-4298-4a9a-8190-c257e7b0cba6',
     'Drives & Storage':
-        'https://img.freepik.com/free-vector/usb-flash-drives-illustration-3d-realistic-memory-stick-black-white-plastic-mockup_33099-588.jpg?t=st=1718872835~exp=1718876435~hmac=8de31f7238b4153a0a2adbe5f2333a49285f7dfcf77e29245544476b05f37bef&w=1800',
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FElectronics%2FDrives%20%26%20Storage.png?alt=media&token=31b20b4c-5a5d-47a5-835a-819b94e14736',
     'Printers & Ink':
-        'https://img.freepik.com/free-vector/isometric-laser-ink-printer-clipboard-calendar-office-paper-knife-pencil-set_126523-2464.jpg?t=st=1718872855~exp=1718876455~hmac=0acff16f27b5db0d0fdfa4c8f69ad4110de518f80cf78382530bc3723bcae704&w=1800',
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FElectronics%2FPrinters%20%26%20Ink.png?alt=media&token=1422679d-bdf2-4684-825c-88c819cdc0ff',
     'Desktop':
-        'https://img.freepik.com/free-vector/computer-design_1156-101.jpg?t=st=1718872877~exp=1718876477~hmac=6e4a6d5a2dda6e946a3428c6c80ab8756764ed25a1e5146a17e43fe25ed3d70f&w=1800',
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FElectronics%2FDesktop.png?alt=media&token=95a6e37b-2c6d-46f5-925a-f8ddce586450',
     'Home Appliances':
-        'https://img.freepik.com/free-vector/gas-oven-hood-microwave-coffee-machine-set_107791-3325.jpg?t=st=1718872898~exp=1718876498~hmac=4d75c2a8f6d21843c440a08947f424d5bdfe4c9c514d5930e575cc7ec2bd5f0d&w=2000',
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FElectronics%2FHome%20Appliances.png?alt=media&token=6a259b9d-2cb3-4292-b3dc-98926a88d9bf',
   },
   'Clothing and Apparel': {
+    // //
     'T Shirt':
-        'https://img.freepik.com/free-vector/set-different-colour-dinosaur-t-shirts_1308-51157.jpg?t=st=1718875404~exp=1718879004~hmac=44690e3a74b035152223821f5d5070141a857e62f529bf1dd44d25317faec543&w=1480',
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FClothing%20and%20Apparel%2FT%20Shirt.png?alt=media&token=e7f49398-e5dc-4435-8ef9-69a935a4b2f9',
     'Polos':
         'https://img.freepik.com/free-vector/front-basic-polo-shirt-isolated_1308-75514.jpg?t=st=1718875433~exp=1718879033~hmac=ca08353836b9ff3429e3501e11214ea231b8c2a7f7903bde1985cb0b70ae0e6b&w=1480',
     'Shirts':
         'https://img.freepik.com/free-vector/set-colour-collar-shirt_1308-28230.jpg?t=st=1718875469~exp=1718879069~hmac=906a2cc3515812e22127c6f5e654f3b63a1bfafcc3da4ed589339f73144741bd&w=1800',
+    // //
+    'Shorts':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FClothing%20and%20Apparel%2FShorts.png?alt=media&token=8c48d5eb-446b-448a-b43d-dffa89a92204',
+    // //
+    'Joggers':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FClothing%20and%20Apparel%2FJoggers.png?alt=media&token=a05aece8-e3e2-4b7f-9975-bf3423b20ad8',
+    // //
+    'Socks':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FClothing%20and%20Apparel%2FSocks.png?alt=media&token=c6ee8525-0ce8-4488-acb0-df2425859cd8',
+    // //
+    'Formal Shoes':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FClothing%20and%20Apparel%2FFormal%20Shoes.png?alt=media&token=46604622-47f0-4e73-81aa-be92396be37c',
+    // //
+    'Hats':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FClothing%20and%20Apparel%2FHats.png?alt=media&token=39dafb35-8809-4114-a12c-590d860fa11b',
+    // //
+    'Hoodies':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FClothing%20and%20Apparel%2FHoodies.png?alt=media&token=6d00b0ce-f066-455b-b868-161f1395bb45',
+    // //
     'Jeans':
-        'https://img.freepik.com/free-vector/jeans-outline-flat-style_78370-2865.jpg?t=st=1718875512~exp=1718879112~hmac=7f465de78d91bad9f190547cc8320a61e7bafc695a8128e62ae67a34fd5d4c60&w=1800',
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FClothing%20and%20Apparel%2FJeans.png?alt=media&token=9334e605-22ef-49af-be0f-46613f32486e',
+    'Denim': '',
     'Innerwear':
         'https://img.freepik.com/free-vector/realistic-mens-underpants-set-with-boxers-briefs-trunks-different-colors-isolated-vector-illustration_1284-78949.jpg?t=st=1718875606~exp=1718879206~hmac=c093dd12743dadec3a6d96f8a199deda6c0339a8037832ce7eb5769bd10c0896&w=2000',
     'Sunglasses':
         'https://img.freepik.com/free-vector/funny-glasses-different-shapes_74855-296.jpg?t=st=1718875637~exp=1718879237~hmac=9d85c92f669d8a1acc31b8e5a27a27d36566fb296fdaf30e74bd6a9711c32ebc&w=1800',
     'Watches':
         'https://img.freepik.com/free-vector/realistic-watches-set_1284-11684.jpg?t=st=1718875652~exp=1718879252~hmac=c6075e59f20b3ae09e4389e3880edcd0ea7b8c91c5e0b10dc94e942a78a5480a&w=1800',
-    'Shoes':
-        'https://img.freepik.com/free-vector/set-sport-shoes-sneakers-different-views_1284-45609.jpg?t=st=1718875682~exp=1718879282~hmac=b268895a44eddd42d8a1afd08d95fdddf9cbc2ed23dabd288e896e3f2dc1dcce&w=1800',
+    // //
+    'Sneakers': '',
     'Sportswear':
         'https://img.freepik.com/free-vector/front-rear-view-cycling-jersey-mockup-green-black-colors-isolated-white-background-realistic-vector-illustration_1284-78068.jpg?t=st=1718875704~exp=1718879304~hmac=8a2c2c8093283b87cc644d2c69b83dd4b11c2863058cfed07348ebea96dbf914&w=1800',
     'Wallets':
@@ -109,6 +135,9 @@ Map<String, Map<String, String>> businessSpecialCategories = {
         'https://img.freepik.com/free-vector/school-uniform-boys-girls-vector-illustrations-set_778687-1596.jpg?t=st=1718875869~exp=1718879469~hmac=6423d797fa050394687a4db0d22223f4590097dd4a1a866f414f462b03a6ae2f&w=1800',
     'Ethnic':
         'https://img.freepik.com/free-vector/antique-women-s-fashion-vector-outfit-design-element-set-remixed-from-public-domain-collection_53876-116293.jpg?t=st=1718875909~exp=1718879509~hmac=f8e9bfaf1e0a2e0c0a9ad720c8fb8d1c63f072e88458d575cd08134b2403b9b7&w=1800',
+    // //
+    'Slippers':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FClothing%20and%20Apparel%2FSlippers.png?alt=media&token=0bcde2ce-e5ac-41f9-bd30-4dc6fe1e137d',
     'Sandals':
         'https://img.freepik.com/free-photo/flip-flop-beach-shoes-yellow-isolated-white-background_1101-2037.jpg?t=st=1718876031~exp=1718879631~hmac=3559e060837bdd95e3160fb6111aca9647e7082a175bb5ab6e60bc7830e9503f&w=1800',
   },
@@ -141,50 +170,77 @@ Map<String, Map<String, String>> businessSpecialCategories = {
     'Oral Hygiene': '',
     'Lipsticks': '',
     'Eye Shadow & Eye Liners': '',
-    'Tattoos': '',
   },
   'Furniture': {
-    'Chairs': '',
-    'Benches': '',
-    'Beds': '',
-    'Couches': '',
-    'Toddlers': '',
-    'Tables': '',
-    'Desks': '',
-    'Shelfs': '',
-    'Cupboards': '',
-    'Racks': '',
+    'Chair':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FFurniture%2FChair.jpg?alt=media&token=dd43aeab-9cb6-4180-9f33-2900b9e99b1f',
+    'Bench':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FFurniture%2FBench.png?alt=media&token=3fcdb9b7-b418-400e-a07e-7dda6351f24a',
+    'Bed':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FFurniture%2FBed.png?alt=media&token=f3090c13-e999-4615-aca8-f4839c8073bd',
+    'Couch':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FFurniture%2FCouch.png?alt=media&token=31d43f89-9b51-44d0-b1bd-dbc8f7038e62',
+    'Toddler':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FFurniture%2FToddler.png?alt=media&token=fcbd6b34-51e7-4ec5-8ef8-9b41cb5415bf',
+    //
+    'Table': '',
+    'Desk':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FFurniture%2FDesk.png?alt=media&token=53121e2a-2638-4224-99f9-af7e4c66b0b3',
+    'Shelf':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FFurniture%2FShelf.jpg?alt=media&token=4fb3a6d1-f70d-4340-a64b-6763adfc41f0',
+    'Cupboard':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FFurniture%2FCupboard.png?alt=media&token=b7461021-758c-4648-8c8c-19a1c6cada69',
+    'Rack':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FFurniture%2FRack.png?alt=media&token=1613cc7e-7542-4bc5-b14b-57d238f3e69e',
   },
   'Jewelry': {
+    //
     'Body Piercings': '',
-    'Bracelets': '',
-    'Brooches': '',
-    'Necklaces': '',
-    'Rings': '',
-    'Luxury Watches': '',
-    'Gem Stones': '',
-    'Pendants': '',
+    'Bracelet':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FJewelry%2FBracelet.png?alt=media&token=72f1dbd4-b219-4526-972b-7f5aecfe69f3',
+    'Brooch':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FJewelry%2FBrooch.png?alt=media&token=6964cd99-a7f9-486f-a8b6-35b31158c623',
+    'Necklace':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FJewelry%2FNecklace.png?alt=media&token=75030102-0969-4ff6-a71d-c16e9bf14092',
+    'Ring':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FJewelry%2FRing.png?alt=media&token=5fa50f31-16d6-49a1-a84c-68def5326ff9',
+    'Luxury Watch':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FJewelry%2FLuxury%20Watch.png?alt=media&token=7a26b8a8-73de-4d73-9a43-1f42d3e33f5b',
+    'Gem Stone':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FJewelry%2FGem%20Stone.png?alt=media&token=0e1245b8-ceed-49ff-8b33-a6b6eef4c40c',
+    'Pendant':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FJewelry%2FPendant.png?alt=media&token=c2abf918-95b2-4f44-9634-5db06ba8cd16',
   },
   'Decorations': {
-    'Clocks': '',
-    'Mirrors': '',
-    'Frames': '',
-    'Vases': '',
-    'Rugs': '',
-    'Cushions': '',
-    'Paintings': '',
-    'Wall Stickers': '',
-    'Screens': '',
-    'Room Dividers': '',
-    'Curtains': '',
-    'Plant Pots': '',
+    // //
+    'Clock':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FDecorations%2FClock.png?alt=media&token=ac1348b4-7b92-402d-8d36-b88721618785',
+    // //
+    'Mirror':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FDecorations%2FMirror.png?alt=media&token=66b3aae1-e6e1-485e-b000-7900fda7c150',
+    // //
+    'Frame':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FDecorations%2FFrame.png?alt=media&token=f509ce1c-2154-4ed8-89de-f6d92095d7de',
+    // //
+    'Vase':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FDecorations%2FVase.png?alt=media&token=9c408235-90c9-4cc8-8133-fba13aa31a09',
+    // //
+    'Rug':
+        'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FDecorations%2FRug.png?alt=media&token=ba7998f8-a12b-4d2d-95d9-1eb7db38cb61',
+    'Cushion': '',
+    'Painting': '',
+    'Wall Sticker': '',
+    'Screen': '',
+    'Room Divider': '',
+    'Curtain': '',
+    'Plant Pot': '',
     'Flower Pot Holder': '',
     'Vertical Garden': '',
   },
   'Bookstores and Stationery': {
     'Fiction Book': '',
-    'Non Fiction Books': '',
-    'Educational Books': '',
+    'Non Fiction Book': '',
+    'Educational Book': '',
     'Necessary': '',
     'Activity Book': '',
     'Coloring': '',
@@ -253,8 +309,15 @@ Map<String, Map<String, String>> businessSpecialCategories = {
     'Rugby': '',
     'Darts & Targets': '',
     'Football': '',
+    // //
     'Sportswear': '',
     'Balls': '',
+    // //
+    'Sports Shoes': '',
+    // //
+    'Gym': '',
+    // //
+    'Yoga': '',
   },
   'Agriculture and Farm Supply': {
     'Irrigation Machines': '',

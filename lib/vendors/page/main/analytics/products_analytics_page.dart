@@ -294,20 +294,19 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                         if (snapshot.hasData) {
                           final productSnap = snapshot.data!.docs;
                           Map<String, dynamic> productData = {
-                            'views': 0,
-                            'viewsTimestamp': [],
-                            'likes': 0,
-                            'likesTimestamp': [],
+                            'productViewsTimestamp': [],
+                            'productLikesTimestamp': {},
                             'wishlists': 0,
                             'shares': 0,
                           };
                           for (var element in productSnap) {
-                            productData['views'] += element['productViews'];
-                            productData['viewsTimestamp'] +=
+                            productData['productViewsTimestamp'] +=
                                 element['productViewsTimestamp'];
-                            productData['likes'] += element['productLikes'];
-                            productData['likesTimestamp'] +=
-                                element['productLikesTimestamp'];
+                            (productData['productLikesTimestamp'] as Map)
+                                .addAll(
+                              element['productLikesTimestamp'],
+                            );
+                            ;
                             productData['wishlists'] +=
                                 element['productWishlist'];
                             productData['shares'] += element['productShares'];
@@ -317,7 +316,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                           List<DateTime> likeTimestamps = [];
 
                           for (Timestamp viewDate
-                              in productData['viewsTimestamp']) {
+                              in productData['productViewsTimestamp']) {
                             if (selectedDuration != null) {
                               if (viewDate
                                   .toDate()
@@ -330,7 +329,8 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                           }
 
                           for (Timestamp likeTimestamp
-                              in productData['likesTimestamp']) {
+                              in (productData['productLikesTimestamp'] as Map)
+                                  .values) {
                             if (selectedDuration != null) {
                               if (likeTimestamp
                                   .toDate()
@@ -347,7 +347,8 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                           for (var element in productSnap) {
                             productWiseViews.addAll({
                               element['productName'].toString():
-                                  (element['productViews']),
+                                  ((element['productViewsTimestamp'] as List)
+                                      .length),
                             });
                           }
 
@@ -356,7 +357,8 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                           for (var element in productSnap) {
                             productWiseLikes.addAll({
                               element['productName'].toString():
-                                  (element['productLikes']),
+                                  (element['productLikesTimestamp'] as Map)
+                                      .length,
                             });
                           }
 
@@ -857,18 +859,22 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                   InfoColorBox(
                                     text: 'VIEWS',
                                     width: width,
-                                    property: productData['views'],
-                                    color: const Color.fromARGB(
-                                        255, 163, 255, 166),
+                                    property:
+                                        (productData['productViewsTimestamp']
+                                                as List)
+                                            .length,
+                                    color: Color.fromRGBO(163, 255, 166, 1),
                                   ),
 
                                   // ALL LIKES
                                   InfoColorBox(
                                     text: 'LIKES',
                                     width: width,
-                                    property: productData['likes'],
-                                    color: const Color.fromARGB(
-                                        255, 237, 255, 163),
+                                    property:
+                                        (productData['productLikesTimestamp']
+                                                as Map)
+                                            .length,
+                                    color: Color.fromRGBO(237, 255, 163, 1),
                                   ),
                                 ],
                               ),
@@ -896,8 +902,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                       text: 'SHARES',
                                       property: productData['shares'],
                                       width: width,
-                                      color: const Color.fromRGBO(
-                                          253, 182, 255, 1),
+                                      color: Color.fromRGBO(253, 182, 255, 1),
                                     ),
                                   ],
                                 ),
@@ -906,14 +911,17 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                               // PRODUCT WISE VIEWS
                               Container(
                                 width: width,
-                                height: width * 0.575,
-                                margin: EdgeInsets.symmetric(
-                                  vertical: width * 0.066,
-                                  horizontal: width * 0.01,
-                                ),
                                 decoration: BoxDecoration(
                                   color: primary2.withOpacity(0.25),
                                   borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  vertical: width * 0.0066,
+                                  horizontal: width * 0.0066,
+                                ),
+                                margin: EdgeInsets.symmetric(
+                                  vertical: width * 0.0125,
+                                  horizontal: width * 0.01,
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -941,12 +949,20 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                 left: width * 0.05,
                                               ),
                                               child: Text(
-                                                productData['views'] > 1000000
-                                                    ? '${productData['views'].toString().substring(0, 1)}.${productData['views'].toString().substring(1, 4)}M'
-                                                    : productData['views'] >
+                                                (productData['productViewsTimestamp']
+                                                                as List)
+                                                            .length >
+                                                        1000000
+                                                    ? '${(productData['productViewsTimestamp'] as List).length.toString().substring(0, 1)}.${(productData['productViewsTimestamp'] as List).length.toString().substring(1, 4)}M'
+                                                    : (productData['productViewsTimestamp']
+                                                                    as List)
+                                                                .length >
                                                             1000
-                                                        ? '${productData['views'].toString().substring(0, 1)}.${productData['views'].toString().substring(1, 4)}k'
-                                                        : productData['views']
+                                                        ? '${(productData['productViewsTimestamp'] as List).length.toString().substring(0, 1)}.${(productData['productViewsTimestamp'] as List).length.toString().substring(1, 4)}k'
+                                                        : (productData[
+                                                                    'productViewsTimestamp']
+                                                                as List)
+                                                            .length
                                                             .toString(),
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
@@ -980,14 +996,17 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                               // PRODUCT WISE LIKES
                               Container(
                                 width: width,
-                                height: width * 0.575,
-                                margin: EdgeInsets.symmetric(
-                                  vertical: width * 0.066,
-                                  horizontal: width * 0.01,
-                                ),
                                 decoration: BoxDecoration(
                                   color: primary2.withOpacity(0.25),
                                   borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  vertical: width * 0.0066,
+                                  horizontal: width * 0.0066,
+                                ),
+                                margin: EdgeInsets.symmetric(
+                                  vertical: width * 0.0125,
+                                  horizontal: width * 0.01,
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1015,12 +1034,20 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                 left: width * 0.05,
                                               ),
                                               child: Text(
-                                                productData['likes'] > 1000000
-                                                    ? '${productData['likes'].toString().substring(0, 1)}.${productData['likes'].toString().substring(1, 4)}M'
-                                                    : productData['likes'] >
+                                                (productData['productLikesTimestamp']
+                                                                as Map)
+                                                            .length >
+                                                        1000000
+                                                    ? '${(productData['productLikesTimestamp'] as Map).length.toString().substring(0, 1)}.${(productData['productLikesTimestamp'] as Map).length.toString().substring(1, 4)}M'
+                                                    : (productData['productLikesTimestamp']
+                                                                    as Map)
+                                                                .length >
                                                             1000
-                                                        ? '${productData['likes'].toString().substring(0, 1)}.${productData['likes'].toString().substring(1, 4)}k'
-                                                        : productData['likes']
+                                                        ? '${(productData['productLikesTimestamp'] as Map).length.toString().substring(0, 1)}.${(productData['productLikesTimestamp'] as Map).length.toString().substring(1, 4)}k'
+                                                        : (productData[
+                                                                    'productLikesTimestamp']
+                                                                as Map)
+                                                            .length
                                                             .toString(),
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,

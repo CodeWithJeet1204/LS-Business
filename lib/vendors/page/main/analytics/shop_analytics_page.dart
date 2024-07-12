@@ -98,6 +98,22 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
     return [BarChartRodData(toY: count.toDouble())];
   }
 
+  // GET FOLLOWERS
+  Future<int> getFollowers() async {
+    int followerCount = 0;
+    final userSnap = await store.collection('Users').get();
+    userSnap.docs.forEach((user) {
+      final userData = user.data();
+
+      final followedShops = userData['followedShops'] as List?;
+      if (followedShops != null &&
+          followedShops.contains(auth.currentUser!.uid)) {
+        followerCount++;
+      }
+    });
+    return followerCount;
+  }
+
   @override
   Widget build(BuildContext context) {
     final shopStream = store
@@ -216,7 +232,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                         if (snapshot.hasData) {
                           final shopData = snapshot.data!;
                           List<DateTime> viewTimestamps = [];
-                          List<DateTime> followerTimestamps = [];
+                          // List<DateTime> followerTimestamps = [];
                           for (Timestamp viewDate
                               in shopData['viewsTimestamp']) {
                             if (selectedDuration != null) {
@@ -230,20 +246,20 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                             }
                           }
 
-                          for (Timestamp followerTimestamp
-                              in shopData['followersDateTime']) {
-                            if (selectedDuration != null) {
-                              if (followerTimestamp
-                                  .toDate()
-                                  .isAfter(selectedDuration!)) {
-                                followerTimestamps
-                                    .add(followerTimestamp.toDate());
-                              }
-                            } else {
-                              followerTimestamps
-                                  .add(followerTimestamp.toDate());
-                            }
-                          }
+                          // for (Timestamp followerTimestamp
+                          //     in shopData['followersTimestamp']) {
+                          //   if (selectedDuration != null) {
+                          //     if (followerTimestamp
+                          //         .toDate()
+                          //         .isAfter(selectedDuration!)) {
+                          //       followerTimestamps
+                          //           .add(followerTimestamp.toDate());
+                          //     }
+                          //   } else {
+                          //     followerTimestamps
+                          //         .add(followerTimestamp.toDate());
+                          //   }
+                          // }
 
                           return Column(
                             children: [
@@ -275,7 +291,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                         children: [
                                           // PROPERTY
                                           Text(
-                                            'Shop Views',
+                                            'Total Views',
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
@@ -482,239 +498,239 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                               ),
 
                               // TIMED FOLLOWERS
-                              Container(
-                                width: width,
-                                height: width * 0.5,
-                                margin: EdgeInsets.symmetric(
-                                  vertical: width * 0.0125,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: primary2.withOpacity(0.25),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // PROPERTY & VALUE
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: width * 0.0225,
-                                        vertical: width * 0.0125,
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          // PROPERTY
-                                          Text(
-                                            'Shop Followers',
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              color: primaryDark2,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: width * 0.05,
-                                            ),
-                                          ),
-                                          // VALUE
-                                          Text(
-                                            followerTimestamps.length > 1000000
-                                                ? '${followerTimestamps.length.toString().substring(0)}.${followerTimestamps.length.toString().substring(1, 3)}M'
-                                                : followerTimestamps.length >
-                                                        1000
-                                                    ? '${followerTimestamps.length.toString().substring(0)}.${followerTimestamps.length.toString().substring(1, 3)}k'
-                                                    : followerTimestamps.length
-                                                        .toString(),
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              color: primaryDark,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: width * 0.06,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                              // Container(
+                              //   width: width,
+                              //   height: width * 0.5,
+                              //   margin: EdgeInsets.symmetric(
+                              //     vertical: width * 0.0125,
+                              //   ),
+                              //   decoration: BoxDecoration(
+                              //     color: primary2.withOpacity(0.25),
+                              //     borderRadius: BorderRadius.circular(12),
+                              //   ),
+                              //   child: Column(
+                              //     mainAxisAlignment:
+                              //         MainAxisAlignment.spaceBetween,
+                              //     crossAxisAlignment: CrossAxisAlignment.start,
+                              //     children: [
+                              //       // PROPERTY & VALUE
+                              //       Padding(
+                              //         padding: EdgeInsets.symmetric(
+                              //           horizontal: width * 0.0225,
+                              //           vertical: width * 0.0125,
+                              //         ),
+                              //         child: Row(
+                              //           mainAxisAlignment:
+                              //               MainAxisAlignment.spaceBetween,
+                              //           children: [
+                              //             // PROPERTY
+                              //             Text(
+                              //               'Shop Followers',
+                              //               maxLines: 1,
+                              //               overflow: TextOverflow.ellipsis,
+                              //               style: TextStyle(
+                              //                 color: primaryDark2,
+                              //                 fontWeight: FontWeight.w500,
+                              //                 fontSize: width * 0.05,
+                              //               ),
+                              //             ),
+                              //             // VALUE
+                              //             Text(
+                              //               followerTimestamps.length > 1000000
+                              //                   ? '${followerTimestamps.length.toString().substring(0)}.${followerTimestamps.length.toString().substring(1, 3)}M'
+                              //                   : followerTimestamps.length >
+                              //                           1000
+                              //                       ? '${followerTimestamps.length.toString().substring(0)}.${followerTimestamps.length.toString().substring(1, 3)}k'
+                              //                       : followerTimestamps.length
+                              //                           .toString(),
+                              //               maxLines: 1,
+                              //               overflow: TextOverflow.ellipsis,
+                              //               style: TextStyle(
+                              //                 color: primaryDark,
+                              //                 fontWeight: FontWeight.w600,
+                              //                 fontSize: width * 0.06,
+                              //               ),
+                              //             ),
+                              //           ],
+                              //         ),
+                              //       ),
 
-                                    // GRAPH
-                                    SizedBox(
-                                      width: width * 1,
-                                      height: width * 0.375,
-                                      child: BarChart(
-                                        BarChartData(
-                                          maxY: followerTimestamps.length * 2,
-                                          gridData: const FlGridData(
-                                            drawVerticalLine: false,
-                                          ),
-                                          titlesData: FlTitlesData(
-                                            leftTitles: AxisTitles(
-                                              sideTitles: SideTitles(
-                                                showTitles: true,
-                                                reservedSize: width * 0.0685,
-                                              ),
-                                            ),
-                                            topTitles: const AxisTitles(
-                                              sideTitles: SideTitles(
-                                                showTitles: false,
-                                              ),
-                                            ),
-                                            rightTitles: const AxisTitles(
-                                              sideTitles: SideTitles(
-                                                showTitles: false,
-                                              ),
-                                            ),
-                                            bottomTitles: AxisTitles(
-                                              sideTitles: SideTitles(
-                                                showTitles: true,
-                                                reservedSize: width * 0.065,
-                                                getTitlesWidget: (value, meta) {
-                                                  return Text(
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    value.toStringAsFixed(0),
-                                                    style: TextStyle(
-                                                      fontSize:
-                                                          selectedStringDuration ==
-                                                                  '24 Hours'
-                                                              ? width * 0.0266
-                                                              : width * 0.0375,
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            ),
-                                          ),
-                                          alignment:
-                                              BarChartAlignment.spaceAround,
-                                          barTouchData: BarTouchData(
-                                            enabled: true,
-                                          ),
-                                          barGroups: selectedStringDuration ==
-                                                  '24 Hours'
-                                              ? List.generate(24, (index) {
-                                                  int groupNumber = index + 1;
-                                                  return BarChartGroupData(
-                                                    x: groupNumber,
-                                                    barRods:
-                                                        convertMapToBarChartRodData(
-                                                      groupDateTimeIntervals(
-                                                        DateTime.now().subtract(
-                                                          const Duration(
-                                                              days: 1),
-                                                        ),
-                                                        followerTimestamps,
-                                                        24,
-                                                      ),
-                                                      groupNumber,
-                                                    ),
-                                                  );
-                                                }).toList()
-                                              : selectedStringDuration ==
-                                                      '7 Days'
-                                                  ? List.generate(7, (index) {
-                                                      int groupNumber =
-                                                          index + 1;
-                                                      return BarChartGroupData(
-                                                        x: groupNumber,
-                                                        barRods:
-                                                            convertMapToBarChartRodData(
-                                                          groupDateTimeIntervals(
-                                                            DateTime.now()
-                                                                .subtract(
-                                                              const Duration(
-                                                                  days: 7),
-                                                            ),
-                                                            followerTimestamps,
-                                                            7,
-                                                          ),
-                                                          groupNumber,
-                                                        ),
-                                                      );
-                                                    }).toList()
-                                                  : selectedStringDuration ==
-                                                          '28 Days'
-                                                      ? List.generate(4,
-                                                          (index) {
-                                                          int groupNumber =
-                                                              index + 1;
-                                                          return BarChartGroupData(
-                                                            x: groupNumber,
-                                                            barRods:
-                                                                convertMapToBarChartRodData(
-                                                              groupDateTimeIntervals(
-                                                                DateTime.now()
-                                                                    .subtract(
-                                                                  const Duration(
-                                                                    days: 28,
-                                                                  ),
-                                                                ),
-                                                                followerTimestamps,
-                                                                4,
-                                                              ),
-                                                              groupNumber,
-                                                            ),
-                                                          );
-                                                        }).toList()
-                                                      : selectedStringDuration ==
-                                                              '365 Days'
-                                                          ? List.generate(12,
-                                                              (index) {
-                                                              int groupNumber =
-                                                                  index + 1;
-                                                              return BarChartGroupData(
-                                                                x: groupNumber,
-                                                                barRods:
-                                                                    convertMapToBarChartRodData(
-                                                                  groupDateTimeIntervals(
-                                                                    DateTime.now()
-                                                                        .subtract(
-                                                                      const Duration(
-                                                                        days:
-                                                                            365,
-                                                                      ),
-                                                                    ),
-                                                                    followerTimestamps,
-                                                                    12,
-                                                                  ),
-                                                                  groupNumber,
-                                                                ),
-                                                              );
-                                                            }).toList()
-                                                          : selectedStringDuration ==
-                                                                  'Lifetime'
-                                                              ? List.generate(
-                                                                  10, (index) {
-                                                                  int groupNumber =
-                                                                      index + 1;
-                                                                  return BarChartGroupData(
-                                                                    x: groupNumber,
-                                                                    barRods:
-                                                                        convertMapToBarChartRodData(
-                                                                      groupDateTimeIntervals(
-                                                                        DateTime.now()
-                                                                            .subtract(
-                                                                          const Duration(
-                                                                            days:
-                                                                                10000,
-                                                                          ),
-                                                                        ),
-                                                                        followerTimestamps,
-                                                                        10,
-                                                                      ),
-                                                                      groupNumber,
-                                                                    ),
-                                                                  );
-                                                                }).toList()
-                                                              : null,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              //       // GRAPH
+                              //       SizedBox(
+                              //         width: width * 1,
+                              //         height: width * 0.375,
+                              //         child: BarChart(
+                              //           BarChartData(
+                              //             maxY: followerTimestamps.length * 2,
+                              //             gridData: const FlGridData(
+                              //               drawVerticalLine: false,
+                              //             ),
+                              //             titlesData: FlTitlesData(
+                              //               leftTitles: AxisTitles(
+                              //                 sideTitles: SideTitles(
+                              //                   showTitles: true,
+                              //                   reservedSize: width * 0.0685,
+                              //                 ),
+                              //               ),
+                              //               topTitles: const AxisTitles(
+                              //                 sideTitles: SideTitles(
+                              //                   showTitles: false,
+                              //                 ),
+                              //               ),
+                              //               rightTitles: const AxisTitles(
+                              //                 sideTitles: SideTitles(
+                              //                   showTitles: false,
+                              //                 ),
+                              //               ),
+                              //               bottomTitles: AxisTitles(
+                              //                 sideTitles: SideTitles(
+                              //                   showTitles: true,
+                              //                   reservedSize: width * 0.065,
+                              //                   getTitlesWidget: (value, meta) {
+                              //                     return Text(
+                              //                       overflow:
+                              //                           TextOverflow.ellipsis,
+                              //                       value.toStringAsFixed(0),
+                              //                       style: TextStyle(
+                              //                         fontSize:
+                              //                             selectedStringDuration ==
+                              //                                     '24 Hours'
+                              //                                 ? width * 0.0266
+                              //                                 : width * 0.0375,
+                              //                       ),
+                              //                     );
+                              //                   },
+                              //                 ),
+                              //               ),
+                              //             ),
+                              //             alignment:
+                              //                 BarChartAlignment.spaceAround,
+                              //             barTouchData: BarTouchData(
+                              //               enabled: true,
+                              //             ),
+                              //             barGroups: selectedStringDuration ==
+                              //                     '24 Hours'
+                              //                 ? List.generate(24, (index) {
+                              //                     int groupNumber = index + 1;
+                              //                     return BarChartGroupData(
+                              //                       x: groupNumber,
+                              //                       barRods:
+                              //                           convertMapToBarChartRodData(
+                              //                         groupDateTimeIntervals(
+                              //                           DateTime.now().subtract(
+                              //                             const Duration(
+                              //                                 days: 1),
+                              //                           ),
+                              //                           followerTimestamps,
+                              //                           24,
+                              //                         ),
+                              //                         groupNumber,
+                              //                       ),
+                              //                     );
+                              //                   }).toList()
+                              //                 : selectedStringDuration ==
+                              //                         '7 Days'
+                              //                     ? List.generate(7, (index) {
+                              //                         int groupNumber =
+                              //                             index + 1;
+                              //                         return BarChartGroupData(
+                              //                           x: groupNumber,
+                              //                           barRods:
+                              //                               convertMapToBarChartRodData(
+                              //                             groupDateTimeIntervals(
+                              //                               DateTime.now()
+                              //                                   .subtract(
+                              //                                 const Duration(
+                              //                                     days: 7),
+                              //                               ),
+                              //                               followerTimestamps,
+                              //                               7,
+                              //                             ),
+                              //                             groupNumber,
+                              //                           ),
+                              //                         );
+                              //                       }).toList()
+                              //                     : selectedStringDuration ==
+                              //                             '28 Days'
+                              //                         ? List.generate(4,
+                              //                             (index) {
+                              //                             int groupNumber =
+                              //                                 index + 1;
+                              //                             return BarChartGroupData(
+                              //                               x: groupNumber,
+                              //                               barRods:
+                              //                                   convertMapToBarChartRodData(
+                              //                                 groupDateTimeIntervals(
+                              //                                   DateTime.now()
+                              //                                       .subtract(
+                              //                                     const Duration(
+                              //                                       days: 28,
+                              //                                     ),
+                              //                                   ),
+                              //                                   followerTimestamps,
+                              //                                   4,
+                              //                                 ),
+                              //                                 groupNumber,
+                              //                               ),
+                              //                             );
+                              //                           }).toList()
+                              //                         : selectedStringDuration ==
+                              //                                 '365 Days'
+                              //                             ? List.generate(12,
+                              //                                 (index) {
+                              //                                 int groupNumber =
+                              //                                     index + 1;
+                              //                                 return BarChartGroupData(
+                              //                                   x: groupNumber,
+                              //                                   barRods:
+                              //                                       convertMapToBarChartRodData(
+                              //                                     groupDateTimeIntervals(
+                              //                                       DateTime.now()
+                              //                                           .subtract(
+                              //                                         const Duration(
+                              //                                           days:
+                              //                                               365,
+                              //                                         ),
+                              //                                       ),
+                              //                                       followerTimestamps,
+                              //                                       12,
+                              //                                     ),
+                              //                                     groupNumber,
+                              //                                   ),
+                              //                                 );
+                              //                               }).toList()
+                              //                             : selectedStringDuration ==
+                              //                                     'Lifetime'
+                              //                                 ? List.generate(
+                              //                                     10, (index) {
+                              //                                     int groupNumber =
+                              //                                         index + 1;
+                              //                                     return BarChartGroupData(
+                              //                                       x: groupNumber,
+                              //                                       barRods:
+                              //                                           convertMapToBarChartRodData(
+                              //                                         groupDateTimeIntervals(
+                              //                                           DateTime.now()
+                              //                                               .subtract(
+                              //                                             const Duration(
+                              //                                               days:
+                              //                                                   10000,
+                              //                                             ),
+                              //                                           ),
+                              //                                           followerTimestamps,
+                              //                                           10,
+                              //                                         ),
+                              //                                         groupNumber,
+                              //                                       ),
+                              //                                     );
+                              //                                   }).toList()
+                              //                                 : null,
+                              //           ),
+                              //         ),
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
 
                               // ALL TIME VIEWS AND FOLLOWERS
                               Row(
@@ -735,14 +751,25 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                   ),
 
                                   // ALL FOLLOWERS
-                                  InfoColorBox(
-                                    text: 'FOLLOWERS',
-                                    width: width,
-                                    property:
-                                        (shopData['Followers'] as List).length,
-                                    color: const Color.fromARGB(
-                                        255, 237, 255, 163),
-                                  ),
+                                  FutureBuilder(
+                                      future: getFollowers(),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasData) {
+                                          return InfoColorBox(
+                                            text: 'FOLLOWERS',
+                                            width: width,
+                                            property: snapshot.data,
+                                            color: Color.fromRGBO(
+                                              237,
+                                              255,
+                                              163,
+                                              1,
+                                            ),
+                                          );
+                                        }
+
+                                        return Container();
+                                      }),
                                 ],
                               ),
                             ],

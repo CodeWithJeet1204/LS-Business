@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:localy/vendors/models/business_special_categories_images.dart';
 import 'package:localy/vendors/models/household_special_categories_images.dart';
-import 'package:localy/vendors/register/membership_page.dart';
+import 'package:localy/vendors/register/business_timings_page.dart';
 import 'package:localy/vendors/utils/colors.dart';
 import 'package:localy/widgets/button.dart';
 import 'package:localy/widgets/head_text.dart';
@@ -86,7 +86,7 @@ class _SelectBusinessCategoryPageState
             Navigator.of(context).pop();
             Navigator.of(context).push(
               MaterialPageRoute(
-                  builder: (context) => const SelectMembershipPage()),
+                  builder: (context) => const SelectBusinessTimingsPage()),
             );
           }
         } catch (e) {

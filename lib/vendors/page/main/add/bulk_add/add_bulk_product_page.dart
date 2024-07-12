@@ -570,10 +570,9 @@ class _AddBulkProductState extends State<AddBulkProduct> {
         'productLikes': 0,
         'productDislikes': 0,
         'productShares': 0,
-        'productViews': 0,
         'productViewsTimestamp': [],
         'productLikesId': [],
-        'productLikesTimestamp': [],
+        'productLikesTimestamp': {},
         'productWishlist': 0,
         'productId': productId,
         'images': [
