@@ -151,17 +151,28 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
 
         final vendorData = vendorSnap.data()!;
 
-        final type = vendorData['Type'];
+        final List shopTypes = vendorData['Type'];
 
         for (String categoryName in categoryNameList) {
-          await store
-              .collection('Business')
-              .doc('Special Categories')
-              .collection(type)
-              .doc(categoryName)
-              .update({
-            'discountId': discountId,
-          });
+          for (var type in shopTypes) {
+            final categorySnap = await store
+                .collection('Business')
+                .doc('Special Categories')
+                .collection(type)
+                .doc(categoryName)
+                .get();
+
+            if (categorySnap.exists) {
+              await store
+                  .collection('Business')
+                  .doc('Special Categories')
+                  .collection(type)
+                  .doc(categoryName)
+                  .update({
+                'discountId': discountId,
+              });
+            }
+          }
         }
 
         await store

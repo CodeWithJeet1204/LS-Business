@@ -13,7 +13,7 @@ class AllCategoriesPage extends StatefulWidget {
     required this.shopType,
   });
 
-  final String shopType;
+  final List shopType;
 
   @override
   State<AllCategoriesPage> createState() => _AllCategoriesPageState();
@@ -32,7 +32,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
   // INIT STATE
   @override
   void initState() {
-    getCommonCategories();
+    getSpecialCategories();
     super.initState();
   }
 
@@ -43,25 +43,41 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
     super.dispose();
   }
 
-  // GET COMMON CATEGORIES
-  Future<void> getCommonCategories() async {
+  // GET SPECIAL CATEGORIES
+  Future<void> getSpecialCategories() async {
     Map<String, dynamic> myCategory = {};
 
-    final specialSnapshot = await store
+    final vendorSnap = await store
         .collection('Business')
-        .doc('Special Categories')
-        .collection(widget.shopType)
+        .doc('Owners')
+        .collection('Shops')
+        .doc(auth.currentUser!.uid)
         .get();
 
-    for (var specialCategory in specialSnapshot.docs) {
-      final specialCategoryData = specialCategory.data();
+    final vendorData = vendorSnap.data()!;
 
-      final name = specialCategoryData['specialCategoryName'];
-      final imageUrl = specialCategoryData['specialCategoryImageUrl'];
+    final List categories = vendorData['Categories'];
+    final List types = vendorData['Type'];
 
-      myCategory[name] = imageUrl;
+    for (var type in types) {
+      final specialSnapshot = await store
+          .collection('Business')
+          .doc('Special Categories')
+          .collection(type)
+          .get();
+
+      for (var specialCategory in specialSnapshot.docs) {
+        for (var category in categories) {
+          final specialCategoryData = specialCategory.data();
+
+          final name = specialCategoryData['specialCategoryName'];
+          final imageUrl = specialCategoryData['specialCategoryImageUrl'];
+          if (category == name) {
+            myCategory[name] = imageUrl;
+          }
+        }
+      }
     }
-
     setState(() {
       currentCategories = myCategory;
       allCategories = myCategory;

@@ -53,23 +53,30 @@ class _SelectCategoryForBulkProductsPageState
 
     final vendorData = vendorSnap.data()!;
 
-    final type = vendorData['Type'];
+    final List shopTypes = vendorData['Type'];
+    final List shopCategories = vendorData['Categories'];
 
     Map<String, dynamic> myCategory = {};
 
-    final specialSnapshot = await store
-        .collection('Business')
-        .doc('Special Categories')
-        .collection(type)
-        .get();
+    for (var type in shopTypes) {
+      final specialSnapshot = await store
+          .collection('Business')
+          .doc('Special Categories')
+          .collection(type)
+          .get();
 
-    for (var specialCategory in specialSnapshot.docs) {
-      final specialCategoryData = specialCategory.data();
+      for (var specialCategory in specialSnapshot.docs) {
+        final specialCategoryData = specialCategory.data();
 
-      final name = specialCategoryData['specialCategoryName'];
-      final imageUrl = specialCategoryData['specialCategoryImageUrl'];
+        for (var category in shopCategories) {
+          final name = specialCategoryData['specialCategoryName'];
+          final imageUrl = specialCategoryData['specialCategoryImageUrl'];
 
-      myCategory[name] = imageUrl;
+          if (category == name) {
+            myCategory[name] = imageUrl;
+          }
+        }
+      }
     }
 
     setState(() {

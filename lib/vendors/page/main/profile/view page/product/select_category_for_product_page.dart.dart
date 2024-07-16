@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:localy/vendors/page/main/profile/view%20page/product/product_page.dart';
 import 'package:localy/vendors/provider/change_category_provider.dart';
 import 'package:localy/vendors/utils/colors.dart';
@@ -11,19 +12,20 @@ class ChangeCategory extends StatefulWidget {
   const ChangeCategory({
     super.key,
     required this.productId,
-    required this.shopType,
+    required this.shopTypes,
     required this.productName,
   });
 
   final String productId;
   final String productName;
-  final String shopType;
+  final List shopTypes;
 
   @override
   State<ChangeCategory> createState() => _ChangeCategoryState();
 }
 
 class _ChangeCategoryState extends State<ChangeCategory> {
+  final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   final searchController = TextEditingController();
   bool isGridView = true;
@@ -49,19 +51,36 @@ class _ChangeCategoryState extends State<ChangeCategory> {
   Future<void> getCommonCategories() async {
     Map<String, dynamic> myCategory = {};
 
-    final specialSnapshot = await store
-        .collection('Business')
-        .doc('Special Categories')
-        .collection(widget.shopType)
-        .get();
+    for (var type in widget.shopTypes) {
+      final specialSnapshot = await store
+          .collection('Business')
+          .doc('Special Categories')
+          .collection(type)
+          .get();
 
-    for (var specialCategory in specialSnapshot.docs) {
-      final specialCategoryData = specialCategory.data();
+      final vendorSnap = await store
+          .collection('Business')
+          .doc('Owners')
+          .collection('Shops')
+          .doc(auth.currentUser!.uid)
+          .get();
 
-      final name = specialCategoryData['specialCategoryName'];
-      final imageUrl = specialCategoryData['specialCategoryImageUrl'];
+      final vendorData = vendorSnap.data()!;
 
-      myCategory[name] = imageUrl;
+      final List categories = vendorData['Categories'];
+
+      for (var specialCategory in specialSnapshot.docs) {
+        for (var category in categories) {
+          final specialCategoryData = specialCategory.data();
+
+          final name = specialCategoryData['specialCategoryName'];
+          final imageUrl = specialCategoryData['specialCategoryImageUrl'];
+
+          if (name == category) {
+            myCategory[name] = imageUrl;
+          }
+        }
+      }
     }
 
     setState(() {

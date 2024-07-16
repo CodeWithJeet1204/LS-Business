@@ -54,7 +54,6 @@ class _ProductPageState extends State<ProductPage> {
   bool isDiscount = false;
   int _currentIndex = 0;
   bool isEditing = false;
-  bool categoryExists = true;
   bool isImageChanging = false;
   List category = [];
 
@@ -629,7 +628,7 @@ class _ProductPageState extends State<ProductPage> {
 
     final vendorData = vendorSnap.data()!;
 
-    final shopType = vendorData['Type'];
+    final List shopType = vendorData['Type'];
 
     final productSnap = await store
         .collection('Business')
@@ -643,26 +642,46 @@ class _ProductPageState extends State<ProductPage> {
     final categoryName = productData['categoryName'];
 
     if (categoryName == '0') {
-      return;
-    } else {
-      final categorySnap = await store
-          .collection('Business')
-          .doc('Special Categories')
-          .collection(shopType)
-          .doc(categoryName)
-          .get();
-
-      final categoryData = categorySnap.data()!;
-
-      final name = categoryData['specialCategoryName'];
-      final imageUrl = categoryData['specialCategoryImageUrl'];
-
       setState(() {
-        category.add(name);
-        category.add(imageUrl);
+        category.add('No Category');
+        category.add(
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
+        );
         category.add(shopType);
       });
-      print("Category info: $category");
+      return;
+    } else {
+      for (var type in shopType) {
+        final categorySnap = await store
+            .collection('Business')
+            .doc('Special Categories')
+            .collection(type)
+            .doc(categoryName)
+            .get();
+
+        final categoryData = categorySnap.data();
+
+        if (categoryData != null) {
+          final name = categoryData['specialCategoryName'];
+          final imageUrl = categoryData['specialCategoryImageUrl'];
+
+          setState(() {
+            category.add(name);
+            category.add(imageUrl);
+            category.add(shopType);
+          });
+        } else {
+          final name = categoryName;
+          final imageUrl =
+              'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png';
+
+          setState(() {
+            category.add(name);
+            category.add(imageUrl);
+            category.add(type);
+          });
+        }
+      }
     }
   }
 
@@ -928,7 +947,8 @@ class _ProductPageState extends State<ProductPage> {
                       final List images = productData['images'];
                       final List tags = productData['Tags'];
 
-                      final int likes = productData['productLikes'];
+                      final int likes =
+                          (productData['productLikesTimestamp'] as Map).length;
                       final int shares = productData['productShares'];
                       final int views = productData['productViews'];
                       final int wishList = productData['productWishlist'];
@@ -1713,7 +1733,7 @@ class _ProductPageState extends State<ProductPage> {
                                       );
                                     },
                                     icon: const Icon(FeatherIcons.edit),
-                                    tooltip: 'Change Category',
+                                    tooltip: 'Change Description',
                                   ),
                                 ],
                               ),
@@ -1769,27 +1789,20 @@ class _ProductPageState extends State<ProductPage> {
                                                   4,
                                                 ),
                                                 child: Image.network(
-                                                  categoryExists
-                                                      ? productData[
-                                                                  'categoryName'] !=
-                                                              '0'
-                                                          ? category[1]
-                                                          : 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png'
+                                                  productData['categoryName'] !=
+                                                          '0'
+                                                      ? category[1]
                                                       : 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
                                                   fit: BoxFit.cover,
-                                                  width: categoryExists
-                                                      ? productData[
-                                                                  'categoryName'] !=
-                                                              '0'
-                                                          ? width * 0.14
-                                                          : width * 0.1
+                                                  width: productData[
+                                                              'categoryName'] !=
+                                                          '0'
+                                                      ? width * 0.14
                                                       : width * 0.1,
-                                                  height: categoryExists
-                                                      ? productData[
-                                                                  'categoryName'] !=
-                                                              '0'
-                                                          ? width * 0.14
-                                                          : width * 0.1
+                                                  height: productData[
+                                                              'categoryName'] !=
+                                                          '0'
+                                                      ? width * 0.14
                                                       : width * 0.1,
                                                 ),
                                               ),
@@ -1798,10 +1811,11 @@ class _ProductPageState extends State<ProductPage> {
                                               SizedBox(
                                                 width: width * 0.4,
                                                 child: AutoSizeText(
-                                                  categoryExists
-                                                      ? productData[
-                                                          'categoryName']
-                                                      : 'No Category',
+                                                  productData['categoryName'] ==
+                                                          '0'
+                                                      ? 'No Category'
+                                                      : productData[
+                                                          'categoryName'],
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   maxLines: 1,
@@ -1824,7 +1838,7 @@ class _ProductPageState extends State<ProductPage> {
                                                     ChangeCategory(
                                                       productId: productData[
                                                           'productId'],
-                                                      shopType: category[2],
+                                                      shopTypes: category[2],
                                                       productName: productData[
                                                           'productName'],
                                                     )),

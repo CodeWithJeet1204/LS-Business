@@ -147,6 +147,26 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  // GET SHOP TYPES
+  String getShopTypes(List shopList) {
+    String type = '';
+    int i = 0;
+    int length = shopList.length;
+    print('Length: $length');
+    shopList.forEach((shopType) {
+      print('i: $i');
+      if (i == length - 1) {
+        type = type + shopType;
+      } else {
+        type = type + '$shopType, ';
+      }
+
+      i++;
+    });
+
+    return type;
+  }
+
   @override
   Widget build(BuildContext context) {
     return shopData.isEmpty
@@ -169,7 +189,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   // },
                   onPressed: () async {
                     Future<void> addBusinessSpecialCategories(
-                        String shopType) async {
+                      String shopType,
+                    ) async {
                       final businessSubCategories =
                           businessSpecialCategories[shopType];
 
@@ -300,8 +321,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 SizedBox(
                                   width: width * 0.8,
                                   child: Text(
-                                    shopData['Type'] ?? 'N/A',
-                                    maxLines: 1,
+                                    getShopTypes(shopData['Type']),
+                                    maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: width * 0.0425,

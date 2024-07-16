@@ -31,7 +31,6 @@ class _CategoryPageState extends State<CategoryPage> {
   bool isFit = false;
   bool isChangingName = false;
   bool isGridView = true;
-  String type = '';
   String categoryName = '';
   String categoryImageUrl = '';
   Map<String, dynamic> currentProducts = {};
@@ -65,39 +64,44 @@ class _CategoryPageState extends State<CategoryPage> {
 
     final vendorData = vendorSnap.data()!;
 
-    final shopType = vendorData['Type'];
+    final List shopType = vendorData['Type'];
+    final List categories = vendorData['Categories'];
 
-    setState(() {
-      type = shopType;
-    });
-
-    await getCategoryInfo(shopType);
+    await getCategoryInfo(shopType, categories);
   }
 
   // GET CATEGORY INFO
-  Future<void> getCategoryInfo(String type) async {
-    final categorySnap = await store
-        .collection('Business')
-        .doc('Special Categories')
-        .collection(type)
-        .doc(widget.categoryName)
-        .get();
+  Future<void> getCategoryInfo(List types, List categories) async {
+    for (var type in types) {
+      final categorySnap = await store
+          .collection('Business')
+          .doc('Special Categories')
+          .collection(type)
+          .doc(widget.categoryName)
+          .get();
 
-    final categoryData = categorySnap.data()!;
+      final categoryData = categorySnap.data();
 
-    final name = categoryData['specialCategoryName'];
-    final imageUrl = categoryData['specialCategoryImageUrl'];
+      if (categoryData != null) {
+        for (var category in categories) {
+          final name = categoryData['specialCategoryName'];
+          final imageUrl = categoryData['specialCategoryImageUrl'];
 
-    setState(() {
-      categoryName = name;
-      categoryImageUrl = imageUrl;
-    });
+          if (category == name) {
+            setState(() {
+              categoryName = name;
+              categoryImageUrl = imageUrl;
+            });
+          }
+        }
+      }
+    }
 
-    await getProductsInfo(type);
+    await getProductsInfo();
   }
 
   // GET PRODUCTS INFO
-  Future<void> getProductsInfo(String type) async {
+  Future<void> getProductsInfo() async {
     Map<String, dynamic> myProducts = {};
     final productsSnap = await store
         .collection('Business')

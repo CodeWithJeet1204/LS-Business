@@ -131,7 +131,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                                     'Description': null,
                                     'Industry': null,
                                     'Image': null,
-                                    'Type': null,
+                                    'Type': [],
                                     'MembershipName': null,
                                     'MembershipDuration': null,
                                     'MembershipTime': null,

@@ -6,6 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:localy/vendors/page/main/profile/details/change_timings_page.dart';
+import 'package:localy/vendors/register/business_choose_category_page_1.dart';
+import 'package:localy/vendors/register/business_choose_category_page_2.dart';
 import 'package:localy/vendors/utils/colors.dart';
 import 'package:localy/widgets/button.dart';
 import 'package:localy/widgets/image_pick_dialog.dart';
@@ -233,6 +235,26 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
         );
       }),
     );
+  }
+
+  // GET SHOP TYPES
+  String getShopTypes(List shopList) {
+    String type = '';
+    int i = 0;
+    int length = shopList.length;
+    print('Length: $length');
+    shopList.forEach((shopType) {
+      print('i: $i');
+      if (i == length - 1) {
+        type = type + shopType;
+      } else {
+        type = type + '$shopType, ';
+      }
+
+      i++;
+    });
+
+    return type;
   }
 
   @override
@@ -696,21 +718,95 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                 color: primary2.withOpacity(0.9),
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                  left: width * 0.055,
-                                ),
-                                child: SizedBox(
-                                  width: width * 0.875,
-                                  child: AutoSizeText(
-                                    shopData['Type'] ?? 'Type: N/A',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: width * 0.055,
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: width * 0.855,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                        left: width * 0.055,
+                                      ),
+                                      child: SizedBox(
+                                        width: width * 0.8,
+                                        child: AutoSizeText(
+                                          getShopTypes(shopData['Type']),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: width * 0.055,
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
+                                  IconButton(
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              BusinessChooseCategoryPage1(
+                                            isEditing: true,
+                                            preSelected: shopData['Type'],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    icon: Icon(FeatherIcons.edit),
+                                    tooltip: 'Edit Types',
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 14),
+
+                            // CATEGORIES
+                            Container(
+                              width: width,
+                              height: width * 0.16,
+                              alignment: Alignment.centerLeft,
+                              decoration: BoxDecoration(
+                                color: primary2.withOpacity(0.9),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: width * 0.855,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                        left: width * 0.055,
+                                      ),
+                                      child: SizedBox(
+                                        width: width * 0.8,
+                                        child: AutoSizeText(
+                                          getShopTypes(shopData['Categories']),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: width * 0.055,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              BusinessChooseCategoryPage2(
+                                            selectedTypes: shopData['Type'],
+                                            isEditing: true,
+                                            selectedCategories:
+                                                shopData['Categories'],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    icon: Icon(FeatherIcons.edit),
+                                    tooltip: 'Edit Categories',
+                                  ),
+                                ],
                               ),
                             ),
                             const SizedBox(height: 14),

@@ -33,7 +33,7 @@ class _SelectContainerState extends State<SelectContainer> {
         decoration: BoxDecoration(
           color: white,
           border: Border.all(
-            width: widget.isSelected ? 3 : 1,
+            width: widget.isSelected ? 3 : 0.5,
             color: primaryDark,
           ),
           borderRadius: BorderRadius.circular(12),
@@ -59,7 +59,7 @@ class _SelectContainerState extends State<SelectContainer> {
                 fontWeight:
                     widget.isSelected ? FontWeight.w600 : FontWeight.w500,
                 fontSize: widget.isSelected
-                    ? widget.width * 0.065
+                    ? widget.width * 0.0625
                     : widget.width * 0.055,
               ),
             ),

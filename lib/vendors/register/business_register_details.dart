@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:localy/vendors/models/industry_segments.dart';
-import 'package:localy/vendors/register/select_business_category_page.dart';
+import 'package:localy/vendors/register/business_choose_category_page_1.dart';
 import 'package:localy/vendors/utils/colors.dart';
 import 'package:localy/widgets/button.dart';
 import 'package:localy/widgets/head_text.dart';
@@ -172,7 +172,7 @@ class _BusinessRegisterDetailsPageState
           Navigator.of(context).pop();
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: ((context) => const SelectBusinessCategoryPage()),
+              builder: ((context) => const BusinessChooseCategoryPage1()),
             ),
           );
         }

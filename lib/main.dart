@@ -6,7 +6,6 @@ import 'package:localy/select_mode_page.dart';
 import 'package:localy/services/main/services_main_page.dart';
 import 'package:localy/vendors/page/intro/intro_page_view.dart';
 import 'package:localy/vendors/page/main/add/brand/add_brand_page.dart';
-import 'package:localy/vendors/page/main/add/category/add_category_page.dart';
 import 'package:localy/vendors/page/main/analytics/shop_analytics_page.dart';
 import 'package:localy/vendors/page/main/main_page.dart';
 import 'package:localy/vendors/page/main/profile/data/all_brand_page.dart';
@@ -150,7 +149,6 @@ class MyApp extends StatelessWidget {
               '/profile': (context) => const ProfilePage(),
               '/ownerDetails': (context) => const OwnerDetailsPage(),
               '/businessDetails': (context) => const BusinessDetailsPage(),
-              '/addCategory': (context) => const AddCategoryPage(),
               '/addBrand': (context) => const AddBrandPage(),
               '/postsPage': (context) => const AllPostsPage(),
               '/productsPage': (context) => const AllProductsPage(),

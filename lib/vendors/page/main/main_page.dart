@@ -4,9 +4,9 @@ import 'package:localy/vendors/page/main/add/add_page.dart';
 import 'package:localy/vendors/page/main/analytics/analytics_page.dart';
 import 'package:localy/vendors/page/main/discount/add_discount_page.dart';
 import 'package:localy/vendors/page/main/profile/profile_page.dart';
+import 'package:localy/vendors/register/business_choose_category_page_1.dart';
 import 'package:localy/vendors/register/business_register_details.dart';
 import 'package:localy/vendors/register/membership_page.dart';
-import 'package:localy/vendors/register/select_business_category_page.dart';
 import 'package:localy/vendors/register/owner_register_details_page.dart';
 import 'package:localy/auth/verify/email_verify.dart';
 import 'package:localy/vendors/utils/colors.dart';
@@ -117,7 +117,7 @@ class _MainPageState extends State<MainPage> {
             detailsPage = const BusinessRegisterDetailsPage();
           } else if (getBusinessDetailsAdded['GSTNumber'] != null &&
               getBusinessDetailsAdded['Type'] == null) {
-            detailsPage = const SelectBusinessCategoryPage();
+            detailsPage = const BusinessChooseCategoryPage1();
           } /* else if (getBusinessDetailsAdded['Type'] != null &&
         await getCommonCategories(getBusinessDetailsAdded['Type'])) {
       detailsPage = SelectBusinessCategoryPage();
@@ -149,7 +149,7 @@ class _MainPageState extends State<MainPage> {
         detailsPage = const BusinessRegisterDetailsPage();
       } else if (getBusinessDetailsAdded['GSTNumber'] != null &&
           getBusinessDetailsAdded['Type'] == null) {
-        detailsPage = const SelectBusinessCategoryPage();
+        detailsPage = const BusinessChooseCategoryPage1();
       } /* else if (getBusinessDetailsAdded['Type'] != null &&
         await getCommonCategories(getBusinessDetailsAdded['Type'])) {
       detailsPage = SelectBusinessCategoryPage();

@@ -46,22 +46,28 @@ class _SelectCategoryForDiscountPageState
 
     final vendorData = vendorSnap.data()!;
 
-    final type = vendorData['Type'];
+    final List shopTypes = vendorData['Type'];
+    final List categories = vendorData['Categories'];
 
-    final categorySnap = await store
-        .collection('Business')
-        .doc('Special Categories')
-        .collection(type)
-        .get();
+    for (var type in shopTypes) {
+      final categorySnap = await store
+          .collection('Business')
+          .doc('Special Categories')
+          .collection(type)
+          .get();
 
-    categorySnap.docs.forEach((category) {
-      final categoryData = category.data();
+      categorySnap.docs.forEach((category) {
+        for (var shopCategory in categories) {
+          final categoryData = category.data();
 
-      final categoryName = categoryData['specialCategoryName'];
-      final imageUrl = categoryData['specialCategoryImageUrl'];
-
-      myCategories[categoryName] = imageUrl;
-    });
+          final categoryName = categoryData['specialCategoryName'];
+          final imageUrl = categoryData['specialCategoryImageUrl'];
+          if (shopCategory == categoryName) {
+            myCategories[categoryName] = imageUrl;
+          }
+        }
+      });
+    }
 
     setState(() {
       allCategories = myCategories;
