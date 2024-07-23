@@ -8,6 +8,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:localy/vendors/page/main/profile/details/change_timings_page.dart';
 import 'package:localy/vendors/register/business_choose_category_page_1.dart';
 import 'package:localy/vendors/register/business_choose_category_page_2.dart';
+import 'package:localy/vendors/register/business_choose_category_page_3.dart';
 import 'package:localy/vendors/utils/colors.dart';
 import 'package:localy/widgets/button.dart';
 import 'package:localy/widgets/image_pick_dialog.dart';
@@ -237,14 +238,12 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
     );
   }
 
-  // GET SHOP TYPES
-  String getShopTypes(List shopList) {
+  // GET LIST
+  String getList(List shopList) {
     String type = '';
     int i = 0;
     int length = shopList.length;
-    print('Length: $length');
     shopList.forEach((shopType) {
-      print('i: $i');
       if (i == length - 1) {
         type = type + shopType;
       } else {
@@ -729,7 +728,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                       child: SizedBox(
                                         width: width * 0.8,
                                         child: AutoSizeText(
-                                          getShopTypes(shopData['Type']),
+                                          getList(shopData['Type']),
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
@@ -779,7 +778,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                       child: SizedBox(
                                         width: width * 0.8,
                                         child: AutoSizeText(
-                                          getShopTypes(shopData['Categories']),
+                                          getList(shopData['Categories']),
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
@@ -805,6 +804,60 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                     },
                                     icon: Icon(FeatherIcons.edit),
                                     tooltip: 'Edit Categories',
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 14),
+
+                            // PRODUCTS
+                            Container(
+                              width: width,
+                              height: width * 0.16,
+                              alignment: Alignment.centerLeft,
+                              decoration: BoxDecoration(
+                                color: primary2.withOpacity(0.9),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: width * 0.855,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                        left: width * 0.055,
+                                      ),
+                                      child: SizedBox(
+                                        width: width * 0.8,
+                                        child: AutoSizeText(
+                                          getList(shopData['Products']),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: width * 0.055,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              BusinessChooseCategoryPage3(
+                                            selectedTypes: shopData['Type'],
+                                            isEditing: true,
+                                            selectedCategories:
+                                                shopData['Categories'],
+                                            selectedProducts:
+                                                shopData['Products'],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    icon: Icon(FeatherIcons.edit),
+                                    tooltip: 'Edit Products',
                                   ),
                                 ],
                               ),

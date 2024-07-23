@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:localy/vendors/models/household_categories.dart';
+import 'package:localy/vendors/models/household_sub_categories.dart';
 import 'package:localy/vendors/register/business_choose_category_page_2.dart';
-import 'package:localy/widgets/button.dart';
 import 'package:localy/widgets/select_container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -32,14 +31,11 @@ class _BusinessChooseCategoryPage1State
   // INIT STATE
   @override
   void initState() {
-    print("Editing: ${widget.isEditing}");
-    print("PreSelected: ${widget.preSelected}");
     if (widget.isEditing != null && widget.preSelected != null) {
       setState(() {
         selected = widget.preSelected!;
       });
     }
-    print("Selected: $selected");
     super.initState();
   }
 
@@ -67,7 +63,7 @@ class _BusinessChooseCategoryPage1State
     });
 
     if (mounted) {
-      Navigator.of(context).pop();
+      // Navigator.of(context).pop();
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: ((context) => BusinessChooseCategoryPage2(
@@ -96,60 +92,46 @@ class _BusinessChooseCategoryPage1State
             final width = constraints.maxWidth;
             final height = constraints.maxHeight;
 
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: width,
-                  height: height * 0.8875,
-                  child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 16 / 9,
-                    ),
-                    itemCount: householdCategories.length,
-                    itemBuilder: (context, index) {
-                      final name = householdCategories.keys.toList()[index];
-                      final imageUrl =
-                          householdCategories.values.toList()[index];
+            return SizedBox(
+              width: width,
+              height: height * 0.8875,
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 16 / 9,
+                ),
+                itemCount: householdSubCategories.length,
+                itemBuilder: (context, index) {
+                  final name = householdSubCategories.keys.toList()[index];
+                  final imageUrl =
+                      householdSubCategories.values.toList()[index];
 
-                      return SelectContainer(
-                        width: width,
-                        text: name,
-                        isSelected: selected.contains(name),
-                        imageUrl: imageUrl,
-                        onTap: () {
-                          setState(() {
-                            if (selected.contains(name)) {
-                              selected.remove(name);
-                            } else {
-                              selected.add(name);
-                            }
-                          });
-                        },
-                      );
+                  return SelectContainer(
+                    width: width,
+                    text: name,
+                    isSelected: selected.contains(name),
+                    imageUrl: imageUrl,
+                    onTap: () {
+                      setState(() {
+                        if (selected.contains(name)) {
+                          selected.remove(name);
+                        } else {
+                          selected.add(name);
+                        }
+                      });
                     },
-                  ),
-                ),
-
-                SizedBox(height: height * 0.0125),
-
-                // NEXT
-                MyButton(
-                  text: 'NEXT',
-                  onTap: () async {
-                    await next();
-                  },
-                  isLoading: isNext,
-                  horizontalPadding: MediaQuery.of(context).size.width * 0.0225,
-                ),
-
-                SizedBox(height: height * 0.0125),
-              ],
+                  );
+                },
+              ),
             );
           }),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await next();
+        },
+        child: Icon(Icons.arrow_forward),
       ),
     );
   }

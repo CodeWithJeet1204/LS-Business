@@ -32,7 +32,7 @@ List<List<String>> businessCategories = [
     'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FJewelry%2FJewelry.png?alt=media&token=371aafbd-fadb-4f26-8c06-48745fc4ae7c',
   ],
   [
-    'Decorations',
+    'Home Decor & Furnishing',
     'https://firebasestorage.googleapis.com/v0/b/localy-1204.appspot.com/o/Special%20Categories%2FDecorations%2FDecorations.png?alt=media&token=95b6b8c1-3683-4843-8289-b443af37bfec',
   ],
   [

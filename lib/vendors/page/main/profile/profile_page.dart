@@ -152,9 +152,7 @@ class _ProfilePageState extends State<ProfilePage> {
     String type = '';
     int i = 0;
     int length = shopList.length;
-    print('Length: $length');
     shopList.forEach((shopType) {
-      print('i: $i');
       if (i == length - 1) {
         type = type + shopType;
       } else {

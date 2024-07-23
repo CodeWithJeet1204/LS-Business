@@ -450,7 +450,7 @@ final Map<String, List<List<dynamic>>> businessCategoryProperties = {
       false,
     ],
   ],
-  'Decorations': [
+  'Home Decor & Furnishing': [
     [
       'Material',
       'eg. Ceramic, Metal, Glass...',
