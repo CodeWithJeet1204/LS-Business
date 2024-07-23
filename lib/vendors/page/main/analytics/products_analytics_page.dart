@@ -306,7 +306,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                 .addAll(
                               element['productLikesTimestamp'],
                             );
-                            ;
+
                             productData['wishlists'] +=
                                 element['productWishlist'];
                             productData['shares'] += element['productShares'];
@@ -863,7 +863,8 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                         (productData['productViewsTimestamp']
                                                 as List)
                                             .length,
-                                    color: Color.fromRGBO(163, 255, 166, 1),
+                                    color:
+                                        const Color.fromRGBO(163, 255, 166, 1),
                                   ),
 
                                   // ALL LIKES
@@ -874,7 +875,8 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                         (productData['productLikesTimestamp']
                                                 as Map)
                                             .length,
-                                    color: Color.fromRGBO(237, 255, 163, 1),
+                                    color:
+                                        const Color.fromRGBO(237, 255, 163, 1),
                                   ),
                                 ],
                               ),
@@ -902,7 +904,8 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                       text: 'SHARES',
                                       property: productData['shares'],
                                       width: width,
-                                      color: Color.fromRGBO(253, 182, 255, 1),
+                                      color: const Color.fromRGBO(
+                                          253, 182, 255, 1),
                                     ),
                                   ],
                                 ),

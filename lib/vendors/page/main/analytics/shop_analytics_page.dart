@@ -102,7 +102,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
   Future<int> getFollowers() async {
     int followerCount = 0;
     final userSnap = await store.collection('Users').get();
-    userSnap.docs.forEach((user) {
+    for (var user in userSnap.docs) {
       final userData = user.data();
 
       final followedShops = userData['followedShops'] as List?;
@@ -110,7 +110,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
           followedShops.contains(auth.currentUser!.uid)) {
         followerCount++;
       }
-    });
+    }
     return followerCount;
   }
 
@@ -759,7 +759,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                             text: 'FOLLOWERS',
                                             width: width,
                                             property: snapshot.data,
-                                            color: Color.fromRGBO(
+                                            color: const Color.fromRGBO(
                                               237,
                                               255,
                                               163,

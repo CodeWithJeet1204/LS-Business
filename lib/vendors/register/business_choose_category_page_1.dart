@@ -96,7 +96,7 @@ class _BusinessChooseCategoryPage1State
               width: width,
               height: height * 0.8875,
               child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   childAspectRatio: 16 / 9,
                 ),
@@ -131,7 +131,7 @@ class _BusinessChooseCategoryPage1State
         onPressed: () async {
           await next();
         },
-        child: Icon(Icons.arrow_forward),
+        child: const Icon(Icons.arrow_forward),
       ),
     );
   }

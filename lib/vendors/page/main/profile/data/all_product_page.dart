@@ -297,7 +297,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                         return isGridView
                             ? GridView.builder(
                                 shrinkWrap: true,
-                                physics: ClampingScrollPhysics(),
+                                physics: const ClampingScrollPhysics(),
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
@@ -429,7 +429,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                                     Navigator.of(context).push(
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              AllProductsPage()),
+                                                              const AllProductsPage()),
                                                     );
                                                   }
                                                 },
@@ -450,7 +450,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                 width: width,
                                 child: ListView.builder(
                                     shrinkWrap: true,
-                                    physics: ClampingScrollPhysics(),
+                                    physics: const ClampingScrollPhysics(),
                                     itemCount: currentProducts.length,
                                     itemBuilder: (context, index) {
                                       final productData = currentProducts[
@@ -556,7 +556,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                                   Navigator.of(context).push(
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            AllProductsPage()),
+                                                            const AllProductsPage()),
                                                   );
                                                 }
                                               },

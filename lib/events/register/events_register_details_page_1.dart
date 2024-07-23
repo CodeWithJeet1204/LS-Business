@@ -321,11 +321,10 @@ class EventsRegisterDetailsPage1State
                         Navigator.of(context)
                             .push(
                           MaterialPageRoute(
-                            builder: ((context) => PickLocationPage()),
+                            builder: ((context) => const PickLocationPage()),
                           ),
                         )
                             .then((value) {
-                          print('Value: $value');
                           setState(() {
                             latitude = value[0];
                             longitude = value[1];
@@ -349,7 +348,7 @@ class EventsRegisterDetailsPage1State
                             horizontal: width * 0.025,
                           ),
                           child: gettingLocation
-                              ? Center(
+                              ? const Center(
                                   child: CircularProgressIndicator(),
                                 )
                               : Text(

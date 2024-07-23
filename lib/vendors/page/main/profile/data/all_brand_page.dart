@@ -448,7 +448,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                                     Navigator.of(context).push(
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              AllBrandPage()),
+                                                              const AllBrandPage()),
                                                     );
                                                   }
                                                 },
@@ -577,7 +577,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                                 Navigator.of(context).push(
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          AllBrandPage()),
+                                                          const AllBrandPage()),
                                                 );
                                               }
                                             },

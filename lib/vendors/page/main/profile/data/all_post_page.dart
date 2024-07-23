@@ -304,7 +304,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
                       return isGridView
                           ? GridView.builder(
                               shrinkWrap: true,
-                              physics: ClampingScrollPhysics(),
+                              physics: const ClampingScrollPhysics(),
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
@@ -494,7 +494,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
                               width: width,
                               child: ListView.builder(
                                 shrinkWrap: true,
-                                physics: ClampingScrollPhysics(),
+                                physics: const ClampingScrollPhysics(),
                                 itemCount: currentPosts.length,
                                 itemBuilder: ((context, index) {
                                   final postData = currentPosts[

@@ -444,7 +444,8 @@ class _EventsAddEventPage1State extends State<EventsAddEventPage1> {
                             setState(() {});
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: ((context) => PickLocationPage()),
+                                builder: ((context) =>
+                                    const PickLocationPage()),
                               ),
                             );
                             setState(() {
@@ -467,13 +468,13 @@ class _EventsAddEventPage1State extends State<EventsAddEventPage1> {
                                 horizontal: width * 0.025,
                               ),
                               child: gettingLocation
-                                  ? Center(
+                                  ? const Center(
                                       child: CircularProgressIndicator(),
                                     )
                                   : Text(
                                       address == null
                                           ? 'Pick Location'
-                                          : '${address!['road'] != null ? address!['road'] : ''}${address!['road'] != null ? ',' : ''} ${address!['neighbourhood'] != null ? address!['neighbourhood'] : ''}${address!['neighbourhood'] != null ? ',' : ''} ${address!['city'] != null ? address!['city'] : ''}',
+                                          : '${address!['road'] ?? ''}${address!['road'] != null ? ',' : ''} ${address!['neighbourhood'] ?? ''}${address!['neighbourhood'] != null ? ',' : ''} ${address!['city'] ?? ''}',
                                       maxLines: 3,
                                       style: TextStyle(
                                         fontSize: width * 0.045,

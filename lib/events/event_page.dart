@@ -324,7 +324,6 @@ class _EventPageState extends State<EventPage> {
 
   // GET ADDRESS
   Future<String> getAddress(double lat, double long) async {
-    print('started');
     List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
     return '${placemarks[0].name}, ${placemarks[0].locality}, ${placemarks[0].administrativeArea}';
   }
@@ -820,7 +819,7 @@ class _EventPageState extends State<EventPage> {
                                         ),
                                         builder: (context, snapshot) {
                                           if (snapshot.hasError) {
-                                            return Text(
+                                            return const Text(
                                               'Something went wrong with address',
                                             );
                                           }
@@ -837,7 +836,7 @@ class _EventPageState extends State<EventPage> {
                                             );
                                           }
 
-                                          return Center(
+                                          return const Center(
                                             child: CircularProgressIndicator(),
                                           );
                                         }),

@@ -86,10 +86,10 @@ class _BusinessChooseCategoryPage2State
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Text(
                       category,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w500,
                       ),
@@ -97,8 +97,9 @@ class _BusinessChooseCategoryPage2State
                   ),
                   GridView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       childAspectRatio: 16 / 9,
                     ),
@@ -134,7 +135,9 @@ class _BusinessChooseCategoryPage2State
         onPressed: () async {
           await next();
         },
-        child: isNext ? CircularProgressIndicator() : Icon(Icons.arrow_forward),
+        child: isNext
+            ? const CircularProgressIndicator()
+            : const Icon(Icons.arrow_forward),
       ),
     );
   }

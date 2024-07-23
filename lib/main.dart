@@ -28,7 +28,6 @@ import 'package:localy/vendors/provider/select_brand_for_product_provider.dart';
 import 'package:localy/vendors/provider/select_product_for_post_provider.dart';
 import 'package:localy/vendors/provider/shop_type_provider.dart';
 import 'package:localy/vendors/provider/sign_in_method_provider.dart';
-import 'package:localy/vendors/register/business_choose_category_page_1.dart';
 import 'package:localy/vendors/utils/colors.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -158,75 +157,75 @@ class MyApp extends StatelessWidget {
               '/analyticsPage': (context) => const ShopAnalyticsPage(),
             },
             debugShowCheckedModeBanner: false,
-            // home: Stack(
-            //   children: [
-            //     isFirstLaunch
-            //         ? const IntroPageView()
-            //         : StreamBuilder<User?>(
-            //             stream: FirebaseAuth.instance.authStateChanges(),
-            //             builder: (context, authSnapshot) {
-            //               if (snapshot.hasData) {
-            //                 if (snapshot.data == 'vendor') {
-            //                   if (authSnapshot.hasData) {
-            //                     if (authSnapshot.data!.emailVerified) {
-            //                       return const MainPage();
-            //                     } else {
-            //                       return const EmailVerifyPage(
-            //                         mode: 'vendor',
-            //                         isLogging: true,
-            //                       );
-            //                     }
-            //                   } else {
-            //                     return const LoginPage(
-            //                       mode: 'vendor',
-            //                     );
-            //                   }
-            //                 } else if (snapshot.data == 'services') {
-            //                   if (authSnapshot.hasData) {
-            //                     if (authSnapshot.data!.email != null) {
-            //                       if (authSnapshot.data!.emailVerified) {
-            //                         return const ServicesMainPage();
-            //                       } else {
-            //                         return const EmailVerifyPage(
-            //                           mode: 'services',
-            //                           isLogging: true,
-            //                         );
-            //                       }
-            //                     } else {
-            //                       return const LoginPage(mode: 'services');
-            //                     }
-            //                   } else {
-            //                     return const LoginPage(
-            //                       mode: 'services',
-            //                     );
-            //                   }
-            //                 } else if (snapshot.data == 'events') {
-            //                   if (authSnapshot.hasData) {
-            //                     if (authSnapshot.data!.emailVerified) {
-            //                       return const EventsMainPage();
-            //                     } else {
-            //                       return const EmailVerifyPage(
-            //                         mode: 'events',
-            //                         isLogging: true,
-            //                       );
-            //                     }
-            //                   } else {
-            //                     return const LoginPage(
-            //                       mode: 'events',
-            //                     );
-            //                   }
-            //                 } else {
-            //                   return const SelectModePage();
-            //                 }
-            //               } else {
-            //                 return const SelectModePage();
-            //               }
-            //             },
-            //           ),
-            //     // const ConnectivityNotificationWidget(),
-            //   ],
-            // ),
-            home: BusinessChooseCategoryPage1(),
+            home: Stack(
+              children: [
+                isFirstLaunch
+                    ? const IntroPageView()
+                    : StreamBuilder<User?>(
+                        stream: FirebaseAuth.instance.authStateChanges(),
+                        builder: (context, authSnapshot) {
+                          if (snapshot.hasData) {
+                            if (snapshot.data == 'vendor') {
+                              if (authSnapshot.hasData) {
+                                if (authSnapshot.data!.emailVerified) {
+                                  return const MainPage();
+                                } else {
+                                  return const EmailVerifyPage(
+                                    mode: 'vendor',
+                                    isLogging: true,
+                                  );
+                                }
+                              } else {
+                                return const LoginPage(
+                                  mode: 'vendor',
+                                );
+                              }
+                            } else if (snapshot.data == 'services') {
+                              if (authSnapshot.hasData) {
+                                if (authSnapshot.data!.email != null) {
+                                  if (authSnapshot.data!.emailVerified) {
+                                    return const ServicesMainPage();
+                                  } else {
+                                    return const EmailVerifyPage(
+                                      mode: 'services',
+                                      isLogging: true,
+                                    );
+                                  }
+                                } else {
+                                  return const LoginPage(mode: 'services');
+                                }
+                              } else {
+                                return const LoginPage(
+                                  mode: 'services',
+                                );
+                              }
+                            } else if (snapshot.data == 'events') {
+                              if (authSnapshot.hasData) {
+                                if (authSnapshot.data!.emailVerified) {
+                                  return const EventsMainPage();
+                                } else {
+                                  return const EmailVerifyPage(
+                                    mode: 'events',
+                                    isLogging: true,
+                                  );
+                                }
+                              } else {
+                                return const LoginPage(
+                                  mode: 'events',
+                                );
+                              }
+                            } else {
+                              return const SelectModePage();
+                            }
+                          } else {
+                            return const SelectModePage();
+                          }
+                        },
+                      ),
+                // const ConnectivityNotificationWidget(),
+              ],
+            ),
+            // home: BusinessChooseCategoryPage1(),
           );
         });
   }

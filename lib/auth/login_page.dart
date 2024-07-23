@@ -491,7 +491,7 @@ class _LoginPageState extends State<LoginPage> {
                               mode = 'vendor';
                             });
                           },
-                          child: Text('Vendor'),
+                          child: const Text('Vendor'),
                         ),
                         PopupMenuItem(
                           onTap: () {
@@ -499,7 +499,7 @@ class _LoginPageState extends State<LoginPage> {
                               mode = 'events';
                             });
                           },
-                          child: Text('Events'),
+                          child: const Text('Events'),
                         ),
                         PopupMenuItem(
                           onTap: () {
@@ -507,12 +507,12 @@ class _LoginPageState extends State<LoginPage> {
                               mode = 'services';
                             });
                           },
-                          child: Text('Services'),
+                          child: const Text('Services'),
                         ),
                       ],
                     );
                   },
-                  text: '${mode} ↓',
+                  text: '$mode ↓',
                   textColor: primaryDark2,
                 ),
               ),
@@ -562,7 +562,7 @@ class _LoginPageState extends State<LoginPage> {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          ForgotPasswordPage()),
+                                          const ForgotPasswordPage()),
                                 );
                               },
                               text: 'Forgot Password?',

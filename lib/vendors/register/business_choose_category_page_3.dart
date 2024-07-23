@@ -68,26 +68,28 @@ class _BusinessChooseCategoryPage3State
       isNext = false;
     });
 
-    Navigator.of(context).pop();
-    if (widget.isEditing != null && widget.isEditing!) {
+    if (mounted) {
       Navigator.of(context).pop();
-      Navigator.of(context).pop();
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: ((context) => MainPage()),
-        ),
-      );
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: ((context) => BusinessDetailsPage()),
-        ),
-      );
-    } else {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: ((context) => SelectBusinessTimingsPage()),
-        ),
-      );
+      if (widget.isEditing != null && widget.isEditing!) {
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: ((context) => const MainPage()),
+          ),
+        );
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: ((context) => const BusinessDetailsPage()),
+          ),
+        );
+      } else {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: ((context) => const SelectBusinessTimingsPage()),
+          ),
+        );
+      }
     }
   }
 
@@ -138,7 +140,7 @@ class _BusinessChooseCategoryPage3State
                   ),
                   ListView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: products.length,
                     itemBuilder: (context, productIndex) {
                       final product = products[productIndex];
@@ -156,7 +158,7 @@ class _BusinessChooseCategoryPage3State
                         child: Container(
                           decoration: BoxDecoration(
                             color: selectedProducts.contains(product)
-                                ? Color.fromRGBO(133, 255, 137, 1)
+                                ? const Color.fromRGBO(133, 255, 137, 1)
                                 : Colors.white,
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -180,7 +182,7 @@ class _BusinessChooseCategoryPage3State
                                     visible:
                                         !selectedProducts.contains(product),
                                     child: IconButton(
-                                      icon: Icon(
+                                      icon: const Icon(
                                         Icons.check,
                                         color: Color.fromRGBO(133, 255, 137, 1),
                                       ),
@@ -222,7 +224,7 @@ class _BusinessChooseCategoryPage3State
                       );
                     },
                   ),
-                  Divider(),
+                  const Divider(),
                 ],
               );
             },
@@ -233,7 +235,9 @@ class _BusinessChooseCategoryPage3State
         onPressed: () async {
           await next();
         },
-        child: isNext ? CircularProgressIndicator() : Icon(Icons.arrow_forward),
+        child: isNext
+            ? const CircularProgressIndicator()
+            : const Icon(Icons.arrow_forward),
       ),
     );
   }

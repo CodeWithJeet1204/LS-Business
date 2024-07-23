@@ -169,7 +169,6 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
         throw Exception('Failed to load data');
       }
     } catch (e) {
-      print(e.toString());
       throw Exception(e.toString());
     }
   }
@@ -243,15 +242,15 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
     String type = '';
     int i = 0;
     int length = shopList.length;
-    shopList.forEach((shopType) {
+    for (var shopType in shopList) {
       if (i == length - 1) {
         type = type + shopType;
       } else {
-        type = type + '$shopType, ';
+        type = '$type$shopType, ';
       }
 
       i++;
-    });
+    }
 
     return type;
   }
@@ -449,9 +448,6 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                             latitude = value.latitude;
                                             longitude = value.longitude;
                                           });
-
-                                          print("Shop latitude: $latitude");
-                                          print("Shop longitude: $longitude");
 
                                           await store
                                               .collection('Users')
@@ -750,7 +746,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                         ),
                                       );
                                     },
-                                    icon: Icon(FeatherIcons.edit),
+                                    icon: const Icon(FeatherIcons.edit),
                                     tooltip: 'Edit Types',
                                   ),
                                 ],
@@ -802,7 +798,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                         ),
                                       );
                                     },
-                                    icon: Icon(FeatherIcons.edit),
+                                    icon: const Icon(FeatherIcons.edit),
                                     tooltip: 'Edit Categories',
                                   ),
                                 ],
@@ -856,7 +852,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                         ),
                                       );
                                     },
-                                    icon: Icon(FeatherIcons.edit),
+                                    icon: const Icon(FeatherIcons.edit),
                                     tooltip: 'Edit Products',
                                   ),
                                 ],
@@ -1033,7 +1029,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          ChangeTimingsPage()),
+                                          const ChangeTimingsPage()),
                                 );
                               },
                               customBorder: RoundedRectangleBorder(
@@ -1147,7 +1143,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                   : Container(),
                             ),
 
-                            SizedBox(height: 12),
+                            const SizedBox(height: 12),
                           ],
                         ),
                       );

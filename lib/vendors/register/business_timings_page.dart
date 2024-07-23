@@ -34,7 +34,7 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
   Future<void> selectWeekdayStartTime() async {
     TimeOfDay? selectedTime = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay(
+      initialTime: const TimeOfDay(
         hour: 8,
         minute: 0,
       ),
@@ -51,7 +51,7 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
   Future<void> selectWeekdayEndTime() async {
     TimeOfDay? selectedTime = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay(
+      initialTime: const TimeOfDay(
         hour: 20,
         minute: 0,
       ),
@@ -68,7 +68,7 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
   Future<void> selectSaturdayStartTime() async {
     TimeOfDay? selectedTime = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay(
+      initialTime: const TimeOfDay(
         hour: 8,
         minute: 0,
       ),
@@ -85,7 +85,7 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
   Future<void> selectSaturdayEndTime() async {
     TimeOfDay? selectedTime = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay(
+      initialTime: const TimeOfDay(
         hour: 20,
         minute: 0,
       ),
@@ -102,7 +102,7 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
   Future<void> selectSundayStartTime() async {
     TimeOfDay? selectedTime = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay(
+      initialTime: const TimeOfDay(
         hour: 8,
         minute: 0,
       ),
@@ -119,7 +119,7 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
   Future<void> selectSundayEndTime() async {
     TimeOfDay? selectedTime = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay(
+      initialTime: const TimeOfDay(
         hour: 20,
         minute: 0,
       ),
@@ -220,14 +220,16 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
       if (mounted) {
         Navigator.of(context).pop();
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => SelectMembershipPage()),
+          MaterialPageRoute(builder: (context) => const SelectMembershipPage()),
         );
       }
     } catch (e) {
       setState(() {
         isNext = false;
       });
-      return mySnackBar(context, e.toString());
+      if (mounted) {
+        return mySnackBar(context, e.toString());
+      }
     }
   }
 
@@ -235,7 +237,7 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Shop Timings'),
+        title: const Text('Shop Timings'),
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
@@ -358,9 +360,7 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
                                         weekdayStartTime == null
                                             ? MyTextButton(
                                                 onPressed: () async {
-                                                  print(111);
                                                   await selectWeekdayStartTime();
-                                                  print(222);
                                                 },
                                                 text: 'Select Time',
                                                 textColor: primaryDark,
@@ -473,7 +473,7 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
                     ],
                   ),
 
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
 
                   // SATURDAY
                   ExpansionTile(
@@ -697,7 +697,7 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
                     ],
                   ),
 
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
 
                   // SUNDAY
                   ExpansionTile(
@@ -921,7 +921,7 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
                     ],
                   ),
 
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
 
                   // NEXT
                   MyButton(

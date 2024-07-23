@@ -27,7 +27,7 @@ class _PickLocationPageState extends State<PickLocationPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Pick Location"),
+        title: const Text("Pick Location"),
       ),
       body: OpenStreetMapSearchAndPick(
         buttonColor: primaryDark,
@@ -41,11 +41,13 @@ class _PickLocationPageState extends State<PickLocationPage> {
               'eventLatitude': pickLocationProvider.latitude,
               'eventLongitude': pickLocationProvider.longitude,
             });
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: ((context) => EventPage(eventId: widget.eventId!)),
-              ),
-            );
+            if (context.mounted) {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: ((context) => EventPage(eventId: widget.eventId!)),
+                ),
+              );
+            }
           } else {
             pickLocationProvider.setLocation(
               pickedData.latLong.latitude,

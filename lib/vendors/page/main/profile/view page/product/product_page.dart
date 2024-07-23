@@ -672,7 +672,7 @@ class _ProductPageState extends State<ProductPage> {
           });
         } else {
           final name = categoryName;
-          final imageUrl =
+          const imageUrl =
               'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png';
 
           setState(() {
@@ -901,11 +901,12 @@ class _ProductPageState extends State<ProductPage> {
           IconButton(
             onPressed: () async {
               await confirmDelete();
-              if (mounted) {
+              if (context.mounted) {
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => AllProductsPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const AllProductsPage()),
                 );
               }
             },

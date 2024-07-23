@@ -100,7 +100,6 @@ class _MainPageState extends State<MainPage> {
           getUserDetailsAddedData['numberVerified'] != true) {
         if (auth.currentUser!.email != null &&
             !auth.currentUser!.emailVerified) {
-          print(123);
           detailsPage = const EmailVerifyPage(
             mode: 'vendor',
             isLogging: true,

@@ -99,10 +99,11 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
               onPressed: () async {
                 Navigator.of(context).pop();
                 await delete(discountId, imageUrl);
-                if (mounted) {
+                if (context.mounted) {
                   Navigator.of(context).pop();
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => AllDiscountPage()),
+                    MaterialPageRoute(
+                        builder: (context) => const AllDiscountPage()),
                   );
                 }
               },
@@ -282,7 +283,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                         return isGridView
                             ? GridView.builder(
                                 shrinkWrap: true,
-                                physics: ClampingScrollPhysics(),
+                                physics: const ClampingScrollPhysics(),
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 1,
@@ -541,7 +542,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                   Navigator.of(context).push(
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            AllDiscountPage()),
+                                                            const AllDiscountPage()),
                                                   );
                                                 },
                                                 icon: Icon(
@@ -563,7 +564,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                 width: width,
                                 child: ListView.builder(
                                   shrinkWrap: true,
-                                  physics: ClampingScrollPhysics(),
+                                  physics: const ClampingScrollPhysics(),
                                   itemCount: currentDiscounts.length,
                                   itemBuilder: ((context, index) {
                                     final discountData = currentDiscounts[

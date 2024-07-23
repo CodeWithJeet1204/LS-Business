@@ -95,7 +95,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
   Future<void> selectWeekdayStartTime() async {
     TimeOfDay? selectedTime = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay(
+      initialTime: const TimeOfDay(
         hour: 8,
         minute: 0,
       ),
@@ -120,7 +120,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
   Future<void> selectWeekdayEndTime() async {
     TimeOfDay? selectedTime = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay(
+      initialTime: const TimeOfDay(
         hour: 20,
         minute: 0,
       ),
@@ -145,7 +145,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
   Future<void> selectSaturdayStartTime() async {
     TimeOfDay? selectedTime = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay(
+      initialTime: const TimeOfDay(
         hour: 8,
         minute: 0,
       ),
@@ -170,7 +170,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
   Future<void> selectSaturdayEndTime() async {
     TimeOfDay? selectedTime = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay(
+      initialTime: const TimeOfDay(
         hour: 20,
         minute: 0,
       ),
@@ -195,7 +195,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
   Future<void> selectSundayStartTime() async {
     TimeOfDay? selectedTime = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay(
+      initialTime: const TimeOfDay(
         hour: 8,
         minute: 0,
       ),
@@ -220,7 +220,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
   Future<void> selectSundayEndTime() async {
     TimeOfDay? selectedTime = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay(
+      initialTime: const TimeOfDay(
         hour: 20,
         minute: 0,
       ),
@@ -282,7 +282,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Change Timings'),
+        title: const Text('Change Timings'),
       ),
       body: SafeArea(
         child: Padding(
@@ -417,9 +417,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                         weekdayStartTime == null
                                             ? MyTextButton(
                                                 onPressed: () async {
-                                                  print(111);
                                                   await selectWeekdayStartTime();
-                                                  print(222);
                                                 },
                                                 text: 'Select Time',
                                                 textColor: primaryDark,
@@ -532,7 +530,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                     ],
                   ),
 
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
 
                   // SATURDAY
                   ExpansionTile(
@@ -769,7 +767,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                     ],
                   ),
 
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
 
                   // SUNDAY
                   ExpansionTile(

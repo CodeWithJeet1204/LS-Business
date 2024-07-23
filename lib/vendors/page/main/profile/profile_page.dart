@@ -152,15 +152,15 @@ class _ProfilePageState extends State<ProfilePage> {
     String type = '';
     int i = 0;
     int length = shopList.length;
-    shopList.forEach((shopType) {
+    for (var shopType in shopList) {
       if (i == length - 1) {
         type = type + shopType;
       } else {
-        type = type + '$shopType, ';
+        type = '$type$shopType, ';
       }
 
       i++;
-    });
+    }
 
     return type;
   }
@@ -211,8 +211,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
                     Future<void> addHouseholdSpecialCategories(
                         String shopType) async {
-                      print("Shop Type: $shopType");
-
                       final householdSubCategories =
                           householdSpecialCategories[shopType];
 
@@ -246,7 +244,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     }
 
                     await addAllSpecialCategories();
-                    print("All special categories added successfully.");
                   },
 
                   icon: const Icon(

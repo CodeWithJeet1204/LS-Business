@@ -13,7 +13,7 @@ Widget addBox({
     margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
-      gradient: LinearGradient(
+      gradient: const LinearGradient(
         colors: [
           Color.fromRGBO(194, 236, 255, 1),
           Color.fromRGBO(227, 242, 253, 1),

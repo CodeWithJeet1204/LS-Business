@@ -56,7 +56,7 @@ class _SelectCategoryForDiscountPageState
           .collection(type)
           .get();
 
-      categorySnap.docs.forEach((category) {
+      for (var category in categorySnap.docs) {
         for (var shopCategory in categories) {
           final categoryData = category.data();
 
@@ -66,7 +66,7 @@ class _SelectCategoryForDiscountPageState
             myCategories[categoryName] = imageUrl;
           }
         }
-      });
+      }
     }
 
     setState(() {
@@ -221,9 +221,9 @@ class _SelectCategoryForDiscountPageState
                       child: isGridView
                           ? GridView.builder(
                               shrinkWrap: true,
-                              physics: ClampingScrollPhysics(),
+                              physics: const ClampingScrollPhysics(),
                               gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
                                 crossAxisSpacing: 0,
                                 mainAxisSpacing: 0,
@@ -336,7 +336,7 @@ class _SelectCategoryForDiscountPageState
                               width: width,
                               child: ListView.builder(
                                 shrinkWrap: true,
-                                physics: ClampingScrollPhysics(),
+                                physics: const ClampingScrollPhysics(),
                                 itemCount: currentCategories.length,
                                 itemBuilder: ((context, index) {
                                   final categoryName =

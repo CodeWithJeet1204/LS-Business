@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_function_literals_in_foreach_calls
+
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
@@ -383,15 +385,17 @@ class DISCOUNT extends State<DiscountPage> {
       });
     }
 
-    Navigator.of(context).pop();
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => DiscountPage(
-          discountId: widget.discountId,
-          discountImageUrl: widget.discountImageUrl,
+    if (mounted) {
+      Navigator.of(context).pop();
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => DiscountPage(
+            discountId: widget.discountId,
+            discountImageUrl: widget.discountImageUrl,
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   // DISCOUNT NAME CHANGE BACKEND
@@ -724,7 +728,8 @@ class DISCOUNT extends State<DiscountPage> {
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => AllDiscountPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const AllDiscountPage()),
                 );
               }
             },
@@ -1160,7 +1165,7 @@ class DISCOUNT extends State<DiscountPage> {
 
                                         if (snapshot.hasData) {
                                           return snapshot.data!.isEmpty
-                                              ? SizedBox(
+                                              ? const SizedBox(
                                                   height: 80,
                                                   child: Center(
                                                     child: Text('No Products'),
@@ -1616,7 +1621,7 @@ class DISCOUNT extends State<DiscountPage> {
 
                                         if (snapshot.hasData) {
                                           return snapshot.data!.isEmpty
-                                              ? SizedBox(
+                                              ? const SizedBox(
                                                   height: 80,
                                                   child: Center(
                                                     child: Text('No Brands'),
@@ -2034,7 +2039,7 @@ class DISCOUNT extends State<DiscountPage> {
 
                                         if (snapshot.hasData) {
                                           return snapshot.data!.isEmpty
-                                              ? SizedBox(
+                                              ? const SizedBox(
                                                   height: 80,
                                                   child: Center(
                                                     child:
@@ -2046,9 +2051,9 @@ class DISCOUNT extends State<DiscountPage> {
                                                       ? GridView.builder(
                                                           shrinkWrap: true,
                                                           physics:
-                                                              ClampingScrollPhysics(),
+                                                              const ClampingScrollPhysics(),
                                                           gridDelegate:
-                                                              SliverGridDelegateWithFixedCrossAxisCount(
+                                                              const SliverGridDelegateWithFixedCrossAxisCount(
                                                             crossAxisCount: 2,
                                                             childAspectRatio:
                                                                 0.695,
