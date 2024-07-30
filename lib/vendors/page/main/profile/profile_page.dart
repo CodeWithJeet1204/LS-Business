@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:localy/select_mode_page.dart';
 import 'package:localy/vendors/models/business_special_categories_images.dart';
-import 'package:localy/vendors/models/household_special_categories_images.dart';
+import 'package:localy/vendors/models/household_categories_subCategories_products.dart';
 import 'package:localy/vendors/page/main/profile/data/all_categories_page.dart';
 import 'package:localy/vendors/utils/colors.dart';
 import 'package:localy/widgets/small_text_container.dart';

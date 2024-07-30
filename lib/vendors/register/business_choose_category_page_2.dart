@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:localy/vendors/models/household_special_categories_images.dart';
+import 'package:localy/vendors/models/household_categories_subCategories_products.dart';
 import 'package:localy/vendors/register/business_choose_category_page_3.dart';
 import 'package:localy/widgets/select_container.dart';
 import 'package:localy/widgets/snack_bar.dart';
