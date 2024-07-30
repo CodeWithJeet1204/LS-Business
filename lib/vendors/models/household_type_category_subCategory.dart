@@ -1,4 +1,4 @@
-Map<String, Map<String, List<String>>> householdSpecialCategories = {
+Map<String, Map<String, List<String>>> householdTypeCategorySubCategory = {
   'Fashion & Clothing': {
     'Men Wear': [
       'Men Shirts',
@@ -29,6 +29,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Men Kurta Pajama',
       'Men Sherwani',
       'Men Hoodies',
+      'Other Men Wear',
     ],
     'Accessories For Men': [
       'Men Scarves',
@@ -41,6 +42,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Men Bags',
       'Men Wallets',
       'Men Watches',
+      'Other Men Accessories',
     ],
     'Women Wear': [
       'Women Shirts',
@@ -75,6 +77,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Women Coats',
       'Women Rain Wear',
       'Women Blazers',
+      'Other Women Wear',
     ],
     'Accessories For Women': [
       'Women Scarves',
@@ -88,6 +91,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Women Bags',
       'Women Purses',
       'Women Watches',
+      'Other Women Accessories',
     ],
     'Kids Wear': [
       'Kids Shirts',
@@ -116,6 +120,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Kids Coats',
       'Kids Rain Wear',
       'Kids Blazers',
+      'Other Kids Wear',
     ],
     'Accessories For Kids': [
       'Scarves',
@@ -129,6 +134,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Wallets',
       'Watches',
       'Purses',
+      'Other Kids Accessories',
     ],
   },
   'Food': {
@@ -148,6 +154,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Oils',
       'Nuts',
       'Seeds',
+      'Other Daily Needs',
     ],
     'Ready To Eat Food': [
       'Baked Food',
@@ -169,6 +176,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Cakes & Bakery Items',
       'Western',
       'Chinese',
+      'Other Ready To Eat',
     ],
     'Bakery Items': [
       'Bread',
@@ -182,6 +190,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Brownies',
       'Cupcakes',
       'Buns',
+      'Other Bakery Items',
     ],
     'Namkeen': [
       'Sev',
@@ -198,39 +207,8 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Khakra',
       'Farsan',
       'Khatta Meetha Mix',
+      'Other Namkeen',
     ],
-    // 'Street Food': [
-    //   'Pani Puri/Golgappa',
-    //   'Bhel Puri',
-    //   'Pav Bhaji',
-    //   'Vada Pav',
-    //   'Dahi Puri',
-    //   'Aloo Tikki',
-    //   'Chole Bhature',
-    //   'Sev Puri',
-    //   'Dhokla',
-    //   'Samosa',
-    //   'Kachori',
-    //   'Pav Bhaji',
-    //   'Chaat',
-    //   'Ragda Pattice',
-    //   'Batata Vada',
-    //   'Pav Bhaji',
-    //   'Paneer Tikka',
-    //   'Aloo Chaat',
-    //   'Vegetable Pakora',
-    //   'Chili Paneer',
-    //   'Misal Pav',
-    //   'Bhutte Ka Kees',
-    //   'Vegetable Frankie/Kathi Roll',
-    //   'Bajji/Bhajiya',
-    //   'Vegetable Momos',
-    //   'Dabeli',
-    //   'Masala Dosa',
-    //   'Idli',
-    //   'Uttapam',
-    //   'Mirchi Bajji',
-    // ],
     'Snacks': [
       'Samosa',
       'Pakora (Bhajiya)',
@@ -262,6 +240,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Aloo Chaat',
       'Papdi Chaat',
       'Samosa Chaat',
+      'Other Snacks',
     ],
     'Baked & Roasted Snacks': [
       'Roasted Chana',
@@ -294,6 +273,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Baked Kale Chips (Indian Spices)',
       'Baked Vegetable Sticks',
       'Baked Lentil Cracker',
+      'Other Baked & Roasted Snacks',
     ],
     'Chaat': [
       'Pani Puri (Golgappa)',
@@ -334,12 +314,14 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Methi na Gota (Methi Pakora) Chaat',
       'Roti Chaat',
       'Paneer Tikka Chaat',
+      'Other Chaat',
     ],
     'Starters': [
       'Salads',
       'Papad',
       'Soups',
       'Raitas',
+      'Other Starters',
     ],
     'Main Course': [
       'Roti',
@@ -351,6 +333,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Gravy Sabji',
       'Non Gravy Sabji',
       'Thali',
+      'Other Main Course Items',
     ],
     'Gujarati Food': [
       'Gujarati Breakfast',
@@ -361,6 +344,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Gujarati Sweets & Desserts',
       'Gujarati Rice Dishes',
       'Gujarati Chutneys & Pickles',
+      'Other Gujarati Food',
     ],
     'Punjabi Food': [
       'Punjabi Breakfast',
@@ -371,6 +355,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Punjabi Sweets & Desserts',
       'Punjabi Rice Dishes',
       'Punjabi Chutneys & Pickles',
+      'Other Punjab Food',
     ],
     'Maharashtrian Food': [
       'Maharashtrian Breakfast',
@@ -381,6 +366,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Maharashtrian Sweets & Desserts',
       'Maharashtrian Rice Dishes',
       'Maharashtrian Chutneys & Pickles',
+      'Other Maharashtrian Food',
     ],
     'South Indian Food': [
       'South Indian Breakfast',
@@ -391,6 +377,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'South Indian Sweets & Desserts',
       'South Indian Rice Dishes',
       'South Indian Chutneys & Pickles',
+      'Other South Indian Food',
     ],
     'Chinese Food': [
       'Chinese Appetizers',
@@ -398,6 +385,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Chinese Main Course',
       'Chinese Gravy Dishes',
       'Chinese Sides & Sauces',
+      'Other Chinese Food',
     ],
     'Western Food': [
       'Western Starters',
@@ -414,6 +402,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Sides',
       'Lasagna',
       'Western Sides & Sauces',
+      'Other Western Food',
     ],
     'Sweets & Desserts': [
       'Gulab Jamun',
@@ -456,6 +445,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Doodhi Halwa',
       'Moong Dal Halwa',
       'Aloo Halwa',
+      'Other Sweets & Desserts',
     ],
     'Beverages': [
       'Masala Chai',
@@ -498,6 +488,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Hibiscus Tea',
       'Jaggery Water (Gur Sharbat)',
       'Bael Sharbat',
+      'Other Beverages',
     ],
   },
   'Beauty & Care': {
@@ -514,6 +505,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'BB Cream',
       'CC Cream',
       'Tinted Moisturizer',
+      'Other Face Beauty & Face Items',
     ],
     'Eyes': [
       'Eyeshadow Primer',
@@ -524,6 +516,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Eyebrow Gel',
       'Eyebrow Powder',
       'False Eyelashes',
+      'Other Eye Beauty & Care Items',
     ],
     'Lips': [
       'Lip Balm',
@@ -532,10 +525,12 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Glossy Lipstick',
       'Lipstick',
       'Lip Gloss',
+      'Other Lip Beauty & Care Items',
     ],
     'Beard': [
       'Beard Filler',
       'Beard Balm/Oil',
+      'Other Beard Beauty & Care Items',
     ],
     'Tools & Accessories': [
       'Combs',
@@ -560,7 +555,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Flat Iron',
       'Hair Rollers',
       'Hair Steamer',
-      'Others',
+      'Other Tools',
     ],
     'Hair Care & Styling': [
       'Shampoo',
@@ -582,7 +577,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Shine Spray',
       'Hair Pomade',
       'Styling Foam',
-      'Others',
+      'Other Hair Care & Styling Products',
     ],
     'Skin Care': [
       'Cleaner',
@@ -603,6 +598,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Hydrating Mist',
       'Exfoliator',
       'Pore Strips',
+      'Other Skin Care Products'
     ],
   },
   'Home Essentials': {
@@ -627,6 +623,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Dish Soap',
       'Laundry Detergent',
       'Fabric Softener',
+      'Other Cleaners',
     ],
     'Cleaning Tools': [
       'Broom',
@@ -649,6 +646,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Dust Mop',
       'Scouring Pad',
       'Cleaning Wipes',
+      'Other Tools',
     ],
   },
   'Health Care': {
@@ -682,6 +680,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Joint Care Supplements',
       'Weight Management Products',
       'Skin Care Oil',
+      'Other Ayurvedic Products',
     ],
     'Homeopathy': [
       'Mother Tinctures',
@@ -708,7 +707,8 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Eye Care Products',
       'Ear Care Products',
       'Dental Care Products',
-      'Women\'Products',
+      'Women\'s Products',
+      'Other Homeopathy Products',
     ],
     'Personal Care': [
       'Cleansers',
@@ -741,6 +741,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Hair Styling Products',
       'Makeup Removers',
       'Hand Sanitizers',
+      'Other Personal Care Products',
     ],
     'Sports Suplemments': [
       'Protein Powders',
@@ -773,6 +774,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Natural Test Boosters',
       'Caffeine Supplements',
       'Electrolyte Tablets',
+      'Other Sports Supplements',
     ],
     'Diet & Nutrition': [
       'Protein Powders',
@@ -805,6 +807,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Energy Tablets',
       'Vitamin B12 Supplements',
       'Antioxidant Capsules',
+      'Other Diet & Nutrition Products',
     ],
     'Health Care Devices': [
       'Blood Pressure Monitors',
@@ -837,6 +840,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Smart Glucose Monitors',
       'Oxygen Concentrators',
       'Wearable Health Monitor',
+      'Other Health Care Devices',
     ],
   },
   'Jewelry': {
@@ -856,6 +860,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Traditional Necklace',
       'Modern Necklace',
       'Multi-layered Necklace',
+      'Other Neck Jewelry',
     ],
     'Legs': [
       'Payal',
@@ -863,6 +868,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Ghungroo',
       'Toe Rings',
       'Toe Anklets',
+      'Other Legs Jewelry',
     ],
     'Hands': [
       'Bangles',
@@ -875,6 +881,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Hathphool',
       'Kada Bangles',
       'Traditional Bangles',
+      'Other Hands Jewelry',
     ],
     'Face': [
       'Naths',
@@ -888,6 +895,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Jhumar',
       'Nose Chain',
       'Hair Accessories',
+      'Other Face Jewelry',
     ],
   },
   'Foot Wear': {
@@ -912,6 +920,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Men Dress Boots',
       'Men Clogs',
       'Men Mules',
+      'Other Men Footwear',
     ],
     'Women': [
       'Women Sneakers',
@@ -934,6 +943,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Women Dress Boots',
       'Women Clogs',
       'Women Mules',
+      'Other Women Footwear',
     ],
     'Kids': [
       'Kids Sneakers',
@@ -956,6 +966,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Kids Dress Boots',
       'Kids Clogs',
       'Kids Mules',
+      'Other Kids Footwear',
     ],
   },
   'Home Decor & Furnishing': {
@@ -983,7 +994,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Mattress Protectors',
       'Orthopedic Products',
       'Gifting',
-      'Others',
+      'Other Home Furnishing Products',
     ],
     'Home Decor': [
       'Table Top Decor',
@@ -1003,7 +1014,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Show Pieces',
       'Wall Shelves',
       'Ethnic Wall Art',
-      'Others',
+      'Other Home Decor Products',
     ],
     'Spiritual Decor': [
       'Idols',
@@ -1011,7 +1022,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Spiritual Themed Lights',
       'Toran',
       'Stickers',
-      'Others',
+      'Other Spiritual Decor Products',
     ],
     'Lights': [
       'Decorative Lights',
@@ -1026,7 +1037,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Garden Lights',
       'Bulbs',
       'Essential Lights',
-      'Others',
+      'Other Lights',
     ],
   },
   'Art & Craft': {
@@ -1037,6 +1048,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Metalwork',
       'Threadwork',
       'Clothwork & Embroidery',
+      'Other Handcrafts',
     ],
     'Art & Craft Supplies': [
       'Paper',
@@ -1061,7 +1073,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Beading & Jewelry Making Essentials',
       'Glue Guns',
       'Crafting Tools',
-      'Others',
+      'Other Art & Craft Supplies',
     ],
   },
   'Festive Essentials': {
@@ -1119,6 +1131,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'String lights with shapes',
       'Decorative plates',
       'Crystal hangings',
+      'Other Decorations',
     ],
     'Puja Essentials': [
       'Clothing For Gods',
@@ -1141,6 +1154,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Ghee lamps',
       'Ritual conch (shankha)',
       'Puja mats',
+      'Other Puja Essentials',
     ],
     'Gifts': [
       'Dry fruit boxes',
@@ -1162,6 +1176,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Aroma diffusers',
       'Meditation cushions',
       'Artistic pottery',
+      'Other Gifts',
     ],
     'Miscellaneous': [
       'Firecrackers',
@@ -1184,6 +1199,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Cultural dance props',
       'Traditional masks',
       'Decorative umbrellas',
+      'Other Miscellaneous Products',
     ],
     'Specific Festive Essentials': [
       'Diwali Essentials',
@@ -1203,6 +1219,7 @@ Map<String, Map<String, List<String>>> householdSpecialCategories = {
       'Pongal Essentials',
       'Onam Essentials',
       'Gudi Padwa Essentials',
+      'Other Specific Festive Products',
     ],
   }
 };

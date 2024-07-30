@@ -78,6 +78,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
         }
       }
     }
+
     setState(() {
       currentCategories = myCategory;
       allCategories = myCategory;

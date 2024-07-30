@@ -84,19 +84,27 @@ class _AddProductPage1State extends State<AddProductPage1> {
 
     final vendorData = vendorSnap.data()!;
 
-    final shopType = vendorData['Type'];
+    final List shopType = vendorData['Type'];
+    final List categories = vendorData['Categories'];
 
-    final categorySnap = await store
-        .collection('Business')
-        .doc('Special Categories')
-        .collection(shopType)
-        .get();
+    for (var type in shopType) {
+      final categorySnap = await store
+          .collection('Business')
+          .doc('Special Categories')
+          .collection(type)
+          .get();
 
-    for (var categoryData in categorySnap.docs) {
-      final categoryName = categoryData['specialCategoryName'];
-      final categoryImageUrl = categoryData['specialCategoryImageUrl'];
+      for (var specialCategory in categorySnap.docs) {
+        for (var category in categories) {
+          final categoryData = specialCategory.data();
 
-      myCategories[categoryName] = categoryImageUrl;
+          final name = categoryData['specialCategoryName'];
+          final imageUrl = categoryData['specialCategoryImageUrl'];
+          if (category == name) {
+            myCategories[name] = imageUrl;
+          }
+        }
+      }
     }
 
     setState(() {
@@ -336,6 +344,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                   width: width * 0.79,
                                   child: ListView.builder(
                                     shrinkWrap: true,
+                                    physics: ClampingScrollPhysics(),
                                     scrollDirection: Axis.horizontal,
                                     itemCount: _image.length,
                                     itemBuilder: ((context, index) {
@@ -1129,6 +1138,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                 : isGridView
                                     ? GridView.builder(
                                         shrinkWrap: true,
+                                        physics: ClampingScrollPhysics(),
                                         gridDelegate:
                                             SliverGridDelegateWithFixedCrossAxisCount(
                                           crossAxisCount: 2,
@@ -1150,6 +1160,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                       )
                                     : ListView.builder(
                                         shrinkWrap: true,
+                                        physics: ClampingScrollPhysics(),
                                         itemCount: 4,
                                         itemBuilder: (context, index) {
                                           return Padding(

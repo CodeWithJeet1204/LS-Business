@@ -247,46 +247,28 @@ class _AllPostsPageState extends State<AllPostsPage> {
       ),
       body: !isData
           ? SafeArea(
-              child: isGridView
-                  ? GridView.builder(
-                      shrinkWrap: true,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 0,
-                        mainAxisSpacing: 0,
-                        childAspectRatio: width * 0.5 / width * 1.6,
-                      ),
-                      itemCount: 4,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.all(
-                            width * 0.02,
-                          ),
-                          child: GridViewSkeleton(
-                            width: width,
-                            isPrice: true,
-                            isDelete: true,
-                          ),
-                        );
-                      },
-                    )
-                  : ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: 4,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.all(
-                            width * 0.02,
-                          ),
-                          child: ListViewSkeleton(
-                            width: width,
-                            isPrice: true,
-                            height: 30,
-                            isDelete: true,
-                          ),
-                        );
-                      },
+              child: GridView.builder(
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 0,
+                  mainAxisSpacing: 0,
+                  childAspectRatio: width * 0.5 / width * 1.6,
+                ),
+                itemCount: 4,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: EdgeInsets.all(
+                      width * 0.02,
                     ),
+                    child: GridViewSkeleton(
+                      width: width,
+                      isPrice: true,
+                      isDelete: true,
+                    ),
+                  );
+                },
+              ),
             )
           : currentPosts.isEmpty
               ? const Center(
@@ -297,8 +279,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
                     horizontal: MediaQuery.of(context).size.width * 0.0125,
                   ),
                   child: LayoutBuilder(
-                    builder:
-                        (BuildContext context, BoxConstraints constraints) {
+                    builder: (context, constraints) {
                       double width = constraints.maxWidth;
 
                       return isGridView
@@ -380,7 +361,8 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                   child: ClipRRect(
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            2),
+                                                      2,
+                                                    ),
                                                     child: Image.network(
                                                       postData[
                                                           'postProductImages'][0],
@@ -391,22 +373,25 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                   ),
                                                 ),
                                               )
-                                            : SizedBox(
-                                                width: width * 0.5,
-                                                height: width * 0.5,
-                                                child: const Center(
-                                                  child: Text(
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    'No Image',
-                                                    style: TextStyle(
-                                                      color: primaryDark2,
-                                                      fontWeight:
-                                                          FontWeight.w500,
+                                            : postData['isTextPost'] &&
+                                                    !postData['isLinked']
+                                                ? Container()
+                                                : SizedBox(
+                                                    width: width * 0.5,
+                                                    height: width * 0.5,
+                                                    child: const Center(
+                                                      child: Text(
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        'No Image',
+                                                        style: TextStyle(
+                                                          color: primaryDark2,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                              ),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
@@ -429,11 +414,16 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                   child: SizedBox(
                                                     width: width * 0.275,
                                                     child: Text(
-                                                      postData[
-                                                          'postProductName'],
+                                                      !postData['isLinked']
+                                                          ? postData['post']
+                                                          : postData[
+                                                              'postProductName'],
                                                       overflow:
                                                           TextOverflow.ellipsis,
-                                                      maxLines: 1,
+                                                      maxLines:
+                                                          !postData['isLinked']
+                                                              ? 8
+                                                              : 1,
                                                       style: TextStyle(
                                                         fontSize: width * 0.05,
                                                       ),
@@ -447,24 +437,27 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                     width * 0.0125,
                                                     0,
                                                   ),
-                                                  child: Text(
-                                                    postData['postProductPrice'] !=
-                                                                '' &&
-                                                            postData[
-                                                                    'postProductPrice'] !=
-                                                                null
-                                                        ? postData[
-                                                            'postProductPrice']
-                                                        : 'N/A',
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    maxLines: 1,
-                                                    style: TextStyle(
-                                                      fontSize: width * 0.045,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                    ),
-                                                  ),
+                                                  child: !postData['isLinked']
+                                                      ? Container()
+                                                      : Text(
+                                                          postData['postProductPrice'] !=
+                                                                      '' &&
+                                                                  postData[
+                                                                          'postProductPrice'] !=
+                                                                      null
+                                                              ? postData[
+                                                                  'postProductPrice']
+                                                              : 'N/A',
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          maxLines: 1,
+                                                          style: TextStyle(
+                                                            fontSize:
+                                                                width * 0.045,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                        ),
                                                 ),
                                               ],
                                             ),

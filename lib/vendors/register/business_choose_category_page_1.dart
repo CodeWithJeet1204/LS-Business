@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:localy/vendors/models/household_sub_categories.dart';
+import 'package:localy/vendors/models/household_types.dart';
 import 'package:localy/vendors/register/business_choose_category_page_2.dart';
 import 'package:localy/widgets/select_container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -100,11 +100,10 @@ class _BusinessChooseCategoryPage1State
                   crossAxisCount: 2,
                   childAspectRatio: 16 / 9,
                 ),
-                itemCount: householdSubCategories.length,
+                itemCount: householdTypes.length,
                 itemBuilder: (context, index) {
-                  final name = householdSubCategories.keys.toList()[index];
-                  final imageUrl =
-                      householdSubCategories.values.toList()[index];
+                  final name = householdTypes.keys.toList()[index];
+                  final imageUrl = householdTypes.values.toList()[index];
 
                   return SelectContainer(
                     width: width,

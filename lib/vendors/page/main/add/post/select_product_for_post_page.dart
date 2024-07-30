@@ -1,23 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:localy/vendors/provider/select_product_for_post_provider.dart';
 import 'package:localy/vendors/utils/colors.dart';
 import 'package:localy/widgets/shimmer_skeleton_container.dart';
 import 'package:localy/widgets/snack_bar.dart';
 import 'package:localy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class SelectProductForPostPage extends StatefulWidget {
   const SelectProductForPostPage({
     super.key,
     required this.isTextPost,
-    required this.postRemaining,
+    required this.textPostRemaining,
+    required this.imagePostRemaining,
   });
 
   final bool isTextPost;
-  final int postRemaining;
+  final int textPostRemaining;
+  final int imagePostRemaining;
 
   @override
   State<SelectProductForPostPage> createState() =>
@@ -25,12 +26,15 @@ class SelectProductForPostPage extends StatefulWidget {
 }
 
 class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
+  final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
+  List selectedProducts = [];
   bool isGridView = true;
   final searchController = TextEditingController();
   Map<String, Map<String, dynamic>> allProducts = {};
   Map<String, Map<String, dynamic>> currentProducts = {};
   bool isData = false;
+  bool isPosting = false;
 
   // INIT STATE
   @override
@@ -64,53 +68,171 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
 
   // ADD PRODUCT
   Future<void> addProduct(
-    SelectProductForPostProvider provider,
     Map<String, dynamic> data,
   ) async {
-    final previousPosts = await store
-        .collection('Business')
-        .doc('Data')
-        .collection('Posts')
-        .where('postVendorId',
-            isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-        .get();
+    if (((widget.isTextPost
+                ? widget.textPostRemaining
+                : widget.imagePostRemaining) -
+            selectedProducts.length) >
+        0) {
+      final previousPosts = await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Posts')
+          .where('postVendorId',
+              isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .get();
 
-    bool postExists = false;
+      bool postExists = false;
 
-    for (QueryDocumentSnapshot doc in previousPosts.docs) {
-      if (data['productId'] == doc['postProductId'] &&
-          widget.isTextPost == doc['isTextPost']) {
-        postExists = true;
-        break;
+      for (QueryDocumentSnapshot doc in previousPosts.docs) {
+        if (data['productId'] == doc['postProductId'] &&
+            widget.isTextPost == doc['isTextPost']) {
+          postExists = true;
+          break;
+        }
       }
-    }
 
-    if (postExists) {
-      if (mounted) {
-        mySnackBar(
-          context,
-          widget.isTextPost
-              ? 'Text Post Already Exists for one of the product'
-              : 'Image Post Already Exists for the product',
-        );
+      if (postExists) {
+        if (mounted) {
+          mySnackBar(
+            context,
+            widget.isTextPost
+                ? 'Text Post Already Exists for one of the product'
+                : 'Image Post Already Exists for the product',
+          );
+        }
+      } else {
+        setState(() {
+          selectedProducts.add(data['productId']);
+        });
       }
     } else {
-      setState(() {
-        provider.addSelectedProduct(
-          data['productId'],
-          widget.postRemaining,
-          widget.isTextPost,
-          context,
-        );
-      });
+      mySnackBar(
+        context,
+        '${widget.isTextPost ? 'Text' : 'Image'} Post Limit Reached',
+      );
+    }
+  }
+
+  // POST
+  Future<void> post() async {
+    if (((widget.isTextPost
+                ? widget.textPostRemaining
+                : widget.imagePostRemaining) -
+            selectedProducts.length) >=
+        0) {
+      try {
+        bool postDoesntExists = true;
+        final previousPosts = await store
+            .collection('Business')
+            .doc('Data')
+            .collection('Posts')
+            .where('postVendorId', isEqualTo: auth.currentUser!.uid)
+            .get();
+
+        for (QueryDocumentSnapshot doc in previousPosts.docs) {
+          for (var id in selectedProducts) {
+            if (doc['postProductId'] == id &&
+                widget.isTextPost == doc['isTextPost']) {
+              if (mounted) {
+                mySnackBar(
+                  context,
+                  widget.isTextPost
+                      ? 'Text Post Already Exists for one of the product'
+                      : 'Image Post Already Exists for the product',
+                );
+              }
+              postDoesntExists = false;
+            }
+          }
+        }
+
+        if (postDoesntExists) {
+          setState(() {
+            isPosting = true;
+          });
+
+          selectedProducts.forEach((id) async {
+            final productSnap = await store
+                .collection('Business')
+                .doc('Data')
+                .collection('Products')
+                .doc(id)
+                .get();
+
+            final String postId = const Uuid().v4();
+
+            Map<String, dynamic> postInfo = {
+              'postId': postId,
+              'postProductId': productSnap['productId'],
+              'postProductName': productSnap['productName'],
+              'postProductPrice': productSnap['productPrice'],
+              'postCategoryName': productSnap['categoryName'],
+              'postProductDescription': productSnap['productDescription'],
+              'postProductBrand': productSnap['productBrand'],
+              'postProductImages':
+                  widget.isTextPost ? null : productSnap['images'],
+              'postVendorId': productSnap['vendorId'],
+              'postViews': 0,
+              'postLikes': 0,
+              'postComments': {},
+              'postDateTime': Timestamp.fromMillisecondsSinceEpoch(
+                DateTime.now().millisecondsSinceEpoch,
+              ),
+              'isTextPost': widget.isTextPost,
+              'isLinked': true,
+            };
+
+            await store
+                .collection('Business')
+                .doc('Data')
+                .collection('Posts')
+                .doc(postId)
+                .set(postInfo);
+
+            await store
+                .collection('Business')
+                .doc('Owners')
+                .collection('Shops')
+                .doc(auth.currentUser!.uid)
+                .update({
+              'noOfTextPosts': widget.isTextPost
+                  ? widget.textPostRemaining - selectedProducts.length
+                  : widget.textPostRemaining,
+              'noOfImagePosts': !widget.isTextPost
+                  ? widget.imagePostRemaining - selectedProducts.length
+                  : widget.imagePostRemaining,
+            });
+          });
+
+          setState(() {
+            isPosting = false;
+          });
+
+          if (mounted) {
+            mySnackBar(context, 'Posted');
+          }
+        }
+      } catch (e) {
+        setState(() {
+          isPosting = false;
+        });
+        if (mounted) {
+          mySnackBar(context, e.toString());
+        }
+      }
+    } else {
+      mySnackBar(
+        context,
+        'You have ${widget.isTextPost ? widget.textPostRemaining : widget.imagePostRemaining} ${widget.isTextPost ? 'Text' : 'Image'} Posts remaining, remove ${-(widget.textPostRemaining - selectedProducts.length)} product to continue',
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    final selectedProductProvider =
-        Provider.of<SelectProductForPostProvider>(context);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -122,10 +244,12 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
         ),
         actions: [
           MyTextButton(
-            onPressed: () {
+            onPressed: () async {
               Navigator.of(context).pop();
+              Navigator.of(context).pop();
+              await post();
             },
-            text: 'NEXT',
+            text: 'DONE',
             textColor: primaryDark,
           ),
         ],
@@ -269,7 +393,6 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                                     return GestureDetector(
                                       onTap: () async {
                                         await addProduct(
-                                          selectedProductProvider,
                                           productData,
                                         );
                                       },
@@ -398,9 +521,7 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                                               ],
                                             ),
                                           ),
-                                          selectedProductProvider
-                                                  .selectedProducts
-                                                  .contains(
+                                          selectedProducts.contains(
                                             productData['productId'],
                                           )
                                               ? Container(
@@ -457,7 +578,6 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                                                     VisualDensity.standard,
                                                 onTap: () async {
                                                   await addProduct(
-                                                    selectedProductProvider,
                                                     productData,
                                                   );
                                                 },
@@ -522,9 +642,7 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
                                                 ),
                                               ),
                                             ),
-                                            selectedProductProvider
-                                                    .selectedProducts
-                                                    .contains(
+                                            selectedProducts.contains(
                                               productData['productId'],
                                             )
                                                 ? Padding(

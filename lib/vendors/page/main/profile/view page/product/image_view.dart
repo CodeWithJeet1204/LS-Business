@@ -45,7 +45,9 @@ class _ImageViewState extends State<ImageView> {
   // DISPOSE
   @override
   void dispose() {
-    flickManager.dispose();
+    if (widget.shortsURL != null) {
+      flickManager.dispose();
+    }
     super.dispose();
   }
 

@@ -75,7 +75,6 @@ class AddShortsPageState extends State<AddShortsPage> {
   //       },
   //     );
   //   } catch (e) {
-  //     print(e);
   //   }
   // }
 
@@ -91,7 +90,6 @@ class AddShortsPageState extends State<AddShortsPage> {
   //       recordingDuration = 0;
   //     });
   //   } catch (e) {
-  //     print(e);
   //   }
   // }
 

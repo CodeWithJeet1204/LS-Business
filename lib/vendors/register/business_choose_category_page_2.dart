@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:localy/vendors/models/household_categories_subCategories_products.dart';
+import 'package:localy/vendors/models/household_type_category_subCategory.dart';
 import 'package:localy/vendors/register/business_choose_category_page_3.dart';
 import 'package:localy/widgets/select_container.dart';
 import 'package:localy/widgets/snack_bar.dart';
@@ -81,7 +81,8 @@ class _BusinessChooseCategoryPage2State
           padding: EdgeInsets.symmetric(horizontal: width * 0.0125),
           child: Column(
             children: widget.selectedTypes.map((category) {
-              final categories = householdSpecialCategories[category.trim()];
+              final categories =
+                  householdTypeCategorySubCategory[category.trim()];
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

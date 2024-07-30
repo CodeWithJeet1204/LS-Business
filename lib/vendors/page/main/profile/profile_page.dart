@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:localy/select_mode_page.dart';
-import 'package:localy/vendors/models/business_special_categories_images.dart';
-import 'package:localy/vendors/models/household_categories_subCategories_products.dart';
+import 'package:localy/vendors/models/business_sub_categories.dart';
+import 'package:localy/vendors/models/household_sub_categories.dart';
+import 'package:localy/vendors/models/household_type_category_subCategory.dart';
 import 'package:localy/vendors/page/main/profile/data/all_categories_page.dart';
 import 'package:localy/vendors/utils/colors.dart';
 import 'package:localy/widgets/small_text_container.dart';
@@ -189,8 +190,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     Future<void> addBusinessSpecialCategories(
                       String shopType,
                     ) async {
-                      final businessSubCategories =
-                          businessSpecialCategories[shopType];
+                      final myBusinessSubCategories =
+                          businessSubCategories[shopType];
 
                       final CollectionReference<Map<String, dynamic>>
                           specialCategoriesCollection = FirebaseFirestore
@@ -199,7 +200,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               .doc('Special Categories')
                               .collection(shopType);
 
-                      businessSubCategories!
+                      myBusinessSubCategories!
                           .forEach((subcategory, imageUrl) async {
                         await specialCategoriesCollection.doc(subcategory).set({
                           'specialCategoryName': subcategory,
@@ -210,9 +211,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     }
 
                     Future<void> addHouseholdSpecialCategories(
-                        String shopType) async {
-                      final householdSubCategories =
-                          householdSpecialCategories[shopType];
+                      String shopType,
+                    ) async {
+                      final householdSubCategory =
+                          householdSubCategories[shopType];
 
                       final CollectionReference<Map<String, dynamic>>
                           specialCategoriesCollection = FirebaseFirestore
@@ -221,7 +223,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               .doc('Special Categories')
                               .collection(shopType);
 
-                      householdSubCategories!
+                      householdSubCategory!
                           .forEach((subcategory, imageUrl) async {
                         await specialCategoriesCollection.doc(subcategory).set({
                           'specialCategoryName': subcategory,
@@ -232,12 +234,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     }
 
                     Future<void> addAllSpecialCategories() async {
-                      await Future.forEach(businessSpecialCategories.keys,
-                          (shopType) async {
-                        await addBusinessSpecialCategories(shopType);
-                      });
+                      // await Future.forEach(businessSubCategories.keys,
+                      //     (shopType) async {
+                      //   await addBusinessSpecialCategories(shopType);
+                      // });
 
-                      await Future.forEach(householdSpecialCategories.keys,
+                      await Future.forEach(
+                          householdTypeCategorySubCategory.keys,
                           (shopType) async {
                         await addHouseholdSpecialCategories(shopType);
                       });

@@ -19,9 +19,9 @@ class PostPage extends StatefulWidget {
   });
 
   final String postId;
-  final String productId;
-  final String productName;
-  final String categoryName;
+  final String? productId;
+  final String? productName;
+  final String? categoryName;
 
   @override
   State<PostPage> createState() => _PostPageState();
@@ -264,10 +264,12 @@ class _PostPageState extends State<PostPage> {
                     if (snapshot.hasData) {
                       final postData = snapshot.data!;
                       final bool isTextPost = postData['isTextPost'];
-                      final String name = postData['postProductName'];
-                      final String brand = postData['postProductBrand'];
+                      final bool isLinked = postData['isLinked'];
+                      final String? name =
+                          postData[!isLinked ? 'post' : 'postProductName'];
+                      final String? brand = postData['postProductBrand'];
                       final String? price = postData['postProductPrice'];
-                      final String description =
+                      final String? description =
                           postData['postProductDescription'];
                       final int likes = postData['postLikes'];
                       final int views = postData['postViews'];
@@ -389,26 +391,28 @@ class _PostPageState extends State<PostPage> {
                           images.isEmpty ? Container() : const Divider(),
 
                           // NAME
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: width * 0.0225,
-                            ),
-                            child: SizedBox(
-                              width: width * 0.785,
-                              child: Text(
-                                name,
-                                maxLines: 10,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  color: primaryDark,
-                                  fontSize: width * 0.06,
-                                  fontWeight: FontWeight.w500,
+                          name == null
+                              ? Container()
+                              : Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: width * 0.0225,
+                                  ),
+                                  child: SizedBox(
+                                    width: width * 0.785,
+                                    child: Text(
+                                      name,
+                                      maxLines: 10,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color: primaryDark,
+                                        fontSize: width * 0.06,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
 
-                          const Divider(),
+                          name == null ? Container() : const Divider(),
 
                           // PRICE
                           Padding(
@@ -445,110 +449,134 @@ class _PostPageState extends State<PostPage> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             // PRICE
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                horizontal: width * 0.028,
-                                              ),
-                                              child: RichText(
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                text: TextSpan(
-                                                  text: price == '' ||
-                                                          price == null ||
-                                                          price == '0'
-                                                      ? ''
-                                                      : 'Rs. ',
-                                                  style: TextStyle(
-                                                    color: primaryDark,
-                                                    fontSize: width * 0.06,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                  children: [
-                                                    TextSpan(
-                                                      text: price == '' ||
-                                                              price == null ||
-                                                              price == '0'
-                                                          ? 'N/A (price)'
-                                                          : data['isPercent']
-                                                              ? '${(double.parse(price) * (100 - (data['discountAmount'])) / 100).toStringAsFixed(2)}  '
-                                                              : '${(double.parse(price) - (data['discountAmount'])).toStringAsFixed(2)}  ',
-                                                      style: const TextStyle(
-                                                        color: Colors.green,
-                                                      ),
+                                            !isLinked
+                                                ? Container()
+                                                : Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      horizontal: width * 0.028,
                                                     ),
-                                                    TextSpan(
-                                                      text: price == ''
-                                                          ? 'N/A (price)'
-                                                          : price,
-                                                      style: TextStyle(
-                                                        fontSize: width * 0.055,
-                                                        color: const Color
-                                                            .fromRGBO(
-                                                          255,
-                                                          134,
-                                                          125,
-                                                          1,
+                                                    child: RichText(
+                                                      maxLines: 2,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      text: TextSpan(
+                                                        text: price == '' ||
+                                                                price == null ||
+                                                                price == '0'
+                                                            ? ''
+                                                            : 'Rs. ',
+                                                        style: TextStyle(
+                                                          color: primaryDark,
+                                                          fontSize:
+                                                              width * 0.06,
+                                                          fontWeight:
+                                                              FontWeight.w500,
                                                         ),
-                                                        decoration:
-                                                            TextDecoration
-                                                                .lineThrough,
+                                                        children: [
+                                                          TextSpan(
+                                                            text: price == '' ||
+                                                                    price ==
+                                                                        null ||
+                                                                    price == '0'
+                                                                ? 'N/A (price)'
+                                                                : data['isPercent']
+                                                                    ? '${(double.parse(price) * (100 - (data['discountAmount'])) / 100).toStringAsFixed(2)}  '
+                                                                    : '${(double.parse(price) - (data['discountAmount'])).toStringAsFixed(2)}  ',
+                                                            style:
+                                                                const TextStyle(
+                                                              color:
+                                                                  Colors.green,
+                                                            ),
+                                                          ),
+                                                          TextSpan(
+                                                            text: price == ''
+                                                                ? 'N/A (price)'
+                                                                : price,
+                                                            style: TextStyle(
+                                                              fontSize:
+                                                                  width * 0.055,
+                                                              color: const Color
+                                                                  .fromRGBO(
+                                                                255,
+                                                                134,
+                                                                125,
+                                                                1,
+                                                              ),
+                                                              decoration:
+                                                                  TextDecoration
+                                                                      .lineThrough,
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
+                                                  ),
 
                                             // DISCOUNT
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                left: width * 0.028,
-                                              ),
-                                              child: data['isPercent']
-                                                  ? Text(
+                                            !isLinked
+                                                ? Container()
+                                                : Padding(
+                                                    padding: EdgeInsets.only(
+                                                      left: width * 0.028,
+                                                    ),
+                                                    child: data['isPercent']
+                                                        ? Text(
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            '${data['discountAmount']}% off',
+                                                            style:
+                                                                const TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                            ),
+                                                          )
+                                                        : Text(
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            'Save Rs. ${data['discountAmount']}',
+                                                            style:
+                                                                const TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                            ),
+                                                          ),
+                                                  ),
+
+                                            // TIME
+                                            !isLinked
+                                                ? Container()
+                                                : Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      horizontal: width * 0.028,
+                                                      vertical: width * 0.00625,
+                                                    ),
+                                                    child: Text(
+                                                      (data['discountEndDateTime']
+                                                                      as Timestamp)
+                                                                  .toDate()
+                                                                  .difference(
+                                                                      DateTime
+                                                                          .now())
+                                                                  .inHours <
+                                                              24
+                                                          ? '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inHours} Hours Left'''
+                                                          : '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inDays} Days Left''',
+                                                      maxLines: 2,
                                                       overflow:
                                                           TextOverflow.ellipsis,
-                                                      '${data['discountAmount']}% off',
                                                       style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                    )
-                                                  : Text(
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      'Save Rs. ${data['discountAmount']}',
-                                                      style: const TextStyle(
+                                                        color: Colors.red,
                                                         fontWeight:
                                                             FontWeight.w500,
                                                       ),
                                                     ),
-                                            ),
-
-                                            // TIME
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                horizontal: width * 0.028,
-                                                vertical: width * 0.00625,
-                                              ),
-                                              child: Text(
-                                                (data['discountEndDateTime']
-                                                                as Timestamp)
-                                                            .toDate()
-                                                            .difference(
-                                                                DateTime.now())
-                                                            .inHours <
-                                                        24
-                                                    ? '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inHours} Hours Left'''
-                                                    : '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inDays} Days Left''',
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(
-                                                  color: Colors.red,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                            ),
+                                                  ),
                                           ],
                                         );
                                       }
@@ -557,29 +585,32 @@ class _PostPageState extends State<PostPage> {
                                         child: CircularProgressIndicator(),
                                       );
                                     })
-                                : Padding(
-                                    padding: const EdgeInsets.only(left: 10),
-                                    child: Text(
-                                      price == '' ||
-                                              price == null ||
-                                              price == '0'
-                                          ? 'N/A (price)'
-                                          : 'Rs. ${postData['postProductPrice']}',
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        color: primaryDark,
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.w500,
+                                : !isLinked
+                                    ? Container()
+                                    : Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 10),
+                                        child: Text(
+                                          price == '' ||
+                                                  price == null ||
+                                                  price == '0'
+                                              ? 'N/A (price)'
+                                              : 'Rs. ${postData['postProductPrice']}',
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            color: primaryDark,
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
                           ),
 
-                          description.isEmpty ? Container() : const Divider(),
+                          price == null ? Container() : const Divider(),
 
                           // DESCRIPTION
-                          description.isEmpty
+                          description == null || description.isEmpty
                               ? Container()
                               : Padding(
                                   padding: EdgeInsets.symmetric(
@@ -611,15 +642,19 @@ class _PostPageState extends State<PostPage> {
                                   ),
                                 ),
 
-                          const Divider(),
+                          description == null || description.isEmpty
+                              ? Container()
+                              : const Divider(),
 
                           // BRAND
-                          InfoBox(
-                            text: 'BRAND',
-                            value: brand,
-                          ),
+                          brand == null
+                              ? Container()
+                              : InfoBox(
+                                  text: 'BRAND',
+                                  value: brand,
+                                ),
 
-                          const Divider(),
+                          brand == null ? Container() : const Divider(),
 
                           // LIKES
                           InfoBox(

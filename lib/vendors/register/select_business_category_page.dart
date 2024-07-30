@@ -62,13 +62,11 @@
 //               .update({
 //             'Type': selectedCategories,
 //           });
-//           print(111);
 
 //           Map<String, String> subCategories = isShop
 //               ? businessSpecialCategories[selectedCategories]!
 //               : householdSpecialCategories[selectedCategories]!;
 
-//           print(222);
 
 //           for (specialCategory)
 //           final specialCategoriesCollection = store
@@ -93,7 +91,6 @@
 //           }
 //         } catch (e) {
 //           if (mounted) {
-//             print("Error: ${e.toString()}");
 //             return mySnackBar(context, e.toString());
 //           }
 //         }
@@ -237,9 +234,7 @@
 //                     // SELECT CATEGORY BUTTON
 //                     GestureDetector(
 //                       onTap: () async {
-//                         print("Showing");
 //                         await showCategoryDialog();
-//                         print('Done');
 //                       },
 //                       child: Container(
 //                         width: width,

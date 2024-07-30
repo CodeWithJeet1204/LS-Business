@@ -1,14 +1,16 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:localy/vendors/page/main/add/post/add_image_post_page.dart';
+import 'package:localy/vendors/page/main/add/post/add_text_post_page.dart';
 import 'package:localy/vendors/page/main/add/post/select_product_for_post_page.dart';
-import 'package:localy/vendors/provider/select_product_for_post_provider.dart';
 import 'package:localy/vendors/utils/colors.dart';
 import 'package:localy/widgets/button.dart';
-import 'package:localy/widgets/snack_bar.dart';
-import 'package:localy/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
+import 'package:localy/widgets/image_pick_dialog.dart';
+import 'package:localy/widgets/snack_bar.dart';
 
 class AddPostPage extends StatefulWidget {
   const AddPostPage({super.key});
@@ -33,123 +35,6 @@ class _AddPostPageState extends State<AddPostPage> {
     super.initState();
   }
 
-  // POST
-  Future<void> post(
-    SelectProductForPostProvider postProvider,
-    bool isTextPost,
-  ) async {
-    if (((isTextPost ? textPostRemaining : imagePostRemaining) -
-            postProvider.selectedProducts.length) >=
-        0) {
-      try {
-        bool postDoesntExists = true;
-        final previousPosts = await store
-            .collection('Business')
-            .doc('Data')
-            .collection('Posts')
-            .where('postVendorId', isEqualTo: auth.currentUser!.uid)
-            .get();
-
-        for (QueryDocumentSnapshot doc in previousPosts.docs) {
-          for (var id in postProvider.selectedProducts) {
-            if (doc['postProductId'] == id && isTextPost == doc['isTextPost']) {
-              if (mounted) {
-                mySnackBar(
-                  context,
-                  isTextPost
-                      ? 'Text Post Already Exists for one of the product'
-                      : 'Image Post Already Exists for the product',
-                );
-              }
-              postDoesntExists = false;
-            }
-          }
-        }
-
-        if (postDoesntExists) {
-          setState(() {
-            isPosting = true;
-          });
-
-          // ignore: avoid_function_literals_in_foreach_calls
-          postProvider.selectedProducts.forEach((id) async {
-            await store
-                .collection('Business')
-                .doc('Owners')
-                .collection('Shops')
-                .doc(auth.currentUser!.uid)
-                .update({
-              'noOfTextPosts': isTextPost
-                  ? textPostRemaining - postProvider.selectedProducts.length
-                  : textPostRemaining,
-              'noOfImagePosts': !isTextPost
-                  ? imagePostRemaining - postProvider.selectedProducts.length
-                  : imagePostRemaining,
-            });
-
-            final productDocSnap = await store
-                .collection('Business')
-                .doc('Data')
-                .collection('Products')
-                .doc(id)
-                .get();
-
-            final String postId = const Uuid().v4();
-
-            Map<String, dynamic> postInfo = {
-              'postId': postId,
-              'postProductId': productDocSnap['productId'],
-              'postProductName': productDocSnap['productName'],
-              'postProductPrice': productDocSnap['productPrice'],
-              'postCategoryName': productDocSnap['categoryName'],
-              'postProductDescription': productDocSnap['productDescription'],
-              'postProductBrand': productDocSnap['productBrand'],
-              'postProductImages': isTextPost ? null : productDocSnap['images'],
-              'postVendorId': productDocSnap['vendorId'],
-              'postViews': 0,
-              'postLikes': 0,
-              'postComments': {},
-              'postDateTime': Timestamp.fromMillisecondsSinceEpoch(
-                DateTime.now().millisecondsSinceEpoch,
-              ),
-              'isTextPost': isTextPost,
-            };
-
-            await store
-                .collection('Business')
-                .doc('Data')
-                .collection('Posts')
-                .doc(postId)
-                .set(postInfo);
-          });
-
-          setState(() {
-            isPosting = false;
-          });
-
-          postProvider.clear();
-
-          if (mounted) {
-            mySnackBar(context, 'Posted');
-            Navigator.of(context).pop();
-          }
-        }
-      } catch (e) {
-        setState(() {
-          isPosting = false;
-        });
-        if (mounted) {
-          mySnackBar(context, e.toString());
-        }
-      }
-    } else {
-      mySnackBar(
-        context,
-        'You have ${isTextPost ? textPostRemaining : imagePostRemaining} ${isTextPost ? 'Text' : 'Image'} Posts remaining, remove ${-(textPostRemaining - postProvider.selectedProducts.length)} product to continue',
-      );
-    }
-  }
-
   // GET NO OF POSTS
   Future<void> getNoOfPosts() async {
     final productData = await store
@@ -165,13 +50,27 @@ class _AddPostPageState extends State<AddPostPage> {
     });
   }
 
+  // SELECT IMAGE
+  Future<void> selectImage() async {
+    final XFile? im = await showImagePickDialog(context);
+    if (im != null) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => AddImagePostPage(
+            selectedImage: File(im.path),
+            imagePostRemaining: imagePostRemaining,
+          ),
+        ),
+      );
+    } else {
+      if (mounted) {
+        mySnackBar(context, 'Select an Image');
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final selectedProductProvider =
-        Provider.of<SelectProductForPostProvider>(context);
-    final List<String> selectedProducts =
-        selectedProductProvider.selectedProducts;
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -180,23 +79,6 @@ class _AddPostPageState extends State<AddPostPage> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
-        actions: [
-          MyTextButton(
-            onPressed: () async {
-              if (selectedProducts.isEmpty ||
-                  selectedProductProvider.isTextPost == null) {
-                return mySnackBar(context, 'Select a Post Type');
-              } else {
-                await post(
-                  selectedProductProvider,
-                  selectedProductProvider.isTextPost!,
-                );
-              }
-            },
-            text: 'DONE',
-            textColor: primaryDark2,
-          ),
-        ],
         bottom: PreferredSize(
           preferredSize:
               isPosting ? const Size(double.infinity, 10) : const Size(0, 0),
@@ -297,21 +179,49 @@ class _AddPostPageState extends State<AddPostPage> {
               Opacity(
                 opacity: textPostRemaining > 0 ? 1 : 0.5,
                 child: MyButton(
-                  text: selectedProducts.isEmpty
-                      ? 'TEXT POST'
-                      : selectedProductProvider.isTextPost == true
-                          ? 'TEXT POSTS: ${selectedProducts.length}'
-                          : 'TEXT POST',
+                  text: 'TEXT POST',
                   onTap: textPostRemaining > 0
                       ? () {
-                          selectedProductProvider.changePostType(true);
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => AddTextPostPage(
+                                textPostRemaining: textPostRemaining,
+                              ),
+                            ),
+                          );
+                        }
+                      : null,
+                  isLoading: false,
+                  horizontalPadding: width * 0.055,
+                ),
+              ),
+              SizedBox(height: width * 0.055),
+              Opacity(
+                opacity: imagePostRemaining > 0 ? 1 : 0.5,
+                child: MyButton(
+                  text: 'IMAGE POST',
+                  onTap: imagePostRemaining > 0
+                      ? () async {
+                          await selectImage();
+                        }
+                      : null,
+                  isLoading: false,
+                  horizontalPadding: width * 0.055,
+                ),
+              ),
+              SizedBox(height: width * 0.055),
+              Opacity(
+                opacity: textPostRemaining > 0 ? 1 : 0.5,
+                child: MyButton(
+                  text: 'TEXT POST (Linked With Product)',
+                  onTap: textPostRemaining > 0
+                      ? () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: ((context) => SelectProductForPostPage(
-                                    isTextPost:
-                                        selectedProductProvider.isTextPost ==
-                                            true,
-                                    postRemaining: textPostRemaining,
+                                    isTextPost: true,
+                                    textPostRemaining: textPostRemaining,
+                                    imagePostRemaining: imagePostRemaining,
                                   )),
                             ),
                           );
@@ -321,26 +231,19 @@ class _AddPostPageState extends State<AddPostPage> {
                   horizontalPadding: width * 0.055,
                 ),
               ),
-              // IMAGE POST BUTTON
               SizedBox(height: width * 0.055),
               Opacity(
                 opacity: imagePostRemaining > 0 ? 1 : 0.5,
                 child: MyButton(
-                  text: selectedProducts.isEmpty
-                      ? 'IMAGE POST'
-                      : selectedProductProvider.isTextPost == false
-                          ? 'IMAGE POSTS: ${selectedProducts.length}'
-                          : 'IMAGE POST',
+                  text: 'IMAGE POST (Linked With Product)',
                   onTap: imagePostRemaining > 0
                       ? () {
-                          selectedProductProvider.changePostType(false);
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: ((context) => SelectProductForPostPage(
-                                    isTextPost:
-                                        selectedProductProvider.isTextPost ==
-                                            true,
-                                    postRemaining: imagePostRemaining,
+                                    isTextPost: false,
+                                    textPostRemaining: textPostRemaining,
+                                    imagePostRemaining: imagePostRemaining,
                                   )),
                             ),
                           );

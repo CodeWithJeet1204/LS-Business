@@ -25,7 +25,6 @@ import 'package:localy/vendors/provider/discount_products_provider.dart';
 import 'package:localy/vendors/provider/products_added_to_brand.dart';
 import 'package:localy/vendors/provider/products_added_to_category_provider.dart';
 import 'package:localy/vendors/provider/select_brand_for_product_provider.dart';
-import 'package:localy/vendors/provider/select_product_for_post_provider.dart';
 import 'package:localy/vendors/provider/shop_type_provider.dart';
 import 'package:localy/vendors/provider/sign_in_method_provider.dart';
 import 'package:localy/vendors/utils/colors.dart';
@@ -66,9 +65,9 @@ void main() async {
         ChangeNotifierProvider(
           create: (_) => ChangeCategoryProvider(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => SelectProductForPostProvider(),
-        ),
+        // ChangeNotifierProvider(
+        //   create: (_) => SelectProductForPostProvider(),
+        // ),
         ChangeNotifierProvider(
           create: (_) => SelectProductForDiscountProvider(),
         ),

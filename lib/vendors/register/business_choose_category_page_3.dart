@@ -2,7 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:localy/vendors/models/household_categories_subCategories_products.dart';
+import 'package:localy/vendors/models/household_type_category_subCategory.dart';
 import 'package:localy/vendors/page/main/main_page.dart';
 import 'package:localy/vendors/page/main/profile/details/business_details_page.dart';
 import 'package:localy/vendors/register/business_timings_page.dart';
@@ -96,7 +96,7 @@ class _BusinessChooseCategoryPage3State
   // GET PRODUCTS FOR SUB CATEGORY
   List<String> getProductsForSubCategory(String subCategory) {
     for (var category in widget.selectedTypes) {
-      final subCategories = householdSpecialCategories[category.trim()];
+      final subCategories = householdTypeCategorySubCategory[category.trim()];
       if (subCategories != null && subCategories.containsKey(subCategory)) {
         return subCategories[subCategory]!;
       }

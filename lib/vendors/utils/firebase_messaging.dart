@@ -11,7 +11,6 @@
 //       await messaging.requestPermission();
 //     } catch (e) {
 //       if (kDebugMode) {
-//         print(e);
 //       }
 //     }
 //     // final token = await messaging.getToken();
