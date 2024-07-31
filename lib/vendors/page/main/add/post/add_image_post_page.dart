@@ -5,10 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:localy/vendors/utils/colors.dart';
-import 'package:localy/widgets/button.dart';
-import 'package:localy/widgets/image_pick_dialog.dart';
-import 'package:localy/widgets/snack_bar.dart';
+import 'package:Localsearch/vendors/utils/colors.dart';
+import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/image_pick_dialog.dart';
+import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:uuid/uuid.dart';
 
 class AddImagePostPage extends StatefulWidget {

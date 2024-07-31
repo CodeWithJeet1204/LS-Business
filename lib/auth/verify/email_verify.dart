@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:localy/vendors/firebase/auth_methods.dart';
-import 'package:localy/vendors/page/main/main_page.dart';
-import 'package:localy/vendors/register/owner_register_details_page.dart';
-import 'package:localy/vendors/utils/colors.dart';
-import 'package:localy/widgets/button.dart';
-import 'package:localy/widgets/snack_bar.dart';
+import 'package:Localsearch/vendors/firebase/auth_methods.dart';
+import 'package:Localsearch/vendors/page/main/main_page.dart';
+import 'package:Localsearch/vendors/register/owner_register_details_page.dart';
+import 'package:Localsearch/vendors/utils/colors.dart';
+import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

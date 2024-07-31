@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:localy/vendors/register/membership_page.dart';
-import 'package:localy/vendors/utils/colors.dart';
-import 'package:localy/widgets/button.dart';
-import 'package:localy/widgets/snack_bar.dart';
-import 'package:localy/widgets/text_button.dart';
+import 'package:Localsearch/vendors/register/membership_page.dart';
+import 'package:Localsearch/vendors/utils/colors.dart';
+import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/snack_bar.dart';
+import 'package:Localsearch/widgets/text_button.dart';
 
 class SelectBusinessTimingsPage extends StatefulWidget {
   const SelectBusinessTimingsPage({super.key});

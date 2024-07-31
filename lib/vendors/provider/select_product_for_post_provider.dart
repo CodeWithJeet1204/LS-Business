@@ -1,4 +1,4 @@
-// import 'package:localy/widgets/snack_bar.dart';
+// import 'package:Localsearch/widgets/snack_bar.dart';
 // import 'package:flutter/material.dart';
 
 // class SelectProductForPostProvider with ChangeNotifier {

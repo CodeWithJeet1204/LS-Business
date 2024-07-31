@@ -1,12 +1,12 @@
-import 'package:localy/auth/login_page.dart';
-import 'package:localy/auth/register_method_page.dart';
-import 'package:localy/vendors/utils/colors.dart';
-import 'package:localy/vendors/utils/is_payed.dart';
-import 'package:localy/vendors/utils/size.dart';
-import 'package:localy/widgets/button.dart';
-import 'package:localy/widgets/head_text.dart';
-import 'package:localy/widgets/snack_bar.dart';
-import 'package:localy/widgets/text_button.dart';
+import 'package:Localsearch/auth/login_page.dart';
+import 'package:Localsearch/auth/register_method_page.dart';
+import 'package:Localsearch/vendors/utils/colors.dart';
+import 'package:Localsearch/vendors/utils/is_payed.dart';
+import 'package:Localsearch/vendors/utils/size.dart';
+import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/head_text.dart';
+import 'package:Localsearch/widgets/snack_bar.dart';
+import 'package:Localsearch/widgets/text_button.dart';
 import 'package:flutter/material.dart';
 
 class RegisterPayPage extends StatefulWidget {

@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:localy/services/main/profile/services_profile_page.dart';
-import 'package:localy/services/register/services_choose_page_1.dart';
-import 'package:localy/services/register/services_choose_page_2.dart';
-import 'package:localy/services/register/services_choose_page_3.dart';
-import 'package:localy/services/register/services_register_details_page.dart';
-import 'package:localy/auth/login_page.dart';
-import 'package:localy/auth/verify/email_verify.dart';
-import 'package:localy/vendors/utils/is_payed.dart';
+import 'package:Localsearch/services/main/profile/services_profile_page.dart';
+import 'package:Localsearch/services/register/services_choose_page_1.dart';
+import 'package:Localsearch/services/register/services_choose_page_2.dart';
+import 'package:Localsearch/services/register/services_choose_page_3.dart';
+import 'package:Localsearch/services/register/services_register_details_page.dart';
+import 'package:Localsearch/auth/login_page.dart';
+import 'package:Localsearch/auth/verify/email_verify.dart';
+import 'package:Localsearch/vendors/utils/is_payed.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

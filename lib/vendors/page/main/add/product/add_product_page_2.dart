@@ -1,12 +1,12 @@
 // ignore_for_file: unnecessary_null_comparison
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:localy/vendors/models/business_category_properties.dart';
-import 'package:localy/vendors/page/main/add/product/add_product_page_3.dart';
-import 'package:localy/vendors/provider/add_product_provider.dart';
-import 'package:localy/vendors/utils/colors.dart';
-import 'package:localy/widgets/additional_info_box.dart';
-import 'package:localy/widgets/snack_bar.dart';
-import 'package:localy/widgets/text_button.dart';
+import 'package:Localsearch/vendors/models/business_category_properties.dart';
+import 'package:Localsearch/vendors/page/main/add/product/add_product_page_3.dart';
+import 'package:Localsearch/vendors/provider/add_product_provider.dart';
+import 'package:Localsearch/vendors/utils/colors.dart';
+import 'package:Localsearch/widgets/additional_info_box.dart';
+import 'package:Localsearch/widgets/snack_bar.dart';
+import 'package:Localsearch/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

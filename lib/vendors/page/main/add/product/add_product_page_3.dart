@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:localy/vendors/page/main/main_page.dart';
-import 'package:localy/vendors/provider/add_product_provider.dart';
-import 'package:localy/vendors/utils/colors.dart';
-import 'package:localy/widgets/check_box_container.dart';
-import 'package:localy/widgets/snack_bar.dart';
-import 'package:localy/widgets/text_button.dart';
+import 'package:Localsearch/vendors/page/main/main_page.dart';
+import 'package:Localsearch/vendors/provider/add_product_provider.dart';
+import 'package:Localsearch/vendors/utils/colors.dart';
+import 'package:Localsearch/widgets/check_box_container.dart';
+import 'package:Localsearch/widgets/snack_bar.dart';
+import 'package:Localsearch/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';

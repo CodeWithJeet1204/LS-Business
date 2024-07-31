@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:localy/services/main/services_main_page.dart';
-import 'package:localy/services/models/services_image_map.dart';
-import 'package:localy/services/models/services_map.dart';
-import 'package:localy/widgets/button.dart';
-import 'package:localy/widgets/select_container.dart';
-import 'package:localy/widgets/snack_bar.dart';
+import 'package:Localsearch/services/main/services_main_page.dart';
+import 'package:Localsearch/services/models/services_image_map.dart';
+import 'package:Localsearch/services/models/services_map.dart';
+import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/select_container.dart';
+import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

@@ -1,6 +1,6 @@
-// import 'package:localy/vendors/models/business_categories.dart';
-// import 'package:localy/vendors/models/household_categories.dart';
-// import 'package:localy/widgets/image_text_container.dart';
+// import 'package:Localsearch/vendors/models/business_categories.dart';
+// import 'package:Localsearch/vendors/models/household_categories.dart';
+// import 'package:Localsearch/widgets/image_text_container.dart';
 // import 'package:flutter/material.dart';
 
 // class ImageContainer extends StatelessWidget {

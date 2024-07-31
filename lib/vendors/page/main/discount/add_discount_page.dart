@@ -1,10 +1,10 @@
 import 'package:feather_icons/feather_icons.dart';
-import 'package:localy/vendors/page/main/discount/brand/brand_discount_page.dart';
-import 'package:localy/vendors/page/main/discount/category/category_discount_page.dart';
-import 'package:localy/vendors/page/main/discount/products/product_discount_page.dart';
-import 'package:localy/vendors/utils/colors.dart';
+import 'package:Localsearch/vendors/page/main/discount/brand/brand_discount_page.dart';
+import 'package:Localsearch/vendors/page/main/discount/category/category_discount_page.dart';
+import 'package:Localsearch/vendors/page/main/discount/products/product_discount_page.dart';
+import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:localy/widgets/add_box.dart';
+import 'package:Localsearch/widgets/add_box.dart';
 
 class AddDiscountPage extends StatefulWidget {
   const AddDiscountPage({super.key});

@@ -56,8 +56,7 @@ class DefaultFirebaseOptions {
     apiKey: 'AIzaSyBPolTb0g19B4ip4IrgQCPc1Higgso5NYM',
     appId: '1:706313830295:android:7b4cc1da031615472e0ed2',
     messagingSenderId: '706313830295',
-    projectId: 'localy-1204',
-    storageBucket: 'localy-1204.appspot.com',
+    projectId: 'Localsearch-1204',
+    storageBucket: 'Localsearch-1204.appspot.com',
   );
-
 }

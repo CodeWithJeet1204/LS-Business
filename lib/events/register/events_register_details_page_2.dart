@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:localy/events/events_main_page.dart';
-import 'package:localy/widgets/button.dart';
+import 'package:Localsearch/events/events_main_page.dart';
+import 'package:Localsearch/widgets/button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

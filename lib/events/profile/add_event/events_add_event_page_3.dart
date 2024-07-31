@@ -1,7 +1,7 @@
-import 'package:localy/events/profile/add_event/events_add_event_page_4.dart';
-import 'package:localy/vendors/utils/colors.dart';
-import 'package:localy/widgets/text_button.dart';
-import 'package:localy/widgets/text_form_field.dart';
+import 'package:Localsearch/events/profile/add_event/events_add_event_page_4.dart';
+import 'package:Localsearch/vendors/utils/colors.dart';
+import 'package:Localsearch/widgets/text_button.dart';
+import 'package:Localsearch/widgets/text_form_field.dart';
 import 'package:flutter/material.dart';
 
 class EventsAddEventPage3 extends StatefulWidget {

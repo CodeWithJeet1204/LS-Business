@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:localy/vendors/provider/products_added_to_category_provider.dart';
-import 'package:localy/vendors/utils/colors.dart';
-import 'package:localy/widgets/shimmer_skeleton_container.dart';
-import 'package:localy/widgets/text_button.dart';
+import 'package:Localsearch/vendors/provider/products_added_to_category_provider.dart';
+import 'package:Localsearch/vendors/utils/colors.dart';
+import 'package:Localsearch/widgets/shimmer_skeleton_container.dart';
+import 'package:Localsearch/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

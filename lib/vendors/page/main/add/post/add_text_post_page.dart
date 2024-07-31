@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:localy/widgets/button.dart';
-import 'package:localy/widgets/snack_bar.dart';
+import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:uuid/uuid.dart';
 
 class AddTextPostPage extends StatefulWidget {

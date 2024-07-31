@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:localy/vendors/register/business_choose_category_page_1.dart';
-import 'package:localy/vendors/utils/colors.dart';
-import 'package:localy/widgets/button.dart';
-import 'package:localy/widgets/snack_bar.dart';
-import 'package:localy/widgets/text_button.dart';
+import 'package:Localsearch/vendors/register/business_choose_category_page_1.dart';
+import 'package:Localsearch/vendors/utils/colors.dart';
+import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/snack_bar.dart';
+import 'package:Localsearch/widgets/text_button.dart';
 
 class BusinessVerificationPage extends StatefulWidget {
   const BusinessVerificationPage({

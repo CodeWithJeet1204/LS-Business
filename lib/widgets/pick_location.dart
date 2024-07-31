@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:localy/events/event_page.dart';
-import 'package:localy/events/provider/picked_location_provider.dart';
-import 'package:localy/vendors/utils/colors.dart';
+import 'package:Localsearch/events/event_page.dart';
+import 'package:Localsearch/events/provider/picked_location_provider.dart';
+import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:open_street_map_search_and_pick/open_street_map_search_and_pick.dart';
 import 'package:provider/provider.dart';
 

@@ -1,8 +1,8 @@
 import 'package:feather_icons/feather_icons.dart';
-import 'package:localy/events/profile/add_event/events_add_event_page_3.dart';
-import 'package:localy/vendors/utils/colors.dart';
-import 'package:localy/widgets/snack_bar.dart';
-import 'package:localy/widgets/text_button.dart';
+import 'package:Localsearch/events/profile/add_event/events_add_event_page_3.dart';
+import 'package:Localsearch/vendors/utils/colors.dart';
+import 'package:Localsearch/widgets/snack_bar.dart';
+import 'package:Localsearch/widgets/text_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

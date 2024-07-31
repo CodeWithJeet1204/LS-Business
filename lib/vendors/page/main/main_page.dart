@@ -1,18 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:localy/vendors/page/main/add/add_page.dart';
-import 'package:localy/vendors/page/main/analytics/analytics_page.dart';
-import 'package:localy/vendors/page/main/discount/add_discount_page.dart';
-import 'package:localy/vendors/page/main/profile/profile_page.dart';
-import 'package:localy/vendors/register/business_choose_category_page_1.dart';
-import 'package:localy/vendors/register/business_register_details_page.dart';
-import 'package:localy/vendors/register/business_verification_page.dart';
-import 'package:localy/vendors/register/membership_page.dart';
-import 'package:localy/vendors/register/owner_register_details_page.dart';
-import 'package:localy/auth/verify/email_verify.dart';
-import 'package:localy/vendors/utils/colors.dart';
-import 'package:localy/vendors/utils/is_payed.dart';
-import 'package:localy/widgets/snack_bar.dart';
+import 'package:Localsearch/vendors/page/main/add/add_page.dart';
+import 'package:Localsearch/vendors/page/main/analytics/analytics_page.dart';
+import 'package:Localsearch/vendors/page/main/discount/add_discount_page.dart';
+import 'package:Localsearch/vendors/page/main/profile/profile_page.dart';
+import 'package:Localsearch/vendors/register/business_choose_category_page_1.dart';
+import 'package:Localsearch/vendors/register/business_register_details_page.dart';
+import 'package:Localsearch/vendors/register/business_verification_page.dart';
+import 'package:Localsearch/vendors/register/membership_page.dart';
+import 'package:Localsearch/vendors/register/owner_register_details_page.dart';
+import 'package:Localsearch/auth/verify/email_verify.dart';
+import 'package:Localsearch/vendors/utils/colors.dart';
+import 'package:Localsearch/vendors/utils/is_payed.dart';
+import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -117,7 +117,7 @@ class _MainPageState extends State<MainPage> {
             detailsPage = const BusinessRegisterDetailsPage();
           } else if (getBusinessDetailsAdded['Name'] != null &&
                   getBusinessDetailsAdded['GSTNumber'] == null ||
-              getBusinessDetailsAdded['Aadhar'] == null) {
+              getBusinessDetailsAdded['AadharNumber'] == null) {
             detailsPage = const BusinessVerificationPage();
           } else if (getBusinessDetailsAdded['GSTNumber'] != null &&
               getBusinessDetailsAdded['Type'] == null) {

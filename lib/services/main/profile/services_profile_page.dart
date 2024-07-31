@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:localy/auth/login_page.dart';
-import 'package:localy/services/main/profile/change_work/services_change_work_page_1.dart';
-import 'package:localy/services/main/profile/work_images/services_add_work_images_page.dart';
-import 'package:localy/services/main/profile/services_details_page.dart';
-import 'package:localy/services/main/profile/services_edit_price_page.dart';
-import 'package:localy/services/main/profile/work_images/services_work_images_page.dart';
-import 'package:localy/vendors/utils/colors.dart';
-import 'package:localy/widgets/snack_bar.dart';
+import 'package:Localsearch/auth/login_page.dart';
+import 'package:Localsearch/services/main/profile/change_work/services_change_work_page_1.dart';
+import 'package:Localsearch/services/main/profile/work_images/services_add_work_images_page.dart';
+import 'package:Localsearch/services/main/profile/services_details_page.dart';
+import 'package:Localsearch/services/main/profile/services_edit_price_page.dart';
+import 'package:Localsearch/services/main/profile/work_images/services_work_images_page.dart';
+import 'package:Localsearch/vendors/utils/colors.dart';
+import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

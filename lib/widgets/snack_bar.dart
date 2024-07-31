@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:localy/vendors/utils/colors.dart';
+import 'package:Localsearch/vendors/utils/colors.dart';
 
 void mySnackBar(BuildContext context, String text) {
   ScaffoldMessenger.of(context).clearSnackBars();

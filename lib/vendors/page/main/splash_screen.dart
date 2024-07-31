@@ -1,6 +1,6 @@
-import 'package:localy/vendors/page/main/main_page.dart';
-import 'package:localy/auth/login_page.dart';
-import 'package:localy/vendors/utils/colors.dart';
+import 'package:Localsearch/vendors/page/main/main_page.dart';
+import 'package:Localsearch/auth/login_page.dart';
+import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:localy/events/profile/events_profile_page.dart';
-import 'package:localy/events/register/events_register_details_page_1.dart';
-import 'package:localy/events/register/events_register_details_page_2.dart';
+import 'package:Localsearch/events/profile/events_profile_page.dart';
+import 'package:Localsearch/events/register/events_register_details_page_1.dart';
+import 'package:Localsearch/events/register/events_register_details_page_2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

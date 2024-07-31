@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:localy/services/main/profile/change_work/services_change_work_page_2.dart';
-import 'package:localy/widgets/button.dart';
-import 'package:localy/widgets/select_container.dart';
+import 'package:Localsearch/services/main/profile/change_work/services_change_work_page_2.dart';
+import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/select_container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

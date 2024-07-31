@@ -1,6 +1,6 @@
 // ignore_for_file: unnecessary_null_comparison
-import 'package:localy/vendors/utils/colors.dart';
-import 'package:localy/widgets/image_pick.dart';
+import 'package:Localsearch/vendors/utils/colors.dart';
+import 'package:Localsearch/widgets/image_pick.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 

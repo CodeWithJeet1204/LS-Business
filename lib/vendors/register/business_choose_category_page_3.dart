@@ -2,11 +2,11 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:localy/vendors/models/household_type_category_subCategory.dart';
-import 'package:localy/vendors/page/main/main_page.dart';
-import 'package:localy/vendors/page/main/profile/details/business_details_page.dart';
-import 'package:localy/vendors/register/business_timings_page.dart';
-import 'package:localy/widgets/snack_bar.dart';
+import 'package:Localsearch/vendors/models/household_type_category_subCategory.dart';
+import 'package:Localsearch/vendors/page/main/main_page.dart';
+import 'package:Localsearch/vendors/page/main/profile/details/business_details_page.dart';
+import 'package:Localsearch/vendors/register/business_timings_page.dart';
+import 'package:Localsearch/widgets/snack_bar.dart';
 
 class BusinessChooseCategoryPage3 extends StatefulWidget {
   const BusinessChooseCategoryPage3({

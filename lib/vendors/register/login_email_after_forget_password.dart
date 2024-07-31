@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:localy/vendors/page/main/main_page.dart';
-import 'package:localy/widgets/button.dart';
-import 'package:localy/widgets/head_text.dart';
-import 'package:localy/widgets/snack_bar.dart';
-import 'package:localy/widgets/text_form_field.dart';
+import 'package:Localsearch/vendors/page/main/main_page.dart';
+import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/head_text.dart';
+import 'package:Localsearch/widgets/snack_bar.dart';
+import 'package:Localsearch/widgets/text_form_field.dart';
 
 class LoginEmailAfterForgetPassword extends StatefulWidget {
   const LoginEmailAfterForgetPassword({

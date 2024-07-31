@@ -1,6 +1,6 @@
-import 'package:localy/vendors/utils/colors.dart';
-import 'package:localy/widgets/page_view.dart';
-import 'package:localy/widgets/text_button.dart';
+import 'package:Localsearch/vendors/utils/colors.dart';
+import 'package:Localsearch/widgets/page_view.dart';
+import 'package:Localsearch/widgets/text_button.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 

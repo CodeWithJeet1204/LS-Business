@@ -1,4 +1,4 @@
-import 'package:localy/vendors/utils/colors.dart';
+import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class InfoBox extends StatelessWidget {

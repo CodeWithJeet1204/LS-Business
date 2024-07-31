@@ -1,6 +1,6 @@
-// import 'package:localy/auth/login_page.dart';
-// import 'package:localy/widgets/button.dart';
-// import 'package:localy/widgets/mode_card.dart';
+// import 'package:Localsearch/auth/login_page.dart';
+// import 'package:Localsearch/widgets/button.dart';
+// import 'package:Localsearch/widgets/mode_card.dart';
 // import 'package:flutter/material.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 

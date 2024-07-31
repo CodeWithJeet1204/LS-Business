@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:localy/vendors/page/main/add/bulk_add/select_brand_for_bulk_products_page.dart';
-import 'package:localy/vendors/page/main/add/bulk_add/select_category_for_bulk_products_page.dart';
-import 'package:localy/widgets/bulk_add.dart';
-import 'package:localy/widgets/button.dart';
-import 'package:localy/widgets/image_pick_dialog.dart';
-import 'package:localy/widgets/snack_bar.dart';
+import 'package:Localsearch/vendors/page/main/add/bulk_add/select_brand_for_bulk_products_page.dart';
+import 'package:Localsearch/vendors/page/main/add/bulk_add/select_category_for_bulk_products_page.dart';
+import 'package:Localsearch/widgets/bulk_add.dart';
+import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/image_pick_dialog.dart';
+import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -646,19 +646,19 @@ class _AddBulkProductState extends State<AddBulkProduct> {
     // ) async {
     //   final serviceAccount = {
     //     'type': 'service_account',
-    //     'project_id': 'localy-1204',
+    //     'project_id': 'Localsearch-1204',
     //     'private_key_id': '77b067e56f3b083400168ad07456b8742affcd75',
     //     'private_key':
     //         '-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDF410m/DqKJx86\nKtx5sXu+7R47TUJef1IgSJkYQesrb2EiplaLfLrId9UDaxb5ddmlDa4w1XMh1S2X\ne/znKYaoZsFlEcD8FlWKhC+/7eofxuQZn3zMfR121ptYMa8U78+fFRdyuu938UBt\n79hLXCFgIT9YiFDZaifxlUmzIwXdIWrqRbZy0dusdJ9YzGUO2Jli63poc1mGkT2v\nHvGvkraVxUcd3PAsvUtRF8hnrRC6+yyHPEKs84ho84pNmZUqhBucfCXxamnD/9Z0\nJkICtOuooSHnPzn5Uc3aIT34J1w99n7ZJSqhGcZ75Mc7rwrETWZ3wrGZOuBo3TmB\nr78bgACfAgMBAAECggEAPzhztrRHWYLFKbauyFwo/ibQDT8SEJGZocG/022f3bkQ\nLds5dAfNvqT2E0j/xoPdnCsiNuzCgxERpz9P3WQ5ZoyphYol/wN9oaq4fJdcQHmw\nvvTikIv6QVCvwX3iAwzYZmj9HETXo5iaLmU9U1okOYt1quml9sfA6h/5MzdhtLLb\nrc5s0QjbDByS3xqPCxqTrhlkUTyWMLkaEZNHsfzMbZxUac0XlCcgPJbLppKl30ZN\nqDME/rZhMKZRM1hJK8xwEzVHtZVytDLP8480dhNO2gxpjMAPzJsefZbU8YG+2e3Z\nl+M7HpRjvtPO2l0uSGEZmESmLgEY5fJUj6Mls72JlQKBgQDzXeCkWsDTC/acBIxy\n9Qg98w7Gs4YfD2hQvxLibEITzlA/LNCZBWYofadtT4PidNysAmmKV8+/nlH/RIQH\niBYRcCa0nFmP/d2BUpvRXNaCJxTJbDjGZpyK40NiYG/BZl9EUVkCg4LdHhr3Bdbv\nzlLJERw5waKj/0VzJiMi7bST2wKBgQDQKR4Ueo7VvTYvvbOEsu+B/HIb85Dqm6dK\n8RgnoLjiFbfZvaPpiW2LCfuIBHpi20KjrVpf74SJZqbgN9Ph8Az/JIwJYyMT0bgH\nxGBTB/F8p7LtIgAB3gbLlbOv2l6htiXWHttALJwu+jS6nAYO5fglNNXEtemR/m8P\nLNPubJ0DjQKBgESNtEL34YtRumUWju2vAmRY/FeSqHxFXdApEsu/TRnBKy+wkw4X\nzEAprSkIlhELdEHr6Aj1VWsX0OdESKDKf9Tnr69+v2flTikouQXPzgkZsyxOFOwm\naYBiJlAm9DQZf0qCU712iD17RoNBHNuuVfmXnUjTt9nUhZ67JninVw+zAoGAG1tc\nBar5vKNqTKnsvuLZUUcBJCVFhV/Bg7rdxs97nNLn36jpstaJ2/0K3pxgDT/tqR8u\nQm9zBq/D/LG5mfb3bky6Tr2FraQhQHwRgLgJh61ueXW/dH9ee0EIZXMYfr42iMZz\nYCK8v/vIFEJPFYQpsZIZCgoyUSqUI/VrQOlrVT0CgYEAzOWItEJsqDkLgn4J0fIv\nSDhX/kCo9S1fVJUipnYZc9EWg0+zQY86dQdC5ari5xDdKBYFhOHWOddUKT0Ymp90\n7CSJRvoE+UKTKIoDbJtSm4qJDk7Rgm9C6o6FfdsQ6fc4kQ9AnLuKaGMD4br3h5lA\nWLSrHoOGijvkQ0R41/AaRj8=\n-----END PRIVATE KEY-----\n',
     //     'client_email':
-    //         'firebase-adminsdk-rbj88@localy-1204.iam.gserviceaccount.com',
+    //         'firebase-adminsdk-rbj88@Localsearch-1204.iam.gserviceaccount.com',
     //     'client_id': '100812646060075834796',
     //     'auth_uri': 'https://accounts.google.com/o/oauth2/auth',
     //     'token_uri': 'https://oauth2.googleapis.com/token',
     //     'auth_provider_x509_cert_url':
     //         'https://www.googleapis.com/oauth2/v1/certs',
     //     'client_x509_cert_url':
-    //         'https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-rbj88%40localy-1204.iam.gserviceaccount.com',
+    //         'https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-rbj88%40Localsearch-1204.iam.gserviceaccount.com',
     //     'universe_domain': 'googleapis.com'
     //   };
 
