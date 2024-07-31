@@ -1,9 +1,6 @@
-import 'package:localy/events/events_main_page.dart';
 import 'package:localy/events/provider/picked_location_provider.dart';
 import 'package:localy/firebase_options.dart';
 import 'package:localy/first_launch_detection.dart';
-import 'package:localy/select_mode_page.dart';
-import 'package:localy/services/main/services_main_page.dart';
 import 'package:localy/vendors/page/intro/intro_page_view.dart';
 import 'package:localy/vendors/page/main/add/brand/add_brand_page.dart';
 import 'package:localy/vendors/page/main/analytics/shop_analytics_page.dart';
@@ -33,7 +30,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -95,138 +91,134 @@ void main() async {
 }
 
 // GET SELECTED MODE
-Future<String> getSelectedMode() async {
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  String selectedMode = prefs.getString('selectedText') ?? '';
-  return selectedMode;
-}
+// Future<String> getSelectedMode() async {
+//   final SharedPreferences prefs = await SharedPreferences.getInstance();
+//   String selectedMode = prefs.getString('selectedText') ?? '';
+//   return selectedMode;
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: getSelectedMode(),
-        builder: (context, snapshot) {
-          return MaterialApp(
-            title: 'Localy Business',
-            theme: ThemeData(
-              scaffoldBackgroundColor: primary,
-              progressIndicatorTheme: const ProgressIndicatorThemeData(
-                color: primaryDark2,
-              ),
-              appBarTheme: const AppBarTheme(
-                // toolbarHeight: 50,
-                backgroundColor: primary,
-                foregroundColor: primaryDark,
-                titleTextStyle: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: primaryDark,
-                  fontSize: 22,
-                  letterSpacing: 1,
-                ),
-                iconTheme: IconThemeData(
-                  color: primaryDark,
-                  weight: 1,
-                ),
-              ),
-              iconButtonTheme: const IconButtonThemeData(
-                style: ButtonStyle(
-                  iconColor: WidgetStatePropertyAll(
-                    primaryDark,
-                  ),
-                ),
-              ),
-              indicatorColor: primaryDark,
-              colorScheme: ColorScheme.fromSeed(
-                seedColor: primary2,
-              ),
-              useMaterial3: true,
+    return MaterialApp(
+      title: 'Localy Business',
+      theme: ThemeData(
+        scaffoldBackgroundColor: primary,
+        progressIndicatorTheme: const ProgressIndicatorThemeData(
+          color: primaryDark2,
+        ),
+        appBarTheme: const AppBarTheme(
+          // toolbarHeight: 50,
+          backgroundColor: primary,
+          foregroundColor: primaryDark,
+          titleTextStyle: TextStyle(
+            fontWeight: FontWeight.w600,
+            color: primaryDark,
+            fontSize: 22,
+            letterSpacing: 1,
+          ),
+          iconTheme: IconThemeData(
+            color: primaryDark,
+            weight: 1,
+          ),
+        ),
+        iconButtonTheme: const IconButtonThemeData(
+          style: ButtonStyle(
+            iconColor: WidgetStatePropertyAll(
+              primaryDark,
             ),
-            routes: {
-              '/profile': (context) => const ProfilePage(),
-              '/ownerDetails': (context) => const OwnerDetailsPage(),
-              '/businessDetails': (context) => const BusinessDetailsPage(),
-              '/addBrand': (context) => const AddBrandPage(),
-              '/postsPage': (context) => const AllPostsPage(),
-              '/productsPage': (context) => const AllProductsPage(),
-              '/discountsPage': (context) => const AllDiscountPage(),
-              '/brandsPage': (context) => const AllBrandPage(),
-              '/analyticsPage': (context) => const ShopAnalyticsPage(),
-            },
-            debugShowCheckedModeBanner: false,
-            home: Stack(
-              children: [
-                isFirstLaunch
-                    ? const IntroPageView()
-                    : StreamBuilder<User?>(
-                        stream: FirebaseAuth.instance.authStateChanges(),
-                        builder: (context, authSnapshot) {
-                          if (snapshot.hasData) {
-                            if (snapshot.data == 'vendor') {
-                              if (authSnapshot.hasData) {
-                                if (authSnapshot.data!.emailVerified) {
-                                  return const MainPage();
-                                } else {
-                                  return const EmailVerifyPage(
-                                    mode: 'vendor',
-                                    isLogging: true,
-                                  );
-                                }
-                              } else {
-                                return const LoginPage(
-                                  mode: 'vendor',
-                                );
-                              }
-                            } else if (snapshot.data == 'services') {
-                              if (authSnapshot.hasData) {
-                                if (authSnapshot.data!.email != null) {
-                                  if (authSnapshot.data!.emailVerified) {
-                                    return const ServicesMainPage();
-                                  } else {
-                                    return const EmailVerifyPage(
-                                      mode: 'services',
-                                      isLogging: true,
-                                    );
-                                  }
-                                } else {
-                                  return const LoginPage(mode: 'services');
-                                }
-                              } else {
-                                return const LoginPage(
-                                  mode: 'services',
-                                );
-                              }
-                            } else if (snapshot.data == 'events') {
-                              if (authSnapshot.hasData) {
-                                if (authSnapshot.data!.emailVerified) {
-                                  return const EventsMainPage();
-                                } else {
-                                  return const EmailVerifyPage(
-                                    mode: 'events',
-                                    isLogging: true,
-                                  );
-                                }
-                              } else {
-                                return const LoginPage(
-                                  mode: 'events',
-                                );
-                              }
-                            } else {
-                              return const SelectModePage();
-                            }
-                          } else {
-                            return const SelectModePage();
-                          }
-                        },
-                      ),
-                // const ConnectivityNotificationWidget(),
-              ],
-            ),
-            // home: BusinessChooseCategoryPage1(),
-          );
-        });
+          ),
+        ),
+        indicatorColor: primaryDark,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: primary2,
+        ),
+        useMaterial3: true,
+      ),
+      routes: {
+        '/profile': (context) => const ProfilePage(),
+        '/ownerDetails': (context) => const OwnerDetailsPage(),
+        '/businessDetails': (context) => const BusinessDetailsPage(),
+        '/addBrand': (context) => const AddBrandPage(),
+        '/postsPage': (context) => const AllPostsPage(),
+        '/productsPage': (context) => const AllProductsPage(),
+        '/discountsPage': (context) => const AllDiscountPage(),
+        '/brandsPage': (context) => const AllBrandPage(),
+        '/analyticsPage': (context) => const ShopAnalyticsPage(),
+      },
+      debugShowCheckedModeBanner: false,
+      home: Stack(
+        children: [
+          isFirstLaunch
+              ? const IntroPageView()
+              : StreamBuilder<User?>(
+                  stream: FirebaseAuth.instance.authStateChanges(),
+                  builder: (context, authSnapshot) {
+                    // if (snapshot.hasData) {
+                    // if (snapshot.data == 'vendor') {
+                    if (authSnapshot.hasData) {
+                      if (authSnapshot.data!.emailVerified) {
+                        return const MainPage();
+                      } else {
+                        return const EmailVerifyPage(
+                          // mode: 'vendor',
+                          isLogging: true,
+                        );
+                      }
+                    } else {
+                      return const LoginPage(
+                          // mode: 'vendor',
+                          );
+                    }
+                    // } else if (snapshot.data == 'services') {
+                    //   if (authSnapshot.hasData) {
+                    //     if (authSnapshot.data!.email != null) {
+                    //       if (authSnapshot.data!.emailVerified) {
+                    //         return const ServicesMainPage();
+                    //       } else {
+                    //         return const EmailVerifyPage(
+                    //           mode: 'services',
+                    //           isLogging: true,
+                    //         );
+                    //       }
+                    //     } else {
+                    //       return const LoginPage(mode: 'services');
+                    //     }
+                    //   } else {
+                    //     return const LoginPage(
+                    //       mode: 'services',
+                    //     );
+                    //   }
+                    // } else if (snapshot.data == 'events') {
+                    //   if (authSnapshot.hasData) {
+                    //     if (authSnapshot.data!.emailVerified) {
+                    //       return const EventsMainPage();
+                    //     } else {
+                    //       return const EmailVerifyPage(
+                    //         mode: 'events',
+                    //         isLogging: true,
+                    //       );
+                    //     }
+                    // } else {
+                    //   return const LoginPage(
+                    //     mode: 'events',
+                    //   );
+                    // }
+                    // } else {
+                    //   return const SelectModePage();
+                    // }
+                    // } else {
+                    //   return const SelectModePage();
+                    // }
+                  },
+                ),
+          // const ConnectivityNotificationWidget(),
+        ],
+      ),
+      // home: BusinessChooseCategoryPage1(),
+    );
   }
 }
 

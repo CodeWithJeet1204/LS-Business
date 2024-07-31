@@ -35,7 +35,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
         );
       });
     }
-    if (date == '28 Days') {
+    if (date == '4 Weeks') {
       setState(() {
         selectedDuration = DateTime.now().subtract(
           const Duration(days: 28),
@@ -179,7 +179,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                 items: [
                                   '24 Hours',
                                   '7 Days',
-                                  '28 Days',
+                                  '4 Weeks',
                                   '365 Days',
                                   'Lifetime'
                                 ]
@@ -416,7 +416,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                                       );
                                                     }).toList()
                                                   : selectedStringDuration ==
-                                                          '28 Days'
+                                                          '4 Weeks'
                                                       ? List.generate(4,
                                                           (index) {
                                                           int groupNumber =
@@ -651,7 +651,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                               //                         );
                               //                       }).toList()
                               //                     : selectedStringDuration ==
-                              //                             '28 Days'
+                              //                             '4 Weeks'
                               //                         ? List.generate(4,
                               //                             (index) {
                               //                             int groupNumber =

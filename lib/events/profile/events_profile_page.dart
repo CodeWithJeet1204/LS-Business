@@ -93,7 +93,7 @@ class _EventsProfilePageState extends State<EventsProfilePage> {
       case '7 Days':
         startDate = currentDate.subtract(const Duration(days: 7));
         break;
-      case '28 Days':
+      case '4 Weeks':
         startDate = currentDate.subtract(const Duration(days: 28));
         break;
       case '1 Year':
@@ -571,7 +571,7 @@ class _EventsProfilePageState extends State<EventsProfilePage> {
                                   value: duration,
                                   items: [
                                     '7 Days',
-                                    '28 Days',
+                                    '4 Weeks',
                                     '1 Year',
                                     'Lifetime'
                                   ]

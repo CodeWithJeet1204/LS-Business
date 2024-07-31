@@ -37,7 +37,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
         );
       });
     }
-    if (date == '28 Days') {
+    if (date == '4 Weeks') {
       setState(() {
         selectedDuration = DateTime.now().subtract(
           const Duration(days: 28),
@@ -232,7 +232,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                 items: [
                                   '24 Hours',
                                   '7 Days',
-                                  '28 Days',
+                                  '4 Weeks',
                                   '365 Days',
                                   'Lifetime'
                                 ]
@@ -535,7 +535,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                       );
                                                     }).toList()
                                                   : selectedStringDuration ==
-                                                          '28 Days'
+                                                          '4 Weeks'
                                                       ? List.generate(4,
                                                           (index) {
                                                           int groupNumber =
@@ -769,7 +769,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                       );
                                                     }).toList()
                                                   : selectedStringDuration ==
-                                                          '28 Days'
+                                                          '4 Weeks'
                                                       ? List.generate(4,
                                                           (index) {
                                                           int groupNumber =

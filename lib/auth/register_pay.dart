@@ -12,10 +12,10 @@ import 'package:flutter/material.dart';
 class RegisterPayPage extends StatefulWidget {
   const RegisterPayPage({
     super.key,
-    required this.mode,
+    // required this.mode,
   });
 
-  final String mode;
+  // final String mode;
 
   @override
   State<RegisterPayPage> createState() => _RegisterPayPageState();
@@ -75,9 +75,7 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                           Navigator.of(context).pop();
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: ((context) => RegisterMethodPage(
-                                    mode: widget.mode,
-                                  )),
+                              builder: ((context) => RegisterMethodPage()),
                             ),
                           );
                         }
@@ -115,9 +113,7 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                             Navigator.of(context).pop();
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: ((context) => const LoginPage(
-                                      mode: 'vendor',
-                                    )),
+                                builder: ((context) => const LoginPage()),
                               ),
                             );
                           }
@@ -178,9 +174,8 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                                 Navigator.of(context).pop();
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: ((context) => RegisterMethodPage(
-                                          mode: widget.mode,
-                                        )),
+                                    builder: ((context) =>
+                                        RegisterMethodPage()),
                                   ),
                                 );
                               }

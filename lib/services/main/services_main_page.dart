@@ -53,8 +53,8 @@ class _ServicesMainPageState extends State<ServicesMainPage> {
     if (getServicesDetailsAddedSnap.exists) {
       if (!(await isPayed())) {
         detailsPage = const LoginPage(
-          mode: 'vendor',
-        );
+            // mode: 'vendor',
+            );
       } else {
         setState(() {
           if (getServicesDetailsAddedData!['Email'] == null ||
@@ -64,7 +64,7 @@ class _ServicesMainPageState extends State<ServicesMainPage> {
               getServicesDetailsAddedData['numberVerified'] != true)) {
             if (!auth.currentUser!.emailVerified) {
               detailsPage = const EmailVerifyPage(
-                mode: 'vendor',
+                // mode: 'vendor',
                 isLogging: true,
               );
             } else {

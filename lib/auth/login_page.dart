@@ -1,9 +1,5 @@
 // ignore_for_file: unnecessary_null_comparison
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:localy/events/events_main_page.dart';
-import 'package:localy/select_mode_page.dart';
-import 'package:localy/services/main/services_main_page.dart';
 import 'package:localy/vendors/firebase/auth_methods.dart';
 import 'package:localy/vendors/page/main/main_page.dart';
 import 'package:localy/auth/register_pay.dart';
@@ -21,10 +17,10 @@ import 'package:flutter/material.dart';
 class LoginPage extends StatefulWidget {
   const LoginPage({
     super.key,
-    required this.mode,
+    // required this.mode,
   });
 
-  final String mode;
+  // final String mode;
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -43,12 +39,12 @@ class _LoginPageState extends State<LoginPage> {
   bool isGoogleLogging = false;
   bool isEmailLogging = false;
   bool isPhoneLogging = false;
-  String? mode;
+  // String? mode;
 
   // INIT STATE
   @override
   void initState() {
-    mode = widget.mode;
+    // mode = widget.mode;
     super.initState();
   }
 
@@ -86,66 +82,66 @@ class _LoginPageState extends State<LoginPage> {
               );
             }
           } else {
-            if (mode == 'vendor') {
-              final vendorSnap = await store
-                  .collection('Business')
-                  .doc('Owners')
-                  .collection('Shops')
-                  .doc(auth.currentUser!.uid)
-                  .get();
+            // if (mode == 'vendor') {
+            final vendorSnap = await store
+                .collection('Business')
+                .doc('Owners')
+                .collection('Shops')
+                .doc(auth.currentUser!.uid)
+                .get();
 
-              if (!vendorSnap.exists) {
-                await auth.signOut();
-                setState(() {
-                  isEmailLogging = false;
-                });
-                if (mounted) {
-                  return mySnackBar(
-                    context,
-                    'This account was created for Services or Events',
-                  );
-                }
-                return;
-              }
-            } else if (mode == 'services') {
-              final serviceSnap = await store
-                  .collection('Services')
-                  .doc(auth.currentUser!.uid)
-                  .get();
-
-              if (!serviceSnap.exists) {
-                await auth.signOut();
-                setState(() {
-                  isEmailLogging = false;
-                });
-                if (mounted) {
-                  return mySnackBar(
-                    context,
-                    'This account was created for Vendor / Events',
-                  );
-                }
-              }
-              return;
-            } else if (mode == 'events') {
-              final serviceSnap = await store
-                  .collection('Organizers')
-                  .doc(auth.currentUser!.uid)
-                  .get();
-
-              if (!serviceSnap.exists) {
-                await auth.signOut();
-                setState(() {
-                  isEmailLogging = false;
-                });
-                if (mounted) {
-                  return mySnackBar(
-                    context,
-                    'This account was created for Vendor / Services',
-                  );
-                }
+            if (!vendorSnap.exists) {
+              await auth.signOut();
+              setState(() {
+                isEmailLogging = false;
+              });
+              if (mounted) {
+                return mySnackBar(
+                  context,
+                  'This account was created for Services or Events',
+                );
               }
               return;
             }
+            // } else if (mode == 'services') {
+            //   final serviceSnap = await store
+            //       .collection('Services')
+            //       .doc(auth.currentUser!.uid)
+            //       .get();
+
+            //   if (!serviceSnap.exists) {
+            //     await auth.signOut();
+            //     setState(() {
+            //       isEmailLogging = false;
+            //     });
+            //     if (mounted) {
+            //       return mySnackBar(
+            //         context,
+            //         'This account was created for Vendor / Events',
+            //       );
+            //     }
+            //   }
+            //   return;
+            // } else if (mode == 'events') {
+            //   final serviceSnap = await store
+            //       .collection('Organizers')
+            //       .doc(auth.currentUser!.uid)
+            //       .get();
+
+            //   if (!serviceSnap.exists) {
+            //     await auth.signOut();
+            //     setState(() {
+            //       isEmailLogging = false;
+            //     });
+            //     if (mounted) {
+            //       return mySnackBar(
+            //         context,
+            //         'This account was created for Vendor / Services',
+            //       );
+            //     }
+            //   }
+            //   return;
+            // }
             if (mounted) {
               mySnackBar(
                 context,
@@ -159,15 +155,15 @@ class _LoginPageState extends State<LoginPage> {
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
                   builder: ((context) {
-                    if (mode == 'vendor') {
-                      return const MainPage();
-                    } else if (mode == 'services') {
-                      return const ServicesMainPage();
-                    } else if (mode == 'events') {
-                      return const EventsMainPage();
-                    } else {
-                      return const MainPage();
-                    }
+                    // if (mode == 'vendor') {
+                    return const MainPage();
+                    // } else if (mode == 'services') {
+                    //   return const ServicesMainPage();
+                    // } else if (mode == 'events') {
+                    //   return const EventsMainPage();
+                    // } else {
+                    // return const MainPage();
+                    // }
                   }),
                 ),
                 (route) => false,
@@ -205,66 +201,66 @@ class _LoginPageState extends State<LoginPage> {
           isPhoneLogging = true;
         });
         try {
-          if (mode == 'vendor') {
-            final vendorSnap = await store
-                .collection('Business')
-                .doc('Owners')
-                .collection('Shops')
-                .doc(auth.currentUser!.uid)
-                .get();
+          // if (mode == 'vendor') {
+          final vendorSnap = await store
+              .collection('Business')
+              .doc('Owners')
+              .collection('Shops')
+              .doc(auth.currentUser!.uid)
+              .get();
 
-            if (!vendorSnap.exists) {
-              await auth.signOut();
-              setState(() {
-                isPhoneLogging = false;
-              });
-              if (mounted) {
-                return mySnackBar(
-                  context,
-                  'This account was created for Services or Events',
-                );
-              }
-              return;
-            }
-          } else if (mode == 'services') {
-            final serviceSnap = await store
-                .collection('Services')
-                .doc(auth.currentUser!.uid)
-                .get();
-
-            if (!serviceSnap.exists) {
-              await auth.signOut();
-              setState(() {
-                isPhoneLogging = false;
-              });
-              if (mounted) {
-                return mySnackBar(
-                  context,
-                  'This account was created for Vendor / Events',
-                );
-              }
-            }
-            return;
-          } else if (mode == 'events') {
-            final serviceSnap = await store
-                .collection('Organizers')
-                .doc(auth.currentUser!.uid)
-                .get();
-
-            if (!serviceSnap.exists) {
-              await auth.signOut();
-              setState(() {
-                isPhoneLogging = false;
-              });
-              if (mounted) {
-                return mySnackBar(
-                  context,
-                  'This account was created for Vendor / Services',
-                );
-              }
+          if (!vendorSnap.exists) {
+            await auth.signOut();
+            setState(() {
+              isPhoneLogging = false;
+            });
+            if (mounted) {
+              return mySnackBar(
+                context,
+                'This account was created for Services or Events',
+              );
             }
             return;
           }
+          // } else if (mode == 'services') {
+          //   final serviceSnap = await store
+          //       .collection('Services')
+          //       .doc(auth.currentUser!.uid)
+          //       .get();
+
+          //   if (!serviceSnap.exists) {
+          //     await auth.signOut();
+          //     setState(() {
+          //       isPhoneLogging = false;
+          //     });
+          //     if (mounted) {
+          //       return mySnackBar(
+          //         context,
+          //         'This account was created for Vendor / Events',
+          //       );
+          //     }
+          //   }
+          //   return;
+          // } else if (mode == 'events') {
+          //   final serviceSnap = await store
+          //       .collection('Organizers')
+          //       .doc(auth.currentUser!.uid)
+          //       .get();
+
+          //   if (!serviceSnap.exists) {
+          //     await auth.signOut();
+          //     setState(() {
+          //       isPhoneLogging = false;
+          //     });
+          //     if (mounted) {
+          //       return mySnackBar(
+          //         context,
+          //         'This account was created for Vendor / Services',
+          //       );
+          //     }
+          //   }
+          //   return;
+          // }
           await auth.verifyPhoneNumber(
               phoneNumber: '+91 ${phoneController.text}',
               timeout: const Duration(seconds: 120),
@@ -290,16 +286,16 @@ class _LoginPageState extends State<LoginPage> {
                 Navigator.of(context).pop();
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) {
-                    if (mode == 'vendor') {
-                      return const MainPage();
-                    } else if (mode == 'services') {
-                      return const ServicesMainPage();
-                    } else if (mode == 'events') {
-                      return const EventsMainPage();
-                    } else {
-                      mySnackBar(context, 'Some error occured, try again');
-                      return const SelectModePage();
-                    }
+                    // if (mode == 'vendor') {
+                    return const MainPage();
+                    // } else if (mode == 'services') {
+                    //   return const ServicesMainPage();
+                    // } else if (mode == 'events') {
+                    //   return const EventsMainPage();
+                    // } else {
+                    //   mySnackBar(context, 'Some error occured, try again');
+                    //   return const SelectModePage();
+                    // }
                   }),
                 );
               },
@@ -350,66 +346,66 @@ class _LoginPageState extends State<LoginPage> {
             );
           }
         } else {
-          if (mode == 'vendor') {
-            final vendorSnap = await store
-                .collection('Business')
-                .doc('Owners')
-                .collection('Shops')
-                .doc(auth.currentUser!.uid)
-                .get();
+          // if (mode == 'vendor') {
+          final vendorSnap = await store
+              .collection('Business')
+              .doc('Owners')
+              .collection('Shops')
+              .doc(auth.currentUser!.uid)
+              .get();
 
-            if (!vendorSnap.exists) {
-              await auth.signOut();
-              setState(() {
-                isGoogleLogging = false;
-              });
-              if (mounted) {
-                return mySnackBar(
-                  context,
-                  'This account was created for Services or Events',
-                );
-              }
-              return;
-            }
-          } else if (mode == 'services') {
-            final serviceSnap = await store
-                .collection('Services')
-                .doc(auth.currentUser!.uid)
-                .get();
-
-            if (!serviceSnap.exists) {
-              await auth.signOut();
-              setState(() {
-                isGoogleLogging = false;
-              });
-              if (mounted) {
-                return mySnackBar(
-                  context,
-                  'This account was created for Vendor / Events',
-                );
-              }
-            }
-            return;
-          } else if (mode == 'events') {
-            final serviceSnap = await store
-                .collection('Organizers')
-                .doc(auth.currentUser!.uid)
-                .get();
-
-            if (!serviceSnap.exists) {
-              await auth.signOut();
-              setState(() {
-                isGoogleLogging = false;
-              });
-              if (mounted) {
-                return mySnackBar(
-                  context,
-                  'This account was created for Vendor / Services',
-                );
-              }
+          if (!vendorSnap.exists) {
+            await auth.signOut();
+            setState(() {
+              isGoogleLogging = false;
+            });
+            if (mounted) {
+              return mySnackBar(
+                context,
+                'This account was created for Services or Events',
+              );
             }
             return;
           }
+          // } else if (mode == 'services') {
+          //   final serviceSnap = await store
+          //       .collection('Services')
+          //       .doc(auth.currentUser!.uid)
+          //       .get();
+
+          //   if (!serviceSnap.exists) {
+          //     await auth.signOut();
+          //     setState(() {
+          //       isGoogleLogging = false;
+          //     });
+          //     if (mounted) {
+          //       return mySnackBar(
+          //         context,
+          //         'This account was created for Vendor / Events',
+          //       );
+          //     }
+          //   }
+          //   return;
+          // } else if (mode == 'events') {
+          //   final serviceSnap = await store
+          //       .collection('Organizers')
+          //       .doc(auth.currentUser!.uid)
+          //       .get();
+
+          //   if (!serviceSnap.exists) {
+          //     await auth.signOut();
+          //     setState(() {
+          //       isGoogleLogging = false;
+          //     });
+          //     if (mounted) {
+          //       return mySnackBar(
+          //         context,
+          //         'This account was created for Vendor / Services',
+          //       );
+          //     }
+          //   }
+          //   return;
+          // }
           setState(() {
             isGoogleLogging = false;
           });
@@ -418,15 +414,15 @@ class _LoginPageState extends State<LoginPage> {
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                 builder: ((context) {
-                  if (mode == 'vendor') {
-                    return const MainPage();
-                  } else if (mode == 'services') {
-                    return const ServicesMainPage();
-                  } else if (mode == 'events') {
-                    return const EventsMainPage();
-                  } else {
-                    return const MainPage();
-                  }
+                  // if (mode == 'vendor') {
+                  return const MainPage();
+                  // } else if (mode == 'services') {
+                  //   return const ServicesMainPage();
+                  // } else if (mode == 'events') {
+                  //   return const EventsMainPage();
+                  // } else {
+                  //   return const MainPage();
+                  // }
                 }),
               ),
               (route) => false,
@@ -468,55 +464,54 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: width * 0.033),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: MyTextButton(
-                  onPressed: () async {
-                    await showMenu(
-                      context: context,
-                      position: RelativeRect.fromSize(
-                        Rect.largest,
-                        Size(
-                          width * 0.25,
-                          100,
-                        ),
-                      ),
-                      elevation: 0,
-                      color: primary2,
-                      items: [
-                        PopupMenuItem(
-                          onTap: () {
-                            setState(() {
-                              mode = 'vendor';
-                            });
-                          },
-                          child: const Text('Vendor'),
-                        ),
-                        PopupMenuItem(
-                          onTap: () {
-                            setState(() {
-                              mode = 'events';
-                            });
-                          },
-                          child: const Text('Events'),
-                        ),
-                        PopupMenuItem(
-                          onTap: () {
-                            setState(() {
-                              mode = 'services';
-                            });
-                          },
-                          child: const Text('Services'),
-                        ),
-                      ],
-                    );
-                  },
-                  text: '$mode ↓',
-                  textColor: primaryDark2,
-                ),
-              ),
-              SizedBox(height: width * 0.135),
+              // Align(
+              //   alignment: Alignment.centerLeft,
+              //   child: MyTextButton(
+              //     onPressed: () async {
+              //       await showMenu(
+              //         context: context,
+              //         position: RelativeRect.fromSize(
+              //           Rect.largest,
+              //           Size(
+              //             width * 0.25,
+              //             100,
+              //           ),
+              //         ),
+              //         elevation: 0,
+              //         color: primary2,
+              //         items: [
+              //           PopupMenuItem(
+              //             onTap: () {
+              //               setState(() {
+              //                 mode = 'vendor';
+              //               });
+              //             },
+              //             child: const Text('Vendor'),
+              //           ),
+              //           PopupMenuItem(
+              //             onTap: () {
+              //               setState(() {
+              //                 mode = 'events';
+              //               });
+              //             },
+              //             child: const Text('Events'),
+              //           ),
+              //           PopupMenuItem(
+              //             onTap: () {
+              //               setState(() {
+              //                 mode = 'services';
+              //               });
+              //             },
+              //             child: const Text('Services'),
+              //           ),
+              //         ],
+              //       );
+              //     },
+              //     text: '$mode ↓',
+              //     textColor: primaryDark2,
+              //   ),
+              // ),
+              SizedBox(height: width * 0.33),
               const HeadText(
                 text: 'LOGIN',
               ),
@@ -701,9 +696,7 @@ class _LoginPageState extends State<LoginPage> {
                       Navigator.of(context).pop();
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: ((context) => RegisterPayPage(
-                                mode: mode!,
-                              )),
+                          builder: ((context) => RegisterPayPage()),
                         ),
                       );
                     },

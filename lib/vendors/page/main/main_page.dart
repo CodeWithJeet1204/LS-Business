@@ -101,7 +101,7 @@ class _MainPageState extends State<MainPage> {
         if (auth.currentUser!.email != null &&
             !auth.currentUser!.emailVerified) {
           detailsPage = const EmailVerifyPage(
-            mode: 'vendor',
+            // mode: 'vendor',
             isLogging: true,
           );
         } else {

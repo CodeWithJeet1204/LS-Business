@@ -1,8 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:localy/events/events_main_page.dart';
-import 'package:localy/events/register/events_register_details_page_1.dart';
-import 'package:localy/services/main/services_main_page.dart';
-import 'package:localy/services/register/services_register_details_page.dart';
 import 'package:localy/vendors/page/main/main_page.dart';
 import 'package:localy/vendors/register/owner_register_details_page.dart';
 import 'package:localy/vendors/utils/colors.dart';
@@ -18,10 +14,10 @@ class NumberVerifyPage extends StatefulWidget {
     required this.verificationId,
     required this.isLogging,
     required this.phoneNumber,
-    required this.mode,
+    // required this.mode,
   });
 
-  final String mode;
+  // final String mode;
   final String verificationId;
   final String phoneNumber;
   final bool isLogging;
@@ -104,39 +100,39 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
 
                             if (!widget.isLogging) {
                               if (auth.currentUser != null) {
-                                if (widget.mode == 'vendor') {
-                                  await FirebaseFirestore.instance
-                                      .collection('Business')
-                                      .doc('Owners')
-                                      .collection('Users')
-                                      .doc(auth.currentUser!.uid)
-                                      .set({
-                                    'Phone Number': widget.phoneNumber,
-                                    'Image': null,
-                                    'Email': null,
-                                    'Name': null,
-                                    'uid': null,
-                                    'numberVerified': true,
-                                  });
+                                // if (widget.mode == 'vendor') {
+                                await FirebaseFirestore.instance
+                                    .collection('Business')
+                                    .doc('Owners')
+                                    .collection('Users')
+                                    .doc(auth.currentUser!.uid)
+                                    .set({
+                                  'Phone Number': widget.phoneNumber,
+                                  'Image': null,
+                                  'Email': null,
+                                  'Name': null,
+                                  'uid': null,
+                                  'numberVerified': true,
+                                });
 
-                                  await FirebaseFirestore.instance
-                                      .collection('Business')
-                                      .doc('Owners')
-                                      .collection('Shops')
-                                      .doc(auth.currentUser!.uid)
-                                      .set({
-                                    'Name': null,
-                                    'GSTNumber': null,
-                                    'Address': null,
-                                    'Description': null,
-                                    'Industry': null,
-                                    'Image': null,
-                                    'Type': [],
-                                    'MembershipName': null,
-                                    'MembershipDuration': null,
-                                    'MembershipTime': null,
-                                  });
-                                }
+                                await FirebaseFirestore.instance
+                                    .collection('Business')
+                                    .doc('Owners')
+                                    .collection('Shops')
+                                    .doc(auth.currentUser!.uid)
+                                    .set({
+                                  'Name': null,
+                                  'GSTNumber': null,
+                                  'Address': null,
+                                  'Description': null,
+                                  'Industry': null,
+                                  'Image': null,
+                                  'Type': [],
+                                  'MembershipName': null,
+                                  'MembershipDuration': null,
+                                  'MembershipTime': null,
+                                });
+                                // }
                               }
                             }
                             setState(() {
@@ -145,26 +141,26 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                             if (context.mounted) {
                               Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(builder: ((context) {
-                                  if (widget.mode == 'vendor') {
-                                    if (widget.isLogging) {
-                                      return const MainPage();
-                                    } else {
-                                      return const UserRegisterDetailsPage();
-                                    }
-                                  } else if (widget.mode == 'services') {
-                                    if (widget.isLogging) {
-                                      return const ServicesMainPage();
-                                    } else {
-                                      return const ServicesRegisterDetailsPage();
-                                    }
-                                  } else if (widget.mode == 'events') {
-                                    if (widget.isLogging) {
-                                      return const EventsMainPage();
-                                    } else {
-                                      return const EventsRegisterDetailsPage1();
-                                    }
+                                  // if (widget.mode == 'vendor') {
+                                  if (widget.isLogging) {
+                                    return const MainPage();
+                                  } else {
+                                    return const UserRegisterDetailsPage();
                                   }
-                                  return const MainPage();
+                                  // } else if (widget.mode == 'services') {
+                                  //   if (widget.isLogging) {
+                                  //     return const ServicesMainPage();
+                                  //   } else {
+                                  //     return const ServicesRegisterDetailsPage();
+                                  //   }
+                                  // } else if (widget.mode == 'events') {
+                                  //   if (widget.isLogging) {
+                                  //     return const EventsMainPage();
+                                  //   } else {
+                                  //     return const EventsRegisterDetailsPage1();
+                                  //   }
+                                  // }
+                                  // return const MainPage();
                                 })),
                                 (route) => false,
                               );

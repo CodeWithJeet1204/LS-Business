@@ -28,8 +28,8 @@ class _SplashScreenState extends State<SplashScreen> {
             builder: ((context) => widget.isLoggedIn
                 ? const MainPage()
                 : const LoginPage(
-                    mode: 'vendor',
-                  )),
+                    // mode: 'vendor',
+                    )),
           ),
         );
       },

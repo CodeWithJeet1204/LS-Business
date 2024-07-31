@@ -14,10 +14,10 @@ class NumberVerifyPage extends StatefulWidget {
     required this.verificationId,
     required this.isLogging,
     required this.phoneNumber,
-    required this.mode,
+    // required this.mode,
   });
 
-  final String mode;
+  // final String mode;
   final String verificationId;
   final String phoneNumber;
   final bool isLogging;

@@ -1,9 +1,5 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:localy/events/events_main_page.dart';
-import 'package:localy/events/register/events_register_details_page_1.dart';
-import 'package:localy/services/main/services_main_page.dart';
-import 'package:localy/services/register/services_register_details_page.dart';
 import 'package:localy/vendors/firebase/auth_methods.dart';
 import 'package:localy/vendors/page/main/main_page.dart';
 import 'package:localy/vendors/register/owner_register_details_page.dart';
@@ -16,11 +12,11 @@ import 'package:flutter/material.dart';
 class EmailVerifyPage extends StatefulWidget {
   const EmailVerifyPage({
     super.key,
-    required this.mode,
+    // required this.mode,
     required this.isLogging,
   });
 
-  final String mode;
+  // final String mode;
   final bool isLogging;
 
   @override
@@ -69,26 +65,26 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
       if (mounted) {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: ((context) {
-            if (widget.mode == 'vendor') {
-              if (widget.isLogging) {
-                return const MainPage();
-              } else {
-                return const UserRegisterDetailsPage();
-              }
-            } else if (widget.mode == 'services') {
-              if (widget.isLogging) {
-                return const ServicesMainPage();
-              } else {
-                return const ServicesRegisterDetailsPage();
-              }
-            } else if (widget.mode == 'events') {
-              if (widget.isLogging) {
-                return const EventsMainPage();
-              } else {
-                return const EventsRegisterDetailsPage1();
-              }
+            // if (widget.mode == 'vendor') {
+            if (widget.isLogging) {
+              return const MainPage();
+            } else {
+              return const UserRegisterDetailsPage();
             }
-            return const MainPage();
+            // } else if (widget.mode == 'services') {
+            //   if (widget.isLogging) {
+            //     return const ServicesMainPage();
+            //   } else {
+            //     return const ServicesRegisterDetailsPage();
+            //   }
+            // } else if (widget.mode == 'events') {
+            //   if (widget.isLogging) {
+            //     return const EventsMainPage();
+            //   } else {
+            //     return const EventsRegisterDetailsPage1();
+            //   }
+            // }
+            // return const MainPage();
           })),
           (route) => false,
         );

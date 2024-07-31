@@ -1,8 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:localy/events/register/events_register_details_page_1.dart';
-import 'package:localy/services/register/services_register_details_page.dart';
 import 'package:localy/vendors/firebase/auth_methods.dart';
-import 'package:localy/vendors/page/main/main_page.dart';
 import 'package:localy/vendors/register/owner_register_details_page.dart';
 import 'package:localy/auth/verify/email_verify.dart';
 import 'package:localy/auth/verify/number_verify.dart';
@@ -20,10 +17,10 @@ import 'package:provider/provider.dart';
 class RegisterMethodPage extends StatefulWidget {
   const RegisterMethodPage({
     super.key,
-    required this.mode,
+    // required this.mode,
   });
 
-  final String mode;
+  // final String mode;
 
   @override
   State<RegisterMethodPage> createState() => _RegisterMethodPageState();
@@ -71,38 +68,38 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
           );
 
           if (auth.currentUser != null) {
-            if (widget.mode == 'vendor') {
-              await store
-                  .collection('Business')
-                  .doc('Owners')
-                  .collection('Users')
-                  .doc(auth.currentUser!.uid)
-                  .set({
-                'Email': emailController.text.toString(),
-                'Image': null,
-                'Name': null,
-                'Phone Number': null,
-                'uid': null,
-              });
+            // if (widget.mode == 'vendor') {
+            await store
+                .collection('Business')
+                .doc('Owners')
+                .collection('Users')
+                .doc(auth.currentUser!.uid)
+                .set({
+              'Email': emailController.text.toString(),
+              'Image': null,
+              'Name': null,
+              'Phone Number': null,
+              'uid': null,
+            });
 
-              await store
-                  .collection('Business')
-                  .doc('Owners')
-                  .collection('Shops')
-                  .doc(auth.currentUser!.uid)
-                  .set({
-                'Name': null,
-                'GSTNumber': null,
-                'Address': null,
-                'Description': null,
-                'Industry': null,
-                'Image': null,
-                'Type': [],
-                'MembershipName': null,
-                'MembershipDuration': null,
-                'MembershipTime': null,
-              });
-            } /* else if (widget.mode == 'services') {
+            await store
+                .collection('Business')
+                .doc('Owners')
+                .collection('Shops')
+                .doc(auth.currentUser!.uid)
+                .set({
+              'Name': null,
+              'GSTNumber': null,
+              'Address': null,
+              'Description': null,
+              'Industry': null,
+              'Image': null,
+              'Type': [],
+              'MembershipName': null,
+              'MembershipDuration': null,
+              'MembershipTime': null,
+            });
+            /*}  else if (widget.mode == 'services') {
               // nothing
             } else if (widget.mode == 'events') {
               // code for events
@@ -127,7 +124,6 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => EmailVerifyPage(
-                    mode: widget.mode,
                     isLogging: false,
                   ),
                 ),
@@ -192,7 +188,6 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                     verificationId: verificationId,
                     isLogging: false,
                     phoneNumber: phoneController.text.toString(),
-                    mode: widget.mode,
                   ),
                 ),
               );
@@ -230,38 +225,38 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
       signInMethodProvider.chooseGoogle();
       await auth.currentUser!.reload();
       if (auth.currentUser != null) {
-        if (widget.mode == 'vendor') {
-          await store
-              .collection('Business')
-              .doc('Owners')
-              .collection('Users')
-              .doc(auth.currentUser!.uid)
-              .set({
-            'Email': emailController.text.toString(),
-            'Image': null,
-            'Name': null,
-            'Phone Number': null,
-            'uid': null,
-          });
+        // if (widget.mode == 'vendor') {
+        await store
+            .collection('Business')
+            .doc('Owners')
+            .collection('Users')
+            .doc(auth.currentUser!.uid)
+            .set({
+          'Email': emailController.text.toString(),
+          'Image': null,
+          'Name': null,
+          'Phone Number': null,
+          'uid': null,
+        });
 
-          await store
-              .collection('Business')
-              .doc('Owners')
-              .collection('Shops')
-              .doc(auth.currentUser!.uid)
-              .set({
-            'Name': null,
-            'GSTNumber': null,
-            'Address': null,
-            'Description': null,
-            'Industry': null,
-            'Image': null,
-            'Type': [],
-            'MembershipName': null,
-            'MembershipDuration': null,
-            'MembershipTime': null,
-          });
-        } /* else if (widget.mode == 'services') {
+        await store
+            .collection('Business')
+            .doc('Owners')
+            .collection('Shops')
+            .doc(auth.currentUser!.uid)
+            .set({
+          'Name': null,
+          'GSTNumber': null,
+          'Address': null,
+          'Description': null,
+          'Industry': null,
+          'Image': null,
+          'Type': [],
+          'MembershipName': null,
+          'MembershipDuration': null,
+          'MembershipTime': null,
+        });
+        /*}  else if (widget.mode == 'services') {
               // nothing
             } else if (widget.mode == 'events') {
               // code for events
@@ -280,14 +275,14 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
       if (mounted) {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: ((context) {
-            if (widget.mode == 'vendor') {
-              return const UserRegisterDetailsPage();
-            } else if (widget.mode == 'services') {
-              return const ServicesRegisterDetailsPage();
-            } else if (widget.mode == 'events') {
-              return const EventsRegisterDetailsPage1();
-            }
-            return const MainPage();
+            // if (widget.mode == 'vendor') {
+            return const UserRegisterDetailsPage();
+            // } else if (widget.mode == 'services') {
+            //   return const ServicesRegisterDetailsPage();
+            // } else if (widget.mode == 'events') {
+            //   return const EventsRegisterDetailsPage1();
+            // }
+            // return const MainPage();
           })),
           (route) => false,
         );
