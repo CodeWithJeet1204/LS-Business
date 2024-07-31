@@ -5,7 +5,8 @@ import 'package:localy/vendors/page/main/analytics/analytics_page.dart';
 import 'package:localy/vendors/page/main/discount/add_discount_page.dart';
 import 'package:localy/vendors/page/main/profile/profile_page.dart';
 import 'package:localy/vendors/register/business_choose_category_page_1.dart';
-import 'package:localy/vendors/register/business_register_details.dart';
+import 'package:localy/vendors/register/business_register_details_page.dart';
+import 'package:localy/vendors/register/business_verification_page.dart';
 import 'package:localy/vendors/register/membership_page.dart';
 import 'package:localy/vendors/register/owner_register_details_page.dart';
 import 'package:localy/auth/verify/email_verify.dart';
@@ -107,13 +108,17 @@ class _MainPageState extends State<MainPage> {
         } else {
           if (getUserDetailsAddedData['Image'] == null) {
             detailsPage = const UserRegisterDetailsPage();
-          } else if (getUserDetailsAddedData['Image'] != null &&
-              getBusinessDetailsAdded['GSTNumber'] == null) {
-            detailsPage = const BusinessRegisterDetailsPage();
           } else if (getBusinessDetailsAdded['Name'] == null ||
               getBusinessDetailsAdded['Latitude'] == null ||
               getBusinessDetailsAdded['Description'] == null) {
             detailsPage = const BusinessRegisterDetailsPage();
+          } else if (getUserDetailsAddedData['Image'] != null &&
+              getBusinessDetailsAdded['Name'] == null) {
+            detailsPage = const BusinessRegisterDetailsPage();
+          } else if (getBusinessDetailsAdded['Name'] != null &&
+                  getBusinessDetailsAdded['GSTNumber'] == null ||
+              getBusinessDetailsAdded['Aadhar'] == null) {
+            detailsPage = const BusinessVerificationPage();
           } else if (getBusinessDetailsAdded['GSTNumber'] != null &&
               getBusinessDetailsAdded['Type'] == null) {
             detailsPage = const BusinessChooseCategoryPage1();

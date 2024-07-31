@@ -8,11 +8,13 @@ class MyCollapseContainer extends StatefulWidget {
     required this.children,
     required this.width,
     required this.text,
+    this.isExpanded,
   });
 
   final String text;
   final Widget children;
   final double width;
+  final bool? isExpanded;
 
   @override
   State<MyCollapseContainer> createState() => _MyCollapseContainerState();
@@ -37,7 +39,7 @@ class _MyCollapseContainerState extends State<MyCollapseContainer> {
                 : widget.width * 0.0175,
           ),
         ),
-        initiallyExpanded: true,
+        initiallyExpanded: widget.isExpanded ?? true,
         tilePadding: EdgeInsets.symmetric(
           horizontal: widget.width < screenSize
               ? widget.width * 0.0225

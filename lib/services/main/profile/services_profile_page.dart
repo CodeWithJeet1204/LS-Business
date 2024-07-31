@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:localy/select_mode_page.dart';
+import 'package:localy/auth/login_page.dart';
 import 'package:localy/services/main/profile/change_work/services_change_work_page_1.dart';
 import 'package:localy/services/main/profile/work_images/services_add_work_images_page.dart';
 import 'package:localy/services/main/profile/services_details_page.dart';
@@ -153,7 +153,7 @@ class _ServicesProfilePageState extends State<ServicesProfilePage> {
                   await auth.signOut().then(
                         (value) => Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
-                            builder: ((context) => const SelectModePage()),
+                            builder: ((context) => const LoginPage()),
                           ),
                           (route) => false,
                         ),

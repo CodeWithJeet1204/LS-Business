@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:localy/vendors/register/business_register_details.dart';
+import 'package:localy/vendors/register/business_register_details_page.dart';
 import 'package:localy/vendors/provider/sign_in_method_provider.dart';
 import 'package:localy/vendors/utils/colors.dart';
 import 'package:localy/widgets/button.dart';
@@ -121,7 +121,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                   children: [
                     // NAME
                     MyTextFormField(
-                      hintText: 'Your Name',
+                      hintText: 'Your Name (Name on AADHAR CARD)',
                       controller: nameController,
                       borderRadius: 12,
                       horizontalPadding: width * 0.055,

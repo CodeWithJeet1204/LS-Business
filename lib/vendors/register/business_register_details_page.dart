@@ -1,9 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
 import 'package:localy/vendors/models/industry_segments.dart';
-import 'package:localy/vendors/register/business_choose_category_page_1.dart';
+import 'package:localy/vendors/register/business_verification_page.dart';
 import 'package:localy/vendors/utils/colors.dart';
 import 'package:localy/widgets/button.dart';
 import 'package:localy/widgets/head_text.dart';
@@ -31,7 +32,6 @@ class _BusinessRegisterDetailsPageState
   final store = FirebaseFirestore.instance;
   final GlobalKey<FormState> businessFormKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
-  final gstController = TextEditingController();
   final descriptionController = TextEditingController();
   bool isNext = false;
   String? selectedIndustrySegment;
@@ -47,7 +47,7 @@ class _BusinessRegisterDetailsPageState
   @override
   void dispose() {
     nameController.dispose();
-    gstController.dispose();
+    // gstController.dispose();
     descriptionController.dispose();
     super.dispose();
   }
@@ -117,11 +117,32 @@ class _BusinessRegisterDetailsPageState
 
   // GET ADDRESS
   Future<void> getAddress(double lat, double long) async {
-    List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
-    setState(() {
-      address =
-          '${placemarks[0].name}, ${placemarks[0].locality}, ${placemarks[0].administrativeArea}';
-    });
+    final url =
+        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$long&key=AIzaSyCTzhOTUtdVUx0qpAbcXdn1TQKSmqtJbZM';
+
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      String? name;
+
+      print('dataResults: ${data['results']}');
+      print('dataResults0: ${data['results'][0]}');
+
+      if (data['status'] == 'OK' && data['results'].isNotEmpty) {
+        print('lalalla');
+        name = data['results'][0]['formatted_address'];
+
+        setState(() {
+          address = name;
+        });
+      } else {
+        mySnackBar(context, 'Some error occured');
+        setState(() {
+          address = 'Get Location';
+        });
+      }
+    }
   }
 
   // UPLOAD DETAILS
@@ -160,7 +181,7 @@ class _BusinessRegisterDetailsPageState
           'viewsTimestamp': [],
           'Followers': [],
           'followersTimestamp': [],
-          'GSTNumber': gstController.text.toString(),
+          // 'GSTNumber': gstController.text.toString(),
           'Description': descriptionController.text.toString(),
           'Industry': selectedIndustrySegment,
           'Image': _image != null
@@ -172,7 +193,7 @@ class _BusinessRegisterDetailsPageState
           Navigator.of(context).pop();
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: ((context) => const BusinessChooseCategoryPage1()),
+              builder: ((context) => const BusinessVerificationPage()),
             ),
           );
         }
@@ -259,20 +280,6 @@ class _BusinessRegisterDetailsPageState
                       autoFillHints: const [AutofillHints.streetAddressLevel1],
                     ),
 
-                    // GST NUMBER
-                    MyTextFormField(
-                      hintText: 'GST Number',
-                      controller: gstController,
-                      borderRadius: 12,
-                      horizontalPadding:
-                          MediaQuery.of(context).size.width * 0.055,
-                      verticalPadding:
-                          MediaQuery.of(context).size.width * 0.01125,
-                      autoFillHints: null,
-                    ),
-
-                    const SizedBox(height: 8),
-
                     // LOCATION
                     GestureDetector(
                       onTap: () async {
@@ -286,11 +293,9 @@ class _BusinessRegisterDetailsPageState
                               latitude = value.latitude;
                               longitude = value.longitude;
                             });
-
-                            if (latitude != null && longitude != null) {
-                              await getAddress(latitude!, longitude!);
-                            }
                           }
+
+                          await getAddress(latitude!, longitude!);
                         });
 
                         setState(() {
@@ -314,6 +319,9 @@ class _BusinessRegisterDetailsPageState
                                 )
                               : Text(
                                   address ?? 'Get Location',
+                                  maxLines: address != null ? 1 : 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: width * 0.045,
                                     color: primaryDark2,

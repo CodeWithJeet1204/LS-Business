@@ -1,8 +1,8 @@
 // ignore_for_file: unnecessary_null_comparison
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:localy/auth/register_method_page.dart';
 import 'package:localy/vendors/firebase/auth_methods.dart';
 import 'package:localy/vendors/page/main/main_page.dart';
-import 'package:localy/auth/register_pay.dart';
 import 'package:localy/vendors/register/forgot_password_page.dart';
 import 'package:localy/vendors/utils/colors.dart';
 import 'package:localy/widgets/button.dart';
@@ -519,6 +519,7 @@ class _LoginPageState extends State<LoginPage> {
               MyCollapseContainer(
                 width: width,
                 text: 'Email',
+                isExpanded: false,
                 children: Form(
                   key: emailLoginFormKey,
                   child: Padding(
@@ -584,6 +585,7 @@ class _LoginPageState extends State<LoginPage> {
               MyCollapseContainer(
                 width: width,
                 text: 'Phone Number',
+                isExpanded: false,
                 children: Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: width * 0.0125,
@@ -696,7 +698,7 @@ class _LoginPageState extends State<LoginPage> {
                       Navigator.of(context).pop();
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: ((context) => RegisterPayPage()),
+                          builder: ((context) => RegisterMethodPage()),
                         ),
                       );
                     },

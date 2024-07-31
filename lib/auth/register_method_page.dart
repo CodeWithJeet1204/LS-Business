@@ -325,9 +325,11 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                 ),
                 SizedBox(height: width * 0.3),
 
+                // EMAIL
                 MyCollapseContainer(
                   width: MediaQuery.of(context).size.width,
                   text: 'Email',
+                  isExpanded: false,
                   children: Padding(
                     padding: EdgeInsets.all(width * 0.0225),
                     child: Form(
@@ -386,6 +388,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                 MyCollapseContainer(
                   width: MediaQuery.of(context).size.width,
                   text: 'Phone Number',
+                  isExpanded: false,
                   children: Padding(
                     padding: EdgeInsets.all(width * 0.0225),
                     child: Form(

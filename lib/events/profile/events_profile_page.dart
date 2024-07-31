@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
+import 'package:localy/auth/login_page.dart';
 import 'package:localy/events/profile/add_event/events_add_event_page_1.dart';
 import 'package:localy/events/profile/work_images/events_add_work_images_page.dart';
 import 'package:localy/events/profile/events_all_events_page.dart';
 import 'package:localy/events/profile/events_details_page.dart';
 import 'package:localy/events/profile/work_images/events_work_images_page.dart';
-import 'package:localy/select_mode_page.dart';
 import 'package:localy/vendors/utils/colors.dart';
 import 'package:localy/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -150,7 +150,7 @@ class _EventsProfilePageState extends State<EventsProfilePage> {
                   await auth.signOut().then(
                         (value) => Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
-                            builder: ((context) => const SelectModePage()),
+                            builder: ((context) => const LoginPage()),
                           ),
                           (route) => false,
                         ),
