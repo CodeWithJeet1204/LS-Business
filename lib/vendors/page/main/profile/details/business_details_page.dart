@@ -151,7 +151,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
 
   // GET ADDRESS
   Future<String> getAddress(double lat, double long) async {
-    const apiKey = 'AIzaSyCTzhOTUtdVUx0qpAbcXdn1TQKSmqtJbZM';
+    const apiKey = 'AIzaSyA-CD3MgDBzAsjmp_FlDbofynMMmW6fPsU';
     final apiUrl =
         'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$long&key=$apiKey';
 
