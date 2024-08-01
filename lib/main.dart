@@ -103,7 +103,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Localy Business',
+      title: 'Localsearch Business',
       theme: ThemeData(
         scaffoldBackgroundColor: primary,
         progressIndicatorTheme: const ProgressIndicatorThemeData(
@@ -222,4 +222,4 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// Idea: Paper print that available on Localy
+// Idea: Paper print that available on Localsearch

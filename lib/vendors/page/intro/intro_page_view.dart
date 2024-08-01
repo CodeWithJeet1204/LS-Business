@@ -60,7 +60,7 @@ class _IntroPageViewState extends State<IntroPageView> {
             },
             children: const [
               MyPageView(
-                text: 'Why\nLocaly ?',
+                text: 'Why\nLocalsearch ?',
                 animation:
                     'https://lottie.host/42f81d17-142d-477a-a114-0e8fd17cf3d1/BtWfHFygeT.json',
                 textColor: Color.fromARGB(255, 12, 0, 104),

@@ -1,4 +1,4 @@
-# Localy
+# Localsearcy
 
 A Startup Idea, which will help local vendors to upload their store products on this app
 

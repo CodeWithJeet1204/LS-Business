@@ -61,13 +61,14 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'files/Localy Transparent.png',
+              'files/Localsearch Transparent.png',
               width: width * 0.5,
             ),
             SizedBox(height: width * 0.25),
             Text(
+              'Localsearch',
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              'Localy',
               style: TextStyle(
                 color: primaryDark2,
                 fontSize: width * 0.08875,
