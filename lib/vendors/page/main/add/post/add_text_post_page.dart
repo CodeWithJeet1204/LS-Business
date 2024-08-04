@@ -42,6 +42,7 @@ class _AddTextPostPageState extends State<AddTextPostPage> {
           'postProductDescription': null,
           'postProductBrand': null,
           'postProductImages': null,
+          'postImages': null,
           'post': postController.text,
           'postId': postId,
           'postVendorId': auth.currentUser!.uid,

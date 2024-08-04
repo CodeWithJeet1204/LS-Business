@@ -532,7 +532,7 @@ Map<String, Map<String, List<String>>> householdTypeCategorySubCategory = {
       'Beard Balm/Oil',
       'Other Beard Beauty & Care Items',
     ],
-    'Tools & Accessories': [
+    'Beauty Tools & Accessories': [
       'Combs',
       'Hair Ties',
       'Hair Clips',
@@ -899,7 +899,7 @@ Map<String, Map<String, List<String>>> householdTypeCategorySubCategory = {
     ],
   },
   'Foot Wear': {
-    'Men': [
+    'Men Foot Wear': [
       'Men Sneakers',
       'Men Loafers',
       'Men Boots',
@@ -922,7 +922,7 @@ Map<String, Map<String, List<String>>> householdTypeCategorySubCategory = {
       'Men Mules',
       'Other Men Footwear',
     ],
-    'Women': [
+    'Women Foot Wear': [
       'Women Sneakers',
       'Women Loafers',
       'Women Boots',
@@ -945,7 +945,7 @@ Map<String, Map<String, List<String>>> householdTypeCategorySubCategory = {
       'Women Mules',
       'Other Women Footwear',
     ],
-    'Kids': [
+    'Kids Foot Wear': [
       'Kids Sneakers',
       'Kids Loafers',
       'Kids Boots',

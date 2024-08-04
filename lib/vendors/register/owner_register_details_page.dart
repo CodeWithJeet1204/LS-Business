@@ -121,7 +121,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                   children: [
                     // NAME
                     MyTextFormField(
-                      hintText: 'Your Name (Name on AADHAR CARD)',
+                      hintText: 'Your Name (Name on AADHAAR CARD)',
                       controller: nameController,
                       borderRadius: 12,
                       horizontalPadding: width * 0.055,

@@ -203,6 +203,15 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
     });
 
     try {
+      final snap = await store
+          .collection('Business')
+          .doc('Owners')
+          .collection('Shops')
+          .doc(auth.currentUser!.uid)
+          .get();
+
+      print('exists: ${snap.exists}');
+
       await store
           .collection('Business')
           .doc('Owners')

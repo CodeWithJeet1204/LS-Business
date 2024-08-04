@@ -117,7 +117,7 @@ class _MainPageState extends State<MainPage> {
             detailsPage = const BusinessRegisterDetailsPage();
           } else if (getBusinessDetailsAdded['Name'] != null &&
                   getBusinessDetailsAdded['GSTNumber'] == null ||
-              getBusinessDetailsAdded['AadharNumber'] == null) {
+              getBusinessDetailsAdded['AadhaarNumber'] == null) {
             detailsPage = const BusinessVerificationPage();
           } else if (getBusinessDetailsAdded['GSTNumber'] != null &&
               getBusinessDetailsAdded['Type'] == null) {

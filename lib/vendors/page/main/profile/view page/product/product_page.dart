@@ -951,7 +951,7 @@ class _ProductPageState extends State<ProductPage> {
                       final int likes =
                           (productData['productLikesTimestamp'] as Map).length;
                       final int shares = productData['productShares'];
-                      final int views = productData['productViews'];
+                      final List views = productData['productViewsTimestamp'];
                       final int wishList = productData['productWishlist'];
 
                       final String? shortsThumbnail =
@@ -1221,7 +1221,8 @@ class _ProductPageState extends State<ProductPage> {
                                                   color: white.withOpacity(0.5),
                                                   borderRadius:
                                                       BorderRadius.circular(
-                                                          100),
+                                                    100,
+                                                  ),
                                                 ),
                                                 child: Icon(
                                                   Icons.play_arrow_rounded,
@@ -2037,7 +2038,7 @@ class _ProductPageState extends State<ProductPage> {
                                 InfoColorBox(
                                   text: 'VIEWS',
                                   width: width,
-                                  property: views,
+                                  property: views.length,
                                   color: const Color.fromRGBO(255, 248, 184, 1),
                                 ),
                               ],

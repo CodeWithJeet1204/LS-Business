@@ -20,6 +20,7 @@ class _AnalyticsPageState extends State<AnalyticsPage>
       vsync: this,
       animationDuration: const Duration(milliseconds: 400),
     );
+    
     return Scaffold(
       backgroundColor: primary,
       appBar: AppBar(
