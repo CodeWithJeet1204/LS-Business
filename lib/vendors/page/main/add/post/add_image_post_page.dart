@@ -104,7 +104,6 @@ class _AddImagePostPageState extends State<AddImagePostPage> {
           'postCategoryName': null,
           'postProductDescription': null,
           'postProductBrand': null,
-          'postProductImages': null,
           'postImages': imageDownloadUrl,
           'post': postController.text,
           'postId': postId,

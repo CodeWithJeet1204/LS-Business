@@ -1,3 +1,4 @@
+import 'package:Localsearch/vendors/page/main/profile/view%20page/shorts/all_shorts_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:Localsearch/auth/login_page.dart';
@@ -204,6 +205,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   //       });
                   //     });
                   //   }
+
                   //   Future<void> addHouseholdSpecialCategories(
                   //     String shopType,
                   //   ) async {
@@ -224,6 +226,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   //       });
                   //     });
                   //   }
+
                   //   Future<void> addAllSpecialCategories() async {
                   //     // await Future.forEach(businessSubCategories.keys,
                   //     //     (shopType) async {
@@ -235,6 +238,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   //       await addHouseholdSpecialCategories(shopType);
                   //     });
                   //   }
+
                   //   await addAllSpecialCategories();
                   // },
 
@@ -416,6 +420,20 @@ class _ProfilePageState extends State<ProfilePage> {
                               text: 'POSTS',
                               onPressed: () {
                                 Navigator.of(context).pushNamed('/postsPage');
+                              },
+                              width: width,
+                            ),
+                            const SizedBox(height: 16),
+
+                            // SHORTS
+                            SmallTextContainer(
+                              text: 'SHORTS',
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => AllShortsPage(),
+                                  ),
+                                );
                               },
                               width: width,
                             ),

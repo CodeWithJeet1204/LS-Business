@@ -20,8 +20,14 @@ class _AllPostsPageState extends State<AllPostsPage> {
   final store = FirebaseFirestore.instance;
   final storage = FirebaseStorage.instance;
   final searchController = TextEditingController();
-  Map<String, Map<String, dynamic>> allPosts = {};
+  // Map<String, Map<String, dynamic>> allPosts = {};
   Map<String, Map<String, dynamic>> currentPosts = {};
+  Map<String, Map<String, dynamic>> linkedTextPosts = {};
+  Map<String, Map<String, dynamic>> linkedImagePosts = {};
+  Map<String, Map<String, dynamic>> unlinkedTextPosts = {};
+  Map<String, Map<String, dynamic>> unlinkedImagePosts = {};
+  String type = 'Image';
+  String link = 'Linked';
   bool isGridView = true;
   String? searchedProduct;
   bool isData = false;
@@ -42,8 +48,6 @@ class _AllPostsPageState extends State<AllPostsPage> {
 
   // GET DATA
   Future<void> getData() async {
-    Map<String, Map<String, dynamic>> myPosts = {};
-
     final postsSnap = await store
         .collection('Business')
         .doc('Data')
@@ -51,15 +55,46 @@ class _AllPostsPageState extends State<AllPostsPage> {
         .where('postVendorId', isEqualTo: auth.currentUser!.uid)
         .get();
 
-    for (var postData in postsSnap.docs) {
-      final postId = postData.id;
+    for (var post in postsSnap.docs) {
+      final postId = post.id;
 
-      myPosts[postId] = postData.data();
+      final postData = post.data();
+
+      final isLinked = postData['isLinked'];
+      final isTextPost = postData['isTextPost'];
+
+      if (isLinked) {
+        if (isTextPost) {
+          linkedTextPosts[postId] = postData;
+        } else {
+          linkedImagePosts[postId] = postData;
+        }
+      } else {
+        if (isTextPost) {
+          unlinkedTextPosts[postId] = postData;
+        } else {
+          unlinkedImagePosts[postId] = postData;
+        }
+      }
     }
 
+    // for (var map in [
+    //   linkedTextPosts,
+    //   unlinkedTextPosts,
+    //   linkedImagePosts,
+    //   unlinkedImagePosts,
+    // ]) {
+    //   map.forEach((key, value) {
+    //     if (allPosts.containsKey(key)) {
+    //       allPosts[key]?.addAll(value);
+    //     } else {
+    //       allPosts[key] = value;
+    //     }
+    //   });
+    // }
+
     setState(() {
-      allPosts = myPosts;
-      currentPosts = myPosts;
+      currentPosts = linkedImagePosts;
       isData = true;
     });
   }
@@ -167,6 +202,25 @@ class _AllPostsPageState extends State<AllPostsPage> {
     );
   }
 
+  // UPDATE CURRENT POSTS
+  void updateCurrentPosts() {
+    setState(() {
+      if (link == 'Linked') {
+        if (type == 'Image') {
+          currentPosts = linkedImagePosts;
+        } else {
+          currentPosts = linkedTextPosts;
+        }
+      } else {
+        if (type == 'Image') {
+          currentPosts = unlinkedImagePosts;
+        } else {
+          currentPosts = unlinkedTextPosts;
+        }
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -179,71 +233,95 @@ class _AllPostsPageState extends State<AllPostsPage> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
-        bottom: PreferredSize(
-          preferredSize: Size(
-            MediaQuery.of(context).size.width,
-            80,
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(
-              MediaQuery.of(context).size.width * 0.0125,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: searchController,
-                    autocorrect: false,
-                    onTapOutside: (event) => FocusScope.of(context).unfocus(),
-                    decoration: const InputDecoration(
-                      hintText: 'Search ...',
-                      border: OutlineInputBorder(),
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        if (value.isEmpty) {
-                          currentPosts =
-                              Map<String, Map<String, dynamic>>.from(allPosts);
-                        } else {
-                          Map<String, Map<String, dynamic>> filteredPosts =
-                              Map<String, Map<String, dynamic>>.from(allPosts);
-                          List<String> keysToRemove = [];
+        // bottom: PreferredSize(
+        //   preferredSize: Size(
+        //     MediaQuery.of(context).size.width,
+        //     80,
+        //   ),
+        //   child: Padding(
+        //     padding: EdgeInsets.all(
+        //       MediaQuery.of(context).size.width * 0.0125,
+        //     ),
+        //     child: Row(
+        //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //       children: [
+        //         Expanded(
+        //           child: TextField(
+        //             controller: searchController,
+        //             autocorrect: false,
+        //             onTapOutside: (event) => FocusScope.of(context).unfocus(),
+        //             decoration: const InputDecoration(
+        //               hintText: 'Search ...',
+        //               border: OutlineInputBorder(),
+        //             ),
+        //             onChanged: (value) {
+        //               setState(() {
+        //                 if (value.isEmpty) {
+        //                   currentPosts = Map<String, Map<String, dynamic>>.from(
+        //                     type == 'Image'
+        //                         ? link == 'Linked'
+        //                             ? linkedImagePosts
+        //                             : unlinkedImagePosts
+        //                         : link == 'Unlinked'
+        //                             ? unlinkedTextPosts
+        //                             : linkedTextPosts,
+        //                   );
+        //                 } else {
+        //                   Map<String, Map<String, dynamic>> filteredPosts =
+        //                       Map<String, Map<String, dynamic>>.from(
+        //                     type == 'Image'
+        //                         ? link == 'Linked'
+        //                             ? linkedImagePosts
+        //                             : unlinkedImagePosts
+        //                         : link == 'Unlinked'
+        //                             ? unlinkedTextPosts
+        //                             : linkedTextPosts,
+        //                   );
+        //                   List<String> keysToRemove = [];
+        //                   filteredPosts.forEach((key, postData) {
+        //                     if (!postData['postProductName']
+        //                         .toString()
+        //                         .toLowerCase()
+        //                         .contains(value.toLowerCase().trim())) {
+        //                       // ignore: unnecessary_null_comparison
+        //                       if (!postData['post'] != null &&
+        //                           !postData['post']
+        //                               .toString()
+        //                               .toLowerCase()
+        //                               .contains(value.toLowerCase().trim())) {
+        //                         keysToRemove.add(key);
+        //                       } else {
+        //                         keysToRemove.add(key);
+        //                       }
+        //                     }
+        //                   });
+        //                   for (var key in keysToRemove) {
+        //                     filteredPosts.remove(key);
+        //                   }
 
-                          filteredPosts.forEach((key, postData) {
-                            if (!postData['postProductName']
-                                .toString()
-                                .toLowerCase()
-                                .contains(value.toLowerCase().trim())) {
-                              keysToRemove.add(key);
-                            }
-                          });
-
-                          for (var key in keysToRemove) {
-                            filteredPosts.remove(key);
-                          }
-
-                          currentPosts = filteredPosts;
-                        }
-                      });
-                    },
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      isGridView = !isGridView;
-                    });
-                  },
-                  icon: Icon(
-                    isGridView ? FeatherIcons.list : FeatherIcons.grid,
-                  ),
-                  tooltip: isGridView ? 'List View' : 'Grid View',
-                ),
-              ],
-            ),
-          ),
-        ),
+        //                   setState(() {
+        //                     currentPosts = filteredPosts;
+        //                   });
+        //                 }
+        //               });
+        //             },
+        //           ),
+        //         ),
+        //         IconButton(
+        //           onPressed: () {
+        //             setState(() {
+        //               isGridView = !isGridView;
+        //             });
+        //           },
+        //           icon: Icon(
+        //             isGridView ? FeatherIcons.list : FeatherIcons.grid,
+        //           ),
+        //           tooltip: isGridView ? 'List View' : 'Grid View',
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        // ),
       ),
       body: !isData
           ? SafeArea(
@@ -270,360 +348,536 @@ class _AllPostsPageState extends State<AllPostsPage> {
                 },
               ),
             )
-          : currentPosts.isEmpty
-              ? const Center(
-                  child: Text('No Posts'),
-                )
-              : Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * 0.0125,
-                  ),
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      double width = constraints.maxWidth;
+          : SafeArea(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * 0.0125,
+                ),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    double width = constraints.maxWidth;
 
-                      return isGridView
-                          ? GridView.builder(
-                              shrinkWrap: true,
-                              physics: const ClampingScrollPhysics(),
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                childAspectRatio: 0.725,
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(width * 0.0125),
+                              child: ActionChip(
+                                label: Text(
+                                  'Image',
+                                  style: TextStyle(
+                                    color:
+                                        type == 'Image' ? white : primaryDark,
+                                  ),
+                                ),
+                                tooltip: 'Select Image',
+                                onPressed: () {
+                                  setState(() {
+                                    type = 'Image';
+                                  });
+                                  updateCurrentPosts();
+                                },
+                                backgroundColor:
+                                    type == 'Image' ? primaryDark : primary2,
                               ),
-                              itemCount: currentPosts.length,
-                              itemBuilder: ((context, index) {
-                                final postData = currentPosts[
-                                    currentPosts.keys.toList()[index]]!;
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(width * 0.0125),
+                              child: ActionChip(
+                                label: Text(
+                                  'Text',
+                                  style: TextStyle(
+                                    color: type == 'Text' ? white : primaryDark,
+                                  ),
+                                ),
+                                tooltip: 'Select Text',
+                                onPressed: () {
+                                  setState(() {
+                                    type = 'Text';
+                                  });
+                                  updateCurrentPosts();
+                                },
+                                backgroundColor:
+                                    type == 'Text' ? primaryDark : primary2,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Divider(
+                          height: 0,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(width * 0.0125),
+                              child: ActionChip(
+                                label: Text(
+                                  'Linked',
+                                  style: TextStyle(
+                                    color:
+                                        link == 'Linked' ? white : primaryDark,
+                                  ),
+                                ),
+                                tooltip: 'Select Linked',
+                                onPressed: () {
+                                  setState(() {
+                                    link = 'Linked';
+                                  });
+                                  updateCurrentPosts();
+                                },
+                                backgroundColor:
+                                    link == 'Linked' ? primaryDark : primary2,
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(width * 0.0125),
+                              child: ActionChip(
+                                label: Text(
+                                  'Unlinked',
+                                  style: TextStyle(
+                                    color: link == 'Unlinked'
+                                        ? white
+                                        : primaryDark,
+                                  ),
+                                ),
+                                tooltip: 'Select Unlinked',
+                                onPressed: () {
+                                  setState(() {
+                                    link = 'Unlinked';
+                                  });
+                                  updateCurrentPosts();
+                                },
+                                backgroundColor:
+                                    link == 'Unlinked' ? primaryDark : primary2,
+                              ),
+                            ),
+                          ],
+                        ),
+                        currentPosts.isEmpty
+                            ? SizedBox(
+                                height: 80,
+                                child: const Center(
+                                  child: Text('No Posts'),
+                                ),
+                              )
+                            : SizedBox(
+                                width: width,
+                                child: isGridView
+                                    ? GridView.builder(
+                                        shrinkWrap: true,
+                                        physics: const ClampingScrollPhysics(),
+                                        gridDelegate:
+                                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2,
+                                          childAspectRatio: 0.725,
+                                        ),
+                                        itemCount: currentPosts.length,
+                                        itemBuilder: ((context, index) {
+                                          final postData = currentPosts[
+                                              currentPosts.keys
+                                                  .toList()[index]]!;
 
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: ((context) => PostPage(
-                                              postId: postData['postId'],
-                                              productId:
-                                                  postData['postProductId'],
-                                              productName:
-                                                  postData['postProductName'],
-                                              categoryName:
-                                                  postData['postCategoryName'],
-                                            )),
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: primary2.withOpacity(0.125),
-                                      border: Border.all(
-                                        width: 0.25,
-                                        color: primaryDark,
-                                      ),
-                                      borderRadius: BorderRadius.circular(2),
-                                    ),
-                                    margin: EdgeInsets.all(width * 0.00625),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        postData['postProductImages'] != null
-                                            // ? CachedNetworkImage(
-                                            //     imageUrl:
-                                            //         postData['postProductImages']
-                                            //             [0],
-                                            //     imageBuilder:
-                                            //         (context, imageProvider) {
-                                            //       return Center(
-                                            //         child: ClipRRect(
-                                            //           borderRadius:
-                                            //               BorderRadius.circular(
-                                            //             12,
-                                            //           ),
-                                            //           child: Container(
-                                            //             width: width * 0.4125,
-                                            //             height: width * 0.4125,
-                                            //             decoration: BoxDecoration(
-                                            //               image: DecorationImage(
-                                            //                 image: imageProvider,
-                                            //                 fit: BoxFit.cover,
-                                            //               ),
-                                            //             ),
-                                            //           ),
-                                            //         ),
-                                            //       );
-                                            //     },
-                                            //   )
-                                            ? Padding(
-                                                padding: EdgeInsets.all(
-                                                  width * 0.00625,
+                                          return GestureDetector(
+                                            onTap: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: ((context) =>
+                                                      PostPage(
+                                                        postId:
+                                                            postData['postId'],
+                                                        productId: postData[
+                                                            'postProductId'],
+                                                        productName: postData[
+                                                            'postProductName'],
+                                                        categoryName: postData[
+                                                            'postCategoryName'],
+                                                      )),
                                                 ),
-                                                child: Center(
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                      2,
-                                                    ),
-                                                    child: Image.network(
-                                                      postData[
-                                                          'postProductImages'][0],
-                                                      width: width * 0.5,
-                                                      height: width * 0.5,
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
+                                              );
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color:
+                                                    primary2.withOpacity(0.125),
+                                                border: Border.all(
+                                                  width: 0.25,
+                                                  color: primaryDark,
                                                 ),
-                                              )
-                                            : postData['isTextPost'] &&
-                                                    !postData['isLinked']
-                                                ? Container()
-                                                : SizedBox(
-                                                    width: width * 0.5,
-                                                    height: width * 0.5,
-                                                    child: const Center(
-                                                      child: Text(
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        'No Image',
-                                                        style: TextStyle(
-                                                          color: primaryDark2,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsets.fromLTRB(
-                                                    width * 0.025,
-                                                    width * 0.0125,
-                                                    width * 0.0125,
-                                                    0,
-                                                  ),
-                                                  child: SizedBox(
-                                                    width: width * 0.275,
-                                                    child: Text(
-                                                      !postData['isLinked']
-                                                          ? postData['post']
-                                                          : postData[
-                                                              'postProductName'],
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      maxLines:
-                                                          !postData['isLinked']
-                                                              ? 8
-                                                              : 1,
-                                                      style: TextStyle(
-                                                        fontSize: width * 0.05,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.fromLTRB(
-                                                    width * 0.025,
-                                                    0,
-                                                    width * 0.0125,
-                                                    0,
-                                                  ),
-                                                  child: !postData['isLinked']
-                                                      ? Container()
-                                                      : Text(
-                                                          postData['postProductPrice'] !=
-                                                                      '' &&
-                                                                  postData[
-                                                                          'postProductPrice'] !=
-                                                                      null
-                                                              ? postData[
-                                                                  'postProductPrice']
-                                                              : 'N/A',
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          maxLines: 1,
-                                                          style: TextStyle(
-                                                            fontSize:
-                                                                width * 0.045,
-                                                            fontWeight:
-                                                                FontWeight.w600,
+                                                borderRadius:
+                                                    BorderRadius.circular(2),
+                                              ),
+                                              margin: EdgeInsets.all(
+                                                  width * 0.00625),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  // postData['postImages'] !=
+                                                  //         null
+                                                  // ? CachedNetworkImage(
+                                                  //     imageUrl:
+                                                  //         postData['postImages']
+                                                  //             [0],
+                                                  //     imageBuilder:
+                                                  //         (context, imageProvider) {
+                                                  //       return Center(
+                                                  //         child: ClipRRect(
+                                                  //           borderRadius:
+                                                  //               BorderRadius.circular(
+                                                  //             12,
+                                                  //           ),
+                                                  //           child: Container(
+                                                  //             width: width * 0.4125,
+                                                  //             height: width * 0.4125,
+                                                  //             decoration: BoxDecoration(
+                                                  //               image: DecorationImage(
+                                                  //                 image: imageProvider,
+                                                  //                 fit: BoxFit.cover,
+                                                  //               ),
+                                                  //             ),
+                                                  //           ),
+                                                  //         ),
+                                                  //       );
+                                                  //     },
+                                                  //   )
+                                                  currentPosts ==
+                                                              linkedImagePosts ||
+                                                          currentPosts ==
+                                                              unlinkedImagePosts
+                                                      ? Padding(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                            width * 0.00625,
                                                           ),
+                                                          child: Center(
+                                                            child: ClipRRect(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                2,
+                                                              ),
+                                                              child:
+                                                                  Image.network(
+                                                                postData[
+                                                                    'postImages'][0],
+                                                                width:
+                                                                    width * 0.5,
+                                                                height:
+                                                                    width * 0.5,
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : postData['isTextPost'] &&
+                                                              !postData[
+                                                                  'isLinked']
+                                                          ? Container()
+                                                          : SizedBox(
+                                                              width:
+                                                                  width * 0.5,
+                                                              height:
+                                                                  width * 0.5,
+                                                              child:
+                                                                  const Center(
+                                                                child: Text(
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  'No Image',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color:
+                                                                        primaryDark2,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                  SizedBox(
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .fromLTRB(
+                                                                width * 0.025,
+                                                                width * 0.0125,
+                                                                width * 0.0125,
+                                                                0,
+                                                              ),
+                                                              child: SizedBox(
+                                                                width: width *
+                                                                    0.275,
+                                                                child: Text(
+                                                                  !postData[
+                                                                          'isLinked']
+                                                                      ? postData[
+                                                                          'post']
+                                                                      : postData[
+                                                                          'postProductName'],
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  maxLines:
+                                                                      !postData[
+                                                                              'isLinked']
+                                                                          ? 8
+                                                                          : 1,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        width *
+                                                                            0.05,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .fromLTRB(
+                                                                width * 0.025,
+                                                                0,
+                                                                width * 0.0125,
+                                                                0,
+                                                              ),
+                                                              child: !postData[
+                                                                      'isLinked']
+                                                                  ? Container()
+                                                                  : Text(
+                                                                      postData['postProductPrice'] != '' &&
+                                                                              postData['postProductPrice'] !=
+                                                                                  null
+                                                                          ? postData[
+                                                                              'postProductPrice']
+                                                                          : 'N/A',
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
+                                                                      maxLines:
+                                                                          1,
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontSize:
+                                                                            width *
+                                                                                0.045,
+                                                                        fontWeight:
+                                                                            FontWeight.w600,
+                                                                      ),
+                                                                    ),
+                                                            ),
+                                                          ],
                                                         ),
-                                                ),
-                                              ],
+                                                        IconButton(
+                                                          onPressed: () async {
+                                                            await confirmDelete(
+                                                              postData[
+                                                                  'postId'],
+                                                              postData[
+                                                                  'isTextPost'],
+                                                            );
+                                                          },
+                                                          icon: Icon(
+                                                            FeatherIcons.trash,
+                                                            color: Colors.red,
+                                                            size: width * 0.08,
+                                                          ),
+                                                          tooltip:
+                                                              'Delete Post',
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                            IconButton(
-                                              onPressed: () async {
-                                                await confirmDelete(
-                                                  postData['postId'],
-                                                  postData['isTextPost'],
+                                          );
+                                        }),
+                                      )
+                                    : SizedBox(
+                                        width: width,
+                                        child: ListView.builder(
+                                          shrinkWrap: true,
+                                          physics:
+                                              const ClampingScrollPhysics(),
+                                          itemCount: currentPosts.length,
+                                          itemBuilder: ((context, index) {
+                                            final postData = currentPosts[
+                                                currentPosts.keys
+                                                    .toList()[index]]!;
+
+                                            return GestureDetector(
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: ((context) =>
+                                                        PostPage(
+                                                          postId: postData[
+                                                              'postId'],
+                                                          productId: postData[
+                                                              'postProductId'],
+                                                          productName: postData[
+                                                              'postProductName'],
+                                                          categoryName: postData[
+                                                              'postCategoryName'],
+                                                        )),
+                                                  ),
                                                 );
                                               },
-                                              icon: Icon(
-                                                FeatherIcons.trash,
-                                                color: Colors.red,
-                                                size: width * 0.08,
-                                              ),
-                                              tooltip: 'Delete Post',
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              }),
-                            )
-                          : SizedBox(
-                              width: width,
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                physics: const ClampingScrollPhysics(),
-                                itemCount: currentPosts.length,
-                                itemBuilder: ((context, index) {
-                                  final postData = currentPosts[
-                                      currentPosts.keys.toList()[index]]!;
-
-                                  return GestureDetector(
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: ((context) => PostPage(
-                                                postId: postData['postId'],
-                                                productId:
-                                                    postData['postProductId'],
-                                                productName:
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: white,
+                                                  border: Border.all(
+                                                    width: 0.5,
+                                                    color: primaryDark,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(2),
+                                                ),
+                                                margin: EdgeInsets.all(
+                                                  width * 0.0125,
+                                                ),
+                                                child: ListTile(
+                                                  visualDensity:
+                                                      VisualDensity.standard,
+                                                  leading: postData[
+                                                              'postImages'] !=
+                                                          null
+                                                      // ? CachedNetworkImage(
+                                                      //     imageUrl:
+                                                      //         postData['postImages']
+                                                      //             [0],
+                                                      //     imageBuilder:
+                                                      //         (context, imageProvider) {
+                                                      //       return ClipRRect(
+                                                      //         borderRadius:
+                                                      //             BorderRadius.circular(
+                                                      //           2,
+                                                      //         ),
+                                                      //         child: Container(
+                                                      //           width: width * 0.15,
+                                                      //           height: width * 0.15,
+                                                      //           decoration: BoxDecoration(
+                                                      //             image: DecorationImage(
+                                                      //               image: imageProvider,
+                                                      //               fit: BoxFit.cover,
+                                                      //             ),
+                                                      //           ),
+                                                      //         ),
+                                                      //       );
+                                                      //     },
+                                                      //   )
+                                                      ? ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                            2,
+                                                          ),
+                                                          child: Image.network(
+                                                            postData[
+                                                                'postImages'][0],
+                                                            width: width * 0.15,
+                                                            height:
+                                                                width * 0.15,
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        )
+                                                      : SizedBox(
+                                                          width: width * 0.15,
+                                                          height: width * 0.15,
+                                                          child: const Center(
+                                                            child: Text(
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              'No Image',
+                                                              style: TextStyle(
+                                                                color:
+                                                                    primaryDark2,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                  title: Text(
                                                     postData['postProductName'],
-                                                categoryName: postData[
-                                                    'postCategoryName'],
-                                              )),
-                                        ),
-                                      );
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: white,
-                                        border: Border.all(
-                                          width: 0.5,
-                                          color: primaryDark,
-                                        ),
-                                        borderRadius: BorderRadius.circular(2),
-                                      ),
-                                      margin: EdgeInsets.all(
-                                        width * 0.0125,
-                                      ),
-                                      child: ListTile(
-                                        visualDensity: VisualDensity.standard,
-                                        leading: postData[
-                                                    'postProductImages'] !=
-                                                null
-                                            // ? CachedNetworkImage(
-                                            //     imageUrl:
-                                            //         postData['postProductImages']
-                                            //             [0],
-                                            //     imageBuilder:
-                                            //         (context, imageProvider) {
-                                            //       return ClipRRect(
-                                            //         borderRadius:
-                                            //             BorderRadius.circular(
-                                            //           2,
-                                            //         ),
-                                            //         child: Container(
-                                            //           width: width * 0.15,
-                                            //           height: width * 0.15,
-                                            //           decoration: BoxDecoration(
-                                            //             image: DecorationImage(
-                                            //               image: imageProvider,
-                                            //               fit: BoxFit.cover,
-                                            //             ),
-                                            //           ),
-                                            //         ),
-                                            //       );
-                                            //     },
-                                            //   )
-                                            ? ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                  2,
-                                                ),
-                                                child: Image.network(
-                                                  postData['postProductImages']
-                                                      [0],
-                                                  width: width * 0.15,
-                                                  height: width * 0.15,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              )
-                                            : SizedBox(
-                                                width: width * 0.15,
-                                                height: width * 0.15,
-                                                child: const Center(
-                                                  child: Text(
+                                                    maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
-                                                    'No Image',
                                                     style: TextStyle(
-                                                      color: primaryDark2,
-                                                      fontWeight:
-                                                          FontWeight.w500,
+                                                      fontSize: width * 0.05,
                                                     ),
+                                                  ),
+                                                  subtitle: Text(
+                                                    postData['postProductPrice'] !=
+                                                                '' &&
+                                                            postData[
+                                                                    'postProductPrice'] !=
+                                                                null
+                                                        ? 'Rs. ${postData['postProductPrice']}'
+                                                        : 'N/A',
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      fontSize: width * 0.045,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                  trailing: IconButton(
+                                                    onPressed: () async {
+                                                      await confirmDelete(
+                                                        postData['postId'],
+                                                        postData['isTextPost'],
+                                                      );
+                                                    },
+                                                    icon: Icon(
+                                                      FeatherIcons.trash,
+                                                      color: Colors.red,
+                                                      size: width * 0.075,
+                                                    ),
+                                                    tooltip: 'Delete Post',
                                                   ),
                                                 ),
                                               ),
-                                        title: Text(
-                                          postData['postProductName'],
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: width * 0.05,
-                                          ),
-                                        ),
-                                        subtitle: Text(
-                                          postData['postProductPrice'] != '' &&
-                                                  postData[
-                                                          'postProductPrice'] !=
-                                                      null
-                                              ? 'Rs. ${postData['postProductPrice']}'
-                                              : 'N/A',
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: width * 0.045,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                        trailing: IconButton(
-                                          onPressed: () async {
-                                            await confirmDelete(
-                                              postData['postId'],
-                                              postData['isTextPost'],
                                             );
-                                          },
-                                          icon: Icon(
-                                            FeatherIcons.trash,
-                                            color: Colors.red,
-                                            size: width * 0.075,
-                                          ),
-                                          tooltip: 'Delete Post',
+                                          }),
                                         ),
                                       ),
-                                    ),
-                                  );
-                                }),
                               ),
-                            );
-                    },
-                  ),
+                      ],
+                    );
+                  },
                 ),
+              ),
+            ),
     );
   }
 }

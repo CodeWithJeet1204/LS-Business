@@ -876,7 +876,41 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                 child: SizedBox(
                                   width: width * 0.875,
                                   child: AutoSizeText(
-                                    shopData['GSTNumber'] ?? 'GST Number: N/A',
+                                    shopData['GSTNumber'] == '' ||
+                                            shopData['GSTNumber'] == null
+                                        ? 'GST Number: N/A'
+                                        : 'GST: ${shopData['GSTNumber']}',
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 14),
+
+                            // AADHAR
+                            Container(
+                              width: width,
+                              height: width * 0.16,
+                              alignment: Alignment.centerLeft,
+                              decoration: BoxDecoration(
+                                color: primary2.withOpacity(0.9),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  left: width * 0.055,
+                                ),
+                                child: SizedBox(
+                                  width: width * 0.875,
+                                  child: AutoSizeText(
+                                    shopData['AadhaarNumber'] == '' ||
+                                            shopData['AadhaarNumber'] == null
+                                        ? 'Aadhaar Number: N/A'
+                                        : 'Aadhaar: ${shopData['AadhaarNumber']}',
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
@@ -1065,6 +1099,8 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                 ),
                               ),
                             ),
+
+                            SizedBox(height: 16),
 
                             // SAVE & CANCEL BUTTON
                             Padding(

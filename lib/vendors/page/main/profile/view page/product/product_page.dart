@@ -452,7 +452,7 @@ class _ProductPageState extends State<ProductPage> {
                   .doc(doc.id)
                   .get();
 
-              final imageUrls = postData['postProductImages'] as List;
+              final imageUrls = postData['postImages'] as List;
               imageUrls.add(value);
 
               await store
@@ -461,7 +461,7 @@ class _ProductPageState extends State<ProductPage> {
                   .collection('Posts')
                   .doc(doc.id)
                   .update({
-                'postProductImages': imageUrls,
+                'postImages': imageUrls,
               });
             });
           });
@@ -555,7 +555,7 @@ class _ProductPageState extends State<ProductPage> {
           .doc(doc.id)
           .get();
 
-      final imageUrls = postData['postProductImages'] as List;
+      final imageUrls = postData['postImages'] as List;
       imageUrls.remove(e);
 
       await store
@@ -564,7 +564,7 @@ class _ProductPageState extends State<ProductPage> {
           .collection('Posts')
           .doc(doc.id)
           .update({
-        'postProductImages': imageUrls,
+        'postImages': imageUrls,
       });
     });
   }

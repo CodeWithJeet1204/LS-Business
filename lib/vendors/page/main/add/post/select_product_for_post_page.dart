@@ -171,9 +171,8 @@ class _SelectProductForPostPageState extends State<SelectProductForPostPage> {
               'postCategoryName': productSnap['categoryName'],
               'postProductDescription': productSnap['productDescription'],
               'postProductBrand': productSnap['productBrand'],
-              'postProductImages':
-                  widget.isTextPost ? null : productSnap['images'],
               'postVendorId': productSnap['vendorId'],
+              'postImages': widget.isTextPost ? null : productSnap['images'],
               'postViews': 0,
               'postLikes': 0,
               'postComments': {},

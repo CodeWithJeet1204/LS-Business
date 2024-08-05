@@ -275,7 +275,7 @@ class _PostPageState extends State<PostPage> {
                       final int views = postData['postViews'];
                       final Map comments = postData['postComments'];
                       final List images =
-                          isTextPost ? [] : postData['postProductImages'];
+                          isTextPost ? [] : postData['postImages'];
 
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
