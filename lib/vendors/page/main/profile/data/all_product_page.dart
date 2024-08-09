@@ -74,32 +74,17 @@ class _AllProductsPageState extends State<AllProductsPage> {
           .doc(productId)
           .delete();
 
-      final postSnap = await store
-          .collection('Business')
-          .doc('Data')
-          .collection('Posts')
-          .where('postProductId', isEqualTo: productId)
-          .get();
-
-      for (QueryDocumentSnapshot doc in postSnap.docs) {
-        await doc.reference.delete();
-      }
-
       final shortsSnap = await store
           .collection('Business')
           .doc('Data')
           .collection('Shorts')
-          .where('postProductId', isEqualTo: productId)
+          .where('productId', isEqualTo: productId)
           .get();
 
       // ignore: avoid_function_literals_in_foreach_calls
       shortsSnap.docs.forEach((short) async {
         await short.reference.delete();
       });
-
-      for (QueryDocumentSnapshot doc in postSnap.docs) {
-        await doc.reference.delete();
-      }
     } catch (e) {
       if (mounted) {
         return mySnackBar(context, e.toString());

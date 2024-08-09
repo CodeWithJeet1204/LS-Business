@@ -13,15 +13,9 @@ class PostPage extends StatefulWidget {
   const PostPage({
     super.key,
     required this.postId,
-    required this.productId,
-    required this.productName,
-    required this.categoryName,
   });
 
   final String postId;
-  final String? productId;
-  final String? productName;
-  final String? categoryName;
 
   @override
   State<PostPage> createState() => _PostPageState();
@@ -36,35 +30,7 @@ class _PostPageState extends State<PostPage> {
   // INIT STATE
   @override
   void initState() {
-    ifDiscount();
     super.initState();
-  }
-
-  // IF DISCOUNT
-  Future<void> ifDiscount() async {
-    final discount = await store
-        .collection('Business')
-        .doc('Data')
-        .collection('Discounts')
-        .where('vendorId', isEqualTo: auth.currentUser!.uid)
-        .get();
-
-    for (QueryDocumentSnapshot<Map<String, dynamic>> doc in discount.docs) {
-      final data = doc.data();
-      if ((data['products'] as List).contains(widget.productId) ||
-          (data['categories'] as List).contains(widget.categoryName)) {
-        if ((data['discountEndDateTime'] as Timestamp)
-                .toDate()
-                .isAfter(DateTime.now()) &&
-            !(data['discountStartDateTime'] as Timestamp)
-                .toDate()
-                .isAfter(DateTime.now())) {
-          setState(() {
-            isDiscount = true;
-          });
-        }
-      }
-    }
   }
 
   // DELETE POST
@@ -77,7 +43,7 @@ class _PostPageState extends State<PostPage> {
       int textPostRemaining = 0;
       int imagePostRemaining = 0;
 
-      final productData = await store
+      final vendorSnap = await store
           .collection('Business')
           .doc('Owners')
           .collection('Shops')
@@ -85,8 +51,8 @@ class _PostPageState extends State<PostPage> {
           .get();
 
       setState(() {
-        textPostRemaining = productData['noOfTextPosts'];
-        imagePostRemaining = productData['noOfImagePosts'];
+        textPostRemaining = vendorSnap['noOfTextPosts'];
+        imagePostRemaining = vendorSnap['noOfImagePosts'];
       });
 
       await store
@@ -134,7 +100,7 @@ class _PostPageState extends State<PostPage> {
             'Confirm DELETE',
           ),
           content: const Text(
-            'Are you sure you want to delete this Post\nProduct of this post will not be deleted',
+            'Are you sure you want to delete this Post',
           ),
           actions: [
             TextButton(
@@ -202,13 +168,6 @@ class _PostPageState extends State<PostPage> {
         .doc(widget.postId)
         .snapshots();
 
-    final discountPriceStream = store
-        .collection('Business')
-        .doc('Data')
-        .collection('Discounts')
-        .where('vendorId', isEqualTo: auth.currentUser!.uid)
-        .snapshots();
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -264,13 +223,7 @@ class _PostPageState extends State<PostPage> {
                     if (snapshot.hasData) {
                       final postData = snapshot.data!;
                       final bool isTextPost = postData['isTextPost'];
-                      final bool isLinked = postData['isLinked'];
-                      final String? name =
-                          postData[!isLinked ? 'post' : 'postProductName'];
-                      final String? brand = postData['postProductBrand'];
-                      final String? price = postData['postProductPrice'];
-                      final String? description =
-                          postData['postProductDescription'];
+                      final String? name = postData['post'];
                       final int likes = postData['postLikes'];
                       final int views = postData['postViews'];
                       final Map comments = postData['postComments'];
@@ -413,248 +366,6 @@ class _PostPageState extends State<PostPage> {
                                 ),
 
                           name == null ? Container() : const Divider(),
-
-                          // PRICE
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: width * 0.0175,
-                            ),
-                            child: isDiscount
-                                ? StreamBuilder(
-                                    stream: discountPriceStream,
-                                    builder: (context, snapshot) {
-                                      if (snapshot.hasError) {
-                                        return const Center(
-                                          child: Text(
-                                            'Something went wrong',
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        );
-                                      }
-
-                                      if (snapshot.hasData) {
-                                        final priceSnap = snapshot.data!;
-                                        Map<String, dynamic> data = {};
-                                        for (QueryDocumentSnapshot<
-                                                Map<String, dynamic>> doc
-                                            in priceSnap.docs) {
-                                          data = doc.data();
-                                        }
-
-                                        return Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            // PRICE
-                                            !isLinked
-                                                ? Container()
-                                                : Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                      horizontal: width * 0.028,
-                                                    ),
-                                                    child: RichText(
-                                                      maxLines: 2,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      text: TextSpan(
-                                                        text: price == '' ||
-                                                                price == null ||
-                                                                price == '0'
-                                                            ? ''
-                                                            : 'Rs. ',
-                                                        style: TextStyle(
-                                                          color: primaryDark,
-                                                          fontSize:
-                                                              width * 0.06,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                        children: [
-                                                          TextSpan(
-                                                            text: price == '' ||
-                                                                    price ==
-                                                                        null ||
-                                                                    price == '0'
-                                                                ? 'N/A (price)'
-                                                                : data['isPercent']
-                                                                    ? '${(double.parse(price) * (100 - (data['discountAmount'])) / 100).toStringAsFixed(2)}  '
-                                                                    : '${(double.parse(price) - (data['discountAmount'])).toStringAsFixed(2)}  ',
-                                                            style:
-                                                                const TextStyle(
-                                                              color:
-                                                                  Colors.green,
-                                                            ),
-                                                          ),
-                                                          TextSpan(
-                                                            text: price == ''
-                                                                ? 'N/A (price)'
-                                                                : price,
-                                                            style: TextStyle(
-                                                              fontSize:
-                                                                  width * 0.055,
-                                                              color: const Color
-                                                                  .fromRGBO(
-                                                                255,
-                                                                134,
-                                                                125,
-                                                                1,
-                                                              ),
-                                                              decoration:
-                                                                  TextDecoration
-                                                                      .lineThrough,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-
-                                            // DISCOUNT
-                                            !isLinked
-                                                ? Container()
-                                                : Padding(
-                                                    padding: EdgeInsets.only(
-                                                      left: width * 0.028,
-                                                    ),
-                                                    child: data['isPercent']
-                                                        ? Text(
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            '${data['discountAmount']}% off',
-                                                            style:
-                                                                const TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                            ),
-                                                          )
-                                                        : Text(
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            'Save Rs. ${data['discountAmount']}',
-                                                            style:
-                                                                const TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                            ),
-                                                          ),
-                                                  ),
-
-                                            // TIME
-                                            !isLinked
-                                                ? Container()
-                                                : Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                      horizontal: width * 0.028,
-                                                      vertical: width * 0.00625,
-                                                    ),
-                                                    child: Text(
-                                                      (data['discountEndDateTime']
-                                                                      as Timestamp)
-                                                                  .toDate()
-                                                                  .difference(
-                                                                      DateTime
-                                                                          .now())
-                                                                  .inHours <
-                                                              24
-                                                          ? '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inHours} Hours Left'''
-                                                          : '''${(data['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inDays} Days Left''',
-                                                      maxLines: 2,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: const TextStyle(
-                                                        color: Colors.red,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                    ),
-                                                  ),
-                                          ],
-                                        );
-                                      }
-
-                                      return const Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    })
-                                : !isLinked
-                                    ? Container()
-                                    : Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 10),
-                                        child: Text(
-                                          price == '' ||
-                                                  price == null ||
-                                                  price == '0'
-                                              ? 'N/A (price)'
-                                              : 'Rs. ${postData['postProductPrice']}',
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                            color: primaryDark,
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                          ),
-
-                          price == null ? Container() : const Divider(),
-
-                          // DESCRIPTION
-                          description == null || description.isEmpty
-                              ? Container()
-                              : Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    vertical: width * 0.0166,
-                                    horizontal: width * 0.0166,
-                                  ),
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                      vertical: width * 0.0225,
-                                      horizontal: width * 0.0225,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: primary.withOpacity(0.3),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: SizedBox(
-                                      width: width * 0.75,
-                                      child: Text(
-                                        description,
-                                        maxLines: 20,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          color: primaryDark,
-                                          fontSize: width * 0.0575,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-
-                          description == null || description.isEmpty
-                              ? Container()
-                              : const Divider(),
-
-                          // BRAND
-                          brand == null
-                              ? Container()
-                              : InfoBox(
-                                  text: 'BRAND',
-                                  value: brand,
-                                ),
-
-                          brand == null ? Container() : const Divider(),
 
                           // LIKES
                           InfoBox(

@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
+import 'package:carousel_slider/carousel_slider.dart' as cs;
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
@@ -22,7 +22,7 @@ class ImageView extends StatefulWidget {
 }
 
 class _ImageViewState extends State<ImageView> {
-  final controller = CarouselController();
+  final controller = cs.CarouselSliderController();
   late FlickManager flickManager;
   int currentIndex = 0;
 
@@ -71,7 +71,7 @@ class _ImageViewState extends State<ImageView> {
 
           return Column(
             children: [
-              CarouselSlider(
+              cs.CarouselSlider(
                 carouselController: controller,
                 items: widget.imagesUrl
                     .map((e) => e == widget.shortsURL
@@ -110,7 +110,7 @@ class _ImageViewState extends State<ImageView> {
                             ),
                           ))
                     .toList(),
-                options: CarouselOptions(
+                options: cs.CarouselOptions(
                   enableInfiniteScroll: false,
                   aspectRatio: 0.6125,
                   enlargeCenterPage: true,

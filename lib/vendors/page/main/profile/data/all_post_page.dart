@@ -22,14 +22,10 @@ class _AllPostsPageState extends State<AllPostsPage> {
   final searchController = TextEditingController();
   // Map<String, Map<String, dynamic>> allPosts = {};
   Map<String, Map<String, dynamic>> currentPosts = {};
-  Map<String, Map<String, dynamic>> linkedTextPosts = {};
-  Map<String, Map<String, dynamic>> linkedImagePosts = {};
   Map<String, Map<String, dynamic>> unlinkedTextPosts = {};
   Map<String, Map<String, dynamic>> unlinkedImagePosts = {};
   String type = 'Image';
-  String link = 'Linked';
   bool isGridView = true;
-  String? searchedProduct;
   bool isData = false;
 
   // INIT STATE
@@ -60,21 +56,12 @@ class _AllPostsPageState extends State<AllPostsPage> {
 
       final postData = post.data();
 
-      final isLinked = postData['isLinked'];
       final isTextPost = postData['isTextPost'];
 
-      if (isLinked) {
-        if (isTextPost) {
-          linkedTextPosts[postId] = postData;
-        } else {
-          linkedImagePosts[postId] = postData;
-        }
+      if (isTextPost) {
+        unlinkedTextPosts[postId] = postData;
       } else {
-        if (isTextPost) {
-          unlinkedTextPosts[postId] = postData;
-        } else {
-          unlinkedImagePosts[postId] = postData;
-        }
+        unlinkedImagePosts[postId] = postData;
       }
     }
 
@@ -94,7 +81,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
     // }
 
     setState(() {
-      currentPosts = linkedImagePosts;
+      currentPosts = unlinkedImagePosts;
       isData = true;
     });
   }
@@ -105,16 +92,16 @@ class _AllPostsPageState extends State<AllPostsPage> {
       int textPostRemaining = 0;
       int imagePostRemaining = 0;
 
-      final productData = await store
+      final vendorSnap = await store
           .collection('Business')
           .doc('Owners')
           .collection('Shops')
-          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .doc(auth.currentUser!.uid)
           .get();
 
       setState(() {
-        textPostRemaining = productData['noOfTextPosts'];
-        imagePostRemaining = productData['noOfImagePosts'];
+        textPostRemaining = vendorSnap['noOfTextPosts'];
+        imagePostRemaining = vendorSnap['noOfImagePosts'];
       });
 
       await store
@@ -162,7 +149,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
             'Confirm DELETE',
           ),
           content: const Text(
-            'Are you sure you want to delete this Post\nProduct of this post will not be deleted',
+            'Are you sure you want to delete this Post',
           ),
           actions: [
             TextButton(
@@ -205,18 +192,10 @@ class _AllPostsPageState extends State<AllPostsPage> {
   // UPDATE CURRENT POSTS
   void updateCurrentPosts() {
     setState(() {
-      if (link == 'Linked') {
-        if (type == 'Image') {
-          currentPosts = linkedImagePosts;
-        } else {
-          currentPosts = linkedTextPosts;
-        }
+      if (type == 'Image') {
+        currentPosts = unlinkedImagePosts;
       } else {
-        if (type == 'Image') {
-          currentPosts = unlinkedImagePosts;
-        } else {
-          currentPosts = unlinkedTextPosts;
-        }
+        currentPosts = unlinkedTextPosts;
       }
     });
   }
@@ -298,7 +277,6 @@ class _AllPostsPageState extends State<AllPostsPage> {
         //                   for (var key in keysToRemove) {
         //                     filteredPosts.remove(key);
         //                   }
-
         //                   setState(() {
         //                     currentPosts = filteredPosts;
         //                   });
@@ -410,55 +388,6 @@ class _AllPostsPageState extends State<AllPostsPage> {
                         Divider(
                           height: 0,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.all(width * 0.0125),
-                              child: ActionChip(
-                                label: Text(
-                                  'Linked',
-                                  style: TextStyle(
-                                    color:
-                                        link == 'Linked' ? white : primaryDark,
-                                  ),
-                                ),
-                                tooltip: 'Select Linked',
-                                onPressed: () {
-                                  setState(() {
-                                    link = 'Linked';
-                                  });
-                                  updateCurrentPosts();
-                                },
-                                backgroundColor:
-                                    link == 'Linked' ? primaryDark : primary2,
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(width * 0.0125),
-                              child: ActionChip(
-                                label: Text(
-                                  'Unlinked',
-                                  style: TextStyle(
-                                    color: link == 'Unlinked'
-                                        ? white
-                                        : primaryDark,
-                                  ),
-                                ),
-                                tooltip: 'Select Unlinked',
-                                onPressed: () {
-                                  setState(() {
-                                    link = 'Unlinked';
-                                  });
-                                  updateCurrentPosts();
-                                },
-                                backgroundColor:
-                                    link == 'Unlinked' ? primaryDark : primary2,
-                              ),
-                            ),
-                          ],
-                        ),
                         currentPosts.isEmpty
                             ? SizedBox(
                                 height: 80,
@@ -468,95 +397,291 @@ class _AllPostsPageState extends State<AllPostsPage> {
                               )
                             : SizedBox(
                                 width: width,
-                                child: isGridView
-                                    ? GridView.builder(
-                                        shrinkWrap: true,
-                                        physics: const ClampingScrollPhysics(),
-                                        gridDelegate:
-                                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2,
-                                          childAspectRatio: 0.725,
-                                        ),
-                                        itemCount: currentPosts.length,
-                                        itemBuilder: ((context, index) {
-                                          final postData = currentPosts[
-                                              currentPosts.keys
-                                                  .toList()[index]]!;
+                                child: type == 'Image'
+                                    ? isGridView
+                                        ? GridView.builder(
+                                            shrinkWrap: true,
+                                            physics:
+                                                const ClampingScrollPhysics(),
+                                            gridDelegate:
+                                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 2,
+                                              childAspectRatio: 0.725,
+                                            ),
+                                            itemCount: currentPosts.length,
+                                            itemBuilder: ((context, index) {
+                                              final postData = currentPosts[
+                                                  currentPosts.keys
+                                                      .toList()[index]]!;
 
-                                          return GestureDetector(
-                                            onTap: () {
-                                              Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                  builder: ((context) =>
-                                                      PostPage(
-                                                        postId:
-                                                            postData['postId'],
-                                                        productId: postData[
-                                                            'postProductId'],
-                                                        productName: postData[
-                                                            'postProductName'],
-                                                        categoryName: postData[
-                                                            'postCategoryName'],
-                                                      )),
-                                                ),
-                                              );
-                                            },
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color:
-                                                    primary2.withOpacity(0.125),
-                                                border: Border.all(
-                                                  width: 0.25,
-                                                  color: primaryDark,
-                                                ),
-                                                borderRadius:
-                                                    BorderRadius.circular(2),
-                                              ),
-                                              margin: EdgeInsets.all(
-                                                  width * 0.00625),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  // postData['postImages'] !=
-                                                  //         null
-                                                  // ? CachedNetworkImage(
-                                                  //     imageUrl:
-                                                  //         postData['postImages']
-                                                  //             [0],
-                                                  //     imageBuilder:
-                                                  //         (context, imageProvider) {
-                                                  //       return Center(
-                                                  //         child: ClipRRect(
-                                                  //           borderRadius:
-                                                  //               BorderRadius.circular(
-                                                  //             12,
-                                                  //           ),
-                                                  //           child: Container(
-                                                  //             width: width * 0.4125,
-                                                  //             height: width * 0.4125,
-                                                  //             decoration: BoxDecoration(
-                                                  //               image: DecorationImage(
-                                                  //                 image: imageProvider,
-                                                  //                 fit: BoxFit.cover,
-                                                  //               ),
-                                                  //             ),
-                                                  //           ),
-                                                  //         ),
-                                                  //       );
-                                                  //     },
-                                                  //   )
-                                                  currentPosts ==
-                                                              linkedImagePosts ||
-                                                          currentPosts ==
-                                                              unlinkedImagePosts
-                                                      ? Padding(
-                                                          padding:
-                                                              EdgeInsets.all(
-                                                            width * 0.00625,
+                                              return postData['isTextPost']
+                                                  ? Container()
+                                                  : GestureDetector(
+                                                      onTap: () {
+                                                        Navigator.of(context)
+                                                            .push(
+                                                          MaterialPageRoute(
+                                                            builder:
+                                                                ((context) =>
+                                                                    PostPage(
+                                                                      postId: postData[
+                                                                          'postId'],
+                                                                    )),
                                                           ),
-                                                          child: Center(
-                                                            child: ClipRRect(
+                                                        );
+                                                      },
+                                                      child: Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: primary2
+                                                              .withOpacity(
+                                                                  0.125),
+                                                          border: Border.all(
+                                                            width: 0.25,
+                                                            color: primaryDark,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(2),
+                                                        ),
+                                                        margin: EdgeInsets.all(
+                                                            width * 0.00625),
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            // postData['postImages'] !=
+                                                            //         null
+                                                            // ? CachedNetworkImage(
+                                                            //     imageUrl:
+                                                            //         postData['postImages']
+                                                            //             [0],
+                                                            //     imageBuilder:
+                                                            //         (context, imageProvider) {
+                                                            //       return Center(
+                                                            //         child: ClipRRect(
+                                                            //           borderRadius:
+                                                            //               BorderRadius.circular(
+                                                            //             12,
+                                                            //           ),
+                                                            //           child: Container(
+                                                            //             width: width * 0.4125,
+                                                            //             height: width * 0.4125,
+                                                            //             decoration: BoxDecoration(
+                                                            //               image: DecorationImage(
+                                                            //                 image: imageProvider,
+                                                            //                 fit: BoxFit.cover,
+                                                            //               ),
+                                                            //             ),
+                                                            //           ),
+                                                            //         ),
+                                                            //       );
+                                                            //     },
+                                                            //   )
+                                                            currentPosts ==
+                                                                    unlinkedImagePosts
+                                                                ? Padding(
+                                                                    padding:
+                                                                        EdgeInsets
+                                                                            .all(
+                                                                      width *
+                                                                          0.00625,
+                                                                    ),
+                                                                    child:
+                                                                        Center(
+                                                                      child:
+                                                                          ClipRRect(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(
+                                                                          2,
+                                                                        ),
+                                                                        child: Image
+                                                                            .network(
+                                                                          postData['postImages']
+                                                                              [
+                                                                              0],
+                                                                          width:
+                                                                              width * 0.5,
+                                                                          height:
+                                                                              width * 0.5,
+                                                                          fit: BoxFit
+                                                                              .cover,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  )
+                                                                : postData[
+                                                                        'isTextPost']
+                                                                    ? Container()
+                                                                    : SizedBox(
+                                                                        width: width *
+                                                                            0.5,
+                                                                        height: width *
+                                                                            0.5,
+                                                                        child:
+                                                                            const Center(
+                                                                          child:
+                                                                              Text(
+                                                                            overflow:
+                                                                                TextOverflow.ellipsis,
+                                                                            'No Image',
+                                                                            style:
+                                                                                TextStyle(
+                                                                              color: primaryDark2,
+                                                                              fontWeight: FontWeight.w500,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                            SizedBox(
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Column(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      Padding(
+                                                                        padding:
+                                                                            EdgeInsets.fromLTRB(
+                                                                          width *
+                                                                              0.025,
+                                                                          width *
+                                                                              0.0125,
+                                                                          width *
+                                                                              0.0125,
+                                                                          0,
+                                                                        ),
+                                                                        child:
+                                                                            SizedBox(
+                                                                          width:
+                                                                              width * 0.275,
+                                                                          child:
+                                                                              Text(
+                                                                            postData['post'],
+                                                                            overflow:
+                                                                                TextOverflow.ellipsis,
+                                                                            maxLines:
+                                                                                8,
+                                                                            style:
+                                                                                TextStyle(
+                                                                              fontSize: width * 0.05,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  IconButton(
+                                                                    onPressed:
+                                                                        () async {
+                                                                      await confirmDelete(
+                                                                        postData[
+                                                                            'postId'],
+                                                                        postData[
+                                                                            'isTextPost'],
+                                                                      );
+                                                                    },
+                                                                    icon: Icon(
+                                                                      FeatherIcons
+                                                                          .trash,
+                                                                      color: Colors
+                                                                          .red,
+                                                                      size: width *
+                                                                          0.08,
+                                                                    ),
+                                                                    tooltip:
+                                                                        'Delete Post',
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    );
+                                            }),
+                                          )
+                                        : SizedBox(
+                                            width: width,
+                                            child: ListView.builder(
+                                              shrinkWrap: true,
+                                              physics:
+                                                  const ClampingScrollPhysics(),
+                                              itemCount: currentPosts.length,
+                                              itemBuilder: ((context, index) {
+                                                final postData = currentPosts[
+                                                    currentPosts.keys
+                                                        .toList()[index]]!;
+
+                                                return GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                        builder: ((context) =>
+                                                            PostPage(
+                                                              postId: postData[
+                                                                  'postId'],
+                                                            )),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      color: white,
+                                                      border: Border.all(
+                                                        width: 0.5,
+                                                        color: primaryDark,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              2),
+                                                    ),
+                                                    margin: EdgeInsets.all(
+                                                      width * 0.0125,
+                                                    ),
+                                                    child: ListTile(
+                                                      visualDensity:
+                                                          VisualDensity
+                                                              .standard,
+                                                      leading: postData[
+                                                                  'postImages'] !=
+                                                              null
+                                                          // ? CachedNetworkImage(
+                                                          //     imageUrl:
+                                                          //         postData['postImages']
+                                                          //             [0],
+                                                          //     imageBuilder:
+                                                          //         (context, imageProvider) {
+                                                          //       return ClipRRect(
+                                                          //         borderRadius:
+                                                          //             BorderRadius.circular(
+                                                          //           2,
+                                                          //         ),
+                                                          //         child: Container(
+                                                          //           width: width * 0.15,
+                                                          //           height: width * 0.15,
+                                                          //           decoration: BoxDecoration(
+                                                          //             image: DecorationImage(
+                                                          //               image: imageProvider,
+                                                          //               fit: BoxFit.cover,
+                                                          //             ),
+                                                          //           ),
+                                                          //         ),
+                                                          //       );
+                                                          //     },
+                                                          //   )
+                                                          ? ClipRRect(
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
@@ -566,25 +691,19 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                                   Image.network(
                                                                 postData[
                                                                     'postImages'][0],
-                                                                width:
-                                                                    width * 0.5,
-                                                                height:
-                                                                    width * 0.5,
+                                                                width: width *
+                                                                    0.15,
+                                                                height: width *
+                                                                    0.15,
                                                                 fit: BoxFit
                                                                     .cover,
                                                               ),
-                                                            ),
-                                                          ),
-                                                        )
-                                                      : postData['isTextPost'] &&
-                                                              !postData[
-                                                                  'isLinked']
-                                                          ? Container()
+                                                            )
                                                           : SizedBox(
                                                               width:
-                                                                  width * 0.5,
+                                                                  width * 0.15,
                                                               height:
-                                                                  width * 0.5,
+                                                                  width * 0.15,
                                                               child:
                                                                   const Center(
                                                                 child: Text(
@@ -603,273 +722,95 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                                 ),
                                                               ),
                                                             ),
-                                                  SizedBox(
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Padding(
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .fromLTRB(
-                                                                width * 0.025,
-                                                                width * 0.0125,
-                                                                width * 0.0125,
-                                                                0,
-                                                              ),
-                                                              child: SizedBox(
-                                                                width: width *
-                                                                    0.275,
-                                                                child: Text(
-                                                                  !postData[
-                                                                          'isLinked']
-                                                                      ? postData[
-                                                                          'post']
-                                                                      : postData[
-                                                                          'postProductName'],
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                  maxLines:
-                                                                      !postData[
-                                                                              'isLinked']
-                                                                          ? 8
-                                                                          : 1,
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        width *
-                                                                            0.05,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Padding(
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .fromLTRB(
-                                                                width * 0.025,
-                                                                0,
-                                                                width * 0.0125,
-                                                                0,
-                                                              ),
-                                                              child: !postData[
-                                                                      'isLinked']
-                                                                  ? Container()
-                                                                  : Text(
-                                                                      postData['postProductPrice'] != '' &&
-                                                                              postData['postProductPrice'] !=
-                                                                                  null
-                                                                          ? postData[
-                                                                              'postProductPrice']
-                                                                          : 'N/A',
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis,
-                                                                      maxLines:
-                                                                          1,
-                                                                      style:
-                                                                          TextStyle(
-                                                                        fontSize:
-                                                                            width *
-                                                                                0.045,
-                                                                        fontWeight:
-                                                                            FontWeight.w600,
-                                                                      ),
-                                                                    ),
-                                                            ),
-                                                          ],
+                                                      title: Text(
+                                                        postData['post'],
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: TextStyle(
+                                                          fontSize:
+                                                              width * 0.05,
                                                         ),
-                                                        IconButton(
-                                                          onPressed: () async {
-                                                            await confirmDelete(
-                                                              postData[
-                                                                  'postId'],
-                                                              postData[
-                                                                  'isTextPost'],
-                                                            );
-                                                          },
-                                                          icon: Icon(
-                                                            FeatherIcons.trash,
-                                                            color: Colors.red,
-                                                            size: width * 0.08,
-                                                          ),
-                                                          tooltip:
-                                                              'Delete Post',
+                                                      ),
+                                                      trailing: IconButton(
+                                                        onPressed: () async {
+                                                          await confirmDelete(
+                                                            postData['postId'],
+                                                            postData[
+                                                                'isTextPost'],
+                                                          );
+                                                        },
+                                                        icon: Icon(
+                                                          FeatherIcons.trash,
+                                                          color: Colors.red,
+                                                          size: width * 0.075,
                                                         ),
-                                                      ],
+                                                        tooltip: 'Delete Post',
+                                                      ),
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        }),
-                                      )
-                                    : SizedBox(
-                                        width: width,
-                                        child: ListView.builder(
-                                          shrinkWrap: true,
-                                          physics:
-                                              const ClampingScrollPhysics(),
-                                          itemCount: currentPosts.length,
-                                          itemBuilder: ((context, index) {
-                                            final postData = currentPosts[
-                                                currentPosts.keys
-                                                    .toList()[index]]!;
-
-                                            return GestureDetector(
-                                              onTap: () {
-                                                Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                    builder: ((context) =>
-                                                        PostPage(
-                                                          postId: postData[
-                                                              'postId'],
-                                                          productId: postData[
-                                                              'postProductId'],
-                                                          productName: postData[
-                                                              'postProductName'],
-                                                          categoryName: postData[
-                                                              'postCategoryName'],
-                                                        )),
                                                   ),
                                                 );
-                                              },
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  color: white,
-                                                  border: Border.all(
-                                                    width: 0.5,
-                                                    color: primaryDark,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(2),
-                                                ),
-                                                margin: EdgeInsets.all(
-                                                  width * 0.0125,
-                                                ),
-                                                child: ListTile(
-                                                  visualDensity:
-                                                      VisualDensity.standard,
-                                                  leading: postData[
-                                                              'postImages'] !=
-                                                          null
-                                                      // ? CachedNetworkImage(
-                                                      //     imageUrl:
-                                                      //         postData['postImages']
-                                                      //             [0],
-                                                      //     imageBuilder:
-                                                      //         (context, imageProvider) {
-                                                      //       return ClipRRect(
-                                                      //         borderRadius:
-                                                      //             BorderRadius.circular(
-                                                      //           2,
-                                                      //         ),
-                                                      //         child: Container(
-                                                      //           width: width * 0.15,
-                                                      //           height: width * 0.15,
-                                                      //           decoration: BoxDecoration(
-                                                      //             image: DecorationImage(
-                                                      //               image: imageProvider,
-                                                      //               fit: BoxFit.cover,
-                                                      //             ),
-                                                      //           ),
-                                                      //         ),
-                                                      //       );
-                                                      //     },
-                                                      //   )
-                                                      ? ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                            2,
-                                                          ),
-                                                          child: Image.network(
-                                                            postData[
-                                                                'postImages'][0],
-                                                            width: width * 0.15,
-                                                            height:
-                                                                width * 0.15,
-                                                            fit: BoxFit.cover,
-                                                          ),
-                                                        )
-                                                      : SizedBox(
-                                                          width: width * 0.15,
-                                                          height: width * 0.15,
-                                                          child: const Center(
-                                                            child: Text(
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              'No Image',
-                                                              style: TextStyle(
-                                                                color:
-                                                                    primaryDark2,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                  title: Text(
-                                                    postData['postProductName'],
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: TextStyle(
-                                                      fontSize: width * 0.05,
-                                                    ),
-                                                  ),
-                                                  subtitle: Text(
-                                                    postData['postProductPrice'] !=
-                                                                '' &&
-                                                            postData[
-                                                                    'postProductPrice'] !=
-                                                                null
-                                                        ? 'Rs. ${postData['postProductPrice']}'
-                                                        : 'N/A',
-                                                    maxLines: 1,
+                                              }),
+                                            ),
+                                          )
+                                    : ListView.builder(
+                                        shrinkWrap: true,
+                                        physics: ClampingScrollPhysics(),
+                                        itemCount: currentPosts.length,
+                                        itemBuilder: (context, index) {
+                                          final postData = currentPosts[
+                                              currentPosts.keys
+                                                  .toList()[index]]!;
+
+                                          return Container(
+                                            decoration: BoxDecoration(
+                                              color: primary2,
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                            padding: EdgeInsets.all(
+                                              width * 0.0225,
+                                            ),
+                                            margin: EdgeInsets.all(
+                                              width * 0.0125,
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                SizedBox(
+                                                  width: width * 0.785,
+                                                  child: Text(
+                                                    postData['post'],
+                                                    maxLines: 3,
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                       fontSize: width * 0.045,
-                                                      fontWeight:
-                                                          FontWeight.w600,
                                                     ),
-                                                  ),
-                                                  trailing: IconButton(
-                                                    onPressed: () async {
-                                                      await confirmDelete(
-                                                        postData['postId'],
-                                                        postData['isTextPost'],
-                                                      );
-                                                    },
-                                                    icon: Icon(
-                                                      FeatherIcons.trash,
-                                                      color: Colors.red,
-                                                      size: width * 0.075,
-                                                    ),
-                                                    tooltip: 'Delete Post',
                                                   ),
                                                 ),
-                                              ),
-                                            );
-                                          }),
-                                        ),
+                                                IconButton(
+                                                  onPressed: () async {
+                                                    await confirmDelete(
+                                                      postData['postId'],
+                                                      postData['isTextPost'],
+                                                    );
+                                                  },
+                                                  icon: Icon(
+                                                    FeatherIcons.trash,
+                                                    color: Colors.red,
+                                                    size: width * 0.08,
+                                                  ),
+                                                  tooltip: 'Delete Post',
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        },
                                       ),
                               ),
                       ],

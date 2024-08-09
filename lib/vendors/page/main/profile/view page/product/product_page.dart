@@ -436,34 +436,6 @@ class _ProductPageState extends State<ProductPage> {
                 .update({
               'images': images,
             });
-
-            final postSnap = await store
-                .collection('Business')
-                .doc('Data')
-                .collection('Posts')
-                .where('postProductId', isEqualTo: widget.productId)
-                .get();
-
-            postSnap.docs.forEach((doc) async {
-              final postData = await store
-                  .collection('Business')
-                  .doc('Data')
-                  .collection('Posts')
-                  .doc(doc.id)
-                  .get();
-
-              final imageUrls = postData['postImages'] as List;
-              imageUrls.add(value);
-
-              await store
-                  .collection('Business')
-                  .doc('Data')
-                  .collection('Posts')
-                  .doc(doc.id)
-                  .update({
-                'postImages': imageUrls,
-              });
-            });
           });
         });
 
@@ -538,34 +510,6 @@ class _ProductPageState extends State<ProductPage> {
         .doc(widget.productId)
         .update({
       'images': images,
-    });
-
-    final postSnap = await store
-        .collection('Business')
-        .doc('Data')
-        .collection('Posts')
-        .where('postProductId', isEqualTo: widget.productId)
-        .get();
-
-    postSnap.docs.forEach((doc) async {
-      final postData = await store
-          .collection('Business')
-          .doc('Data')
-          .collection('Posts')
-          .doc(doc.id)
-          .get();
-
-      final imageUrls = postData['postImages'] as List;
-      imageUrls.remove(e);
-
-      await store
-          .collection('Business')
-          .doc('Data')
-          .collection('Posts')
-          .doc(doc.id)
-          .update({
-        'postImages': imageUrls,
-      });
     });
   }
 
@@ -715,17 +659,6 @@ class _ProductPageState extends State<ProductPage> {
           .collection('Products')
           .doc(widget.productId)
           .delete();
-
-      final postSnap = await store
-          .collection('Business')
-          .doc('Data')
-          .collection('Posts')
-          .where('postProductId', isEqualTo: widget.productId)
-          .get();
-
-      for (QueryDocumentSnapshot doc in postSnap.docs) {
-        await doc.reference.delete();
-      }
 
       final shortsSnap = await store
           .collection('Business')

@@ -717,50 +717,44 @@ class _EventPageState extends State<EventPage> {
                             isChangingType
                                 ? Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 2,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: primary3,
+                                        borderRadius: BorderRadius.circular(12),
                                       ),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: primary3,
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 10,
-                                          vertical: 4,
-                                        ),
-                                        child: DropdownButton(
-                                          value: eventType,
-                                          hint: const Text(
-                                            'Select Type',
-                                            style: TextStyle(
-                                              color: primaryDark2,
-                                            ),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 10,
+                                        vertical: 6,
+                                      ),
+                                      child: DropdownButton(
+                                        value: eventType,
+                                        hint: const Text(
+                                          'Select Type',
+                                          style: TextStyle(
+                                            color: primaryDark2,
                                           ),
-                                          underline: const SizedBox(),
-                                          iconEnabledColor: primaryDark,
-                                          dropdownColor: primary2,
-                                          items: suggestions
-                                              .map((e) => DropdownMenuItem(
-                                                    value: e,
-                                                    child: Text(e),
-                                                  ))
-                                              .toList(),
-                                          onChanged: (value) async {
-                                            await store
-                                                .collection('Events')
-                                                .doc(widget.eventId)
-                                                .update({
-                                              'eventType': value,
-                                            });
-
-                                            setState(() {
-                                              isChangingType = false;
-                                            });
-                                          },
                                         ),
+                                        underline: const SizedBox(),
+                                        iconEnabledColor: primaryDark,
+                                        dropdownColor: primary2,
+                                        items: suggestions
+                                            .map((e) => DropdownMenuItem(
+                                                  value: e,
+                                                  child: Text(e),
+                                                ))
+                                            .toList(),
+                                        onChanged: (value) async {
+                                          await store
+                                              .collection('Events')
+                                              .doc(widget.eventId)
+                                              .update({
+                                            'eventType': value,
+                                          });
+
+                                          setState(() {
+                                            isChangingType = false;
+                                          });
+                                        },
                                       ),
                                     ),
                                   )

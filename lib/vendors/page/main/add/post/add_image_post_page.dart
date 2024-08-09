@@ -98,15 +98,9 @@ class _AddImagePostPageState extends State<AddImagePostPage> {
         }
 
         Map<String, dynamic> postInfo = {
-          'postProductId': null,
-          'postProductName': null,
-          'postProductPrice': null,
-          'postCategoryName': null,
-          'postProductDescription': null,
-          'postProductBrand': null,
-          'postImages': imageDownloadUrl,
-          'post': postController.text,
           'postId': postId,
+          'post': postController.text,
+          'postImages': imageDownloadUrl,
           'postVendorId': auth.currentUser!.uid,
           'postViews': 0,
           'postLikes': 0,
@@ -115,7 +109,6 @@ class _AddImagePostPageState extends State<AddImagePostPage> {
             DateTime.now().millisecondsSinceEpoch,
           ),
           'isTextPost': false,
-          'isLinked': false,
         };
 
         await store

@@ -2,6 +2,7 @@ import 'package:Localsearch/vendors/page/main/profile/view%20page/shorts/shorts_
 import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:Localsearch/widgets/shimmer_skeleton_container.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:feather_icons/feather_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +43,7 @@ class _AllShortsPageState extends State<AllShortsPage> {
 
     print('length: ${shortsSnap.docs.length}');
 
-    shortsSnap.docs.forEach((short) async {
+    Future.forEach(shortsSnap.docs, (short) async {
       final shortsData = short.data();
 
       final shortsId = short.id;
@@ -80,12 +81,14 @@ class _AllShortsPageState extends State<AllShortsPage> {
         thumbnailDownloadUrl,
         vendorId,
       ];
+
+      print('done');
     });
 
     myShorts = Map.fromEntries(myShorts.entries.toList()
       ..sort((a, b) => (b.value[3] as Timestamp).compareTo(a.value[3])));
 
-    print(myShorts);
+    print('lalla: $myShorts');
 
     setState(() {
       allShorts = myShorts;
@@ -93,6 +96,9 @@ class _AllShortsPageState extends State<AllShortsPage> {
       isData = true;
     });
   }
+
+  // DELETE SHORT
+  Future<void> deleteShort() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +148,9 @@ class _AllShortsPageState extends State<AllShortsPage> {
                         filteredShorts.remove(key);
                       }
 
-                      currentShorts = filteredShorts;
+                      setState(() {
+                        currentShorts = filteredShorts;
+                      });
                     }
                   });
                 },
@@ -239,6 +247,14 @@ class _AllShortsPageState extends State<AllShortsPage> {
                                       color: white,
                                       size: width * 0.1,
                                     ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      FeatherIcons.trash,
+                                      color: Colors.red,
+                                    ),
+                                    tooltip: 'Delete',
                                   ),
                                 ],
                               ),

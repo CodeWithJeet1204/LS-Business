@@ -1,10 +1,8 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:Localsearch/vendors/page/main/add/post/add_image_post_page.dart';
 import 'package:Localsearch/vendors/page/main/add/post/add_text_post_page.dart';
-import 'package:Localsearch/vendors/page/main/add/post/select_product_for_post_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:Localsearch/widgets/button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -140,32 +138,32 @@ class _AddPostPageState extends State<AddPostPage> {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        Text(
-                          'Just select the product you want the post',
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: primaryDark,
-                            fontSize: width * 0.045,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        Text(
-                          'Then the product details will automatically be added',
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: primaryDark,
-                            fontSize: width * 0.045,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
+                        // Text(
+                        //   'Just select the product you want the post',
+                        //   maxLines: 2,
+                        //   overflow: TextOverflow.ellipsis,
+                        //   textAlign: TextAlign.center,
+                        //   style: TextStyle(
+                        //     color: primaryDark,
+                        //     fontSize: width * 0.045,
+                        //     fontWeight: FontWeight.w500,
+                        //   ),
+                        // ),
+                        // Text(
+                        //   'Then the product details will automatically be added',
+                        //   maxLines: 2,
+                        //   overflow: TextOverflow.ellipsis,
+                        //   textAlign: TextAlign.center,
+                        //   style: TextStyle(
+                        //     color: primaryDark,
+                        //     fontSize: width * 0.045,
+                        //     fontWeight: FontWeight.w500,
+                        //   ),
+                        // ),
                       ],
                     )
                   : Text(
-                      'Your no of Text & Image Posts has reached 0\nYou cannot post another post until your current memberhsip ends',
+                      'Your no of Text & Image Posts has reached 0\nYou cannot post another post until your current membership ends',
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
@@ -209,50 +207,50 @@ class _AddPostPageState extends State<AddPostPage> {
                   horizontalPadding: width * 0.055,
                 ),
               ),
-              SizedBox(height: width * 0.055),
-              Opacity(
-                opacity: textPostRemaining > 0 ? 1 : 0.5,
-                child: MyButton(
-                  text: 'TEXT POST (Linked With Product)',
-                  onTap: textPostRemaining > 0
-                      ? () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: ((context) => SelectProductForPostPage(
-                                    isTextPost: true,
-                                    textPostRemaining: textPostRemaining,
-                                    imagePostRemaining: imagePostRemaining,
-                                  )),
-                            ),
-                          );
-                        }
-                      : null,
-                  isLoading: false,
-                  horizontalPadding: width * 0.055,
-                ),
-              ),
-              SizedBox(height: width * 0.055),
-              Opacity(
-                opacity: imagePostRemaining > 0 ? 1 : 0.5,
-                child: MyButton(
-                  text: 'IMAGE POST (Linked With Product)',
-                  onTap: imagePostRemaining > 0
-                      ? () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: ((context) => SelectProductForPostPage(
-                                    isTextPost: false,
-                                    textPostRemaining: textPostRemaining,
-                                    imagePostRemaining: imagePostRemaining,
-                                  )),
-                            ),
-                          );
-                        }
-                      : null,
-                  isLoading: false,
-                  horizontalPadding: width * 0.055,
-                ),
-              ),
+              // SizedBox(height: width * 0.055),
+              // Opacity(
+              //   opacity: textPostRemaining > 0 ? 1 : 0.5,
+              //   child: MyButton(
+              //     text: 'TEXT POST (Linked With Product)',
+              //     onTap: textPostRemaining > 0
+              //         ? () {
+              //             Navigator.of(context).push(
+              //               MaterialPageRoute(
+              //                 builder: ((context) => SelectProductForPostPage(
+              //                       isTextPost: true,
+              //                       textPostRemaining: textPostRemaining,
+              //                       imagePostRemaining: imagePostRemaining,
+              //                     )),
+              //               ),
+              //             );
+              //           }
+              //         : null,
+              //     isLoading: false,
+              //     horizontalPadding: width * 0.055,
+              //   ),
+              // ),
+              // SizedBox(height: width * 0.055),
+              // Opacity(
+              //   opacity: imagePostRemaining > 0 ? 1 : 0.5,
+              //   child: MyButton(
+              //     text: 'IMAGE POST (Linked With Product)',
+              //     onTap: imagePostRemaining > 0
+              //         ? () {
+              //             Navigator.of(context).push(
+              //               MaterialPageRoute(
+              //                 builder: ((context) => SelectProductForPostPage(
+              //                       isTextPost: false,
+              //                       textPostRemaining: textPostRemaining,
+              //                       imagePostRemaining: imagePostRemaining,
+              //                     )),
+              //               ),
+              //             );
+              //           }
+              //         : null,
+              //     isLoading: false,
+              //     horizontalPadding: width * 0.055,
+              //   ),
+              // ),
             ],
           );
         }),

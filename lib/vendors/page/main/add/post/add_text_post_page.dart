@@ -35,24 +35,17 @@ class _AddTextPostPageState extends State<AddTextPostPage> {
         final String postId = const Uuid().v4();
 
         Map<String, dynamic> postInfo = {
-          'postProductId': null,
-          'postProductName': null,
-          'postProductPrice': null,
-          'postCategoryName': null,
-          'postProductDescription': null,
-          'postProductBrand': null,
-          'postImages': null,
           'post': postController.text,
           'postId': postId,
           'postVendorId': auth.currentUser!.uid,
           'postViews': 0,
           'postLikes': 0,
+          'postImages': null,
           'postComments': {},
           'postDateTime': Timestamp.fromMillisecondsSinceEpoch(
             DateTime.now().millisecondsSinceEpoch,
           ),
           'isTextPost': true,
-          'isLinked': false,
         };
 
         await store
