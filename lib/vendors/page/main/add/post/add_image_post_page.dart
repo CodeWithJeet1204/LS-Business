@@ -14,12 +14,7 @@ import 'package:uuid/uuid.dart';
 class AddImagePostPage extends StatefulWidget {
   const AddImagePostPage({
     super.key,
-    required this.imagePostRemaining,
-    required this.selectedImage,
   });
-
-  final int imagePostRemaining;
-  final File selectedImage;
 
   @override
   State<AddImagePostPage> createState() => _AddImagePostPageState();
@@ -34,15 +29,21 @@ class _AddImagePostPageState extends State<AddImagePostPage> {
   int currentImageIndex = 0;
   bool isFit = false;
   bool isPosting = false;
+  // int imagePostRemaining = 0;
 
-  // INIT STATE
-  @override
-  void initState() {
-    setState(() {
-      _image.add(widget.selectedImage);
-    });
-    super.initState();
-  }
+  // // GET NO OF POSTS
+  // Future<void> getNoOfPosts() async {
+  //   final productData = await store
+  //       .collection('Business')
+  //       .doc('Owners')
+  //       .collection('Shops')
+  //       .doc(auth.currentUser!.uid)
+  //       .get();
+
+  //   setState(() {
+  //     imagePostRemaining = productData['noOfImagePosts'];
+  //   });
+  // }
 
   // ADD PRODUCT IMAGE
   Future<void> addProductImages() async {
@@ -99,26 +100,34 @@ class _AddImagePostPageState extends State<AddImagePostPage> {
 
         Map<String, dynamic> postInfo = {
           'postId': postId,
-          'post': postController.text,
+          'postText': postController.text,
           'postImages': imageDownloadUrl,
           'postVendorId': auth.currentUser!.uid,
           'postViews': 0,
           'postLikes': 0,
-          'postComments': {},
           'postDateTime': Timestamp.fromMillisecondsSinceEpoch(
             DateTime.now().millisecondsSinceEpoch,
           ),
-          'isTextPost': false,
+          'postDeleteDateTime': Timestamp.fromMillisecondsSinceEpoch(
+            DateTime.now()
+                .add(
+                  Duration(
+                    hours: 23,
+                    minutes: 50,
+                  ),
+                )
+                .millisecondsSinceEpoch,
+          ),
         };
 
-        await store
-            .collection('Business')
-            .doc('Owners')
-            .collection('Shops')
-            .doc(auth.currentUser!.uid)
-            .update({
-          'noOfImagePosts': widget.imagePostRemaining - 1,
-        });
+        // await store
+        //     .collection('Business')
+        //     .doc('Owners')
+        //     .collection('Shops')
+        //     .doc(auth.currentUser!.uid)
+        //     .update({
+        //   'noOfImagePosts': imagePostRemaining - 1,
+        // });
 
         await store
             .collection('Business')
@@ -156,7 +165,7 @@ class _AddImagePostPageState extends State<AddImagePostPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Image Post'),
+        title: Text('Add Post'),
       ),
       body: SafeArea(
         child: LayoutBuilder(
@@ -168,124 +177,186 @@ class _AddImagePostPageState extends State<AddImagePostPage> {
                 padding: EdgeInsets.all(width * 0.0225),
                 child: Column(
                   children: [
-                    Center(
-                      child: Stack(
-                        alignment: Alignment.topRight,
-                        children: [
-                          GestureDetector(
-                            onTap: changeFit,
-                            child: Container(
-                              height: width,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: primaryDark,
-                                  width: 3,
-                                ),
-                                image: DecorationImage(
-                                  fit: isFit ? null : BoxFit.cover,
-                                  image: FileImage(
-                                    _image[currentImageIndex],
+                    // Text(
+                    //   'Remaining Image Post - $imagePostRemaining',
+                    //   maxLines: 2,
+                    //   overflow: TextOverflow.ellipsis,
+                    //   style: TextStyle(
+                    //     color: primaryDark,
+                    //     fontWeight: FontWeight.w500,
+                    //     fontSize: width * 0.05,
+                    //   ),
+                    // ),
+                    // SizedBox(height: 8),
+                    _image.isEmpty
+                        ? SizedOverflowBox(
+                            size: Size(width, width),
+                            child: InkWell(
+                              onTap: () async {
+                                await addProductImages();
+                              },
+                              customBorder: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(32),
+                              ),
+                              child: Container(
+                                width: width,
+                                height: width,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: primaryDark,
+                                    width: 3,
                                   ),
+                                  borderRadius: BorderRadius.circular(32),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      FeatherIcons.upload,
+                                      size: width * 0.4,
+                                    ),
+                                    SizedBox(height: width * 0.09),
+                                    Text(
+                                      'Select Image',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: width * 0.09,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                              top: width * 0.015,
-                              right: width * 0.015,
-                            ),
-                            child: IconButton.filledTonal(
-                              onPressed: currentImageIndex != _image.length - 1
-                                  ? () {
-                                      removeProductImages(
-                                        currentImageIndex,
-                                      );
-                                    }
-                                  : null,
-                              icon: Icon(
-                                FeatherIcons.x,
-                                size: width * 0.1,
-                              ),
-                              tooltip: 'Remove Image',
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Container(
-                          width: width * 0.75,
-                          height: width * 0.225,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: primaryDark,
-                              width: 3,
-                            ),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          padding: EdgeInsets.all(width * 0.0125),
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: _image.length,
-                            itemBuilder: ((context, index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    currentImageIndex = index;
-                                  });
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(2),
-                                  child: Container(
-                                    height: width * 0.18,
-                                    width: width * 0.18,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        width: 0.3,
-                                        color: primaryDark,
-                                      ),
-                                      borderRadius: BorderRadius.circular(4),
-                                      image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: FileImage(
-                                          _image[index],
+                          )
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Center(
+                                child: Stack(
+                                  alignment: Alignment.topRight,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: changeFit,
+                                      child: Container(
+                                        height: width,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          border: Border.all(
+                                            color: primaryDark,
+                                            width: 3,
+                                          ),
+                                          image: DecorationImage(
+                                            fit: isFit ? null : BoxFit.cover,
+                                            image: FileImage(
+                                              _image[currentImageIndex],
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        top: width * 0.015,
+                                        right: width * 0.015,
+                                      ),
+                                      child: IconButton.filledTonal(
+                                        onPressed: currentImageIndex !=
+                                                _image.length - 1
+                                            ? () {
+                                                removeProductImages(
+                                                  currentImageIndex,
+                                                );
+                                              }
+                                            : null,
+                                        icon: Icon(
+                                          FeatherIcons.x,
+                                          size: width * 0.1,
+                                        ),
+                                        tooltip: 'Remove Image',
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              );
-                            }),
+                              ),
+                              const SizedBox(height: 16),
+                              Row(
+                                children: [
+                                  Container(
+                                    width: width * 0.75,
+                                    height: width * 0.225,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: primaryDark,
+                                        width: 3,
+                                      ),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    padding: EdgeInsets.all(width * 0.0125),
+                                    child: ListView.builder(
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: _image.length,
+                                      itemBuilder: ((context, index) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              currentImageIndex = index;
+                                            });
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(2),
+                                            child: Container(
+                                              height: width * 0.18,
+                                              width: width * 0.18,
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  width: 0.3,
+                                                  color: primaryDark,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(4),
+                                                image: DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  image: FileImage(
+                                                    _image[index],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }),
+                                    ),
+                                  ),
+                                  SizedBox(width: width * 0.02),
+                                  Container(
+                                    width: width * 0.175,
+                                    height: width * 0.175,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: primaryDark,
+                                        width: 3,
+                                      ),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: IconButton(
+                                      onPressed: () async {
+                                        await addProductImages();
+                                      },
+                                      icon: Icon(
+                                        FeatherIcons.plus,
+                                        size: width * 0.1,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                        ),
-                        SizedBox(width: width * 0.02),
-                        Container(
-                          width: width * 0.175,
-                          height: width * 0.175,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: primaryDark,
-                              width: 3,
-                            ),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: IconButton(
-                            onPressed: () async {
-                              await addProductImages();
-                            },
-                            icon: Icon(
-                              FeatherIcons.plus,
-                              size: width * 0.1,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
                     SizedBox(height: 8),
                     Form(
                       key: postKey,

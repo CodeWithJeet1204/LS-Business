@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:Localsearch/vendors/page/main/add/post/add_image_post_page.dart';
@@ -54,10 +53,7 @@ class _AddPostPageState extends State<AddPostPage> {
     if (im != null) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => AddImagePostPage(
-            selectedImage: File(im.path),
-            imagePostRemaining: imagePostRemaining,
-          ),
+          builder: (context) => AddImagePostPage(),
         ),
       );
     } else {

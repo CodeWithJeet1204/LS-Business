@@ -263,8 +263,8 @@ class _AllPostsPageState extends State<AllPostsPage> {
         //                         .toLowerCase()
         //                         .contains(value.toLowerCase().trim())) {
         //                       // ignore: unnecessary_null_comparison
-        //                       if (!postData['post'] != null &&
-        //                           !postData['post']
+        //                       if (!postData['postText'] != null &&
+        //                           !postData['postText']
         //                               .toString()
         //                               .toLowerCase()
         //                               .contains(value.toLowerCase().trim())) {
@@ -568,7 +568,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                                               width * 0.275,
                                                                           child:
                                                                               Text(
-                                                                            postData['post'],
+                                                                            postData['postText'],
                                                                             overflow:
                                                                                 TextOverflow.ellipsis,
                                                                             maxLines:
@@ -723,7 +723,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                               ),
                                                             ),
                                                       title: Text(
-                                                        postData['post'],
+                                                        postData['postText'],
                                                         maxLines: 1,
                                                         overflow: TextOverflow
                                                             .ellipsis,
@@ -784,7 +784,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                 SizedBox(
                                                   width: width * 0.785,
                                                   child: Text(
-                                                    postData['post'],
+                                                    postData['postText'],
                                                     maxLines: 3,
                                                     overflow:
                                                         TextOverflow.ellipsis,

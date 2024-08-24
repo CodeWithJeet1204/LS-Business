@@ -46,10 +46,16 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
   }
 
   // SHOW PRICES
-  String showPrices(String name) {
+  int showPrices(String name) {
     if (selectedDuration != 'Duration') {
       if (name == 'BASIC') {
-        return '0';
+        if (selectedDuration == '1 month') {
+          return membershipPricing[0][0];
+        } else if (selectedDuration == '6 months') {
+          return membershipPricing[0][1];
+        } else {
+          return membershipPricing[0][2];
+        }
       } else if (name == 'GOLD') {
         if (selectedDuration == '1 month') {
           return membershipPricing[1][0];
@@ -68,7 +74,8 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
         }
       }
     } else {
-      return '--';
+      // TODO: something to change
+      return 0;
     }
   }
 
@@ -236,7 +243,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                 name: 'BASIC',
                 price: showPrices(
                   'BASIC',
-                ),
+                ).toString(),
                 textColor: const Color.fromARGB(255, 61, 60, 60),
                 priceTextColor: const Color.fromARGB(255, 81, 81, 81),
                 benefitBackSelectedColor:
@@ -255,7 +262,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                       isBasicSelected = true;
                       isGoldSelected = false;
                       isPremiumSelected = false;
-                      currentBasicPrice = int.parse(showPrices('BASIC'));
+                      currentBasicPrice = showPrices('BASIC');
                       currentMembership = 'BASIC';
                     });
                   }
@@ -270,7 +277,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                 name: 'GOLD',
                 price: showPrices(
                   'GOLD',
-                ),
+                ).toString(),
                 textColor: const Color.fromARGB(255, 94, 86, 0),
                 priceTextColor: const Color.fromARGB(255, 102, 92, 0),
                 benefitBackSelectedColor:
@@ -288,7 +295,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                       isBasicSelected = false;
                       isGoldSelected = true;
                       isPremiumSelected = false;
-                      currentGoldPrice = int.parse(showPrices('GOLD'));
+                      currentGoldPrice = showPrices('GOLD');
                       currentMembership = 'GOLD';
                     });
                   }
@@ -305,7 +312,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                     name: 'PREMIUM',
                     price: showPrices(
                       'PREMIUM',
-                    ),
+                    ).toString(),
                     textColor: const Color.fromARGB(255, 43, 72, 87),
                     priceTextColor: const Color.fromARGB(255, 67, 92, 106),
                     benefitBackSelectedColor:
@@ -323,9 +330,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                           isBasicSelected = false;
                           isGoldSelected = false;
                           isPremiumSelected = true;
-                          currentPremiumPrice = int.parse(
-                            showPrices('PREMIUM'),
-                          );
+                          currentPremiumPrice = showPrices('PREMIUM');
                           currentMembership = 'PREMIUM';
                         });
                       }
@@ -360,15 +365,15 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                       if (currentMembership != null) {
                         if (currentMembership == 'BASIC') {
                           setState(() {
-                            selectedPrice = showPrices('BASIC');
+                            selectedPrice = showPrices('BASIC').toString();
                           });
                         } else if (currentMembership == 'GOLD') {
                           setState(() {
-                            selectedPrice = showPrices('GOLD');
+                            selectedPrice = showPrices('GOLD').toString();
                           });
                         } else if (currentMembership == 'PREMIUM') {
                           setState(() {
-                            selectedPrice = showPrices('PREMIUM');
+                            selectedPrice = showPrices('PREMIUM').toString();
                           });
                         }
                         try {

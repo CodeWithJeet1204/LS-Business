@@ -1,6 +1,6 @@
+import 'package:Localsearch/vendors/page/main/add/post/add_image_post_page.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:Localsearch/vendors/page/main/add/bulk_add/add_bulk_product_page.dart';
-import 'package:Localsearch/vendors/page/main/add/post/add_post_page.dart';
 import 'package:Localsearch/vendors/page/main/add/product/add_product_page_1.dart';
 import 'package:Localsearch/vendors/page/main/add/shorts/add_shorts_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
@@ -49,7 +49,7 @@ class _AddPageState extends State<AddPage> {
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => const AddPostPage(),
+                          builder: (context) => const AddImagePostPage(),
                         ),
                       );
                     },

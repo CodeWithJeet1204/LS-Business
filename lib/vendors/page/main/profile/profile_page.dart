@@ -416,14 +416,14 @@ class _ProfilePageState extends State<ProfilePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // POSTS
-                            SmallTextContainer(
-                              text: 'POSTS',
-                              onPressed: () {
-                                Navigator.of(context).pushNamed('/postsPage');
-                              },
-                              width: width,
-                            ),
-                            const SizedBox(height: 16),
+                            // SmallTextContainer(
+                            //   text: 'POSTS',
+                            //   onPressed: () {
+                            //     Navigator.of(context).pushNamed('/postsPage');
+                            //   },
+                            //   width: width,
+                            // ),
+                            // const SizedBox(height: 16),
 
                             // SHORTS
                             SmallTextContainer(

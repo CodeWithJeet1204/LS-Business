@@ -1,20 +1,20 @@
-List<List<String>> membershipPricing = [
+List<List<int>> membershipPricing = [
   // BASIC
   [
-    '0',
-    '0',
-    '0',
+    399,
+    1999,
+    3599,
   ],
   // GOLD
   [
-    '120',
-    '600',
-    '1000',
+    999,
+    4999,
+    8999,
   ],
   // PREMIUM
   [
-    '130',
-    '650',
-    '1100',
+    1499,
+    7499,
+    13499,
   ],
 ];

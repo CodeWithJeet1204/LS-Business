@@ -223,7 +223,7 @@ class _PostPageState extends State<PostPage> {
                     if (snapshot.hasData) {
                       final postData = snapshot.data!;
                       final bool isTextPost = postData['isTextPost'];
-                      final String? name = postData['post'];
+                      final String? name = postData['postText'];
                       final int likes = postData['postLikes'];
                       final int views = postData['postViews'];
                       final Map comments = postData['postComments'];

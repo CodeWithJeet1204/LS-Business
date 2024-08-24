@@ -35,7 +35,7 @@ class _AddTextPostPageState extends State<AddTextPostPage> {
         final String postId = const Uuid().v4();
 
         Map<String, dynamic> postInfo = {
-          'post': postController.text,
+          'postText': postController.text,
           'postId': postId,
           'postVendorId': auth.currentUser!.uid,
           'postViews': 0,

@@ -1,6 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
+// import 'package:cached_network_image/cached_network_image.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:carousel_slider/carousel_slider.dart' as cs;
+// import 'package:carousel_slider/carousel_slider.dart' as cs;
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
@@ -22,7 +22,7 @@ class ImageView extends StatefulWidget {
 }
 
 class _ImageViewState extends State<ImageView> {
-  final controller = cs.CarouselSliderController();
+  // final controller = cs.CarouselSliderController();
   late FlickManager flickManager;
   int currentIndex = 0;
 
@@ -71,56 +71,56 @@ class _ImageViewState extends State<ImageView> {
 
           return Column(
             children: [
-              cs.CarouselSlider(
-                carouselController: controller,
-                items: widget.imagesUrl
-                    .map((e) => e == widget.shortsURL
-                        ? AspectRatio(
-                            aspectRatio: 9 / 16,
-                            child: FlickVideoPlayer(
-                              flickManager: flickManager,
-                            ),
-                          )
-                        : SizedBox(
-                            height: width * 8,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: InteractiveViewer(
-                                child: CachedNetworkImage(
-                                  imageUrl: e,
-                                  imageBuilder: (context, imageProvider) {
-                                    return Center(
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(
-                                          8,
-                                        ),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                              image: imageProvider,
-                                              fit: BoxFit.contain,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                          ))
-                    .toList(),
-                options: cs.CarouselOptions(
-                  enableInfiniteScroll: false,
-                  aspectRatio: 0.6125,
-                  enlargeCenterPage: true,
-                  onPageChanged: (index, reason) {
-                    setState(() {
-                      controller.animateToPage(index);
-                    });
-                  },
-                ),
-              ),
+              // cs.CarouselSlider(
+              //   carouselController: controller,
+              //   items: widget.imagesUrl
+              //       .map((e) => e == widget.shortsURL
+              //           ? AspectRatio(
+              //               aspectRatio: 9 / 16,
+              //               child: FlickVideoPlayer(
+              //                 flickManager: flickManager,
+              //               ),
+              //             )
+              //           : SizedBox(
+              //               height: width * 8,
+              //               child: ClipRRect(
+              //                 borderRadius: BorderRadius.circular(8),
+              //                 child: InteractiveViewer(
+              //                   child: CachedNetworkImage(
+              //                     imageUrl: e,
+              //                     imageBuilder: (context, imageProvider) {
+              //                       return Center(
+              //                         child: ClipRRect(
+              //                           borderRadius: BorderRadius.circular(
+              //                             8,
+              //                           ),
+              //                           child: Container(
+              //                             decoration: BoxDecoration(
+              //                               image: DecorationImage(
+              //                                 image: imageProvider,
+              //                                 fit: BoxFit.contain,
+              //                               ),
+              //                             ),
+              //                           ),
+              //                         ),
+              //                       );
+              //                     },
+              //                   ),
+              //                 ),
+              //               ),
+              //             ))
+              //       .toList(),
+              //   options: cs.CarouselOptions(
+              //     enableInfiniteScroll: false,
+              //     aspectRatio: 0.6125,
+              //     enlargeCenterPage: true,
+              //     onPageChanged: (index, reason) {
+              //       setState(() {
+              //         controller.animateToPage(index);
+              //       });
+              //     },
+              //   ),
+              // ),
               const SizedBox(height: 12),
               Padding(
                 padding: EdgeInsets.symmetric(
@@ -138,7 +138,7 @@ class _ImageViewState extends State<ImageView> {
                         child: GestureDetector(
                           onTap: () {
                             setState(() {
-                              controller.animateToPage(index);
+                              // controller.animateToPage(index);
                             });
                           },
                           child: Container(
