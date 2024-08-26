@@ -103,7 +103,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Localsearch Business',
+      title: 'LS Business',
       theme: ThemeData(
         scaffoldBackgroundColor: primary,
         progressIndicatorTheme: const ProgressIndicatorThemeData(

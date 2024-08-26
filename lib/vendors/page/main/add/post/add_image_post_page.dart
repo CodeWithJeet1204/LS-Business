@@ -98,43 +98,45 @@ class _AddImagePostPageState extends State<AddImagePostPage> {
           }
         }
 
-        Map<String, dynamic> postInfo = {
-          'postId': postId,
-          'postText': postController.text,
-          'postImages': imageDownloadUrl,
-          'postVendorId': auth.currentUser!.uid,
-          'postViews': 0,
-          'postLikes': 0,
-          'postDateTime': Timestamp.fromMillisecondsSinceEpoch(
-            DateTime.now().millisecondsSinceEpoch,
-          ),
-          'postDeleteDateTime': Timestamp.fromMillisecondsSinceEpoch(
-            DateTime.now()
-                .add(
-                  Duration(
-                    hours: 23,
-                    minutes: 50,
-                  ),
-                )
-                .millisecondsSinceEpoch,
-          ),
-        };
+        for (String imgUrl in imageDownloadUrl) {
+          Map<String, dynamic> postInfo = {
+            'postId': postId,
+            'postText': postController.text,
+            'postImage': imgUrl,
+            'postVendorId': auth.currentUser!.uid,
+            'postViews': [],
+            'postDateTime': Timestamp.fromMillisecondsSinceEpoch(
+              DateTime.now().millisecondsSinceEpoch,
+            ),
+            // 'postLikes': 0,
+            // 'postDeleteDateTime': Timestamp.fromMillisecondsSinceEpoch(
+            //   DateTime.now()
+            //       .add(
+            //         Duration(
+            //           hours: 23,
+            //           minutes: 50,
+            //         ),
+            //       )
+            //       .millisecondsSinceEpoch,
+            // ),
+          };
 
-        // await store
-        //     .collection('Business')
-        //     .doc('Owners')
-        //     .collection('Shops')
-        //     .doc(auth.currentUser!.uid)
-        //     .update({
-        //   'noOfImagePosts': imagePostRemaining - 1,
-        // });
+          // await store
+          //     .collection('Business')
+          //     .doc('Owners')
+          //     .collection('Shops')
+          //     .doc(auth.currentUser!.uid)
+          //     .update({
+          //   'noOfImagePosts': imagePostRemaining - 1,
+          // });
 
-        await store
-            .collection('Business')
-            .doc('Data')
-            .collection('Posts')
-            .doc(postId)
-            .set(postInfo);
+          await store
+              .collection('Business')
+              .doc('Data')
+              .collection('Posts')
+              .doc(postId)
+              .set(postInfo);
+        }
 
         setState(() {
           isPosting = false;
@@ -142,7 +144,6 @@ class _AddImagePostPageState extends State<AddImagePostPage> {
 
         if (mounted) {
           mySnackBar(context, 'Posted');
-          Navigator.of(context).pop();
           Navigator.of(context).pop();
         }
       } catch (e) {
