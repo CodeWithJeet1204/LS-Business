@@ -408,7 +408,8 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                             if (context.mounted) {
                               Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
-                                    builder: (context) => const MainPage()),
+                                  builder: (context) => const MainPage(),
+                                ),
                                 (route) => false,
                               );
                             }

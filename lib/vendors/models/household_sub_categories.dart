@@ -1,17 +1,17 @@
 Map<String, Map<String, String>> householdSubCategories = {
   'Fashion & Clothing': {
-    'Men Wear':
-        'https://firebasestorage.googleapis.com/v0/b/find-easy-1204.appspot.com/o/Household%20Categories%2FFashion%20%26%20Clothing%2FMen%20Wear.png?alt=media&token=4ca8bb25-c8af-4cc7-bdb5-91e9677b75f5',
-    'Accessories For Men':
-        'https://firebasestorage.googleapis.com/v0/b/find-easy-1204.appspot.com/o/Household%20Categories%2FFashion%20%26%20Clothing%2FAccessories%20For%20Men.png?alt=media&token=211ff424-414a-41f2-b78d-102ac288461a',
-    'Women Wear':
-        'https://firebasestorage.googleapis.com/v0/b/find-easy-1204.appspot.com/o/Household%20Categories%2FFashion%20%26%20Clothing%2FWomen%20Wear.png?alt=media&token=2ca52a1c-c076-44ab-8579-5bd8151547a0',
-    'Accessories For Women':
-        'https://firebasestorage.googleapis.com/v0/b/find-easy-1204.appspot.com/o/Household%20Categories%2FFashion%20%26%20Clothing%2FAccessories%20For%20Women.png?alt=media&token=1b607ee1-1abe-4162-a8d7-c3be9aa86177',
-    'Kids Wear':
-        'https://firebasestorage.googleapis.com/v0/b/find-easy-1204.appspot.com/o/Household%20Categories%2FFashion%20%26%20Clothing%2FKids%20Wear.png?alt=media&token=fd877576-7ce4-4611-a43c-c3d58c515cc3',
-    'Accessories For Kids':
-        'https://firebasestorage.googleapis.com/v0/b/find-easy-1204.appspot.com/o/Household%20Categories%2FFashion%20%26%20Clothing%2FAccessories%20For%20Kids.png?alt=media&token=6054ccf7-cbf9-4b00-a5fa-3adcee32f188',
+    // 'Men Wear':
+    //     'https://firebasestorage.googleapis.com/v0/b/find-easy-1204.appspot.com/o/Household%20Categories%2FFashion%20%26%20Clothing%2FMen%20Wear.png?alt=media&token=4ca8bb25-c8af-4cc7-bdb5-91e9677b75f5',
+    // 'Accessories For Men':
+    //     'https://firebasestorage.googleapis.com/v0/b/find-easy-1204.appspot.com/o/Household%20Categories%2FFashion%20%26%20Clothing%2FAccessories%20For%20Men.png?alt=media&token=211ff424-414a-41f2-b78d-102ac288461a',
+    // 'Women Wear':
+    //     'https://firebasestorage.googleapis.com/v0/b/find-easy-1204.appspot.com/o/Household%20Categories%2FFashion%20%26%20Clothing%2FWomen%20Wear.png?alt=media&token=2ca52a1c-c076-44ab-8579-5bd8151547a0',
+    // 'Accessories For Women':
+    //     'https://firebasestorage.googleapis.com/v0/b/find-easy-1204.appspot.com/o/Household%20Categories%2FFashion%20%26%20Clothing%2FAccessories%20For%20Women.png?alt=media&token=1b607ee1-1abe-4162-a8d7-c3be9aa86177',
+    // 'Kids Wear':
+    //     'https://firebasestorage.googleapis.com/v0/b/find-easy-1204.appspot.com/o/Household%20Categories%2FFashion%20%26%20Clothing%2FKids%20Wear.png?alt=media&token=fd877576-7ce4-4611-a43c-c3d58c515cc3',
+    // 'Accessories For Kids':
+    //     'https://firebasestorage.googleapis.com/v0/b/find-easy-1204.appspot.com/o/Household%20Categories%2FFashion%20%26%20Clothing%2FAccessories%20For%20Kids.png?alt=media&token=6054ccf7-cbf9-4b00-a5fa-3adcee32f188',
   },
   'Food': {
     'Daily Needs':
@@ -93,12 +93,12 @@ Map<String, Map<String, String>> householdSubCategories = {
     // 'Face': '',
   },
   'Foot Wear': {
-    'Men Foot Wear':
-        'https://firebasestorage.googleapis.com/v0/b/find-easy-1204.appspot.com/o/Household%20Categories%2FFoot%20Wear%2FMen%20Foot%20Wear.png?alt=media&token=abec5b81-6c48-488d-bfa2-7ebdb8949dce',
-    'Women Foot Wear':
-        'https://firebasestorage.googleapis.com/v0/b/find-easy-1204.appspot.com/o/Household%20Categories%2FFoot%20Wear%2FWomen%20Foot%20Wear.png?alt=media&token=259619b6-8f8b-49be-ad40-1ac6a701f042',
-    'Kids Foot Wear':
-        'https://firebasestorage.googleapis.com/v0/b/find-easy-1204.appspot.com/o/Household%20Categories%2FFoot%20Wear%2FKids%20Foot%20Wear.png?alt=media&token=d8b05cda-98ee-4a33-871b-79c448b567a4',
+    // 'Men Foot Wear':
+    //     'https://firebasestorage.googleapis.com/v0/b/find-easy-1204.appspot.com/o/Household%20Categories%2FFoot%20Wear%2FMen%20Foot%20Wear.png?alt=media&token=abec5b81-6c48-488d-bfa2-7ebdb8949dce',
+    // 'Women Foot Wear':
+    //     'https://firebasestorage.googleapis.com/v0/b/find-easy-1204.appspot.com/o/Household%20Categories%2FFoot%20Wear%2FWomen%20Foot%20Wear.png?alt=media&token=259619b6-8f8b-49be-ad40-1ac6a701f042',
+    // 'Kids Foot Wear':
+    //     'https://firebasestorage.googleapis.com/v0/b/find-easy-1204.appspot.com/o/Household%20Categories%2FFoot%20Wear%2FKids%20Foot%20Wear.png?alt=media&token=d8b05cda-98ee-4a33-871b-79c448b567a4',
   },
   'Home Decor & Furnishing': {
     'Home Furnishing':
