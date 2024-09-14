@@ -1,4 +1,3 @@
-import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
 
 class SelectProductForDiscountProvider with ChangeNotifier {
@@ -8,17 +7,13 @@ class SelectProductForDiscountProvider with ChangeNotifier {
 
   void selectProduct(
     String id,
-    dynamic price,
+    double price,
     BuildContext context,
   ) {
-    if (price == '') {
-      mySnackBar(context, 'Product with no price cannot be selected');
+    if (_selectedProducts.contains(id)) {
+      _selectedProducts.remove(id);
     } else {
-      if (_selectedProducts.contains(id)) {
-        _selectedProducts.remove(id);
-      } else {
-        _selectedProducts.add(id);
-      }
+      _selectedProducts.add(id);
     }
 
     notifyListeners();

@@ -1,3 +1,4 @@
+import 'package:Localsearch/vendors/page/main/main_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Localsearch/vendors/firebase/auth_methods.dart';
 import 'package:Localsearch/vendors/register/owner_register_details_page.dart';
@@ -7,7 +8,6 @@ import 'package:Localsearch/vendors/provider/sign_in_method_provider.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:Localsearch/widgets/button.dart';
 import 'package:Localsearch/widgets/collapse_container.dart';
-import 'package:Localsearch/widgets/head_text.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:Localsearch/widgets/text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -27,7 +27,7 @@ class RegisterMethodPage extends StatefulWidget {
 }
 
 class _RegisterMethodPageState extends State<RegisterMethodPage> {
-  final FirebaseAuth auth = FirebaseAuth.instance;
+  final auth = FirebaseAuth.instance;
   final AuthMethods authMethods = AuthMethods();
   final store = FirebaseFirestore.instance;
   final GlobalKey<FormState> registerEmailFormKey = GlobalKey<FormState>();
@@ -56,11 +56,54 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
   Future<void> registerEmail(SignInMethodProvider signInMethodProvider) async {
     if (passwordController.text == confirmPasswordController.text) {
       if (registerEmailFormKey.currentState!.validate()) {
-        setState(() {
-          isEmailRegistering = true;
-        });
-
         try {
+          setState(() {
+            isEmailRegistering = true;
+          });
+
+          final userExistsSnap = await store
+              .collection('Users')
+              .where('Email', isEqualTo: emailController.text)
+              .where('registration', isEqualTo: 'email')
+              .get();
+
+          if (userExistsSnap.docs.isNotEmpty) {
+            if (mounted) {
+              setState(() {
+                isEmailRegistering = false;
+              });
+              return mySnackBar(
+                context,
+                'This account was created in User app, use a different Email here',
+              );
+            }
+          }
+
+          final vendorExistsSnap = await store
+              .collection('Business')
+              .doc('Owners')
+              .collection('Users')
+              .where('Email', isEqualTo: emailController.text)
+              .where('registration', isEqualTo: 'email')
+              .get();
+
+          if (vendorExistsSnap.docs.isNotEmpty) {
+            if (mounted) {
+              setState(() {
+                isEmailRegistering = false;
+              });
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => MainPage(),
+                ),
+                (route) => false,
+              );
+              return mySnackBar(
+                context,
+                'This account is already registered. Signing you in',
+              );
+            }
+          }
           await authMethods.signUpWithEmail(
             email: emailController.text,
             password: passwordController.text,
@@ -76,10 +119,13 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                 .doc(auth.currentUser!.uid)
                 .set({
               'Email': emailController.text.toString(),
+              'registration': 'email',
               'Image': null,
               'Name': null,
               'Phone Number': null,
               'uid': null,
+              'allowCalls': true,
+              'hasReviewed': false,
             });
 
             await store
@@ -89,15 +135,15 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                 .doc(auth.currentUser!.uid)
                 .set({
               'Name': null,
+              'registration': 'email',
               'GSTNumber': null,
-              'Address': null,
               'Description': null,
               'Industry': null,
               'Image': null,
               'Type': [],
               'MembershipName': null,
               'MembershipDuration': null,
-              'MembershipTime': null,
+              'MembershipStartDateTime': null,
             });
             /*}  else if (widget.mode == 'services') {
               // nothing
@@ -150,10 +196,54 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
   // REGISTER PHONE
   Future<void> registerPhone(SignInMethodProvider signInMethodProvider) async {
     if (registerNumberFormKey.currentState!.validate()) {
-      setState(() {
-        isPhoneRegistering = true;
-      });
       try {
+        setState(() {
+          isPhoneRegistering = true;
+        });
+
+        final userExistsSnap = await store
+            .collection('Users')
+            .where('Phone Number', isEqualTo: '+91 ${phoneController.text}')
+            .where('registration', isEqualTo: 'phone number')
+            .get();
+
+        if (userExistsSnap.docs.isNotEmpty) {
+          if (mounted) {
+            setState(() {
+              isPhoneRegistering = false;
+            });
+            return mySnackBar(
+              context,
+              'This account was created in User app, use a different Phone Number here',
+            );
+          }
+        }
+
+        final vendorExistsSnap = await store
+            .collection('Business')
+            .doc('Owners')
+            .collection('Users')
+            .where('Phone Number', isEqualTo: '+91 ${phoneController.text}')
+            .where('registration', isEqualTo: 'phone number')
+            .get();
+
+        if (vendorExistsSnap.docs.isNotEmpty) {
+          if (mounted) {
+            setState(() {
+              isPhoneRegistering = false;
+            });
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => MainPage(),
+              ),
+              (route) => false,
+            );
+            return mySnackBar(
+              context,
+              'This account is already registered. Signing you in',
+            );
+          }
+        }
         signInMethodProvider.chooseNumber();
 
         await auth.verifyPhoneNumber(
@@ -216,15 +306,60 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
 
   // REGISTER GOOGLE
   Future<void> registerGoogle(SignInMethodProvider signInMethodProvider) async {
-    setState(() {
-      isGoogleRegistering = true;
-    });
-
     try {
+      setState(() {
+        isGoogleRegistering = true;
+      });
+
       await AuthMethods().signInWithGoogle(context);
       signInMethodProvider.chooseGoogle();
       await auth.currentUser!.reload();
       if (auth.currentUser != null) {
+        final userExistsSnap = await store
+            .collection('Users')
+            .where('Email', isEqualTo: auth.currentUser!.email)
+            .where('registration', isEqualTo: 'google')
+            .get();
+
+        if (userExistsSnap.docs.isNotEmpty) {
+          await auth.signOut();
+          setState(() {
+            isGoogleRegistering = false;
+          });
+          if (mounted) {
+            return mySnackBar(
+              context,
+              'This account was created in User app, use a different Google Account here',
+            );
+          }
+        }
+
+        final vendorExistsSnap = await store
+            .collection('Business')
+            .doc('Owners')
+            .collection('Users')
+            .where('Email', isEqualTo: auth.currentUser!.email)
+            .where('registration', isEqualTo: 'google')
+            .get();
+
+        if (vendorExistsSnap.docs.isNotEmpty) {
+          if (mounted) {
+            setState(() {
+              isGoogleRegistering = false;
+            });
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => MainPage(),
+              ),
+              (route) => false,
+            );
+            return mySnackBar(
+              context,
+              'This account is already registered. Signing you in',
+            );
+          }
+        }
+
         // if (widget.mode == 'vendor') {
         await store
             .collection('Business')
@@ -232,11 +367,14 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
             .collection('Users')
             .doc(auth.currentUser!.uid)
             .set({
-          'Email': emailController.text.toString(),
+          'Email': auth.currentUser!.email,
+          'registration': 'google',
           'Image': null,
           'Name': null,
           'Phone Number': null,
           'uid': null,
+          'allowCalls': true,
+          'hasReviewed': false,
         });
 
         await store
@@ -246,15 +384,15 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
             .doc(auth.currentUser!.uid)
             .set({
           'Name': null,
+          'registration': 'google',
           'GSTNumber': null,
-          'Address': null,
           'Description': null,
           'Industry': null,
           'Image': null,
           'Type': [],
           'MembershipName': null,
           'MembershipDuration': null,
-          'MembershipTime': null,
+          'MembershipStartDateTime': null,
         });
         /*}  else if (widget.mode == 'services') {
               // nothing
@@ -268,7 +406,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
         if (mounted) {
           return mySnackBar(
             context,
-            'Some error occured\nTry signing with email / phone number',
+            'Some error occured\nTry signing with Email / Phone Number',
           );
         }
       }
@@ -303,10 +441,13 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
   @override
   Widget build(BuildContext context) {
     final signInMethodProvider = Provider.of<SignInMethodProvider>(context);
-    final double width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: Text('Register'),
+      ),
       body: SafeArea(
         child: /* width < screenSize
             ?*/
@@ -319,11 +460,11 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // REGISTER HEADTEXT
-                SizedBox(height: width * 0.35),
-                const HeadText(
-                  text: 'REGISTER',
-                ),
-                SizedBox(height: width * 0.3),
+                // SizedBox(height: width * 0.35),
+                // const HeadText(
+                //   text: 'REGISTER',
+                // ),
+                SizedBox(height: width * 0.65),
 
                 // EMAIL
                 MyCollapseContainer(
@@ -601,14 +742,13 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
         //                                       .set({
         //                                     'Name': null,
         //                                     'GSTNumber': null,
-        //                                     'Address': null,
         //                                     'Description': null,
         //                                     'Industry': null,
         //                                     'Image': null,
         //                                     'Type': null,
         //                                     'MembershipName': null,
         //                                     'MembershipDuration': null,
-        //                                     'MembershipTime': null,
+        //                                     'MembershipStartDateTime': null,
         //                                   });
         //                                   signInMethodProvider
         //                                       .chooseEmail();
@@ -647,7 +787,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
         //                                   if (context.mounted) {
         //                                     mySnackBar(
         //                                       context,
-        //                                       'This email is already in use.',
+        //                                       'This Email is already in use.',
         //                                     );
         //                                   }
         //                                 } else {
@@ -740,7 +880,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
         //             //       signInMethodProvider.chooseGoogle();
         //             //       await AuthMethods().signInWithGoogle(context);
         //             //       await _auth.currentUser!.reload();
-        //             //       if (FirebaseAuth.instance.currentUser != null) {
+        //             //       if (auth.currentUser != null) {
         //             //         await store
         //             //             .collection('Business')
         //             //             .doc('Owners')
@@ -748,10 +888,10 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
         //             //             .doc(_auth.currentUser!.uid)
         //             //             .set({
         //             //           'Email':
-        //             //               FirebaseAuth.instance.currentUser!.email,
+        //             //               auth.currentUser!.email,
         //             //           'Name': FirebaseAuth
         //             //               .instance.currentUser!.displayName,
-        //             //           'uid': FirebaseAuth.instance.currentUser!.uid,
+        //             //           'uid': auth.currentUser!.uid,
         //             //           'Image': null,
         //             //           'Phone Number': null,
         //             //         });
@@ -763,14 +903,13 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
         //             //             .update({
         //             //           'Name': null,
         //             //           'GSTNumber': null,
-        //             //           'Address': null,
         //             //           'Description': null,
         //             //           'Industry': null,
         //             //           'Image': null,
         //             //           'Type': null,
         //             //           'MembershipName': null,
         //             //           'MembershipDuration': null,
-        //             //           'MembershipTime': null,
+        //             //           'MembershipStartDateTime': null,
         //             //         });
         //             //
         //             //         if (mounted) {
@@ -786,7 +925,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
         //             //         if (mounted) {
         //             //           mySnackBar(
         //             //             context,
-        //             //             'Some error occured\nTry signing with email / phone number',
+        //             //             'Some error occured\nTry signing with Email / Phone Number',
         //             //           );
         //             //         }
         //             //       }

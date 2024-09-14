@@ -12,7 +12,6 @@ import 'package:Localsearch/widgets/text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -50,8 +49,9 @@ class _AddBrandPageState extends State<AddBrandPage> {
 
   // SELECT CATEGORY IMAGE
   Future<void> selectImage() async {
-    final XFile? im = await showImagePickDialog(context);
-    if (im != null) {
+    final images = await showImagePickDialog(context, true);
+    if (images.isNotEmpty) {
+      final im = images[0];
       setState(() {
         _image = (File(im.path));
       });
@@ -112,7 +112,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
             'brandId': brandId,
             'brandName': brandNameController.text.toString(),
             'imageUrl': imageUrl,
-            'vendorId': FirebaseAuth.instance.currentUser!.uid,
+            'vendorId': auth.currentUser!.uid,
           });
           if (mounted) {
             mySnackBar(context, 'Brand Added');
@@ -189,7 +189,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
         ),
         child: LayoutBuilder(
           builder: ((context, constraints) {
-            final double width = constraints.maxWidth;
+            final width = constraints.maxWidth;
 
             return SingleChildScrollView(
               child: Form(

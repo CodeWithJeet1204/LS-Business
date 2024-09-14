@@ -365,7 +365,6 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                 children: [
                                   // START TIME
                                   Container(
-                                    height: 100,
                                     width: width * 0.45,
                                     decoration: BoxDecoration(
                                       color: primary3,
@@ -420,7 +419,6 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                   await selectWeekdayStartTime();
                                                 },
                                                 text: 'Select Time',
-                                                textColor: primaryDark,
                                               )
                                             : Padding(
                                                 padding: EdgeInsets.only(
@@ -435,7 +433,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                       TextOverflow.ellipsis,
                                                   style: TextStyle(
                                                     color: primaryDark,
-                                                    fontSize: width * 0.07,
+                                                    fontSize: width * 0.066,
                                                     fontWeight: FontWeight.w600,
                                                   ),
                                                 ),
@@ -446,7 +444,6 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
 
                                   // END TIME
                                   Container(
-                                    height: 100,
                                     width: width * 0.45,
                                     decoration: BoxDecoration(
                                       color: primary3,
@@ -501,7 +498,6 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                   await selectWeekdayEndTime();
                                                 },
                                                 text: 'Select Time',
-                                                textColor: primaryDark,
                                               )
                                             : Padding(
                                                 padding: EdgeInsets.only(
@@ -516,7 +512,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                       TextOverflow.ellipsis,
                                                   style: TextStyle(
                                                     color: primaryDark,
-                                                    fontSize: width * 0.07,
+                                                    fontSize: width * 0.066,
                                                     fontWeight: FontWeight.w600,
                                                   ),
                                                 ),
@@ -602,7 +598,6 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                 children: [
                                   // START TIME
                                   Container(
-                                    height: 100,
                                     width: width * 0.45,
                                     decoration: BoxDecoration(
                                       color: primary3,
@@ -657,7 +652,6 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                   await selectSaturdayStartTime();
                                                 },
                                                 text: 'Select Time',
-                                                textColor: primaryDark,
                                               )
                                             : Padding(
                                                 padding: EdgeInsets.only(
@@ -672,7 +666,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                       TextOverflow.ellipsis,
                                                   style: TextStyle(
                                                     color: primaryDark,
-                                                    fontSize: width * 0.07,
+                                                    fontSize: width * 0.066,
                                                     fontWeight: FontWeight.w600,
                                                   ),
                                                 ),
@@ -683,7 +677,6 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
 
                                   // END TIME
                                   Container(
-                                    height: 100,
                                     width: width * 0.45,
                                     decoration: BoxDecoration(
                                       color: primary3,
@@ -738,7 +731,6 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                   await selectSaturdayEndTime();
                                                 },
                                                 text: 'Select Time',
-                                                textColor: primaryDark,
                                               )
                                             : Padding(
                                                 padding: EdgeInsets.only(
@@ -753,7 +745,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                       TextOverflow.ellipsis,
                                                   style: TextStyle(
                                                     color: primaryDark,
-                                                    fontSize: width * 0.07,
+                                                    fontSize: width * 0.066,
                                                     fontWeight: FontWeight.w600,
                                                   ),
                                                 ),
@@ -839,7 +831,6 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                 children: [
                                   // START TIME
                                   Container(
-                                    height: 100,
                                     width: width * 0.45,
                                     decoration: BoxDecoration(
                                       color: primary3,
@@ -894,7 +885,6 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                   await selectSundayStartTime();
                                                 },
                                                 text: 'Select Time',
-                                                textColor: primaryDark,
                                               )
                                             : Padding(
                                                 padding: EdgeInsets.only(
@@ -909,7 +899,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                       TextOverflow.ellipsis,
                                                   style: TextStyle(
                                                     color: primaryDark,
-                                                    fontSize: width * 0.07,
+                                                    fontSize: width * 0.066,
                                                     fontWeight: FontWeight.w600,
                                                   ),
                                                 ),
@@ -920,7 +910,6 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
 
                                   // END TIME
                                   Container(
-                                    height: 100,
                                     width: width * 0.45,
                                     decoration: BoxDecoration(
                                       color: primary3,
@@ -975,7 +964,6 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                   await selectSundayEndTime();
                                                 },
                                                 text: 'Select Time',
-                                                textColor: primaryDark,
                                               )
                                             : Padding(
                                                 padding: EdgeInsets.only(
@@ -990,7 +978,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                       TextOverflow.ellipsis,
                                                   style: TextStyle(
                                                     color: primaryDark,
-                                                    fontSize: width * 0.07,
+                                                    fontSize: width * 0.066,
                                                     fontWeight: FontWeight.w600,
                                                   ),
                                                 ),

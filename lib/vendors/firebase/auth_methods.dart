@@ -6,12 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthMethods {
+  final auth = FirebaseAuth.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   User get user => _auth.currentUser!;
 
   // STATE PERSISTENCE
-  Stream<User?> get authState => FirebaseAuth.instance.authStateChanges();
+  Stream<User?> get authState => auth.authStateChanges();
 
   // EMAIL SIGNUP
   Future<void> signUpWithEmail({
@@ -84,7 +85,7 @@ class AuthMethods {
       );
       // ignore: unused_local_variable
       UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithCredential(credential);
+          await auth.signInWithCredential(credential);
       if (userCredential.user != null) {
         if (userCredential.additionalUserInfo!.isNewUser) {
           if (context.mounted) {
@@ -119,7 +120,7 @@ class AuthMethods {
         phoneNumber: phoneNumber,
         timeout: const Duration(seconds: 120),
         verificationCompleted: (PhoneAuthCredential credential) async {
-          await FirebaseAuth.instance.signInWithCredential(credential);
+          await auth.signInWithCredential(credential);
         },
         verificationFailed: (FirebaseAuthException e) {
           if (context.mounted) {

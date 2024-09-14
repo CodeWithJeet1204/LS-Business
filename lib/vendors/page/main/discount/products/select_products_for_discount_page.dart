@@ -69,7 +69,7 @@ class _SelectProductForDiscountPageState
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          'SELECT PRODUCT',
+          'Select Product',
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
@@ -79,7 +79,6 @@ class _SelectProductForDiscountPageState
               Navigator.of(context).pop();
             },
             text: 'DONE',
-            textColor: primaryDark,
           ),
         ],
         bottom: PreferredSize(
@@ -200,16 +199,16 @@ class _SelectProductForDiscountPageState
                     padding: EdgeInsets.all(width * 0.006125),
                     child: LayoutBuilder(
                       builder: ((context, constraints) {
-                        final double width = constraints.maxWidth;
+                        final width = constraints.maxWidth;
 
                         return SafeArea(
                           child: isGridView
                               ? GridView.builder(
                                   shrinkWrap: true,
                                   gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                      SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
-                                    childAspectRatio: 0.725,
+                                    childAspectRatio: width * 0.6875 / width,
                                   ),
                                   itemCount: currentProducts.length,
                                   itemBuilder: (context, index) {
@@ -231,8 +230,7 @@ class _SelectProductForDiscountPageState
                                         children: [
                                           Container(
                                             decoration: BoxDecoration(
-                                              color:
-                                                  primary2.withOpacity(0.125),
+                                              color: white,
                                               border: Border.all(
                                                 width: 0.25,
                                                 color: primaryDark,
@@ -294,13 +292,7 @@ class _SelectProductForDiscountPageState
                                                     0,
                                                   ),
                                                   child: Text(
-                                                    productData['productPrice'] !=
-                                                                '' &&
-                                                            productData[
-                                                                    'productPrice'] !=
-                                                                null
-                                                        ? '''Rs. ${productData['productPrice']}'''
-                                                        : 'N/A',
+                                                    'Rs. ${productData['productPrice']}',
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                     maxLines: 1,
@@ -419,13 +411,7 @@ class _SelectProductForDiscountPageState
                                                   ),
                                                 ),
                                                 subtitle: Text(
-                                                  productData['productPrice'] !=
-                                                              '' &&
-                                                          productData[
-                                                                  'productPrice'] !=
-                                                              null
-                                                      ? 'Rs. ${productData['productPrice']}'
-                                                      : 'N/A',
+                                                  'Rs. ${productData['productPrice']}',
                                                   maxLines: 1,
                                                   overflow:
                                                       TextOverflow.ellipsis,

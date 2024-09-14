@@ -1,5 +1,6 @@
 import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:Localsearch/vendors/utils/size.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class MyButton extends StatelessWidget {
@@ -15,7 +16,7 @@ class MyButton extends StatelessWidget {
 
   final String text;
   final bool isLoading;
-  final double width;
+  final width;
   final double horizontalPadding;
   final double verticalPadding;
   final void Function()? onTap;
@@ -25,28 +26,28 @@ class MyButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: EdgeInsets.symmetric(
-          horizontal: horizontalPadding,
-          vertical: verticalPadding,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: buttonColor,
         ),
         padding: EdgeInsets.symmetric(
           vertical: MediaQuery.of(context).size.width < screenSize
               ? MediaQuery.of(context).size.width * 0.033
               : MediaQuery.of(context).size.width * 0.0066,
         ),
-        alignment: Alignment.center,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: buttonColor,
+        margin: EdgeInsets.symmetric(
+          horizontal: horizontalPadding,
+          vertical: verticalPadding,
         ),
+        alignment: Alignment.center,
         child: isLoading
             ? const Center(
                 child: CircularProgressIndicator(
                   color: white,
                 ),
               )
-            : Text(
+            : AutoSizeText(
                 text,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,

@@ -1,24 +1,22 @@
-import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:Localsearch/vendors/page/main/main_page.dart';
+import 'package:Localsearch/vendors/page/main/add/product/add_product_page_4.dart';
 import 'package:Localsearch/vendors/provider/add_product_provider.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:Localsearch/widgets/check_box_container.dart';
+import 'package:Localsearch/widgets/shimmer_skeleton_container.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:Localsearch/widgets/text_button.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:feather_icons/feather_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
 
 class AddProductPage3 extends StatefulWidget {
   const AddProductPage3({
     super.key,
-    required this.productId,
+    required this.shopType,
   });
 
-  final String productId;
+  final String shopType;
 
   @override
   State<AddProductPage3> createState() => _AddProductPage3State();
@@ -27,392 +25,463 @@ class AddProductPage3 extends StatefulWidget {
 class _AddProductPage3State extends State<AddProductPage3> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
-  bool isDeliveryAvailable = false;
-  bool isCODAvailable = false;
-  bool isRefundAvailable = false;
-  bool isReplacementAvailable = false;
-  bool isGiftWrapAvailable = false;
-  bool isBulkSellAvailable = false;
-  bool isGSTInvoiceAvailable = false;
-  bool isCardOffersAvailable = false;
-  double? deliveryRange;
-  double? refundRange;
-  int? replacementRange;
-  bool isSaving = false;
+  final searchController = TextEditingController();
+  Map<String, dynamic> currentCategories = {};
+  Map<String, dynamic> allCategories = {};
+  String? selectedCategory;
+  bool isCategoryData = false;
+  bool isGridView = true;
 
-  Future<void> save(AddProductProvider provider) async {
-    try {
-      setState(() {
-        isSaving = true;
-      });
-      final List<String> imageDownloadUrl = [];
+  // INIT STATE
+  @override
+  void initState() {
+    getCategoryData();
+    super.initState();
+  }
 
-      for (File img in (provider.productInfo['imageFiles'] as List<File>)) {
-        try {
-          Reference ref = FirebaseStorage.instance
-              .ref()
-              .child('Data/Products')
-              .child(const Uuid().v4());
-          await ref.putFile(img).whenComplete(() async {
-            await ref.getDownloadURL().then((value) {
-              setState(() {
-                imageDownloadUrl.add(value);
-              });
-            });
-          });
-        } catch (e) {
-          if (mounted) {
-            mySnackBar(context, e.toString());
-          }
-        }
-      }
+  // DISPOSE
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
 
-      provider.add(
-        {
-          'deliveryAvailable': isDeliveryAvailable,
-          'codAvailable': isDeliveryAvailable ? isCODAvailable : false,
-          'refundAvailable': isRefundAvailable,
-          'replacementAvailable': isReplacementAvailable,
-          'giftWrapAvailable': isGiftWrapAvailable,
-          'bulkSellAvailable': isBulkSellAvailable,
-          'gstInvoiceAvailable': isGSTInvoiceAvailable,
-          'cardOffersAvailable': isCardOffersAvailable,
-          'deliveryRange': deliveryRange,
-          'refundRange': refundRange,
-          'replacementRange': replacementRange,
-          'images': imageDownloadUrl,
-          'shortsThumbnail': '',
-          'shortsURL': '',
-        },
-        true,
-      );
-      provider.remove('imageFiles');
+  // GET CATEGORY DATA
+  Future<void> getCategoryData() async {
+    Map<String, dynamic> myCategories = {};
 
-      await store
-          .collection('Business')
-          .doc('Data')
-          .collection('Products')
-          .doc(widget.productId)
-          .set(provider.productInfo);
-      if (mounted) {
-        mySnackBar(context, 'Product Added');
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: ((context) => const MainPage()),
-          ),
-          (route) => false,
-        );
-      }
-      setState(() {
-        isSaving = false;
-      });
-    } catch (e) {
-      setState(() {
-        isSaving = false;
-      });
-      if (mounted) {
-        mySnackBar(context, e.toString());
-      }
+    final categorySnap = await store
+        .collection('Business')
+        .doc('Special Categories')
+        .collection(widget.shopType)
+        .get();
+
+    for (var specialCategory in categorySnap.docs) {
+      final categoryData = specialCategory.data();
+
+      final category = categoryData['specialCategoryName'];
+      final imageUrl = categoryData['specialCategoryImageUrl'];
+
+      myCategories[category] = imageUrl;
     }
+
+    setState(() {
+      allCategories = myCategories;
+      currentCategories = myCategories;
+      isCategoryData = true;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final productProvider = Provider.of<AddProductProvider>(context);
+    final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'SERVICES AVAILABLE',
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
+        title: Text('Select Category'),
         actions: [
           MyTextButton(
-            onPressed: () async {
-              await save(productProvider);
+            onPressed: () {
+              if (selectedCategory != null) {
+                final productProvider = Provider.of<AddProductProvider>(
+                  context,
+                  listen: false,
+                );
+
+                productProvider.add(
+                  {
+                    'categoryName': selectedCategory,
+                  },
+                  true,
+                );
+
+                if (mounted) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: ((context) => AddProductPage4(
+                            shopType: widget.shopType,
+                            category: selectedCategory!,
+                          )),
+                    ),
+                  );
+                }
+              } else {
+                return mySnackBar(context, 'Select Category');
+              }
             },
-            text: 'DONE',
-            textColor: primaryDark2,
+            text: 'NEXT',
           ),
         ],
         bottom: PreferredSize(
-          preferredSize:
-              isSaving ? const Size(double.infinity, 10) : const Size(0, 0),
-          child: isSaving ? const LinearProgressIndicator() : Container(),
+          preferredSize: Size(width, 60),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: searchController,
+                  autocorrect: false,
+                  onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                  decoration: const InputDecoration(
+                    hintText: 'Search ...',
+                    border: OutlineInputBorder(),
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      if (value.isEmpty) {
+                        currentCategories = Map<String, dynamic>.from(
+                          allCategories,
+                        );
+                      } else {
+                        Map<String, dynamic> filteredCategories =
+                            Map<String, dynamic>.from(
+                          allCategories,
+                        );
+                        List<String> keysToRemove = [];
+
+                        filteredCategories.forEach((key, imageUrl) {
+                          if (!key
+                              .toString()
+                              .toLowerCase()
+                              .contains(value.toLowerCase())) {
+                            keysToRemove.add(key);
+                          }
+                        });
+
+                        for (var key in keysToRemove) {
+                          filteredCategories.remove(key);
+                        }
+
+                        currentCategories = filteredCategories;
+                      }
+                    });
+                  },
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    isGridView = !isGridView;
+                  });
+                },
+                icon: Icon(
+                  isGridView ? FeatherIcons.list : FeatherIcons.grid,
+                ),
+                tooltip: isGridView ? 'List View' : 'Grid View',
+              ),
+            ],
+          ),
         ),
       ),
       body: LayoutBuilder(
-        builder: ((context, constraints) {
+        builder: (context, constraints) {
           final width = constraints.maxWidth;
 
-          return SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: width * 0.0225,
-                vertical: width * 0.0125,
-              ),
-              child: Column(
-                children: [
-                  // DELIVERY AVAILABLE
-                  CheckBoxContainer(
-                    text: 'Self Delivery Available ?',
-                    value: isDeliveryAvailable,
-                    function: (_) {
-                      setState(() {
-                        isDeliveryAvailable = !isDeliveryAvailable;
-                      });
-                    },
-                    width: width,
+          return !isCategoryData
+              ? GridView.builder(
+                  shrinkWrap: true,
+                  physics: ClampingScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: width * 0.5 / width * 1.6,
                   ),
-
-                  // DELIVERY RANGE
-                  isDeliveryAvailable
-                      ? Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: width * 0.025,
+                  itemCount: 4,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.all(
+                        width * 0.02,
+                      ),
+                      child: GridViewSkeleton(
+                        width: width,
+                        isPrice: false,
+                      ),
+                    );
+                  },
+                )
+              : currentCategories.isEmpty
+                  ? const SizedBox(
+                      height: 60,
+                      child: Center(
+                        child: Text('No Categories'),
+                      ),
+                    )
+                  : isGridView
+                      ? GridView.builder(
+                          shrinkWrap: true,
+                          physics: const ClampingScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 0.75,
                           ),
-                          child: Container(
-                            width: width,
-                            height: width * 0.125,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: primary2,
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: TextFormField(
-                              keyboardType: TextInputType.number,
-                              onTapOutside: (event) =>
-                                  FocusScope.of(context).unfocus(),
-                              decoration: InputDecoration(
-                                hintText: 'Range of Delivery (in Km)',
-                                hintStyle: TextStyle(
-                                  color: primaryDark2.withOpacity(0.8),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                              ),
-                              onChanged: (value) {
+                          itemCount: currentCategories.length,
+                          itemBuilder: ((context, index) {
+                            final categoryName =
+                                currentCategories.keys.toList()[index];
+                            final categoryImageUrl =
+                                currentCategories.values.toList()[index];
+
+                            return GestureDetector(
+                              onTap: () {
                                 setState(() {
-                                  deliveryRange = double.parse(value);
+                                  if (selectedCategory != categoryName) {
+                                    selectedCategory = categoryName;
+                                  } else {
+                                    selectedCategory = null;
+                                  }
                                 });
                               },
-                            ),
-                          ),
+                              child: Stack(
+                                alignment: Alignment.topRight,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: white,
+                                      border: Border.all(
+                                        width: 0.25,
+                                        color: primaryDark,
+                                      ),
+                                      borderRadius: BorderRadius.circular(2),
+                                    ),
+                                    margin: EdgeInsets.all(
+                                      width * 0.00625,
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        // CachedNetworkImage(
+                                        //   imageUrl:
+                                        //       categoryData[
+                                        //           'imageUrl'],
+                                        //   imageBuilder:
+                                        //       (context,
+                                        //           imageProvider) {
+                                        //     return Center(
+                                        //       child:
+                                        //           ClipRRect(
+                                        //         borderRadius:
+                                        //             BorderRadius
+                                        //                 .circular(
+                                        //           12,
+                                        //         ),
+                                        //         child:
+                                        //             Container(
+                                        //           width: width *
+                                        //               0.4,
+                                        //           height: width *
+                                        //               0.4,
+                                        //           decoration:
+                                        //               BoxDecoration(
+                                        //             image:
+                                        //                 DecorationImage(
+                                        //               image:
+                                        //                   imageProvider,
+                                        //               fit:
+                                        //                   BoxFit.cover,
+                                        //             ),
+                                        //           ),
+                                        //         ),
+                                        //       ),
+                                        //     );
+                                        //   },
+                                        // ),
+                                        Padding(
+                                          padding: EdgeInsets.all(
+                                            width * 0.0125,
+                                          ),
+                                          child: Center(
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                2,
+                                              ),
+                                              child: Image.network(
+                                                categoryImageUrl,
+                                                width: width * 0.5,
+                                                height: width * 0.5,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            left: width * 0.02,
+                                          ),
+                                          child: Text(
+                                            categoryName,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              color: primaryDark,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: width * 0.06,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  selectedCategory == categoryName
+                                      ? Padding(
+                                          padding: const EdgeInsets.only(
+                                            right: 4,
+                                            top: 4,
+                                          ),
+                                          child: Container(
+                                            width: width * 0.1125,
+                                            height: width * 0.1125,
+                                            decoration: const BoxDecoration(
+                                              color: primaryDark,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: Icon(
+                                              FeatherIcons.check,
+                                              size: width * 0.08,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        )
+                                      : Container()
+                                ],
+                              ),
+                            );
+                          }),
                         )
-                      : Container(),
-
-                  // COD ON DELIVERY
-                  isDeliveryAvailable
-                      ? Container(
+                      : SizedBox(
                           width: width,
-                          height: width * 0.125,
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: width * 0.0225,
-                          ),
-                          decoration: BoxDecoration(
-                            color: primary2.withOpacity(0.8),
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Cash On Delivery',
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  color: primaryDark2,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: width * 0.05,
-                                ),
-                              ),
-                              Checkbox(
-                                activeColor: primaryDark2,
-                                checkColor: white,
-                                value: isCODAvailable,
-                                onChanged: ((value) {
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            physics: const ClampingScrollPhysics(),
+                            itemCount: currentCategories.length,
+                            itemBuilder: ((context, index) {
+                              final categoryName =
+                                  currentCategories.keys.toList()[index];
+                              final categoryImageUrl =
+                                  currentCategories.values.toList()[index];
+
+                              return GestureDetector(
+                                onTap: () {
                                   setState(() {
-                                    isCODAvailable = !isCODAvailable;
+                                    if (selectedCategory != categoryName) {
+                                      selectedCategory = categoryName;
+                                    } else {
+                                      selectedCategory = null;
+                                    }
                                   });
-                                }),
-                              ),
-                            ],
-                          ),
-                        )
-                      : Container(),
-
-                  const Divider(),
-
-                  // REFUND
-                  CheckBoxContainer(
-                    text: 'Refund Available ?',
-                    value: isRefundAvailable,
-                    function: (_) {
-                      setState(() {
-                        isRefundAvailable = !isRefundAvailable;
-                      });
-                    },
-                    width: width,
-                  ),
-
-                  // REFUND DATE RANGE
-                  isRefundAvailable
-                      ? Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: width * 0.025,
-                          ),
-                          child: Container(
-                            width: width,
-                            height: width * 0.125,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: primary2,
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: TextFormField(
-                              keyboardType: TextInputType.number,
-                              onTapOutside: (event) =>
-                                  FocusScope.of(context).unfocus(),
-                              decoration: InputDecoration(
-                                hintText: 'Days To Return',
-                                hintStyle: TextStyle(
-                                  color: primaryDark2.withOpacity(0.8),
+                                },
+                                child: Stack(
+                                  alignment: Alignment.centerRight,
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: white,
+                                        border: Border.all(
+                                          width: 0.5,
+                                          color: primaryDark,
+                                        ),
+                                        borderRadius: BorderRadius.circular(
+                                          2,
+                                        ),
+                                      ),
+                                      margin: EdgeInsets.all(
+                                        width * 0.0125,
+                                      ),
+                                      child: ListTile(
+                                        visualDensity: VisualDensity.standard,
+                                        // leading:
+                                        //     CachedNetworkImage(
+                                        //   imageUrl:
+                                        //       categoryData[
+                                        //           'imageUrl'],
+                                        //   imageBuilder: (context,
+                                        //       imageProvider) {
+                                        //     return Padding(
+                                        //       padding: EdgeInsets
+                                        //           .symmetric(
+                                        //         vertical:
+                                        //             width *
+                                        //                 0.0125,
+                                        //       ),
+                                        //       child:
+                                        //           ClipRRect(
+                                        //         borderRadius:
+                                        //             BorderRadius
+                                        //                 .circular(
+                                        //           4,
+                                        //         ),
+                                        //         child:
+                                        //             Container(
+                                        //           width: width *
+                                        //               0.133,
+                                        //           height:
+                                        //               width *
+                                        //                   0.133,
+                                        //           decoration:
+                                        //               BoxDecoration(
+                                        //             image:
+                                        //                 DecorationImage(
+                                        //               image:
+                                        //                   imageProvider,
+                                        //               fit: BoxFit
+                                        //                   .cover,
+                                        //             ),
+                                        //           ),
+                                        //         ),
+                                        //       ),
+                                        //     );
+                                        //   },
+                                        // ),
+                                        leading: ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                            2,
+                                          ),
+                                          child: Image.network(
+                                            categoryImageUrl,
+                                            width: width * 0.15,
+                                            height: width * 0.15,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        title: Text(
+                                          categoryName,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: width * 0.05,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    selectedCategory == categoryName
+                                        ? Padding(
+                                            padding: EdgeInsets.only(
+                                              right: width * 0.033,
+                                            ),
+                                            child: Container(
+                                              width: width * 0.125,
+                                              height: width * 0.125,
+                                              decoration: const BoxDecoration(
+                                                color: primaryDark,
+                                                shape: BoxShape.circle,
+                                              ),
+                                              child: Icon(
+                                                Icons.check,
+                                                size: width * 0.1,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          )
+                                        : Container()
+                                  ],
                                 ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                              ),
-                              onChanged: (value) {
-                                setState(() {
-                                  refundRange = double.parse(value);
-                                });
-                              },
-                            ),
+                              );
+                            }),
                           ),
-                        )
-                      : Container(),
-
-                  const Divider(),
-
-                  // REPLACEMENT
-                  CheckBoxContainer(
-                    text: 'Replacement Available ?',
-                    value: isReplacementAvailable,
-                    function: (_) {
-                      setState(() {
-                        isReplacementAvailable = !isReplacementAvailable;
-                      });
-                    },
-                    width: width,
-                  ),
-
-                  // REPLACEMENT DATE RANGE
-                  isReplacementAvailable
-                      ? Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: width * 0.025,
-                          ),
-                          child: Container(
-                            width: width,
-                            height: width * 0.125,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: primary2,
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: TextFormField(
-                              keyboardType: TextInputType.number,
-                              onTapOutside: (event) =>
-                                  FocusScope.of(context).unfocus(),
-                              decoration: InputDecoration(
-                                hintText: 'Days To Replace',
-                                hintStyle: TextStyle(
-                                  color: primaryDark2.withOpacity(0.8),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                              ),
-                              onChanged: (value) {
-                                setState(() {
-                                  replacementRange = int.parse(value);
-                                });
-                              },
-                            ),
-                          ),
-                        )
-                      : Container(),
-
-                  const Divider(),
-
-                  // GIFT WRAP
-                  CheckBoxContainer(
-                    text: 'Gift Wrap ?',
-                    value: isGiftWrapAvailable,
-                    function: (_) {
-                      setState(() {
-                        isGiftWrapAvailable = !isGiftWrapAvailable;
-                      });
-                    },
-                    width: width,
-                  ),
-
-                  const Divider(),
-
-                  // BULK SELL
-                  CheckBoxContainer(
-                    text: 'Bulk Selling ?',
-                    value: isBulkSellAvailable,
-                    function: (_) {
-                      setState(() {
-                        isBulkSellAvailable = !isBulkSellAvailable;
-                      });
-                    },
-                    width: width,
-                  ),
-
-                  const Divider(),
-
-                  // GST INVOICE
-                  CheckBoxContainer(
-                    text: 'GST Invoice',
-                    value: isGSTInvoiceAvailable,
-                    function: (_) {
-                      setState(() {
-                        isGSTInvoiceAvailable = !isGSTInvoiceAvailable;
-                      });
-                    },
-                    width: width,
-                  ),
-
-                  const Divider(),
-
-                  // MEMBERSHIP
-                  Padding(
-                    padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom,
-                    ),
-                    child: CheckBoxContainer(
-                      text: 'Card Offers ?',
-                      value: isCardOffersAvailable,
-                      function: (_) {
-                        setState(() {
-                          isCardOffersAvailable = !isCardOffersAvailable;
-                        });
-                      },
-                      width: width,
-                    ),
-                  ),
-
-                  SizedBox(height: width * 0.0125),
-                ],
-              ),
-            ),
-          );
-        }),
+                        );
+        },
       ),
     );
   }

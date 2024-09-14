@@ -18,7 +18,7 @@ class DetailsContainer extends StatefulWidget {
   final TextEditingController controller;
   final void Function() onTap;
   final bool isChanging;
-  final double width;
+  final width;
 
   @override
   State<DetailsContainer> createState() => _DetailsContainerState();
@@ -31,7 +31,7 @@ class _DetailsContainerState extends State<DetailsContainer> {
       width: widget.width,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: primary2.withOpacity(0.125),
+        color: white,
         border: Border.all(
           width: widget.isChanging ? 1 : 0.5,
           color: primaryDark.withOpacity(0.5),

@@ -7,7 +7,6 @@ import 'package:Localsearch/vendors/register/forgot_password_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:Localsearch/widgets/button.dart';
 import 'package:Localsearch/widgets/collapse_container.dart';
-import 'package:Localsearch/widgets/head_text.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:Localsearch/widgets/text_button.dart';
 import 'package:Localsearch/widgets/text_form_field.dart';
@@ -64,45 +63,83 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           isEmailLogging = true;
         });
-        UserCredential? user = await auth.signInWithEmailAndPassword(
-          email: emailController.text.toString(),
-          password: passwordController.text.toString(),
-        );
 
-        if (user != null) {
-          final userExistsSnap =
-              await store.collection('Users').doc(auth.currentUser!.uid).get();
+        final userExistsSnap = await store
+            .collection('Users')
+            .where('Email', isEqualTo: emailController.text)
+            .where('registration', isEqualTo: 'email')
+            .get();
 
-          if (userExistsSnap.exists) {
-            await auth.signOut();
-            if (mounted) {
-              return mySnackBar(
-                context,
-                'This account was created in User app, use a different email here',
-              );
-            }
-          } else {
+        if (userExistsSnap.docs.isNotEmpty) {
+          setState(() {
+            isEmailLogging = false;
+          });
+          if (mounted) {
+            return mySnackBar(
+              context,
+              'This account was created in User app, use a different Email here',
+            );
+          }
+        }
+
+        final vendorExistsSnap = await store
+            .collection('Business')
+            .doc('Owners')
+            .collection('Users')
+            .where('Email', isEqualTo: emailController.text)
+            .where('registration', isEqualTo: 'email')
+            .get();
+
+        if (vendorExistsSnap.docs.isEmpty) {
+          setState(() {
+            isEmailLogging = false;
+          });
+          if (mounted) {
+            await showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text('Not Registered'),
+                content: Text(
+                  'This account is not registered. Register with this Email',
+                ),
+              ),
+            );
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => RegisterMethodPage(),
+              ),
+              (route) => false,
+            );
+          }
+          return;
+        } else {
+          await auth.signInWithEmailAndPassword(
+            email: emailController.text.toString(),
+            password: passwordController.text.toString(),
+          );
+
+          if (auth.currentUser != null) {
             // if (mode == 'vendor') {
-            final vendorSnap = await store
-                .collection('Business')
-                .doc('Owners')
-                .collection('Shops')
-                .doc(auth.currentUser!.uid)
-                .get();
+            // final vendorSnap = await store
+            //     .collection('Business')
+            //     .doc('Owners')
+            //     .collection('Shops')
+            //     .doc(auth.currentUser!.uid)
+            //     .get();
 
-            if (!vendorSnap.exists) {
-              await auth.signOut();
-              setState(() {
-                isEmailLogging = false;
-              });
-              if (mounted) {
-                return mySnackBar(
-                  context,
-                  'This account was created for Services or Events',
-                );
-              }
-              return;
-            }
+            // if (!vendorSnap.exists) {
+            //   await auth.signOut();
+            //   setState(() {
+            //     isEmailLogging = false;
+            //   });
+            //   if (mounted) {
+            //     return mySnackBar(
+            //       context,
+            //       'This account was created for Services or Events',
+            //     );
+            //   }
+            //   return;
+            // }
             // } else if (mode == 'services') {
             //   final serviceSnap = await store
             //       .collection('Services')
@@ -170,10 +207,6 @@ class _LoginPageState extends State<LoginPage> {
               );
             }
           }
-        } else {
-          if (mounted) {
-            return mySnackBar(context, 'Some error occurred');
-          }
         }
       } catch (e) {
         setState(() {
@@ -189,45 +222,85 @@ class _LoginPageState extends State<LoginPage> {
   // LOGIN PHONE
   Future<void> loginPhone() async {
     if (numberLoginFormKey.currentState!.validate()) {
-      final phoneSnap = await store
-          .collection('Business')
-          .doc('Owners')
-          .collection('Users')
-          .where('Phone Number', isEqualTo: phoneController.text)
-          .get();
-
-      if (phoneSnap.docs.isNotEmpty) {
+      try {
         setState(() {
           isPhoneLogging = true;
         });
-        try {
-          // if (mode == 'vendor') {
-          final vendorSnap = await store
-              .collection('Business')
-              .doc('Owners')
-              .collection('Shops')
-              .doc(auth.currentUser!.uid)
-              .get();
 
-          if (!vendorSnap.exists) {
-            await auth.signOut();
-            setState(() {
-              isPhoneLogging = false;
-            });
-            if (mounted) {
-              return mySnackBar(
-                context,
-                'This account was created for Services or Events',
-              );
-            }
-            return;
+        final userExistsSnap = await store
+            .collection('Users')
+            .where('Email', isEqualTo: '+91 ${phoneController.text}')
+            .where('registration', isEqualTo: 'phone number')
+            .get();
+
+        if (userExistsSnap.docs.isNotEmpty) {
+          setState(() {
+            isPhoneLogging = false;
+          });
+          if (mounted) {
+            return mySnackBar(
+              context,
+              'This account was created in User app, use a different Phone Number here',
+            );
           }
+        }
+
+        final vendorExistsSnap = await store
+            .collection('Business')
+            .doc('Owners')
+            .collection('Users')
+            .where('Phone Number', isEqualTo: '+91 ${phoneController.text}')
+            .where('registration', isEqualTo: 'phone number')
+            .get();
+
+        if (vendorExistsSnap.docs.isEmpty) {
+          setState(() {
+            isPhoneLogging = false;
+          });
+          if (mounted) {
+            await showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text('Not Registered'),
+                content: Text(
+                  'This account is not registered. Register with this Phone Number',
+                ),
+              ),
+            );
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => RegisterMethodPage(),
+              ),
+              (route) => false,
+            );
+          }
+          return;
+        } else {
+          // if (mode == 'vendor') {
+          // final vendorSnap = await store
+          //     .collection('Business')
+          //     .doc('Owners')
+          //     .collection('Shops')
+          //     .doc(auth.currentUser!.uid)
+          //     .get();
+          // if (!vendorSnap.exists) {
+          //   await auth.signOut();
+          //   setState(() {
+          //     isPhoneLogging = false;
+          //   });
+          //   if (mounted) {
+          //     return mySnackBar(
+          //       context,
+          //       'This account was created for Services or Events',
+          //     );
+          //   }
+          //   return;
+          // }
           // } else if (mode == 'services') {
           //   final serviceSnap = await store
           //       .collection('Services')
           //       .doc(auth.currentUser!.uid)
           //       .get();
-
           //   if (!serviceSnap.exists) {
           //     await auth.signOut();
           //     setState(() {
@@ -246,7 +319,6 @@ class _LoginPageState extends State<LoginPage> {
           //       .collection('Organizers')
           //       .doc(auth.currentUser!.uid)
           //       .get();
-
           //   if (!serviceSnap.exists) {
           //     await auth.signOut();
           //     setState(() {
@@ -307,20 +379,13 @@ class _LoginPageState extends State<LoginPage> {
                   isPhoneLogging = false;
                 });
               });
-        } catch (e) {
-          setState(() {
-            isPhoneLogging = false;
-          });
-          if (mounted) {
-            mySnackBar(context, e.toString());
-          }
         }
-      } else {
+      } catch (e) {
         setState(() {
           isPhoneLogging = false;
         });
         if (mounted) {
-          mySnackBar(context, 'You have not registered with this phone number');
+          mySnackBar(context, e.toString());
         }
       }
     }
@@ -328,51 +393,88 @@ class _LoginPageState extends State<LoginPage> {
 
   // LOGIN GOOGLE
   Future<void> loginGoogle() async {
-    setState(() {
-      isGoogleLogging = true;
-    });
     try {
+      setState(() {
+        isGoogleLogging = true;
+      });
+
       await AuthMethods().signInWithGoogle(context);
       if (auth.currentUser != null) {
-        final userExistsSnap =
-            await store.collection('Users').doc(auth.currentUser!.uid).get();
+        final userExistsSnap = await store
+            .collection('Users')
+            .where('Email', isEqualTo: auth.currentUser!.email)
+            .where('registration', isEqualTo: 'google')
+            .get();
 
-        if (userExistsSnap.exists) {
+        if (userExistsSnap.docs.isNotEmpty) {
           await auth.signOut();
+          setState(() {
+            isGoogleLogging = false;
+          });
           if (mounted) {
             return mySnackBar(
               context,
-              'This account was created in User app, use a different email here',
+              'This account was created in User app, use a different Google Account here',
             );
           }
-        } else {
-          // if (mode == 'vendor') {
-          final vendorSnap = await store
-              .collection('Business')
-              .doc('Owners')
-              .collection('Shops')
-              .doc(auth.currentUser!.uid)
-              .get();
+        }
+        final vendorExistsSnap = await store
+            .collection('Business')
+            .doc('Owners')
+            .collection('Users')
+            .where('Email', isEqualTo: auth.currentUser!.email)
+            .where('registration', isEqualTo: 'google')
+            .get();
 
-          if (!vendorSnap.exists) {
+        if (vendorExistsSnap.docs.isEmpty) {
+          if (mounted) {
             await auth.signOut();
             setState(() {
               isGoogleLogging = false;
             });
-            if (mounted) {
-              return mySnackBar(
-                context,
-                'This account was created for Services or Events',
-              );
-            }
-            return;
+            await showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text('Not Registered'),
+                content: Text(
+                  'This account is not registered. Register with this Google Account',
+                ),
+              ),
+            );
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => RegisterMethodPage(),
+              ),
+              (route) => false,
+            );
           }
+          return;
+        } else {
+          // if (mode == 'vendor') {
+          // final vendorSnap = await store
+          //     .collection('Business')
+          //     .doc('Owners')
+          //     .collection('Shops')
+          //     .doc(auth.currentUser!.uid)
+          //     .get();
+
+          // if (!vendorSnap.exists) {
+          //   await auth.signOut();
+          //   setState(() {
+          //     isGoogleLogging = false;
+          //   });
+          //   if (mounted) {
+          //     return mySnackBar(
+          //       context,
+          //       'Some error occured, sign in using different account',
+          //     );
+          //   }
+          // }
           // } else if (mode == 'services') {
           //   final serviceSnap = await store
           //       .collection('Services')
           //       .doc(auth.currentUser!.uid)
           //       .get();
-
           //   if (!serviceSnap.exists) {
           //     await auth.signOut();
           //     setState(() {
@@ -391,7 +493,6 @@ class _LoginPageState extends State<LoginPage> {
           //       .collection('Organizers')
           //       .doc(auth.currentUser!.uid)
           //       .get();
-
           //   if (!serviceSnap.exists) {
           //     await auth.signOut();
           //     setState(() {
@@ -406,6 +507,7 @@ class _LoginPageState extends State<LoginPage> {
           //   }
           //   return;
           // }
+
           setState(() {
             isGoogleLogging = false;
           });
@@ -449,10 +551,13 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: Text('Login'),
+      ),
       body: SafeArea(
           child: /* width < screenSize
             ? */
@@ -511,11 +616,11 @@ class _LoginPageState extends State<LoginPage> {
               //     textColor: primaryDark2,
               //   ),
               // ),
-              SizedBox(height: width * 0.33),
-              const HeadText(
-                text: 'LOGIN',
-              ),
-              SizedBox(height: width * 0.3),
+              // SizedBox(height: width * 0.33),
+              // const HeadText(
+              //   text: 'LOGIN',
+              // ),
+              SizedBox(height: width * 0.63),
               MyCollapseContainer(
                 width: width,
                 text: 'Email',

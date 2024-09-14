@@ -1,220 +1,309 @@
 // ignore_for_file: unnecessary_null_comparison
+import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:Localsearch/vendors/models/membership_no_of_plans.dart';
 import 'package:Localsearch/vendors/page/main/main_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:Localsearch/widgets/button.dart';
-import 'package:Localsearch/widgets/head_text.dart';
 import 'package:Localsearch/widgets/membership_card.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:Localsearch/widgets/text_button.dart';
+import 'package:feather_icons/feather_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
 
 class SelectMembershipPage extends StatefulWidget {
   const SelectMembershipPage({
     super.key,
+    required this.hasAvailedLaunchOffer,
   });
+
+  final bool hasAvailedLaunchOffer;
 
   @override
   State<SelectMembershipPage> createState() => _SelectMembershipPageState();
 }
 
 class _SelectMembershipPageState extends State<SelectMembershipPage> {
-  final FirebaseFirestore store = FirebaseFirestore.instance;
+  final auth = FirebaseAuth.instance;
+  final store = FirebaseFirestore.instance;
+  bool isOffer = false;
+  Map<String, dynamic>? offerData;
+  bool isRegistrationSelected = false;
   bool isBasicSelected = false;
   bool isGoldSelected = false;
   bool isPremiumSelected = false;
+  bool isAvailingOffer = false;
   bool isPaying = false;
-  String selectedDuration = 'Duration';
+  String? selectedDuration;
   DateTime? selectedDurationDateTime;
-  List<List<int>>? membershipPricing;
-  List<List<String?>>? membershipBenefits;
+  Map<String, List<String>> membershipDurations = {};
+  Map<String, String> membershipReverseDurations = {};
+  Map<String, Map<String, dynamic>> membershipDetails = {};
   String? selectedPrice;
-  int? currentBasicPrice;
-  int? currentGoldPrice;
-  int? currentPremiumPrice;
+  int? currentPrice;
   String? currentMembership;
+  bool isData = false;
 
   // INIT STATE
   @override
   void initState() {
+    if (!widget.hasAvailedLaunchOffer) {
+      getOffersData();
+    }
     super.initState();
-    getPricesAndBenefits();
-    isBasicSelected = true;
-    isGoldSelected = true;
-    isPremiumSelected = true;
+    getMembershipData();
   }
 
-  // GET PRICES AND BENEFITS
-  Future<void> getPricesAndBenefits() async {
-    final basicPricingSnap =
-        await store.collection('Prices').doc('Basic').get();
-    final goldPricingSnap = await store.collection('Prices').doc('Gold').get();
-    final premiumPricingSnap =
-        await store.collection('Prices').doc('Premium').get();
+  // GET OFFERS DATA
+  Future<void> getOffersData() async {
+    String address = '';
 
-    final basicData = basicPricingSnap.data()!;
-    final goldData = goldPricingSnap.data()!;
-    final premiumData = premiumPricingSnap.data()!;
+    // GET LOCATION
+    Future<Position?> getLocation() async {
+      LocationPermission permission = await Geolocator.checkPermission();
 
-    final basic1Month = basicData['1 month'];
-    final basic6Month = basicData['6 months'];
-    final basic1Year = basicData['1 year'];
-    final gold1Month = goldData['1 month'];
-    final gold6Month = goldData['6 months'];
-    final gold1Year = goldData['1 year'];
-    final premium1Month = premiumData['1 month'];
-    final premium6Month = premiumData['6 months'];
-    final premium1Year = premiumData['1 year'];
+      while (true) {
+        bool isLocationServiceEnabled =
+            await Geolocator.isLocationServiceEnabled();
+        if (!isLocationServiceEnabled) {
+          await Geolocator.openLocationSettings();
+          return Future.error('Location services are disabled.');
+        }
 
-    final basicDiscount = basicData['discount'];
-    final goldDiscount = goldData['discount'];
-    final premiumDiscount = premiumData['discount'];
+        permission = await Geolocator.checkPermission();
+        if (permission == LocationPermission.denied) {
+          permission = await Geolocator.requestPermission();
+          if (permission == LocationPermission.denied) {
+            continue;
+          }
+        }
 
-    final basic1Benefit = basicData['benefit1'];
-    final basic2Benefit = basicData['benefit2'];
-    final basic3Benefit = basicData['benefit3'];
-    final basic4Benefit = basicData['benefit4'];
-    final basic5Benefit = basicData['benefit5'];
-    final gold1Benefit = goldData['benefit1'];
-    final gold2Benefit = goldData['benefit2'];
-    final gold3Benefit = goldData['benefit3'];
-    final gold4Benefit = goldData['benefit4'];
-    final gold5Benefit = goldData['benefit5'];
-    final premium1Benefit = premiumData['benefit1'];
-    final premium2Benefit = premiumData['benefit2'];
-    final premium3Benefit = premiumData['benefit3'];
-    final premium4Benefit = premiumData['benefit4'];
-    final premium5Benefit = premiumData['benefit5'];
+        if (permission == LocationPermission.deniedForever) {
+          ScaffoldMessenger.of(context).clearSnackBars();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Location permissions are permanently denied. Enable them in Settings.',
+                style: const TextStyle(
+                  color: Color.fromARGB(255, 240, 252, 255),
+                ),
+              ),
+              action: SnackBarAction(
+                label: 'Open Settings',
+                onPressed: () async {
+                  await Geolocator.openAppSettings();
+                },
+                textColor: primary2,
+              ),
+              elevation: 2,
+              backgroundColor: primaryDark,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              dismissDirection: DismissDirection.down,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+          await Future.delayed(Duration(seconds: 1));
+          continue;
+        }
+
+        return await Geolocator.getCurrentPosition();
+      }
+    }
+
+    // GET ADDRESS
+    Future<String> getAddress(double shopLatitude, double shopLongitude) async {
+      const apiKey = 'AIzaSyA-CD3MgDBzAsjmp_FlDbofynMMmW6fPsU';
+      final apiUrl =
+          'https://maps.googleapis.com/maps/api/geocode/json?latlng=$shopLatitude,$shopLongitude&key=$apiKey';
+
+      try {
+        final response = await http.get(Uri.parse(apiUrl));
+
+        if (response.statusCode == 200) {
+          final data = json.decode(response.body);
+          if (data['status'] == 'OK' && data['results'].isNotEmpty) {
+            final results = data['results'] as List;
+
+            for (var result in results) {
+              final addressComponents =
+                  result['address_components'] as List<dynamic>;
+
+              for (var component in addressComponents) {
+                final types = component['types'] as List<dynamic>;
+
+                if (types.contains('administrative_area_level_3')) {
+                  final districtName = component['long_name'];
+                  return districtName;
+                }
+              }
+            }
+
+            return '';
+          } else {
+            if (mounted) {
+              mySnackBar(context, 'Failed to get address');
+            }
+            return '';
+          }
+        } else {
+          if (mounted) {
+            mySnackBar(context, 'Failed to load data');
+          }
+          return '';
+        }
+      } catch (e) {
+        if (mounted) {
+          mySnackBar(context, e.toString());
+        }
+        return '';
+      }
+    }
+
+    await getLocation().then((coordinates) async {
+      if (coordinates != null) {
+        address = await getAddress(coordinates.latitude, coordinates.longitude);
+      }
+    });
+
+    final offerSnap = await store
+        .collection('Offers')
+        .where('city', isEqualTo: address)
+        .where('expiry', isGreaterThan: Timestamp.fromDate(DateTime.now()))
+        .orderBy('discount', descending: true)
+        .get();
+
+    if (offerSnap.docs.isNotEmpty) {
+      Map<String, dynamic> myOffers = {};
+      final highestOffer = offerSnap.docs[0];
+
+      final currentOfferData = highestOffer.data();
+
+      myOffers = currentOfferData;
+
+      setState(() {
+        isOffer = true;
+        offerData = myOffers;
+      });
+    } else {
+      setState(() {
+        isOffer = false;
+      });
+    }
+  }
+
+  // GET MEMBERSHIP DATA
+  Future<void> getMembershipData() async {
+    // DURATION
+    final durationSnapshot =
+        await store.collection('Membership').doc('Duration').get();
+    if (durationSnapshot.exists) {
+      Map<String, dynamic> durationData = durationSnapshot.data()!;
+
+      membershipDurations = {'durations': []};
+
+      durationData.forEach((key, value) {
+        if (value != null) {
+          membershipDurations['durations']!.add(value as String);
+        }
+      });
+    }
+
+    // REVERSE DURATION
+    final reverseDurationSnapshot =
+        await store.collection('Membership').doc('Reverse Duration').get();
+    if (reverseDurationSnapshot.exists) {
+      Map<String, dynamic> reverseDurationData =
+          reverseDurationSnapshot.data()!;
+
+      membershipReverseDurations = {};
+
+      reverseDurationData.forEach((key, value) {
+        if (value != null) {
+          membershipReverseDurations[key] = value as String;
+        }
+      });
+    }
+
+    // MEMBERSHIP
+    List<String> membershipTypes = ['Registration', 'Basic', 'Gold', 'Premium'];
+
+    for (String membershipType in membershipTypes) {
+      final membershipSnapshot =
+          await store.collection('Membership').doc(membershipType).get();
+      if (membershipSnapshot.exists) {
+        Map<String, dynamic> membershipData = membershipSnapshot.data()!;
+
+        membershipDetails[membershipType] = {
+          'benefits': membershipData['benefits'],
+          'charges': {},
+          'discount': membershipData['discount'],
+        };
+
+        int? discount = membershipDetails[membershipType]!['discount'];
+
+        membershipData.forEach((key, value) {
+          if (key.startsWith('duration') && value != null) {
+            int originalPrice = value;
+            double discountedPrice = originalPrice.toDouble();
+
+            if (discount != null && discount > 0) {
+              discountedPrice = originalPrice * (1 - (discount / 100));
+            }
+
+            discountedPrice = roundToNearest49or99(discountedPrice);
+
+            membershipDetails[membershipType]!['charges']![key] = [
+              discountedPrice,
+              originalPrice
+            ];
+          }
+        });
+      }
+    }
 
     setState(() {
-      membershipBenefits = [
-        [
-          basic1Benefit,
-          basic2Benefit,
-          basic3Benefit,
-          basic4Benefit,
-          basic5Benefit,
-        ],
-        [
-          gold1Benefit,
-          gold2Benefit,
-          gold3Benefit,
-          gold4Benefit,
-          gold5Benefit,
-        ],
-        [
-          premium1Benefit,
-          premium2Benefit,
-          premium3Benefit,
-          premium4Benefit,
-          premium5Benefit,
-        ],
-      ];
-      membershipPricing = [
-        [
-          basic1Month,
-          basic6Month,
-          basic1Year,
-        ],
-        [
-          gold1Month,
-          gold6Month,
-          gold1Year,
-        ],
-        [
-          premium1Month,
-          premium6Month,
-          premium1Year,
-        ],
-        [
-          basicDiscount,
-          goldDiscount,
-          premiumDiscount,
-        ],
-      ];
+      isData = true;
     });
   }
 
   // SHOW BENEFITS
-  String? showBenefits(String name, benefitNo) {
-    if (name == 'BASIC') {
-      return membershipBenefits![0][benefitNo - 1];
-    } else if (name == 'GOLD') {
-      return membershipBenefits![1][benefitNo - 1];
-    } else {
-      return membershipBenefits![2][benefitNo - 1];
-    }
+  String? showBenefits(String name, String benefitNo) {
+    Map benefits = membershipDetails[name]!['benefits'];
+    final reverseDuration = showReverseDuration(selectedDuration!);
+    return benefits[benefitNo]?[reverseDuration];
   }
 
   // SHOW PRICES
-  int showPrices(String name) {
-    if (name == 'BASIC') {
-      if (selectedDuration == '1 month') {
-        return membershipPricing![0][0];
-      } else if (selectedDuration == '6 months') {
-        return membershipPricing![0][1];
-      } else {
-        return membershipPricing![0][2];
-      }
-    } else if (name == 'GOLD') {
-      if (selectedDuration == '1 month') {
-        return membershipPricing![1][0];
-      } else if (selectedDuration == '6 months') {
-        return membershipPricing![1][1];
-      } else {
-        return membershipPricing![1][2];
-      }
-    } else {
-      if (selectedDuration == '1 month') {
-        return membershipPricing![2][0];
-      } else if (selectedDuration == '6 months') {
-        return membershipPricing![2][1];
-      } else {
-        return membershipPricing![2][2];
-      }
-    }
+  int? showPrices(String name) {
+    Map charges = membershipDetails[name]?['charges'];
+    final reverseDuration = showReverseDuration(selectedDuration!);
+    return charges[reverseDuration]?[1].toInt();
   }
 
-  // SHOW DISCOUNT PRICES
-  double showDiscountPrices(String name) {
-    double price;
-    if (name == 'BASIC') {
-      if (selectedDuration == '1 month') {
-        price =
-            membershipPricing![0][0] * ((100 - membershipPricing![3][0]) / 100);
-      } else if (selectedDuration == '6 months') {
-        price =
-            membershipPricing![0][1] * ((100 - membershipPricing![3][0]) / 100);
-      } else {
-        price =
-            membershipPricing![0][2] * ((100 - membershipPricing![3][0]) / 100);
-      }
-    } else if (name == 'GOLD') {
-      if (selectedDuration == '1 month') {
-        price =
-            membershipPricing![1][0] * ((100 - membershipPricing![3][1]) / 100);
-      } else if (selectedDuration == '6 months') {
-        price =
-            membershipPricing![1][1] * ((100 - membershipPricing![3][1]) / 100);
-      } else {
-        price =
-            membershipPricing![1][2] * ((100 - membershipPricing![3][1]) / 100);
-      }
-    } else {
-      if (selectedDuration == '1 month') {
-        price =
-            membershipPricing![2][0] * ((100 - membershipPricing![3][2]) / 100);
-      } else if (selectedDuration == '6 months') {
-        price =
-            membershipPricing![2][1] * ((100 - membershipPricing![3][2]) / 100);
-      } else {
-        price =
-            membershipPricing![2][2] * ((100 - membershipPricing![3][2]) / 100);
-      }
+  // SHOW DISCOUNT
+  double? showDiscount(String name) {
+    String? internalKey = membershipReverseDurations[selectedDuration];
+    List? prices = membershipDetails[name]?['charges']?[internalKey];
+    if (prices != null) {
+      double originalPrice = prices[1].toDouble();
+      double discount = membershipDetails[name]?['discount']?.toDouble() ?? 0;
+      double discountedPrice = originalPrice * (1 - (discount / 100));
+      return roundToNearest49or99(discountedPrice);
     }
-    return roundToNearest49or99(price);
+    return null;
+  }
+
+  // SHOW REVERSE DURATION
+  String? showReverseDuration(String duration) {
+    if (membershipReverseDurations.containsKey(duration)) {
+      return membershipReverseDurations[duration]!;
+    } else {
+      return 'Unknown Duration';
+    }
   }
 
   // ROUND TO NEAREST 49 OR 99
@@ -222,21 +311,12 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
     int priceInt = price.toInt();
     int lastTwoDigits = priceInt % 100;
 
-    if (lastTwoDigits > 49) {
+    if (price < 49) {
+      return 0;
+    } else if (lastTwoDigits > 49) {
       return (priceInt - lastTwoDigits + 99).toDouble();
     } else {
       return (priceInt - lastTwoDigits + 49).toDouble();
-    }
-  }
-
-  // SHOW DISCOUNT
-  int showDiscount(String name) {
-    if (name == 'BASIC') {
-      return membershipPricing![3][0];
-    } else if (name == 'GOLD') {
-      return membershipPricing![3][1];
-    } else {
-      return membershipPricing![3][2];
     }
   }
 
@@ -261,57 +341,402 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                   Navigator.of(context).pop();
                 },
                 text: 'OK',
-                textColor: primaryDark,
               ),
             ],
           )),
     );
   }
 
-  // SELECT PRICE
-  String selectPrice(bool basic, bool gold, bool premium) {
-    if (basic) {
+  // PAY
+  Future<void> pay() async {
+    if (!isRegistrationSelected &&
+        !isBasicSelected &&
+        !isGoldSelected &&
+        !isPremiumSelected &&
+        !isAvailingOffer) {
+      mySnackBar(
+        context,
+        'Please select a Membership',
+      );
+    } else if (isAvailingOffer) {
       setState(() {
-        selectedPrice = currentBasicPrice.toString();
+        isPaying = true;
       });
-      return selectedPrice!;
-    } else if (gold) {
-      setState(() {
-        selectedPrice = currentGoldPrice.toString();
-      });
-      return selectedPrice!;
-    } else if (premium) {
-      setState(() {
-        selectedPrice = currentPremiumPrice.toString();
-      });
-      return selectedPrice!;
+      try {
+        Duration getMembershipDuration(
+          String membershipDuration,
+        ) {
+          final now = DateTime.now();
+
+          if (membershipDuration == '10 Days') {
+            return Duration(days: 10);
+          } else if (membershipDuration == '1 Month') {
+            return DateTime(now.year, now.month + 1, now.day).difference(now);
+          } else if (membershipDuration == '3 Months') {
+            return DateTime(now.year, now.month + 3, now.day).difference(now);
+          } else if (membershipDuration == '6 Months') {
+            return DateTime(now.year, now.month + 6, now.day).difference(now);
+          } else if (membershipDuration == '1 Year') {
+            return DateTime(now.year + 1, now.month, now.day).difference(now);
+          } else {
+            return Duration.zero;
+          }
+        }
+
+        final String membershipName = offerData!['membership'];
+        final String membershipDuration = offerData!['duration'];
+        final Duration membershipDurationDateTime =
+            getMembershipDuration(membershipDuration);
+        final DateTime membershipEndDateTime =
+            DateTime.now().add(membershipDurationDateTime);
+
+        await store
+            .collection('Business')
+            .doc('Owners')
+            .collection('Shops')
+            .doc(auth.currentUser!.uid)
+            .update({
+          'MembershipName': membershipName,
+          'MembershipDuration': membershipDuration,
+          'MembershipStartDateTime': DateTime.now(),
+          'MembershipEndDateTime': membershipEndDateTime,
+          // TODO: NO OF BASED ON DURATION
+        });
+
+        setState(() {
+          isPaying = false;
+        });
+        if (auth.currentUser != null) {
+          if (context.mounted) {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => const MainPage(),
+              ),
+              (route) => false,
+            );
+          }
+        }
+      } catch (e) {
+        setState(() {
+          isPaying = false;
+        });
+        if (context.mounted) {
+          return mySnackBar(context, e.toString());
+        }
+      }
     } else {
-      setState(() {
-        selectedPrice = 'null';
-      });
-      return 'null';
+      if (currentMembership != null) {
+        if (currentMembership == 'Registration') {
+          setState(() {
+            selectedPrice = showPrices('Registration').toString();
+          });
+        } else if (currentMembership == 'BASIC') {
+          setState(() {
+            selectedPrice = showPrices('Basic').toString();
+          });
+        } else if (currentMembership == 'GOLD') {
+          setState(() {
+            selectedPrice = showPrices('Gold').toString();
+          });
+        } else if (currentMembership == 'PREMIUM') {
+          setState(() {
+            selectedPrice = showPrices('Premium').toString();
+          });
+        }
+        setState(() {
+          isPaying = true;
+        });
+        try {
+          // TODO: PAYMENT
+
+          await store
+              .collection('Business')
+              .doc('Owners')
+              .collection('Shops')
+              .doc(auth.currentUser!.uid)
+              .update({
+            'MembershipName': currentMembership.toString(),
+            'MembershipDuration': selectedDuration.toString(),
+            'MembershipStartDateTime': DateTime.now(),
+            'MembershipEndDateTime': selectedDurationDateTime,
+          });
+
+          setState(() {
+            isPaying = false;
+          });
+          if (auth.currentUser != null) {
+            if (context.mounted) {
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => const MainPage(),
+                ),
+                (route) => false,
+              );
+            }
+          }
+        } catch (e) {
+          setState(() {
+            isPaying = false;
+          });
+          if (context.mounted) {
+            return mySnackBar(context, e.toString());
+          }
+        }
+      } else {
+        return mySnackBar(
+          context,
+          'Please select a Membership',
+        );
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: membershipPricing == null
+      appBar: AppBar(
+        title: Text('Select Membership'),
+      ),
+      bottomSheet: // PAY BUTTON
+          selectedDuration == 'Duration' && !isAvailingOffer
+              ? Container(
+                  width: 0,
+                  height: 0,
+                )
+              : SizedBox(
+                  width: width,
+                  height: width * 0.175,
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: width * 0.0225),
+                    child: MyButton(
+                      text: isAvailingOffer
+                          ? 'CONTINUE FREE'
+                          : currentPrice != null
+                              ? 'Pay - $currentPrice'
+                              : '❌❌',
+                      onTap: () async {
+                        await pay();
+                      },
+                      isLoading: isPaying,
+                      horizontalPadding: width * 0.01125,
+                    ),
+                  ),
+                ),
+      body: isData == false || isOffer == null
           ? Center(
               child: CircularProgressIndicator(),
             )
           : SafeArea(
               child: SingleChildScrollView(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: width * 0.1),
-                    const HeadText(
-                      text: 'SELECT\nMEMBERSHIP',
+                    !isOffer
+                        ? Container()
+                        : Padding(
+                            padding: EdgeInsets.only(left: width * 0.033),
+                            child: Text(
+                              'Launch Offer',
+                              style: TextStyle(
+                                color: const Color.fromARGB(255, 63, 63, 63),
+                              ),
+                            ),
+                          ),
+
+                    !isOffer
+                        ? Container()
+                        : SizedBox(height: height * 0.006125),
+
+                    !isOffer
+                        ? Container()
+                        : SizedBox(
+                            width: width,
+                            child: Builder(
+                              builder: (context) {
+                                final offerName = offerData!['name'];
+                                final offerMembership =
+                                    offerData!['membership'];
+                                final offerDuration = offerData!['duration'];
+                                final lightColor = offerMembership == 'BASIC'
+                                    ? white
+                                    : offerMembership == 'GOLD'
+                                        ? const Color.fromARGB(
+                                            255,
+                                            253,
+                                            243,
+                                            154,
+                                          )
+                                        : const Color.fromARGB(
+                                            255,
+                                            202,
+                                            226,
+                                            238,
+                                          );
+                                final darkColor = offerMembership == 'BASIC'
+                                    ? black
+                                    : offerMembership == 'GOLD'
+                                        ? const Color.fromARGB(
+                                            255,
+                                            93,
+                                            76,
+                                            0,
+                                          )
+                                        : Colors.blueGrey.shade600;
+
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      isAvailingOffer = !isAvailingOffer;
+                                      isRegistrationSelected = false;
+                                      isBasicSelected = false;
+                                      isGoldSelected = false;
+                                      isPremiumSelected = false;
+                                    });
+                                  },
+                                  child: Opacity(
+                                    opacity: isAvailingOffer ? 1 : 0.9,
+                                    child: Container(
+                                      width: width,
+                                      decoration: BoxDecoration(
+                                        color: lightColor,
+                                        border: Border.all(
+                                          width: isAvailingOffer ? 3 : 1,
+                                          color: darkColor,
+                                        ),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      padding: EdgeInsets.all(width * 0.025),
+                                      margin: EdgeInsets.all(
+                                        width *
+                                            (isAvailingOffer ? 0.025 : 0.04),
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            offerName,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              color: darkColor,
+                                            ),
+                                          ),
+                                          RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: offerMembership,
+                                                  style: TextStyle(
+                                                    color: darkColor,
+                                                    fontSize: width * 0.066,
+                                                    fontWeight: FontWeight.w500,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: ' Membership',
+                                                  style: TextStyle(
+                                                    color: darkColor,
+                                                    fontSize: width * 0.06,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: 'Duration: ',
+                                                  style: TextStyle(
+                                                    color: darkColor,
+                                                    fontSize: width * 0.055,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: offerDuration,
+                                                  style: TextStyle(
+                                                    color: darkColor,
+                                                    fontSize: width * 0.06,
+                                                    fontWeight: FontWeight.w500,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'FREE',
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  color: darkColor,
+                                                  fontSize: width * 0.0675,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                              MyTextButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    isAvailingOffer =
+                                                        !isAvailingOffer;
+                                                    isRegistrationSelected =
+                                                        false;
+                                                    isBasicSelected = false;
+                                                    isGoldSelected = false;
+                                                    isPremiumSelected = false;
+                                                  });
+                                                },
+                                                text: isAvailingOffer
+                                                    ? 'SELECTED'
+                                                    : 'Select',
+                                                textColor: darkColor,
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+
+                    !isOffer ? Container() : Divider(),
+
+                    // MEMBERSHIPS
+                    Padding(
+                      padding: EdgeInsets.only(left: width * 0.033),
+                      child: Text(
+                        'Memberships',
+                        style: TextStyle(
+                          color: const Color.fromARGB(255, 63, 63, 63),
+                        ),
+                      ),
                     ),
-                    SizedBox(height: width * 0.1),
+                    SizedBox(height: height * 0.006125),
+
+                    // DURATION & INFO
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -332,7 +757,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                               underline: const SizedBox(),
                               borderRadius: BorderRadius.circular(12),
                               hint: Text(
-                                selectedDuration,
+                                selectedDuration ?? 'DURATION',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -345,7 +770,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                                 isPremiumSelected = false;
                               },
                               dropdownColor: primary2,
-                              items: ['1 month', '6 months', '1 year']
+                              items: membershipDurations['durations']!
                                   .map(
                                     (e) => DropdownMenuItem(
                                       value: e,
@@ -360,27 +785,34 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                               onChanged: (value) {
                                 setState(() {
                                   selectedDuration = value!;
-                                  if (value == '1 month') {
-                                    selectedDurationDateTime =
-                                        DateTime.now().add(
-                                      const Duration(
-                                        days: 28,
-                                      ),
+                                  final now = DateTime.now();
+
+                                  if (value == '1 Month') {
+                                    selectedDurationDateTime = DateTime(
+                                      now.year,
+                                      now.month + 1,
+                                      now.day,
                                     );
-                                  } else if (value == '6 months') {
-                                    selectedDurationDateTime =
-                                        DateTime.now().add(
-                                      const Duration(
-                                        days: 168,
-                                      ),
+                                  } else if (value == '3 Months') {
+                                    selectedDurationDateTime = DateTime(
+                                      now.year,
+                                      now.month + 3,
+                                      now.day,
                                     );
-                                  } else if (value == '1 year') {
-                                    selectedDurationDateTime =
-                                        DateTime.now().add(
-                                      const Duration(
-                                        days: 336,
-                                      ),
+                                  } else if (value == '6 Months') {
+                                    selectedDurationDateTime = DateTime(
+                                      now.year,
+                                      now.month + 6,
+                                      now.day,
                                     );
+                                  } else if (value == '1 Year') {
+                                    selectedDurationDateTime = DateTime(
+                                      now.year + 1,
+                                      now.month,
+                                      now.day,
+                                    );
+                                  } else {
+                                    selectedDurationDateTime = now;
                                   }
                                 });
                               },
@@ -396,52 +828,90 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                               await showInfoDialog();
                             },
                             icon: const Icon(
-                              Icons.info_outline,
+                              FeatherIcons.info,
                               color: primaryDark,
                             ),
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: width * 0.025),
+                    SizedBox(height: height * 0.006125),
 
-                    // BASIC
-                    selectedDuration == 'Duration'
+                    // REGISTRATION
+                    selectedDuration == null
                         ? Container()
                         : MembershipCard(
-                            isSelected: isBasicSelected,
+                            isSelected: isRegistrationSelected,
                             selectedColor: white,
-                            selectedBorderColor: Colors.black,
-                            name: 'BASIC',
-                            originalPrice: showPrices('BASIC'),
-                            discountPrice: showDiscountPrices('BASIC'),
-                            discount: showDiscount('BASIC'),
+                            selectedBorderColor:
+                                const Color.fromARGB(255, 57, 57, 57),
+                            name: 'FREE REGISTRATION',
+                            originalPrice: showPrices('Registration'),
+                            discountPrice: showDiscount('Registration'),
+                            discount:
+                                membershipDetails['Registration']!['discount'],
                             textColor: const Color.fromARGB(255, 61, 60, 60),
                             priceTextColor:
                                 const Color.fromARGB(255, 81, 81, 81),
                             benefitBackSelectedColor:
                                 const Color.fromARGB(255, 196, 196, 196),
-                            width: width,
-                            benefit1: showBenefits('BASIC', 1),
-                            benefit2: showBenefits('BASIC', 2),
-                            benefit3: showBenefits('BASIC', 3),
-                            benefit4: showBenefits('BASIC', 4),
-                            benefit5: showBenefits('BASIC', 5),
-                            // storageSize: 100,
-                            // storageUnit: 'MB',
+                            benefit1: showBenefits('Registration', 'benefit1'),
+                            benefit2: showBenefits('Registration', 'benefit2'),
+                            benefit3: showBenefits('Registration', 'benefit3'),
+                            benefit4: showBenefits('Registration', 'benefit4'),
+                            benefit5: showBenefits('Registration', 'benefit5'),
                             onTap: () {
                               setState(() {
+                                isAvailingOffer = false;
+                                isRegistrationSelected = true;
+                                isBasicSelected = false;
+                                isGoldSelected = false;
+                                isPremiumSelected = false;
+                                currentPrice =
+                                    showDiscount('Registration') == null
+                                        ? null
+                                        : showDiscount('Registration')!.toInt();
+                                currentMembership = 'REGISTRATION';
+                              });
+                            },
+                          ),
+
+                    // BASIC
+                    selectedDuration == null
+                        ? Container()
+                        : MembershipCard(
+                            isSelected: isBasicSelected,
+                            selectedColor: white,
+                            selectedBorderColor: black,
+                            name: 'BASIC',
+                            originalPrice: showPrices('Basic'),
+                            discountPrice: showDiscount('Basic'),
+                            discount: membershipDetails['Basic']!['discount'],
+                            textColor: black,
+                            priceTextColor: black,
+                            benefitBackSelectedColor: black,
+                            benefit1: showBenefits('Basic', 'benefit1'),
+                            benefit2: showBenefits('Basic', 'benefit2'),
+                            benefit3: showBenefits('Basic', 'benefit3'),
+                            benefit4: showBenefits('Basic', 'benefit4'),
+                            benefit5: showBenefits('Basic', 'benefit5'),
+                            onTap: () {
+                              setState(() {
+                                isAvailingOffer = false;
+                                isRegistrationSelected = false;
                                 isBasicSelected = true;
                                 isGoldSelected = false;
                                 isPremiumSelected = false;
-                                currentBasicPrice = showPrices('BASIC');
+                                currentPrice = showDiscount('Basic') == null
+                                    ? null
+                                    : showDiscount('Basic')!.toInt();
                                 currentMembership = 'BASIC';
                               });
                             },
                           ),
 
                     // GOLD
-                    selectedDuration == 'Duration'
+                    selectedDuration == null
                         ? Container()
                         : MembershipCard(
                             isSelected: isGoldSelected,
@@ -450,175 +920,74 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                             selectedBorderColor:
                                 const Color.fromARGB(255, 93, 76, 0),
                             name: 'GOLD',
-                            originalPrice: showPrices('GOLD'),
-                            discountPrice: showDiscountPrices('GOLD'),
-                            discount: showDiscount('GOLD'),
+                            originalPrice: showPrices('Gold'),
+                            discountPrice: showDiscount('Gold'),
+                            discount: membershipDetails['Gold']!['discount'],
                             textColor: const Color.fromARGB(255, 94, 86, 0),
                             priceTextColor:
                                 const Color.fromARGB(255, 102, 92, 0),
                             benefitBackSelectedColor:
                                 const Color.fromARGB(255, 200, 182, 19),
-                            width: width,
-                            benefit1: showBenefits('GOLD', 1),
-                            benefit2: showBenefits('GOLD', 2),
-                            benefit3: showBenefits('GOLD', 3),
-                            benefit4: showBenefits('GOLD', 4),
-                            benefit5: showBenefits('GOLD', 5),
+                            benefit1: showBenefits('Gold', 'benefit1'),
+                            benefit2: showBenefits('Gold', 'benefit2'),
+                            benefit3: showBenefits('Gold', 'benefit3'),
+                            benefit4: showBenefits('Gold', 'benefit4'),
+                            benefit5: showBenefits('Gold', 'benefit5'),
                             // storageSize: 2,
                             onTap: () {
                               setState(() {
+                                isAvailingOffer = false;
+                                isRegistrationSelected = false;
                                 isBasicSelected = false;
                                 isGoldSelected = true;
                                 isPremiumSelected = false;
-                                currentGoldPrice = showPrices('GOLD');
+                                currentPrice = showDiscount('Gold') == null
+                                    ? null
+                                    : showDiscount('Gold')!.toInt();
                                 currentMembership = 'GOLD';
                               });
                             },
                           ),
 
                     // PREMIUM
-                    selectedDuration == 'Duration'
-                        ? Container()
-                        : MembershipCard(
-                            isSelected: isPremiumSelected,
-                            selectedColor:
-                                const Color.fromARGB(255, 202, 226, 238),
-                            selectedBorderColor: Colors.blueGrey.shade600,
-                            name: 'PREMIUM',
-                            originalPrice: showPrices('PREMIUM'),
-                            discountPrice: showDiscountPrices('PREMIUM'),
-                            discount: showDiscount('PREMIUM'),
-                            textColor: const Color.fromARGB(255, 43, 72, 87),
-                            priceTextColor:
-                                const Color.fromARGB(255, 67, 92, 106),
-                            benefitBackSelectedColor:
-                                const Color.fromARGB(255, 112, 140, 157),
-                            width: width,
-                            benefit1: showBenefits('PREMIUM', 1),
-                            benefit2: showBenefits('PREMIUM', 2),
-                            benefit3: showBenefits('PREMIUM', 3),
-                            benefit4: showBenefits('PREMIUM', 4),
-                            benefit5: showBenefits('PREMIUM', 5),
-                            // storageSize: 5,
-                            onTap: () {
-                              setState(() {
-                                isBasicSelected = false;
-                                isGoldSelected = false;
-                                isPremiumSelected = true;
-                                currentPremiumPrice = showPrices('PREMIUM');
-                                currentMembership = 'PREMIUM';
-                              });
-                            },
-                          ),
-
-                    // PAY BUTTON
-                    selectedDuration == 'Duration'
+                    selectedDuration == null
                         ? Container()
                         : Padding(
-                            padding: EdgeInsets.only(bottom: width * 0.0225),
-                            child: MyButton(
-                              text: selectPrice(isBasicSelected, isGoldSelected,
-                                              isPremiumSelected) !=
-                                          null &&
-                                      selectPrice(
-                                              isBasicSelected,
-                                              isGoldSelected,
-                                              isPremiumSelected) !=
-                                          'null'
-                                  ? 'Pay - ${selectPrice(isBasicSelected, isGoldSelected, isPremiumSelected)}'
-                                  : '❌❌',
-                              onTap: () async {
-                                if (isGoldSelected && isPremiumSelected ||
-                                    isPremiumSelected && isBasicSelected ||
-                                    isBasicSelected && isGoldSelected ||
-                                    isBasicSelected &&
-                                        isGoldSelected &&
-                                        isPremiumSelected &&
-                                        selectedPrice == null ||
-                                    selectedPrice == 'null') {
-                                  mySnackBar(
-                                      context, 'Please select a Membership');
-                                } else {
-                                  if (currentMembership != null) {
-                                    if (currentMembership == 'BASIC') {
-                                      setState(() {
-                                        selectedPrice =
-                                            showPrices('BASIC').toString();
-                                      });
-                                    } else if (currentMembership == 'GOLD') {
-                                      setState(() {
-                                        selectedPrice =
-                                            showPrices('GOLD').toString();
-                                      });
-                                    } else if (currentMembership == 'PREMIUM') {
-                                      setState(() {
-                                        selectedPrice =
-                                            showPrices('PREMIUM').toString();
-                                      });
-                                    }
-                                    try {
-                                      setState(() {
-                                        isPaying = true;
-                                      });
-
-                                      // Pay
-
-                                      await store
-                                          .collection('Business')
-                                          .doc('Owners')
-                                          .collection('Shops')
-                                          .doc(FirebaseAuth
-                                              .instance.currentUser!.uid)
-                                          .update({
-                                        'MembershipName':
-                                            currentMembership.toString(),
-                                        'MembershipDuration':
-                                            selectedDuration.toString(),
-                                        'MembershipTime':
-                                            DateTime.now().toString(),
-                                        'MembershipEndDateTime':
-                                            selectedDurationDateTime,
-                                        'noOfTextPosts': membershipNoOfPlans[
-                                            currentMembership]!['textPost'],
-                                        'noOfImagePosts': membershipNoOfPlans[
-                                            currentMembership]!['imagePost'],
-                                        'noOfShorts': membershipNoOfPlans[
-                                            currentMembership]!['shorts'],
-                                      });
-
-                                      setState(() {
-                                        isPaying = false;
-                                      });
-                                      if (FirebaseAuth.instance.currentUser !=
-                                          null) {
-                                        if (context.mounted) {
-                                          Navigator.of(context)
-                                              .pushAndRemoveUntil(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const MainPage(),
-                                            ),
-                                            (route) => false,
-                                          );
-                                        }
-                                      }
-                                    } catch (e) {
-                                      setState(() {
-                                        isPaying = false;
-                                      });
-                                      // Error
-                                      if (context.mounted) {
-                                        mySnackBar(context, e.toString());
-                                      }
-                                    }
-                                  } else {
-                                    mySnackBar(
-                                        context, 'Please select a Membership');
-                                  }
-                                }
+                            padding: EdgeInsets.only(bottom: width * 0.175),
+                            child: MembershipCard(
+                              isSelected: isPremiumSelected,
+                              selectedColor:
+                                  const Color.fromARGB(255, 202, 226, 238),
+                              selectedBorderColor: Colors.blueGrey.shade600,
+                              name: 'PREMIUM',
+                              originalPrice: showPrices('Premium'),
+                              discountPrice: showDiscount('Premium'),
+                              discount:
+                                  membershipDetails['Premium']!['discount'],
+                              textColor: const Color.fromARGB(255, 43, 72, 87),
+                              priceTextColor:
+                                  const Color.fromARGB(255, 67, 92, 106),
+                              benefitBackSelectedColor:
+                                  const Color.fromARGB(255, 112, 140, 157),
+                              benefit1: showBenefits('Premium', 'benefit1'),
+                              benefit2: showBenefits('Premium', 'benefit2'),
+                              benefit3: showBenefits('Premium', 'benefit3'),
+                              benefit4: showBenefits('Premium', 'benefit4'),
+                              benefit5: showBenefits('Premium', 'benefit5'),
+                              // storageSize: 5,
+                              onTap: () {
+                                setState(() {
+                                  isAvailingOffer = false;
+                                  isRegistrationSelected = false;
+                                  isBasicSelected = false;
+                                  isGoldSelected = false;
+                                  isPremiumSelected = true;
+                                  currentPrice = showDiscount('Premium') == null
+                                      ? null
+                                      : showDiscount('Premium')!.toInt();
+                                  currentMembership = 'PREMIUM';
+                                });
                               },
-                              isLoading: isPaying,
-                              horizontalPadding: width * 0.01125,
                             ),
                           ),
                   ],

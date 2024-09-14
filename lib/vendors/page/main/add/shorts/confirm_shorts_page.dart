@@ -141,59 +141,57 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      appBar: AppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              AspectRatio(
-                aspectRatio: 9 / 16,
-                child: FlickVideoPlayer(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+            child: Column(
+              children: [
+                const SizedBox(height: 4),
+                FlickVideoPlayer(
                   flickManager: flickManager,
                 ),
-              ),
-              const SizedBox(height: 30),
-              SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    MyButton(
-                      text: data != null ? data![1]! : 'Select Product',
-                      onTap: () async {
-                        Navigator.of(context)
-                            .push(
-                          MaterialPageRoute(
-                            builder: ((context) => SelectProductForShortsPage(
-                                  selectedProduct: data?[0],
-                                )),
-                          ),
-                        )
-                            .then((value) {
-                          setState(() {
-                            data = value;
-                          });
-                        });
-                      },
-                      isLoading: false,
-                      horizontalPadding: width * 0.025,
-                    ),
-                    const SizedBox(height: 10),
-                    data == null
-                        ? Container()
-                        : MyButton(
-                            text: 'DONE',
-                            onTap: () async {
-                              await uploadVideo(
-                                  data![0], data![0], widget.videoPath);
-                            },
-                            isLoading: isDone,
-                            horizontalPadding: width * 0.025,
-                          ),
-                    const SizedBox(height: 12),
-                  ],
+                const SizedBox(height: 20),
+                MyButton(
+                  text: data != null ? data![1]! : 'Select Product',
+                  onTap: () async {
+                    Navigator.of(context)
+                        .push(
+                      MaterialPageRoute(
+                        builder: (context) => SelectProductForShortsPage(
+                          selectedProduct: data?[0],
+                        ),
+                      ),
+                    )
+                        .then((value) {
+                      setState(() {
+                        data = value;
+                      });
+                    });
+                  },
+                  isLoading: false,
+                  horizontalPadding: width * 0.025,
                 ),
-              ),
-            ],
+                const SizedBox(height: 15),
+                if (data != null)
+                  MyButton(
+                    text: 'DONE',
+                    onTap: () async {
+                      setState(() {
+                        isDone = true;
+                      });
+                      await uploadVideo(data![0], data![0], widget.videoPath);
+                      setState(() {
+                        isDone = false;
+                      });
+                    },
+                    isLoading: isDone,
+                    horizontalPadding: width * 0.025,
+                  ),
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         ),
       ),

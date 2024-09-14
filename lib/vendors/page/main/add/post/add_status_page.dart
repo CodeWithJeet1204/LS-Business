@@ -11,16 +11,16 @@ import 'package:Localsearch/widgets/image_pick_dialog.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:uuid/uuid.dart';
 
-class AddImagePostPage extends StatefulWidget {
-  const AddImagePostPage({
+class AddStatusPage extends StatefulWidget {
+  const AddStatusPage({
     super.key,
   });
 
   @override
-  State<AddImagePostPage> createState() => _AddImagePostPageState();
+  State<AddStatusPage> createState() => _AddStatusPageState();
 }
 
-class _AddImagePostPageState extends State<AddImagePostPage> {
+class _AddStatusPageState extends State<AddStatusPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   final postKey = GlobalKey<FormState>();
@@ -39,31 +39,34 @@ class _AddImagePostPageState extends State<AddImagePostPage> {
   //       .collection('Shops')
   //       .doc(auth.currentUser!.uid)
   //       .get();
-
   //   setState(() {
   //     imagePostRemaining = productData['noOfImagePosts'];
   //   });
   // }
 
-  // ADD PRODUCT IMAGE
-  Future<void> addProductImages() async {
-    final XFile? im = await showImagePickDialog(context);
-    if (im != null) {
+  // ADD STATUS IMAGE
+  Future<void> addStatusImages() async {
+    final images = await showImagePickDialog(context, false);
+    for (XFile im in images) {
       setState(() {
         _image.add(File(im.path));
         currentImageIndex = _image.length - 1;
       });
-    } else {
+    }
+    if (images.isEmpty) {
       if (mounted) {
-        mySnackBar(context, 'Select an Image');
+        mySnackBar(context, 'Select Image');
       }
     }
   }
 
-  // REMOVE PRODUCT IMAGE
-  void removeProductImages(int index) {
+  // REMOVE STATUS IMAGE
+  void removeStatusImages(int index) {
     setState(() {
       _image.removeAt(index);
+      if (currentImageIndex == (_image.length)) {
+        currentImageIndex = _image.length - 1;
+      }
     });
   }
 
@@ -75,7 +78,6 @@ class _AddImagePostPageState extends State<AddImagePostPage> {
       });
 
       try {
-        final String postId = const Uuid().v4();
         List imageDownloadUrl = [];
 
         for (File img in _image) {
@@ -99,6 +101,7 @@ class _AddImagePostPageState extends State<AddImagePostPage> {
         }
 
         for (String imgUrl in imageDownloadUrl) {
+          final String postId = const Uuid().v4();
           Map<String, dynamic> postInfo = {
             'postId': postId,
             'postText': postController.text,
@@ -166,7 +169,7 @@ class _AddImagePostPageState extends State<AddImagePostPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Post'),
+        title: Text('Add Status'),
       ),
       body: SafeArea(
         child: LayoutBuilder(
@@ -194,7 +197,7 @@ class _AddImagePostPageState extends State<AddImagePostPage> {
                             size: Size(width, width),
                             child: InkWell(
                               onTap: () async {
-                                await addProductImages();
+                                await addStatusImages();
                               },
                               customBorder: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(32),
@@ -205,8 +208,8 @@ class _AddImagePostPageState extends State<AddImagePostPage> {
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                   border: Border.all(
-                                    color: primaryDark,
                                     width: 3,
+                                    color: primaryDark,
                                   ),
                                   borderRadius: BorderRadius.circular(32),
                                 ),
@@ -265,14 +268,11 @@ class _AddImagePostPageState extends State<AddImagePostPage> {
                                         right: width * 0.015,
                                       ),
                                       child: IconButton.filledTonal(
-                                        onPressed: currentImageIndex !=
-                                                _image.length - 1
-                                            ? () {
-                                                removeProductImages(
-                                                  currentImageIndex,
-                                                );
-                                              }
-                                            : null,
+                                        onPressed: () {
+                                          removeStatusImages(
+                                            currentImageIndex,
+                                          );
+                                        },
                                         icon: Icon(
                                           FeatherIcons.x,
                                           size: width * 0.1,
@@ -346,7 +346,7 @@ class _AddImagePostPageState extends State<AddImagePostPage> {
                                     ),
                                     child: IconButton(
                                       onPressed: () async {
-                                        await addProductImages();
+                                        await addStatusImages();
                                       },
                                       icon: Icon(
                                         FeatherIcons.plus,
@@ -370,7 +370,7 @@ class _AddImagePostPageState extends State<AddImagePostPage> {
                               controller: postController,
                               minLines: 1,
                               maxLines: 10,
-                              maxLength: 1000,
+                              maxLength: 100,
                               onTapOutside: (event) =>
                                   FocusScope.of(context).unfocus(),
                               decoration: InputDecoration(
@@ -380,7 +380,7 @@ class _AddImagePostPageState extends State<AddImagePostPage> {
                                     color: Colors.cyan.shade700,
                                   ),
                                 ),
-                                hintText: 'Post...',
+                                hintText: 'Caption',
                               ),
                               validator: (value) {
                                 if (value != null) {

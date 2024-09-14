@@ -14,7 +14,6 @@ import 'package:Localsearch/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 class BrandPage extends StatefulWidget {
   const BrandPage({
@@ -59,8 +58,9 @@ class _BrandPageState extends State<BrandPage> {
 
   // CHANGE BRAND IMAGE
   Future<void> changeBrandImage({String? imageUrl}) async {
-    final XFile? im = await showImagePickDialog(context);
-    if (im != null) {
+    final images = await showImagePickDialog(context, true);
+    if (images.isNotEmpty) {
+      final im = images[0];
       String? imageDownloadUrl;
       try {
         setState(() {
@@ -158,7 +158,7 @@ class _BrandPageState extends State<BrandPage> {
     await showDialog(
       context: context,
       builder: (context) {
-        final propertyStream = FirebaseFirestore.instance
+        final propertyStream = store
             .collection('Business')
             .doc('Data')
             .collection('Brands')
@@ -844,9 +844,10 @@ class _BrandPageState extends State<BrandPage> {
                                         ? GridView.builder(
                                             shrinkWrap: true,
                                             gridDelegate:
-                                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                                SliverGridDelegateWithFixedCrossAxisCount(
                                               crossAxisCount: 2,
-                                              childAspectRatio: 0.675,
+                                              childAspectRatio:
+                                                  width * 0.425 / width * 1.5,
                                             ),
                                             itemCount:
                                                 snapshot.data!.docs.length,
@@ -872,9 +873,7 @@ class _BrandPageState extends State<BrandPage> {
                                                 },
                                                 child: Container(
                                                   decoration: BoxDecoration(
-                                                    color: primary2.withOpacity(
-                                                      0.125,
-                                                    ),
+                                                    color: white,
                                                     border: Border.all(
                                                       width: 0.25,
                                                       color: primaryDark,
@@ -970,13 +969,7 @@ class _BrandPageState extends State<BrandPage> {
                                                                   width: width *
                                                                       0.275,
                                                                   child: Text(
-                                                                    productData['productPrice'] !=
-                                                                                '' &&
-                                                                            productData['productPrice'] !=
-                                                                                null
-                                                                        ? productData[
-                                                                            'productPrice']
-                                                                        : 'N/A',
+                                                                    'Rs. ${productData['productPrice']}',
                                                                     overflow:
                                                                         TextOverflow
                                                                             .ellipsis,
@@ -1061,11 +1054,15 @@ class _BrandPageState extends State<BrandPage> {
                                                   },
                                                   child: Container(
                                                     decoration: BoxDecoration(
-                                                      color: primary2
-                                                          .withOpacity(0.5),
+                                                      color: white,
+                                                      border: Border.all(
+                                                        width: 0.5,
+                                                        color: primaryDark,
+                                                      ),
                                                       borderRadius:
                                                           BorderRadius.circular(
-                                                              8),
+                                                        2,
+                                                      ),
                                                     ),
                                                     child: ListTile(
                                                       leading: ClipRRect(
@@ -1095,14 +1092,7 @@ class _BrandPageState extends State<BrandPage> {
                                                         ),
                                                       ),
                                                       subtitle: Text(
-                                                        productData['productPrice'] !=
-                                                                    '' &&
-                                                                productData[
-                                                                        'productPrice'] !=
-                                                                    null
-                                                            ? productData[
-                                                                'productPrice']
-                                                            : 'N/A',
+                                                        'Rs. ${productData['productPrice']}',
                                                         overflow: TextOverflow
                                                             .ellipsis,
                                                         style: TextStyle(

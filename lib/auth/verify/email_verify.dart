@@ -24,7 +24,7 @@ class EmailVerifyPage extends StatefulWidget {
 }
 
 class _EmailVerifyPageState extends State<EmailVerifyPage> {
-  final FirebaseAuth auth = FirebaseAuth.instance;
+  final auth = FirebaseAuth.instance;
   final AuthMethods authMethods = AuthMethods();
   final store = FirebaseFirestore.instance;
   bool isCheckingEmailVerified = false;

@@ -103,7 +103,8 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                   Navigator.of(context).pop();
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                        builder: (context) => const AllDiscountPage()),
+                      builder: (context) => const AllDiscountPage(),
+                    ),
                   );
                 }
               },
@@ -150,7 +151,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'ALL DISCOUNTS',
+          'All Discounts',
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
@@ -247,6 +248,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                             width: width,
                             isPrice: true,
                             isDelete: true,
+                            isDiscount: true,
                           ),
                         );
                       },
@@ -285,9 +287,9 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                 shrinkWrap: true,
                                 physics: const ClampingScrollPhysics(),
                                 gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                    SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 1,
-                                  childAspectRatio: 16 / 10,
+                                  childAspectRatio: width * 1.475 / width,
                                 ),
                                 itemCount: currentDiscounts.length,
                                 itemBuilder: ((context, index) {
@@ -310,7 +312,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        color: primary2.withOpacity(0.125),
+                                        color: white,
                                         border: Border.all(
                                           width: 0.25,
                                           color: primaryDark,
@@ -532,8 +534,8 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                 ],
                                               ),
                                               IconButton(
-                                                onPressed: () {
-                                                  confirmDelete(
+                                                onPressed: () async {
+                                                  await confirmDelete(
                                                     discountData['discountId'],
                                                     discountData[
                                                         'discountImageUrl'],
@@ -541,8 +543,9 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                   Navigator.of(context).pop();
                                                   Navigator.of(context).push(
                                                     MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            const AllDiscountPage()),
+                                                      builder: (context) =>
+                                                          const AllDiscountPage(),
+                                                    ),
                                                   );
                                                 },
                                                 icon: Icon(

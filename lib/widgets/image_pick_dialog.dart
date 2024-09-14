@@ -4,8 +4,11 @@ import 'package:Localsearch/widgets/image_pick.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-Future<XFile?>? showImagePickDialog(BuildContext context) async {
-  XFile? im;
+Future<List<XFile>> showImagePickDialog(
+  BuildContext context,
+  bool max1,
+) async {
+  List<XFile> im = [];
 
   await showDialog(
     context: context,
@@ -16,7 +19,11 @@ Future<XFile?>? showImagePickDialog(BuildContext context) async {
           children: [
             GestureDetector(
               onTap: () async {
-                final image = await pickCompressedImage(ImageSource.camera);
+                final image = await pickCompressedImage(
+                  ImageSource.camera,
+                  context,
+                  max1,
+                );
                 if (image != null) {
                   im = image;
                 }
@@ -53,7 +60,11 @@ Future<XFile?>? showImagePickDialog(BuildContext context) async {
             ),
             GestureDetector(
               onTap: () async {
-                final image = await pickCompressedImage(ImageSource.gallery);
+                final image = await pickCompressedImage(
+                  ImageSource.gallery,
+                  context,
+                  max1,
+                );
                 if (image != null) {
                   im = image;
                 }

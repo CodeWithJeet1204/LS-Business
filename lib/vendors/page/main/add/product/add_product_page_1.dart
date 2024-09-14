@@ -1,14 +1,14 @@
 // ignore_for_file: unnecessary_null_comparison
 import 'dart:io';
+import 'package:Localsearch/vendors/page/main/add/product/add_product_page_2.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:Localsearch/vendors/page/main/add/product/add_product_page_2.dart';
 import 'package:Localsearch/vendors/page/main/add/product/select_brand_for_product_page.dart';
 import 'package:Localsearch/vendors/provider/add_product_provider.dart';
 import 'package:Localsearch/vendors/provider/select_brand_for_product_provider.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:Localsearch/widgets/image_pick_dialog.dart';
-import 'package:Localsearch/widgets/shimmer_skeleton_container.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:Localsearch/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -28,36 +28,21 @@ class AddProductPage1 extends StatefulWidget {
 class _AddProductPage1State extends State<AddProductPage1> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
-  final fireStorage = FirebaseStorage.instance;
+  final storage = FirebaseStorage.instance;
   final productKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final priceController = TextEditingController();
   final descriptionController = TextEditingController();
   final otherInfoController = TextEditingController();
   final otherInfoValueController = TextEditingController();
-  final searchController = TextEditingController();
-
   bool isSaving = false;
   final List<File> _image = [];
   int currentImageIndex = 0;
-  String? selectedCategory = 'No Category Selected';
-  final ImagePicker picker = ImagePicker();
+  final picker = ImagePicker();
   List<String> otherInfoList = [];
   bool isFit = false;
-  final Map<String, String> categoryNamesAndIds = {};
-  bool isGridView = true;
-  String? searchedCategory;
-  bool isAvailable = true;
-  Map<String, dynamic> currentCategories = {};
-  Map<String, dynamic> allCategories = {};
-  bool getCategoryData = false;
-
-  // INIT STATE
-  @override
-  void initState() {
-    getCategoryInfo();
-    super.initState();
-  }
+  int isAvailable = 0;
+  bool? isPost;
 
   // DISPOSE
   @override
@@ -67,62 +52,19 @@ class _AddProductPage1State extends State<AddProductPage1> {
     descriptionController.dispose();
     otherInfoController.dispose();
     otherInfoValueController.dispose();
-    searchController.dispose();
     super.dispose();
-  }
-
-  // GET CATEGORY DATA
-  Future<void> getCategoryInfo() async {
-    Map<String, dynamic> myCategories = {};
-
-    final vendorSnap = await store
-        .collection('Business')
-        .doc('Owners')
-        .collection('Shops')
-        .doc(auth.currentUser!.uid)
-        .get();
-
-    final vendorData = vendorSnap.data()!;
-
-    final List shopType = vendorData['Type'];
-    final List categories = vendorData['Categories'];
-
-    for (var type in shopType) {
-      final categorySnap = await store
-          .collection('Business')
-          .doc('Special Categories')
-          .collection(type)
-          .get();
-
-      for (var specialCategory in categorySnap.docs) {
-        for (var category in categories) {
-          final categoryData = specialCategory.data();
-
-          final name = categoryData['specialCategoryName'];
-          final imageUrl = categoryData['specialCategoryImageUrl'];
-          if (category == name) {
-            myCategories[name] = imageUrl;
-          }
-        }
-      }
-    }
-
-    setState(() {
-      allCategories = myCategories;
-      currentCategories = myCategories;
-      getCategoryData = true;
-    });
   }
 
   // ADD PRODUCT IMAGE
   Future<void> addProductImages() async {
-    final XFile? im = await showImagePickDialog(context);
-    if (im != null) {
+    final images = await showImagePickDialog(context, false);
+    for (XFile im in images) {
       setState(() {
         _image.add(File(im.path));
         currentImageIndex = _image.length - 1;
       });
-    } else {
+    }
+    if (images.isEmpty) {
       if (mounted) {
         mySnackBar(context, 'Select an Image');
       }
@@ -133,24 +75,46 @@ class _AddProductPage1State extends State<AddProductPage1> {
   void removeProductImages(int index) {
     setState(() {
       _image.removeAt(index);
+      if (currentImageIndex == (_image.length)) {
+        currentImageIndex = _image.length - 1;
+      }
     });
   }
 
   // ADD PRODUCT
-  Future<void> addProduct(AddProductProvider productProvider,
-      SelectBrandForProductProvider brandProvider) async {
+  Future<void> addProduct(
+    AddProductProvider productProvider,
+    SelectBrandForProductProvider brandProvider,
+  ) async {
     if (productKey.currentState!.validate()) {
-      if (_image.isEmpty) {
-        return mySnackBar(context, 'Select atleast 1 image');
+      if (_image.length < 2) {
+        return mySnackBar(context, 'Select atleast 2 image');
       }
       if (priceController.text.length > 10) {
         return mySnackBar(context, 'Max Price is 100 Cr.');
       }
       if (priceController.text.isNotEmpty) {
-        if (double.parse(priceController.text) <= 0.99999999999999999999) {
+        if (double.parse(priceController.text) < 1) {
           return mySnackBar(context, 'Min Price is 1 Rs.');
         }
       }
+      final vendorSnap = await store
+          .collection('Business')
+          .doc('Owners')
+          .collection('Shops')
+          .doc(auth.currentUser!.uid)
+          .get();
+
+      final vendorData = vendorSnap.data()!;
+
+      final double latitude = vendorData['Latitude'];
+      final double longitude = vendorData['Longitude'];
+      final String city = vendorData['City'];
+      final membershipType = vendorData['MembershipName'];
+
+      setState(() {
+        isPost = membershipType != 'BASIC';
+      });
       try {
         bool productDoesntExists = true;
         final previousProducts = await store
@@ -158,18 +122,17 @@ class _AddProductPage1State extends State<AddProductPage1> {
             .doc('Data')
             .collection('Products')
             .where('vendorId', isEqualTo: auth.currentUser!.uid)
+            .where('productName', isEqualTo: nameController.text.toString())
             .get();
 
-        for (QueryDocumentSnapshot doc in previousProducts.docs) {
-          if (doc['productName'] == nameController.text.toString()) {
-            if (mounted) {
-              mySnackBar(
-                context,
-                'Product with same name already exists',
-              );
-            }
-            productDoesntExists = false;
+        if (previousProducts.docs.isNotEmpty) {
+          if (mounted) {
+            mySnackBar(
+              context,
+              'Product with same name already exists',
+            );
           }
+          productDoesntExists = false;
         }
 
         if (productDoesntExists) {
@@ -181,28 +144,28 @@ class _AddProductPage1State extends State<AddProductPage1> {
           productProvider.add(
             {
               'productName': nameController.text,
-              'productPrice': priceController.text,
+              'productPrice': double.parse(priceController.text),
               'productDescription': descriptionController.text,
               'productBrand': brandProvider.selectedBrandName,
               'productBrandId': brandProvider.selectedBrandId,
-              'productLikes': 0,
-              'productDislikes': 0,
               'productShares': 0,
               'productViewsTimestamp': [],
-              'productLikesId': [],
               'productLikesTimestamp': {},
-              'productWishlist': 0,
+              'productWishlistTimestamp': {},
               'productId': productId,
               'imageFiles': _image,
               'datetime': Timestamp.fromMillisecondsSinceEpoch(
                 DateTime.now().millisecondsSinceEpoch,
               ),
               'isAvailable': isAvailable,
-              'categoryName': selectedCategory,
               'vendorId': auth.currentUser!.uid,
               'ratings': {},
               'shortsThumbnail': '',
               'shortsURL': '',
+              'isPost': isPost,
+              'City': city,
+              'Latitude': latitude,
+              'Longitude': longitude,
             },
             false,
           );
@@ -213,7 +176,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
           if (mounted) {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: ((context) => AddProductPage2(productId: productId)),
+                builder: ((context) => AddProductPage2()),
               ),
             );
           }
@@ -244,7 +207,6 @@ class _AddProductPage1State extends State<AddProductPage1> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: primary,
       appBar: AppBar(
         title: const Text(
           'Basic Info',
@@ -310,14 +272,11 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                       right: width * 0.015,
                                     ),
                                     child: IconButton.filledTonal(
-                                      onPressed:
-                                          currentImageIndex != _image.length - 1
-                                              ? () {
-                                                  removeProductImages(
-                                                    currentImageIndex,
-                                                  );
-                                                }
-                                              : null,
+                                      onPressed: () {
+                                        removeProductImages(
+                                          currentImageIndex,
+                                        );
+                                      },
                                       icon: Icon(
                                         FeatherIcons.x,
                                         size: width * 0.1,
@@ -477,6 +436,35 @@ class _AddProductPage1State extends State<AddProductPage1> {
                         ),
                         const SizedBox(height: 12),
 
+                        // PRICE
+                        TextFormField(
+                          controller: priceController,
+                          onTapOutside: (event) =>
+                              FocusScope.of(context).unfocus(),
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            hintText: 'Price',
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: primaryDark2,
+                                width: 2,
+                              ),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value != null && value.isNotEmpty) {
+                              if (int.parse(value) >= 1) {
+                                return null;
+                              } else {
+                                return 'Price should be greater than Rs. 1';
+                              }
+                            } else {
+                              return 'Enter Price';
+                            }
+                          },
+                        ),
+                        const SizedBox(height: 12),
+
                         // DESCRIPTION
                         TextFormField(
                           controller: descriptionController,
@@ -506,24 +494,6 @@ class _AddProductPage1State extends State<AddProductPage1> {
                               return 'Enter Description';
                             }
                           },
-                        ),
-                        const SizedBox(height: 12),
-
-                        // PRICE
-                        TextFormField(
-                          controller: priceController,
-                          onTapOutside: (event) =>
-                              FocusScope.of(context).unfocus(),
-                          keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(
-                            hintText: 'Price (Optional)',
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: primaryDark2,
-                                width: 2,
-                              ),
-                            ),
-                          ),
                         ),
                         const SizedBox(height: 12),
 
@@ -560,12 +530,11 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                           'No Brand'
                                       ? 'Select Brand'
                                       : selectBrandProvider.selectedBrandName!,
-                                  maxLines: 2,
+                                  maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     color: primaryDark,
-                                    fontSize: width * 0.06,
-                                    fontWeight: FontWeight.w500,
+                                    fontSize: width * 0.055,
                                   ),
                                 ),
                                 Icon(
@@ -582,17 +551,19 @@ class _AddProductPage1State extends State<AddProductPage1> {
                         // AVAILABLE / OUT OF STOCK
                         Container(
                           width: width,
-                          height: 130,
                           decoration: BoxDecoration(
                             color: primary2.withOpacity(0.75),
                             borderRadius: BorderRadius.circular(12),
+                          ),
+                          margin: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom,
                           ),
                           child: Column(
                             children: [
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    isAvailable = !isAvailable;
+                                    isAvailable = 0;
                                   });
                                 },
                                 child: SizedBox(
@@ -606,23 +577,25 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                          'Available',
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            color: primaryDark,
-                                            fontSize: width * 0.06,
-                                            fontWeight: FontWeight.w500,
+                                        SizedBox(
+                                          width: width * 0.8,
+                                          child: AutoSizeText(
+                                            'Available',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              color: primaryDark,
+                                              fontSize: width * 0.05,
+                                            ),
                                           ),
                                         ),
                                         Checkbox(
                                           activeColor: primaryDark,
                                           checkColor: white,
-                                          value: isAvailable,
+                                          value: isAvailable == 0,
                                           onChanged: (value) {
                                             setState(() {
-                                              isAvailable = value!;
+                                              isAvailable = 0;
                                             });
                                           },
                                         ),
@@ -635,7 +608,49 @@ class _AddProductPage1State extends State<AddProductPage1> {
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    isAvailable = !isAvailable;
+                                    isAvailable = 1;
+                                  });
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: width * 0.025,
+                                    vertical: 4,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      SizedBox(
+                                        width: width * 0.8,
+                                        child: AutoSizeText(
+                                          'Will be Available Within a Week',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: primaryDark,
+                                            fontSize: width * 0.05,
+                                          ),
+                                        ),
+                                      ),
+                                      Checkbox(
+                                        activeColor: primaryDark,
+                                        checkColor: white,
+                                        value: isAvailable == 1,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            isAvailable = 1;
+                                          });
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const Divider(),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    isAvailable = 2;
                                   });
                                 },
                                 child: SizedBox(
@@ -649,23 +664,25 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                          'Out Of Stock',
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            color: primaryDark,
-                                            fontSize: width * 0.06,
-                                            fontWeight: FontWeight.w500,
+                                        SizedBox(
+                                          width: width * 0.8,
+                                          child: AutoSizeText(
+                                            'Out Of Stock',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              color: primaryDark,
+                                              fontSize: width * 0.05,
+                                            ),
                                           ),
                                         ),
                                         Checkbox(
                                           activeColor: primaryDark,
                                           checkColor: white,
-                                          value: !isAvailable,
+                                          value: isAvailable == 2,
                                           onChanged: (value) {
                                             setState(() {
-                                              isAvailable = !value!;
+                                              isAvailable = 2;
                                             });
                                           },
                                         ),
@@ -675,506 +692,6 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                 ),
                               ),
                             ],
-                          ),
-                        ),
-
-                        const SizedBox(height: 12),
-
-                        const Divider(),
-
-                        const SizedBox(height: 12),
-
-                        // SELECT CATEGORY TEXT
-                        Text(
-                          'Select Category',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: primaryDark,
-                            fontSize: width * 0.066,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-
-                        // SELECT CATEGORY
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 6),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: TextField(
-                                  controller: searchController,
-                                  autocorrect: false,
-                                  onTapOutside: (event) =>
-                                      FocusScope.of(context).unfocus(),
-                                  decoration: const InputDecoration(
-                                    hintText: 'Search ...',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      if (value.isEmpty) {
-                                        currentCategories =
-                                            Map<String, dynamic>.from(
-                                          allCategories,
-                                        );
-                                      } else {
-                                        Map<String, dynamic>
-                                            filteredCategories =
-                                            Map<String, dynamic>.from(
-                                          allCategories,
-                                        );
-                                        List<String> keysToRemove = [];
-
-                                        filteredCategories
-                                            .forEach((key, imageUrl) {
-                                          if (!key
-                                              .toString()
-                                              .toLowerCase()
-                                              .contains(value.toLowerCase())) {
-                                            keysToRemove.add(key);
-                                          }
-                                        });
-
-                                        for (var key in keysToRemove) {
-                                          filteredCategories.remove(key);
-                                        }
-
-                                        currentCategories = filteredCategories;
-                                      }
-                                    });
-                                  },
-                                ),
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    isGridView = !isGridView;
-                                  });
-                                },
-                                icon: Icon(
-                                  isGridView
-                                      ? FeatherIcons.list
-                                      : FeatherIcons.grid,
-                                ),
-                                tooltip: isGridView ? 'List View' : 'Grid View',
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        Padding(
-                          padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).viewInsets.bottom,
-                          ),
-                          child: SizedBox(
-                            width: width,
-                            child: getCategoryData
-                                ? currentCategories.isEmpty
-                                    ? const SizedBox(
-                                        height: 60,
-                                        child: Center(
-                                          child: Text('No Categories'),
-                                        ),
-                                      )
-                                    : isGridView
-                                        ? GridView.builder(
-                                            shrinkWrap: true,
-                                            physics:
-                                                const ClampingScrollPhysics(),
-                                            gridDelegate:
-                                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 2,
-                                              childAspectRatio: 0.75,
-                                            ),
-                                            itemCount: currentCategories.length,
-                                            itemBuilder: ((context, index) {
-                                              final categoryName =
-                                                  currentCategories.keys
-                                                      .toList()[index];
-                                              final categoryImageUrl =
-                                                  currentCategories.values
-                                                      .toList()[index];
-
-                                              return GestureDetector(
-                                                onTap: () {
-                                                  if (selectedCategory !=
-                                                      categoryName) {
-                                                    setState(() {
-                                                      selectedCategory =
-                                                          categoryName;
-                                                      selectedCategory =
-                                                          categoryName;
-                                                    });
-                                                  } else {
-                                                    setState(() {
-                                                      selectedCategory =
-                                                          'No Category Selected';
-                                                      selectedCategory = '0';
-                                                    });
-                                                  }
-                                                },
-                                                child: Stack(
-                                                  alignment: Alignment.topRight,
-                                                  children: [
-                                                    Container(
-                                                      decoration: BoxDecoration(
-                                                        color: primary2
-                                                            .withOpacity(0.125),
-                                                        border: Border.all(
-                                                          width: 0.25,
-                                                          color: primaryDark,
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(2),
-                                                      ),
-                                                      margin: EdgeInsets.all(
-                                                        width * 0.00625,
-                                                      ),
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceAround,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          // CachedNetworkImage(
-                                                          //   imageUrl:
-                                                          //       categoryData[
-                                                          //           'imageUrl'],
-                                                          //   imageBuilder:
-                                                          //       (context,
-                                                          //           imageProvider) {
-                                                          //     return Center(
-                                                          //       child:
-                                                          //           ClipRRect(
-                                                          //         borderRadius:
-                                                          //             BorderRadius
-                                                          //                 .circular(
-                                                          //           12,
-                                                          //         ),
-                                                          //         child:
-                                                          //             Container(
-                                                          //           width: width *
-                                                          //               0.4,
-                                                          //           height: width *
-                                                          //               0.4,
-                                                          //           decoration:
-                                                          //               BoxDecoration(
-                                                          //             image:
-                                                          //                 DecorationImage(
-                                                          //               image:
-                                                          //                   imageProvider,
-                                                          //               fit:
-                                                          //                   BoxFit.cover,
-                                                          //             ),
-                                                          //           ),
-                                                          //         ),
-                                                          //       ),
-                                                          //     );
-                                                          //   },
-                                                          // ),
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                              width * 0.0125,
-                                                            ),
-                                                            child: Center(
-                                                              child: ClipRRect(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                  2,
-                                                                ),
-                                                                child: Image
-                                                                    .network(
-                                                                  categoryImageUrl,
-                                                                  width: width *
-                                                                      0.5,
-                                                                  height:
-                                                                      width *
-                                                                          0.5,
-                                                                  fit: BoxFit
-                                                                      .cover,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                              left:
-                                                                  width * 0.02,
-                                                            ),
-                                                            child: Text(
-                                                              categoryName,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              style: TextStyle(
-                                                                color:
-                                                                    primaryDark,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                                fontSize:
-                                                                    width *
-                                                                        0.06,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    selectedCategory ==
-                                                            categoryName
-                                                        ? Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .only(
-                                                              right: 4,
-                                                              top: 4,
-                                                            ),
-                                                            child: Container(
-                                                              width: width *
-                                                                  0.1125,
-                                                              height: width *
-                                                                  0.1125,
-                                                              decoration:
-                                                                  const BoxDecoration(
-                                                                color:
-                                                                    primaryDark,
-                                                                shape: BoxShape
-                                                                    .circle,
-                                                              ),
-                                                              child: Icon(
-                                                                FeatherIcons
-                                                                    .check,
-                                                                size: width *
-                                                                    0.08,
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
-                                                            ),
-                                                          )
-                                                        : Container()
-                                                  ],
-                                                ),
-                                              );
-                                            }),
-                                          )
-                                        : SizedBox(
-                                            width: width,
-                                            child: ListView.builder(
-                                              shrinkWrap: true,
-                                              physics:
-                                                  const ClampingScrollPhysics(),
-                                              itemCount:
-                                                  currentCategories.length,
-                                              itemBuilder: ((context, index) {
-                                                final categoryName =
-                                                    currentCategories.keys
-                                                        .toList()[index];
-                                                final categoryImageUrl =
-                                                    currentCategories.values
-                                                        .toList()[index];
-
-                                                return GestureDetector(
-                                                  onTap: () {
-                                                    if (selectedCategory !=
-                                                        categoryName) {
-                                                      setState(() {
-                                                        selectedCategory =
-                                                            categoryName;
-                                                      });
-                                                    } else {
-                                                      setState(() {
-                                                        selectedCategory =
-                                                            'No Category Selected';
-                                                        selectedCategory = '0';
-                                                      });
-                                                    }
-                                                  },
-                                                  child: Stack(
-                                                    alignment:
-                                                        Alignment.centerRight,
-                                                    children: [
-                                                      Container(
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: white,
-                                                          border: Border.all(
-                                                            width: 0.5,
-                                                            color: primaryDark,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                            2,
-                                                          ),
-                                                        ),
-                                                        margin: EdgeInsets.all(
-                                                          width * 0.0125,
-                                                        ),
-                                                        child: ListTile(
-                                                          visualDensity:
-                                                              VisualDensity
-                                                                  .standard,
-                                                          // leading:
-                                                          //     CachedNetworkImage(
-                                                          //   imageUrl:
-                                                          //       categoryData[
-                                                          //           'imageUrl'],
-                                                          //   imageBuilder: (context,
-                                                          //       imageProvider) {
-                                                          //     return Padding(
-                                                          //       padding: EdgeInsets
-                                                          //           .symmetric(
-                                                          //         vertical:
-                                                          //             width *
-                                                          //                 0.0125,
-                                                          //       ),
-                                                          //       child:
-                                                          //           ClipRRect(
-                                                          //         borderRadius:
-                                                          //             BorderRadius
-                                                          //                 .circular(
-                                                          //           4,
-                                                          //         ),
-                                                          //         child:
-                                                          //             Container(
-                                                          //           width: width *
-                                                          //               0.133,
-                                                          //           height:
-                                                          //               width *
-                                                          //                   0.133,
-                                                          //           decoration:
-                                                          //               BoxDecoration(
-                                                          //             image:
-                                                          //                 DecorationImage(
-                                                          //               image:
-                                                          //                   imageProvider,
-                                                          //               fit: BoxFit
-                                                          //                   .cover,
-                                                          //             ),
-                                                          //           ),
-                                                          //         ),
-                                                          //       ),
-                                                          //     );
-                                                          //   },
-                                                          // ),
-                                                          leading: ClipRRect(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                              2,
-                                                            ),
-                                                            child:
-                                                                Image.network(
-                                                              categoryImageUrl,
-                                                              width:
-                                                                  width * 0.15,
-                                                              height:
-                                                                  width * 0.15,
-                                                              fit: BoxFit.cover,
-                                                            ),
-                                                          ),
-                                                          title: Text(
-                                                            categoryName,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            style: TextStyle(
-                                                              fontSize:
-                                                                  width * 0.05,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      selectedCategory ==
-                                                              categoryName
-                                                          ? Padding(
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .only(
-                                                                right: width *
-                                                                    0.033,
-                                                              ),
-                                                              child: Container(
-                                                                width: width *
-                                                                    0.125,
-                                                                height: width *
-                                                                    0.125,
-                                                                decoration:
-                                                                    const BoxDecoration(
-                                                                  color:
-                                                                      primaryDark,
-                                                                  shape: BoxShape
-                                                                      .circle,
-                                                                ),
-                                                                child: Icon(
-                                                                  Icons.check,
-                                                                  size: width *
-                                                                      0.1,
-                                                                  color: Colors
-                                                                      .white,
-                                                                ),
-                                                              ),
-                                                            )
-                                                          : Container()
-                                                    ],
-                                                  ),
-                                                );
-                                              }),
-                                            ),
-                                          )
-                                : isGridView
-                                    ? GridView.builder(
-                                        shrinkWrap: true,
-                                        physics: ClampingScrollPhysics(),
-                                        gridDelegate:
-                                            SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2,
-                                          childAspectRatio:
-                                              width * 0.5 / width * 1.6,
-                                        ),
-                                        itemCount: 4,
-                                        itemBuilder: (context, index) {
-                                          return Padding(
-                                            padding: EdgeInsets.all(
-                                              width * 0.02,
-                                            ),
-                                            child: GridViewSkeleton(
-                                              width: width,
-                                              isPrice: false,
-                                            ),
-                                          );
-                                        },
-                                      )
-                                    : ListView.builder(
-                                        shrinkWrap: true,
-                                        physics: ClampingScrollPhysics(),
-                                        itemCount: 4,
-                                        itemBuilder: (context, index) {
-                                          return Padding(
-                                            padding: EdgeInsets.all(
-                                              width * 0.02,
-                                            ),
-                                            child: ListViewSkeleton(
-                                              width: width,
-                                              isPrice: false,
-                                              height: 30,
-                                            ),
-                                          );
-                                        },
-                                      ),
                           ),
                         ),
                       ],

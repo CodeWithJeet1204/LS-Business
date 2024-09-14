@@ -18,7 +18,7 @@ class InfoEditBox extends StatelessWidget {
   final dynamic content;
   final List<dynamic> propertyValue;
   final int noOfAnswers;
-  final double width;
+  final width;
   final int? maxLines;
   final void Function()? onPressed;
 
@@ -77,69 +77,40 @@ class InfoEditBox extends StatelessWidget {
                                   width: width * 0.725,
                                   height: 50,
                                   child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
                                     shrinkWrap: true,
-                                    itemCount: 1,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: propertyValue.length,
                                     itemBuilder: (context, index) {
-                                      return Row(
-                                        children: propertyValue
-                                            .map(
-                                              (e) => Container(
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.1250,
-                                                margin: EdgeInsets.only(
-                                                  right: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.0125,
-                                                  top: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.0125,
-                                                  bottom: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.0125,
-                                                ),
-                                                padding: EdgeInsets.symmetric(
-                                                  horizontal: 6,
-                                                  vertical:
-                                                      MediaQuery.of(context)
-                                                              .size
-                                                              .width *
-                                                          0.0125,
-                                                ),
-                                                alignment: Alignment.center,
-                                                decoration: BoxDecoration(
-                                                  color:
-                                                      primary2.withOpacity(0.8),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                    MediaQuery.of(context)
-                                                            .size
-                                                            .width *
-                                                        0.0125,
-                                                  ),
-                                                ),
-                                                child: Text(
-                                                  e,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                    fontSize:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.05,
-                                                    color: primaryDark2,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                              ),
-                                            )
-                                            .toList(),
+                                      final e = propertyValue[index];
+
+                                      return Container(
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: primary2.withOpacity(0.8),
+                                          borderRadius: BorderRadius.circular(
+                                            4,
+                                          ),
+                                        ),
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: width * 0.015,
+                                          vertical: width * 0.01,
+                                        ),
+                                        margin: EdgeInsets.only(
+                                          right: width * 0.0125,
+                                          top: width * 0.0125,
+                                          bottom: width * 0.0125,
+                                        ),
+                                        child: Text(
+                                          e,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: width * 0.05,
+                                            color: primaryDark2,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
                                       );
                                     },
                                   ),

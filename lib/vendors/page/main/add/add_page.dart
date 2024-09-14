@@ -1,6 +1,5 @@
-import 'package:Localsearch/vendors/page/main/add/post/add_image_post_page.dart';
+import 'package:Localsearch/vendors/page/main/add/post/add_status_page.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:Localsearch/vendors/page/main/add/bulk_add/add_bulk_product_page.dart';
 import 'package:Localsearch/vendors/page/main/add/product/add_product_page_1.dart';
 import 'package:Localsearch/vendors/page/main/add/shorts/add_shorts_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
@@ -15,8 +14,6 @@ class AddPage extends StatefulWidget {
 }
 
 class _AddPageState extends State<AddPage> {
-  final ScrollController scrollController = ScrollController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,26 +37,41 @@ class _AddPageState extends State<AddPage> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  // POST
-                  addBox(
+                  // SINGLE PRODUCT
+                  AddBox(
                     context: context,
                     width: width,
-                    icon: FeatherIcons.upload,
-                    label: 'POST',
+                    icon: FeatherIcons.box,
+                    label: 'PRODUCT',
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => const AddImagePostPage(),
+                          builder: (context) => const AddProductPage1(),
+                        ),
+                      );
+                    },
+                  ),
+
+                  // STATUS
+                  AddBox(
+                    context: context,
+                    width: width,
+                    icon: FeatherIcons.upload,
+                    label: 'STATUS',
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const AddStatusPage(),
                         ),
                       );
                     },
                   ),
 
                   // SHORTS
-                  addBox(
+                  AddBox(
                     context: context,
                     width: width,
-                    icon: FeatherIcons.video,
+                    icon: FeatherIcons.playCircle,
                     label: 'SHORTS',
                     onTap: () {
                       Navigator.of(context).push(
@@ -70,38 +82,8 @@ class _AddPageState extends State<AddPage> {
                     },
                   ),
 
-                  // SINGLE PRODUCTS
-                  addBox(
-                    context: context,
-                    width: width,
-                    icon: FeatherIcons.box,
-                    label: 'PRODUCTS',
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const AddProductPage1(),
-                        ),
-                      );
-                    },
-                  ),
-
-                  // BULK PRODUCTS
-                  addBox(
-                    context: context,
-                    width: width,
-                    icon: FeatherIcons.box,
-                    label: 'BULK ADD',
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const AddBulkProduct(),
-                        ),
-                      );
-                    },
-                  ),
-
                   // BRAND
-                  addBox(
+                  AddBox(
                     context: context,
                     width: width,
                     icon: FeatherIcons.award,
@@ -111,8 +93,23 @@ class _AddPageState extends State<AddPage> {
                     },
                   ),
 
+                  // BULK PRODUCTS
+                  // AddBox(
+                  //   context: context,
+                  //   width: width,
+                  //   icon: FeatherIcons.box,
+                  //   label: 'BULK ADD',
+                  //   onTap: () {
+                  //     Navigator.of(context).push(
+                  //       MaterialPageRoute(
+                  //         builder: (context) => const AddBulkProduct(),
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
+
                   // CATEGORY
-                  // addBox(
+                  // AddBox(
                   //   context: context,
                   //   width: width,
                   //   icon: FeatherIcons.award,

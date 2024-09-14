@@ -11,7 +11,6 @@ import 'package:Localsearch/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -49,8 +48,9 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
 
   // ADD DISCOUNT IMAGE
   Future<void> addDiscountImage() async {
-    final XFile? im = await showImagePickDialog(context);
-    if (im != null) {
+    final images = await showImagePickDialog(context, true);
+    if (images.isNotEmpty) {
+      final im = images[0];
       setState(() {
         _image = File(im.path);
       });
@@ -150,30 +150,31 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
             .get();
 
         final vendorData = vendorSnap.data()!;
+        final latitude = vendorData['Latitude'];
+        final longitude = vendorData['Longitude'];
+        // final List shopTypes = vendorData['Type'];
 
-        final List shopTypes = vendorData['Type'];
+        // for (String categoryName in categoryNameList) {
+        //   for (var type in shopTypes) {
+        //     final categorySnap = await store
+        //         .collection('Business')
+        //         .doc('Special Categories')
+        //         .collection(type)
+        //         .doc(categoryName)
+        //         .get();
 
-        for (String categoryName in categoryNameList) {
-          for (var type in shopTypes) {
-            final categorySnap = await store
-                .collection('Business')
-                .doc('Special Categories')
-                .collection(type)
-                .doc(categoryName)
-                .get();
-
-            if (categorySnap.exists) {
-              await store
-                  .collection('Business')
-                  .doc('Special Categories')
-                  .collection(type)
-                  .doc(categoryName)
-                  .update({
-                'discountId': discountId,
-              });
-            }
-          }
-        }
+        //     if (categorySnap.exists) {
+        //       await store
+        //           .collection('Business')
+        //           .doc('Special Categories')
+        //           .collection(type)
+        //           .doc(categoryName)
+        //           .update({
+        //         'discountId': discountId,
+        //       });
+        //     }
+        //   }
+        // }
 
         await store
             .collection('Business')
@@ -195,6 +196,8 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
           'categories': categoryNameList,
           'brands': [],
           'vendorId': auth.currentUser!.uid,
+          'Latitude': latitude,
+          'Longitude': longitude,
         });
         provider.clear();
         if (mounted) {
@@ -240,7 +243,6 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
               await addDiscount(selectedCategoryProvider, selectedCategories);
             },
             text: 'DONE',
-            textColor: primaryDark,
           ),
         ],
         bottom: PreferredSize(
@@ -296,16 +298,15 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                 children: [
                                   Icon(
                                     FeatherIcons.upload,
-                                    size: width * 0.35,
+                                    size: width * 0.25,
                                   ),
                                   Text(
                                     'SELECT IMAGE',
-                                    maxLines: 1,
+                                    maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       color: primaryDark,
-                                      fontSize: width * 0.08,
-                                      fontWeight: FontWeight.w500,
+                                      fontSize: width * 0.06,
                                     ),
                                   ),
                                 ],
@@ -442,7 +443,6 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                         await selectStartDate();
                                       },
                                       text: 'Select Date',
-                                      textColor: primaryDark,
                                     )
                                   : Padding(
                                       padding: EdgeInsets.only(
@@ -455,7 +455,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                           color: primaryDark,
-                                          fontSize: width * 0.07,
+                                          fontSize: width * 0.0575,
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
@@ -515,7 +515,6 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                         await selectEndDate();
                                       },
                                       text: 'Select Date',
-                                      textColor: primaryDark,
                                     )
                                   : Padding(
                                       padding: EdgeInsets.only(
@@ -528,7 +527,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                           color: primaryDark,
-                                          fontSize: width * 0.07,
+                                          fontSize: width * 0.0575,
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
@@ -610,7 +609,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                     color: !isPercentSelected
                                         ? primaryDark.withOpacity(0.33)
                                         : primaryDark.withOpacity(0.9),
-                                    fontSize: width * 0.055,
+                                    fontSize: width * 0.05,
                                     fontWeight: isPercentSelected
                                         ? FontWeight.w600
                                         : FontWeight.w500,
@@ -644,7 +643,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                     color: isPercentSelected
                                         ? primaryDark.withOpacity(0.33)
                                         : primaryDark.withOpacity(0.9),
-                                    fontSize: width * 0.055,
+                                    fontSize: width * 0.05,
                                     fontWeight: !isPercentSelected
                                         ? FontWeight.w600
                                         : FontWeight.w500,

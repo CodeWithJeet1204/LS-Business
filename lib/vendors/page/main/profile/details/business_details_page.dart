@@ -1,5 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:Localsearch/vendors/page/main/profile/details/membership_details_page.dart';
+import 'package:Localsearch/vendors/register/business_social_media_page.dart';
+import 'package:Localsearch/widgets/text_button.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -16,8 +19,6 @@ import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
 class BusinessDetailsPage extends StatefulWidget {
@@ -54,9 +55,10 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
 
   // CHANGE BUSINESS IMAGE
   Future<void> changeImage(String previousUrl) async {
-    XFile? im = await showImagePickDialog(context);
+    final images = await showImagePickDialog(context, true);
     String? businessPhotoUrl;
-    if (im != null) {
+    if (images.isNotEmpty) {
+      final im = images[0];
       try {
         setState(() {
           isChangingImage = true;
@@ -84,7 +86,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
             .collection('Business')
             .doc('Owners')
             .collection('Shops')
-            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .doc(auth.currentUser!.uid)
             .update(updatedUserImage);
         setState(() {
           isChangingImage = false;
@@ -195,7 +197,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
             .collection('Business')
             .doc('Owners')
             .collection('Shops')
-            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .doc(auth.currentUser!.uid)
             .update({
           propertyName: controller.text.toString(),
         });
@@ -263,7 +265,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
         .collection('Business')
         .doc('Owners')
         .collection('Shops')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .doc(auth.currentUser!.uid)
         .snapshots();
 
     return Scaffold(
@@ -284,6 +286,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
           child: LayoutBuilder(
             builder: ((context, constraints) {
               double width = constraints.maxWidth;
+              double height = constraints.maxHeight;
 
               return StreamBuilder(
                   stream: shopStream,
@@ -362,13 +365,66 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                   ),
                             const SizedBox(height: 32),
 
+                            // OPEN / CLOSED
+                            Align(
+                              alignment: Alignment.center,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: shopData['Open']
+                                      ? Colors.green.shade50
+                                      : Colors.red.shade50,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: width * 0.025,
+                                  vertical: 4,
+                                ),
+                                margin: const EdgeInsets.symmetric(
+                                  vertical: 2,
+                                ),
+                                child: DropdownButton(
+                                  value: shopData['Open'] ? "Open" : "Closed",
+                                  hint: const Text(
+                                    'Open / Closed',
+                                    style: TextStyle(
+                                      color: primaryDark2,
+                                    ),
+                                  ),
+                                  underline: const SizedBox(),
+                                  iconEnabledColor: primaryDark,
+                                  dropdownColor: primary2,
+                                  items: ['Open', 'Closed']
+                                      .map((e) => DropdownMenuItem(
+                                            value: e,
+                                            child: Text(e),
+                                          ))
+                                      .toList(),
+                                  onChanged: (value) async {
+                                    await store
+                                        .collection('Business')
+                                        .doc('Owners')
+                                        .collection('Shops')
+                                        .doc(auth.currentUser!.uid)
+                                        .update({
+                                      'Open': value == "Open" ? true : false,
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+
                             // NAME
                             Container(
                               width: width,
-                              height: isChangingName
-                                  ? width * 0.2775
-                                  : width * 0.175,
+                              // height: isChangingName
+                              //     ? width * 0.2775
+                              //     : width * 0.175,
                               alignment: Alignment.center,
+                              padding: EdgeInsets.symmetric(
+                                // horizontal: width * 0.006125,
+                                vertical: height * 0.0125,
+                              ),
                               decoration: BoxDecoration(
                                 color: primary2.withOpacity(0.9),
                                 borderRadius: BorderRadius.circular(12),
@@ -394,7 +450,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                       children: [
                                         Padding(
                                           padding: EdgeInsets.only(
-                                            left: width * 0.055,
+                                            left: width * 0.0335,
                                           ),
                                           child: SizedBox(
                                             width: width * 0.725,
@@ -451,8 +507,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
 
                                           await store
                                               .collection('Users')
-                                              .doc(FirebaseAuth
-                                                  .instance.currentUser!.uid)
+                                              .doc(auth.currentUser!.uid)
                                               .update({
                                             'Latitude': latitude,
                                             'Longitude': longitude,
@@ -473,39 +528,37 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                     },
                               child: Container(
                                 width: width,
-                                height: width * 0.175,
+                                // height: width * 0.175,
                                 decoration: BoxDecoration(
                                   color: primary2.withOpacity(0.9),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
+                                padding: EdgeInsets.symmetric(
+                                  // horizontal: width * 0.006125,
+                                  vertical: height * 0.0125,
+                                ),
                                 child: isChangingAddress
                                     ? Padding(
                                         padding: EdgeInsets.symmetric(
-                                            horizontal: width * 0.0125),
+                                          horizontal: width * 0.0125,
+                                        ),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           children: [
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                SizedBox(
-                                                  width: width * 0.8,
-                                                  child: const Text(
-                                                      'Getting Location'),
-                                                ),
-                                                const Text('-- km'),
-                                              ],
+                                            SizedBox(
+                                              width: width * 0.8,
+                                              child: const Text(
+                                                'Getting Location',
+                                              ),
                                             ),
                                             IconButton(
                                               onPressed: () {},
                                               icon: const Icon(
-                                                  FeatherIcons.mapPin),
+                                                FeatherIcons.mapPin,
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -516,7 +569,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                         children: [
                                           Padding(
                                             padding: EdgeInsets.only(
-                                              left: width * 0.055,
+                                              left: width * 0.0335,
                                             ),
                                             child: SizedBox(
                                               width: width * 0.725,
@@ -530,8 +583,8 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                                       ? null
                                                       : getAddress(
                                                           shopData['Latitude'],
-                                                          shopData[
-                                                              'Longitude']),
+                                                          shopData['Longitude'],
+                                                        ),
                                                   builder: (context, snapshot) {
                                                     if (snapshot.hasError) {
                                                       return Text(
@@ -556,6 +609,9 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                                                     0
                                                             ? 'NONE'
                                                             : snapshot.data!,
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                         style: TextStyle(
                                                           fontSize:
                                                               width * 0.045,
@@ -567,7 +623,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                                     }
 
                                                     return Text(
-                                                      'Click on icon to get Location',
+                                                      'Getting Location',
                                                       style: TextStyle(
                                                         fontSize: width * 0.04,
                                                         color: primaryDark2
@@ -591,34 +647,29 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                                 double? longitude;
 
                                                 await getLocation()
-                                                    .then((value) async {
-                                                  if (value != null) {
+                                                    .then((coordinates) async {
+                                                  if (coordinates != null) {
                                                     setState(() {
-                                                      latitude = value.latitude;
+                                                      latitude =
+                                                          coordinates.latitude;
                                                       longitude =
-                                                          value.longitude;
+                                                          coordinates.longitude;
                                                     });
+                                                    await getAddress(
+                                                      latitude!,
+                                                      longitude!,
+                                                    );
 
                                                     await store
                                                         .collection('Business')
                                                         .doc('Owners')
                                                         .collection('Shops')
-                                                        .doc(FirebaseAuth
-                                                            .instance
-                                                            .currentUser!
-                                                            .uid)
+                                                        .doc(auth
+                                                            .currentUser!.uid)
                                                         .update({
                                                       'Latitude': latitude,
                                                       'Longitude': longitude,
                                                     });
-
-                                                    if (latitude != null &&
-                                                        longitude != null) {
-                                                      await getAddress(
-                                                        latitude!,
-                                                        longitude!,
-                                                      );
-                                                    }
                                                   }
                                                 });
                                                 setState(() {
@@ -640,12 +691,16 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             // DESCRIPTION
                             Container(
                               width: width,
-                              height: isChangingDescription
-                                  ? width * 0.2775
-                                  : width * 0.175,
+                              // height: isChangingDescription
+                              //     ? width * 0.2775
+                              //     : width * 0.175,
                               decoration: BoxDecoration(
                                 color: primary2.withOpacity(0.9),
                                 borderRadius: BorderRadius.circular(12),
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                // horizontal: width * 0.006125,
+                                vertical: height * 0.0125,
                               ),
                               child: isChangingDescription
                                   ? TextField(
@@ -668,7 +723,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                       children: [
                                         Padding(
                                           padding: EdgeInsets.only(
-                                            left: width * 0.055,
+                                            left: width * 0.0335,
                                           ),
                                           child: SizedBox(
                                             width: width * 0.725,
@@ -707,11 +762,15 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             // TYPE
                             Container(
                               width: width,
-                              height: width * 0.16,
+                              // height: width * 0.16,
                               alignment: Alignment.centerLeft,
                               decoration: BoxDecoration(
                                 color: primary2.withOpacity(0.9),
                                 borderRadius: BorderRadius.circular(12),
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                // horizontal: width * 0.006125,
+                                vertical: height * 0.0125,
                               ),
                               child: Row(
                                 children: [
@@ -719,7 +778,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                     width: width * 0.855,
                                     child: Padding(
                                       padding: EdgeInsets.only(
-                                        left: width * 0.055,
+                                        left: width * 0.0335,
                                       ),
                                       child: SizedBox(
                                         width: width * 0.8,
@@ -757,11 +816,15 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             // CATEGORIES
                             Container(
                               width: width,
-                              height: width * 0.16,
+                              // height: width * 0.16,
                               alignment: Alignment.centerLeft,
                               decoration: BoxDecoration(
                                 color: primary2.withOpacity(0.9),
                                 borderRadius: BorderRadius.circular(12),
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                // horizontal: width * 0.006125,
+                                vertical: height * 0.0125,
                               ),
                               child: Row(
                                 children: [
@@ -769,7 +832,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                     width: width * 0.855,
                                     child: Padding(
                                       padding: EdgeInsets.only(
-                                        left: width * 0.055,
+                                        left: width * 0.0335,
                                       ),
                                       child: SizedBox(
                                         width: width * 0.8,
@@ -809,11 +872,15 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             // PRODUCTS
                             Container(
                               width: width,
-                              height: width * 0.16,
+                              // height: width * 0.16,
                               alignment: Alignment.centerLeft,
                               decoration: BoxDecoration(
                                 color: primary2.withOpacity(0.9),
                                 borderRadius: BorderRadius.circular(12),
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                // horizontal: width * 0.006125,
+                                vertical: height * 0.0125,
                               ),
                               child: Row(
                                 children: [
@@ -821,7 +888,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                     width: width * 0.855,
                                     child: Padding(
                                       padding: EdgeInsets.only(
-                                        left: width * 0.055,
+                                        left: width * 0.0335,
                                       ),
                                       child: SizedBox(
                                         width: width * 0.8,
@@ -863,15 +930,19 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             // GST
                             Container(
                               width: width,
-                              height: width * 0.16,
+                              // height: width * 0.16,
                               alignment: Alignment.centerLeft,
                               decoration: BoxDecoration(
                                 color: primary2.withOpacity(0.9),
                                 borderRadius: BorderRadius.circular(12),
                               ),
+                              padding: EdgeInsets.symmetric(
+                                // horizontal: width * 0.006125,
+                                vertical: height * 0.0125,
+                              ),
                               child: Padding(
                                 padding: EdgeInsets.only(
-                                  left: width * 0.055,
+                                  left: width * 0.0335,
                                 ),
                                 child: SizedBox(
                                   width: width * 0.875,
@@ -891,18 +962,22 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             ),
                             const SizedBox(height: 14),
 
-                            // AADHAR
+                            // AADHAAR
                             Container(
                               width: width,
-                              height: width * 0.16,
+                              // height: width * 0.16,
                               alignment: Alignment.centerLeft,
                               decoration: BoxDecoration(
                                 color: primary2.withOpacity(0.9),
                                 borderRadius: BorderRadius.circular(12),
                               ),
+                              padding: EdgeInsets.symmetric(
+                                // horizontal: width * 0.006125,
+                                vertical: height * 0.0125,
+                              ),
                               child: Padding(
                                 padding: EdgeInsets.only(
-                                  left: width * 0.055,
+                                  left: width * 0.0335,
                                 ),
                                 child: SizedBox(
                                   width: width * 0.875,
@@ -925,14 +1000,16 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             // INDUSTRY
                             Container(
                               width: width,
-                              height: width * 0.16,
+                              // height: width * 0.16,
                               alignment: Alignment.centerLeft,
                               decoration: BoxDecoration(
                                 color: primary2.withOpacity(0.9),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               padding: EdgeInsets.only(
-                                left: width * 0.055,
+                                left: width * 0.0335,
+                                top: height * 0.006125,
+                                bottom: height * 0.006125,
                               ),
                               child: SizedBox(
                                 width: width * 0.725,
@@ -949,121 +1026,110 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             ),
                             const SizedBox(height: 14),
 
-                            // OPEN / CLOSED
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 2,
-                                ),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: shopData['Open']
-                                        ? Colors.green.shade50
-                                        : Colors.red.shade50,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: width * 0.025,
-                                    vertical: 4,
-                                  ),
-                                  child: DropdownButton(
-                                    value: shopData['Open'] ? "Open" : "Closed",
-                                    hint: const Text(
-                                      'Open / Closed',
-                                      style: TextStyle(
-                                        color: primaryDark2,
-                                      ),
-                                    ),
-                                    underline: const SizedBox(),
-                                    iconEnabledColor: primaryDark,
-                                    dropdownColor: primary2,
-                                    items: ['Open', 'Closed']
-                                        .map((e) => DropdownMenuItem(
-                                              value: e,
-                                              child: Text(e),
-                                            ))
-                                        .toList(),
-                                    onChanged: (value) async {
-                                      await store
-                                          .collection('Business')
-                                          .doc('Owners')
-                                          .collection('Shops')
-                                          .doc(auth.currentUser!.uid)
-                                          .update({
-                                        'Open': value == "Open" ? true : false,
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-
                             // MEMBERSHIP
                             Container(
                               width: width,
-                              height: width * 0.16,
+                              // height: width * 0.16,
                               alignment: Alignment.centerLeft,
                               decoration: BoxDecoration(
                                 color: shopData['MembershipName'] == 'PREMIUM'
-                                    ? const Color.fromRGBO(202, 226, 238, 1)
+                                    ? const Color.fromRGBO(
+                                        202,
+                                        226,
+                                        238,
+                                        1,
+                                      )
                                     : shopData['MembershipName'] == 'GOLD'
-                                        ? const Color.fromRGBO(253, 243, 154, 1)
+                                        ? const Color.fromRGBO(
+                                            253,
+                                            243,
+                                            154,
+                                            1,
+                                          )
                                         : const Color.fromRGBO(
-                                            167, 167, 167, 1),
+                                            167,
+                                            167,
+                                            167,
+                                            1,
+                                          ),
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              child: Padding(
-                                padding: EdgeInsets.only(left: width * 0.05),
-                                child: SizedBox(
-                                  width: width * 0.725,
-                                  child: AutoSizeText(
-                                    shopData['MembershipName'] ?? 'N/A',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: width * 0.055,
-                                      fontWeight: FontWeight.w700,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.006125,
+                                vertical: height * 0.0125,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.only(left: width * 0.033),
+                                    child: SizedBox(
+                                      width: width * 0.5975,
+                                      child: AutoSizeText(
+                                        shopData['MembershipName'] ?? 'N/A',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: width * 0.055,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
+                                  MyTextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              MembershipDetailsPage(),
+                                        ),
+                                      );
+                                    },
+                                    text: 'See Details',
+                                  ),
+                                ],
                               ),
                             ),
                             const SizedBox(height: 14),
 
                             // MEMBERSHIP END DATETIME
-                            Container(
-                              width: width,
-                              height: width * 0.2,
-                              alignment: Alignment.centerLeft,
-                              decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 255, 130, 121),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              padding: EdgeInsets.only(
-                                left: width * 0.055,
-                              ),
-                              child: SizedBox(
-                                width: width * 0.875,
-                                child: Text(
-                                  'Membership Expiry Date - ${DateFormat('dd/M/yy').format((shopData['MembershipEndDateTime'] as Timestamp).toDate())}',
-                                  style: TextStyle(
-                                    fontSize: width * 0.055,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 18),
+                            // Container(
+                            //   width: width,
+                            //   // height: width * 0.2,
+                            //   alignment: Alignment.centerLeft,
+                            //   decoration: BoxDecoration(
+                            //     color: const Color.fromARGB(255, 255, 130, 121),
+                            //     borderRadius: BorderRadius.circular(12),
+                            //   ),
+                            //   padding: EdgeInsets.only(
+                            //     left: width * 0.0335,
+                            //     top: height * 0.006125,
+                            //     bottom: height * 0.006125,
+                            //   ),
+                            //   child: SizedBox(
+                            //     width: width * 0.875,
+                            //     child: Text(
+                            //       'Membership Expiry Date - ${DateFormat('dd/M/yy').format((shopData['MembershipEndDateTime'] as Timestamp).toDate())}',
+                            //       style: TextStyle(
+                            //         fontSize: width * 0.055,
+                            //         fontWeight: FontWeight.w500,
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
+                            // const SizedBox(height: 14),
 
                             // TIMINGS
                             InkWell(
                               onTap: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ChangeTimingsPage()),
+                                    builder: (context) =>
+                                        const ChangeTimingsPage(),
+                                  ),
                                 );
                               },
                               customBorder: RoundedRectangleBorder(
@@ -1071,23 +1137,31 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                               ),
                               child: Container(
                                 width: width,
-                                height: 50,
+                                // height: 50,
                                 decoration: BoxDecoration(
                                   color: primary2.withOpacity(0.9),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                padding: EdgeInsets.all(width * 0.0125),
+                                padding: EdgeInsets.symmetric(
+                                  // horizontal: width * 0.006125,
+                                  vertical: height * 0.0125,
+                                ),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text(
-                                      'Timings',
-                                      style: TextStyle(
-                                        color: primaryDark,
-                                        fontSize: width * 0.05,
-                                        fontWeight: FontWeight.w500,
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        left: width * 0.0335,
+                                      ),
+                                      child: Text(
+                                        'Timings',
+                                        style: TextStyle(
+                                          color: primaryDark,
+                                          fontSize: width * 0.05,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
                                     ),
                                     Icon(
@@ -1099,8 +1173,66 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                 ),
                               ),
                             ),
+                            SizedBox(height: 14),
 
-                            SizedBox(height: 16),
+                            // SOCIAL MEDIA
+                            InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const BusinessSocialMediaPage(
+                                      isChanging: true,
+                                    ),
+                                  ),
+                                );
+                              },
+                              customBorder: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Container(
+                                width: width,
+                                // height: 50,
+                                decoration: BoxDecoration(
+                                  color: primary2.withOpacity(0.9),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  // horizontal: width * 0.006125,
+                                  vertical: height * 0.0125,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        left: width * 0.0335,
+                                      ),
+                                      child: Text(
+                                        'Social Media Links',
+                                        style: TextStyle(
+                                          color: primaryDark,
+                                          fontSize: width * 0.05,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                    Icon(
+                                      FeatherIcons.chevronRight,
+                                      color: primaryDark,
+                                      size: width * 0.09,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            isChangingName ||
+                                    isChangingAddress ||
+                                    isChangingDescription
+                                ? SizedBox(height: 14)
+                                : Container(),
 
                             // SAVE & CANCEL BUTTON
                             Padding(
@@ -1108,9 +1240,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                 bottom:
                                     MediaQuery.of(context).viewInsets.bottom,
                               ),
-                              child: isChangingName ||
-                                      isChangingAddress ||
-                                      isChangingDescription
+                              child: isChangingName || isChangingDescription
                                   ? Column(
                                       children: [
                                         isSaving
@@ -1144,12 +1274,6 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                                       'Name',
                                                       isChangingName,
                                                     );
-                                                  } else if (isChangingAddress) {
-                                                    await save(
-                                                      addressController,
-                                                      'Address',
-                                                      isChangingAddress,
-                                                    );
                                                   } else if (isChangingDescription) {
                                                     await save(
                                                       descriptionController,
@@ -1178,7 +1302,6 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                     )
                                   : Container(),
                             ),
-
                             const SizedBox(height: 12),
                           ],
                         ),

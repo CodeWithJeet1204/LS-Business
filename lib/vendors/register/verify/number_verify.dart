@@ -27,6 +27,7 @@ class NumberVerifyPage extends StatefulWidget {
 }
 
 class _NumberVerifyPageState extends State<NumberVerifyPage> {
+  final store = FirebaseFirestore.instance;
   final otpController = TextEditingController();
   bool isOTPVerifying = false;
 
@@ -39,7 +40,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
 
   @override
   Widget build(BuildContext context) {
-    final FirebaseAuth auth = FirebaseAuth.instance;
+    final auth = FirebaseAuth.instance;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -100,7 +101,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
 
                             await auth.signInWithCredential(credential);
                             if (!widget.isLogging) {
-                              await FirebaseFirestore.instance
+                              await store
                                   .collection('Business')
                                   .doc('Owners')
                                   .collection('Users')
@@ -114,7 +115,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                                 'numberVerified': true,
                               });
 
-                              await FirebaseFirestore.instance
+                              await store
                                   .collection('Business')
                                   .doc('Owners')
                                   .collection('Shops')
@@ -122,14 +123,13 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                                   .set({
                                 'Name': null,
                                 'GSTNumber': null,
-                                'Address': null,
                                 'Description': null,
                                 'Industry': null,
                                 'Image': null,
                                 'Type': null,
                                 'MembershipName': null,
                                 'MembershipDuration': null,
-                                'MembershipTime': null,
+                                'MembershipStartDateTime': null,
                               });
                             }
 

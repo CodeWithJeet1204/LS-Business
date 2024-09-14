@@ -68,7 +68,7 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          'SELECT BRANDS',
+          'Select Brand',
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
@@ -77,8 +77,7 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            text: 'NEXT',
-            textColor: primaryDark,
+            text: 'DONE',
           ),
         ],
         bottom: PreferredSize(
@@ -203,7 +202,7 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                     padding: EdgeInsets.all(width * 0.006125),
                     child: LayoutBuilder(
                       builder: ((context, constraints) {
-                        final double width = constraints.maxWidth;
+                        final width = constraints.maxWidth;
 
                         return isGridView
                             ? GridView.builder(
@@ -230,7 +229,7 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                                       children: [
                                         Container(
                                           decoration: BoxDecoration(
-                                            color: primary2.withOpacity(0.125),
+                                            color: white,
                                             border: Border.all(
                                               width: 0.25,
                                               color: primaryDark,
@@ -282,13 +281,10 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                                                         ),
                                                       ),
                                                     ),
-                                              const Divider(
-                                                height: 0,
-                                              ),
                                               Padding(
                                                 padding: EdgeInsets.fromLTRB(
                                                   width * 0.0125,
-                                                  width * 0.0125,
+                                                  0,
                                                   width * 0.0125,
                                                   0,
                                                 ),

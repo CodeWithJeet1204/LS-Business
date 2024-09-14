@@ -101,7 +101,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          'SELECT PRODUCTS',
+          'Select Products',
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
@@ -117,8 +117,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                 Navigator.of(context).pop();
               }
             },
-            text: 'NEXT',
-            textColor: primaryDark,
+            text: 'DONE',
           ),
         ],
         bottom: PreferredSize(
@@ -250,16 +249,16 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                     padding: EdgeInsets.all(width * 0.006125),
                     child: LayoutBuilder(
                       builder: ((context, constraints) {
-                        final double width = constraints.maxWidth;
+                        final width = constraints.maxWidth;
 
                         return SafeArea(
                           child: isGridView
                               ? GridView.builder(
                                   shrinkWrap: true,
                                   gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                      SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
-                                    childAspectRatio: 0.725,
+                                    childAspectRatio: width * 0.6875 / width,
                                   ),
                                   itemCount: currentProducts.length,
                                   itemBuilder: (context, index) {
@@ -277,8 +276,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                                         children: [
                                           Container(
                                             decoration: BoxDecoration(
-                                              color:
-                                                  primary2.withOpacity(0.125),
+                                              color: white,
                                               border: Border.all(
                                                 width: 0.25,
                                                 color: primaryDark,
@@ -341,13 +339,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                                                     0,
                                                   ),
                                                   child: Text(
-                                                    productData['productPrice'] !=
-                                                                '' &&
-                                                            productData[
-                                                                    'productPrice'] !=
-                                                                null
-                                                        ? 'Rs. ${productData['productPrice']}'
-                                                        : 'N/A',
+                                                    'Rs. ${productData['productPrice']}',
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -418,7 +410,9 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                                                     color: primaryDark,
                                                   ),
                                                   borderRadius:
-                                                      BorderRadius.circular(2),
+                                                      BorderRadius.circular(
+                                                    2,
+                                                  ),
                                                 ),
                                                 margin: EdgeInsets.all(
                                                   width * 0.0125,
@@ -448,13 +442,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                                                     ),
                                                   ),
                                                   subtitle: Text(
-                                                    productData['productPrice'] !=
-                                                                '' &&
-                                                            productData[
-                                                                    'productPrice'] !=
-                                                                null
-                                                        ? 'Rs. ${productData['productPrice']}'
-                                                        : 'N/A',
+                                                    'Rs. ${productData['productPrice']}',
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,

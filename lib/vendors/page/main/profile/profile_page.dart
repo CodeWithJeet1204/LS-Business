@@ -8,6 +8,7 @@ import 'package:Localsearch/widgets/small_text_container.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -19,16 +20,17 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
-  final ScrollController scrollController = ScrollController();
   bool hideNameOverflow = true;
   bool showbtn = true;
   bool isDataLoaded = false;
   Map shopData = {};
+  bool hasReviewed = true;
 
   // INIT STATE
   @override
   void initState() {
     getShopType();
+    getHasReviewed();
     super.initState();
   }
 
@@ -164,6 +166,24 @@ class _ProfilePageState extends State<ProfilePage> {
     return type;
   }
 
+  // GET HAS REVIEWED
+  Future<void> getHasReviewed() async {
+    final userSnap = await store
+        .collection('Business')
+        .doc('Owners')
+        .collection('Users')
+        .doc(auth.currentUser!.uid)
+        .get();
+
+    final userData = userSnap.data()!;
+
+    final myHasReviewed = userData['hasReviewed'];
+
+    setState(() {
+      hasReviewed = myHasReviewed;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return shopData.isEmpty
@@ -180,73 +200,73 @@ class _ProfilePageState extends State<ProfilePage> {
                 'PROFILE',
               ),
               actions: [
+                // SIGN OUT
                 IconButton(
                   onPressed: () async {
                     await signOut();
                   },
                   // onPressed: () async {
-                  //   Future<void> addBusinessSpecialCategories(
-                  //     String shopType,
-                  //   ) async {
-                  //     final myBusinessSubCategories =
-                  //         businessSubCategories[shopType];
-                  //     final CollectionReference<Map<String, dynamic>>
-                  //         specialCategoriesCollection = FirebaseFirestore
-                  //             .instance
-                  //             .collection('Business')
-                  //             .doc('Special Categories')
-                  //             .collection(shopType);
-                  //     myBusinessSubCategories!
-                  //         .forEach((subcategory, imageUrl) async {
-                  //       await specialCategoriesCollection.doc(subcategory).set({
-                  //         'specialCategoryName': subcategory,
-                  //         'specialCategoryImageUrl': imageUrl,
-                  //         'vendorIds': [],
-                  //       });
+                  // Future<void> addBusinessSpecialCategories(
+                  //   String shopType,
+                  // ) async {
+                  //   final myBusinessSubCategories =
+                  //       businessSubCategories[shopType];
+                  //   final CollectionReference<Map<String, dynamic>>
+                  //       specialCategoriesCollection = FirebaseFirestore
+                  //           .instance
+                  //           .collection('Business')
+                  //           .doc('Special Categories')
+                  //           .collection(shopType);
+                  //   myBusinessSubCategories!
+                  //       .forEach((subcategory, imageUrl) async {
+                  //     await specialCategoriesCollection.doc(subcategory).set({
+                  //       'specialCategoryName': subcategory,
+                  //       'specialCategoryImageUrl': imageUrl,
+                  //       'vendorIds': [],
                   //     });
-                  //   }
+                  //   });
+                  // }
 
-                  //   Future<void> addHouseholdSpecialCategories(
-                  //     String shopType,
-                  //   ) async {
-                  //     final householdSubCategory =
-                  //         householdSubCategories[shopType];
-                  //     final CollectionReference<Map<String, dynamic>>
-                  //         specialCategoriesCollection = FirebaseFirestore
-                  //             .instance
-                  //             .collection('Business')
-                  //             .doc('Special Categories')
-                  //             .collection(shopType);
-                  //     householdSubCategory!
-                  //         .forEach((subcategory, imageUrl) async {
-                  //       await specialCategoriesCollection.doc(subcategory).set({
-                  //         'specialCategoryName': subcategory,
-                  //         'specialCategoryImageUrl': imageUrl,
-                  //         'vendorIds': [],
-                  //       });
+                  // Future<void> addHouseholdSpecialCategories(
+                  //   String shopType,
+                  // ) async {
+                  //   final householdSubCategory =
+                  //       householdSubCategories[shopType];
+                  //   final CollectionReference<Map<String, dynamic>>
+                  //       specialCategoriesCollection = FirebaseFirestore
+                  //           .instance
+                  //           .collection('Business')
+                  //           .doc('Special Categories')
+                  //           .collection(shopType);
+                  //   householdSubCategory!
+                  //       .forEach((subcategory, imageUrl) async {
+                  //     await specialCategoriesCollection.doc(subcategory).set({
+                  //       'specialCategoryName': subcategory,
+                  //       'specialCategoryImageUrl': imageUrl,
+                  //       'vendorIds': [],
                   //     });
-                  //   }
+                  //   });
+                  // }
 
-                  //   Future<void> addAllSpecialCategories() async {
-                  //     // await Future.forEach(businessSubCategories.keys,
-                  //     //     (shopType) async {
-                  //     //   await addBusinessSpecialCategories(shopType);
-                  //     // });
-                  //     await Future.forEach(
-                  //         householdTypeCategorySubCategory.keys,
-                  //         (shopType) async {
-                  //       await addHouseholdSpecialCategories(shopType);
-                  //     });
-                  //   }
+                  // Future<void> addAllSpecialCategories() async {
+                  //   // await Future.forEach(businessSubCategories.keys,
+                  //   //     (shopType) async {
+                  //   //   await addBusinessSpecialCategories(shopType);
+                  //   // });
+                  //   await Future.forEach(
+                  //       householdTypeCategorySubCategory.keys,
+                  //       (shopType) async {
+                  //     await addHouseholdSpecialCategories(shopType);
+                  //   });
+                  // }
 
-                  //   await addAllSpecialCategories();
+                  // await addAllSpecialCategories();
                   // },
-
                   icon: const Icon(
                     FeatherIcons.logOut,
-                    color: primaryDark,
+                    color: Colors.red,
                   ),
-                  tooltip: 'Log Out',
+                  tooltip: 'Sign Out',
                 ),
               ],
             ),
@@ -256,7 +276,8 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               child: LayoutBuilder(
                 builder: (context, constraints) {
-                  final double width = constraints.maxWidth;
+                  final width = constraints.maxWidth;
+                  final height = constraints.maxHeight;
 
                   return SingleChildScrollView(
                     child: Column(
@@ -298,12 +319,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                 SizedBox(
                                   width: width * 0.8,
                                   child: Text(
-                                    shopData['Name'] ?? 'N/A',
+                                    shopData['Name'],
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
-                                      fontSize: width * 0.07,
-                                      fontWeight: FontWeight.w700,
+                                      fontSize: width * 0.06,
+                                      fontWeight: FontWeight.w500,
                                       color: primaryDark.withBlue(5),
                                     ),
                                     textAlign: TextAlign.center,
@@ -316,8 +337,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
-                                      fontSize: width * 0.0425,
-                                      fontWeight: FontWeight.w600,
+                                      fontSize: width * 0.04,
                                       color: primaryDark.withOpacity(0.85),
                                     ),
                                     textAlign: TextAlign.center,
@@ -361,9 +381,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                    fontSize: width * 0.05,
+                                    fontSize: width * 0.045,
                                     color: primaryDark,
-                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
                               ),
@@ -398,9 +417,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                    fontSize: width * 0.05,
+                                    fontSize: width * 0.0425,
                                     color: primaryDark,
-                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
                               ),
@@ -408,86 +426,126 @@ class _ProfilePageState extends State<ProfilePage> {
                           ],
                         ),
                         Divider(
-                          height: width * 0.138875,
+                          height: height * 0.05,
                         ),
 
                         // VIEW
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // POSTS
-                            // SmallTextContainer(
-                            //   text: 'POSTS',
-                            //   onPressed: () {
-                            //     Navigator.of(context).pushNamed('/postsPage');
-                            //   },
-                            //   width: width,
-                            // ),
-                            // const SizedBox(height: 16),
-
-                            // SHORTS
-                            SmallTextContainer(
-                              text: 'SHORTS',
-                              onPressed: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => AllShortsPage(),
-                                  ),
-                                );
-                              },
-                              width: width,
-                            ),
-                            const SizedBox(height: 16),
-
-                            // CATEGORY
-                            SmallTextContainer(
-                              text: 'CATEGORIES',
-                              onPressed: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: ((context) => AllCategoriesPage(
-                                          shopType: shopData['Type'],
-                                        )),
-                                  ),
-                                );
-                              },
-                              width: width,
-                            ),
-                            const SizedBox(height: 16),
-
-                            // PRODUCTS
-                            SmallTextContainer(
-                              text: 'PRODUCTS',
-                              onPressed: () {
-                                Navigator.of(context)
-                                    .pushNamed('/productsPage');
-                              },
-                              width: width,
-                            ),
-                            const SizedBox(height: 16),
-
-                            // DISCOUNTS
-                            SmallTextContainer(
-                              text: 'DISCOUNTS',
-                              onPressed: () {
-                                Navigator.of(context)
-                                    .pushNamed('/discountsPage');
-                              },
-                              width: width,
-                            ),
-                            const SizedBox(height: 16),
-
-                            // BRAND
-                            SmallTextContainer(
-                              text: 'BRANDS',
-                              onPressed: () {
-                                Navigator.of(context).pushNamed('/brandsPage');
-                              },
-                              width: width,
-                            ),
-                            const SizedBox(height: 8),
-                          ],
+                        SmallTextContainer(
+                          text: 'SHORTS',
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => AllShortsPage(),
+                              ),
+                            );
+                          },
+                          width: width,
                         ),
+                        const SizedBox(height: 16),
+
+                        // CATEGORY
+                        SmallTextContainer(
+                          text: 'CATEGORIES',
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: ((context) => AllCategoriesPage(
+                                      shopType: shopData['Type'],
+                                    )),
+                              ),
+                            );
+                          },
+                          width: width,
+                        ),
+                        const SizedBox(height: 16),
+
+                        // PRODUCTS
+                        SmallTextContainer(
+                          text: 'PRODUCTS',
+                          onPressed: () {
+                            Navigator.of(context).pushNamed('/productsPage');
+                          },
+                          width: width,
+                        ),
+                        const SizedBox(height: 16),
+
+                        // DISCOUNTS
+                        SmallTextContainer(
+                          text: 'DISCOUNTS',
+                          onPressed: () {
+                            Navigator.of(context).pushNamed('/discountsPage');
+                          },
+                          width: width,
+                        ),
+                        const SizedBox(height: 16),
+
+                        // BRAND
+                        SmallTextContainer(
+                          text: 'BRANDS',
+                          onPressed: () {
+                            Navigator.of(context).pushNamed('/brandsPage');
+                          },
+                          width: width,
+                        ),
+                        hasReviewed ? Container() : SizedBox(height: 6),
+
+                        hasReviewed ? Container() : Divider(),
+
+                        // RATE THIS APP
+                        hasReviewed
+                            ? Container()
+                            : Padding(
+                                padding: EdgeInsets.all(width * 0.0225),
+                                child: InkWell(
+                                  onTap: () async {
+                                    await store
+                                        .collection('Business')
+                                        .doc('Owners')
+                                        .collection('Users')
+                                        .doc(auth.currentUser!.uid)
+                                        .update({
+                                      'hasReviewed': true,
+                                    });
+
+                                    const url =
+                                        'https://play.google.com/store/apps/details?id=com.localsearch.package';
+                                    if (await canLaunchUrl(Uri.parse(url))) {
+                                      await launchUrl(Uri.parse(url));
+                                    } else {
+                                      return mySnackBar(
+                                        context,
+                                        'Some error occured, Try Again Later',
+                                      );
+                                    }
+                                  },
+                                  customBorder: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(width * 0.0225),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Rate This App',
+                                          style: TextStyle(
+                                            fontSize: width * 0.0425,
+                                            color: primaryDark,
+                                          ),
+                                        ),
+                                        Icon(
+                                          Icons.star,
+                                          size: width * 0.075,
+                                          color: Colors.yellow,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                       ],
                     ),
                   );

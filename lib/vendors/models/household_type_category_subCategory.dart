@@ -1,5 +1,5 @@
 // ignore_for_file: file_names
-
+// TODO: Improve Whole Data
 Map<String, Map<String, List<String>>> householdTypeCategorySubCategory = {
   'Fashion & Clothing': {
     // 'Men Wear': [
@@ -138,7 +138,6 @@ Map<String, Map<String, List<String>>> householdTypeCategorySubCategory = {
     //   'Purses',
     //   'Other Kids Accessories',
     // ],
-    // TODO: improve this & footwear
     'Men Watches': [
       'Men Watches',
     ],

@@ -80,7 +80,7 @@
 //           .doc('Data')
 //           .collection('Posts')
 //           .where('postVendorId',
-//               isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+//               isEqualTo: auth.currentUser!.uid)
 //           .get();
 
 //       bool postExists = false;
@@ -237,7 +237,7 @@
 //       resizeToAvoidBottomInset: false,
 //       appBar: AppBar(
 //         title: const Text(
-//           'SELECT PRODUCTS',
+//           'Select Products',
 //           maxLines: 1,
 //           overflow: TextOverflow.ellipsis,
 //         ),
@@ -249,7 +249,7 @@
 //               await post();
 //             },
 //             text: 'DONE',
-//             textColor: primaryDark,
+//             
 //           ),
 //         ],
 //         bottom: PreferredSize(
@@ -373,16 +373,16 @@
 //                     padding: EdgeInsets.all(width * 0.006125),
 //                     child: LayoutBuilder(
 //                       builder: ((context, constraints) {
-//                         final double width = constraints.maxWidth;
+//                         final width = constraints.maxWidth;
 
 //                         return SafeArea(
 //                           child: isGridView
 //                               ? GridView.builder(
 //                                   shrinkWrap: true,
 //                                   gridDelegate:
-//                                       const SliverGridDelegateWithFixedCrossAxisCount(
+//                                       SliverGridDelegateWithFixedCrossAxisCount(
 //                                     crossAxisCount: 2,
-//                                     childAspectRatio: 0.725,
+//                                     childAspectRatio: width * 0.6875 / width,
 //                                   ),
 //                                   itemCount: currentProducts.length,
 //                                   itemBuilder: (context, index) {
@@ -401,7 +401,7 @@
 //                                           Container(
 //                                             decoration: BoxDecoration(
 //                                               color:
-//                                                   primary2.withOpacity(0.125),
+//                                                   white,
 //                                               border: Border.all(
 //                                                 width: 0.25,
 //                                                 color: primaryDark,

@@ -40,9 +40,7 @@ class _ModeCardState extends State<ModeCard> {
             width: width,
             height: widget.isSelected ? width * 0.3833 : width * 0.35,
             decoration: BoxDecoration(
-              color: widget.isSelected
-                  ? widget.selectedBackgroundColor
-                  : primary2.withOpacity(0.125),
+              color: widget.isSelected ? widget.selectedBackgroundColor : white,
               border: Border.all(
                 color: widget.isSelected
                     ? primaryDark

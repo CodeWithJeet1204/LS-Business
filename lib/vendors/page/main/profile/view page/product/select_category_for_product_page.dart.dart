@@ -58,28 +58,13 @@ class _ChangeCategoryState extends State<ChangeCategory> {
           .collection(type)
           .get();
 
-      final vendorSnap = await store
-          .collection('Business')
-          .doc('Owners')
-          .collection('Shops')
-          .doc(auth.currentUser!.uid)
-          .get();
-
-      final vendorData = vendorSnap.data()!;
-
-      final List categories = vendorData['Categories'];
-
       for (var specialCategory in specialSnapshot.docs) {
-        for (var category in categories) {
-          final specialCategoryData = specialCategory.data();
+        final specialCategoryData = specialCategory.data();
 
-          final name = specialCategoryData['specialCategoryName'];
-          final imageUrl = specialCategoryData['specialCategoryImageUrl'];
+        final name = specialCategoryData['specialCategoryName'];
+        final imageUrl = specialCategoryData['specialCategoryImageUrl'];
 
-          if (name == category) {
-            myCategory[name] = imageUrl;
-          }
-        }
+        myCategory[name] = imageUrl;
       }
     }
 
@@ -97,7 +82,7 @@ class _ChangeCategoryState extends State<ChangeCategory> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          'SELECT CATEGORY',
+          'Select Category',
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
@@ -108,7 +93,7 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                 isAdding = true;
               });
               if (changeCategoryProvider.selectedCategory.isEmpty) {
-                await FirebaseFirestore.instance
+                await store
                     .collection('Business')
                     .doc('Data')
                     .collection('Products')
@@ -117,7 +102,7 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                   'categoryName': '0',
                 });
               } else {
-                await FirebaseFirestore.instance
+                await store
                     .collection('Business')
                     .doc('Data')
                     .collection('Products')
@@ -199,7 +184,7 @@ class _ChangeCategoryState extends State<ChangeCategory> {
       ),
       body: LayoutBuilder(
         builder: ((context, constraints) {
-          final double width = constraints.maxWidth;
+          final width = constraints.maxWidth;
 
           return !getData
               ? const Center(
@@ -208,10 +193,9 @@ class _ChangeCategoryState extends State<ChangeCategory> {
               : isGridView
                   ? GridView.builder(
                       shrinkWrap: true,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                        childAspectRatio: 0.75,
+                        childAspectRatio: width * 0.75 / width,
                       ),
                       itemCount: categories.length,
                       itemBuilder: (context, index) {
@@ -230,7 +214,7 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                             children: [
                               Container(
                                 decoration: BoxDecoration(
-                                  color: primary2.withOpacity(0.125),
+                                  color: white,
                                   border: Border.all(
                                     width: 0.25,
                                     color: primaryDark,

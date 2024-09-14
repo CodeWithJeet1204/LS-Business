@@ -87,7 +87,7 @@ class _SelectCategoryForDiscountPageState
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          'SELECT CATEGORIES',
+          'Select Categories',
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
@@ -97,7 +97,6 @@ class _SelectCategoryForDiscountPageState
               Navigator.of(context).pop();
             },
             text: 'DONE',
-            textColor: primaryDark,
           ),
         ],
         bottom: PreferredSize(
@@ -215,7 +214,7 @@ class _SelectCategoryForDiscountPageState
                 padding: EdgeInsets.all(width * 0.0125),
                 child: LayoutBuilder(
                   builder: ((context, constraints) {
-                    final double width = constraints.maxWidth;
+                    final width = constraints.maxWidth;
 
                     return SafeArea(
                       child: isGridView
@@ -227,7 +226,7 @@ class _SelectCategoryForDiscountPageState
                                 crossAxisCount: 2,
                                 crossAxisSpacing: 0,
                                 mainAxisSpacing: 0,
-                                childAspectRatio: 0.75,
+                                childAspectRatio: 0.7375,
                               ),
                               itemCount: currentCategories.length,
                               itemBuilder: (context, index) {
@@ -247,7 +246,7 @@ class _SelectCategoryForDiscountPageState
                                     children: [
                                       Container(
                                         decoration: BoxDecoration(
-                                          color: primary2.withOpacity(0.125),
+                                          color: white,
                                           border: Border.all(
                                             width: 0.25,
                                             color: primaryDark,
@@ -290,18 +289,14 @@ class _SelectCategoryForDiscountPageState
                                               padding: EdgeInsets.symmetric(
                                                 vertical: width * 0.0125,
                                               ),
-                                              child: SizedBox(
-                                                width: width * 0.5,
-                                                child: Text(
-                                                  categoryName,
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontSize: width * 0.06,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
+                                              child: Text(
+                                                categoryName,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontSize: width * 0.06,
+                                                  fontWeight: FontWeight.w600,
                                                 ),
                                               ),
                                             ),

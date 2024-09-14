@@ -1,8 +1,7 @@
+import 'package:Localsearch/vendors/register/business_social_media_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:Localsearch/vendors/register/business_choose_category_page_1.dart';
-import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:Localsearch/widgets/button.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:Localsearch/widgets/text_button.dart';
@@ -30,6 +29,7 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
   bool isAadhaarNotValidated = false;
   bool isNext = false;
 
+  // DISPOSE
   @override
   void dispose() {
     gstController.dispose();
@@ -82,8 +82,6 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
       return c == 0;
     }
 
-    print('lalla');
-
     if (validateVerhoeff(aadhaarNumber)) {
       setState(() {
         isAadhaarValidated = true;
@@ -119,7 +117,9 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
             Navigator.of(context).pop();
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: ((context) => const BusinessChooseCategoryPage1()),
+                builder: ((context) => const BusinessSocialMediaPage(
+                      isChanging: false,
+                    )),
               ),
             );
           }
@@ -144,7 +144,7 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('VERIFICATION'),
+        title: Text('Verification'),
       ),
       body: SafeArea(
         child: LayoutBuilder(
@@ -159,6 +159,12 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // CANNOT BE CHANGED
+                      Text(
+                        'Aadhaar & GST Number Cannot Be Changed Later',
+                        textAlign: TextAlign.center,
+                      ),
+
                       // AADHAAR
                       isAadhaarValidated
                           ? Container()
@@ -204,7 +210,6 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
                                 ? 'NOT VALID TRY AGAIN'
                                 : 'VALIDATE AADHAAR'
                             : 'AADHAAR VALIDATED',
-                        textColor: primaryDark,
                       ),
 
                       Divider(),

@@ -12,7 +12,7 @@ class SelectContainer extends StatefulWidget {
     this.imageUrl,
   });
 
-  final double width;
+  final width;
   final String text;
   final bool isSelected;
   final void Function()? onTap;

@@ -10,7 +10,6 @@ import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 class OwnerDetailsPage extends StatefulWidget {
   const OwnerDetailsPage({super.key});
@@ -20,7 +19,8 @@ class OwnerDetailsPage extends StatefulWidget {
 }
 
 class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
-  final FirebaseAuth auth = FirebaseAuth.instance;
+  final auth = FirebaseAuth.instance;
+  final store = FirebaseFirestore.instance;
   final storage = FirebaseStorage.instance;
   final nameController = TextEditingController();
   final numberController = TextEditingController();
@@ -29,6 +29,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
   bool isChangingImage = false;
   bool isSaving = false;
   bool isDataLoaded = false;
+  bool allowCall = true;
 
   // DISPOSE
   @override
@@ -38,11 +39,12 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
     super.dispose();
   }
 
-  // CHANGE  IMAGE
+  // CHANGE IMAGE
   Future<void> changeImage(String previousUrl) async {
-    XFile? im = await showImagePickDialog(context);
+    final images = await showImagePickDialog(context, true);
     String? userPhotoUrl;
-    if (im != null) {
+    if (images.isNotEmpty) {
+      final im = images[0];
       try {
         setState(() {
           isChangingImage = true;
@@ -66,7 +68,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
         updatedUserImage = {
           'Image': userPhotoUrl,
         };
-        await FirebaseFirestore.instance
+        await store
             .collection('Business')
             .doc('Owners')
             .collection('Users')
@@ -107,7 +109,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
           Map<String, dynamic> updatedUserName = {
             'Name': nameController.text.toString(),
           };
-          await FirebaseFirestore.instance
+          await store
               .collection('Business')
               .doc('Owners')
               .collection('Users')
@@ -130,7 +132,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
           Map<String, dynamic> updatedUserNumber = {
             'Phone Number': numberController.text.toString(),
           };
-          await FirebaseFirestore.instance
+          await store
               .collection('Business')
               .doc('Owners')
               .collection('Users')
@@ -162,7 +164,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
           Map<String, dynamic> updatedUserName = {
             'Name': nameController.text.toString(),
           };
-          await FirebaseFirestore.instance
+          await store
               .collection('Business')
               .doc('Owners')
               .collection('Users')
@@ -173,7 +175,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
           Map<String, dynamic> updatedUserNumber = {
             'Phone Number': numberController.text.toString(),
           };
-          await FirebaseFirestore.instance
+          await store
               .collection('Business')
               .doc('Owners')
               .collection('Users')
@@ -214,9 +216,25 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
     );
   }
 
+  // TOGGLE ALLOW CALL
+  Future<void> toggleAllowCall() async {
+    setState(() {
+      allowCall = !allowCall;
+    });
+
+    await store
+        .collection('Business')
+        .doc('Owners')
+        .collection('Users')
+        .doc(auth.currentUser!.uid)
+        .update({
+      'allowCalls': allowCall,
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final userStream = FirebaseFirestore.instance
+    final userStream = store
         .collection('Business')
         .doc('Owners')
         .collection('Users')
@@ -344,7 +362,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                         child: SizedBox(
                                           width: width * 0.725,
                                           child: AutoSizeText(
-                                            userData['Name'] ?? 'N/A',
+                                            userData['Name'],
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
@@ -406,7 +424,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                         child: SizedBox(
                                           width: width * 0.725,
                                           child: AutoSizeText(
-                                            userData['Phone Number'] ?? 'N/A',
+                                            userData['Phone Number'],
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
@@ -466,6 +484,47 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                               ],
                             ),
                           ),
+                          const SizedBox(height: 14),
+                          InkWell(
+                            onTap: () async {
+                              await toggleAllowCall();
+                            },
+                            customBorder: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(width * 0.0125),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.only(left: width * 0.025),
+                                    child: Text(
+                                      'Allow Calls from Users',
+                                      style: TextStyle(
+                                        color: primaryDark,
+                                        fontSize: width * 0.04,
+                                      ),
+                                    ),
+                                  ),
+                                  Switch(
+                                    value: allowCall,
+                                    onChanged: (value) async {
+                                      await toggleAllowCall();
+                                    },
+                                    activeColor: primary2,
+                                    activeTrackColor: primaryDark,
+                                    inactiveThumbColor: primaryDark,
+                                    inactiveTrackColor: primary2,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+
                           const SizedBox(height: 18),
 
                           // SAVE & CANCEL BUTTON

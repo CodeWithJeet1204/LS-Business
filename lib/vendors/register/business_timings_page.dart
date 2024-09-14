@@ -203,15 +203,6 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
     });
 
     try {
-      final snap = await store
-          .collection('Business')
-          .doc('Owners')
-          .collection('Shops')
-          .doc(auth.currentUser!.uid)
-          .get();
-
-      print('exists: ${snap.exists}');
-
       await store
           .collection('Business')
           .doc('Owners')
@@ -229,7 +220,11 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
       if (mounted) {
         Navigator.of(context).pop();
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const SelectMembershipPage()),
+          MaterialPageRoute(
+            builder: (context) => const SelectMembershipPage(
+              hasAvailedLaunchOffer: false,
+            ),
+          ),
         );
       }
     } catch (e) {
@@ -372,7 +367,6 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
                                                   await selectWeekdayStartTime();
                                                 },
                                                 text: 'Select Time',
-                                                textColor: primaryDark,
                                               )
                                             : Padding(
                                                 padding: EdgeInsets.only(
@@ -453,7 +447,6 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
                                                   await selectWeekdayEndTime();
                                                 },
                                                 text: 'Select Time',
-                                                textColor: primaryDark,
                                               )
                                             : Padding(
                                                 padding: EdgeInsets.only(
@@ -596,7 +589,6 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
                                                   await selectSaturdayStartTime();
                                                 },
                                                 text: 'Select Time',
-                                                textColor: primaryDark,
                                               )
                                             : Padding(
                                                 padding: EdgeInsets.only(
@@ -677,7 +669,6 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
                                                   await selectSaturdayEndTime();
                                                 },
                                                 text: 'Select Time',
-                                                textColor: primaryDark,
                                               )
                                             : Padding(
                                                 padding: EdgeInsets.only(
@@ -820,7 +811,6 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
                                                   await selectSundayStartTime();
                                                 },
                                                 text: 'Select Time',
-                                                textColor: primaryDark,
                                               )
                                             : Padding(
                                                 padding: EdgeInsets.only(
@@ -901,7 +891,6 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
                                                   await selectSundayEndTime();
                                                 },
                                                 text: 'Select Time',
-                                                textColor: primaryDark,
                                               )
                                             : Padding(
                                                 padding: EdgeInsets.only(

@@ -45,7 +45,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
 
   // GET SPECIAL CATEGORIES
   Future<void> getSpecialCategories() async {
-    Map<String, dynamic> myCategory = {};
+    Map<String, dynamic> myCategories = {};
 
     final vendorSnap = await store
         .collection('Business')
@@ -56,32 +56,28 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
 
     final vendorData = vendorSnap.data()!;
 
-    final List categories = vendorData['Categories'];
-    final List types = vendorData['Type'];
+    final List shopTypes = vendorData['Type'];
 
-    for (var type in types) {
-      final specialSnapshot = await store
+    for (var type in shopTypes) {
+      final categorySnap = await store
           .collection('Business')
           .doc('Special Categories')
           .collection(type)
           .get();
 
-      for (var specialCategory in specialSnapshot.docs) {
-        for (var category in categories) {
-          final specialCategoryData = specialCategory.data();
+      for (var category in categorySnap.docs) {
+        final categoryData = category.data();
 
-          final name = specialCategoryData['specialCategoryName'];
-          final imageUrl = specialCategoryData['specialCategoryImageUrl'];
-          if (category == name) {
-            myCategory[name] = imageUrl;
-          }
-        }
+        final categoryName = categoryData['specialCategoryName'];
+        final imageUrl = categoryData['specialCategoryImageUrl'];
+
+        myCategories[categoryName] = imageUrl;
       }
     }
 
     setState(() {
-      currentCategories = myCategory;
-      allCategories = myCategory;
+      currentCategories = myCategories;
+      allCategories = myCategories;
       getData = true;
     });
   }
@@ -94,19 +90,19 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          'ALL CATEGORIES',
+          'All Categories',
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
         bottom: PreferredSize(
           preferredSize: Size(
-            MediaQuery.of(context).size.width,
-            80,
+            width,
+            width * 0.2,
           ),
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.0166,
-              vertical: MediaQuery.of(context).size.width * 0.0225,
+              horizontal: width * 0.0166,
+              vertical: width * 0.0225,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -168,10 +164,52 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
           ),
         ),
       ),
-      body: getData
-          ? currentCategories.isEmpty
+      body: !getData
+          ? SafeArea(
+              child: isGridView
+                  ? GridView.builder(
+                      shrinkWrap: true,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 0,
+                        mainAxisSpacing: 0,
+                        childAspectRatio: width * 0.5 / width * 1.6,
+                      ),
+                      itemCount: 4,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.all(
+                            width * 0.02,
+                          ),
+                          child: GridViewSkeleton(
+                            width: width,
+                            isPrice: false,
+                            isDelete: true,
+                          ),
+                        );
+                      },
+                    )
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: 4,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.all(
+                            width * 0.02,
+                          ),
+                          child: ListViewSkeleton(
+                            width: width,
+                            isPrice: false,
+                            height: 30,
+                            isDelete: true,
+                          ),
+                        );
+                      },
+                    ),
+            )
+          : currentCategories.isEmpty
               ? const SizedBox(
-                  height: 60,
+                  height: 80,
                   child: Center(
                     child: Text('No Categories'),
                   ),
@@ -194,9 +232,9 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                                       shrinkWrap: true,
                                       physics: const ClampingScrollPhysics(),
                                       gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                          SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 2,
-                                        childAspectRatio: 0.75,
+                                        childAspectRatio: width * 0.75 / width,
                                       ),
                                       itemCount: currentCategories.length,
                                       itemBuilder: ((context, index) {
@@ -219,8 +257,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                                           },
                                           child: Container(
                                             decoration: BoxDecoration(
-                                              color:
-                                                  primary2.withOpacity(0.125),
+                                              color: white,
                                               border: Border.all(
                                                 width: 0.25,
                                                 color: primaryDark,
@@ -304,9 +341,9 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: TextStyle(
-                                                        fontSize: width * 0.06,
+                                                        fontSize: width * 0.05,
                                                         fontWeight:
-                                                            FontWeight.w600,
+                                                            FontWeight.w500,
                                                       ),
                                                     ),
                                                   ),
@@ -469,49 +506,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                       );
                     },
                   ),
-                )
-          : SafeArea(
-              child: isGridView
-                  ? GridView.builder(
-                      shrinkWrap: true,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 0,
-                        mainAxisSpacing: 0,
-                        childAspectRatio: width * 0.5 / width * 1.6,
-                      ),
-                      itemCount: 4,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.all(
-                            width * 0.02,
-                          ),
-                          child: GridViewSkeleton(
-                            width: width,
-                            isPrice: false,
-                            isDelete: true,
-                          ),
-                        );
-                      },
-                    )
-                  : ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: 4,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.all(
-                            width * 0.02,
-                          ),
-                          child: ListViewSkeleton(
-                            width: width,
-                            isPrice: false,
-                            height: 30,
-                            isDelete: true,
-                          ),
-                        );
-                      },
-                    ),
-            ),
+                ),
     );
   }
 }

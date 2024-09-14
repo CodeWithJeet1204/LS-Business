@@ -4,14 +4,12 @@ import 'package:Localsearch/vendors/register/business_register_details_page.dart
 import 'package:Localsearch/vendors/provider/sign_in_method_provider.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:Localsearch/widgets/button.dart';
-import 'package:Localsearch/widgets/head_text.dart';
 import 'package:Localsearch/widgets/image_pick_dialog.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:Localsearch/widgets/text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class UserRegisterDetailsPage extends StatefulWidget {
@@ -44,40 +42,38 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
 
   // SELECT IMAGE
   Future<void> selectImage() async {
-    XFile? im = await showImagePickDialog(context);
-    if (im == null) {
-      setState(() {
-        isImageSelected = false;
-      });
-    } else {
-      setState(() {
-        _image = File(im.path);
-        isImageSelected = true;
-      });
-    }
+    final images = await showImagePickDialog(context, true);
+    final im = images[0];
+    setState(() {
+      _image = File(im.path);
+      isImageSelected = true;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final FirebaseAuth auth = FirebaseAuth.instance;
+    final auth = FirebaseAuth.instance;
     final store = FirebaseFirestore.instance;
     final String uid = auth.currentUser!.uid;
     final signInMethodProvider = Provider.of<SignInMethodProvider>(context);
-    final double width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: Text('Owner Details'),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // USER DETAILS HEADTEXT
-              const SizedBox(height: 100),
-              const HeadText(
-                text: 'OWNER\nDETAILS',
-              ),
-              const SizedBox(height: 40),
+              // const SizedBox(height: 100),
+              // const HeadText(
+              //   text: 'OWNER\nDETAILS',
+              // ),
+              const SizedBox(height: 140),
 
               // IMAGE
               isImageSelected
@@ -176,8 +172,7 @@ class _UserRegisterDetailsPageState extends State<UserRegisterDetailsPage> {
                                 Reference ref = FirebaseStorage.instance
                                     .ref()
                                     .child('VendorOwners')
-                                    .child(
-                                        FirebaseAuth.instance.currentUser!.uid);
+                                    .child(auth.currentUser!.uid);
                                 await ref
                                     .putFile(File(uploadImagePath!))
                                     .whenComplete(() async {

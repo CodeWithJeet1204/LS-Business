@@ -47,7 +47,7 @@ class _PostPageState extends State<PostPage> {
           .collection('Business')
           .doc('Owners')
           .collection('Shops')
-          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .doc(auth.currentUser!.uid)
           .get();
 
       setState(() {
@@ -67,7 +67,7 @@ class _PostPageState extends State<PostPage> {
               .collection('Business')
               .doc('Owners')
               .collection('Shops')
-              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .doc(auth.currentUser!.uid)
               .update({
               'noOfTextPosts': textPostRemaining + 1,
             })
@@ -75,7 +75,7 @@ class _PostPageState extends State<PostPage> {
               .collection('Business')
               .doc('Owners')
               .collection('Shops')
-              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .doc(auth.currentUser!.uid)
               .update({
               'noOfImagePosts': imagePostRemaining + 1,
             });

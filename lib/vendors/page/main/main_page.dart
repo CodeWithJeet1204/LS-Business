@@ -1,3 +1,4 @@
+import 'package:Localsearch/widgets/text_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:Localsearch/vendors/page/main/add/add_page.dart';
@@ -130,14 +131,34 @@ class _MainPageState extends State<MainPage> {
               getBusinessDetailsAdded['GSTNumber'] != null &&
               (getBusinessDetailsAdded['MembershipName'] == null ||
                   getBusinessDetailsAdded['MembershipEndDateTime'] == null)) {
-            detailsPage = const SelectMembershipPage();
+            detailsPage =
+                const SelectMembershipPage(hasAvailedLaunchOffer: false);
           } else if (DateTime.now().isAfter(
               (getBusinessDetailsAdded['MembershipEndDateTime'] as Timestamp)
                   .toDate())) {
+            detailsPage = const SelectMembershipPage(
+              hasAvailedLaunchOffer: true,
+            );
             if (mounted) {
-              mySnackBar(context, 'Your Membership Has Expired');
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text('Your Membership Has Expired'),
+                    content: Text('Select New Membership to continue'),
+                    actions: [
+                      MyTextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        text: 'OK',
+                        textColor: Colors.green,
+                      ),
+                    ],
+                  );
+                },
+              );
             }
-            detailsPage = const SelectMembershipPage();
           } else {
             detailsPage = null;
           }
@@ -162,14 +183,35 @@ class _MainPageState extends State<MainPage> {
           getBusinessDetailsAdded['GSTNumber'] != null &&
           (getBusinessDetailsAdded['MembershipName'] == null ||
               getBusinessDetailsAdded['MembershipEndDateTime'] == null)) {
-        detailsPage = const SelectMembershipPage();
+        detailsPage = const SelectMembershipPage(
+          hasAvailedLaunchOffer: false,
+        );
       } else if (DateTime.now().isAfter(
           (getBusinessDetailsAdded['MembershipEndDateTime'] as Timestamp)
               .toDate())) {
+        detailsPage = const SelectMembershipPage(
+          hasAvailedLaunchOffer: true,
+        );
         if (mounted) {
-          mySnackBar(context, 'Your Membership Has Expired');
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('Your Membership Has Expired'),
+                content: Text('Select New Membership to continue'),
+                actions: [
+                  MyTextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    text: 'OK',
+                    textColor: Colors.green,
+                  ),
+                ],
+              );
+            },
+          );
         }
-        detailsPage = const SelectMembershipPage();
       } else {
         detailsPage = null;
       }
@@ -248,10 +290,10 @@ class _MainPageState extends State<MainPage> {
               ),
               BottomNavigationBarItem(
                 activeIcon: Icon(
-                  Icons.person_outline,
+                  FeatherIcons.user,
                 ),
                 icon: Icon(
-                  FeatherIcons.user,
+                  Icons.person_outline_rounded,
                 ),
                 label: 'Profile',
               ),

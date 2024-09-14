@@ -161,7 +161,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          'ALL BRANDS',
+          'All Brands',
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
@@ -320,7 +320,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        color: primary2.withOpacity(0.125),
+                                        color: white,
                                         border: Border.all(
                                           width: 0.25,
                                           color: primaryDark,

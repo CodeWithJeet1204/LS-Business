@@ -54,33 +54,28 @@ class _SelectCategoryForBulkProductsPageState
     final vendorData = vendorSnap.data()!;
 
     final List shopTypes = vendorData['Type'];
-    final List shopCategories = vendorData['Categories'];
 
-    Map<String, dynamic> myCategory = {};
+    Map<String, dynamic> myCategories = {};
 
     for (var type in shopTypes) {
-      final specialSnapshot = await store
+      final categorySnap = await store
           .collection('Business')
           .doc('Special Categories')
           .collection(type)
           .get();
 
-      for (var specialCategory in specialSnapshot.docs) {
-        final specialCategoryData = specialCategory.data();
+      for (var category in categorySnap.docs) {
+        final categoryData = category.data();
 
-        for (var category in shopCategories) {
-          final name = specialCategoryData['specialCategoryName'];
-          final imageUrl = specialCategoryData['specialCategoryImageUrl'];
+        final categoryName = categoryData['specialCategoryName'];
+        final imageUrl = categoryData['specialCategoryImageUrl'];
 
-          if (category == name) {
-            myCategory[name] = imageUrl;
-          }
-        }
+        myCategories[categoryName] = imageUrl;
       }
     }
 
     setState(() {
-      categories = myCategory;
+      categories = myCategories;
       getData = true;
     });
   }
@@ -93,7 +88,7 @@ class _SelectCategoryForBulkProductsPageState
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          'SELECT CATEGORY',
+          'Select Category',
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
@@ -165,7 +160,7 @@ class _SelectCategoryForBulkProductsPageState
       ),
       body: LayoutBuilder(
         builder: ((context, constraints) {
-          final double width = constraints.maxWidth;
+          final width = constraints.maxWidth;
 
           return !getData
               ? SafeArea(
@@ -231,7 +226,7 @@ class _SelectCategoryForBulkProductsPageState
                             children: [
                               Container(
                                 decoration: BoxDecoration(
-                                  color: primary2.withOpacity(0.125),
+                                  color: white,
                                   border: Border.all(
                                     width: 0.25,
                                     color: primaryDark,

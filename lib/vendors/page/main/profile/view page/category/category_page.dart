@@ -31,17 +31,17 @@ class _CategoryPageState extends State<CategoryPage> {
   bool isFit = false;
   bool isChangingName = false;
   bool isGridView = true;
-  String categoryName = '';
   String categoryImageUrl = '';
   Map<String, dynamic> currentProducts = {};
   Map<String, dynamic> allProducts = {};
-  bool getProductsData = false;
+  bool isProductsData = false;
   bool isDiscount = false;
 
   // INIT STATE
   @override
   void initState() {
-    getVendorType();
+    getCategoryData();
+    getProductsData();
     ifDiscount();
     super.initState();
   }
@@ -54,7 +54,7 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   // GET VENDOR TYPE
-  Future<void> getVendorType() async {
+  Future<void> getCategoryData() async {
     final vendorSnap = await store
         .collection('Business')
         .doc('Owners')
@@ -64,15 +64,9 @@ class _CategoryPageState extends State<CategoryPage> {
 
     final vendorData = vendorSnap.data()!;
 
-    final List shopType = vendorData['Type'];
-    final List categories = vendorData['Categories'];
+    final List shopTypes = vendorData['Type'];
 
-    await getCategoryInfo(shopType, categories);
-  }
-
-  // GET CATEGORY INFO
-  Future<void> getCategoryInfo(List types, List categories) async {
-    for (var type in types) {
+    for (var type in shopTypes) {
       final categorySnap = await store
           .collection('Business')
           .doc('Special Categories')
@@ -83,25 +77,18 @@ class _CategoryPageState extends State<CategoryPage> {
       final categoryData = categorySnap.data();
 
       if (categoryData != null) {
-        for (var category in categories) {
-          final name = categoryData['specialCategoryName'];
-          final imageUrl = categoryData['specialCategoryImageUrl'];
+        final imageUrl = categoryData['specialCategoryImageUrl'];
 
-          if (category == name) {
-            setState(() {
-              categoryName = name;
-              categoryImageUrl = imageUrl;
-            });
-          }
-        }
+        setState(() {
+          categoryImageUrl = imageUrl;
+        });
+        break;
       }
     }
-
-    await getProductsInfo();
   }
 
-  // GET PRODUCTS INFO
-  Future<void> getProductsInfo() async {
+  // GET PRODUCTS DATA
+  Future<void> getProductsData() async {
     Map<String, dynamic> myProducts = {};
     final productsSnap = await store
         .collection('Business')
@@ -122,7 +109,7 @@ class _CategoryPageState extends State<CategoryPage> {
     setState(() {
       allProducts = myProducts;
       currentProducts = myProducts;
-      getProductsData = true;
+      isProductsData = true;
     });
   }
 
@@ -212,15 +199,15 @@ class _CategoryPageState extends State<CategoryPage> {
 
   // IF DISCOUNT
   Future<void> ifDiscount() async {
-    final discount = await store
+    final discountSnap = await store
         .collection('Business')
         .doc('Data')
         .collection('Discounts')
         .where('vendorId', isEqualTo: auth.currentUser!.uid)
         .get();
 
-    for (QueryDocumentSnapshot<Map<String, dynamic>> doc in discount.docs) {
-      final data = doc.data();
+    for (var discount in discountSnap.docs) {
+      final data = discount.data();
       if ((data['categories'] as List).contains(widget.categoryName)) {
         if ((data['discountEndDateTime'] as Timestamp)
                 .toDate()
@@ -321,7 +308,7 @@ class _CategoryPageState extends State<CategoryPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        categoryName,
+                        widget.categoryName,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -494,7 +481,7 @@ class _CategoryPageState extends State<CategoryPage> {
                         horizontal: width * 0.0125,
                         vertical: width * 0.02125,
                       ),
-                      child: getProductsData
+                      child: isProductsData
                           ? currentProducts.isEmpty
                               ? const SizedBox(
                                   height: 60,

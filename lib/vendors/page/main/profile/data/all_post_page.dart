@@ -116,7 +116,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
               .collection('Business')
               .doc('Owners')
               .collection('Shops')
-              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .doc(auth.currentUser!.uid)
               .update({
               'noOfTextPosts': textPostRemaining + 1,
             })
@@ -124,7 +124,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
               .collection('Business')
               .doc('Owners')
               .collection('Shops')
-              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .doc(auth.currentUser!.uid)
               .update({
               'noOfImagePosts': imagePostRemaining + 1,
             });
@@ -208,7 +208,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          'ALL POSTS',
+          'All Posts',
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),

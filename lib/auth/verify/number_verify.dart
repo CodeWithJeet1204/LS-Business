@@ -27,6 +27,8 @@ class NumberVerifyPage extends StatefulWidget {
 }
 
 class _NumberVerifyPageState extends State<NumberVerifyPage> {
+  final auth = FirebaseAuth.instance;
+  final store = FirebaseFirestore.instance;
   final otpController = TextEditingController();
   bool isOTPVerifying = false;
 
@@ -37,10 +39,110 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
     super.dispose();
   }
 
+  // VERIFY
+  Future<void> verify() async {
+    if (otpController.text.length == 6) {
+      final credential = PhoneAuthProvider.credential(
+        verificationId: widget.verificationId,
+        smsCode: otpController.text,
+      );
+      setState(() {
+        isOTPVerifying = true;
+      });
+      try {
+        await auth.signInWithCredential(credential);
+
+        if (!widget.isLogging) {
+          if (auth.currentUser != null) {
+            // if (widget.mode == 'vendor') {
+            await store
+                .collection('Business')
+                .doc('Owners')
+                .collection('Users')
+                .doc(auth.currentUser!.uid)
+                .set({
+              'Phone Number': '+91 ${widget.phoneNumber}',
+              'registration': 'phone number',
+              'Image': null,
+              'Email': null,
+              'Name': null,
+              'uid': null,
+              'numberVerified': true,
+              'allowCalls': true,
+              'hasReviewed': false,
+            });
+
+            await store
+                .collection('Business')
+                .doc('Owners')
+                .collection('Shops')
+                .doc(auth.currentUser!.uid)
+                .set({
+              'Name': null,
+              'registration': 'phone number',
+              'GSTNumber': null,
+              'Description': null,
+              'Industry': null,
+              'Image': null,
+              'Type': [],
+              'MembershipName': null,
+              'MembershipDuration': null,
+              'MembershipStartDateTime': null,
+            });
+            // }
+          }
+        }
+        setState(() {
+          isOTPVerifying = false;
+        });
+        if (context.mounted) {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: ((context) {
+              // if (widget.mode == 'vendor') {
+              if (widget.isLogging) {
+                return const MainPage();
+              } else {
+                return const UserRegisterDetailsPage();
+              }
+              // } else if (widget.mode == 'services') {
+              //   if (widget.isLogging) {
+              //     return const ServicesMainPage();
+              //   } else {
+              //     return const ServicesRegisterDetailsPage();
+              //   }
+              // } else if (widget.mode == 'events') {
+              //   if (widget.isLogging) {
+              //     return const EventsMainPage();
+              //   } else {
+              //     return const EventsRegisterDetailsPage1();
+              //   }
+              // }
+              // return const MainPage();
+            })),
+            (route) => false,
+          );
+        }
+      } catch (e) {
+        setState(() {
+          isOTPVerifying = false;
+        });
+        setState(() {
+          if (mounted) {
+            mySnackBar(context, e.toString());
+          }
+        });
+      }
+    } else {
+      mySnackBar(
+        context,
+        'OTP should be 6 characters long',
+      );
+    }
+    return;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final FirebaseAuth auth = FirebaseAuth.instance;
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
@@ -87,101 +189,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                   : MyButton(
                       text: 'Verify',
                       onTap: () async {
-                        if (otpController.text.length == 6) {
-                          final credential = PhoneAuthProvider.credential(
-                            verificationId: widget.verificationId,
-                            smsCode: otpController.text,
-                          );
-                          setState(() {
-                            isOTPVerifying = true;
-                          });
-                          try {
-                            await auth.signInWithCredential(credential);
-
-                            if (!widget.isLogging) {
-                              if (auth.currentUser != null) {
-                                // if (widget.mode == 'vendor') {
-                                await FirebaseFirestore.instance
-                                    .collection('Business')
-                                    .doc('Owners')
-                                    .collection('Users')
-                                    .doc(auth.currentUser!.uid)
-                                    .set({
-                                  'Phone Number': widget.phoneNumber,
-                                  'Image': null,
-                                  'Email': null,
-                                  'Name': null,
-                                  'uid': null,
-                                  'numberVerified': true,
-                                });
-
-                                await FirebaseFirestore.instance
-                                    .collection('Business')
-                                    .doc('Owners')
-                                    .collection('Shops')
-                                    .doc(auth.currentUser!.uid)
-                                    .set({
-                                  'Name': null,
-                                  'GSTNumber': null,
-                                  'Address': null,
-                                  'Description': null,
-                                  'Industry': null,
-                                  'Image': null,
-                                  'Type': [],
-                                  'MembershipName': null,
-                                  'MembershipDuration': null,
-                                  'MembershipTime': null,
-                                });
-                                // }
-                              }
-                            }
-                            setState(() {
-                              isOTPVerifying = false;
-                            });
-                            if (context.mounted) {
-                              Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(builder: ((context) {
-                                  // if (widget.mode == 'vendor') {
-                                  if (widget.isLogging) {
-                                    return const MainPage();
-                                  } else {
-                                    return const UserRegisterDetailsPage();
-                                  }
-                                  // } else if (widget.mode == 'services') {
-                                  //   if (widget.isLogging) {
-                                  //     return const ServicesMainPage();
-                                  //   } else {
-                                  //     return const ServicesRegisterDetailsPage();
-                                  //   }
-                                  // } else if (widget.mode == 'events') {
-                                  //   if (widget.isLogging) {
-                                  //     return const EventsMainPage();
-                                  //   } else {
-                                  //     return const EventsRegisterDetailsPage1();
-                                  //   }
-                                  // }
-                                  // return const MainPage();
-                                })),
-                                (route) => false,
-                              );
-                            }
-                          } catch (e) {
-                            setState(() {
-                              isOTPVerifying = false;
-                            });
-                            setState(() {
-                              if (mounted) {
-                                mySnackBar(context, e.toString());
-                              }
-                            });
-                          }
-                        } else {
-                          mySnackBar(
-                            context,
-                            'OTP should be 6 characters long',
-                          );
-                        }
-                        return;
+                        await verify();
                       },
                       isLoading: isOTPVerifying,
                       horizontalPadding:

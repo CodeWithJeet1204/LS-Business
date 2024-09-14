@@ -81,8 +81,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
           .where('productId', isEqualTo: productId)
           .get();
 
-      // ignore: avoid_function_literals_in_foreach_calls
-      shortsSnap.docs.forEach((short) async {
+      await Future.forEach(shortsSnap.docs, (short) async {
         await short.reference.delete();
       });
     } catch (e) {
@@ -148,19 +147,17 @@ class _AllProductsPageState extends State<AllProductsPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          'ALL PRODUCTS',
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+          'All Products',
         ),
         bottom: PreferredSize(
           preferredSize: Size(
-            MediaQuery.of(context).size.width,
-            MediaQuery.of(context).size.width * 0.2,
+            width,
+            width * 0.2,
           ),
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.0166,
-              vertical: MediaQuery.of(context).size.width * 0.0225,
+              horizontal: width * 0.0166,
+              vertical: width * 0.0225,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -242,7 +239,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                           ),
                           child: GridViewSkeleton(
                             width: width,
-                            isPrice: true,
+                            isPrice: false,
                             isDelete: true,
                           ),
                         );
@@ -258,7 +255,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                           ),
                           child: ListViewSkeleton(
                             width: width,
-                            isPrice: true,
+                            isPrice: false,
                             height: 30,
                             isDelete: true,
                           ),
@@ -277,16 +274,16 @@ class _AllProductsPageState extends State<AllProductsPage> {
                     ),
                     child: LayoutBuilder(
                       builder: ((context, constraints) {
-                        final double width = constraints.maxWidth;
+                        final width = constraints.maxWidth;
 
                         return isGridView
                             ? GridView.builder(
                                 shrinkWrap: true,
                                 physics: const ClampingScrollPhysics(),
                                 gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                    SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
-                                  childAspectRatio: 0.725,
+                                  childAspectRatio: width * 0.6875 / width,
                                 ),
                                 itemCount: currentProducts.length,
                                 itemBuilder: (context, index) {
@@ -312,7 +309,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        color: primary2.withOpacity(0.125),
+                                        color: white,
                                         border: Border.all(
                                           width: 0.25,
                                           color: primaryDark,
@@ -385,13 +382,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                                       0,
                                                     ),
                                                     child: Text(
-                                                      productData['productPrice'] !=
-                                                                  '' &&
-                                                              productData[
-                                                                      'productPrice'] !=
-                                                                  null
-                                                          ? 'Rs. ${productData['productPrice']}'
-                                                          : 'N/A',
+                                                      'Rs. ${productData['productPrice']}',
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                       maxLines: 1,
@@ -517,13 +508,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                               ),
                                             ),
                                             subtitle: Text(
-                                              productData['productPrice'] !=
-                                                          '' &&
-                                                      productData[
-                                                              'productPrice'] !=
-                                                          null
-                                                  ? 'Rs. ${productData['productPrice']}'
-                                                  : 'N/A',
+                                              'Rs. ${productData['productPrice']}',
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(

@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_function_literals_in_foreach_calls
 
 import 'dart:io';
+import 'package:Localsearch/vendors/models/household_type_category_subCategory.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -150,17 +151,10 @@ class _ProductPageState extends State<ProductPage> {
                                               return 'Min 2 chars required';
                                             }
                                           } else {
-                                            if (value == null ||
-                                                value == '0' ||
-                                                value == '') {
-                                              editController.text = '';
+                                            if (double.parse(value!) > 0) {
                                               return null;
                                             } else {
-                                              if (double.parse(value) > 0) {
-                                                return null;
-                                              } else {
-                                                return 'Min price is Rs. 1';
-                                              }
+                                              return 'Min price is Rs. 1';
                                             }
                                           }
                                         },
@@ -187,8 +181,7 @@ class _ProductPageState extends State<ProductPage> {
                                                   newPropertyMap[
                                                       propertyValue] = property;
 
-                                                  await FirebaseFirestore
-                                                      .instance
+                                                  await store
                                                       .collection('Business')
                                                       .doc('Data')
                                                       .collection('Products')
@@ -374,9 +367,12 @@ class _ProductPageState extends State<ProductPage> {
                                                   .collection('Products')
                                                   .doc(widget.productId)
                                                   .update({
-                                                propertyValue: editController
-                                                    .text
-                                                    .toString(),
+                                                propertyValue: propertyValue !=
+                                                        'productPrice'
+                                                    ? editController.text
+                                                        .toString()
+                                                    : double.parse(
+                                                        editController.text),
                                               });
                                               editController.clear();
                                             }
@@ -415,28 +411,31 @@ class _ProductPageState extends State<ProductPage> {
 
   // ADD IMAGES
   Future<void> addProductImages(List images) async {
-    final XFile? im = await showImagePickDialog(context);
-    if (im != null) {
+    final List<XFile> imageList = await showImagePickDialog(context, false);
+    if (imageList.isNotEmpty) {
       try {
         setState(() {
           isImageChanging = true;
         });
-        Reference ref = FirebaseStorage.instance
-            .ref()
-            .child('Data/Products')
-            .child(const Uuid().v4());
-        await ref.putFile(File(im.path)).whenComplete(() async {
-          await ref.getDownloadURL().then((value) async {
-            images.add(value);
-            await store
-                .collection('Business')
-                .doc('Data')
-                .collection('Products')
-                .doc(widget.productId)
-                .update({
-              'images': images,
+        for (var im in imageList) {
+          final productImageId = Uuid().v4();
+
+          Reference ref =
+              storage.ref().child('Data/Products').child(productImageId);
+          await ref.putFile(File(im.path)).whenComplete(() async {
+            await ref.getDownloadURL().then((value) async {
+              images.add(value);
             });
           });
+        }
+
+        await store
+            .collection('Business')
+            .doc('Data')
+            .collection('Products')
+            .doc(widget.productId)
+            .update({
+          'images': images,
         });
 
         setState(() {
@@ -448,8 +447,9 @@ class _ProductPageState extends State<ProductPage> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: ((context) => ProductPage(
-                  productId: widget.productId,
-                  productName: widget.productName)),
+                    productId: widget.productId,
+                    productName: widget.productName,
+                  )),
             ),
           );
         }
@@ -470,7 +470,7 @@ class _ProductPageState extends State<ProductPage> {
 
   // CHANGE IMAGE
   // Future<void> changeProductImage(String e, int index, List images) async {
-  //   final XFile? im = await showImagePickDialog(context);
+  //   final XFile im = await showImagePickDialog(context);
   //   if (im != null) {
   //     try {
   //       setState(() {
@@ -498,19 +498,62 @@ class _ProductPageState extends State<ProductPage> {
   // }
 
   // REMOVE IMAGES
-  Future<void> removeProductImages(String e, List images) async {
-    await FirebaseStorage.instance
-        .refFromURL(images[images.indexOf(e)])
-        .delete();
-    images.remove(e);
-    await store
-        .collection('Business')
-        .doc('Data')
-        .collection('Products')
-        .doc(widget.productId)
-        .update({
-      'images': images,
-    });
+  Future<void> removeProductImages(int index, List images) async {
+    await showDialog(
+      context: context,
+      builder: ((context) {
+        return AlertDialog(
+          title: const Text(
+            'Confirm REMOVE',
+          ),
+          content: const Text(
+            'Are you sure you want to remove this image?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'NO',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: Colors.green,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                await storage.refFromURL(images[index]).delete();
+                setState(() {
+                  images.removeAt(index);
+                });
+                await store
+                    .collection('Business')
+                    .doc('Data')
+                    .collection('Products')
+                    .doc(widget.productId)
+                    .update({
+                  'images': images,
+                });
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'YES',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
+        );
+      }),
+    );
   }
 
   // CONFIRM DELETE
@@ -596,16 +639,16 @@ class _ProductPageState extends State<ProductPage> {
       return;
     } else {
       for (var type in shopType) {
-        final categorySnap = await store
-            .collection('Business')
-            .doc('Special Categories')
-            .collection(type)
-            .doc(categoryName)
-            .get();
+        if (householdTypeCategorySubCategory[type]?[categoryName] != null) {
+          final categorySnap = await store
+              .collection('Business')
+              .doc('Special Categories')
+              .collection(type)
+              .doc(categoryName)
+              .get();
 
-        final categoryData = categorySnap.data();
+          final categoryData = categorySnap.data()!;
 
-        if (categoryData != null) {
           final name = categoryData['specialCategoryName'];
           final imageUrl = categoryData['specialCategoryImageUrl'];
 
@@ -613,16 +656,6 @@ class _ProductPageState extends State<ProductPage> {
             category.add(name);
             category.add(imageUrl);
             category.add(shopType);
-          });
-        } else {
-          final name = categoryName;
-          const imageUrl =
-              'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png';
-
-          setState(() {
-            category.add(name);
-            category.add(imageUrl);
-            category.add(type);
           });
         }
       }
@@ -874,9 +907,9 @@ class _ProductPageState extends State<ProductPage> {
                     if (snapshot.hasData) {
                       final productData = snapshot.data!;
                       final String name = productData['productName'];
-                      final String price = productData['productPrice'];
-                      // final String description =
-                      //     productData['productDescription'];
+                      final price = productData['productPrice'];
+                      final String? description =
+                          productData['productDescription'];
                       final String brand = productData['productBrand'];
                       final List images = productData['images'];
                       final List tags = productData['Tags'];
@@ -885,7 +918,8 @@ class _ProductPageState extends State<ProductPage> {
                           (productData['productLikesTimestamp'] as Map).length;
                       final int shares = productData['productShares'];
                       final List views = productData['productViewsTimestamp'];
-                      final int wishList = productData['productWishlist'];
+                      final Map wishList =
+                          productData['productWishlistTimestamp'];
 
                       final String? shortsThumbnail =
                           productData['shortsThumbnail'];
@@ -896,7 +930,7 @@ class _ProductPageState extends State<ProductPage> {
                         images.insert(0, shortsThumbnail);
                       }
 
-                      bool isAvailable = productData['isAvailable'];
+                      int isAvailable = productData['isAvailable'];
 
                       final Map<String, dynamic> properties =
                           productData['Properties'];
@@ -1082,20 +1116,27 @@ class _ProductPageState extends State<ProductPage> {
                                                       ),
                                                       child: IconButton
                                                           .filledTonal(
-                                                        onPressed: images
-                                                                    .last !=
-                                                                e
-                                                            ? e == shortsThumbnail
-                                                                ? () async {
-                                                                    await confirmDeleteShort();
+                                                        onPressed: e ==
+                                                                shortsThumbnail
+                                                            ? () async {
+                                                                await confirmDeleteShort();
+                                                              }
+                                                            : images.length <= 2
+                                                                ? () {
+                                                                    mySnackBar(
+                                                                      context,
+                                                                      'Minimum 2 images are required',
+                                                                    );
                                                                   }
                                                                 : () async {
                                                                     await removeProductImages(
-                                                                      e,
+                                                                      images
+                                                                          .indexOf(
+                                                                        e,
+                                                                      ),
                                                                       images,
                                                                     );
-                                                                  }
-                                                            : null,
+                                                                  },
                                                         icon: Icon(
                                                           FeatherIcons.x,
                                                           size: width * 0.1,
@@ -1221,7 +1262,6 @@ class _ProductPageState extends State<ProductPage> {
                                   await addProductImages(images);
                                 },
                                 child: Container(
-                                  width: width * 0.275,
                                   height: width * 0.1,
                                   decoration: BoxDecoration(
                                     color: primary,
@@ -1349,8 +1389,8 @@ class _ProductPageState extends State<ProductPage> {
                                                             TextSpan(
                                                               text: data[
                                                                       'isPercent']
-                                                                  ? '${double.parse(price) * (100 - (data['discountAmount'])) / 100}  '
-                                                                  : '${double.parse(price) - (data['discountAmount'])}  ',
+                                                                  ? '${price * (100 - (data['discountAmount'])) / 100}  '
+                                                                  : '${price - (data['discountAmount'])}  ',
                                                               style:
                                                                   const TextStyle(
                                                                 color: Colors
@@ -1358,7 +1398,10 @@ class _ProductPageState extends State<ProductPage> {
                                                               ),
                                                             ),
                                                             TextSpan(
-                                                              text: price,
+                                                              text: price
+                                                                  .toStringAsFixed(
+                                                                2,
+                                                              ),
                                                               style:
                                                                   const TextStyle(
                                                                 fontSize: 20,
@@ -1444,9 +1487,7 @@ class _ProductPageState extends State<ProductPage> {
                                             left: width * 0.02775,
                                           ),
                                           child: Text(
-                                            productData['productPrice'] == ''
-                                                ? 'N/A'
-                                                : 'Rs. ${productData['productPrice']}',
+                                            'Rs. ${productData['productPrice']}',
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
@@ -1457,28 +1498,23 @@ class _ProductPageState extends State<ProductPage> {
                                           ),
                                         ),
                                         MyTextButton(
-                                          onPressed:
-                                              productData['productPrice'] ==
-                                                      'N/A'
-                                                  ? () {}
-                                                  : () async {
-                                                      Navigator.of(context)
-                                                          .push(
-                                                        MaterialPageRoute(
-                                                          builder: ((context) =>
-                                                              ProductDiscountPage(
-                                                                changeSelectedProductDiscount:
-                                                                    true,
-                                                                changeSelectedProductDiscountId:
-                                                                    productData[
-                                                                        'productId'],
-                                                                changeSelectedProductDiscountName:
-                                                                    productData[
-                                                                        'productName'],
-                                                              )),
-                                                        ),
-                                                      );
-                                                    },
+                                          onPressed: () async {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: ((context) =>
+                                                    ProductDiscountPage(
+                                                      changeSelectedProductDiscount:
+                                                          true,
+                                                      changeSelectedProductDiscountId:
+                                                          productData[
+                                                              'productId'],
+                                                      changeSelectedProductDiscountName:
+                                                          productData[
+                                                              'productName'],
+                                                    )),
+                                              ),
+                                            );
+                                          },
                                           text: 'Add Discount',
                                           textColor: primaryDark2,
                                         ),
@@ -1507,55 +1543,54 @@ class _ProductPageState extends State<ProductPage> {
                           const Divider(),
 
                           // AVAILABLE / OUT OF STOCK
-                          Padding(
-                            padding: EdgeInsets.symmetric(
+                          Container(
+                            width: width,
+                            decoration: BoxDecoration(
+                              color: primary2.withOpacity(0.75),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            margin: EdgeInsets.symmetric(
                               vertical: width * 0.0225,
                             ),
-                            child: Container(
-                              width: width,
-                              height: width * 0.36,
-                              decoration: BoxDecoration(
-                                color: primary2.withOpacity(0.75),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  // AVAILABLE
-                                  SizedBox(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      isAvailable = 0;
+                                    });
+                                  },
+                                  child: SizedBox(
                                     width: width,
                                     child: Padding(
                                       padding: EdgeInsets.symmetric(
-                                        horizontal: width * 0.0225,
-                                        vertical: width * 0.00125,
+                                        horizontal: width * 0.025,
+                                        vertical: 4,
                                       ),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(
-                                            'Available',
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              color: primaryDark,
-                                              fontSize: width * 0.06,
-                                              fontWeight: FontWeight.w500,
+                                          SizedBox(
+                                            width: width * 0.8,
+                                            child: AutoSizeText(
+                                              'Available',
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                color: primaryDark,
+                                                fontSize: width * 0.05,
+                                              ),
                                             ),
                                           ),
                                           Checkbox(
                                             activeColor: primaryDark,
                                             checkColor: white,
-                                            value: isAvailable,
-                                            onChanged: (value) async {
-                                              await store
-                                                  .collection('Business')
-                                                  .doc('Data')
-                                                  .collection('Products')
-                                                  .doc(widget.productId)
-                                                  .update({
-                                                'isAvailable': value,
+                                            value: isAvailable == 0,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                isAvailable = 0;
                                               });
                                             },
                                           ),
@@ -1563,45 +1598,86 @@ class _ProductPageState extends State<ProductPage> {
                                       ),
                                     ),
                                   ),
-                                  Divider(
-                                    color: primaryDark.withOpacity(0.2),
-                                    indent: width * 0.0225,
-                                    endIndent: width * 0.0225,
+                                ),
+                                const Divider(),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      isAvailable = 1;
+                                    });
+                                  },
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: width * 0.025,
+                                      vertical: 4,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        SizedBox(
+                                          width: width * 0.8,
+                                          child: AutoSizeText(
+                                            'Will be Available Within a Week',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              color: primaryDark,
+                                              fontSize: width * 0.05,
+                                            ),
+                                          ),
+                                        ),
+                                        Checkbox(
+                                          activeColor: primaryDark,
+                                          checkColor: white,
+                                          value: isAvailable == 1,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              isAvailable = 1;
+                                            });
+                                          },
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  // OUT OF STOCK
-                                  SizedBox(
+                                ),
+                                const Divider(),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      isAvailable = 2;
+                                    });
+                                  },
+                                  child: SizedBox(
                                     width: width,
                                     child: Padding(
                                       padding: EdgeInsets.symmetric(
-                                        horizontal: width * 0.0225,
-                                        vertical: width * 0.0125,
+                                        horizontal: width * 0.025,
+                                        vertical: 4,
                                       ),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(
-                                            'Out Of Stock',
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              color: primaryDark,
-                                              fontSize: width * 0.06,
-                                              fontWeight: FontWeight.w500,
+                                          SizedBox(
+                                            width: width * 0.8,
+                                            child: AutoSizeText(
+                                              'Out Of Stock',
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                color: primaryDark,
+                                                fontSize: width * 0.05,
+                                              ),
                                             ),
                                           ),
                                           Checkbox(
                                             activeColor: primaryDark,
                                             checkColor: white,
-                                            value: !isAvailable,
-                                            onChanged: (value) async {
-                                              await store
-                                                  .collection('Business')
-                                                  .doc('Data')
-                                                  .collection('Products')
-                                                  .doc(widget.productId)
-                                                  .update({
-                                                'isAvailable': !value!,
+                                            value: isAvailable == 2,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                isAvailable = 2;
                                               });
                                             },
                                           ),
@@ -1609,8 +1685,8 @@ class _ProductPageState extends State<ProductPage> {
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
 
@@ -1638,15 +1714,8 @@ class _ProductPageState extends State<ProductPage> {
                                   SizedBox(
                                     width: width * 0.75,
                                     child: Text(
-                                      productData['productDescription'] !=
-                                                  null &&
-                                              productData[
-                                                      'productDescription'] !=
-                                                  '' &&
-                                              productData[
-                                                      'productDescription'] !=
-                                                  '0'
-                                          ? productData['productDescription']
+                                      description != null && description != ''
+                                          ? description
                                           : 'No Description',
                                       maxLines: 20,
                                       overflow: TextOverflow.ellipsis,
@@ -1995,7 +2064,7 @@ class _ProductPageState extends State<ProductPage> {
                                 InfoColorBox(
                                   text: 'WISHLIST',
                                   width: width,
-                                  property: wishList,
+                                  property: wishList.length,
                                   color: const Color.fromRGBO(255, 176, 170, 1),
                                 ),
                               ],

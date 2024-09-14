@@ -4,7 +4,6 @@ import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:Localsearch/vendors/utils/is_payed.dart';
 import 'package:Localsearch/vendors/utils/size.dart';
 import 'package:Localsearch/widgets/button.dart';
-import 'package:Localsearch/widgets/head_text.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:Localsearch/widgets/text_button.dart';
 import 'package:flutter/material.dart';
@@ -28,22 +27,25 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: Text('Pay'),
+      ),
       body: SafeArea(
         child: MediaQuery.of(context).size.width < screenSize
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Expanded(
-                    flex: 3,
-                    child: Container(),
-                  ),
+                  // Expanded(
+                  //   flex: 3,
+                  //   child: Container(),
+                  // ),
 
-                  // PAY HEADTEXT
-                  const HeadText(
-                    text: 'PAY',
-                  ),
+                  // // PAY HEADTEXT
+                  // const HeadText(
+                  //   text: 'PAY',
+                  // ),
                   Expanded(
-                    flex: 2,
+                    flex: 5,
                     child: Container(),
                   ),
 
@@ -133,9 +135,9 @@ class _RegisterPayPageState extends State<RegisterPayPage> {
                   Container(
                     alignment: Alignment.center,
                     width: MediaQuery.of(context).size.width * 0.66,
-                    child: const HeadText(
-                      text: 'PAY',
-                    ),
+                    // child: const HeadText(
+                    //   text: 'PAY',
+                    // ),
                   ),
                   Container(
                     alignment: Alignment.center,

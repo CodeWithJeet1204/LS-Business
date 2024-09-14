@@ -12,25 +12,25 @@ class InfoColorBox extends StatelessWidget {
   });
 
   final String text;
-  final double width;
+  final width;
   final Color color;
   final dynamic property;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: width * 0.45,
-      height: width * 0.2775,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Padding(
+    return Expanded(
+      child: Container(
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(16),
+        ),
         padding: EdgeInsets.only(
           left: width * 0.033,
           top: width * 0.033,
         ),
+        margin: EdgeInsets.all(width * 0.0125),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
@@ -45,9 +45,11 @@ class InfoColorBox extends StatelessWidget {
             ),
             property.runtimeType == int
                 ? Text(
-                    property > 1000
-                        ? '${(property / 1000).toStringAsFixed(2)}k'
-                        : property.toString(),
+                    property > 1000000
+                        ? '${(property / 1000).toStringAsFixed(2)}M'
+                        : property > 1000
+                            ? '${(property / 1000).toStringAsFixed(2)}k'
+                            : property.toString(),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -57,22 +59,18 @@ class InfoColorBox extends StatelessWidget {
                     ),
                   )
                 : SizedBox(
-                    width: width * 0.4,
-                    height: width * 0.155,
                     child: Align(
                       alignment: Alignment.center,
                       child: AutoSizeText(
                         property.toString(),
-                        maxLines: 3,
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        minFontSize: 12,
-                        maxFontSize: 80,
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           color: primaryDark,
                           fontSize: width * 0.12,
                           fontWeight: FontWeight.w600,
                         ),
-                        textAlign: TextAlign.center,
                       ),
                     ),
                   ),

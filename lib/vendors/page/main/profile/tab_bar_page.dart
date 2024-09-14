@@ -7,7 +7,7 @@ class TabBarPage extends StatefulWidget {
     super.key,
     required this.height,
   });
-  final double height;
+  final height;
 
   @override
   State<TabBarPage> createState() => _TabBarPageState();

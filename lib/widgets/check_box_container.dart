@@ -1,4 +1,5 @@
 import 'package:Localsearch/vendors/utils/colors.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class CheckBoxContainer extends StatefulWidget {
@@ -11,7 +12,7 @@ class CheckBoxContainer extends StatefulWidget {
   });
 
   final String text;
-  final double width;
+  final width;
   final bool value;
   final void Function(bool?)? function;
 
@@ -35,14 +36,17 @@ class _CheckBoxContainerState extends State<CheckBoxContainer> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            widget.text,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              color: primaryDark,
-              fontWeight: FontWeight.w500,
-              fontSize: widget.width * 0.055,
+          SizedBox(
+            width: widget.width * 0.75,
+            child: AutoSizeText(
+              widget.text,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: primaryDark,
+                fontWeight: FontWeight.w500,
+                fontSize: widget.width * 0.055,
+              ),
             ),
           ),
           Checkbox(

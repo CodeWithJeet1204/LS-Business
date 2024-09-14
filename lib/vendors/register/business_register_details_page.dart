@@ -7,14 +7,12 @@ import 'package:Localsearch/vendors/models/industry_segments.dart';
 import 'package:Localsearch/vendors/register/business_verification_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:Localsearch/widgets/button.dart';
-import 'package:Localsearch/widgets/head_text.dart';
 import 'package:Localsearch/widgets/image_pick_dialog.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:Localsearch/widgets/text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 class BusinessRegisterDetailsPage extends StatefulWidget {
   const BusinessRegisterDetailsPage({
@@ -30,6 +28,7 @@ class _BusinessRegisterDetailsPageState
     extends State<BusinessRegisterDetailsPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
+  final storage = FirebaseStorage.instance;
   final GlobalKey<FormState> businessFormKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
@@ -40,7 +39,7 @@ class _BusinessRegisterDetailsPageState
   File? _image;
   double? latitude;
   double? longitude;
-  String? address;
+  String? city;
   String? uploadImagePath;
 
   // DISPOSE
@@ -54,17 +53,12 @@ class _BusinessRegisterDetailsPageState
 
   // SELECT IMAGE
   Future<void> selectImage() async {
-    XFile? im = await showImagePickDialog(context);
-    if (im == null) {
-      setState(() {
-        isImageSelected = false;
-      });
-    } else {
-      setState(() {
-        _image = File(im.path);
-        isImageSelected = true;
-      });
-    }
+    final images = await showImagePickDialog(context, true);
+    final im = images[0];
+    setState(() {
+      _image = File(im.path);
+      isImageSelected = true;
+    });
   }
 
   // GET LOCATION
@@ -96,7 +90,7 @@ class _BusinessRegisterDetailsPageState
           setState(() {
             latitude = 0;
             longitude = 0;
-            address = 'NONE';
+            city = 'NONE';
           });
 
           setState(() {
@@ -121,54 +115,67 @@ class _BusinessRegisterDetailsPageState
         'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$long&key=AIzaSyA-CD3MgDBzAsjmp_FlDbofynMMmW6fPsU';
 
     final response = await http.get(Uri.parse(url));
-    print('response: ${response.body}');
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      String? name;
-
-      print('dataResults: ${data['results']}');
-      print('dataResults0: ${data['results'][0]}');
+      String? cityName;
 
       if (data['status'] == 'OK' && data['results'].isNotEmpty) {
-        print('lalalla');
-        name = data['results'][0]['formatted_address'];
+        for (var result in data['results']) {
+          for (var component in result['address_components']) {
+            if (component['types'].contains('locality')) {
+              cityName = component['long_name'];
+              break;
+            } else if (component['types'].contains('sublocality')) {
+              cityName = component['long_name'];
+            } else if (component['types'].contains('neighborhood')) {
+              cityName = component['long_name'];
+            } else if (component['types'].contains('route')) {
+              cityName = component['long_name'];
+            } else if (component['types']
+                .contains('administrative_area_level_3')) {
+              cityName = component['long_name'];
+            }
+          }
+          if (cityName != null) break;
+        }
 
         setState(() {
-          address = name;
+          city = cityName;
         });
       } else {
         mySnackBar(context, 'Some error occured');
         setState(() {
-          address = 'Get Location';
+          city = 'Get Location';
         });
       }
     }
   }
 
-  // UPLOAD DETAILS
-  Future<void> uploadDetails() async {
+  // SAVE
+  Future<void> save() async {
     if (businessFormKey.currentState!.validate()) {
-      if (address == null) {
+      if (city == null) {
         return mySnackBar(context, 'Get Location');
       }
       try {
         String? businessPhotoUrl;
+
         setState(() {
           isNext = true;
         });
+
         if (_image != null) {
           uploadImagePath = _image!.path;
-          Reference ref = FirebaseStorage.instance
-              .ref()
-              .child('VendorShops')
-              .child(auth.currentUser!.uid);
+          Reference ref =
+              storage.ref().child('VendorShops').child(auth.currentUser!.uid);
           await ref.putFile(File(uploadImagePath!)).whenComplete(() async {
             await ref.getDownloadURL().then((value) {
               businessPhotoUrl = value;
             });
           });
         }
+
         await store
             .collection('Business')
             .doc('Owners')
@@ -180,14 +187,14 @@ class _BusinessRegisterDetailsPageState
           'Longitude': longitude,
           'Open': true,
           'viewsTimestamp': [],
-          'Followers': [],
-          'followersTimestamp': [],
+          'followersTimestamp': {},
           // 'GSTNumber': gstController.text.toString(),
           'Description': descriptionController.text.toString(),
           'Industry': selectedIndustrySegment,
           'Image': _image != null
               ? businessPhotoUrl
               : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1fDf705o-VZ3lVxTLh0jLPyFApbnwGoNHhSpwODOC0g&s',
+          'City': city,
         });
 
         if (mounted) {
@@ -198,6 +205,7 @@ class _BusinessRegisterDetailsPageState
             ),
           );
         }
+
         setState(() {
           isNext = false;
         });
@@ -218,19 +226,22 @@ class _BusinessRegisterDetailsPageState
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: Text('Business Details'),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 100),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.875,
-                child: const HeadText(
-                  text: 'BUSINESS\nDETAILS',
-                ),
-              ),
-              const SizedBox(height: 40),
+              // const SizedBox(height: 100),
+              // SizedBox(
+              //   width: MediaQuery.of(context).size.width * 0.875,
+              //   child: const HeadText(
+              //     text: 'BUSINESS\nDETAILS',
+              //   ),
+              // ),
+              const SizedBox(height: 140),
 
               // IMAGE
               isImageSelected
@@ -319,8 +330,8 @@ class _BusinessRegisterDetailsPageState
                                   child: CircularProgressIndicator(),
                                 )
                               : Text(
-                                  address ?? 'Get Location',
-                                  maxLines: address != null ? 1 : 2,
+                                  city ?? 'Get Location',
+                                  maxLines: city != null ? 1 : 2,
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
@@ -343,7 +354,7 @@ class _BusinessRegisterDetailsPageState
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(
-                              color: primary2.withOpacity(0.75),
+                              color: primary2,
                               width: 1,
                             ),
                           ),
@@ -398,7 +409,7 @@ class _BusinessRegisterDetailsPageState
                       child: MyButton(
                         text: 'NEXT',
                         onTap: () async {
-                          await uploadDetails();
+                          await save();
                         },
                         isLoading: isNext,
                         horizontalPadding:

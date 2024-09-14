@@ -182,7 +182,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
-            final double width = constraints.maxWidth;
+            final width = constraints.maxWidth;
 
             return Padding(
               padding: EdgeInsets.symmetric(
@@ -206,52 +206,50 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               color: primaryDark,
-                              fontWeight: FontWeight.w500,
-                              fontSize: width * 0.06,
+                              fontSize: width * 0.045,
                             ),
                           ),
                           // TIME
                           Container(
-                            width: width * 0.4275,
-                            height: width * 0.125,
                             decoration: BoxDecoration(
-                              color: primary2.withOpacity(0.4),
+                              color: primary2,
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: width * 0.05),
-                              child: DropdownButton(
-                                hint: const Text(
-                                  'Select Duration',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                value: selectedStringDuration,
-                                underline: const SizedBox(),
-                                dropdownColor: primary2,
-                                items: [
-                                  '24 Hours',
-                                  '7 Days',
-                                  '4 Weeks',
-                                  '365 Days',
-                                  'Lifetime'
-                                ]
-                                    .map((e) => DropdownMenuItem(
-                                          value: e,
-                                          child: Text(
-                                            e,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ))
-                                    .toList(),
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedStringDuration = value;
-                                  });
-                                  selectDate(selectedStringDuration!);
-                                },
-                              ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: width * 0.025,
+                            ),
+                            child: DropdownButton(
+                              // hint: const Text(
+                              //   'Select Duration',
+                              //   maxLines: 1,
+                              //   overflow: TextOverflow.ellipsis,
+                              // ),
+                              value:
+                                  selectedStringDuration ?? 'Select Duration',
+                              underline: const SizedBox(),
+                              dropdownColor: primary2,
+                              items: [
+                                '24 Hours',
+                                '7 Days',
+                                '4 Weeks',
+                                '365 Days',
+                                'Lifetime'
+                              ]
+                                  .map((e) => DropdownMenuItem(
+                                        value: e,
+                                        child: Text(
+                                          e,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ))
+                                  .toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedStringDuration = value;
+                                });
+                                selectDate(selectedStringDuration!);
+                              },
                             ),
                           ),
                         ],
@@ -271,17 +269,6 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                           );
                         }
 
-                        if (snapshot.data != null) {
-                          if (snapshot.data!.docs.isEmpty) {
-                            return const Center(
-                              child: Text(
-                                'No Products Added',
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            );
-                          }
-                        }
-
                         if (!snapshot.hasData) {
                           return const Center(
                             child: Text(
@@ -292,28 +279,53 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                         }
 
                         if (snapshot.hasData) {
+                          if (snapshot.data!.docs.isEmpty) {
+                            return const Center(
+                              child: Text(
+                                'No Products Added',
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            );
+                          }
                           final productSnap = snapshot.data!.docs;
                           Map<String, dynamic> productData = {
                             'productViewsTimestamp': [],
+                            'productWishlistTimestamp': {},
                             'productLikesTimestamp': {},
-                            'wishlists': 0,
                             'shares': 0,
                           };
+                          int index = 0;
                           for (var element in productSnap) {
                             productData['productViewsTimestamp'] +=
                                 element['productViewsTimestamp'];
-                            (productData['productLikesTimestamp'] as Map)
+
+                            (productData['productWishlistTimestamp'] as Map)
                                 .addAll(
-                              element['productLikesTimestamp'],
+                              (element['productWishlistTimestamp'] as Map).map(
+                                (key, value) => MapEntry(
+                                  '$key$index',
+                                  value,
+                                ),
+                              ),
                             );
 
-                            productData['wishlists'] +=
-                                element['productWishlist'];
+                            (productData['productLikesTimestamp'] as Map)
+                                .addAll(
+                              (element['productLikesTimestamp'] as Map).map(
+                                (key, value) => MapEntry(
+                                  '$key$index',
+                                  value,
+                                ),
+                              ),
+                            );
+
                             productData['shares'] += element['productShares'];
+
+                            index++;
                           }
 
                           List<DateTime> viewTimestamps = [];
-                          List<DateTime> likeTimestamps = [];
+                          List<DateTime> wishlistTimestamps = [];
 
                           for (Timestamp viewDate
                               in productData['productViewsTimestamp']) {
@@ -328,17 +340,20 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                             }
                           }
 
-                          for (Timestamp likeTimestamp
-                              in (productData['productLikesTimestamp'] as Map)
+                          for (Timestamp wishlistTimestamp
+                              in (productData['productWishlistTimestamp']
+                                      as Map)
                                   .values) {
                             if (selectedDuration != null) {
-                              if (likeTimestamp
+                              if (wishlistTimestamp
                                   .toDate()
                                   .isAfter(selectedDuration!)) {
-                                likeTimestamps.add(likeTimestamp.toDate());
+                                wishlistTimestamps
+                                    .add(wishlistTimestamp.toDate());
                               }
                             } else {
-                              likeTimestamps.add(likeTimestamp.toDate());
+                              wishlistTimestamps
+                                  .add(wishlistTimestamp.toDate());
                             }
                           }
 
@@ -352,12 +367,12 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                             });
                           }
 
-                          Map<String, int> productWiseLikes = {};
+                          Map<String, int> productWiseWishlist = {};
 
                           for (var element in productSnap) {
-                            productWiseLikes.addAll({
+                            productWiseWishlist.addAll({
                               element['productName'].toString():
-                                  (element['productLikesTimestamp'] as Map)
+                                  (element['productWishlistTimestamp'] as Map)
                                       .length,
                             });
                           }
@@ -371,12 +386,12 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                             }
                           });
 
-                          String maxProductLikesKey = '-';
-                          int maxProductLikesValue = 0;
-                          productWiseLikes.forEach((key, value) {
-                            if (value > maxProductLikesValue) {
-                              maxProductLikesKey = key;
-                              maxProductLikesValue = value;
+                          String maxProductWishlistKey = '-';
+                          int maxProductWishlistValue = 0;
+                          productWiseWishlist.forEach((key, value) {
+                            if (value > maxProductWishlistValue) {
+                              maxProductWishlistKey = key;
+                              maxProductWishlistValue = value;
                             }
                           });
 
@@ -441,11 +456,12 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
 
                                     // GRAPH
                                     SizedBox(
-                                      width: width * 1,
-                                      height: width * 0.375,
+                                      width: width,
+                                      height: width * 0.3625,
                                       child: BarChart(
                                         BarChartData(
-                                          maxY: viewTimestamps.length * 2,
+                                          maxY:
+                                              viewTimestamps.length.toDouble(),
                                           gridData: const FlGridData(
                                             drawVerticalLine: false,
                                           ),
@@ -472,9 +488,10 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                 reservedSize: width * 0.065,
                                                 getTitlesWidget: (value, meta) {
                                                   return Text(
+                                                    value.toStringAsFixed(0),
+                                                    maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
-                                                    value.toStringAsFixed(0),
                                                     style: TextStyle(
                                                       fontSize:
                                                           selectedStringDuration ==
@@ -494,120 +511,133 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                           ),
                                           barGroups: selectedStringDuration ==
                                                   '24 Hours'
-                                              ? List.generate(24, (index) {
-                                                  int groupNumber = index + 1;
-                                                  return BarChartGroupData(
-                                                    x: groupNumber,
-                                                    barRods:
-                                                        convertMapToBarChartRodData(
-                                                      groupDateTimeIntervals(
-                                                        DateTime.now().subtract(
-                                                          const Duration(
-                                                              days: 1),
+                                              ? List.generate(
+                                                  24,
+                                                  (index) {
+                                                    int groupNumber = index + 1;
+                                                    return BarChartGroupData(
+                                                      x: groupNumber,
+                                                      barRods:
+                                                          convertMapToBarChartRodData(
+                                                        groupDateTimeIntervals(
+                                                          DateTime.now()
+                                                              .subtract(
+                                                            const Duration(
+                                                                days: 1),
+                                                          ),
+                                                          viewTimestamps,
+                                                          24,
                                                         ),
-                                                        viewTimestamps,
-                                                        24,
+                                                        groupNumber,
                                                       ),
-                                                      groupNumber,
-                                                    ),
-                                                  );
-                                                }).toList()
+                                                    );
+                                                  },
+                                                ).toList()
                                               : selectedStringDuration ==
                                                       '7 Days'
-                                                  ? List.generate(7, (index) {
-                                                      int groupNumber =
-                                                          index + 1;
-                                                      return BarChartGroupData(
-                                                        x: groupNumber,
-                                                        barRods:
-                                                            convertMapToBarChartRodData(
-                                                          groupDateTimeIntervals(
-                                                            DateTime.now()
-                                                                .subtract(
-                                                              const Duration(
-                                                                  days: 7),
+                                                  ? List.generate(
+                                                      7,
+                                                      (index) {
+                                                        int groupNumber =
+                                                            index + 1;
+                                                        return BarChartGroupData(
+                                                          x: groupNumber,
+                                                          barRods:
+                                                              convertMapToBarChartRodData(
+                                                            groupDateTimeIntervals(
+                                                              DateTime.now()
+                                                                  .subtract(
+                                                                const Duration(
+                                                                    days: 7),
+                                                              ),
+                                                              viewTimestamps,
+                                                              7,
                                                             ),
-                                                            viewTimestamps,
-                                                            7,
+                                                            groupNumber,
                                                           ),
-                                                          groupNumber,
-                                                        ),
-                                                      );
-                                                    }).toList()
+                                                        );
+                                                      },
+                                                    ).toList()
                                                   : selectedStringDuration ==
                                                           '4 Weeks'
-                                                      ? List.generate(4,
+                                                      ? List.generate(
+                                                          4,
                                                           (index) {
-                                                          int groupNumber =
-                                                              index + 1;
-                                                          return BarChartGroupData(
-                                                            x: groupNumber,
-                                                            barRods:
-                                                                convertMapToBarChartRodData(
-                                                              groupDateTimeIntervals(
-                                                                DateTime.now()
-                                                                    .subtract(
-                                                                  const Duration(
-                                                                    days: 28,
+                                                            int groupNumber =
+                                                                index + 1;
+                                                            return BarChartGroupData(
+                                                              x: groupNumber,
+                                                              barRods:
+                                                                  convertMapToBarChartRodData(
+                                                                groupDateTimeIntervals(
+                                                                  DateTime.now()
+                                                                      .subtract(
+                                                                    const Duration(
+                                                                      days: 28,
+                                                                    ),
                                                                   ),
+                                                                  viewTimestamps,
+                                                                  4,
                                                                 ),
-                                                                viewTimestamps,
-                                                                4,
+                                                                groupNumber,
                                                               ),
-                                                              groupNumber,
-                                                            ),
-                                                          );
-                                                        }).toList()
+                                                            );
+                                                          },
+                                                        ).toList()
                                                       : selectedStringDuration ==
                                                               '365 Days'
-                                                          ? List.generate(12,
+                                                          ? List.generate(
+                                                              12,
                                                               (index) {
-                                                              int groupNumber =
-                                                                  index + 1;
-                                                              return BarChartGroupData(
-                                                                x: groupNumber,
-                                                                barRods:
-                                                                    convertMapToBarChartRodData(
-                                                                  groupDateTimeIntervals(
-                                                                    DateTime.now()
-                                                                        .subtract(
-                                                                      const Duration(
-                                                                        days:
-                                                                            365,
+                                                                int groupNumber =
+                                                                    index + 1;
+                                                                return BarChartGroupData(
+                                                                  x: groupNumber,
+                                                                  barRods:
+                                                                      convertMapToBarChartRodData(
+                                                                    groupDateTimeIntervals(
+                                                                      DateTime.now()
+                                                                          .subtract(
+                                                                        const Duration(
+                                                                          days:
+                                                                              365,
+                                                                        ),
                                                                       ),
+                                                                      viewTimestamps,
+                                                                      12,
                                                                     ),
-                                                                    viewTimestamps,
-                                                                    12,
+                                                                    groupNumber,
                                                                   ),
-                                                                  groupNumber,
-                                                                ),
-                                                              );
-                                                            }).toList()
+                                                                );
+                                                              },
+                                                            ).toList()
                                                           : selectedStringDuration ==
                                                                   'Lifetime'
                                                               ? List.generate(
-                                                                  10, (index) {
-                                                                  int groupNumber =
-                                                                      index + 1;
-                                                                  return BarChartGroupData(
-                                                                    x: groupNumber,
-                                                                    barRods:
-                                                                        convertMapToBarChartRodData(
-                                                                      groupDateTimeIntervals(
-                                                                        DateTime.now()
-                                                                            .subtract(
-                                                                          const Duration(
-                                                                            days:
-                                                                                10000,
+                                                                  10,
+                                                                  (index) {
+                                                                    int groupNumber =
+                                                                        index +
+                                                                            1;
+                                                                    return BarChartGroupData(
+                                                                      x: groupNumber,
+                                                                      barRods:
+                                                                          convertMapToBarChartRodData(
+                                                                        groupDateTimeIntervals(
+                                                                          DateTime.now()
+                                                                              .subtract(
+                                                                            const Duration(
+                                                                              days: 10000,
+                                                                            ),
                                                                           ),
+                                                                          viewTimestamps,
+                                                                          10,
                                                                         ),
-                                                                        viewTimestamps,
-                                                                        10,
+                                                                        groupNumber,
                                                                       ),
-                                                                      groupNumber,
-                                                                    ),
-                                                                  );
-                                                                }).toList()
+                                                                    );
+                                                                  },
+                                                                ).toList()
                                                               : null,
                                         ),
                                       ),
@@ -616,7 +646,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                 ),
                               ),
 
-                              // TIMED LIKES
+                              // TIMED WISHLIST
                               Container(
                                 width: width,
                                 height: width * 0.5,
@@ -644,7 +674,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                         children: [
                                           // PROPERTY
                                           Text(
-                                            'Product Likes',
+                                            'Product Wishlist',
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
@@ -655,11 +685,12 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                           ),
                                           // VALUE
                                           Text(
-                                            likeTimestamps.length > 1000000
-                                                ? '${likeTimestamps.length.toString().substring(0)}.${likeTimestamps.length.toString().substring(1, 3)}M'
-                                                : likeTimestamps.length > 1000
-                                                    ? '${likeTimestamps.length.toString().substring(0)}.${likeTimestamps.length.toString().substring(1, 3)}k'
-                                                    : likeTimestamps.length
+                                            wishlistTimestamps.length > 1000000
+                                                ? '${wishlistTimestamps.length.toString().substring(0)}.${wishlistTimestamps.length.toString().substring(1, 3)}M'
+                                                : wishlistTimestamps.length >
+                                                        1000
+                                                    ? '${wishlistTimestamps.length.toString().substring(0)}.${wishlistTimestamps.length.toString().substring(1, 3)}k'
+                                                    : wishlistTimestamps.length
                                                         .toString(),
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
@@ -675,11 +706,12 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
 
                                     // GRAPH
                                     SizedBox(
-                                      width: width * 1,
-                                      height: width * 0.375,
+                                      width: width,
+                                      height: width * 0.3625,
                                       child: BarChart(
                                         BarChartData(
-                                          maxY: likeTimestamps.length * 2,
+                                          maxY: wishlistTimestamps.length
+                                              .toDouble(),
                                           gridData: const FlGridData(
                                             drawVerticalLine: false,
                                           ),
@@ -728,120 +760,135 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                           ),
                                           barGroups: selectedStringDuration ==
                                                   '24 Hours'
-                                              ? List.generate(24, (index) {
-                                                  int groupNumber = index + 1;
-                                                  return BarChartGroupData(
-                                                    x: groupNumber,
-                                                    barRods:
-                                                        convertMapToBarChartRodData(
-                                                      groupDateTimeIntervals(
-                                                        DateTime.now().subtract(
-                                                          const Duration(
-                                                              days: 1),
+                                              ? List.generate(
+                                                  24,
+                                                  (index) {
+                                                    int groupNumber = index + 1;
+                                                    return BarChartGroupData(
+                                                      x: groupNumber,
+                                                      barRods:
+                                                          convertMapToBarChartRodData(
+                                                        groupDateTimeIntervals(
+                                                          DateTime.now()
+                                                              .subtract(
+                                                            const Duration(
+                                                              days: 1,
+                                                            ),
+                                                          ),
+                                                          wishlistTimestamps,
+                                                          24,
                                                         ),
-                                                        likeTimestamps,
-                                                        24,
+                                                        groupNumber,
                                                       ),
-                                                      groupNumber,
-                                                    ),
-                                                  );
-                                                }).toList()
+                                                    );
+                                                  },
+                                                ).toList()
                                               : selectedStringDuration ==
                                                       '7 Days'
-                                                  ? List.generate(7, (index) {
-                                                      int groupNumber =
-                                                          index + 1;
-                                                      return BarChartGroupData(
-                                                        x: groupNumber,
-                                                        barRods:
-                                                            convertMapToBarChartRodData(
-                                                          groupDateTimeIntervals(
-                                                            DateTime.now()
-                                                                .subtract(
-                                                              const Duration(
-                                                                  days: 7),
+                                                  ? List.generate(
+                                                      7,
+                                                      (index) {
+                                                        int groupNumber =
+                                                            index + 1;
+                                                        return BarChartGroupData(
+                                                          x: groupNumber,
+                                                          barRods:
+                                                              convertMapToBarChartRodData(
+                                                            groupDateTimeIntervals(
+                                                              DateTime.now()
+                                                                  .subtract(
+                                                                const Duration(
+                                                                  days: 7,
+                                                                ),
+                                                              ),
+                                                              wishlistTimestamps,
+                                                              7,
                                                             ),
-                                                            likeTimestamps,
-                                                            7,
+                                                            groupNumber,
                                                           ),
-                                                          groupNumber,
-                                                        ),
-                                                      );
-                                                    }).toList()
+                                                        );
+                                                      },
+                                                    ).toList()
                                                   : selectedStringDuration ==
                                                           '4 Weeks'
-                                                      ? List.generate(4,
+                                                      ? List.generate(
+                                                          4,
                                                           (index) {
-                                                          int groupNumber =
-                                                              index + 1;
-                                                          return BarChartGroupData(
-                                                            x: groupNumber,
-                                                            barRods:
-                                                                convertMapToBarChartRodData(
-                                                              groupDateTimeIntervals(
-                                                                DateTime.now()
-                                                                    .subtract(
-                                                                  const Duration(
-                                                                    days: 28,
+                                                            int groupNumber =
+                                                                index + 1;
+                                                            return BarChartGroupData(
+                                                              x: groupNumber,
+                                                              barRods:
+                                                                  convertMapToBarChartRodData(
+                                                                groupDateTimeIntervals(
+                                                                  DateTime.now()
+                                                                      .subtract(
+                                                                    const Duration(
+                                                                      days: 28,
+                                                                    ),
                                                                   ),
+                                                                  wishlistTimestamps,
+                                                                  4,
                                                                 ),
-                                                                likeTimestamps,
-                                                                4,
+                                                                groupNumber,
                                                               ),
-                                                              groupNumber,
-                                                            ),
-                                                          );
-                                                        }).toList()
+                                                            );
+                                                          },
+                                                        ).toList()
                                                       : selectedStringDuration ==
                                                               '365 Days'
-                                                          ? List.generate(12,
+                                                          ? List.generate(
+                                                              12,
                                                               (index) {
-                                                              int groupNumber =
-                                                                  index + 1;
-                                                              return BarChartGroupData(
-                                                                x: groupNumber,
-                                                                barRods:
-                                                                    convertMapToBarChartRodData(
-                                                                  groupDateTimeIntervals(
-                                                                    DateTime.now()
-                                                                        .subtract(
-                                                                      const Duration(
-                                                                        days:
-                                                                            365,
+                                                                int groupNumber =
+                                                                    index + 1;
+                                                                return BarChartGroupData(
+                                                                  x: groupNumber,
+                                                                  barRods:
+                                                                      convertMapToBarChartRodData(
+                                                                    groupDateTimeIntervals(
+                                                                      DateTime.now()
+                                                                          .subtract(
+                                                                        const Duration(
+                                                                          days:
+                                                                              365,
+                                                                        ),
                                                                       ),
+                                                                      wishlistTimestamps,
+                                                                      12,
                                                                     ),
-                                                                    likeTimestamps,
-                                                                    12,
+                                                                    groupNumber,
                                                                   ),
-                                                                  groupNumber,
-                                                                ),
-                                                              );
-                                                            }).toList()
+                                                                );
+                                                              },
+                                                            ).toList()
                                                           : selectedStringDuration ==
                                                                   'Lifetime'
                                                               ? List.generate(
-                                                                  10, (index) {
-                                                                  int groupNumber =
-                                                                      index + 1;
-                                                                  return BarChartGroupData(
-                                                                    x: groupNumber,
-                                                                    barRods:
-                                                                        convertMapToBarChartRodData(
-                                                                      groupDateTimeIntervals(
-                                                                        DateTime.now()
-                                                                            .subtract(
-                                                                          const Duration(
-                                                                            days:
-                                                                                10000,
+                                                                  10,
+                                                                  (index) {
+                                                                    int groupNumber =
+                                                                        index +
+                                                                            1;
+                                                                    return BarChartGroupData(
+                                                                      x: groupNumber,
+                                                                      barRods:
+                                                                          convertMapToBarChartRodData(
+                                                                        groupDateTimeIntervals(
+                                                                          DateTime.now()
+                                                                              .subtract(
+                                                                            const Duration(
+                                                                              days: 10000,
+                                                                            ),
                                                                           ),
+                                                                          wishlistTimestamps,
+                                                                          10,
                                                                         ),
-                                                                        likeTimestamps,
-                                                                        10,
+                                                                        groupNumber,
                                                                       ),
-                                                                      groupNumber,
-                                                                    ),
-                                                                  );
-                                                                }).toList()
+                                                                    );
+                                                                  },
+                                                                ).toList()
                                                               : null,
                                         ),
                                       ),
@@ -850,7 +897,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                 ),
                               ),
 
-                              // ALL TIME VIEWS AND LIKES
+                              // ALL TIME VIEWS AND WISHLIST
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -893,10 +940,17 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                     // ALL TIME WISHLIST
                                     InfoColorBox(
                                       text: 'WISHLISTS',
-                                      property: productData['wishlists'],
+                                      property: (productData[
+                                                  'productWishlistTimestamp']
+                                              as Map)
+                                          .length,
                                       width: width,
                                       color: const Color.fromRGBO(
-                                          255, 174, 201, 1),
+                                        255,
+                                        174,
+                                        201,
+                                        1,
+                                      ),
                                     ),
 
                                     // ALL TIME SHARES
@@ -981,7 +1035,6 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                               height: width * 0.5,
                                               child: PieChart(
                                                 PieChartData(
-                                                  pieTouchData: PieTouchData(),
                                                   sections: productWiseData(
                                                     productWiseViews,
                                                   ),
@@ -996,7 +1049,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                 ),
                               ),
 
-                              // PRODUCT WISE LIKES
+                              // PRODUCT WISE WISHLIST
                               Container(
                                 width: width,
                                 decoration: BoxDecoration(
@@ -1019,7 +1072,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Product Wise Likes',
+                                          'Product Wise Wishlist',
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
@@ -1037,18 +1090,18 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                 left: width * 0.05,
                                               ),
                                               child: Text(
-                                                (productData['productLikesTimestamp']
+                                                (productData['productWishlistTimestamp']
                                                                 as Map)
                                                             .length >
                                                         1000000
-                                                    ? '${(productData['productLikesTimestamp'] as Map).length.toString().substring(0, 1)}.${(productData['productLikesTimestamp'] as Map).length.toString().substring(1, 4)}M'
-                                                    : (productData['productLikesTimestamp']
+                                                    ? '${(productData['productWishlistTimestamp'] as Map).length.toString().substring(0, 1)}.${(productData['productWishlistTimestamp'] as Map).length.toString().substring(1, 4)}M'
+                                                    : (productData['productWishlistTimestamp']
                                                                     as Map)
                                                                 .length >
                                                             1000
-                                                        ? '${(productData['productLikesTimestamp'] as Map).length.toString().substring(0, 1)}.${(productData['productLikesTimestamp'] as Map).length.toString().substring(1, 4)}k'
+                                                        ? '${(productData['productWishlistTimestamp'] as Map).length.toString().substring(0, 1)}.${(productData['productWishlistTimestamp'] as Map).length.toString().substring(1, 4)}k'
                                                         : (productData[
-                                                                    'productLikesTimestamp']
+                                                                    'productWishlistTimestamp']
                                                                 as Map)
                                                             .length
                                                             .toString(),
@@ -1068,7 +1121,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                 PieChartData(
                                                   pieTouchData: PieTouchData(),
                                                   sections: productWiseData(
-                                                    productWiseLikes,
+                                                    productWiseWishlist,
                                                   ),
                                                 ),
                                               ),
@@ -1081,7 +1134,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                 ),
                               ),
 
-                              // VIEWS & LIKES
+                              // VIEWS & WISHLIST
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -1095,10 +1148,10 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                         const Color.fromRGBO(255, 135, 175, 1),
                                   ),
 
-                                  // PRODUCT WITH MOST LIKES
+                                  // PRODUCT WITH MOST WISHLIST
                                   InfoColorBox(
-                                    text: 'Most Liked',
-                                    property: maxProductLikesKey,
+                                    text: 'Most Wishlisted',
+                                    property: maxProductWishlistKey,
                                     width: width,
                                     color:
                                         const Color.fromRGBO(251, 135, 255, 1),

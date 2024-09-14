@@ -82,4 +82,5 @@ flutter {
 dependencies {
     implementation("com.google.firebase:firebase-auth:22.3.0")
     implementation('com.google.firebase:firebase-appcheck-playintegrity:17.0.0')
+    implementation('androidx.activity:activity:1.6.0-alpha05')
 }

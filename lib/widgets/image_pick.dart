@@ -1,43 +1,58 @@
-import 'package:flutter/foundation.dart';
+import 'package:Localsearch/widgets/snack_bar.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart' as pp;
 
-Future<XFile?> pickCompressedImage(ImageSource source) async {
-  XFile? image;
-
-  image = await ImagePicker().pickImage(source: source);
-
-  if (image != null) {
-    final bytes = await image.readAsBytes();
-    final kb = bytes.length / 1024;
-    final mb = kb / 1024;
-
-    if (kDebugMode) {
-      print('Original: ${mb.toString()}');
+Future<List<XFile>> pickCompressedImage(
+  ImageSource source,
+  BuildContext context,
+  bool max1,
+) async {
+  try {
+    List<XFile> images = [];
+    List<XFile> results = [];
+    if (source == ImageSource.camera) {
+      final im = await ImagePicker().pickImage(source: ImageSource.camera);
+      if (im != null) {
+        images = [im];
+      }
+    } else {
+      if (max1) {
+        final im = await ImagePicker().pickImage(source: ImageSource.gallery);
+        if (im != null) {
+          images = [im];
+        } else {
+          images = [];
+        }
+      } else {
+        images = await ImagePicker().pickMultiImage();
+      }
     }
 
-    final dir = await pp.getTemporaryDirectory();
-    final timestamp = DateTime.now().millisecondsSinceEpoch;
-    final targetPath = '${dir.absolute.path}/temp_$timestamp.jpg';
+    if (images.isNotEmpty) {
+      for (XFile image in images) {
+        final dir = await pp.getTemporaryDirectory();
+        final timestamp = DateTime.now().millisecondsSinceEpoch;
+        final targetPath = '${dir.absolute.path}/temp_$timestamp.jpg';
 
-    final result = await FlutterImageCompress.compressAndGetFile(
-      image.path,
-      targetPath,
-      quality: 50,
-    );
+        final compressedFile = await FlutterImageCompress.compressAndGetFile(
+          image.path,
+          targetPath,
+          quality: 50,
+        );
 
-    final data = await result!.readAsBytes();
+        if (compressedFile != null) {
+          results.add(compressedFile);
+        }
+      }
 
-    final newKb = data.length / 1024;
-    final newMb = newKb / 1024;
-
-    if (kDebugMode) {
-      print('Compressed: ${newMb.toString()}');
+      return results;
     }
-
-    return result;
-  } else {
-    return null;
+    return [];
+  } catch (e) {
+    print('error: ${e.toString()}');
+    mySnackBar(context, e.toString());
+    return [];
   }
 }

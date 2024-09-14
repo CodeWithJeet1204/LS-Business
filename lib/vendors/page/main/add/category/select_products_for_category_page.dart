@@ -82,7 +82,7 @@ class _SelectProductsForCategoryPageState
       setState(() {
         isAdding = true;
       });
-      await FirebaseFirestore.instance
+      await store
           .collection('Business')
           .doc('Data')
           .collection('Products')
@@ -110,7 +110,7 @@ class _SelectProductsForCategoryPageState
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          'SELECT PRODUCTS',
+          'Select Products',
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
@@ -127,7 +127,6 @@ class _SelectProductsForCategoryPageState
                     productsAddedToCategoryProvider.clearProducts();
                   },
             text: 'NEXT',
-            textColor: primaryDark,
           ),
         ],
         bottom: PreferredSize(
@@ -262,18 +261,18 @@ class _SelectProductsForCategoryPageState
                     padding: EdgeInsets.all(width * 0.006125),
                     child: LayoutBuilder(
                       builder: ((context, constraints) {
-                        final double width = constraints.maxWidth;
+                        final width = constraints.maxWidth;
 
                         return SafeArea(
                           child: isGridView
                               ? GridView.builder(
                                   shrinkWrap: true,
                                   gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                      SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
                                     crossAxisSpacing: 0,
                                     mainAxisSpacing: 0,
-                                    childAspectRatio: 0.725,
+                                    childAspectRatio: width * 0.6875 / width,
                                   ),
                                   itemCount: currentProducts.length,
                                   itemBuilder: (context, index) {
@@ -292,8 +291,7 @@ class _SelectProductsForCategoryPageState
                                         children: [
                                           Container(
                                             decoration: BoxDecoration(
-                                              color:
-                                                  primary2.withOpacity(0.125),
+                                              color: white,
                                               border: Border.all(
                                                 width: 0.25,
                                                 color: primaryDark,
@@ -391,16 +389,10 @@ class _SelectProductsForCategoryPageState
                                                   child: SizedBox(
                                                     width: width * 0.275,
                                                     child: Text(
-                                                      productData['productPrice'] !=
-                                                                  '' &&
-                                                              productData[
-                                                                      'productPrice'] !=
-                                                                  null
-                                                          ? '''Rs. ${productData['productPrice']}'''
-                                                          : 'N/A',
+                                                      'Rs. ${productData['productPrice']}',
+                                                      maxLines: 1,
                                                       overflow:
                                                           TextOverflow.ellipsis,
-                                                      maxLines: 1,
                                                       style: TextStyle(
                                                         fontSize: width * 0.045,
                                                         fontWeight:
@@ -521,14 +513,7 @@ class _SelectProductsForCategoryPageState
                                                       ),
                                                     ),
                                                     subtitle: Text(
-                                                      productData['productPrice'] !=
-                                                                  '' &&
-                                                              productData[
-                                                                      'productPrice'] !=
-                                                                  null
-                                                          ? productData[
-                                                              'productPrice']
-                                                          : 'N/A',
+                                                      'Rs. ${productData['productPrice']}',
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                       style: TextStyle(

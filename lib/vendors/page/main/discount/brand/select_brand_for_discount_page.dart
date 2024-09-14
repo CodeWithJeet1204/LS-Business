@@ -70,7 +70,7 @@ class _SelectBrandForDiscountPageState
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          'SELECT BRANDS',
+          'Select Brands',
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
@@ -80,7 +80,6 @@ class _SelectBrandForDiscountPageState
               Navigator.of(context).pop();
             },
             text: 'DONE',
-            textColor: primaryDark,
           ),
         ],
         bottom: PreferredSize(
@@ -204,7 +203,7 @@ class _SelectBrandForDiscountPageState
                     padding: EdgeInsets.all(width * 0.006125),
                     child: LayoutBuilder(
                       builder: ((context, constraints) {
-                        final double width = constraints.maxWidth;
+                        final width = constraints.maxWidth;
 
                         return SafeArea(
                           child: isGridView
@@ -213,7 +212,7 @@ class _SelectBrandForDiscountPageState
                                   gridDelegate:
                                       const SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
-                                    childAspectRatio: 0.795,
+                                    childAspectRatio: 0.775,
                                   ),
                                   itemCount: currentBrands.length,
                                   itemBuilder: (context, index) {
@@ -232,8 +231,7 @@ class _SelectBrandForDiscountPageState
                                         children: [
                                           Container(
                                             decoration: BoxDecoration(
-                                              color:
-                                                  primary2.withOpacity(0.125),
+                                              color: white,
                                               border: Border.all(
                                                 width: 0.25,
                                                 color: primaryDark,
@@ -257,7 +255,8 @@ class _SelectBrandForDiscountPageState
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
-                                                                        2),
+                                                              2,
+                                                            ),
                                                             child:
                                                                 Image.network(
                                                               brandData[
@@ -289,28 +288,22 @@ class _SelectBrandForDiscountPageState
                                                           ),
                                                         ),
                                                       ),
-                                                const Divider(
-                                                  height: 0,
-                                                ),
                                                 Padding(
                                                   padding: EdgeInsets.fromLTRB(
                                                     width * 0.0125,
-                                                    width * 0.0125,
+                                                    0,
                                                     width * 0.0125,
                                                     0,
                                                   ),
-                                                  child: SizedBox(
-                                                    width: width * 0.275,
-                                                    child: Text(
-                                                      brandData['brandName'],
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      maxLines: 1,
-                                                      style: TextStyle(
-                                                        fontSize: width * 0.055,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
+                                                  child: Text(
+                                                    brandData['brandName'],
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      fontSize: width * 0.055,
+                                                      fontWeight:
+                                                          FontWeight.w500,
                                                     ),
                                                   ),
                                                 ),

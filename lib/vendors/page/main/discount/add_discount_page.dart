@@ -35,12 +35,12 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
             return SingleChildScrollView(
               child: Column(
                 children: [
-                  // PRODUCTS
-                  addBox(
+                  // PRODUCT
+                  AddBox(
                     context: context,
                     width: width,
                     icon: FeatherIcons.box,
-                    label: 'PRODUCTS',
+                    label: 'PRODUCT',
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
@@ -51,10 +51,10 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                   ),
 
                   // BRAND
-                  addBox(
+                  AddBox(
                     context: context,
                     width: width,
-                    icon: FeatherIcons.box,
+                    icon: FeatherIcons.award,
                     label: 'BRAND',
                     onTap: () {
                       Navigator.of(context).push(
@@ -66,7 +66,7 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                   ),
 
                   // CATEGORY
-                  addBox(
+                  AddBox(
                     context: context,
                     width: width,
                     icon: FeatherIcons.box,

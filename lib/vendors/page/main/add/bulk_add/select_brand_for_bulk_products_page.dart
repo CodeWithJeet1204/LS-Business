@@ -18,6 +18,8 @@ class SelectBrandForBulkProductsPage extends StatefulWidget {
 
 class _SelectBrandForBulkProductsPageState
     extends State<SelectBrandForBulkProductsPage> {
+  final auth = FirebaseAuth.instance;
+  final store = FirebaseFirestore.instance;
   bool isGridView = true;
   String? searchedBrand;
 
@@ -26,13 +28,13 @@ class _SelectBrandForBulkProductsPageState
     final selectBrandProvider =
         Provider.of<SelectBrandForProductProvider>(context);
 
-    final Stream<QuerySnapshot> allBrandStream = FirebaseFirestore.instance
+    final Stream<QuerySnapshot> allBrandStream = store
         .collection('Business')
         .doc('Data')
         .collection('Brands')
         .where(
           'vendorId',
-          isEqualTo: FirebaseAuth.instance.currentUser!.uid,
+          isEqualTo: auth.currentUser!.uid,
         )
         .snapshots();
 
@@ -40,7 +42,7 @@ class _SelectBrandForBulkProductsPageState
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          'SELECT BRAND',
+          'Select Brands',
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
@@ -53,7 +55,6 @@ class _SelectBrandForBulkProductsPageState
               ]);
             },
             text: 'DONE',
-            textColor: primaryDark,
           ),
         ],
         bottom: PreferredSize(
@@ -101,7 +102,7 @@ class _SelectBrandForBulkProductsPageState
       ),
       body: LayoutBuilder(
         builder: ((context, constraints) {
-          final double width = constraints.maxWidth;
+          final width = constraints.maxWidth;
 
           return Column(
             children: [
@@ -157,7 +158,7 @@ class _SelectBrandForBulkProductsPageState
                                     children: [
                                       Container(
                                         decoration: BoxDecoration(
-                                          color: primary2.withOpacity(0.125),
+                                          color: white,
                                           border: Border.all(
                                             width: 0.25,
                                             color: primaryDark,

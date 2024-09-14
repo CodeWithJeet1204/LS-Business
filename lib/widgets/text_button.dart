@@ -1,3 +1,4 @@
+import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class MyTextButton extends StatelessWidget {
@@ -6,12 +7,12 @@ class MyTextButton extends StatelessWidget {
     required this.onPressed,
     required this.text,
     this.fontSize = 16,
-    required this.textColor,
+    this.textColor,
   });
 
   final String text;
   final double fontSize;
-  final Color textColor;
+  final Color? textColor;
   final void Function() onPressed;
 
   @override
@@ -24,7 +25,7 @@ class MyTextButton extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
           fontSize: fontSize,
-          color: textColor,
+          color: textColor ?? primaryDark,
         ),
       ),
     );

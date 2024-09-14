@@ -11,7 +11,7 @@ class SmallTextContainer extends StatelessWidget {
 
   final String text;
   final void Function()? onPressed;
-  final double width;
+  final width;
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +45,7 @@ class SmallTextContainer extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: primaryDark,
-                fontWeight: FontWeight.w500,
-                fontSize: width * 0.05,
+                fontSize: width * 0.0475,
               ),
             ),
           ),

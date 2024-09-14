@@ -33,7 +33,6 @@ class _AllShortsPageState extends State<AllShortsPage> {
   // GET SHORTS
   Future<void> getShorts() async {
     Map<String, List> myShorts = {};
-    print(1);
     final shortsSnap = await store
         .collection('Business')
         .doc('Data')
@@ -41,54 +40,48 @@ class _AllShortsPageState extends State<AllShortsPage> {
         .where('vendorId', isEqualTo: auth.currentUser!.uid)
         .get();
 
-    print('length: ${shortsSnap.docs.length}');
+    await Future.forEach(
+      shortsSnap.docs,
+      (short) async {
+        final shortsData = short.data();
 
-    Future.forEach(shortsSnap.docs, (short) async {
-      final shortsData = short.data();
+        final shortsId = short.id;
+        final datetime = shortsData['datetime'];
+        final productId = shortsData['productId'];
+        final shortsUrl = shortsData['shortsURL'];
+        final vendorId = auth.currentUser!.uid;
 
-      final shortsId = short.id;
-      print('shortsId: $shortsId');
-      final datetime = shortsData['datetime'];
-      final productId = shortsData['productId'];
-      final shortsUrl = shortsData['shortsURL'];
-      final vendorId = auth.currentUser!.uid;
+        final productSnap = await store
+            .collection('Business')
+            .doc('Data')
+            .collection('Products')
+            .doc(productId)
+            .get();
 
-      final productSnap = await store
-          .collection('Business')
-          .doc('Data')
-          .collection('Products')
-          .doc(productId)
-          .get();
+        final productData = productSnap.data()!;
 
-      final productData = productSnap.data()!;
+        final productName = productData['productName'];
 
-      final productName = productData['productName'];
+        Reference thumbnailRef = FirebaseStorage.instance
+            .ref()
+            .child('Data/Thumbnails')
+            .child(productId);
 
-      print('productName: $productName');
+        String thumbnailDownloadUrl = await thumbnailRef.getDownloadURL();
 
-      Reference thumbnailRef = FirebaseStorage.instance
-          .ref()
-          .child('Data/Thumbnails')
-          .child(productId);
-
-      String thumbnailDownloadUrl = await thumbnailRef.getDownloadURL();
-
-      myShorts[shortsId] = [
-        shortsUrl,
-        productId,
-        productName,
-        datetime,
-        thumbnailDownloadUrl,
-        vendorId,
-      ];
-
-      print('done');
-    });
+        myShorts[shortsId] = [
+          shortsUrl,
+          productId,
+          productName,
+          datetime,
+          thumbnailDownloadUrl,
+          vendorId,
+        ];
+      },
+    );
 
     myShorts = Map.fromEntries(myShorts.entries.toList()
       ..sort((a, b) => (b.value[3] as Timestamp).compareTo(a.value[3])));
-
-    print('lalla: $myShorts');
 
     setState(() {
       allShorts = myShorts;
@@ -106,7 +99,7 @@ class _AllShortsPageState extends State<AllShortsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('ALL SHORTS'),
+        title: Text('All Shorts'),
         bottom: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,

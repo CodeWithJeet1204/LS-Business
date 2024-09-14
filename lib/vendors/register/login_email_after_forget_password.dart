@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:Localsearch/vendors/page/main/main_page.dart';
 import 'package:Localsearch/widgets/button.dart';
-import 'package:Localsearch/widgets/head_text.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:Localsearch/widgets/text_form_field.dart';
 
@@ -21,6 +20,7 @@ class LoginEmailAfterForgetPassword extends StatefulWidget {
 
 class _LoginEmailAfterForgetPasswordState
     extends State<LoginEmailAfterForgetPassword> {
+  final auth = FirebaseAuth.instance;
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool isEmailLogging = false;
@@ -32,7 +32,7 @@ class _LoginEmailAfterForgetPasswordState
         setState(() {
           isEmailLogging = true;
         });
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
+        await auth.signInWithEmailAndPassword(
           email: emailController.text.toString(),
           password: passwordController.text.toString(),
         );
@@ -69,6 +69,9 @@ class _LoginEmailAfterForgetPasswordState
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Email Login'),
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(
@@ -80,11 +83,11 @@ class _LoginEmailAfterForgetPasswordState
             return SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(height: width * 0.35),
-                  const HeadText(
-                    text: 'LOGIN WITH EMAIL',
-                  ),
-                  SizedBox(height: width * 0.3),
+                  // SizedBox(height: width * 0.35),
+                  // const HeadText(
+                  //   text: 'LOGIN WITH EMAIL',
+                  // ),
+                  SizedBox(height: width * 0.65),
                   MyTextFormField(
                     hintText: 'Email',
                     controller: emailController,

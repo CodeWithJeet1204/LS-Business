@@ -25,8 +25,8 @@
 // }
 
 // class _AddCategoryPageState extends State<AddCategoryPage> {
-//   final FirebaseAuth auth = FirebaseAuth.instance;
-//   final FirebaseFirestore store = FirebaseFirestore.instance;
+//   final auth = FirebaseAuth.instance;
+//   final store = FirebaseFirestore.instance;
 //   final GlobalKey<FormState> categoryKey = GlobalKey<FormState>();
 //   final categoryController = TextEditingController();
 //   bool isSaving = false;
@@ -49,7 +49,7 @@
 //           .collection('Business')
 //           .doc('Data')
 //           .collection('Category')
-//           .where('vendorId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+//           .where('vendorId', isEqualTo: auth.currentUser!.uid)
 //           .get();
 
 //       for (QueryDocumentSnapshot doc in previousProducts.docs) {
@@ -134,7 +134,7 @@
 
 //   // SELECT CATEGORY IMAGE
 //   Future<void> selectImage() async {
-//     final XFile? im = await showImagePickDialog(context);
+//     final XFile im = await showImagePickDialog(context);
 //     if (im != null) {
 //       setState(() {
 //         _image = (File(im.path));
