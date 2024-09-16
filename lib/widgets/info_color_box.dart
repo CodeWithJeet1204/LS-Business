@@ -24,10 +24,7 @@ class InfoColorBox extends StatelessWidget {
           color: color,
           borderRadius: BorderRadius.circular(16),
         ),
-        padding: EdgeInsets.only(
-          left: width * 0.033,
-          top: width * 0.033,
-        ),
+        padding: EdgeInsets.all(width * 0.025),
         margin: EdgeInsets.all(width * 0.0125),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -40,7 +37,6 @@ class InfoColorBox extends StatelessWidget {
               style: TextStyle(
                 color: primaryDark2,
                 fontSize: width * 0.04,
-                fontWeight: FontWeight.w500,
               ),
             ),
             property.runtimeType == int
@@ -55,12 +51,11 @@ class InfoColorBox extends StatelessWidget {
                     style: TextStyle(
                       color: primaryDark,
                       fontSize: width * 0.12,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                     ),
                   )
                 : SizedBox(
-                    child: Align(
-                      alignment: Alignment.center,
+                    child: Center(
                       child: AutoSizeText(
                         property.toString(),
                         maxLines: 1,
@@ -69,7 +64,7 @@ class InfoColorBox extends StatelessWidget {
                         style: TextStyle(
                           color: primaryDark,
                           fontSize: width * 0.12,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),

@@ -7,9 +7,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthMethods {
   final auth = FirebaseAuth.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  User get user => _auth.currentUser!;
+  User get user => auth.currentUser!;
 
   // STATE PERSISTENCE
   Stream<User?> get authState => auth.authStateChanges();
@@ -21,11 +20,11 @@ class AuthMethods {
     required BuildContext context,
   }) async {
     try {
-      await _auth.createUserWithEmailAndPassword(
+      await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      await _auth.signInWithEmailAndPassword(
+      await auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -39,7 +38,7 @@ class AuthMethods {
   // EMAIL VERIFICATION
   Future<void> sendEmailVerification(BuildContext context) async {
     try {
-      _auth.currentUser!.sendEmailVerification();
+      auth.currentUser!.sendEmailVerification();
       mySnackBar(context, 'Email Verification has been sent');
     } on FirebaseAuthException catch (e) {
       if (context.mounted) {
@@ -55,8 +54,8 @@ class AuthMethods {
     required BuildContext context,
   }) async {
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
-      if (!_auth.currentUser!.emailVerified) {
+      await auth.signInWithEmailAndPassword(email: email, password: password);
+      if (!auth.currentUser!.emailVerified) {
         if (context.mounted) {
           await sendEmailVerification(context);
         }
@@ -116,7 +115,7 @@ class AuthMethods {
     // TextEditingController codeController = TextEditingController();
     // ADNROID / IOS
 
-    _auth.verifyPhoneNumber(
+    auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         timeout: const Duration(seconds: 120),
         verificationCompleted: (PhoneAuthCredential credential) async {
@@ -147,7 +146,7 @@ class AuthMethods {
   // SIGN OUT
   Future<void> signOut(BuildContext context) async {
     try {
-      await _auth.signOut();
+      await auth.signOut();
     } on FirebaseAuthException catch (e) {
       if (context.mounted) {
         mySnackBar(context, e.message!);
@@ -158,7 +157,7 @@ class AuthMethods {
   // DELETE ACCOUNT
   Future<void> deleteAccount(BuildContext context) async {
     try {
-      await _auth.currentUser!.delete();
+      await auth.currentUser!.delete();
     } on FirebaseAuthException catch (e) {
       if (context.mounted) {
         mySnackBar(context, e.message!);

@@ -72,7 +72,7 @@ class _BrandPageState extends State<BrandPage> {
         } else {
           Reference ref = FirebaseStorage.instance
               .ref()
-              .child('Data/Brand')
+              .child('Vendor/Brand')
               .child(widget.brandId);
           await ref.putFile(File(im.path)).whenComplete(() async {
             await ref.getDownloadURL().then((value) {

@@ -216,7 +216,7 @@ class MyApp extends StatelessWidget {
           // const ConnectivityNotificationWidget(),
         ],
       ),
-      // home: BusinessSocialMediaPage(),
+      // home: BusinessRegisterDetailsPage(),
     );
   }
 }

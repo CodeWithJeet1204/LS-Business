@@ -83,7 +83,7 @@ class DISCOUNT extends State<DiscountPage> {
           isAddingImage = true;
         });
         Reference ref =
-            storage.ref().child('Data/Products').child(const Uuid().v4());
+            storage.ref().child('Vendor/Products').child(const Uuid().v4());
         await ref.putFile(File(im.path)).whenComplete(() async {
           await ref.getDownloadURL().then((value) {
             setState(() {

@@ -221,7 +221,6 @@ class _SelectProductForDiscountPageState
                                       onTap: () {
                                         selectedProductsProvider.selectProduct(
                                           productData['productId'],
-                                          productData['productPrice'],
                                           context,
                                         );
                                       },
@@ -364,7 +363,6 @@ class _SelectProductForDiscountPageState
                                                   selectedProductsProvider
                                                       .selectProduct(
                                                     productData['productId'],
-                                                    productData['productPrice'],
                                                     context,
                                                   );
                                                 },

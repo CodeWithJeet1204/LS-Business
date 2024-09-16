@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:Localsearch/vendors/models/household_type_category_subCategory.dart';
 import 'package:Localsearch/vendors/register/business_choose_category_page_3.dart';
 import 'package:Localsearch/widgets/select_container.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
@@ -28,8 +27,32 @@ class _BusinessChooseCategoryPage2State
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   List<String> selectedCategories = [];
+  Map<String, dynamic>? categories;
   String? expandedCategory;
   bool isNext = false;
+
+  // INIT STATE
+  @override
+  void initState() {
+    getCategories();
+    super.initState();
+  }
+
+  // GET CATEGORIES
+  Future<void> getCategories() async {
+    final catalogueSnap = await store
+        .collection('Shop Types & Category Data')
+        .doc('Catalogue')
+        .get();
+
+    final catalogueData = catalogueSnap.data()!;
+
+    final catalogue = catalogueData['catalogueData'];
+
+    setState(() {
+      categories = catalogue;
+    });
+  }
 
   // NEXT
   Future<void> next() async {
@@ -76,62 +99,66 @@ class _BusinessChooseCategoryPage2State
         title: const Text('Choose Your Categories'),
         automaticallyImplyLeading: false,
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: width * 0.0125),
-          child: Column(
-            children: widget.selectedTypes.map((category) {
-              final categories =
-                  householdTypeCategorySubCategory[category.trim()];
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Text(
-                      category,
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 16 / 9,
-                    ),
-                    itemCount: categories?.length ?? 0,
-                    itemBuilder: (context, index) {
-                      final entry = categories!.entries.toList()[index];
-                      final category = entry.key;
+      body: categories == null
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : SafeArea(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: width * 0.0125),
+                child: Column(
+                  children: widget.selectedTypes.map((category) {
+                    final categoryData = categories![category.trim()];
 
-                      return SelectContainer(
-                        width: width,
-                        text: category,
-                        isSelected: selectedCategories.contains(category),
-                        onTap: () {
-                          setState(() {
-                            if (selectedCategories.contains(category)) {
-                              selectedCategories.remove(category);
-                            } else {
-                              selectedCategories.add(category);
-                            }
-                          });
-                        },
-                        imageUrl: null,
-                      );
-                    },
-                  ),
-                ],
-              );
-            }).toList(),
-          ),
-        ),
-      ),
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: Text(
+                            category,
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 16 / 9,
+                          ),
+                          itemCount: categoryData?.length ?? 0,
+                          itemBuilder: (context, index) {
+                            final entry = categoryData!.entries.toList()[index];
+                            final category = entry.key;
+
+                            return SelectContainer(
+                              width: width,
+                              text: category,
+                              isSelected: selectedCategories.contains(category),
+                              onTap: () {
+                                setState(() {
+                                  if (selectedCategories.contains(category)) {
+                                    selectedCategories.remove(category);
+                                  } else {
+                                    selectedCategories.add(category);
+                                  }
+                                });
+                              },
+                              imageUrl: null,
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                  }).toList(),
+                ),
+              ),
+            ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await next();

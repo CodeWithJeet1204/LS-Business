@@ -7,7 +7,6 @@ class SelectProductForDiscountProvider with ChangeNotifier {
 
   void selectProduct(
     String id,
-    double price,
     BuildContext context,
   ) {
     if (_selectedProducts.contains(id)) {

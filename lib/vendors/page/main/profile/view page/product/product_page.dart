@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_function_literals_in_foreach_calls
 
 import 'dart:io';
-import 'package:Localsearch/vendors/models/household_type_category_subCategory.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -421,7 +420,7 @@ class _ProductPageState extends State<ProductPage> {
           final productImageId = Uuid().v4();
 
           Reference ref =
-              storage.ref().child('Data/Products').child(productImageId);
+              storage.ref().child('Vendor/Products').child(productImageId);
           await ref.putFile(File(im.path)).whenComplete(() async {
             await ref.getDownloadURL().then((value) async {
               images.add(value);
@@ -638,8 +637,17 @@ class _ProductPageState extends State<ProductPage> {
       });
       return;
     } else {
+      final catalogueSnap = await store
+          .collection('Shop Types & Category Data')
+          .doc('Catalogue')
+          .get();
+
+      final catalogueData = catalogueSnap.data()!;
+
+      final catalogue = catalogueData['catalogueData'];
+
       for (var type in shopType) {
-        if (householdTypeCategorySubCategory[type]?[categoryName] != null) {
+        if (catalogue[type]?[categoryName] != null) {
           final categorySnap = await store
               .collection('Business')
               .doc('Special Categories')
@@ -704,7 +712,11 @@ class _ProductPageState extends State<ProductPage> {
         await doc.reference.delete();
       }
 
-      await storage.ref().child('Data/Shorts').child(widget.productId).delete();
+      await storage
+          .ref()
+          .child('Vendor/Shorts')
+          .child(widget.productId)
+          .delete();
 
       if (mounted) {
         mySnackBar(context, 'Product Deleted');
@@ -840,8 +852,8 @@ class _ProductPageState extends State<ProductPage> {
       'shortsURL': '',
     });
 
-    await storage.ref('Data/Shorts/${widget.productId}').delete();
-    await storage.ref('Data/Thumbnails/${widget.productId}').delete();
+    await storage.ref('Vendor/Shorts/${widget.productId}').delete();
+    await storage.ref('Vendor/Thumbnails/${widget.productId}').delete();
   }
 
   @override

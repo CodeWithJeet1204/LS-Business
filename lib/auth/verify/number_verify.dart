@@ -82,7 +82,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
               'registration': 'phone number',
               'GSTNumber': null,
               'Description': null,
-              'Industry': null,
+              // 'Industry': null,
               'Image': null,
               'Type': [],
               'MembershipName': null,

@@ -92,7 +92,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
         if (brandDoesntExists) {
           final String brandId = const Uuid().v4();
           if (_image != null) {
-            Reference ref = storage.ref().child('Data/Brand').child(brandId);
+            Reference ref = storage.ref().child('Vendor/Brand').child(brandId);
 
             await ref.putFile(_image!).whenComplete(() async {
               await ref.getDownloadURL().then((value) {

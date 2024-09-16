@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:Localsearch/vendors/page/main/profile/details/membership_details_page.dart';
 import 'package:Localsearch/vendors/register/business_social_media_page.dart';
+import 'package:Localsearch/widgets/pick_location.dart';
 import 'package:Localsearch/widgets/text_button.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -70,8 +71,10 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
           'Image': im.path,
         };
 
-        Reference ref =
-            storage.ref().child('VendorShops').child(auth.currentUser!.uid);
+        Reference ref = storage
+            .ref()
+            .child('Vendor/Shops/Profile')
+            .child(auth.currentUser!.uid);
         await ref
             .putFile(File(updatedUserImage['Image']!))
             .whenComplete(() async {
@@ -163,16 +166,21 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data['status'] == 'OK') {
-          return data['results'][0]['formatted_address'];
+          final address = data['results'][0]['address_components'];
+
+          print(data['results'][0]['address_components'][2]['long_name']);
+          return '${address[0]['long_name']}, ${address[1]['long_name']}, ${address[2]['long_name']}';
         } else {
-          throw Exception('Failed to get location');
+          mySnackBar(context, 'Failed to get location');
         }
       } else {
-        throw Exception('Failed to load data');
+        mySnackBar(context, 'Failed to load data');
       }
     } catch (e) {
-      throw Exception(e.toString());
+      mySnackBar(context, e.toString());
+      return e.toString();
     }
+    return 'Couldn\'t get Address';
   }
 
   // SAVE
@@ -486,205 +494,143 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             const SizedBox(height: 14),
 
                             // LOCATION
-                            GestureDetector(
-                              onTap: shopData['Latitude'] != 0 &&
-                                      shopData['Longitude'] != 0
-                                  ? null
-                                  : () async {
-                                      setState(() {
-                                        isChangingAddress = true;
-                                      });
-
-                                      double? latitude;
-                                      double? longitude;
-
-                                      await getLocation().then((value) async {
-                                        if (value != null) {
-                                          setState(() {
-                                            latitude = value.latitude;
-                                            longitude = value.longitude;
-                                          });
-
-                                          await store
-                                              .collection('Users')
-                                              .doc(auth.currentUser!.uid)
-                                              .update({
-                                            'Latitude': latitude,
-                                            'Longitude': longitude,
-                                          });
-
-                                          if (latitude != null &&
-                                              longitude != null) {
-                                            await getAddress(
-                                              latitude!,
-                                              longitude!,
-                                            );
-                                          }
-                                        }
-                                      });
-                                      setState(() {
-                                        isChangingAddress = false;
-                                      });
-                                    },
-                              child: Container(
-                                width: width,
-                                // height: width * 0.175,
-                                decoration: BoxDecoration(
-                                  color: primary2.withOpacity(0.9),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                  // horizontal: width * 0.006125,
-                                  vertical: height * 0.0125,
-                                ),
-                                child: isChangingAddress
-                                    ? Padding(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: width * 0.0125,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            SizedBox(
-                                              width: width * 0.8,
-                                              child: const Text(
-                                                'Getting Location',
-                                              ),
-                                            ),
-                                            IconButton(
-                                              onPressed: () {},
-                                              icon: const Icon(
-                                                FeatherIcons.mapPin,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    : Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                              left: width * 0.0335,
-                                            ),
-                                            child: SizedBox(
-                                              width: width * 0.725,
-                                              child: FutureBuilder(
-                                                  future: shopData[
-                                                                  'Latitude'] ==
-                                                              0 &&
-                                                          shopData[
-                                                                  'Longitude'] ==
-                                                              0
-                                                      ? null
-                                                      : getAddress(
-                                                          shopData['Latitude'],
-                                                          shopData['Longitude'],
-                                                        ),
-                                                  builder: (context, snapshot) {
-                                                    if (snapshot.hasError) {
-                                                      return Text(
-                                                        snapshot.error
-                                                            .toString(),
-                                                        style: TextStyle(
-                                                          fontSize:
-                                                              width * 0.045,
-                                                          color: primaryDark2,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                      );
-                                                    }
-
-                                                    if (snapshot.hasData) {
-                                                      return Text(
-                                                        shopData['Latitude'] ==
-                                                                    0 &&
-                                                                shopData[
-                                                                        'Longitude'] ==
-                                                                    0
-                                                            ? 'NONE'
-                                                            : snapshot.data!,
-                                                        maxLines: 2,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style: TextStyle(
-                                                          fontSize:
-                                                              width * 0.045,
-                                                          color: primaryDark2,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                      );
-                                                    }
-
+                            Container(
+                              width: width,
+                              decoration: BoxDecoration(
+                                color: primary2.withOpacity(0.9),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                // horizontal: width * 0.006125,
+                                vertical: height * 0.0125,
+                              ),
+                              child: isChangingAddress
+                                  ? Center(
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  : Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            left: width * 0.0335,
+                                          ),
+                                          child: SizedBox(
+                                            width: width * 0.625,
+                                            child: FutureBuilder(
+                                                future: getAddress(
+                                                  shopData['Latitude'],
+                                                  shopData['Longitude'],
+                                                ),
+                                                builder: (context, snapshot) {
+                                                  if (snapshot.hasData) {
                                                     return Text(
-                                                      'Getting Location',
+                                                      snapshot.data!,
+                                                      maxLines: 2,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       style: TextStyle(
-                                                        fontSize: width * 0.04,
-                                                        color: primaryDark2
-                                                            .withOpacity(0.75),
+                                                        fontSize: width * 0.045,
+                                                        color: primaryDark2,
+                                                        fontWeight:
+                                                            FontWeight.w500,
                                                       ),
                                                     );
-                                                  }),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                              right: width * 0.03,
-                                            ),
-                                            child: IconButton(
-                                              onPressed: () async {
-                                                setState(() {
-                                                  isChangingAddress = true;
-                                                });
-
-                                                double? latitude;
-                                                double? longitude;
-
-                                                await getLocation()
-                                                    .then((coordinates) async {
-                                                  if (coordinates != null) {
-                                                    setState(() {
-                                                      latitude =
-                                                          coordinates.latitude;
-                                                      longitude =
-                                                          coordinates.longitude;
-                                                    });
-                                                    await getAddress(
-                                                      latitude!,
-                                                      longitude!,
-                                                    );
-
-                                                    await store
-                                                        .collection('Business')
-                                                        .doc('Owners')
-                                                        .collection('Shops')
-                                                        .doc(auth
-                                                            .currentUser!.uid)
-                                                        .update({
-                                                      'Latitude': latitude,
-                                                      'Longitude': longitude,
-                                                    });
                                                   }
-                                                });
-                                                setState(() {
-                                                  isChangingAddress = false;
-                                                });
-                                              },
-                                              icon: const Icon(
-                                                FeatherIcons.refreshCw,
-                                              ),
-                                              tooltip: 'Relocate',
-                                            ),
+
+                                                  return Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  );
+                                                }),
                                           ),
-                                        ],
-                                      ),
-                              ),
+                                        ),
+                                        IconButton(
+                                          onPressed: () async {
+                                            setState(() {
+                                              isChangingAddress = true;
+                                            });
+
+                                            double? latitude;
+                                            double? longitude;
+
+                                            await getLocation()
+                                                .then((coordinates) async {
+                                              if (coordinates != null) {
+                                                setState(() {
+                                                  latitude =
+                                                      coordinates.latitude;
+                                                  longitude =
+                                                      coordinates.longitude;
+                                                });
+
+                                                await store
+                                                    .collection('Business')
+                                                    .doc('Owners')
+                                                    .collection('Shops')
+                                                    .doc(auth.currentUser!.uid)
+                                                    .update({
+                                                  'Latitude': latitude,
+                                                  'Longitude': longitude,
+                                                });
+                                              }
+                                            });
+
+                                            setState(() {
+                                              isChangingAddress = false;
+                                            });
+                                          },
+                                          icon: const Icon(
+                                            FeatherIcons.refreshCw,
+                                          ),
+                                          tooltip: 'Relocate',
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            right: width * 0.03,
+                                          ),
+                                          child: IconButton(
+                                            onPressed: () async {
+                                              double? latitude;
+                                              double? longitude;
+
+                                              Navigator.of(context)
+                                                  .push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      PickLocationPage(),
+                                                ),
+                                              )
+                                                  .then((address) async {
+                                                final coordinates = address[1];
+
+                                                setState(() {
+                                                  latitude =
+                                                      coordinates.latitude;
+                                                  longitude =
+                                                      coordinates.longitude;
+                                                });
+
+                                                await store
+                                                    .collection('Business')
+                                                    .doc('Owners')
+                                                    .collection('Shops')
+                                                    .doc(auth.currentUser!.uid)
+                                                    .update({
+                                                  'Latitude': latitude,
+                                                  'Longitude': longitude,
+                                                });
+                                              });
+                                            },
+                                            icon: const Icon(
+                                              FeatherIcons.mapPin,
+                                            ),
+                                            tooltip: 'Select on Map',
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                             ),
                             const SizedBox(height: 14),
 
@@ -998,33 +944,33 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             const SizedBox(height: 14),
 
                             // INDUSTRY
-                            Container(
-                              width: width,
-                              // height: width * 0.16,
-                              alignment: Alignment.centerLeft,
-                              decoration: BoxDecoration(
-                                color: primary2.withOpacity(0.9),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              padding: EdgeInsets.only(
-                                left: width * 0.0335,
-                                top: height * 0.006125,
-                                bottom: height * 0.006125,
-                              ),
-                              child: SizedBox(
-                                width: width * 0.725,
-                                child: Text(
-                                  shopData['Industry'] ?? 'Industry: N/A',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: width * 0.055,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 14),
+                            // Container(
+                            //   width: width,
+                            //   // height: width * 0.16,
+                            //   alignment: Alignment.centerLeft,
+                            //   decoration: BoxDecoration(
+                            //     color: primary2.withOpacity(0.9),
+                            //     borderRadius: BorderRadius.circular(12),
+                            //   ),
+                            //   padding: EdgeInsets.only(
+                            //     left: width * 0.0335,
+                            //     top: height * 0.006125,
+                            //     bottom: height * 0.006125,
+                            //   ),
+                            //   child: SizedBox(
+                            //     width: width * 0.725,
+                            //     child: Text(
+                            //       shopData['Industry'] ?? 'Industry: N/A',
+                            //       maxLines: 1,
+                            //       overflow: TextOverflow.ellipsis,
+                            //       style: TextStyle(
+                            //         fontSize: width * 0.055,
+                            //         fontWeight: FontWeight.w500,
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
+                            // const SizedBox(height: 14),
 
                             // MEMBERSHIP
                             Container(

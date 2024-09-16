@@ -400,7 +400,6 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
           'MembershipDuration': membershipDuration,
           'MembershipStartDateTime': DateTime.now(),
           'MembershipEndDateTime': membershipEndDateTime,
-          // TODO: NO OF BASED ON DURATION
         });
 
         setState(() {
@@ -447,7 +446,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
           isPaying = true;
         });
         try {
-          // TODO: PAYMENT
+          // TODO: NO OF & PAYMENT
 
           await store
               .collection('Business')

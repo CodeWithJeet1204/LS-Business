@@ -1,3 +1,4 @@
+import 'package:Localsearch/auth/login_page.dart';
 import 'package:Localsearch/vendors/page/main/main_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Localsearch/vendors/firebase/auth_methods.dart';
@@ -92,6 +93,10 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
               setState(() {
                 isEmailRegistering = false;
               });
+              await auth.signInWithEmailAndPassword(
+                email: emailController.text.toString(),
+                password: passwordController.text.toString(),
+              );
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
                   builder: (context) => MainPage(),
@@ -138,7 +143,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
               'registration': 'email',
               'GSTNumber': null,
               'Description': null,
-              'Industry': null,
+              // 'Industry': null,
               'Image': null,
               'Type': [],
               'MembershipName': null,
@@ -234,13 +239,13 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
             });
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (context) => MainPage(),
+                builder: (context) => LoginPage(),
               ),
               (route) => false,
             );
             return mySnackBar(
               context,
-              'This account is already registered. Signing you in',
+              'This account is already registered. Log in',
             );
           }
         }
@@ -387,7 +392,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
           'registration': 'google',
           'GSTNumber': null,
           'Description': null,
-          'Industry': null,
+          // 'Industry': null,
           'Image': null,
           'Type': [],
           'MembershipName': null,
@@ -464,7 +469,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                 // const HeadText(
                 //   text: 'REGISTER',
                 // ),
-                SizedBox(height: width * 0.65),
+                // SizedBox(height: width * 0.65),
 
                 // EMAIL
                 MyCollapseContainer(

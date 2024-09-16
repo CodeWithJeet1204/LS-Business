@@ -84,7 +84,7 @@ class _AddStatusPageState extends State<AddStatusPage> {
           try {
             Reference ref = FirebaseStorage.instance
                 .ref()
-                .child('Data/Posts')
+                .child('Vendor/Posts')
                 .child(const Uuid().v4());
             await ref.putFile(img).whenComplete(() async {
               await ref.getDownloadURL().then((value) {

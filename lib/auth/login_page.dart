@@ -102,6 +102,14 @@ class _LoginPageState extends State<LoginPage> {
                 content: Text(
                   'This account is not registered. Register with this Email',
                 ),
+                actions: [
+                  MyTextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    text: 'OK',
+                  ),
+                ],
               ),
             );
             Navigator.of(context).pushAndRemoveUntil(
@@ -265,6 +273,14 @@ class _LoginPageState extends State<LoginPage> {
                 content: Text(
                   'This account is not registered. Register with this Phone Number',
                 ),
+                actions: [
+                  MyTextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    text: 'OK',
+                  ),
+                ],
               ),
             );
             Navigator.of(context).pushAndRemoveUntil(
@@ -439,6 +455,14 @@ class _LoginPageState extends State<LoginPage> {
                 content: Text(
                   'This account is not registered. Register with this Google Account',
                 ),
+                actions: [
+                  MyTextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    text: 'OK',
+                  ),
+                ],
               ),
             );
             Navigator.of(context).pushAndRemoveUntil(
@@ -620,7 +644,8 @@ class _LoginPageState extends State<LoginPage> {
               // const HeadText(
               //   text: 'LOGIN',
               // ),
-              SizedBox(height: width * 0.63),
+              // SizedBox(height: width * 0.65),
+
               MyCollapseContainer(
                 width: width,
                 text: 'Email',

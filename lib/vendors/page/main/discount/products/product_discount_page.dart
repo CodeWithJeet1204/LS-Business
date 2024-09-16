@@ -146,7 +146,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
         if (_image != null) {
           Reference ref = FirebaseStorage.instance
               .ref()
-              .child('Data/Discounts/Products')
+              .child('Vendor/Discounts/Products')
               .child(discountId);
           await ref.putFile(_image!).whenComplete(() async {
             await ref.getDownloadURL().then((value) {

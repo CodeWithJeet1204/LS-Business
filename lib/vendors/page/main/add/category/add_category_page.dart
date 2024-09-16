@@ -74,7 +74,7 @@
 
 //             Reference ref = FirebaseStorage.instance
 //                 .ref()
-//                 .child('Data/Categories')
+//                 .child('Vendor/Categories')
 //                 .child(categoryId);
 //             await ref.putFile(_image!).whenComplete(() async {
 //               await ref.getDownloadURL().then((value) {

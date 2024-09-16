@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:Localsearch/vendors/models/household_types.dart';
 import 'package:Localsearch/vendors/register/business_choose_category_page_2.dart';
 import 'package:Localsearch/widgets/select_container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,6 +24,7 @@ class _BusinessChooseCategoryPage1State
     extends State<BusinessChooseCategoryPage1> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
+  Map<String, dynamic>? shopTypes;
   List selected = [];
   bool isNext = false;
 
@@ -36,7 +36,24 @@ class _BusinessChooseCategoryPage1State
         selected = widget.preSelected!;
       });
     }
+    getShopTypes();
     super.initState();
+  }
+
+  // GET SHOP TYPES
+  Future<void> getShopTypes() async {
+    final shopTypesSnap = await store
+        .collection('Shop Types & Category Data')
+        .doc('Shop Types Data')
+        .get();
+
+    final shopTypesData = shopTypesSnap.data()!;
+
+    final myShopTypes = shopTypesData['shopTypesData'];
+
+    setState(() {
+      shopTypes = myShopTypes;
+    });
   }
 
   // NEXT
@@ -85,47 +102,52 @@ class _BusinessChooseCategoryPage1State
         title: const Text('Choose Your Type'),
         automaticallyImplyLeading: false,
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: width * 0.0125),
-          child: LayoutBuilder(builder: (context, constraints) {
-            final width = constraints.maxWidth;
-            final height = constraints.maxHeight;
+      body: shopTypes == null
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : SafeArea(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: width * 0.0125),
+                child: LayoutBuilder(builder: (context, constraints) {
+                  final width = constraints.maxWidth;
+                  final height = constraints.maxHeight;
 
-            return SizedBox(
-              width: width,
-              height: height * 0.8875,
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 16 / 9,
-                ),
-                itemCount: householdTypes.length,
-                itemBuilder: (context, index) {
-                  final name = householdTypes.keys.toList()[index];
-                  final imageUrl = householdTypes.values.toList()[index];
-
-                  return SelectContainer(
+                  return SizedBox(
                     width: width,
-                    text: name,
-                    isSelected: selected.contains(name),
-                    imageUrl: imageUrl,
-                    onTap: () {
-                      setState(() {
-                        if (selected.contains(name)) {
-                          selected.remove(name);
-                        } else {
-                          selected.add(name);
-                        }
-                      });
-                    },
+                    height: height * 0.8875,
+                    child: GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 16 / 9,
+                      ),
+                      itemCount: shopTypes!.length,
+                      itemBuilder: (context, index) {
+                        final name = shopTypes!.keys.toList()[index];
+                        final imageUrl = shopTypes!.values.toList()[index];
+
+                        return SelectContainer(
+                          width: width,
+                          text: name,
+                          isSelected: selected.contains(name),
+                          imageUrl: imageUrl,
+                          onTap: () {
+                            setState(() {
+                              if (selected.contains(name)) {
+                                selected.remove(name);
+                              } else {
+                                selected.add(name);
+                              }
+                            });
+                          },
+                        );
+                      },
+                    ),
                   );
-                },
+                }),
               ),
-            );
-          }),
-        ),
-      ),
+            ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await next();

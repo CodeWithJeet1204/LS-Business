@@ -49,7 +49,7 @@ class _AddProductPage5State extends State<AddProductPage5> {
         try {
           Reference ref = FirebaseStorage.instance
               .ref()
-              .child('Data/Products')
+              .child('Vendor/Products')
               .child(const Uuid().v4());
           await ref.putFile(img).whenComplete(() async {
             await ref.getDownloadURL().then((value) {

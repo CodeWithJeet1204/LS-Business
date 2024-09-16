@@ -1,5 +1,4 @@
 // ignore_for_file: unnecessary_null_comparison
-import 'package:Localsearch/vendors/models/household_category_properties.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Localsearch/vendors/page/main/add/product/add_product_page_5.dart';
 import 'package:Localsearch/vendors/provider/add_product_provider.dart';
@@ -34,7 +33,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
   final otherInfoController = TextEditingController();
   final otherInfoValueController = TextEditingController();
   String? otherInfo;
-
+  Map<String, Map<String, Map<String, dynamic>>>? householdCategoryProperties;
   final property0Controller = TextEditingController();
   final property1Controller = TextEditingController();
   final property2Controller = TextEditingController();
@@ -57,6 +56,12 @@ class _AddProductPage4State extends State<AddProductPage4> {
   String? propertyValue5;
   bool isSaving = false;
 
+  // INIT STATE
+  @override
+  void initState() {
+    super.initState();
+  }
+
   // DISPOSE
   @override
   void dispose() {
@@ -70,6 +75,22 @@ class _AddProductPage4State extends State<AddProductPage4> {
     property4Controller.dispose();
     property5Controller.dispose();
     super.dispose();
+  }
+
+  // GET CATEGORY PROPERTIES
+  Future<void> getCategoryProperties() async {
+    final categoryPropertySnap = await store
+        .collection('Shop Types & Category Data')
+        .doc('Category Properties')
+        .get();
+
+    final categoryPropertyData = categoryPropertySnap.data()!;
+
+    final categoryProperties = categoryPropertyData['categoryPropertiesData'];
+
+    setState(() {
+      householdCategoryProperties = categoryProperties;
+    });
   }
 
   // ADD TAG
@@ -292,30 +313,50 @@ class _AddProductPage4State extends State<AddProductPage4> {
     }
   }
 
+  // GET PROPERTIES KEYS
   String getPropertiesKeys(int index) {
-    return householdCategoryProperties[widget.shopType]![index][0];
+    return householdCategoryProperties![widget.shopType]!.keys.toList()[index];
   }
 
+  // GET PROPERTIES HINT TEXT
   String getPropertiesHintText(int index) {
-    return householdCategoryProperties[widget.shopType]![index][1];
+    return householdCategoryProperties![widget.shopType]!.values.toList()[index]
+        ['hintText'];
   }
 
+  // GET NO. OF ANSWERS
   int getNoOfAnswers(int index) {
-    return householdCategoryProperties[widget.shopType]![index][2];
+    return householdCategoryProperties![widget.shopType]!.values.toList()[index]
+        ['noOfAsnwers'];
   }
 
+  // GET DROP DOWN ITEMS
   List<String> getDropDownItems(int index) {
-    return householdCategoryProperties[widget.shopType]![index][3];
+    return householdCategoryProperties![widget.shopType]!.values.toList()[index]
+        ['dropDownItems'];
   }
 
+  // GET PROPERTIES INPUT TYPE
   TextInputType getPropertiesInputType(int index) {
-    return householdCategoryProperties[widget.shopType]![index][4];
+    final number = householdCategoryProperties![widget.shopType]!
+        .values
+        .toList()[index]['inputType'];
+    if (number == 2) {
+      return TextInputType.datetime;
+    } else if (number == 1) {
+      return TextInputType.number;
+    } else {
+      return TextInputType.text;
+    }
   }
 
+  // GET MAX LINES
   int getMaxLines(int index) {
-    return householdCategoryProperties[widget.shopType]![index][5];
+    return householdCategoryProperties![widget.shopType]!.values.toList()[index]
+        ['maxLines'];
   }
 
+  // GET CHANGE BOOL
   bool getChangeBool(int index) {
     if (getNoOfAnswers(index) == 1 || getNoOfAnswers(index) == 3) {
       return true;
@@ -324,8 +365,10 @@ class _AddProductPage4State extends State<AddProductPage4> {
     }
   }
 
+  // GET COMPULSORY
   bool getCompulsory(int index) {
-    return householdCategoryProperties[widget.shopType]![index][6];
+    return householdCategoryProperties![widget.shopType]!.values.toList()[index]
+        ['compulsory'];
   }
 
   @override
@@ -492,7 +535,9 @@ class _AddProductPage4State extends State<AddProductPage4> {
                           ),
 
                           // PROPERTY 0
-                          getPropertiesKeys(0) != ''
+                          getPropertiesKeys(0) != '2' ||
+                                  getPropertiesKeys(0) != '0' ||
+                                  getPropertiesKeys(0) != '1'
                               ? PropertyBox(
                                   headText: getCompulsory(0)
                                       ? '${getPropertiesKeys(0)}*'
@@ -537,10 +582,10 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                       (e) => DropdownMenuItem(
                                                         value: e.toUpperCase(),
                                                         child: Text(
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            e.toUpperCase()),
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          e.toUpperCase(),
+                                                        ),
                                                       ),
                                                     )
                                                     .toList(),
@@ -695,7 +740,9 @@ class _AddProductPage4State extends State<AddProductPage4> {
                               : Container(),
 
                           // PROPERTY 1
-                          getPropertiesKeys(1) != ''
+                          getPropertiesKeys(1) != '2' ||
+                                  getPropertiesKeys(1) != '0' ||
+                                  getPropertiesKeys(1) != '1'
                               ? PropertyBox(
                                   headText: getCompulsory(1)
                                       ? '${getPropertiesKeys(1)}*'
@@ -898,7 +945,9 @@ class _AddProductPage4State extends State<AddProductPage4> {
                               : Container(),
 
                           // PROPERTY 2
-                          getPropertiesKeys(2) != ''
+                          getPropertiesKeys(2) != '2' ||
+                                  getPropertiesKeys(2) != '0' ||
+                                  getPropertiesKeys(2) != '1'
                               ? PropertyBox(
                                   headText: getCompulsory(2)
                                       ? '${getPropertiesKeys(2)}*'
@@ -1101,7 +1150,9 @@ class _AddProductPage4State extends State<AddProductPage4> {
                               : Container(),
 
                           // PROPERTY 3
-                          getPropertiesKeys(3) != ''
+                          getPropertiesKeys(3) != '2' ||
+                                  getPropertiesKeys(3) != '0' ||
+                                  getPropertiesKeys(3) != '1'
                               ? PropertyBox(
                                   headText: getCompulsory(3)
                                       ? '${getPropertiesKeys(3)}*'
@@ -1304,7 +1355,9 @@ class _AddProductPage4State extends State<AddProductPage4> {
                               : Container(),
 
                           // PROPERTY 4
-                          getPropertiesKeys(4) != ''
+                          getPropertiesKeys(4) != '2' ||
+                                  getPropertiesKeys(4) != '0' ||
+                                  getPropertiesKeys(4) != '1'
                               ? PropertyBox(
                                   headText: getCompulsory(4)
                                       ? '${getPropertiesKeys(4)}*'
@@ -1507,7 +1560,9 @@ class _AddProductPage4State extends State<AddProductPage4> {
                               : Container(),
 
                           // PROPERTY 5
-                          getPropertiesKeys(5) != ''
+                          getPropertiesKeys(5) != '2' ||
+                                  getPropertiesKeys(5) != '0' ||
+                                  getPropertiesKeys(5) != '1'
                               ? PropertyBox(
                                   headText: getCompulsory(5)
                                       ? '${getPropertiesKeys(5)}*'

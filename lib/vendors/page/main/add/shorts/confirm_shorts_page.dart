@@ -64,7 +64,7 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
       isDone = true;
     });
 
-    Reference shortsRef = storage.ref().child('Data/Shorts').child(productId);
+    Reference shortsRef = storage.ref().child('Vendor/Shorts').child(productId);
 
     UploadTask uploadShortsTask = shortsRef.putFile(
       await compressVideo(videoPath),
@@ -74,7 +74,7 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
     String shortsDownloadUrl = await shortsSnap.ref.getDownloadURL();
 
     Reference thumbnailRef =
-        storage.ref().child('Data/Thumbnails').child(productId);
+        storage.ref().child('Vendor/Thumbnails').child(productId);
 
     UploadTask uploadThumbnailTask = thumbnailRef.putFile(
       await getThumbnail(videoPath),

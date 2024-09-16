@@ -64,7 +64,7 @@ class _AllShortsPageState extends State<AllShortsPage> {
 
         Reference thumbnailRef = FirebaseStorage.instance
             .ref()
-            .child('Data/Thumbnails')
+            .child('Vendor/Thumbnails')
             .child(productId);
 
         String thumbnailDownloadUrl = await thumbnailRef.getDownloadURL();
