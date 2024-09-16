@@ -22,7 +22,6 @@ import 'package:Localsearch/vendors/provider/products_added_to_brand.dart';
 import 'package:Localsearch/vendors/provider/products_added_to_category_provider.dart';
 import 'package:Localsearch/vendors/provider/select_brand_for_product_provider.dart';
 import 'package:Localsearch/vendors/provider/shop_type_provider.dart';
-import 'package:Localsearch/vendors/provider/sign_in_method_provider.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -42,9 +41,6 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) => SignInMethodProvider(),
-        ),
         ChangeNotifierProvider(
           create: (_) => AddProductProvider(),
         ),
@@ -109,11 +105,10 @@ class MyApp extends StatelessWidget {
           color: primaryDark2,
         ),
         appBarTheme: const AppBarTheme(
-          // toolbarHeight: 50,
           backgroundColor: primary,
           foregroundColor: primaryDark,
           titleTextStyle: TextStyle(
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w500,
             color: primaryDark,
             fontSize: 22,
             letterSpacing: 1,
@@ -163,7 +158,7 @@ class MyApp extends StatelessWidget {
                       } else {
                         return const EmailVerifyPage(
                           // mode: 'vendor',
-                          isLogging: true,
+                          fromMainPage: true,
                         );
                       }
                     } else {

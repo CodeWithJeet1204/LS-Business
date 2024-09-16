@@ -72,7 +72,7 @@ class AuthMethods {
     hostedDomain: '',
   );
 
-  /*Future<void>*/ signInWithGoogle(BuildContext context) async {
+  Future<UserCredential?> signInWithGoogle(BuildContext context) async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       final GoogleSignInAuthentication googleAuth =
@@ -90,7 +90,9 @@ class AuthMethods {
           if (context.mounted) {
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: ((context) => const UserRegisterDetailsPage()),
+                builder: ((context) => const OwnerRegisterDetailsPage(
+                      fromMainPage: false,
+                    )),
               ),
               (route) => false,
             );
@@ -99,10 +101,11 @@ class AuthMethods {
       }
       // }
       return userCredential;
-    } on FirebaseAuthException catch (e) {
+    } catch (e) {
       if (context.mounted) {
-        mySnackBar(context, e.message!);
+        mySnackBar(context, e.toString());
       }
+      return null;
     }
   }
 
@@ -131,7 +134,7 @@ class AuthMethods {
             MaterialPageRoute(
               builder: (context) => NumberVerifyPage(
                 verificationId: verificationId,
-                isLogging: false,
+                fromMainPage: false,
                 phoneNumber: phoneNumber,
                 // mode: mode,
               ),

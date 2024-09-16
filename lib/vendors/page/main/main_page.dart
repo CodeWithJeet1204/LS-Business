@@ -1,3 +1,10 @@
+import 'package:Localsearch/auth/login_page.dart';
+import 'package:Localsearch/auth/verify/number_verify.dart';
+import 'package:Localsearch/under_development_page.dart';
+import 'package:Localsearch/vendors/register/business_choose_category_page_2.dart';
+import 'package:Localsearch/vendors/register/business_choose_category_page_3.dart';
+import 'package:Localsearch/vendors/register/business_timings_page.dart';
+import 'package:Localsearch/vendors/register/get_location_page.dart';
 import 'package:Localsearch/widgets/text_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
@@ -7,12 +14,10 @@ import 'package:Localsearch/vendors/page/main/discount/add_discount_page.dart';
 import 'package:Localsearch/vendors/page/main/profile/profile_page.dart';
 import 'package:Localsearch/vendors/register/business_choose_category_page_1.dart';
 import 'package:Localsearch/vendors/register/business_register_details_page.dart';
-import 'package:Localsearch/vendors/register/business_verification_page.dart';
 import 'package:Localsearch/vendors/register/membership_page.dart';
 import 'package:Localsearch/vendors/register/owner_register_details_page.dart';
 import 'package:Localsearch/auth/verify/email_verify.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:Localsearch/vendors/utils/is_payed.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +39,6 @@ class _MainPageState extends State<MainPage> {
 
   List<Widget> allPages = [
     const AnalyticsPage(),
-    // const AllCommentPage(),
     const AddPage(),
     const AddDiscountPage(),
     const ProfilePage(),
@@ -47,182 +51,142 @@ class _MainPageState extends State<MainPage> {
     super.initState();
   }
 
-  // IS PAYED
-  Future<bool> isPayed() async {
-    final isPayed = await getIsPayed();
-    return isPayed;
-  }
-
   // DETAILS ADDED
   Future<void> detailsAdded() async {
-    final DocumentSnapshot<Map<String, dynamic>> getUserDetailsAdded =
-        await store
-            .collection('Business')
-            .doc('Owners')
-            .collection('Users')
-            .doc(auth.currentUser!.uid)
-            .get();
+    final developmentSnap =
+        await store.collection('Development').doc('Under Development').get();
 
-    final Map<String, dynamic>? getUserDetailsAddedData =
-        getUserDetailsAdded.data();
+    final developmentData = developmentSnap.data()!;
 
-    final DocumentSnapshot<Map<String, dynamic>> getBusinessDetailsAdded =
-        await store
-            .collection('Business')
-            .doc('Owners')
-            .collection('Shops')
-            .doc(auth.currentUser!.uid)
-            .get();
+    final businessUnderDevelopment =
+        developmentData['businessUnderDevelopment'];
 
-    // Future<bool> getCommonCategories(String type) async {
-    //   final getCommonCategoriesDetailsAdded = await store
-    //       .collection('Business')
-    //       .doc('Data')
-    //       .collection('Category')
-    //       .doc(type)
-    //       .get();
+    if (businessUnderDevelopment) {
+      detailsPage = UnderDevelopmentPage();
+    } else {
+      final getUserDetailsAdded = await store
+          .collection('Business')
+          .doc('Owners')
+          .collection('Users')
+          .doc(auth.currentUser!.uid)
+          .get();
 
-    //   if (getCommonCategoriesDetailsAdded.data()!.isNotEmpty) {
-    //     return false;
-    //   } else {
-    //     return true;
-    //   }
-    // }
+      final getUserDetailsAddedData = getUserDetailsAdded.data()!;
 
-    if (getUserDetailsAdded.exists && getBusinessDetailsAdded.exists) {
-      /*if (!(await isPayed())) {
-        detailsPage = const LoginPage(
-          mode: 'vendor',
-        );*/
-      // } else {
-      if (getUserDetailsAddedData!['Email'] == null ||
-          getUserDetailsAddedData['Phone Number'] == null) {
-        detailsPage = const UserRegisterDetailsPage();
-      } else if (getUserDetailsAddedData['Phone Number'] != null &&
-          getUserDetailsAddedData['numberVerified'] != true) {
-        if (auth.currentUser!.email != null &&
+      final getBusinessDetailsAdded = await store
+          .collection('Business')
+          .doc('Owners')
+          .collection('Shops')
+          .doc(auth.currentUser!.uid)
+          .get();
+
+      final getBusinessDetailsAddedData = getBusinessDetailsAdded.data()!;
+
+      if (getUserDetailsAdded.exists && getBusinessDetailsAdded.exists) {
+        if (getUserDetailsAddedData['Email'] == null ||
+            getUserDetailsAddedData['Phone Number'] == null) {
+          detailsPage = const OwnerRegisterDetailsPage(
+            fromMainPage: true,
+          );
+        } else if (getUserDetailsAddedData['Image'] == null) {
+          detailsPage = const OwnerRegisterDetailsPage(
+            fromMainPage: true,
+          );
+        } else if (getUserDetailsAddedData['registration'] == 'phone number' &&
+            getUserDetailsAddedData['numberVerified'] == false) {
+          detailsPage = NumberVerifyPage(
+            fromMainPage: true,
+            phoneNumber: getUserDetailsAddedData['Phone Number'],
+          );
+        } else if (auth.currentUser!.email != null &&
             !auth.currentUser!.emailVerified) {
           detailsPage = const EmailVerifyPage(
             // mode: 'vendor',
-            isLogging: true,
+            fromMainPage: true,
           );
-        } else {
-          if (getUserDetailsAddedData['Image'] == null) {
-            detailsPage = const UserRegisterDetailsPage();
-          } else if (getBusinessDetailsAdded['Name'] == null ||
-              getBusinessDetailsAdded['Latitude'] == null ||
-              getBusinessDetailsAdded['Description'] == null) {
-            detailsPage = const BusinessRegisterDetailsPage();
-          } else if (getUserDetailsAddedData['Image'] != null &&
-              getBusinessDetailsAdded['Name'] == null) {
-            detailsPage = const BusinessRegisterDetailsPage();
-          } else if (getBusinessDetailsAdded['Name'] != null &&
-                  getBusinessDetailsAdded['GSTNumber'] == null ||
-              getBusinessDetailsAdded['AadhaarNumber'] == null) {
-            detailsPage = const BusinessVerificationPage();
-          } else if (getBusinessDetailsAdded['GSTNumber'] != null &&
-              getBusinessDetailsAdded['Type'] == null) {
-            detailsPage = const BusinessChooseCategoryPage1();
-          } /* else if (getBusinessDetailsAdded['Type'] != null &&
-        await getCommonCategories(getBusinessDetailsAdded['Type'])) {
-      detailsPage = SelectBusinessCategoryPage();
-    }*/
-          else if (getUserDetailsAddedData['Image'] != null &&
-              getBusinessDetailsAdded['GSTNumber'] != null &&
-              (getBusinessDetailsAdded['MembershipName'] == null ||
-                  getBusinessDetailsAdded['MembershipEndDateTime'] == null)) {
-            detailsPage =
-                const SelectMembershipPage(hasAvailedLaunchOffer: false);
-          } else if (DateTime.now().isAfter(
-              (getBusinessDetailsAdded['MembershipEndDateTime'] as Timestamp)
-                  .toDate())) {
-            detailsPage = const SelectMembershipPage(
-              hasAvailedLaunchOffer: true,
+        } else if (getBusinessDetailsAddedData['Name'] == null ||
+            getBusinessDetailsAddedData['Latitude'] == null ||
+            getBusinessDetailsAddedData['Description'] == null) {
+          detailsPage = const BusinessRegisterDetailsPage(
+            fromMainPage: true,
+          );
+        } else if (getBusinessDetailsAddedData['AadhaarNumber'] != null &&
+            getBusinessDetailsAddedData['Type'] == null) {
+          detailsPage = const BusinessChooseCategoryPage1(
+            isEditing: true,
+          );
+        } else if (getBusinessDetailsAddedData['Type'] != null &&
+            getBusinessDetailsAddedData['Categories'] == null) {
+          detailsPage = BusinessChooseCategoryPage2(
+            selectedTypes: getBusinessDetailsAddedData['Type'],
+            isEditing: true,
+          );
+        } else if (getBusinessDetailsAddedData['Categories'] != null &&
+            getBusinessDetailsAddedData['Products'] == null) {
+          detailsPage = BusinessChooseCategoryPage3(
+            selectedTypes: getBusinessDetailsAddedData['Type'],
+            selectedCategories: getBusinessDetailsAddedData['Categories'],
+            isEditing: true,
+          );
+        } else if (getBusinessDetailsAddedData['City'] == null ||
+            getBusinessDetailsAddedData['Latitude'] == null) {
+          detailsPage = GetLocationPage();
+        } else if (getBusinessDetailsAddedData['weekdayStartTime'] == null ||
+            getBusinessDetailsAddedData['weekdayEndTime'] == null) {
+          detailsPage = SelectBusinessTimingsPage(
+            fromMainPage: true,
+          );
+        } else if (getUserDetailsAddedData['Image'] != null &&
+            getBusinessDetailsAddedData['AadhaarNumber'] != null &&
+            (getBusinessDetailsAddedData['MembershipName'] == null ||
+                getBusinessDetailsAddedData['MembershipEndDateTime'] == null)) {
+          detailsPage = const SelectMembershipPage(
+            hasAvailedLaunchOffer: false,
+          );
+        } else if (DateTime.now().isAfter(
+            (getBusinessDetailsAddedData['MembershipEndDateTime'] as Timestamp)
+                .toDate())) {
+          detailsPage = const SelectMembershipPage(
+            hasAvailedLaunchOffer: true,
+          );
+          if (mounted) {
+            await showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text('Your Membership Has Expired'),
+                  content: Text('Select New Membership to continue'),
+                  actions: [
+                    MyTextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      text: 'OK',
+                      textColor: Colors.green,
+                    ),
+                  ],
+                );
+              },
             );
-            if (mounted) {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: Text('Your Membership Has Expired'),
-                    content: Text('Select New Membership to continue'),
-                    actions: [
-                      MyTextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        text: 'OK',
-                        textColor: Colors.green,
-                      ),
-                    ],
-                  );
-                },
-              );
-            }
-          } else {
-            detailsPage = null;
           }
+        } else {
+          detailsPage = null;
         }
-      } else if (getUserDetailsAddedData['Image'] == null) {
-        detailsPage = const UserRegisterDetailsPage();
-      } else if (getUserDetailsAddedData['Image'] != null &&
-          getBusinessDetailsAdded['GSTNumber'] == null) {
-        detailsPage = const BusinessRegisterDetailsPage();
-      } else if (getBusinessDetailsAdded['Name'] == null ||
-          getBusinessDetailsAdded['Latitude'] == null ||
-          getBusinessDetailsAdded['Description'] == null) {
-        detailsPage = const BusinessRegisterDetailsPage();
-      } else if (getBusinessDetailsAdded['GSTNumber'] != null &&
-          getBusinessDetailsAdded['Type'] == null) {
-        detailsPage = const BusinessChooseCategoryPage1();
-      } /* else if (getBusinessDetailsAdded['Type'] != null &&
-        await getCommonCategories(getBusinessDetailsAdded['Type'])) {
-      detailsPage = SelectBusinessCategoryPage();
-    }*/
-      else if (getUserDetailsAddedData['Image'] != null &&
-          getBusinessDetailsAdded['GSTNumber'] != null &&
-          (getBusinessDetailsAdded['MembershipName'] == null ||
-              getBusinessDetailsAdded['MembershipEndDateTime'] == null)) {
-        detailsPage = const SelectMembershipPage(
-          hasAvailedLaunchOffer: false,
-        );
-      } else if (DateTime.now().isAfter(
-          (getBusinessDetailsAdded['MembershipEndDateTime'] as Timestamp)
-              .toDate())) {
-        detailsPage = const SelectMembershipPage(
-          hasAvailedLaunchOffer: true,
-        );
+        // }
+      } else {
+        await auth.signOut();
         if (mounted) {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text('Your Membership Has Expired'),
-                content: Text('Select New Membership to continue'),
-                actions: [
-                  MyTextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    text: 'OK',
-                    textColor: Colors.green,
-                  ),
-                ],
-              );
-            },
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => LoginPage(),
+            ),
+            (route) => false,
+          );
+          return mySnackBar(
+            context,
+            'This account was created in User app, use another account to use here',
           );
         }
-      } else {
-        detailsPage = null;
-      }
-      // }
-    } else {
-      await auth.signOut();
-      if (mounted) {
-        return mySnackBar(
-          context,
-          'This account was created in User app, use another account to sign in here',
-        );
       }
     }
 
@@ -293,7 +257,7 @@ class _MainPageState extends State<MainPage> {
                   FeatherIcons.user,
                 ),
                 icon: Icon(
-                  Icons.person_outline_rounded,
+                  FeatherIcons.user,
                 ),
                 label: 'Profile',
               ),

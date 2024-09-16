@@ -1,3 +1,4 @@
+import 'package:Localsearch/vendors/page/main/main_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:Localsearch/widgets/page_view.dart';
 import 'package:Localsearch/widgets/text_button.dart';
@@ -12,10 +13,11 @@ class IntroPageView extends StatefulWidget {
 }
 
 class _IntroPageViewState extends State<IntroPageView> {
-  final PageController controller = PageController();
+  final controller = PageController();
   int currentIndex = 0;
   String nextText = 'NEXT';
 
+  // ON SKIP
   void onSkip() {
     controller.animateToPage(
       2,
@@ -24,14 +26,22 @@ class _IntroPageViewState extends State<IntroPageView> {
     );
   }
 
+  // ON NEXT
   void onNext() {
-    nextText == 'NEXT'
-        ? controller.animateToPage(
-            currentIndex + 1,
-            duration: const Duration(seconds: 1),
-            curve: Curves.easeInOut,
-          )
-        : Navigator.of(context).popAndPushNamed('/profile');
+    if (nextText == 'NEXT') {
+      controller.animateToPage(
+        currentIndex + 1,
+        duration: const Duration(seconds: 1),
+        curve: Curves.easeInOut,
+      );
+    } else {
+      Navigator.of(context).pop();
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => MainPage(),
+        ),
+      );
+    }
   }
 
   @override

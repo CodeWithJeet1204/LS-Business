@@ -12,14 +12,14 @@ class BusinessChooseCategoryPage3 extends StatefulWidget {
     super.key,
     required this.selectedCategories,
     required this.selectedTypes,
+    required this.isEditing,
     this.selectedProducts,
-    this.isEditing,
   });
 
+  final bool isEditing;
   final List selectedTypes;
   final List selectedCategories;
   final List? selectedProducts;
-  final bool? isEditing;
 
   @override
   State<BusinessChooseCategoryPage3> createState() =>
@@ -42,6 +42,26 @@ class _BusinessChooseCategoryPage3State
       });
     }
     super.initState();
+  }
+
+  // GET PRODUCTS FOR SUB CATEGORY
+  Future<List<String>> getProductsForSubCategory(String subCategory) async {
+    final catalogueSnap = await store
+        .collection('Shop Types & Category Data')
+        .doc('Catalogue')
+        .get();
+
+    final catalogueData = catalogueSnap.data()!;
+
+    final catalogue = catalogueData['catalogueData'];
+
+    for (var category in widget.selectedTypes) {
+      final subCategories = catalogue[category.trim()];
+      if (subCategories != null && subCategories.containsKey(subCategory)) {
+        return subCategories[subCategory]!;
+      }
+    }
+    return [];
   }
 
   // NEXT
@@ -69,7 +89,7 @@ class _BusinessChooseCategoryPage3State
 
     if (mounted) {
       Navigator.of(context).pop();
-      if (widget.isEditing != null && widget.isEditing!) {
+      if (widget.isEditing) {
         Navigator.of(context).pop();
         Navigator.of(context).pop();
         Navigator.of(context).push(
@@ -85,31 +105,13 @@ class _BusinessChooseCategoryPage3State
       } else {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: ((context) => const SelectBusinessTimingsPage()),
+            builder: ((context) => const SelectBusinessTimingsPage(
+                  fromMainPage: false,
+                )),
           ),
         );
       }
     }
-  }
-
-  // GET PRODUCTS FOR SUB CATEGORY
-  Future<List<String>> getProductsForSubCategory(String subCategory) async {
-    final catalogueSnap = await store
-        .collection('Shop Types & Category Data')
-        .doc('Catalogue')
-        .get();
-
-    final catalogueData = catalogueSnap.data()!;
-
-    final catalogue = catalogueData['catalogueData'];
-
-    for (var category in widget.selectedTypes) {
-      final subCategories = catalogue[category.trim()];
-      if (subCategories != null && subCategories.containsKey(subCategory)) {
-        return subCategories[subCategory]!;
-      }
-    }
-    return [];
   }
 
   @override
@@ -263,7 +265,7 @@ class _BusinessChooseCategoryPage3State
         },
         child: isNext
             ? const CircularProgressIndicator()
-            : const Icon(Icons.arrow_forward),
+            : Icon(widget.isEditing ? Icons.done : Icons.arrow_forward),
       ),
     );
   }

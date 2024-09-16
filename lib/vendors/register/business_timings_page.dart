@@ -1,3 +1,4 @@
+import 'package:Localsearch/vendors/page/main/main_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,7 +10,12 @@ import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:Localsearch/widgets/text_button.dart';
 
 class SelectBusinessTimingsPage extends StatefulWidget {
-  const SelectBusinessTimingsPage({super.key});
+  const SelectBusinessTimingsPage({
+    super.key,
+    required this.fromMainPage,
+  });
+
+  final bool fromMainPage;
 
   @override
   State<SelectBusinessTimingsPage> createState() =>
@@ -218,14 +224,23 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
       });
 
       if (mounted) {
-        Navigator.of(context).pop();
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const SelectMembershipPage(
-              hasAvailedLaunchOffer: false,
+        if (widget.fromMainPage) {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => MainPage(),
             ),
-          ),
-        );
+            (route) => false,
+          );
+        } else {
+          Navigator.of(context).pop();
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const SelectMembershipPage(
+                hasAvailedLaunchOffer: false,
+              ),
+            ),
+          );
+        }
       }
     } catch (e) {
       setState(() {
@@ -923,7 +938,7 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
 
                   // NEXT
                   MyButton(
-                    text: 'NEXT',
+                    text: widget.fromMainPage ? 'DONE' : 'NEXT',
                     onTap: () async {
                       await next();
                     },

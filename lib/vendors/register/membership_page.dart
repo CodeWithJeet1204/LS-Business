@@ -30,10 +30,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
   final store = FirebaseFirestore.instance;
   bool isOffer = false;
   Map<String, dynamic>? offerData;
-  bool isRegistrationSelected = false;
-  bool isBasicSelected = false;
-  bool isGoldSelected = false;
-  bool isPremiumSelected = false;
+  String? selectedMembership;
   bool isAvailingOffer = false;
   bool isPaying = false;
   String? selectedDuration;
@@ -41,9 +38,9 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
   Map<String, List<String>> membershipDurations = {};
   Map<String, String> membershipReverseDurations = {};
   Map<String, Map<String, dynamic>> membershipDetails = {};
+  Map<String, Map<String, dynamic>> membershipQuota = {};
   String? selectedPrice;
   int? currentPrice;
-  String? currentMembership;
   bool isData = false;
 
   // INIT STATE
@@ -228,9 +225,13 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
       });
     }
 
-    // MEMBERSHIP
-    List<String> membershipTypes = ['Registration', 'Basic', 'Gold', 'Premium'];
+    final membershipTypeSnap =
+        await store.collection('Membership').doc('Membership Types').get();
 
+    final membershipTypesData = membershipTypeSnap.data()!;
+
+    // MEMBERSHIP
+    final membershipTypes = membershipTypesData['membershipTypes'];
     for (String membershipType in membershipTypes) {
       final membershipSnapshot =
           await store.collection('Membership').doc(membershipType).get();
@@ -324,35 +325,33 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
   Future<void> showInfoDialog() async {
     await showDialog(
       context: context,
-      builder: ((context) => AlertDialog(
-            title: const Text(
-              'Select Membership',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+      builder: ((context) {
+        return AlertDialog(
+          title: const Text(
+            'Select Membership',
+          ),
+          content: const Text(
+            'First select the Duration for which you want the membership\nThen the respective prices will be displayed\nand then select one of them.',
+          ),
+          actions: [
+            MyTextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              text: 'OK',
             ),
-            content: const Text(
-              'First select the Duration for which you want the membership\nThen the respective prices will be displayed\nand then select one of them.',
-              maxLines: 6,
-              overflow: TextOverflow.ellipsis,
-            ),
-            actions: [
-              MyTextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                text: 'OK',
-              ),
-            ],
-          )),
+          ],
+        );
+      }),
     );
   }
 
   // PAY
   Future<void> pay() async {
-    if (!isRegistrationSelected &&
-        !isBasicSelected &&
-        !isGoldSelected &&
-        !isPremiumSelected &&
+    print('selectedMembership: $selectedMembership');
+    print('isAvailingOffer: $isAvailingOffer');
+    if (selectedMembership == null &&
+        // !isPremiumSelected &&
         !isAvailingOffer) {
       mySnackBar(
         context,
@@ -363,9 +362,8 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
         isPaying = true;
       });
       try {
-        Duration getMembershipDuration(
-          String membershipDuration,
-        ) {
+        // GET MEMBERSHIP DURATION
+        Duration getMembershipDuration(String membershipDuration) {
           final now = DateTime.now();
 
           if (membershipDuration == '10 Days') {
@@ -390,17 +388,47 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
         final DateTime membershipEndDateTime =
             DateTime.now().add(membershipDurationDateTime);
 
-        await store
+        final membershipSnap =
+            await store.collection('Membership').doc(selectedMembership).get();
+
+        final membershipData = membershipSnap.data()!;
+
+        final productGallery = membershipData['productGallery'];
+        final noOfShorts = membershipData['noOfShorts'];
+
+        final vendorDoc = await store
             .collection('Business')
             .doc('Owners')
             .collection('Shops')
-            .doc(auth.currentUser!.uid)
-            .update({
-          'MembershipName': membershipName,
-          'MembershipDuration': membershipDuration,
-          'MembershipStartDateTime': DateTime.now(),
-          'MembershipEndDateTime': membershipEndDateTime,
-        });
+            .doc(auth.currentUser!.uid);
+
+        final vendorSnap = await vendorDoc.get();
+
+        final vendorData = vendorSnap.data()!;
+        final currentNoOfShorts = vendorData['noOfShorts'];
+        final currentProductGallery = vendorData['productGallery'];
+
+        if (currentNoOfShorts == null || currentProductGallery == null) {
+          print('updating');
+          await vendorDoc.update({
+            'MembershipName': membershipName,
+            'MembershipDuration': membershipDuration,
+            'MembershipStartDateTime': DateTime.now(),
+            'MembershipEndDateTime': membershipEndDateTime,
+            'productGallery': productGallery,
+            'noOfShorts': noOfShorts,
+          });
+        } else {
+          print('updating');
+          await vendorDoc.update({
+            'MembershipName': membershipName,
+            'MembershipDuration': membershipDuration,
+            'MembershipStartDateTime': DateTime.now(),
+            'MembershipEndDateTime': membershipEndDateTime,
+            'productGallery': currentProductGallery + productGallery,
+            'noOfShorts': currentNoOfShorts + noOfShorts,
+          });
+        }
 
         setState(() {
           isPaying = false;
@@ -424,41 +452,56 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
         }
       }
     } else {
-      if (currentMembership != null) {
-        if (currentMembership == 'Registration') {
-          setState(() {
-            selectedPrice = showPrices('Registration').toString();
-          });
-        } else if (currentMembership == 'BASIC') {
-          setState(() {
-            selectedPrice = showPrices('Basic').toString();
-          });
-        } else if (currentMembership == 'GOLD') {
-          setState(() {
-            selectedPrice = showPrices('Gold').toString();
-          });
-        } else if (currentMembership == 'PREMIUM') {
-          setState(() {
-            selectedPrice = showPrices('Premium').toString();
-          });
-        }
+      if (selectedMembership != null) {
         setState(() {
+          selectedPrice = showPrices(selectedMembership!).toString();
           isPaying = true;
         });
         try {
-          // TODO: NO OF & PAYMENT
+          // TODO: PAYMENT GATEWAY
+          final membershipSnap = await store
+              .collection('Membership')
+              .doc(selectedMembership)
+              .get();
 
-          await store
+          final membershipData = membershipSnap.data()!;
+
+          final productGallery = membershipData['productGallery'];
+          final noOfShorts = membershipData['noOfShorts'];
+
+          final vendorDoc = await store
               .collection('Business')
               .doc('Owners')
               .collection('Shops')
-              .doc(auth.currentUser!.uid)
-              .update({
-            'MembershipName': currentMembership.toString(),
-            'MembershipDuration': selectedDuration.toString(),
-            'MembershipStartDateTime': DateTime.now(),
-            'MembershipEndDateTime': selectedDurationDateTime,
-          });
+              .doc(auth.currentUser!.uid);
+
+          final vendorSnap = await vendorDoc.get();
+
+          final vendorData = vendorSnap.data()!;
+          final currentNoOfShorts = vendorData['noOfShorts'];
+          final currentProductGallery = vendorData['productGallery'];
+
+          if (currentNoOfShorts == null || currentProductGallery == null) {
+            print('updating');
+            await vendorDoc.update({
+              'MembershipName': selectedMembership,
+              'MembershipDuration': selectedDuration,
+              'MembershipStartDateTime': DateTime.now(),
+              'MembershipEndDateTime': selectedDurationDateTime,
+              'productGallery': productGallery,
+              'noOfShorts': noOfShorts,
+            });
+          } else {
+            print('updating');
+            await vendorDoc.update({
+              'MembershipName': selectedMembership,
+              'MembershipDuration': selectedDuration,
+              'MembershipStartDateTime': DateTime.now(),
+              'MembershipEndDateTime': selectedDurationDateTime,
+              'productGallery': currentProductGallery + productGallery,
+              'noOfShorts': currentNoOfShorts + noOfShorts,
+            });
+          }
 
           setState(() {
             isPaying = false;
@@ -560,9 +603,9 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                                 final offerMembership =
                                     offerData!['membership'];
                                 final offerDuration = offerData!['duration'];
-                                final lightColor = offerMembership == 'BASIC'
+                                final lightColor = offerMembership == 'Basic'
                                     ? white
-                                    : offerMembership == 'GOLD'
+                                    : offerMembership == 'Gold'
                                         ? const Color.fromARGB(
                                             255,
                                             253,
@@ -575,9 +618,9 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                                             226,
                                             238,
                                           );
-                                final darkColor = offerMembership == 'BASIC'
+                                final darkColor = offerMembership == 'Basic'
                                     ? black
-                                    : offerMembership == 'GOLD'
+                                    : offerMembership == 'Gold'
                                         ? const Color.fromARGB(
                                             255,
                                             93,
@@ -590,10 +633,8 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                                   onTap: () {
                                     setState(() {
                                       isAvailingOffer = !isAvailingOffer;
-                                      isRegistrationSelected = false;
-                                      isBasicSelected = false;
-                                      isGoldSelected = false;
-                                      isPremiumSelected = false;
+                                      selectedMembership = null;
+                                      // isPremiumSelected = false;
                                     });
                                   },
                                   child: Opacity(
@@ -698,11 +739,8 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                                                   setState(() {
                                                     isAvailingOffer =
                                                         !isAvailingOffer;
-                                                    isRegistrationSelected =
-                                                        false;
-                                                    isBasicSelected = false;
-                                                    isGoldSelected = false;
-                                                    isPremiumSelected = false;
+                                                    selectedMembership = null;
+                                                    // isPremiumSelected = false;
                                                   });
                                                 },
                                                 text: isAvailingOffer
@@ -764,9 +802,8 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                                   const EdgeInsets.symmetric(horizontal: 8),
                               elevation: 1,
                               onTap: () {
-                                isBasicSelected = false;
-                                isGoldSelected = false;
-                                isPremiumSelected = false;
+                                selectedMembership = null;
+                                // isPremiumSelected = false;
                               },
                               dropdownColor: primary2,
                               items: membershipDurations['durations']!
@@ -810,6 +847,12 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                                       now.month,
                                       now.day,
                                     );
+                                  } else if (value == '3 Years') {
+                                    selectedDurationDateTime = DateTime(
+                                      now.year + 3,
+                                      now.month,
+                                      now.day,
+                                    );
                                   } else {
                                     selectedDurationDateTime = now;
                                   }
@@ -840,11 +883,11 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                     selectedDuration == null
                         ? Container()
                         : MembershipCard(
-                            isSelected: isRegistrationSelected,
+                            isSelected: selectedMembership == 'Registration',
                             selectedColor: white,
                             selectedBorderColor:
                                 const Color.fromARGB(255, 57, 57, 57),
-                            name: 'FREE REGISTRATION',
+                            name: 'FREE Registration',
                             originalPrice: showPrices('Registration'),
                             discountPrice: showDiscount('Registration'),
                             discount:
@@ -862,15 +905,12 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                             onTap: () {
                               setState(() {
                                 isAvailingOffer = false;
-                                isRegistrationSelected = true;
-                                isBasicSelected = false;
-                                isGoldSelected = false;
-                                isPremiumSelected = false;
+                                selectedMembership = 'Registration';
+                                // isPremiumSelected = false;
                                 currentPrice =
                                     showDiscount('Registration') == null
                                         ? null
                                         : showDiscount('Registration')!.toInt();
-                                currentMembership = 'REGISTRATION';
                               });
                             },
                           ),
@@ -879,10 +919,10 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                     selectedDuration == null
                         ? Container()
                         : MembershipCard(
-                            isSelected: isBasicSelected,
+                            isSelected: selectedMembership == 'Basic',
                             selectedColor: white,
                             selectedBorderColor: black,
-                            name: 'BASIC',
+                            name: 'Basic',
                             originalPrice: showPrices('Basic'),
                             discountPrice: showDiscount('Basic'),
                             discount: membershipDetails['Basic']!['discount'],
@@ -897,14 +937,11 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                             onTap: () {
                               setState(() {
                                 isAvailingOffer = false;
-                                isRegistrationSelected = false;
-                                isBasicSelected = true;
-                                isGoldSelected = false;
-                                isPremiumSelected = false;
+                                selectedMembership = 'Basic';
+                                // isPremiumSelected = false;
                                 currentPrice = showDiscount('Basic') == null
                                     ? null
                                     : showDiscount('Basic')!.toInt();
-                                currentMembership = 'BASIC';
                               });
                             },
                           ),
@@ -913,12 +950,12 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                     selectedDuration == null
                         ? Container()
                         : MembershipCard(
-                            isSelected: isGoldSelected,
+                            isSelected: selectedMembership == 'Gold',
                             selectedColor:
                                 const Color.fromARGB(255, 253, 243, 154),
                             selectedBorderColor:
                                 const Color.fromARGB(255, 93, 76, 0),
-                            name: 'GOLD',
+                            name: 'Gold',
                             originalPrice: showPrices('Gold'),
                             discountPrice: showDiscount('Gold'),
                             discount: membershipDetails['Gold']!['discount'],
@@ -934,61 +971,58 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                             benefit5: showBenefits('Gold', 'benefit5'),
                             // storageSize: 2,
                             onTap: () {
+                              print('ok');
                               setState(() {
                                 isAvailingOffer = false;
-                                isRegistrationSelected = false;
-                                isBasicSelected = false;
-                                isGoldSelected = true;
-                                isPremiumSelected = false;
+                                selectedMembership = 'Gold';
+                                print('done');
+                                // isPremiumSelected = false;
                                 currentPrice = showDiscount('Gold') == null
                                     ? null
                                     : showDiscount('Gold')!.toInt();
-                                currentMembership = 'GOLD';
                               });
                             },
                           ),
 
                     // PREMIUM
-                    selectedDuration == null
-                        ? Container()
-                        : Padding(
-                            padding: EdgeInsets.only(bottom: width * 0.175),
-                            child: MembershipCard(
-                              isSelected: isPremiumSelected,
-                              selectedColor:
-                                  const Color.fromARGB(255, 202, 226, 238),
-                              selectedBorderColor: Colors.blueGrey.shade600,
-                              name: 'PREMIUM',
-                              originalPrice: showPrices('Premium'),
-                              discountPrice: showDiscount('Premium'),
-                              discount:
-                                  membershipDetails['Premium']!['discount'],
-                              textColor: const Color.fromARGB(255, 43, 72, 87),
-                              priceTextColor:
-                                  const Color.fromARGB(255, 67, 92, 106),
-                              benefitBackSelectedColor:
-                                  const Color.fromARGB(255, 112, 140, 157),
-                              benefit1: showBenefits('Premium', 'benefit1'),
-                              benefit2: showBenefits('Premium', 'benefit2'),
-                              benefit3: showBenefits('Premium', 'benefit3'),
-                              benefit4: showBenefits('Premium', 'benefit4'),
-                              benefit5: showBenefits('Premium', 'benefit5'),
-                              // storageSize: 5,
-                              onTap: () {
-                                setState(() {
-                                  isAvailingOffer = false;
-                                  isRegistrationSelected = false;
-                                  isBasicSelected = false;
-                                  isGoldSelected = false;
-                                  isPremiumSelected = true;
-                                  currentPrice = showDiscount('Premium') == null
-                                      ? null
-                                      : showDiscount('Premium')!.toInt();
-                                  currentMembership = 'PREMIUM';
-                                });
-                              },
-                            ),
-                          ),
+                    // selectedDuration == null
+                    //     ? Container()
+                    //     : Padding(
+                    //         padding: EdgeInsets.only(bottom: width * 0.175),
+                    //         child: MembershipCard(
+                    //           isSelected: isPremiumSelected,
+                    //           selectedColor:
+                    //               const Color.fromARGB(255, 202, 226, 238),
+                    //           selectedBorderColor: Colors.blueGrey.shade600,
+                    //           name: 'Premium',
+                    //           originalPrice: showPrices('Premium'),
+                    //           discountPrice: showDiscount('Premium'),
+                    //           discount:
+                    //               membershipDetails['Premium']!['discount'],
+                    //           textColor:
+                    //               const Color.fromARGB(255, 43, 72, 87),
+                    //           priceTextColor:
+                    //               const Color.fromARGB(255, 67, 92, 106),
+                    //           benefitBackSelectedColor:
+                    //               const Color.fromARGB(255, 112, 140, 157),
+                    //           benefit1: showBenefits('Premium', 'benefit1'),
+                    //           benefit2: showBenefits('Premium', 'benefit2'),
+                    //           benefit3: showBenefits('Premium', 'benefit3'),
+                    //           benefit4: showBenefits('Premium', 'benefit4'),
+                    //           benefit5: showBenefits('Premium', 'benefit5'),
+                    //           // storageSize: 5,
+                    //           onTap: () {
+                    //             setState(() {
+                    //               isAvailingOffer = false;
+                    //               selectedMembership = 'Premium';
+                    //               currentPrice =
+                    //                   showDiscount('Premium') == null
+                    //                       ? null
+                    //                       : showDiscount('Premium')!.toInt();
+                    //             });
+                    //           },
+                    //         ),
+                    //       ),
                   ],
                 ),
               ),

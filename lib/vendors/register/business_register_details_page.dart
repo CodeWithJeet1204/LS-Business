@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:Localsearch/vendors/page/main/main_page.dart';
 import 'package:Localsearch/widgets/pick_location.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,7 +21,10 @@ import 'package:open_street_map_search_and_pick/open_street_map_search_and_pick.
 class BusinessRegisterDetailsPage extends StatefulWidget {
   const BusinessRegisterDetailsPage({
     super.key,
+    required this.fromMainPage,
   });
+
+  final bool fromMainPage;
 
   @override
   State<BusinessRegisterDetailsPage> createState() =>
@@ -38,13 +42,13 @@ class _BusinessRegisterDetailsPageState
   bool isNext = false;
   String? selectedIndustrySegment;
   bool isImageSelected = false;
-  bool isGettingCity = false;
-  bool isPickingCity = false;
   File? image;
+  bool isDetectingCity = false;
+  bool isPickingCity = false;
   double? latitude;
   double? longitude;
-  String? displayGetCity;
-  String? cityGetLocation;
+  String? displayDetectCity;
+  String? cityDetectLocation;
   String? cityPickLocation;
   String? uploadImagePath;
 
@@ -96,11 +100,11 @@ class _BusinessRegisterDetailsPageState
           setState(() {
             latitude = 0;
             longitude = 0;
-            cityGetLocation = 'NONE';
+            cityDetectLocation = 'NONE';
           });
 
           setState(() {
-            isGettingCity = false;
+            isDetectingCity = false;
           });
           if (mounted) {
             mySnackBar(context, 'Sorry, without location we can\'t Continue');
@@ -128,7 +132,7 @@ class _BusinessRegisterDetailsPageState
 
       if (data['status'] == 'OK' && data['results'].isNotEmpty) {
         setState(() {
-          displayGetCity = data['results'][0]['formatted_address'];
+          displayDetectCity = data['results'][0]['formatted_address'];
         });
 
         for (var result in data['results']) {
@@ -151,21 +155,21 @@ class _BusinessRegisterDetailsPageState
         }
 
         setState(() {
-          cityGetLocation = myCityName;
+          cityDetectLocation = myCityName;
         });
       } else {
         mySnackBar(context, 'Some error occured');
         setState(() {
-          cityGetLocation = 'Get Location';
+          cityDetectLocation = 'Detect Location';
         });
       }
     }
   }
 
-  // SAVE
-  Future<void> save() async {
+  // NEXT
+  Future<void> next() async {
     if (businessFormKey.currentState!.validate()) {
-      if (cityGetLocation == null && cityPickLocation == null) {
+      if (cityDetectLocation == null && cityPickLocation == null) {
         return mySnackBar(context, 'Get Location');
       }
       try {
@@ -194,27 +198,36 @@ class _BusinessRegisterDetailsPageState
             .doc(auth.currentUser!.uid)
             .update({
           'Name': nameController.text,
-          'Latitude': latitude,
-          'Longitude': longitude,
-          'Open': true,
-          'viewsTimestamp': [],
-          'followersTimestamp': {},
-          // 'GSTNumber': gstController.text.toString(),
-          'Description': descriptionController.text.toString(),
-          // 'Industry': selectedIndustrySegment,
           'Image': image != null
               ? businessPhotoUrl
               : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1fDf705o-VZ3lVxTLh0jLPyFApbnwGoNHhSpwODOC0g&s',
-          'City': cityGetLocation ?? cityPickLocation ?? 0,
+          'Latitude': latitude,
+          'Longitude': longitude,
+          'City': cityDetectLocation ?? cityPickLocation,
+          'Open': true,
+          'viewsTimestamp': [],
+          'followersTimestamp': {},
+          'Description': descriptionController.text.toString(),
+          // 'GSTNumber': gstController.text.toString(),
+          // 'Industry': selectedIndustrySegment,
         });
 
         if (mounted) {
-          Navigator.of(context).pop();
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: ((context) => const BusinessVerificationPage()),
-            ),
-          );
+          if (widget.fromMainPage) {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => MainPage(),
+              ),
+              (route) => false,
+            );
+          } else {
+            Navigator.of(context).pop();
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: ((context) => const BusinessVerificationPage()),
+              ),
+            );
+          }
         }
 
         setState(() {
@@ -312,11 +325,11 @@ class _BusinessRegisterDetailsPageState
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(
-                            flex: cityGetLocation != null ? 3 : 1,
+                            flex: cityDetectLocation != null ? 3 : 1,
                             child: GestureDetector(
                               onTap: () async {
                                 setState(() {
-                                  isGettingCity = true;
+                                  isDetectingCity = true;
                                 });
 
                                 await getLocation().then((value) async {
@@ -332,7 +345,7 @@ class _BusinessRegisterDetailsPageState
 
                                 setState(() {
                                   cityPickLocation = null;
-                                  isGettingCity = false;
+                                  isDetectingCity = false;
                                 });
                               },
                               child: Container(
@@ -342,14 +355,16 @@ class _BusinessRegisterDetailsPageState
                                   borderRadius: BorderRadius.circular(24),
                                 ),
                                 padding: EdgeInsets.all(width * 0.025),
-                                child: isGettingCity
+                                child: isDetectingCity
                                     ? CircularProgressIndicator()
                                     : cityPickLocation != null
                                         ? Icon(FeatherIcons.mapPin)
                                         : AutoSizeText(
-                                            displayGetCity ?? 'Get Location',
-                                            maxLines:
-                                                cityGetLocation != null ? 1 : 2,
+                                            displayDetectCity ??
+                                                'Detect Location',
+                                            maxLines: cityDetectLocation != null
+                                                ? 1
+                                                : 2,
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
@@ -388,7 +403,7 @@ class _BusinessRegisterDetailsPageState
                                   },
                                 );
                                 setState(() {
-                                  cityGetLocation = null;
+                                  cityDetectLocation = null;
                                   isPickingCity = false;
                                 });
                               },
@@ -401,7 +416,7 @@ class _BusinessRegisterDetailsPageState
                                 padding: EdgeInsets.all(width * 0.025),
                                 child: isPickingCity
                                     ? CircularProgressIndicator()
-                                    : cityGetLocation != null
+                                    : cityDetectLocation != null
                                         ? Icon(FeatherIcons.map)
                                         : AutoSizeText(
                                             cityPickLocation ??
@@ -483,9 +498,9 @@ class _BusinessRegisterDetailsPageState
                           bottom: MediaQuery.of(context).viewInsets.bottom,
                         ),
                         child: MyButton(
-                          text: 'NEXT',
+                          text: widget.fromMainPage ? 'DONE' : 'NEXT',
                           onTap: () async {
-                            await save();
+                            await next();
                           },
                           isLoading: isNext,
                           horizontalPadding:

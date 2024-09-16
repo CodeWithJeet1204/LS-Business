@@ -39,15 +39,18 @@ class _MembershipDetailsPageState extends State<MembershipDetailsPage> {
     final vendorData = vendorSnap.data()!;
 
     setState(() {
-      if (vendorData['MembershipName'] == 'PREMIUM') {
+      if (vendorData['MembershipName'] == 'Premium') {
         lightColor = const Color.fromRGBO(202, 226, 238, 1);
         darkColor = const Color.fromARGB(255, 12, 48, 66);
-      } else if (vendorData['MembershipName'] == 'GOLD') {
+      } else if (vendorData['MembershipName'] == 'Gold') {
         lightColor = const Color.fromRGBO(253, 243, 154, 1);
         darkColor = const Color.fromARGB(255, 82, 76, 23);
+      } else if (vendorData['MembershipName'] == 'Basic') {
+        lightColor = const Color.fromRGBO(235, 235, 235, 1);
+        darkColor = const Color.fromRGBO(20, 20, 20, 1);
       } else {
-        lightColor = const Color.fromRGBO(167, 167, 167, 1);
-        darkColor = const Color.fromARGB(255, 67, 67, 67);
+        lightColor = const Color.fromRGBO(200, 200, 200, 1);
+        darkColor = const Color.fromRGBO(100, 100, 100, 1);
       }
     });
 

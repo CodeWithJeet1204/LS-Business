@@ -463,8 +463,6 @@ class DISCOUNT extends State<DiscountPage> {
     setState(() {
       products = myProducts;
     });
-
-    print('products: $products');
   }
 
   // GET BRAND DATA

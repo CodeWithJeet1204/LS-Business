@@ -1,4 +1,5 @@
 // ignore_for_file: unnecessary_null_comparison
+import 'package:Localsearch/auth/verify/number_verify.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Localsearch/auth/register_method_page.dart';
 import 'package:Localsearch/vendors/firebase/auth_methods.dart';
@@ -375,7 +376,11 @@ class _LoginPageState extends State<LoginPage> {
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) {
                     // if (mode == 'vendor') {
-                    return const MainPage();
+                    return NumberVerifyPage(
+                      verificationId: verificationId,
+                      phoneNumber: phoneController.text,
+                      fromMainPage: false,
+                    );
                     // } else if (mode == 'services') {
                     //   return const ServicesMainPage();
                     // } else if (mode == 'events') {
@@ -687,8 +692,9 @@ class _LoginPageState extends State<LoginPage> {
                               onPressed: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ForgotPasswordPage()),
+                                    builder: (context) =>
+                                        const ForgotPasswordPage(),
+                                  ),
                                 );
                               },
                               text: 'Forgot Password?',
@@ -753,7 +759,7 @@ class _LoginPageState extends State<LoginPage> {
                                   return 'Please enter Phone Number';
                                 } else {
                                   if (value.length != 10) {
-                                    return 'Number must be 10 chars long';
+                                    return 'Number must be 10 characters long';
                                   }
                                 }
                               }
@@ -821,7 +827,6 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   const Text(
                     'Don\'t have an account?',
-                    overflow: TextOverflow.ellipsis,
                   ),
                   MyTextButton(
                     onPressed: () {

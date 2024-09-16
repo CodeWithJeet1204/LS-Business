@@ -9,13 +9,13 @@ class BusinessChooseCategoryPage2 extends StatefulWidget {
   const BusinessChooseCategoryPage2({
     super.key,
     required this.selectedTypes,
-    this.isEditing,
+    required this.isEditing,
     this.selectedCategories,
   });
 
+  final bool isEditing;
   final List selectedTypes;
   final List? selectedCategories;
-  final bool? isEditing;
 
   @override
   State<BusinessChooseCategoryPage2> createState() =>

@@ -11,16 +11,16 @@ import 'package:flutter/material.dart';
 class NumberVerifyPage extends StatefulWidget {
   const NumberVerifyPage({
     super.key,
-    required this.verificationId,
-    required this.isLogging,
     required this.phoneNumber,
+    required this.fromMainPage,
+    this.verificationId,
     // required this.mode,
   });
 
   // final String mode;
-  final String verificationId;
   final String phoneNumber;
-  final bool isLogging;
+  final bool fromMainPage;
+  final String? verificationId;
 
   @override
   State<NumberVerifyPage> createState() => _NumberVerifyPageState();
@@ -30,7 +30,18 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   final otpController = TextEditingController();
+  String? verificationId;
+  bool isPhoneRegistering = false;
   bool isOTPVerifying = false;
+
+  // INIT STATE
+  @override
+  void initState() {
+    if (widget.fromMainPage) {
+      sendVerification();
+    }
+    super.initState();
+  }
 
   // DISPOSE
   @override
@@ -39,58 +50,107 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
     super.dispose();
   }
 
+  // SEND VERIFICATION
+  Future<void> sendVerification() async {
+    final userSnap =
+        await store.collection('Users').doc(auth.currentUser!.uid).get();
+
+    final userData = userSnap.data()!;
+
+    final phoneNumber = userData['Phone Number'];
+
+    await auth.verifyPhoneNumber(
+      phoneNumber: '+91 $phoneNumber',
+      verificationCompleted: (_) {
+        setState(() {
+          isPhoneRegistering = false;
+        });
+      },
+      verificationFailed: (e) {
+        setState(() {
+          isPhoneRegistering = false;
+        });
+        if (mounted) {
+          mySnackBar(
+            context,
+            e.toString(),
+          );
+        }
+      },
+      codeSent: (
+        String currentVerificationId,
+        int? token,
+      ) {
+        setState(() {
+          verificationId = currentVerificationId;
+        });
+      },
+      codeAutoRetrievalTimeout: (e) {
+        setState(() {
+          isPhoneRegistering = false;
+        });
+        if (mounted) {
+          mySnackBar(
+            context,
+            e.toString(),
+          );
+        }
+      },
+    );
+  }
+
   // VERIFY
   Future<void> verify() async {
     if (otpController.text.length == 6) {
-      final credential = PhoneAuthProvider.credential(
-        verificationId: widget.verificationId,
-        smsCode: otpController.text,
-      );
       setState(() {
         isOTPVerifying = true;
       });
+
+      final credential = PhoneAuthProvider.credential(
+        verificationId: widget.verificationId ?? verificationId!,
+        smsCode: otpController.text,
+      );
+
       try {
         await auth.signInWithCredential(credential);
 
-        if (!widget.isLogging) {
-          if (auth.currentUser != null) {
-            // if (widget.mode == 'vendor') {
-            await store
-                .collection('Business')
-                .doc('Owners')
-                .collection('Users')
-                .doc(auth.currentUser!.uid)
-                .set({
-              'Phone Number': '+91 ${widget.phoneNumber}',
-              'registration': 'phone number',
-              'Image': null,
-              'Email': null,
-              'Name': null,
-              'uid': null,
-              'numberVerified': true,
-              'allowCalls': true,
-              'hasReviewed': false,
-            });
+        await auth.currentUser?.reload();
+        if (auth.currentUser != null) {
+          // if (widget.mode == 'vendor') {
+          await store
+              .collection('Business')
+              .doc('Owners')
+              .collection('Users')
+              .doc(auth.currentUser!.uid)
+              .set({
+            'Phone Number': '+91 ${widget.phoneNumber}',
+            'registration': 'phone number',
+            'Image': null,
+            'Email': null,
+            'Name': null,
+            'numberVerified': true,
+            'allowCalls': true,
+            'hasReviewed': false,
+          });
 
-            await store
-                .collection('Business')
-                .doc('Owners')
-                .collection('Shops')
-                .doc(auth.currentUser!.uid)
-                .set({
-              'Name': null,
-              'registration': 'phone number',
-              'GSTNumber': null,
-              'Description': null,
-              // 'Industry': null,
-              'Image': null,
-              'Type': [],
-              'MembershipName': null,
-              'MembershipDuration': null,
-              'MembershipStartDateTime': null,
-            });
-            // }
-          }
+          await store
+              .collection('Business')
+              .doc('Owners')
+              .collection('Shops')
+              .doc(auth.currentUser!.uid)
+              .set({
+            'Name': null,
+            'registration': 'phone number',
+            'GSTNumber': null,
+            'Description': null,
+            // 'Industry': null,
+            'Image': null,
+            'Type': [],
+            'MembershipName': null,
+            'MembershipDuration': null,
+            'MembershipStartDateTime': null,
+          });
+          // }
         }
         setState(() {
           isOTPVerifying = false;
@@ -99,10 +159,12 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: ((context) {
               // if (widget.mode == 'vendor') {
-              if (widget.isLogging) {
+              if (widget.fromMainPage) {
                 return const MainPage();
               } else {
-                return const UserRegisterDetailsPage();
+                return const OwnerRegisterDetailsPage(
+                  fromMainPage: false,
+                );
               }
               // } else if (widget.mode == 'services') {
               //   if (widget.isLogging) {
@@ -143,13 +205,17 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Center(
           child: Column(
             children: [
-              Expanded(child: Container()),
+              Expanded(
+                child: Container(),
+              ),
               Text(
                 'An OTP has been sent to your Phone Number\nPls enter the OTP below',
                 overflow: TextOverflow.ellipsis,
@@ -172,8 +238,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
               isOTPVerifying
                   ? Container(
                       margin: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width * 0.055,
-                        vertical: 0,
+                        horizontal: width * 0.055,
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       alignment: Alignment.center,

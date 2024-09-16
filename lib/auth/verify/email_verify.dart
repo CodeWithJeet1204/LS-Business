@@ -13,11 +13,11 @@ class EmailVerifyPage extends StatefulWidget {
   const EmailVerifyPage({
     super.key,
     // required this.mode,
-    required this.isLogging,
+    required this.fromMainPage,
   });
 
   // final String mode;
-  final bool isLogging;
+  final bool fromMainPage;
 
   @override
   State<EmailVerifyPage> createState() => _EmailVerifyPageState();
@@ -32,16 +32,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
   Timer? timer;
   bool isEmailVerified = false;
 
-  // DISPOSE
-  @override
-  void dispose() {
-    super.dispose();
-    if (timer != null) {
-      timer!.cancel();
-    }
-  }
-
-  // INIT STATE + CHECKING EMAIL VERIFY
+  // INIT STATE
   @override
   void initState() {
     super.initState();
@@ -52,6 +43,15 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
       timer = Timer.periodic(const Duration(seconds: 2), (_) async {
         await checkEmailVerification(false);
       });
+    }
+  }
+
+  // DISPOSE
+  @override
+  void dispose() {
+    super.dispose();
+    if (timer != null) {
+      timer!.cancel();
     }
   }
 
@@ -66,10 +66,12 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: ((context) {
             // if (widget.mode == 'vendor') {
-            if (widget.isLogging) {
+            if (widget.fromMainPage) {
               return const MainPage();
             } else {
-              return const UserRegisterDetailsPage();
+              return const OwnerRegisterDetailsPage(
+                fromMainPage: false,
+              );
             }
             // } else if (widget.mode == 'services') {
             //   if (widget.isLogging) {

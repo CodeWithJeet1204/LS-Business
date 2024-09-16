@@ -746,7 +746,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                           builder: (context) =>
                                               BusinessChooseCategoryPage1(
                                             isEditing: true,
-                                            preSelected: shopData['Type'],
+                                            selectedShopTypes: shopData['Type'],
                                           ),
                                         ),
                                       );
@@ -978,26 +978,33 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                               // height: width * 0.16,
                               alignment: Alignment.centerLeft,
                               decoration: BoxDecoration(
-                                color: shopData['MembershipName'] == 'PREMIUM'
+                                color: shopData['MembershipName'] == 'Premium'
                                     ? const Color.fromRGBO(
                                         202,
                                         226,
                                         238,
                                         1,
                                       )
-                                    : shopData['MembershipName'] == 'GOLD'
+                                    : shopData['MembershipName'] == 'Gold'
                                         ? const Color.fromRGBO(
                                             253,
                                             243,
                                             154,
                                             1,
                                           )
-                                        : const Color.fromRGBO(
-                                            167,
-                                            167,
-                                            167,
-                                            1,
-                                          ),
+                                        : shopData['MembershipName'] == 'Basic'
+                                            ? const Color.fromRGBO(
+                                                225,
+                                                225,
+                                                225,
+                                                1,
+                                              )
+                                            : const Color.fromRGBO(
+                                                200,
+                                                200,
+                                                200,
+                                                1,
+                                              ),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               padding: EdgeInsets.symmetric(

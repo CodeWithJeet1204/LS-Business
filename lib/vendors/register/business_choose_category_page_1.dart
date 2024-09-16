@@ -8,12 +8,12 @@ import 'package:Localsearch/widgets/snack_bar.dart';
 class BusinessChooseCategoryPage1 extends StatefulWidget {
   const BusinessChooseCategoryPage1({
     super.key,
-    this.preSelected,
-    this.isEditing,
+    this.selectedShopTypes,
+    required this.isEditing,
   });
 
-  final List? preSelected;
-  final bool? isEditing;
+  final bool isEditing;
+  final List? selectedShopTypes;
 
   @override
   State<BusinessChooseCategoryPage1> createState() =>
@@ -31,9 +31,9 @@ class _BusinessChooseCategoryPage1State
   // INIT STATE
   @override
   void initState() {
-    if (widget.isEditing != null && widget.preSelected != null) {
+    if (widget.selectedShopTypes != null) {
       setState(() {
-        selected = widget.preSelected!;
+        selected = widget.selectedShopTypes!;
       });
     }
     getShopTypes();

@@ -60,7 +60,9 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
         if (!widget.isChanging) {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: ((context) => const BusinessChooseCategoryPage1()),
+              builder: ((context) => const BusinessChooseCategoryPage1(
+                    isEditing: false,
+                  )),
             ),
           );
         }
@@ -128,10 +130,30 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
                       onTap: () async {
                         await next();
                       },
-                      text: 'NEXT',
+                      text: widget.isChanging ? 'DONE' : 'NEXT',
                       isLoading: isNext,
                       horizontalPadding: 0,
                     ),
+
+                    // NEXT
+                    widget.isChanging
+                        ? Container()
+                        : MyButton(
+                            onTap: () async {
+                              Navigator.of(context).pop();
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: ((context) =>
+                                      const BusinessChooseCategoryPage1(
+                                        isEditing: false,
+                                      )),
+                                ),
+                              );
+                            },
+                            text: 'DONE',
+                            isLoading: false,
+                            horizontalPadding: 0,
+                          ),
                   ],
                 ),
               ),
