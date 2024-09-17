@@ -33,7 +33,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
   final otherInfoController = TextEditingController();
   final otherInfoValueController = TextEditingController();
   String? otherInfo;
-  Map<String, Map<String, Map<String, dynamic>>>? householdCategoryProperties;
+  Map<String, dynamic>? householdCategoryProperties;
   final property0Controller = TextEditingController();
   final property1Controller = TextEditingController();
   final property2Controller = TextEditingController();
@@ -59,6 +59,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
   // INIT STATE
   @override
   void initState() {
+    getCategoryProperties();
     super.initState();
   }
 
@@ -80,7 +81,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
   // GET CATEGORY PROPERTIES
   Future<void> getCategoryProperties() async {
     final categoryPropertySnap = await store
-        .collection('Shop Types & Category Data')
+        .collection('Shop Types And Category Data')
         .doc('Category Properties')
         .get();
 
@@ -315,7 +316,12 @@ class _AddProductPage4State extends State<AddProductPage4> {
 
   // GET PROPERTIES KEYS
   String getPropertiesKeys(int index) {
-    return householdCategoryProperties![widget.shopType]!.keys.toList()[index];
+    print(
+        '$index: ${householdCategoryProperties![widget.shopType]!.keys.toList()[index].toString()}');
+    return householdCategoryProperties![widget.shopType]!
+        .keys
+        .toList()[index]
+        .toString();
   }
 
   // GET PROPERTIES HINT TEXT
@@ -327,11 +333,11 @@ class _AddProductPage4State extends State<AddProductPage4> {
   // GET NO. OF ANSWERS
   int getNoOfAnswers(int index) {
     return householdCategoryProperties![widget.shopType]!.values.toList()[index]
-        ['noOfAsnwers'];
+        ['noOfAnswers'];
   }
 
   // GET DROP DOWN ITEMS
-  List<String> getDropDownItems(int index) {
+  List getDropDownItems(int index) {
     return householdCategoryProperties![widget.shopType]!.values.toList()[index]
         ['dropDownItems'];
   }
@@ -398,7 +404,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
           child: isSaving ? const LinearProgressIndicator() : Container(),
         ),
       ),
-      body: widget.shopType == ''
+      body: householdCategoryProperties == null
           ? const Center(
               child: CircularProgressIndicator(
                 color: primaryDark,
@@ -535,8 +541,8 @@ class _AddProductPage4State extends State<AddProductPage4> {
                           ),
 
                           // PROPERTY 0
-                          getPropertiesKeys(0) != '2' ||
-                                  getPropertiesKeys(0) != '0' ||
+                          getPropertiesKeys(0) != '2' &&
+                                  getPropertiesKeys(0) != '0' &&
                                   getPropertiesKeys(0) != '1'
                               ? PropertyBox(
                                   headText: getCompulsory(0)
@@ -592,7 +598,8 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                 onChanged: (value) {
                                                   setState(() {
                                                     if (value != null) {
-                                                      propertyValue0 = value;
+                                                      propertyValue0 =
+                                                          value.toString();
                                                       property0.clear();
                                                       property0
                                                           .add(propertyValue0!);
@@ -740,8 +747,8 @@ class _AddProductPage4State extends State<AddProductPage4> {
                               : Container(),
 
                           // PROPERTY 1
-                          getPropertiesKeys(1) != '2' ||
-                                  getPropertiesKeys(1) != '0' ||
+                          getPropertiesKeys(1) != '2' &&
+                                  getPropertiesKeys(1) != '0' &&
                                   getPropertiesKeys(1) != '1'
                               ? PropertyBox(
                                   headText: getCompulsory(1)
@@ -797,7 +804,8 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                 onChanged: (value) {
                                                   setState(() {
                                                     if (value != null) {
-                                                      propertyValue1 = value;
+                                                      propertyValue1 =
+                                                          value.toString();
                                                       property1.clear();
                                                       property1
                                                           .add(propertyValue1!);
@@ -945,8 +953,8 @@ class _AddProductPage4State extends State<AddProductPage4> {
                               : Container(),
 
                           // PROPERTY 2
-                          getPropertiesKeys(2) != '2' ||
-                                  getPropertiesKeys(2) != '0' ||
+                          getPropertiesKeys(2) != '2' &&
+                                  getPropertiesKeys(2) != '0' &&
                                   getPropertiesKeys(2) != '1'
                               ? PropertyBox(
                                   headText: getCompulsory(2)
@@ -1002,7 +1010,8 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                 onChanged: (value) {
                                                   setState(() {
                                                     if (value != null) {
-                                                      propertyValue2 = value;
+                                                      propertyValue2 =
+                                                          value.toString();
                                                       property2.clear();
                                                       property2
                                                           .add(propertyValue2!);
@@ -1150,8 +1159,8 @@ class _AddProductPage4State extends State<AddProductPage4> {
                               : Container(),
 
                           // PROPERTY 3
-                          getPropertiesKeys(3) != '2' ||
-                                  getPropertiesKeys(3) != '0' ||
+                          getPropertiesKeys(3) != '2' &&
+                                  getPropertiesKeys(3) != '0' &&
                                   getPropertiesKeys(3) != '1'
                               ? PropertyBox(
                                   headText: getCompulsory(3)
@@ -1207,7 +1216,8 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                 onChanged: (value) {
                                                   setState(() {
                                                     if (value != null) {
-                                                      propertyValue3 = value;
+                                                      propertyValue3 =
+                                                          value.toString();
                                                       property3.clear();
                                                       property3
                                                           .add(propertyValue3!);
@@ -1355,8 +1365,8 @@ class _AddProductPage4State extends State<AddProductPage4> {
                               : Container(),
 
                           // PROPERTY 4
-                          getPropertiesKeys(4) != '2' ||
-                                  getPropertiesKeys(4) != '0' ||
+                          getPropertiesKeys(4) != '2' &&
+                                  getPropertiesKeys(4) != '0' &&
                                   getPropertiesKeys(4) != '1'
                               ? PropertyBox(
                                   headText: getCompulsory(4)
@@ -1412,7 +1422,8 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                 onChanged: (value) {
                                                   setState(() {
                                                     if (value != null) {
-                                                      propertyValue4 = value;
+                                                      propertyValue4 =
+                                                          value.toString();
                                                       property4.clear();
                                                       property4
                                                           .add(propertyValue4!);
@@ -1560,8 +1571,8 @@ class _AddProductPage4State extends State<AddProductPage4> {
                               : Container(),
 
                           // PROPERTY 5
-                          getPropertiesKeys(5) != '2' ||
-                                  getPropertiesKeys(5) != '0' ||
+                          getPropertiesKeys(5) != '2' &&
+                                  getPropertiesKeys(5) != '0' &&
                                   getPropertiesKeys(5) != '1'
                               ? PropertyBox(
                                   headText: getCompulsory(5)
@@ -1617,7 +1628,8 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                 onChanged: (value) {
                                                   setState(() {
                                                     if (value != null) {
-                                                      propertyValue5 = value;
+                                                      propertyValue5 =
+                                                          value.toString();
                                                       property5.clear();
                                                       property5
                                                           .add(propertyValue5!);

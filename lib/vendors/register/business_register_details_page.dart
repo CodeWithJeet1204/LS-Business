@@ -260,7 +260,7 @@ class _BusinessRegisterDetailsPageState
             children: [
               // const SizedBox(height: 100),
               // SizedBox(
-              //   width: MediaQuery.of(context).size.width * 0.875,
+              //   width: width * 0.875,
               //   child: const HeadText(
               //     text: 'BUSINESS\nDETAILS',
               //   ),
@@ -273,13 +273,13 @@ class _BusinessRegisterDetailsPageState
                       alignment: Alignment.bottomRight,
                       children: [
                         CircleAvatar(
-                          radius: MediaQuery.of(context).size.width * 0.13885,
+                          radius: width * 0.13885,
                           backgroundImage: FileImage(image!),
                         ),
                         IconButton.filledTonal(
                           icon: const Icon(Icons.camera_alt_outlined),
-                          iconSize: MediaQuery.of(context).size.width * 0.1,
-                          tooltip: 'Change Shop Picture',
+                          iconSize: width * 0.1,
+                          tooltip: 'Change Shop Image',
                           onPressed: () async {
                             await selectImage();
                           },
@@ -288,18 +288,20 @@ class _BusinessRegisterDetailsPageState
                       ],
                     )
                   : CircleAvatar(
-                      radius: MediaQuery.of(context).size.width * 0.13885,
+                      radius: width * 0.13885,
                       child: IconButton(
                         icon: Icon(
                           Icons.camera_alt_outlined,
-                          size: MediaQuery.of(context).size.width * 0.166,
+                          size: width * 0.166,
                         ),
                         onPressed: () async {
                           await selectImage();
                         },
                       ),
                     ),
-              const SizedBox(height: 12),
+
+              const SizedBox(height: 16),
+
               Form(
                 key: businessFormKey,
                 child: Padding(
@@ -317,7 +319,7 @@ class _BusinessRegisterDetailsPageState
                           AutofillHints.streetAddressLevel1
                         ],
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 12),
 
                       // LOCATION
                       Row(
@@ -436,7 +438,7 @@ class _BusinessRegisterDetailsPageState
                           ),
                         ],
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 12),
 
                       // INDUSTRY SEGMENT
                       // Padding(
@@ -490,7 +492,7 @@ class _BusinessRegisterDetailsPageState
                         maxLines: 10,
                         keyboardType: TextInputType.multiline,
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 12),
 
                       // NEXT
                       Padding(
@@ -503,11 +505,9 @@ class _BusinessRegisterDetailsPageState
                             await next();
                           },
                           isLoading: isNext,
-                          horizontalPadding:
-                              MediaQuery.of(context).size.width * 0.055,
+                          horizontalPadding: width * 0.055,
                         ),
                       ),
-                      const SizedBox(height: 8),
                     ],
                   ),
                 ),

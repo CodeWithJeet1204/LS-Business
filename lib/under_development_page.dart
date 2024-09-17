@@ -18,7 +18,7 @@ class UnderDevelopmentPage extends StatelessWidget {
           children: [
             Center(
               child: Text(
-                'This app is currently under development\nTry after some time',
+                'This app is currently under development\nTry again after some time',
                 textAlign: TextAlign.center,
               ),
             ),

@@ -31,7 +31,7 @@ class _CategoryPageState extends State<CategoryPage> {
   bool isFit = false;
   bool isChangingName = false;
   bool isGridView = true;
-  String categoryImageUrl = '';
+  String? categoryImageUrl;
   Map<String, dynamic> currentProducts = {};
   Map<String, dynamic> allProducts = {};
   bool isProductsData = false;
@@ -55,36 +55,20 @@ class _CategoryPageState extends State<CategoryPage> {
 
   // GET VENDOR TYPE
   Future<void> getCategoryData() async {
-    final vendorSnap = await store
-        .collection('Business')
-        .doc('Owners')
-        .collection('Shops')
-        .doc(auth.currentUser!.uid)
+    final categoriesSnap = await store
+        .collection('Shop Types And Category Data')
+        .doc('Just Category Data')
         .get();
 
-    final vendorData = vendorSnap.data()!;
+    final categoriesData = categoriesSnap.data()!;
 
-    final List shopTypes = vendorData['Type'];
+    final householdCategories = categoriesData['householdCategories'];
 
-    for (var type in shopTypes) {
-      final categorySnap = await store
-          .collection('Business')
-          .doc('Special Categories')
-          .collection(type)
-          .doc(widget.categoryName)
-          .get();
+    final imageUrl = householdCategories[widget.categoryName];
 
-      final categoryData = categorySnap.data();
-
-      if (categoryData != null) {
-        final imageUrl = categoryData['specialCategoryImageUrl'];
-
-        setState(() {
-          categoryImageUrl = imageUrl;
-        });
-        break;
-      }
-    }
+    setState(() {
+      categoryImageUrl = imageUrl;
+    });
   }
 
   // GET PRODUCTS DATA
@@ -277,7 +261,8 @@ class _CategoryPageState extends State<CategoryPage> {
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
                                           image: NetworkImage(
-                                            categoryImageUrl,
+                                            categoryImageUrl ??
+                                                'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
                                           ),
                                           fit: isFit ? null : BoxFit.cover,
                                         ),
@@ -499,7 +484,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                           gridDelegate:
                                               const SliverGridDelegateWithFixedCrossAxisCount(
                                             crossAxisCount: 2,
-                                            childAspectRatio: 0.675,
+                                            childAspectRatio: 0.625,
                                           ),
                                           itemCount: currentProducts.length,
                                           itemBuilder: (context, index) {
@@ -527,8 +512,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                               },
                                               child: Container(
                                                 decoration: BoxDecoration(
-                                                  color: primary2
-                                                      .withOpacity(0.125),
+                                                  color: white,
                                                   border: Border.all(
                                                     width: 0.25,
                                                     color: primaryDark,

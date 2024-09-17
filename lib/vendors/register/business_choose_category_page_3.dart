@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -45,18 +47,20 @@ class _BusinessChooseCategoryPage3State
   }
 
   // GET PRODUCTS FOR SUB CATEGORY
-  Future<List<String>> getProductsForSubCategory(String subCategory) async {
+  Future<List> getProductsForSubCategory(String subCategory) async {
     final catalogueSnap = await store
-        .collection('Shop Types & Category Data')
+        .collection('Shop Types And Category Data')
         .doc('Catalogue')
         .get();
 
     final catalogueData = catalogueSnap.data()!;
 
+    log('catalogueData: $catalogueData');
+
     final catalogue = catalogueData['catalogueData'];
 
-    for (var category in widget.selectedTypes) {
-      final subCategories = catalogue[category.trim()];
+    for (var shopType in widget.selectedTypes) {
+      final subCategories = catalogue[shopType.trim()];
       if (subCategories != null && subCategories.containsKey(subCategory)) {
         return subCategories[subCategory]!;
       }

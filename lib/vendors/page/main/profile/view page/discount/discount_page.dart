@@ -1,9 +1,9 @@
 // ignore_for_file: avoid_function_literals_in_foreach_calls
 
 import 'dart:io';
+import 'package:Localsearch/vendors/page/main/profile/data/all_discounts_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:Localsearch/vendors/page/main/profile/data/all_discounts_page.dart';
 import 'package:Localsearch/vendors/page/main/profile/view%20page/brand/brand_page.dart';
 import 'package:Localsearch/vendors/page/main/profile/view%20page/category/category_page.dart';
 import 'package:Localsearch/vendors/page/main/profile/view%20page/product/product_page.dart';
@@ -41,7 +41,7 @@ class DISCOUNT extends State<DiscountPage> {
   final searchController = TextEditingController();
   List<Map<String, dynamic>>? products;
   List<Map<String, dynamic>>? brands;
-  List<Map<String, dynamic>>? categories;
+  Map<String, dynamic>? categories;
   bool isCategoryGridView = true;
   bool isImageChanging = false;
   bool isChangingName = false;
@@ -52,9 +52,7 @@ class DISCOUNT extends State<DiscountPage> {
   // INIT STATE
   @override
   void initState() {
-    getProductData();
-    getBrandData();
-    getCategoryData();
+    getData();
     super.initState();
   }
 
@@ -65,10 +63,120 @@ class DISCOUNT extends State<DiscountPage> {
     super.dispose();
   }
 
-  // IMAGE FIT CHANGE
-  void changeFit() {
+  // GET DATA
+  Future<void> getData() async {
+    final discountSnap = await store
+        .collection('Business')
+        .doc('Data')
+        .collection('Discounts')
+        .doc(widget.discountId)
+        .get();
+
+    final discountData = discountSnap.data()!;
+
+    final isProducts = discountData['isProducts'];
+    final isBrands = discountData['isBrands'];
+    final isCategories = discountData['isCategories'];
+    final products = discountData['products'];
+    final brands = discountData['brands'];
+    final categories = discountData['categories'];
+
+    if (isProducts) {
+      await getProductData(products);
+    } else if (isBrands) {
+      await getBrandData(brands);
+    } else if (isCategories) {
+      await getCategoryData(categories);
+    }
+  }
+
+  // GET PRODUCT DATA
+  Future<void> getProductData(List discountProducts) async {
+    List<Map<String, dynamic>> myProducts = [];
+
+    await Future.forEach(discountProducts, (productId) async {
+      final productSnap = await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Products')
+          .doc(productId)
+          .get();
+
+      if (productSnap.exists) {
+        final productData = productSnap.data()!;
+
+        myProducts.add(productData);
+      }
+    });
+
     setState(() {
-      isFit = !isFit;
+      products = myProducts;
+    });
+  }
+
+  // GET BRAND DATA
+  Future<void> getBrandData(List discountBrands) async {
+    List<Map<String, dynamic>> myBrands = [];
+
+    await Future.forEach(discountBrands, (brand) async {
+      final brandSnap = await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Brands')
+          .doc(brand)
+          .get();
+
+      if (brandSnap.exists) {
+        print('oh yes');
+        final brandData = brandSnap.data()!;
+
+        myBrands.add(brandData);
+      }
+    });
+
+    print('myBrands: $myBrands');
+
+    setState(() {
+      brands = myBrands;
+    });
+  }
+
+  // GET CATEGORY DATA
+  Future<void> getCategoryData(List discountCategories) async {
+    Map<String, dynamic> myCategories = {};
+    final vendorSnap = await store
+        .collection('Business')
+        .doc('Owners')
+        .collection('Shops')
+        .doc(auth.currentUser!.uid)
+        .get();
+
+    final vendorData = vendorSnap.data()!;
+
+    final List types = vendorData['Type'];
+
+    final categoriesSnap = await store
+        .collection('Shop Types And Category Data')
+        .doc('Category Data')
+        .get();
+
+    final categoriesData = categoriesSnap.data()!;
+
+    final householdCategoryData = categoriesData['householdCategoryData'];
+
+    for (var type in types) {
+      for (var category in discountCategories) {
+        if (householdCategoryData[type]![category] != null) {
+          final categoryImageUrl = householdCategoryData[type]![category];
+          myCategories.addAll({
+            category: categoryImageUrl,
+          });
+        }
+      }
+    }
+
+    setState(() {
+      categories = myCategories;
     });
   }
 
@@ -175,24 +283,16 @@ class DISCOUNT extends State<DiscountPage> {
   }
 
   // CONFIRMING TO DELETE
-  Future<void> confirmDelete(
-    String discountId,
-    String? imageUrl,
-    String type,
-  ) async {
+  Future<void> confirmDelete(String type) async {
     await showDialog(
       context: context,
       builder: ((context) {
         return AlertDialog(
           title: const Text(
             'Confirm DELETE',
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
           ),
           content: const Text(
             'Are you sure you want to delete this Discount\nDiscount will be removed from all the products/categories with this discount',
-            maxLines: 4,
-            overflow: TextOverflow.ellipsis,
           ),
           actions: [
             TextButton(
@@ -211,19 +311,7 @@ class DISCOUNT extends State<DiscountPage> {
             ),
             TextButton(
               onPressed: () async {
-                await delete(discountId, imageUrl, type);
-                if (context.mounted) {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => DiscountPage(
-                        discountId: widget.discountId,
-                        discountImageUrl: widget.discountImageUrl,
-                      ),
-                    ),
-                  );
-                }
+                await delete(type);
               },
               child: const Text(
                 'YES',
@@ -242,21 +330,14 @@ class DISCOUNT extends State<DiscountPage> {
   }
 
   // DELETE DISCOUNT
-  Future<void> delete(String discountId, String? imageUrl, String type) async {
+  Future<void> delete(String type) async {
     try {
-      if (mounted) {
-        Navigator.of(context).pop();
-      }
-      if (imageUrl != null) {
-        await storage.refFromURL(imageUrl).delete();
-      }
-
       if (type == 'Product') {
         final productSnap = await store
             .collection('Business')
             .doc('Data')
             .collection('Products')
-            .where('discountId', isEqualTo: discountId)
+            .where('discountId', isEqualTo: widget.discountId)
             .get();
 
         productSnap.docs.forEach((product) async {
@@ -271,7 +352,6 @@ class DISCOUNT extends State<DiscountPage> {
               .doc(productId)
               .update({
             'discountId': '',
-            'discountEndDate': '',
           });
         });
       } else if (type == 'Brand') {
@@ -279,7 +359,7 @@ class DISCOUNT extends State<DiscountPage> {
             .collection('Business')
             .doc('Data')
             .collection('Brands')
-            .where('discountId', isEqualTo: discountId)
+            .where('discountId', isEqualTo: widget.discountId)
             .get();
 
         brandSnap.docs.forEach((brand) async {
@@ -294,40 +374,6 @@ class DISCOUNT extends State<DiscountPage> {
               .doc(brandId)
               .update({
             'discountId': '',
-            'discountEndDate': '',
-          });
-        });
-      } else if (type == 'Special Category') {
-        final vendorSnap = await store
-            .collection('Business')
-            .doc('Owners')
-            .collection('Shops')
-            .doc(auth.currentUser!.uid)
-            .get();
-
-        final vendorData = vendorSnap.data()!;
-
-        final type = vendorData['Type'];
-
-        final categorySnap = await store
-            .collection('Business')
-            .doc('Special Categories')
-            .collection(type)
-            .where('discountId', isEqualTo: discountId)
-            .get();
-
-        categorySnap.docs.forEach((category) async {
-          final categoryData = category.data();
-
-          final categoryId = categoryData['specialCategoryName'];
-
-          await store
-              .collection('Business')
-              .doc('Special Categories')
-              .collection(type)
-              .doc(categoryId)
-              .update({
-            'discountId': '',
           });
         });
       }
@@ -336,10 +382,22 @@ class DISCOUNT extends State<DiscountPage> {
           .collection('Business')
           .doc('Data')
           .collection('Discounts')
-          .doc(discountId)
+          .doc(widget.discountId)
           .delete();
 
+      if (widget.discountImageUrl != null) {
+        await storage.refFromURL(widget.discountImageUrl!).delete();
+      }
+
       if (mounted) {
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => AllDiscountPage(),
+          ),
+        );
         mySnackBar(context, 'Discount Deleted');
       }
     } catch (e) {
@@ -349,9 +407,8 @@ class DISCOUNT extends State<DiscountPage> {
     }
   }
 
-  // REMOVE PRODUCTBRANDCATEGORY
+  // REMOVE PRODUCT/BRAND/CATEGORY
   Future<void> removeProductBrandCategory(
-    String discountId,
     String type,
     String id,
   ) async {
@@ -363,7 +420,24 @@ class DISCOUNT extends State<DiscountPage> {
           .doc(id)
           .update({
         'discountId': '',
-        'discountEndDate': '',
+      });
+
+      final discountDoc = await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Discounts')
+          .doc(widget.discountId);
+
+      final discountSnap = await discountDoc.get();
+
+      final discountData = discountSnap.data()!;
+
+      List products = discountData['products'];
+
+      products.remove(id);
+
+      discountDoc.update({
+        'products': products,
       });
     } else if (type == 'Brand') {
       await store
@@ -373,27 +447,42 @@ class DISCOUNT extends State<DiscountPage> {
           .doc(id)
           .update({
         'discountId': '',
-        'discountEndDate': '',
       });
-    } else if (type == 'Special Category') {
-      final vendorSnap = await store
+
+      final discountDoc = await store
           .collection('Business')
-          .doc('Owners')
-          .collection('Shops')
-          .doc(auth.currentUser!.uid)
-          .get();
+          .doc('Data')
+          .collection('Discounts')
+          .doc(widget.discountId);
 
-      final vendorData = vendorSnap.data()!;
+      final discountSnap = await discountDoc.get();
 
-      final type = vendorData['Type'];
+      final discountData = discountSnap.data()!;
 
-      await store
+      List brands = discountData['brands'];
+
+      brands.remove(id);
+
+      discountDoc.update({
+        'brands': brands,
+      });
+    } else if (type == 'Category') {
+      final discountDoc = await store
           .collection('Business')
-          .doc('Special Categories')
-          .collection(type)
-          .doc(id)
-          .update({
-        'discountId': '',
+          .doc('Data')
+          .collection('Discounts')
+          .doc(widget.discountId);
+
+      final discountSnap = await discountDoc.get();
+
+      final discountData = discountSnap.data()!;
+
+      List categories = discountData['categories'];
+
+      categories.remove(id);
+
+      discountDoc.update({
+        'categories': categories,
       });
     }
 
@@ -411,7 +500,7 @@ class DISCOUNT extends State<DiscountPage> {
   }
 
   // DISCOUNT NAME CHANGE BACKEND
-  Future<void> changeDiscount(
+  Future<void> changeNameBackend(
     String newName,
     String propertyName,
     TextInputType keyboardType,
@@ -441,87 +530,6 @@ class DISCOUNT extends State<DiscountPage> {
         }
       }
     }
-  }
-
-  // GET PRODUCT DATA
-  Future<void> getProductData() async {
-    List<Map<String, dynamic>> myProducts = [];
-
-    final productsSnap = await store
-        .collection('Business')
-        .doc('Data')
-        .collection('Products')
-        .where('discountId', isEqualTo: widget.discountId)
-        .get();
-
-    productsSnap.docs.forEach((product) {
-      final productData = product.data();
-
-      myProducts.add(productData);
-    });
-
-    setState(() {
-      products = myProducts;
-    });
-  }
-
-  // GET BRAND DATA
-  Future<void> getBrandData() async {
-    List<Map<String, dynamic>> myBrands = [];
-
-    final brandsSnap = await store
-        .collection('Business')
-        .doc('Data')
-        .collection('Brands')
-        .get();
-
-    brandsSnap.docs.forEach((brand) {
-      final brandData = brand.data();
-
-      if (brandData['discountId'] == widget.discountId) {
-        myBrands.add(brandData);
-      }
-    });
-
-    setState(() {
-      brands = myBrands;
-    });
-  }
-
-  // GET CATEGORY DATA
-  Future<void> getCategoryData() async {
-    List<Map<String, dynamic>> myCategories = [];
-    final vendorSnap = await store
-        .collection('Business')
-        .doc('Owners')
-        .collection('Shops')
-        .doc(auth.currentUser!.uid)
-        .get();
-
-    final vendorData = vendorSnap.data()!;
-
-    final List types = vendorData['Type'];
-
-    for (var type in types) {
-      final categorySnap = await store
-          .collection('Business')
-          .doc('Special Categories')
-          .collection(type)
-          .get();
-
-      categorySnap.docs.forEach((category) {
-        final categoryData = category.data();
-
-        if (categoryData['discountId'] != null &&
-            categoryData['discountId'] == widget.discountId) {
-          myCategories.add(categoryData);
-        }
-      });
-    }
-
-    setState(() {
-      categories = myCategories;
-    });
   }
 
   // DISCOUNT NAME CHANGE
@@ -593,7 +601,7 @@ class DISCOUNT extends State<DiscountPage> {
                           MyButton(
                             text: 'SAVE',
                             onTap: () async {
-                              await changeDiscount(
+                              await changeNameBackend(
                                 discountProperty,
                                 propertyName,
                                 keyboardType,
@@ -713,6 +721,13 @@ class DISCOUNT extends State<DiscountPage> {
   //   );
   // }
 
+  // CHANGE FIT
+  void changeFit() {
+    setState(() {
+      isFit = !isFit;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final discountStream = store
@@ -737,24 +752,12 @@ class DISCOUNT extends State<DiscountPage> {
               final discountData = discountSnap.data()!;
 
               await confirmDelete(
-                widget.discountId,
-                widget.discountImageUrl,
                 discountData['isProducts']
                     ? 'Product'
                     : discountData['isBrands']
                         ? 'Brand'
-                        : 'Special Category',
+                        : 'Category',
               );
-              if (context.mounted) {
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const AllDiscountPage(),
-                  ),
-                );
-              }
             },
             icon: const Icon(
               FeatherIcons.trash,
@@ -1181,8 +1184,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                   gridDelegate:
                                                       SliverGridDelegateWithFixedCrossAxisCount(
                                                     crossAxisCount: 2,
-                                                    childAspectRatio:
-                                                        width * 0.65 / width,
+                                                    childAspectRatio: 0.65,
                                                   ),
                                                   itemCount: products!.length,
                                                   itemBuilder:
@@ -1332,8 +1334,6 @@ class DISCOUNT extends State<DiscountPage> {
                                                                   onPressed:
                                                                       () async {
                                                                     await removeProductBrandCategory(
-                                                                      widget
-                                                                          .discountId,
                                                                       'Product',
                                                                       productData[
                                                                           'productId'],
@@ -1423,9 +1423,9 @@ class DISCOUNT extends State<DiscountPage> {
                                                                 productData[
                                                                     'images'][0],
                                                                 width: width *
-                                                                    0.15,
+                                                                    0.1125,
                                                                 height: width *
-                                                                    0.15,
+                                                                    0.1125,
                                                                 fit: BoxFit
                                                                     .cover,
                                                               ),
@@ -1464,8 +1464,6 @@ class DISCOUNT extends State<DiscountPage> {
                                                               onPressed:
                                                                   () async {
                                                                 await removeProductBrandCategory(
-                                                                  widget
-                                                                      .discountId,
                                                                   'Product',
                                                                   productData[
                                                                       'productId'],
@@ -1665,19 +1663,21 @@ class DISCOUNT extends State<DiscountPage> {
                                                                           0,
                                                                         ),
                                                                         child:
-                                                                            Text(
-                                                                          brandData[
-                                                                              'brandName'],
-                                                                          maxLines:
-                                                                              1,
-                                                                          overflow:
-                                                                              TextOverflow.ellipsis,
-                                                                          style:
-                                                                              TextStyle(
-                                                                            fontSize:
-                                                                                width * 0.055,
-                                                                            fontWeight:
-                                                                                FontWeight.w500,
+                                                                            SizedBox(
+                                                                          width:
+                                                                              width * 0.275,
+                                                                          child:
+                                                                              Text(
+                                                                            brandData['brandName'],
+                                                                            maxLines:
+                                                                                1,
+                                                                            overflow:
+                                                                                TextOverflow.ellipsis,
+                                                                            style:
+                                                                                TextStyle(
+                                                                              fontSize: width * 0.055,
+                                                                              fontWeight: FontWeight.w500,
+                                                                            ),
                                                                           ),
                                                                         ),
                                                                       ),
@@ -1687,8 +1687,6 @@ class DISCOUNT extends State<DiscountPage> {
                                                                     onPressed:
                                                                         () async {
                                                                       await removeProductBrandCategory(
-                                                                        widget
-                                                                            .discountId,
                                                                         'Brand',
                                                                         brandData[
                                                                             'brandId'],
@@ -1784,10 +1782,9 @@ class DISCOUNT extends State<DiscountPage> {
                                                                   brandData[
                                                                       'imageUrl'],
                                                                   width: width *
-                                                                      0.15,
-                                                                  height:
-                                                                      width *
-                                                                          0.15,
+                                                                      0.1125,
+                                                                  height: width *
+                                                                      0.1125,
                                                                   fit: BoxFit
                                                                       .cover,
                                                                 ),
@@ -1813,8 +1810,6 @@ class DISCOUNT extends State<DiscountPage> {
                                                                 onPressed:
                                                                     () async {
                                                                   await removeProductBrandCategory(
-                                                                    widget
-                                                                        .discountId,
                                                                     'Brand',
                                                                     brandData[
                                                                         'brandId'],
@@ -1922,8 +1917,12 @@ class DISCOUNT extends State<DiscountPage> {
                                                         categories!.length,
                                                     itemBuilder:
                                                         (context, index) {
-                                                      final categoryData =
-                                                          categories![index];
+                                                      final categoryName =
+                                                          categories!.keys
+                                                              .toList()[index];
+                                                      final categoryImageUrl =
+                                                          categories!.values
+                                                              .toList()[index];
 
                                                       return GestureDetector(
                                                         onTap: () {
@@ -1934,7 +1933,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                                   ((context) =>
                                                                       CategoryPage(
                                                                         categoryName:
-                                                                            categoryData['specialCategoryName'],
+                                                                            categoryName,
                                                                       )),
                                                             ),
                                                           );
@@ -1977,8 +1976,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                                   ),
                                                                   child: Image
                                                                       .network(
-                                                                    categoryData[
-                                                                        'specialCategoryImageUrl'],
+                                                                    categoryImageUrl,
                                                                     width:
                                                                         width *
                                                                             0.5,
@@ -2015,19 +2013,21 @@ class DISCOUNT extends State<DiscountPage> {
                                                                           0,
                                                                         ),
                                                                         child:
-                                                                            Text(
-                                                                          categoryData[
-                                                                              'specialCategoryName'],
-                                                                          overflow:
-                                                                              TextOverflow.ellipsis,
-                                                                          maxLines:
-                                                                              1,
-                                                                          style:
-                                                                              TextStyle(
-                                                                            fontSize:
-                                                                                width * 0.055,
-                                                                            fontWeight:
-                                                                                FontWeight.w500,
+                                                                            SizedBox(
+                                                                          width:
+                                                                              width * 0.275,
+                                                                          child:
+                                                                              Text(
+                                                                            categoryName,
+                                                                            overflow:
+                                                                                TextOverflow.ellipsis,
+                                                                            maxLines:
+                                                                                1,
+                                                                            style:
+                                                                                TextStyle(
+                                                                              fontSize: width * 0.055,
+                                                                              fontWeight: FontWeight.w500,
+                                                                            ),
                                                                           ),
                                                                         ),
                                                                       ),
@@ -2037,11 +2037,8 @@ class DISCOUNT extends State<DiscountPage> {
                                                                     onPressed:
                                                                         () async {
                                                                       await removeProductBrandCategory(
-                                                                        widget
-                                                                            .discountId,
-                                                                        'Special Category',
-                                                                        categoryData[
-                                                                            'specialCategoryId'],
+                                                                        'Category',
+                                                                        categoryName,
                                                                       );
                                                                     },
                                                                     icon: Icon(
@@ -2073,8 +2070,12 @@ class DISCOUNT extends State<DiscountPage> {
                                                         categories!.length,
                                                     itemBuilder:
                                                         ((context, index) {
-                                                      final categoryData =
-                                                          categories![index];
+                                                      final categoryName =
+                                                          categories!.keys
+                                                              .toList()[index];
+                                                      final categoryImageUrl =
+                                                          categories!.values
+                                                              .toList()[index];
 
                                                       return Padding(
                                                         padding: EdgeInsets
@@ -2094,7 +2095,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                                     ((context) =>
                                                                         CategoryPage(
                                                                           categoryName:
-                                                                              categoryData['specialCategoryName'],
+                                                                              categoryName,
                                                                         )),
                                                               ),
                                                             );
@@ -2128,8 +2129,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                                 ),
                                                                 child: Image
                                                                     .network(
-                                                                  categoryData[
-                                                                      'specialCategoryImageUrl'],
+                                                                  categoryImageUrl,
                                                                   width: width *
                                                                       0.1125,
                                                                   height: width *
@@ -2139,8 +2139,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                                 ),
                                                               ),
                                                               title: Text(
-                                                                categoryData[
-                                                                    'specialCategoryName'],
+                                                                categoryName,
                                                                 overflow:
                                                                     TextOverflow
                                                                         .ellipsis,
@@ -2159,11 +2158,8 @@ class DISCOUNT extends State<DiscountPage> {
                                                                 onPressed:
                                                                     () async {
                                                                   await removeProductBrandCategory(
-                                                                    widget
-                                                                        .discountId,
-                                                                    'Special Category',
-                                                                    categoryData[
-                                                                        'specialCategoryId'],
+                                                                    'Category',
+                                                                    categoryName,
                                                                   );
                                                                 },
                                                                 icon: Icon(

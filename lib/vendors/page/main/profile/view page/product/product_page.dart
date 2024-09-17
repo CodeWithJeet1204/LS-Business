@@ -9,7 +9,7 @@ import 'package:Localsearch/vendors/page/main/analytics/analytics_page.dart';
 import 'package:Localsearch/vendors/page/main/discount/products/product_discount_page.dart';
 import 'package:Localsearch/vendors/page/main/profile/data/all_product_page.dart';
 import 'package:Localsearch/vendors/page/main/profile/view%20page/category/category_page.dart';
-import 'package:Localsearch/vendors/page/main/profile/view%20page/product/select_category_for_product_page.dart.dart';
+import 'package:Localsearch/vendors/page/main/profile/view%20page/product/change_product_category_page.dart';
 import 'package:Localsearch/vendors/page/main/profile/view%20page/product/image_view.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:Localsearch/widgets/button.dart';
@@ -55,7 +55,7 @@ class _ProductPageState extends State<ProductPage> {
   int _currentIndex = 0;
   bool isEditing = false;
   bool isImageChanging = false;
-  List category = [];
+  Map<String, dynamic> category = {};
 
   // INIT STATE
   @override
@@ -614,7 +614,7 @@ class _ProductPageState extends State<ProductPage> {
 
     final vendorData = vendorSnap.data()!;
 
-    final List shopType = vendorData['Type'];
+    final List shopTypes = vendorData['Type'];
 
     final productSnap = await store
         .collection('Business')
@@ -629,44 +629,33 @@ class _ProductPageState extends State<ProductPage> {
 
     if (categoryName == '0') {
       setState(() {
-        category.add('No Category');
-        category.add(
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
-        );
-        category.add(shopType);
+        category.addAll({
+          'name': 'No Category',
+          'imageUrl':
+              'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
+          'shopTypes': shopTypes,
+        });
       });
       return;
     } else {
-      final catalogueSnap = await store
-          .collection('Shop Types & Category Data')
-          .doc('Catalogue')
+      final justCategoriesSnap = await store
+          .collection('Shop Types And Category Data')
+          .doc('Just Category Data')
           .get();
 
-      final catalogueData = catalogueSnap.data()!;
+      final justCategoriesData = justCategoriesSnap.data()!;
 
-      final catalogue = catalogueData['catalogueData'];
+      final householdCategories = justCategoriesData['householdCategories'];
 
-      for (var type in shopType) {
-        if (catalogue[type]?[categoryName] != null) {
-          final categorySnap = await store
-              .collection('Business')
-              .doc('Special Categories')
-              .collection(type)
-              .doc(categoryName)
-              .get();
+      final imageUrl = householdCategories[categoryName];
 
-          final categoryData = categorySnap.data()!;
-
-          final name = categoryData['specialCategoryName'];
-          final imageUrl = categoryData['specialCategoryImageUrl'];
-
-          setState(() {
-            category.add(name);
-            category.add(imageUrl);
-            category.add(shopType);
-          });
-        }
-      }
+      setState(() {
+        category.addAll({
+          'name': categoryName,
+          'imageUrl': imageUrl,
+          'shopTypes': shopTypes,
+        });
+      });
     }
   }
 
@@ -1807,7 +1796,7 @@ class _ProductPageState extends State<ProductPage> {
                                                 child: Image.network(
                                                   productData['categoryName'] !=
                                                           '0'
-                                                      ? category[1]
+                                                      ? category['imageUrl']
                                                       : 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
                                                   fit: BoxFit.cover,
                                                   width: productData[
@@ -1851,10 +1840,11 @@ class _ProductPageState extends State<ProductPage> {
                                             await Navigator.of(context).push(
                                               MaterialPageRoute(
                                                 builder: ((context) =>
-                                                    ChangeCategory(
+                                                    ChangeProductCategoryPage(
                                                       productId: productData[
                                                           'productId'],
-                                                      shopTypes: category[2],
+                                                      shopTypes:
+                                                          category['shopTypes'],
                                                       productName: productData[
                                                           'productName'],
                                                     )),
@@ -1882,7 +1872,9 @@ class _ProductPageState extends State<ProductPage> {
                           const Divider(),
 
                           // PROPERTY 0
-                          propertyName0 != ''
+                          propertyName0 != '0' &&
+                                  propertyName0 != '1' &&
+                                  propertyName0 != '2'
                               ? InfoEditBox(
                                   head: propertyName0,
                                   content: propertyValue0.isNotEmpty
@@ -1903,7 +1895,9 @@ class _ProductPageState extends State<ProductPage> {
                               : Container(),
 
                           // PROPERTY 1
-                          propertyName1 != ''
+                          propertyName1 != '0' &&
+                                  propertyName1 != '1' &&
+                                  propertyName1 != '2'
                               ? InfoEditBox(
                                   head: propertyName1,
                                   content: propertyValue1.isNotEmpty
@@ -1924,7 +1918,9 @@ class _ProductPageState extends State<ProductPage> {
                               : Container(),
 
                           // PROPERTY 2
-                          propertyName2 != ''
+                          propertyName2 != '0' &&
+                                  propertyName2 != '1' &&
+                                  propertyName2 != '2'
                               ? InfoEditBox(
                                   head: propertyName2,
                                   content: propertyValue2.isNotEmpty
@@ -1945,7 +1941,9 @@ class _ProductPageState extends State<ProductPage> {
                               : Container(),
 
                           // PROPERTY 3
-                          propertyName3 != ''
+                          propertyName3 != '0' &&
+                                  propertyName3 != '1' &&
+                                  propertyName3 != '2'
                               ? InfoEditBox(
                                   head: propertyName3,
                                   content: propertyValue3.isNotEmpty
@@ -1966,7 +1964,9 @@ class _ProductPageState extends State<ProductPage> {
                               : Container(),
 
                           // PROPERTY 4
-                          propertyName4 != ''
+                          propertyName4 != '0' &&
+                                  propertyName4 != '1' &&
+                                  propertyName4 != '2'
                               ? InfoEditBox(
                                   head: propertyName4,
                                   content: propertyValue4.isNotEmpty
@@ -1987,7 +1987,9 @@ class _ProductPageState extends State<ProductPage> {
                               : Container(),
 
                           // PROPERTY 5
-                          propertyName5 != ''
+                          propertyName5 != '0' &&
+                                  propertyName5 != '1' &&
+                                  propertyName5 != '2'
                               ? InfoEditBox(
                                   head: propertyName5,
                                   content: propertyValue5.isNotEmpty

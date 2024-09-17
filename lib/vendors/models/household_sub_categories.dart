@@ -63,7 +63,7 @@
 //     'Skin Care':
 //         'https://firebasestorage.googleapis.com/v0/b/find-easy-1204.appspot.com/o/Household%20Categories%2FBeauty%20%26%20Care%2FSkin%20Care.png?alt=media&token=71c93170-071e-4c85-850e-aa0ac19612fd',
 //   },
-//   'Home Essentials': {
+//   'Cleaning Essentials': {
 //     'Cleaners':
 //         'https://firebasestorage.googleapis.com/v0/b/find-easy-1204.appspot.com/o/Household%20Categories%2FHome%20Essentials%2FCleaners.png?alt=media&token=66556f02-1e03-4586-b78b-4821bace7eb0',
 //     'Cleaning Tools':

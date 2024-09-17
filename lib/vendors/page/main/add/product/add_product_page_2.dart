@@ -56,15 +56,19 @@ class _AddProductPage2State extends State<AddProductPage2> {
 
     final List shopType = vendorData['Type'];
 
+    final shopTypeSnap = await store
+        .collection('Shop Types And Category Data')
+        .doc('Shop Types Data')
+        .get();
+
+    final shopTypesData = shopTypeSnap.data()!;
+
+    final myAllShopTypes = shopTypesData['shopTypesData'];
+
     for (var type in shopType) {
-      final shopTypeSnap = await store.collection('Shop Types').doc(type).get();
+      final shopTypeImageUrl = myAllShopTypes[type];
 
-      final shopTypeData = shopTypeSnap.data()!;
-
-      final shopTypeName = shopTypeData['shopTypeName'];
-      final shopTypeImageUrl = shopTypeData['shopTypeImageUrl'];
-
-      myShopTypes[shopTypeName] = shopTypeImageUrl;
+      myShopTypes[type] = shopTypeImageUrl;
     }
 
     setState(() {
@@ -84,30 +88,29 @@ class _AddProductPage2State extends State<AddProductPage2> {
         actions: [
           MyTextButton(
             onPressed: () {
-              if (selectedShopType != null) {
-                final productProvider = Provider.of<AddProductProvider>(
-                  context,
-                  listen: false,
-                );
-
-                productProvider.add(
-                  {
-                    'shopTypeName': selectedShopType,
-                  },
-                  true,
-                );
-
-                if (mounted) {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: ((context) => AddProductPage3(
-                            shopType: selectedShopType!,
-                          )),
-                    ),
-                  );
-                }
-              } else {
+              if (selectedShopType == null) {
                 return mySnackBar(context, 'Select Shop Type');
+              }
+              final productProvider = Provider.of<AddProductProvider>(
+                context,
+                listen: false,
+              );
+
+              productProvider.add(
+                {
+                  'shopTypeName': selectedShopType,
+                },
+                true,
+              );
+
+              if (mounted) {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: ((context) => AddProductPage3(
+                          shopType: selectedShopType!,
+                        )),
+                  ),
+                );
               }
             },
             text: 'NEXT',

@@ -51,7 +51,6 @@ Future<List<XFile>> pickCompressedImage(
     }
     return [];
   } catch (e) {
-    print('error: ${e.toString()}');
     mySnackBar(context, e.toString());
     return [];
   }

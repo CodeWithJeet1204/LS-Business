@@ -41,7 +41,7 @@ class _BusinessChooseCategoryPage2State
   // GET CATEGORIES
   Future<void> getCategories() async {
     final catalogueSnap = await store
-        .collection('Shop Types & Category Data')
+        .collection('Shop Types And Category Data')
         .doc('Catalogue')
         .get();
 
@@ -98,6 +98,19 @@ class _BusinessChooseCategoryPage2State
       appBar: AppBar(
         title: const Text('Choose Your Categories'),
         automaticallyImplyLeading: false,
+        // actions: [
+        //   MyTextButton(
+        //     onPressed: () async {
+        //       await store
+        //           .collection('Shop Types And Category Data')
+        //           .doc('Category Properties')
+        //           .set({
+        //         'categoryPropertiesData': householdCategoryProperties,
+        //       });
+        //     },
+        //     text: 'ADD',
+        //   ),
+        // ],
       ),
       body: categories == null
           ? Center(

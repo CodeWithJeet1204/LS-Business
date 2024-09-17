@@ -65,14 +65,10 @@ class _ProfilePageState extends State<ProfilePage> {
       builder: ((context) {
         return AlertDialog(
           title: const Text(
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
             'Sign Out?',
           ),
           content: const Text(
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            'Are you sure\nYou want to Sign Out?',
+            'Are you sure,\nYou want to Sign Out?',
           ),
           actions: [
             TextButton(
@@ -92,26 +88,18 @@ class _ProfilePageState extends State<ProfilePage> {
             TextButton(
               onPressed: () async {
                 try {
-                  await auth.signOut().then(
-                        (value) => Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                            builder: ((context) => const LoginPage()),
-                          ),
-                          (route) => false,
-                        ),
-                      );
+                  await auth.signOut();
                   if (context.mounted) {
                     Navigator.of(context).pop();
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: ((context) => const LoginPage()),
+                      ),
+                      (route) => false,
+                    );
                   }
-                } on FirebaseAuthException catch (e) {
-                  if (context.mounted) {
-                    mySnackBar(context, e.toString());
-                  }
-                }
-                await auth.signOut();
-                auth.currentUser!.reload();
-                if (context.mounted) {
-                  Navigator.of(context).pop();
+                } catch (e) {
+                  mySnackBar(context, e.toString());
                 }
               },
               child: const Text(

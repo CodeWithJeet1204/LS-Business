@@ -32,7 +32,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
   // INIT STATE
   @override
   void initState() {
-    getSpecialCategories();
+    getCategoryData();
     super.initState();
   }
 
@@ -43,36 +43,25 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
     super.dispose();
   }
 
-  // GET SPECIAL CATEGORIES
-  Future<void> getSpecialCategories() async {
+  // GET CATEGORY DATA
+  Future<void> getCategoryData() async {
     Map<String, dynamic> myCategories = {};
 
-    final vendorSnap = await store
-        .collection('Business')
-        .doc('Owners')
-        .collection('Shops')
-        .doc(auth.currentUser!.uid)
+    final categoriesSnap = await store
+        .collection('Shop Types And Category Data')
+        .doc('Category Data')
         .get();
 
-    final vendorData = vendorSnap.data()!;
+    final categoriesData = categoriesSnap.data()!;
 
-    final List shopTypes = vendorData['Type'];
+    final householdCategoryData = categoriesData['householdCategoryData'];
 
-    for (var type in shopTypes) {
-      final categorySnap = await store
-          .collection('Business')
-          .doc('Special Categories')
-          .collection(type)
-          .get();
+    for (var shopType in widget.shopType) {
+      final categories = householdCategoryData[shopType]!;
 
-      for (var category in categorySnap.docs) {
-        final categoryData = category.data();
-
-        final categoryName = categoryData['specialCategoryName'];
-        final imageUrl = categoryData['specialCategoryImageUrl'];
-
-        myCategories[categoryName] = imageUrl;
-      }
+      categories.forEach((categoryName, categoryImageUrl) {
+        myCategories[categoryName] = categoryImageUrl;
+      });
     }
 
     setState(() {

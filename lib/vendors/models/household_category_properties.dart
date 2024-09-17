@@ -8,7 +8,7 @@
 //   'Art & Craft': {
 //     'Type': {
 //       'hintText': '',
-//       'noOfAsnwers': 2,
+//       'noOfAnswers': 2,
 //       'dropDownItems': ['Painting', 'Drawing', 'Sculpture', 'Craft', 'Other'],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -16,7 +16,7 @@
 //     },
 //     'Material': {
 //       'hintText': '',
-//       'noOfAsnwers': 2,
+//       'noOfAnswers': 2,
 //       'dropDownItems': ['Canvas', 'Paper', 'Clay', 'Wood', 'Other'],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -24,7 +24,7 @@
 //     },
 //     'Size (in cm)': {
 //       'hintText': 'eg. 80cm X 20cm',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -32,7 +32,7 @@
 //     },
 //     'Color': {
 //       'hintText': 'eg. Red, Blue',
-//       'noOfAsnwers': 3,
+//       'noOfAnswers': 3,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -40,7 +40,7 @@
 //     },
 //     'Techniques Used': {
 //       'hintText': '',
-//       'noOfAsnwers': 2,
+//       'noOfAnswers': 2,
 //       'dropDownItems': [
 //         'Acrylic',
 //         'Oil Painting',
@@ -54,7 +54,7 @@
 //     },
 //     'Artist Name': {
 //       'hintText': 'Name of Artist',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -64,7 +64,7 @@
 //   'Beauty & Care': {
 //     'Product Type': {
 //       'hintText': '',
-//       'noOfAsnwers': 2,
+//       'noOfAnswers': 2,
 //       'dropDownItems': [
 //         'Skincare',
 //         'Haircare',
@@ -78,7 +78,7 @@
 //     },
 //     '0': {
 //       'hintText': '',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -86,7 +86,7 @@
 //     },
 //     'Size': {
 //       'hintText': '',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': ['Small', 'Medium', 'Large', 'Extra Large', 'Custom'],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -94,7 +94,7 @@
 //     },
 //     'Color': {
 //       'hintText': 'eg. Red, Blue',
-//       'noOfAsnwers': 3,
+//       'noOfAnswers': 3,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -102,7 +102,7 @@
 //     },
 //     'Ingredients': {
 //       'hintText': 'eg. Rose Water, Vitamin C',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 3,
@@ -110,7 +110,7 @@
 //     },
 //     'Usage Instructions': {
 //       'hintText': 'How To Use, Safety Instructions',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -120,7 +120,7 @@
 //   'Fashion & Clothing': {
 //     'Category': {
 //       'hintText': '',
-//       'noOfAsnwers': 2,
+//       'noOfAnswers': 2,
 //       'dropDownItems': ['Men\'s', 'Women\'s', 'Kids', 'Unisex'],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -128,7 +128,7 @@
 //     },
 //     'Quantity': {
 //       'hintText': 'eg. 1 set',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -136,7 +136,7 @@
 //     },
 //     'Size': {
 //       'hintText': '',
-//       'noOfAsnwers': 2,
+//       'noOfAnswers': 2,
 //       'dropDownItems': ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'Other'],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -144,7 +144,7 @@
 //     },
 //     'Color': {
 //       'hintText': 'eg. Red, Blue',
-//       'noOfAsnwers': 3,
+//       'noOfAnswers': 3,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -152,7 +152,7 @@
 //     },
 //     'Material': {
 //       'hintText': '',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': ['Cotton', 'Polyester', 'Silk', 'Wool', 'Other'],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -160,7 +160,7 @@
 //     },
 //     '0': {
 //       'hintText': '',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -170,7 +170,7 @@
 //   'Festive Essentials Products': {
 //     'Category': {
 //       'hintText': '',
-//       'noOfAsnwers': 2,
+//       'noOfAnswers': 2,
 //       'dropDownItems': [
 //         'Decorations',
 //         'Clothing',
@@ -184,7 +184,7 @@
 //     },
 //     'Quantity': {
 //       'hintText': 'eg. set of 3, set of 5',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 1,
 //       'maxLines': 1,
@@ -192,7 +192,7 @@
 //     },
 //     'Size': {
 //       'hintText': '',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': ['Small', 'Medium', 'Large', 'One Size'],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -200,7 +200,7 @@
 //     },
 //     'Color': {
 //       'hintText': 'eg. Red, Gold',
-//       'noOfAsnwers': 3,
+//       'noOfAnswers': 3,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -208,7 +208,7 @@
 //     },
 //     'Material': {
 //       'hintText': '',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': ['Paper', 'Fabric', 'Plastic', 'Metal', 'Other'],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -216,7 +216,7 @@
 //     },
 //     'Occasion': {
 //       'hintText': 'eg. Diwali, Christmas, Eid, Others',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -226,7 +226,7 @@
 //   'Food': {
 //     'Flavor Profile': {
 //       'hintText': '',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': ['Sweet', 'Savory', 'Spicy', 'Sour', 'Bitter', 'Umami'],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -234,7 +234,7 @@
 //     },
 //     'Quantity': {
 //       'hintText': 'eg. 500g, 1L',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 1,
 //       'maxLines': 1,
@@ -242,7 +242,7 @@
 //     },
 //     'Expiry Duration': {
 //       'hintText': 'eg. 1 month, 6 months',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 2,
 //       'maxLines': 1,
@@ -250,7 +250,7 @@
 //     },
 //     'Packaging Type': {
 //       'hintText': '',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [
 //         'Box',
 //         'Bag',
@@ -266,7 +266,7 @@
 //     },
 //     'Serving Size': {
 //       'hintText': 'eg. 100g, 1 cup',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -274,7 +274,7 @@
 //     },
 //     '0': {
 //       'hintText': '',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -284,7 +284,7 @@
 //   'Foot Wear': {
 //     'Size': {
 //       'hintText': 'eg. UK 5, US 7',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -292,7 +292,7 @@
 //     },
 //     'Color': {
 //       'hintText': 'eg. Black, Brown',
-//       'noOfAsnwers': 3,
+//       'noOfAnswers': 3,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -300,7 +300,7 @@
 //     },
 //     'Material': {
 //       'hintText': '',
-//       'noOfAsnwers': 2,
+//       'noOfAnswers': 2,
 //       'dropDownItems': [
 //         'Leather',
 //         'Suede',
@@ -315,7 +315,7 @@
 //     },
 //     'Closure Type': {
 //       'hintText': '',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': ['Lace-Up', 'Slip-On', 'Velcro', 'Zipper', 'Buckle'],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -323,7 +323,7 @@
 //     },
 //     'Heel Height': {
 //       'hintText': '',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': ['Flat', 'Low', 'Medium', 'High'],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -333,7 +333,7 @@
 //   'Health Care ': {
 //     'Expiry Duration': {
 //       'hintText': 'eg, 1 month, 6 month',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 2,
 //       'maxLines': 1,
@@ -341,7 +341,7 @@
 //     },
 //     'Usage Instructions': {
 //       'hintText': 'eg. Apply twice daily',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -349,7 +349,7 @@
 //     },
 //     'Precautions': {
 //       'hintText': 'e.g Avoid contact with eyes',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -357,7 +357,7 @@
 //     },
 //     '0': {
 //       'hintText': '',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -365,7 +365,7 @@
 //     },
 //     '1': {
 //       'hintText': '',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -373,7 +373,7 @@
 //     },
 //     '2': {
 //       'hintText': '',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -383,7 +383,7 @@
 //   'Home Decor & Furnishing': {
 //     'Color': {
 //       'hintText': 'e.g Beige, Gray',
-//       'noOfAsnwers': 3,
+//       'noOfAnswers': 3,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -391,7 +391,7 @@
 //     },
 //     'Material': {
 //       'hintText': '',
-//       'noOfAsnwers': 2,
+//       'noOfAnswers': 2,
 //       'dropDownItems': ['Wood', 'Metal', 'Glass', 'Fabric', 'Leather', 'Other'],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -399,7 +399,7 @@
 //     },
 //     'Assembly Required': {
 //       'hintText': '',
-//       'noOfAsnwers': 2,
+//       'noOfAnswers': 2,
 //       'dropDownItems': ['Yes', 'No'],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -407,7 +407,7 @@
 //     },
 //     'Size (in cm)': {
 //       'hintText': 'e.g 80cm X 100cm X 20cm',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -415,7 +415,7 @@
 //     },
 //     'Pattern': {
 //       'hintText': 'e.g Floral, Geometric',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -423,17 +423,17 @@
 //     },
 //     'Care Instructions': {
 //       'hintText': 'eg.  Wipe with a damp cloth',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
 //       'compulsory': false,
 //     },
 //   },
-//   'Home Essentials': {
+//   'Cleaning Essentials': {
 //     'Color': {
 //       'hintText': 'eg. Beige, Grey',
-//       'noOfAsnwers': 3,
+//       'noOfAnswers': 3,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -441,7 +441,7 @@
 //     },
 //     'Material': {
 //       'hintText': 'eg. Cotton, Wood',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -449,7 +449,7 @@
 //     },
 //     'Size': {
 //       'hintText': '',
-//       'noOfAsnwers': 2,
+//       'noOfAnswers': 2,
 //       'dropDownItems': ['Small', 'Medium', 'Large', 'Custom'],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -457,7 +457,7 @@
 //     },
 //     'Usage': {
 //       'hintText': 'eg. Daily Use, Occasional Use',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -465,7 +465,7 @@
 //     },
 //     'Features': {
 //       'hintText': 'eg. Waterproof, Foldable',
-//       'noOfAsnwers': 3,
+//       'noOfAnswers': 3,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -473,7 +473,7 @@
 //     },
 //     'Maintenance': {
 //       'hintText': 'eg. Easy to Clean, Requires Special Care',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -483,7 +483,7 @@
 //   'Jewelry': {
 //     'Material': {
 //       'hintText': 'eg. Gold, Silver',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -491,7 +491,7 @@
 //     },
 //     'Color': {
 //       'hintText': 'eg. Gold, Silver, Rose Gold',
-//       'noOfAsnwers': 3,
+//       'noOfAnswers': 3,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -499,7 +499,7 @@
 //     },
 //     'Size': {
 //       'hintText': '',
-//       'noOfAsnwers': 2,
+//       'noOfAnswers': 2,
 //       'dropDownItems': ['Small', 'Medium', 'Large', 'Adjustable'],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -507,7 +507,7 @@
 //     },
 //     'Occasion': {
 //       'hintText': 'e.g., Wedding, Casual, Party',
-//       'noOfAsnwers': 3,
+//       'noOfAnswers': 3,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -515,7 +515,7 @@
 //     },
 //     'Care Instructions': {
 //       'hintText': 'e.g., Clean with a soft cloth, Avoid contact with chemicals',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,
@@ -523,7 +523,7 @@
 //     },
 //     '0': {
 //       'hintText': '',
-//       'noOfAsnwers': 1,
+//       'noOfAnswers': 1,
 //       'dropDownItems': [],
 //       'inputType': 0,
 //       'maxLines': 1,

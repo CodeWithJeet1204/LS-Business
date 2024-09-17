@@ -15,7 +15,7 @@
 //       'https://firebasestorage.googleapis.com/v0/b/find-easy-1204.appspot.com/o/Household%20Categories%2FHealth%20Care%2FHealth%20Care.png?alt=media&token=56568efc-9843-4cfe-ba37-acc12e516dbb',
 //   'Home Decor & Furnishing':
 //       'https://firebasestorage.googleapis.com/v0/b/find-easy-1204.appspot.com/o/Household%20Categories%2FHome%20Decor%20%26%20Furnishing%2FHome%20Decor%20%26%20Furnishing.png?alt=media&token=ae453770-ee84-4e71-9802-2ff7b840c04c',
-//   'Home Essentials':
+//   'Cleaning Essentials':
 //       'https://firebasestorage.googleapis.com/v0/b/find-easy-1204.appspot.com/o/Household%20Categories%2FHome%20Essentials%2FHome%20Essentials.png?alt=media&token=04b5d0df-6c90-47b4-a942-8d99e6b68457',
 //   'Jewelry':
 //       'https://firebasestorage.googleapis.com/v0/b/find-easy-1204.appspot.com/o/Household%20Categories%2FHome%20Essentials%2FHome%20Essentials.png?alt=media&token=04b5d0df-6c90-47b4-a942-8d99e6b68457',

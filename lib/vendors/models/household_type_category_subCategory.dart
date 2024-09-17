@@ -740,7 +740,7 @@
 //       'Other Skin Care Products'
 //     ],
 //   },
-//   'Home Essentials': {
+//   'Cleaning Essentials': {
 //     'Cleaners': [
 //       'All Purpose Cleaner',
 //       'Glass Cleaner',

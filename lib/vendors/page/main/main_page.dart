@@ -1,6 +1,7 @@
 import 'package:Localsearch/auth/login_page.dart';
 import 'package:Localsearch/auth/verify/number_verify.dart';
 import 'package:Localsearch/under_development_page.dart';
+import 'package:Localsearch/vendors/provider/main_page_provider.dart';
 import 'package:Localsearch/vendors/register/business_choose_category_page_2.dart';
 import 'package:Localsearch/vendors/register/business_choose_category_page_3.dart';
 import 'package:Localsearch/vendors/register/business_timings_page.dart';
@@ -21,6 +22,7 @@ import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({
@@ -35,14 +37,6 @@ class _MainPageState extends State<MainPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   Widget? detailsPage;
-  int current = 3;
-
-  List<Widget> allPages = [
-    const AnalyticsPage(),
-    const AddPage(),
-    const AddDiscountPage(),
-    const ProfilePage(),
-  ];
 
   // INIT STATE
   @override
@@ -53,157 +47,172 @@ class _MainPageState extends State<MainPage> {
 
   // DETAILS ADDED
   Future<void> detailsAdded() async {
-    final developmentSnap =
-        await store.collection('Development').doc('Under Development').get();
+    try {
+      final developmentSnap =
+          await store.collection('Development').doc('Under Development').get();
 
-    final developmentData = developmentSnap.data()!;
+      final developmentData = developmentSnap.data()!;
 
-    final businessUnderDevelopment =
-        developmentData['businessUnderDevelopment'];
+      final businessUnderDevelopment =
+          developmentData['businessUnderDevelopment'];
 
-    if (businessUnderDevelopment) {
-      detailsPage = UnderDevelopmentPage();
-    } else {
-      final getUserDetailsAdded = await store
-          .collection('Business')
-          .doc('Owners')
-          .collection('Users')
-          .doc(auth.currentUser!.uid)
-          .get();
+      if (businessUnderDevelopment) {
+        detailsPage = UnderDevelopmentPage();
+      } else {
+        final getUserDetailsAdded = await store
+            .collection('Business')
+            .doc('Owners')
+            .collection('Users')
+            .doc(auth.currentUser!.uid)
+            .get();
 
-      final getUserDetailsAddedData = getUserDetailsAdded.data()!;
+        final getUserDetailsAddedData = getUserDetailsAdded.data()!;
 
-      final getBusinessDetailsAdded = await store
-          .collection('Business')
-          .doc('Owners')
-          .collection('Shops')
-          .doc(auth.currentUser!.uid)
-          .get();
+        final getBusinessDetailsAdded = await store
+            .collection('Business')
+            .doc('Owners')
+            .collection('Shops')
+            .doc(auth.currentUser!.uid)
+            .get();
 
-      final getBusinessDetailsAddedData = getBusinessDetailsAdded.data()!;
+        final getBusinessDetailsAddedData = getBusinessDetailsAdded.data()!;
 
-      if (getUserDetailsAdded.exists && getBusinessDetailsAdded.exists) {
-        if (getUserDetailsAddedData['Email'] == null ||
-            getUserDetailsAddedData['Phone Number'] == null) {
-          detailsPage = const OwnerRegisterDetailsPage(
-            fromMainPage: true,
-          );
-        } else if (getUserDetailsAddedData['Image'] == null) {
-          detailsPage = const OwnerRegisterDetailsPage(
-            fromMainPage: true,
-          );
-        } else if (getUserDetailsAddedData['registration'] == 'phone number' &&
-            getUserDetailsAddedData['numberVerified'] == false) {
-          detailsPage = NumberVerifyPage(
-            fromMainPage: true,
-            phoneNumber: getUserDetailsAddedData['Phone Number'],
-          );
-        } else if (auth.currentUser!.email != null &&
-            !auth.currentUser!.emailVerified) {
-          detailsPage = const EmailVerifyPage(
-            // mode: 'vendor',
-            fromMainPage: true,
-          );
-        } else if (getBusinessDetailsAddedData['Name'] == null ||
-            getBusinessDetailsAddedData['Latitude'] == null ||
-            getBusinessDetailsAddedData['Description'] == null) {
-          detailsPage = const BusinessRegisterDetailsPage(
-            fromMainPage: true,
-          );
-        } else if (getBusinessDetailsAddedData['AadhaarNumber'] != null &&
-            getBusinessDetailsAddedData['Type'] == null) {
-          detailsPage = const BusinessChooseCategoryPage1(
-            isEditing: true,
-          );
-        } else if (getBusinessDetailsAddedData['Type'] != null &&
-            getBusinessDetailsAddedData['Categories'] == null) {
-          detailsPage = BusinessChooseCategoryPage2(
-            selectedTypes: getBusinessDetailsAddedData['Type'],
-            isEditing: true,
-          );
-        } else if (getBusinessDetailsAddedData['Categories'] != null &&
-            getBusinessDetailsAddedData['Products'] == null) {
-          detailsPage = BusinessChooseCategoryPage3(
-            selectedTypes: getBusinessDetailsAddedData['Type'],
-            selectedCategories: getBusinessDetailsAddedData['Categories'],
-            isEditing: true,
-          );
-        } else if (getBusinessDetailsAddedData['City'] == null ||
-            getBusinessDetailsAddedData['Latitude'] == null) {
-          detailsPage = GetLocationPage();
-        } else if (getBusinessDetailsAddedData['weekdayStartTime'] == null ||
-            getBusinessDetailsAddedData['weekdayEndTime'] == null) {
-          detailsPage = SelectBusinessTimingsPage(
-            fromMainPage: true,
-          );
-        } else if (getUserDetailsAddedData['Image'] != null &&
-            getBusinessDetailsAddedData['AadhaarNumber'] != null &&
-            (getBusinessDetailsAddedData['MembershipName'] == null ||
-                getBusinessDetailsAddedData['MembershipEndDateTime'] == null)) {
-          detailsPage = const SelectMembershipPage(
-            hasAvailedLaunchOffer: false,
-          );
-        } else if (DateTime.now().isAfter(
-            (getBusinessDetailsAddedData['MembershipEndDateTime'] as Timestamp)
-                .toDate())) {
-          detailsPage = const SelectMembershipPage(
-            hasAvailedLaunchOffer: true,
-          );
+        if (getUserDetailsAdded.exists && getBusinessDetailsAdded.exists) {
+          if (getUserDetailsAddedData['Email'] == null ||
+              getUserDetailsAddedData['Phone Number'] == null) {
+            detailsPage = const OwnerRegisterDetailsPage(
+              fromMainPage: true,
+            );
+          } else if (getUserDetailsAddedData['Image'] == null) {
+            detailsPage = const OwnerRegisterDetailsPage(
+              fromMainPage: true,
+            );
+          } else if (getUserDetailsAddedData['registration'] ==
+                  'phone number' &&
+              getUserDetailsAddedData['numberVerified'] == false) {
+            detailsPage = NumberVerifyPage(
+              fromMainPage: true,
+              phoneNumber: getUserDetailsAddedData['Phone Number'],
+            );
+          } else if (auth.currentUser!.email != null &&
+              !auth.currentUser!.emailVerified) {
+            detailsPage = const EmailVerifyPage(
+              // mode: 'vendor',
+              fromMainPage: true,
+            );
+          } else if (getBusinessDetailsAddedData['Name'] == null ||
+              getBusinessDetailsAddedData['Latitude'] == null ||
+              getBusinessDetailsAddedData['Description'] == null) {
+            detailsPage = const BusinessRegisterDetailsPage(
+              fromMainPage: true,
+            );
+          } else if (getBusinessDetailsAddedData['AadhaarNumber'] != null &&
+              getBusinessDetailsAddedData['Type'] == null) {
+            detailsPage = const BusinessChooseCategoryPage1(
+              isEditing: true,
+            );
+          } else if (getBusinessDetailsAddedData['Type'] != null &&
+              getBusinessDetailsAddedData['Categories'] == null) {
+            detailsPage = BusinessChooseCategoryPage2(
+              selectedTypes: getBusinessDetailsAddedData['Type'],
+              isEditing: true,
+            );
+          } else if (getBusinessDetailsAddedData['Categories'] != null &&
+              getBusinessDetailsAddedData['Products'] == null) {
+            detailsPage = BusinessChooseCategoryPage3(
+              selectedTypes: getBusinessDetailsAddedData['Type'],
+              selectedCategories: getBusinessDetailsAddedData['Categories'],
+              isEditing: true,
+            );
+          } else if (getBusinessDetailsAddedData['City'] == null ||
+              getBusinessDetailsAddedData['Latitude'] == null) {
+            detailsPage = GetLocationPage();
+          } else if (getBusinessDetailsAddedData['weekdayStartTime'] == null ||
+              getBusinessDetailsAddedData['weekdayEndTime'] == null) {
+            detailsPage = SelectBusinessTimingsPage(
+              fromMainPage: true,
+            );
+          } else if (getUserDetailsAddedData['Image'] != null &&
+              getBusinessDetailsAddedData['AadhaarNumber'] != null &&
+              (getBusinessDetailsAddedData['MembershipName'] == null ||
+                  getBusinessDetailsAddedData['MembershipEndDateTime'] ==
+                      null)) {
+            detailsPage = const SelectMembershipPage(
+              hasAvailedLaunchOffer: false,
+            );
+          } else if (DateTime.now().isAfter(
+              (getBusinessDetailsAddedData['MembershipEndDateTime']
+                      as Timestamp)
+                  .toDate())) {
+            detailsPage = const SelectMembershipPage(
+              hasAvailedLaunchOffer: true,
+            );
+            if (mounted) {
+              await showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text('Your Membership Has Expired'),
+                    content: Text('Select New Membership to continue'),
+                    actions: [
+                      MyTextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        text: 'OK',
+                        textColor: Colors.green,
+                      ),
+                    ],
+                  );
+                },
+              );
+            }
+          } else {
+            detailsPage = null;
+          }
+          // }
+        } else {
+          await auth.signOut();
           if (mounted) {
-            await showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: Text('Your Membership Has Expired'),
-                  content: Text('Select New Membership to continue'),
-                  actions: [
-                    MyTextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      text: 'OK',
-                      textColor: Colors.green,
-                    ),
-                  ],
-                );
-              },
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => LoginPage(),
+              ),
+              (route) => false,
+            );
+            return mySnackBar(
+              context,
+              'This account was created in User app, use another account to use here',
             );
           }
-        } else {
-          detailsPage = null;
-        }
-        // }
-      } else {
-        await auth.signOut();
-        if (mounted) {
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-              builder: (context) => LoginPage(),
-            ),
-            (route) => false,
-          );
-          return mySnackBar(
-            context,
-            'This account was created in User app, use another account to use here',
-          );
         }
       }
+    } catch (e) {
+      mySnackBar(context, e.toString());
     }
 
     setState(() {});
   }
 
-  // CHANGE PAGE
-  void changePage(int index) {
-    setState(() {
-      current = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    final mainPageProvider = Provider.of<MainPageProvider>(context);
+    final loadedPages = mainPageProvider.loadedPages;
+    final current = mainPageProvider.index;
+
+    List<Widget> allPages = [
+      loadedPages.contains(0) ? AnalyticsPage() : Container(),
+      loadedPages.contains(1) ? AddPage() : Container(),
+      loadedPages.contains(2) ? AddDiscountPage() : Container(),
+      const ProfilePage(),
+    ];
+
     return detailsPage ??
         Scaffold(
+          body: IndexedStack(
+            index: current,
+            children: allPages,
+          ),
           resizeToAvoidBottomInset: false,
           bottomNavigationBar: BottomNavigationBar(
             elevation: 0,
@@ -223,7 +232,9 @@ class _MainPageState extends State<MainPage> {
               color: black.withOpacity(0.5),
             ),
             currentIndex: current,
-            onTap: changePage,
+            onTap: (index) {
+              mainPageProvider.changeIndex(index);
+            },
             items: const [
               BottomNavigationBarItem(
                 activeIcon: Icon(
@@ -263,7 +274,6 @@ class _MainPageState extends State<MainPage> {
               ),
             ],
           ),
-          body: allPages[current],
         );
   }
 }

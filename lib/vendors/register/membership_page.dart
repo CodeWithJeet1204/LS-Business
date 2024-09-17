@@ -348,8 +348,6 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
 
   // PAY
   Future<void> pay() async {
-    print('selectedMembership: $selectedMembership');
-    print('isAvailingOffer: $isAvailingOffer');
     if (selectedMembership == null &&
         // !isPremiumSelected &&
         !isAvailingOffer) {
@@ -409,7 +407,6 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
         final currentProductGallery = vendorData['productGallery'];
 
         if (currentNoOfShorts == null || currentProductGallery == null) {
-          print('updating');
           await vendorDoc.update({
             'MembershipName': membershipName,
             'MembershipDuration': membershipDuration,
@@ -419,7 +416,6 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
             'noOfShorts': noOfShorts,
           });
         } else {
-          print('updating');
           await vendorDoc.update({
             'MembershipName': membershipName,
             'MembershipDuration': membershipDuration,
@@ -482,7 +478,6 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
           final currentProductGallery = vendorData['productGallery'];
 
           if (currentNoOfShorts == null || currentProductGallery == null) {
-            print('updating');
             await vendorDoc.update({
               'MembershipName': selectedMembership,
               'MembershipDuration': selectedDuration,
@@ -492,7 +487,6 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
               'noOfShorts': noOfShorts,
             });
           } else {
-            print('updating');
             await vendorDoc.update({
               'MembershipName': selectedMembership,
               'MembershipDuration': selectedDuration,
@@ -971,11 +965,9 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                             benefit5: showBenefits('Gold', 'benefit5'),
                             // storageSize: 2,
                             onTap: () {
-                              print('ok');
                               setState(() {
                                 isAvailingOffer = false;
                                 selectedMembership = 'Gold';
-                                print('done');
                                 // isPremiumSelected = false;
                                 currentPrice = showDiscount('Gold') == null
                                     ? null

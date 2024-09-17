@@ -18,6 +18,7 @@ import 'package:Localsearch/vendors/provider/change_category_provider.dart';
 import 'package:Localsearch/vendors/provider/discount_brand_provider.dart';
 import 'package:Localsearch/vendors/provider/discount_category_provider.dart';
 import 'package:Localsearch/vendors/provider/discount_products_provider.dart';
+import 'package:Localsearch/vendors/provider/main_page_provider.dart';
 import 'package:Localsearch/vendors/provider/products_added_to_brand.dart';
 import 'package:Localsearch/vendors/provider/products_added_to_category_provider.dart';
 import 'package:Localsearch/vendors/provider/select_brand_for_product_provider.dart';
@@ -74,15 +75,13 @@ void main() async {
         // ChangeNotifierProvider(
         //   create: (_) => PickLocationProvider(),
         // ),
+        ChangeNotifierProvider(
+          create: (_) => MainPageProvider(),
+        ),
       ],
       child: const MyApp(),
     ),
   );
-  // if (auth.currentUser != null) {
-  //   print(auth.currentUser!.email);
-  // } else {
-  //   print('No Current User');
-  // }
 }
 
 // GET SELECTED MODE
@@ -211,7 +210,9 @@ class MyApp extends StatelessWidget {
           // const ConnectivityNotificationWidget(),
         ],
       ),
-      // home: BusinessRegisterDetailsPage(),
+      // home: BusinessChooseCategoryPage1(
+      //   isEditing: true,
+      // ),
     );
   }
 }

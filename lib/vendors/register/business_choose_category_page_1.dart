@@ -43,7 +43,7 @@ class _BusinessChooseCategoryPage1State
   // GET SHOP TYPES
   Future<void> getShopTypes() async {
     final shopTypesSnap = await store
-        .collection('Shop Types & Category Data')
+        .collection('Shop Types And Category Data')
         .doc('Shop Types Data')
         .get();
 

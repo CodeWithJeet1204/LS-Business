@@ -50,20 +50,20 @@ class _AddProductPage3State extends State<AddProductPage3> {
   Future<void> getCategoryData() async {
     Map<String, dynamic> myCategories = {};
 
-    final categorySnap = await store
-        .collection('Business')
-        .doc('Special Categories')
-        .collection(widget.shopType)
+    final categoriesSnap = await store
+        .collection('Shop Types And Category Data')
+        .doc('Category Data')
         .get();
 
-    for (var specialCategory in categorySnap.docs) {
-      final categoryData = specialCategory.data();
+    final categoriesData = categoriesSnap.data()!;
 
-      final category = categoryData['specialCategoryName'];
-      final imageUrl = categoryData['specialCategoryImageUrl'];
+    final householdCategoryData = categoriesData['householdCategoryData'];
 
-      myCategories[category] = imageUrl;
-    }
+    final categories = householdCategoryData[widget.shopType]!;
+
+    categories.forEach((categoryName, categoryImageUrl) {
+      myCategories[categoryName] = categoryImageUrl;
+    });
 
     setState(() {
       allCategories = myCategories;

@@ -30,7 +30,7 @@ class SmallTextContainer extends StatelessWidget {
           height: width * 0.125,
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-            color: primary2.withOpacity(0.125),
+            color: white,
             border: Border.all(
               width: 0.125,
               color: primaryDark,

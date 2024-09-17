@@ -214,13 +214,11 @@ class _AddBrandPageState extends State<AddBrandPage> {
                                       width: 2,
                                     ),
                                   ),
-                                  child: InteractiveViewer(
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(18),
-                                      child: Image(
-                                        image: FileImage(_image!),
-                                        fit: BoxFit.cover,
-                                      ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(18),
+                                    child: Image(
+                                      image: FileImage(_image!),
+                                      fit: BoxFit.cover,
                                     ),
                                   ),
                                 ),

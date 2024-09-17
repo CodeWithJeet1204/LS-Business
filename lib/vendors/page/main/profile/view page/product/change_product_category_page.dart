@@ -8,8 +8,8 @@ import 'package:Localsearch/widgets/text_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ChangeCategory extends StatefulWidget {
-  const ChangeCategory({
+class ChangeProductCategoryPage extends StatefulWidget {
+  const ChangeProductCategoryPage({
     super.key,
     required this.productId,
     required this.shopTypes,
@@ -21,22 +21,24 @@ class ChangeCategory extends StatefulWidget {
   final List shopTypes;
 
   @override
-  State<ChangeCategory> createState() => _ChangeCategoryState();
+  State<ChangeProductCategoryPage> createState() =>
+      _ChangeProductCategoryPageState();
 }
 
-class _ChangeCategoryState extends State<ChangeCategory> {
+class _ChangeProductCategoryPageState extends State<ChangeProductCategoryPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   final searchController = TextEditingController();
   bool isGridView = true;
   bool isAdding = false;
-  Map<String, dynamic> categories = {};
-  bool getData = false;
+  Map<String, dynamic> currentCategories = {};
+  Map<String, dynamic> allCategories = {};
+  bool isData = false;
 
   // INIT STATE
   @override
   void initState() {
-    getCommonCategories();
+    getCategoriesData();
     super.initState();
   }
 
@@ -47,30 +49,31 @@ class _ChangeCategoryState extends State<ChangeCategory> {
     super.dispose();
   }
 
-  // GET COMMON CATEGORIES
-  Future<void> getCommonCategories() async {
-    Map<String, dynamic> myCategory = {};
+  // GET CATEGORIES DATA
+  Future<void> getCategoriesData() async {
+    Map<String, dynamic> myCategories = {};
 
-    for (var type in widget.shopTypes) {
-      final specialSnapshot = await store
-          .collection('Business')
-          .doc('Special Categories')
-          .collection(type)
-          .get();
+    final categoriesSnap = await store
+        .collection('Shop Types And Category Data')
+        .doc('Category Data')
+        .get();
 
-      for (var specialCategory in specialSnapshot.docs) {
-        final specialCategoryData = specialCategory.data();
+    final categoriesData = categoriesSnap.data()!;
 
-        final name = specialCategoryData['specialCategoryName'];
-        final imageUrl = specialCategoryData['specialCategoryImageUrl'];
+    final householdCategoryData = categoriesData['householdCategoryData'];
 
-        myCategory[name] = imageUrl;
-      }
+    for (var shopType in widget.shopTypes) {
+      final allShopTypesCategories = householdCategoryData[shopType]!;
+
+      allShopTypesCategories.forEach((categoryName, categoryImageUrl) {
+        myCategories[categoryName] = categoryImageUrl;
+      });
     }
 
     setState(() {
-      categories = myCategory;
-      getData = true;
+      allCategories = myCategories;
+      currentCategories = myCategories;
+      isData = true;
     });
   }
 
@@ -159,7 +162,34 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                           border: OutlineInputBorder(),
                         ),
                         onChanged: (value) {
-                          setState(() {});
+                          setState(() {
+                            if (value.isEmpty) {
+                              currentCategories = Map<String, dynamic>.from(
+                                allCategories,
+                              );
+                            } else {
+                              Map<String, dynamic> filteredCategories =
+                                  Map<String, dynamic>.from(
+                                allCategories,
+                              );
+                              List<String> keysToRemove = [];
+
+                              filteredCategories.forEach((key, imageUrl) {
+                                if (!key
+                                    .toString()
+                                    .toLowerCase()
+                                    .contains(value.toLowerCase())) {
+                                  keysToRemove.add(key);
+                                }
+                              });
+
+                              for (var key in keysToRemove) {
+                                filteredCategories.remove(key);
+                              }
+
+                              currentCategories = filteredCategories;
+                            }
+                          });
                         },
                       ),
                     ),
@@ -186,7 +216,7 @@ class _ChangeCategoryState extends State<ChangeCategory> {
         builder: ((context, constraints) {
           final width = constraints.maxWidth;
 
-          return !getData
+          return !isData
               ? const Center(
                   child: CircularProgressIndicator(),
                 )
@@ -197,11 +227,12 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                         crossAxisCount: 2,
                         childAspectRatio: width * 0.75 / width,
                       ),
-                      itemCount: categories.length,
+                      itemCount: currentCategories.length,
                       itemBuilder: (context, index) {
-                        final id = categories.keys.toList()[index];
-                        final name = categories.keys.toList()[index];
-                        final imageUrl = categories.values.toList()[index];
+                        final id = currentCategories.keys.toList()[index];
+                        final name = currentCategories.keys.toList()[index];
+                        final imageUrl =
+                            currentCategories.values.toList()[index];
 
                         return GestureDetector(
                           onTap: () {
@@ -291,11 +322,12 @@ class _ChangeCategoryState extends State<ChangeCategory> {
                       width: width,
                       child: ListView.builder(
                         shrinkWrap: true,
-                        itemCount: categories.length,
+                        itemCount: currentCategories.length,
                         itemBuilder: ((context, index) {
-                          final id = categories.keys.toList()[index];
-                          final name = categories.keys.toList()[index];
-                          final imageUrl = categories.values.toList()[index];
+                          final id = currentCategories.keys.toList()[index];
+                          final name = currentCategories.keys.toList()[index];
+                          final imageUrl =
+                              currentCategories.values.toList()[index];
 
                           return GestureDetector(
                             onTap: () {

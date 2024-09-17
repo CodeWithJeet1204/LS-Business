@@ -72,13 +72,9 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
         return AlertDialog(
           title: const Text(
             'Confirm DELETE',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
           ),
           content: const Text(
-            'Are you sure you want to delete this Discount\nDiscount will be removed from all the products/categories with this discount',
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
+            'Are you sure you want to delete this Discount\nDiscount will be removed from all the products/brands/categories within this discount',
           ),
           actions: [
             TextButton(
@@ -97,9 +93,9 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
             ),
             TextButton(
               onPressed: () async {
-                Navigator.of(context).pop();
                 await delete(discountId, imageUrl);
                 if (context.mounted) {
+                  Navigator.of(context).pop();
                   Navigator.of(context).pop();
                   Navigator.of(context).push(
                     MaterialPageRoute(
@@ -539,13 +535,6 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                     discountData['discountId'],
                                                     discountData[
                                                         'discountImageUrl'],
-                                                  );
-                                                  Navigator.of(context).pop();
-                                                  Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          const AllDiscountPage(),
-                                                    ),
                                                   );
                                                 },
                                                 icon: Icon(

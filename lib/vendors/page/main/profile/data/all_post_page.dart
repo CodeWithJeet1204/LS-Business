@@ -433,9 +433,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                       child: Container(
                                                         decoration:
                                                             BoxDecoration(
-                                                          color: primary2
-                                                              .withOpacity(
-                                                                  0.125),
+                                                          color: white,
                                                           border: Border.all(
                                                             width: 0.25,
                                                             color: primaryDark,
