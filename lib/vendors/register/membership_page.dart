@@ -454,7 +454,6 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
           isPaying = true;
         });
         try {
-          // TODO: PAYMENT GATEWAY
           final membershipSnap = await store
               .collection('Membership')
               .doc(selectedMembership)

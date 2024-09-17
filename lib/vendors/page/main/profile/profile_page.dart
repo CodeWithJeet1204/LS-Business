@@ -368,7 +368,17 @@ class _ProfilePageState extends State<ProfilePage> {
                           height: height * 0.05,
                         ),
 
-                        // VIEW
+                        // PRODUCTS
+                        SmallTextContainer(
+                          text: 'PRODUCTS',
+                          onPressed: () {
+                            Navigator.of(context).pushNamed('/productsPage');
+                          },
+                          width: width,
+                        ),
+                        const SizedBox(height: 16),
+
+                        // SHORTS
                         SmallTextContainer(
                           text: 'SHORTS',
                           onPressed: () {
@@ -382,27 +392,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         const SizedBox(height: 16),
 
-                        // CATEGORY
+                        // BRAND
                         SmallTextContainer(
-                          text: 'CATEGORIES',
+                          text: 'BRANDS',
                           onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: ((context) => AllCategoriesPage(
-                                      shopType: shopData['Type'],
-                                    )),
-                              ),
-                            );
-                          },
-                          width: width,
-                        ),
-                        const SizedBox(height: 16),
-
-                        // PRODUCTS
-                        SmallTextContainer(
-                          text: 'PRODUCTS',
-                          onPressed: () {
-                            Navigator.of(context).pushNamed('/productsPage');
+                            Navigator.of(context).pushNamed('/brandsPage');
                           },
                           width: width,
                         ),
@@ -418,14 +412,21 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         const SizedBox(height: 16),
 
-                        // BRAND
+                        // CATEGORIES
                         SmallTextContainer(
-                          text: 'BRANDS',
+                          text: 'CATEGORIES',
                           onPressed: () {
-                            Navigator.of(context).pushNamed('/brandsPage');
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: ((context) => AllCategoriesPage(
+                                      shopType: shopData['Type'],
+                                    )),
+                              ),
+                            );
                           },
                           width: width,
                         ),
+
                         hasReviewed ? Container() : SizedBox(height: 6),
 
                         hasReviewed ? Container() : Divider(),

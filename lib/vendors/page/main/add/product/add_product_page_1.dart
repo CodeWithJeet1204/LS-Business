@@ -113,7 +113,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
       final membershipType = vendorData['MembershipName'];
 
       setState(() {
-        isPost = membershipType != 'BASIC';
+        isPost = membershipType != 'Basic';
       });
       try {
         bool productDoesntExists = true;
