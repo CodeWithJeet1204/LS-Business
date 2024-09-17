@@ -479,6 +479,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                     child: ListView.builder(
                                       scrollDirection: Axis.horizontal,
                                       shrinkWrap: true,
+                                      physics: ClampingScrollPhysics(),
                                       itemCount: tagList.length,
                                       itemBuilder: ((context, index) {
                                         return Padding(
@@ -671,6 +672,8 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                 scrollDirection:
                                                     Axis.horizontal,
                                                 shrinkWrap: true,
+                                                physics:
+                                                    ClampingScrollPhysics(),
                                                 itemCount: property0.length,
                                                 itemBuilder: ((context, index) {
                                                   return Padding(
@@ -877,6 +880,8 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                 scrollDirection:
                                                     Axis.horizontal,
                                                 shrinkWrap: true,
+                                                physics:
+                                                    ClampingScrollPhysics(),
                                                 itemCount: property1.length,
                                                 itemBuilder: ((context, index) {
                                                   return Padding(
@@ -1083,6 +1088,8 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                 scrollDirection:
                                                     Axis.horizontal,
                                                 shrinkWrap: true,
+                                                physics:
+                                                    ClampingScrollPhysics(),
                                                 itemCount: property2.length,
                                                 itemBuilder: ((context, index) {
                                                   return Padding(
@@ -1289,6 +1296,8 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                 scrollDirection:
                                                     Axis.horizontal,
                                                 shrinkWrap: true,
+                                                physics:
+                                                    ClampingScrollPhysics(),
                                                 itemCount: property3.length,
                                                 itemBuilder: ((context, index) {
                                                   return Padding(
@@ -1495,6 +1504,8 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                 scrollDirection:
                                                     Axis.horizontal,
                                                 shrinkWrap: true,
+                                                physics:
+                                                    ClampingScrollPhysics(),
                                                 itemCount: property4.length,
                                                 itemBuilder: ((context, index) {
                                                   return Padding(
@@ -1701,6 +1712,8 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                 scrollDirection:
                                                     Axis.horizontal,
                                                 shrinkWrap: true,
+                                                physics:
+                                                    ClampingScrollPhysics(),
                                                 itemCount: property5.length,
                                                 itemBuilder: ((context, index) {
                                                   return Padding(
@@ -1853,6 +1866,8 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                       height: 50,
                                       child: ListView.builder(
                                         scrollDirection: Axis.horizontal,
+                                        shrinkWrap: true,
+                                        physics: ClampingScrollPhysics(),
                                         itemCount: otherInfoList.length,
                                         itemBuilder: ((context, index) {
                                           return Padding(

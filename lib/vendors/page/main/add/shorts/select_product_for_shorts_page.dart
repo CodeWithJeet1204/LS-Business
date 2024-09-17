@@ -52,7 +52,7 @@ class _SelectProductForShortsPageState
         .collection('Business')
         .doc('Data')
         .collection('Products')
-        .where('shortsUrl', isEqualTo: '')
+        .where('shortsURL', isEqualTo: '')
         .where('vendorId', isEqualTo: auth.currentUser!.uid)
         .get();
 
@@ -185,6 +185,7 @@ class _SelectProductForShortsPageState
                 ? isGridView
                     ? GridView.builder(
                         shrinkWrap: true,
+                        physics: ClampingScrollPhysics(),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           crossAxisSpacing: 0,
@@ -207,6 +208,7 @@ class _SelectProductForShortsPageState
                     : ListView.builder(
                         shrinkWrap: true,
                         itemCount: 4,
+                        physics: ClampingScrollPhysics(),
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: EdgeInsets.all(
@@ -223,12 +225,15 @@ class _SelectProductForShortsPageState
                 : SafeArea(
                     child: currentProducts.isEmpty
                         ? Center(
-                            child:
-                                Text('No Products or All Products have Shorts'),
+                            child: Text(
+                              'No Products\n(Max. 1 Shorts per product allowed)',
+                              textAlign: TextAlign.center,
+                            ),
                           )
                         : isGridView
                             ? GridView.builder(
                                 shrinkWrap: true,
+                                physics: ClampingScrollPhysics(),
                                 gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
@@ -375,6 +380,7 @@ class _SelectProductForShortsPageState
                                 width: width,
                                 child: ListView.builder(
                                   shrinkWrap: true,
+                                  physics: ClampingScrollPhysics(),
                                   itemCount: currentProducts.length,
                                   itemBuilder: ((context, index) {
                                     final productData = currentProducts[

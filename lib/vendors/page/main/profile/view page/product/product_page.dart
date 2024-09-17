@@ -56,10 +56,12 @@ class _ProductPageState extends State<ProductPage> {
   bool isEditing = false;
   bool isImageChanging = false;
   Map<String, dynamic> category = {};
+  int? maxImages;
 
   // INIT STATE
   @override
   void initState() {
+    getMaxImages();
     ifDiscount();
     getCategoryInfo();
     super.initState();
@@ -70,6 +72,24 @@ class _ProductPageState extends State<ProductPage> {
   void dispose() {
     editController.dispose();
     super.dispose();
+  }
+
+  // GET MAX IMAGES
+  Future<void> getMaxImages() async {
+    final vendorSnap = await store
+        .collection('Business')
+        .doc('Owners')
+        .collection('Shops')
+        .doc(auth.currentUser!.uid)
+        .get();
+
+    final vendorData = vendorSnap.data()!;
+
+    final myMaxImages = vendorData['maxImages'];
+
+    setState(() {
+      maxImages = myMaxImages;
+    });
   }
 
   // EDIT INFO
@@ -224,6 +244,8 @@ class _ProductPageState extends State<ProductPage> {
                                       height: 50,
                                       child: ListView.builder(
                                         scrollDirection: Axis.horizontal,
+                                        shrinkWrap: true,
+                                        physics: ClampingScrollPhysics(),
                                         itemCount: property.length,
                                         itemBuilder: ((context, index) {
                                           return Padding(
@@ -411,7 +433,74 @@ class _ProductPageState extends State<ProductPage> {
   // ADD IMAGES
   Future<void> addProductImages(List images) async {
     final List<XFile> imageList = await showImagePickDialog(context, false);
-    if (imageList.isNotEmpty) {
+    final currentImagesLength = images.length;
+    final selectedImagesLength = imageList.length;
+    if ((currentImagesLength + selectedImagesLength) > maxImages!) {
+      setState(() {
+        isImageChanging = true;
+      });
+      final remainingSlots = maxImages! - currentImagesLength;
+      final validImages = imageList.take(remainingSlots).toList();
+
+      for (var im in validImages) {
+        final productImageId = Uuid().v4();
+
+        Reference ref =
+            storage.ref().child('Vendor/Products').child(productImageId);
+        await ref.putFile(File(im.path)).whenComplete(() async {
+          await ref.getDownloadURL().then((value) async {
+            setState(() {
+              images.add(value);
+            });
+          });
+        });
+      }
+
+      await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Products')
+          .doc(widget.productId)
+          .update({
+        'images': images,
+      });
+
+      setState(() {
+        isImageChanging = false;
+      });
+
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Max $maxImages Images Allowed'),
+            content: Text(
+              'Your current membership only supports $maxImages maximum',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+
+      if (mounted) {
+        Navigator.of(context).pop();
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: ((context) => ProductPage(
+                  productId: widget.productId,
+                  productName: widget.productName,
+                )),
+          ),
+        );
+      }
+    } else if (imageList.isNotEmpty) {
       try {
         setState(() {
           isImageChanging = true;
@@ -816,9 +905,7 @@ class _ProductPageState extends State<ProductPage> {
             MyTextButton(
               onPressed: () async {
                 await deleteShort();
-                if (context.mounted) {
-                  Navigator.of(context).pop();
-                }
+                Navigator.of(context).pop();
               },
               text: 'YES',
               textColor: Colors.red,
@@ -831,6 +918,13 @@ class _ProductPageState extends State<ProductPage> {
 
   // DELETE SHORT
   Future<void> deleteShort() async {
+    await store
+        .collection('Business')
+        .doc('Data')
+        .collection('Shorts')
+        .doc(widget.productId)
+        .delete();
+
     await store
         .collection('Business')
         .doc('Data')
@@ -1258,29 +1352,38 @@ class _ProductPageState extends State<ProductPage> {
                                       ),
                                     )
                                   : const SizedBox(height: 40),
-                              GestureDetector(
-                                onTap: () async {
-                                  await addProductImages(images);
-                                },
-                                child: Container(
-                                  height: width * 0.1,
-                                  decoration: BoxDecoration(
-                                    color: primary,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: const Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Add Image',
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
+                              images.length - (maxImages ?? 0) == 0
+                                  ? Text(
+                                      'Max. $maxImages images',
+                                      style: TextStyle(
+                                        fontSize: width * 0.025,
                                       ),
-                                      Icon(FeatherIcons.plus),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                                    )
+                                  : GestureDetector(
+                                      onTap: () async {
+                                        await addProductImages(images);
+                                      },
+                                      child: Container(
+                                        height: width * 0.1,
+                                        decoration: BoxDecoration(
+                                          color: primary,
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                        child: const Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Add Image',
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            Icon(FeatherIcons.plus),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                             ],
                           ),
 

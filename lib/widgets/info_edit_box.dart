@@ -77,8 +77,9 @@ class InfoEditBox extends StatelessWidget {
                                   width: width * 0.725,
                                   height: 50,
                                   child: ListView.builder(
-                                    shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
+                                    shrinkWrap: true,
+                                    physics: ClampingScrollPhysics(),
                                     itemCount: propertyValue.length,
                                     itemBuilder: (context, index) {
                                       final e = propertyValue[index];

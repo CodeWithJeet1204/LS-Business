@@ -158,6 +158,7 @@ class _SelectBrandForDiscountPageState
               child: isGridView
                   ? GridView.builder(
                       shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 0,
@@ -180,6 +181,7 @@ class _SelectBrandForDiscountPageState
                   : ListView.builder(
                       shrinkWrap: true,
                       itemCount: 4,
+                      physics: ClampingScrollPhysics(),
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: EdgeInsets.all(
@@ -209,6 +211,7 @@ class _SelectBrandForDiscountPageState
                           child: isGridView
                               ? GridView.builder(
                                   shrinkWrap: true,
+                                  physics: ClampingScrollPhysics(),
                                   gridDelegate:
                                       const SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
@@ -340,6 +343,7 @@ class _SelectBrandForDiscountPageState
                                   width: width,
                                   child: ListView.builder(
                                       shrinkWrap: true,
+                                      physics: ClampingScrollPhysics(),
                                       itemCount: currentBrands.length,
                                       itemBuilder: (context, index) {
                                         final brandData = currentBrands[

@@ -223,6 +223,7 @@ class _ChangeProductCategoryPageState extends State<ChangeProductCategoryPage> {
               : isGridView
                   ? GridView.builder(
                       shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         childAspectRatio: width * 0.75 / width,
@@ -322,6 +323,7 @@ class _ChangeProductCategoryPageState extends State<ChangeProductCategoryPage> {
                       width: width,
                       child: ListView.builder(
                         shrinkWrap: true,
+                        physics: ClampingScrollPhysics(),
                         itemCount: currentCategories.length,
                         itemBuilder: ((context, index) {
                           final id = currentCategories.keys.toList()[index];

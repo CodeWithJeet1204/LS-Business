@@ -2,7 +2,6 @@ import 'package:Localsearch/vendors/page/main/profile/view%20page/shorts/shorts_
 import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:Localsearch/widgets/shimmer_skeleton_container.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:feather_icons/feather_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -47,15 +46,14 @@ class _AllShortsPageState extends State<AllShortsPage> {
 
         final shortsId = short.id;
         final datetime = shortsData['datetime'];
-        final productId = shortsData['productId'];
-        final shortsUrl = shortsData['shortsURL'];
+        final shortsURL = shortsData['shortsURL'];
         final vendorId = auth.currentUser!.uid;
 
         final productSnap = await store
             .collection('Business')
             .doc('Data')
             .collection('Products')
-            .doc(productId)
+            .doc(shortsId)
             .get();
 
         final productData = productSnap.data()!;
@@ -65,13 +63,13 @@ class _AllShortsPageState extends State<AllShortsPage> {
         Reference thumbnailRef = FirebaseStorage.instance
             .ref()
             .child('Vendor/Thumbnails')
-            .child(productId);
+            .child(shortsId);
 
         String thumbnailDownloadUrl = await thumbnailRef.getDownloadURL();
 
         myShorts[shortsId] = [
-          shortsUrl,
-          productId,
+          shortsURL,
+          shortsId,
           productName,
           datetime,
           thumbnailDownloadUrl,
@@ -89,9 +87,6 @@ class _AllShortsPageState extends State<AllShortsPage> {
       isData = true;
     });
   }
-
-  // DELETE SHORT
-  Future<void> deleteShort() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -128,8 +123,8 @@ class _AllShortsPageState extends State<AllShortsPage> {
                           Map<String, List>.from(allShorts);
                       List<String> keysToRemove = [];
 
-                      filteredShorts.forEach((key, postData) {
-                        if (!postData[2]
+                      filteredShorts.forEach((key, shortsData) {
+                        if (!shortsData[2]
                             .toString()
                             .toLowerCase()
                             .contains(value.toLowerCase().trim())) {
@@ -156,6 +151,7 @@ class _AllShortsPageState extends State<AllShortsPage> {
           ? SafeArea(
               child: GridView.builder(
                 shrinkWrap: true,
+                physics: ClampingScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 0,
@@ -170,8 +166,8 @@ class _AllShortsPageState extends State<AllShortsPage> {
                     ),
                     child: GridViewSkeleton(
                       width: width,
-                      isPrice: true,
-                      isDelete: true,
+                      isPrice: false,
+                      isDelete: false,
                     ),
                   );
                 },
@@ -241,14 +237,14 @@ class _AllShortsPageState extends State<AllShortsPage> {
                                       size: width * 0.1,
                                     ),
                                   ),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      FeatherIcons.trash,
-                                      color: Colors.red,
-                                    ),
-                                    tooltip: 'Delete',
-                                  ),
+                                  // IconButton(
+                                  //   onPressed: () {},
+                                  //   icon: Icon(
+                                  //     FeatherIcons.trash,
+                                  //     color: Colors.red,
+                                  //   ),
+                                  //   tooltip: 'Delete',
+                                  // ),
                                 ],
                               ),
                             ),

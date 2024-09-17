@@ -135,6 +135,7 @@ class _SelectBrandForBulkProductsPageState
                       child: isGridView
                           ? GridView.builder(
                               shrinkWrap: true,
+                              physics: ClampingScrollPhysics(),
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
@@ -266,6 +267,7 @@ class _SelectBrandForBulkProductsPageState
                               width: width,
                               child: ListView.builder(
                                 shrinkWrap: true,
+                                physics: ClampingScrollPhysics(),
                                 itemCount: snapshot.data!.docs.length,
                                 itemBuilder: ((context, index) {
                                   final brandSnap = snapshot.data!.docs[index];
@@ -369,6 +371,7 @@ class _SelectBrandForBulkProductsPageState
                     child: isGridView
                         ? GridView.builder(
                             shrinkWrap: true,
+                            physics: ClampingScrollPhysics(),
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
@@ -391,6 +394,7 @@ class _SelectBrandForBulkProductsPageState
                           )
                         : ListView.builder(
                             shrinkWrap: true,
+                            physics: ClampingScrollPhysics(),
                             itemCount: 4,
                             itemBuilder: (context, index) {
                               return Padding(

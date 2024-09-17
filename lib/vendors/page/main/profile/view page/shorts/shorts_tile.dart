@@ -1,7 +1,11 @@
+import 'package:Localsearch/vendors/page/main/profile/view%20page/product/product_page.dart';
+import 'package:Localsearch/vendors/page/main/profile/view%20page/shorts/all_shorts_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
+import 'package:Localsearch/widgets/text_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
@@ -23,9 +27,10 @@ class ShortsTile extends StatefulWidget {
 }
 
 class _ShortsTileState extends State<ShortsTile> {
-  late FlickManager flickManager;
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
+  final storage = FirebaseStorage.instance;
+  late FlickManager flickManager;
   bool isWishListed = false;
   bool isWishlistLocked = false;
   bool isVideoPlaying = true;
@@ -76,36 +81,82 @@ class _ShortsTileState extends State<ShortsTile> {
     });
   }
 
-  // GET VENDOR INFO
-  Future<String> getVendorInfo(String vendorId) async {
-    final vendorSnap = await store
-        .collection('Business')
-        .doc('Owners')
-        .collection('Shops')
-        .doc(vendorId)
-        .get();
+  // CONFIRM DELETE SHORT
+  Future<void> confirmDeleteShort() async {
+    bool isLoading = false;
 
-    final vendorData = vendorSnap.data()!;
-
-    final vendorName = vendorData['Name'] as String;
-
-    return vendorName;
+    await showDialog(
+      context: context,
+      builder: ((context) {
+        return isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : AlertDialog(
+                title: const Text('Delete Short'),
+                content:
+                    const Text('Are you sure you want to delete this short?'),
+                actions: [
+                  MyTextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    text: 'NO',
+                    textColor: Colors.green,
+                  ),
+                  MyTextButton(
+                    onPressed: () async {
+                      setState(() {
+                        isLoading = true;
+                      });
+                      await deleteShort();
+                      setState(() {
+                        isLoading = false;
+                      });
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => AllShortsPage(),
+                        ),
+                      );
+                    },
+                    text: 'YES',
+                    textColor: Colors.red,
+                  ),
+                ],
+              );
+      }),
+    );
   }
 
-  // GET PRODUCT NAME
-  Future<String> getProductName(String productId) async {
-    final productSnap = await store
+  // DELETE SHORT
+  Future<void> deleteShort() async {
+    await store
+        .collection('Business')
+        .doc('Data')
+        .collection('Shorts')
+        .doc(widget.data.values.toList()[0][1])
+        .delete();
+
+    await store
         .collection('Business')
         .doc('Data')
         .collection('Products')
-        .doc(productId)
-        .get();
+        .doc(widget.data.values.toList()[0][1])
+        .update({
+      'shortsThumbnail': '',
+      'shortsURL': '',
+    });
 
-    final productData = productSnap.data()!;
+    await storage
+        .ref('Vendor/Shorts/${widget.data.values.toList()[0][1]}')
+        .delete();
 
-    final productName = productData['productName'] as String;
-
-    return productName;
+    await storage
+        .ref('Vendor/Thumbnails/${widget.data.values.toList()[0][1]}')
+        .delete();
   }
 
   @override
@@ -147,70 +198,69 @@ class _ShortsTileState extends State<ShortsTile> {
                       Padding(
                         padding: EdgeInsets.all(width * 0.025),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  icon: Icon(
+                                    FeatherIcons.arrowLeft,
+                                    color: Colors.white,
+                                  ),
+                                  iconSize: width * 0.075,
+                                  color: Colors.white,
+                                  tooltip: 'Back',
+                                ),
+                                IconButton(
+                                  onPressed: () async {
+                                    await confirmDeleteShort();
+                                  },
+                                  icon: Icon(
+                                    FeatherIcons.trash,
+                                    color: Colors.red,
+                                  ),
+                                  iconSize: width * 0.1,
+                                  color: Colors.red,
+                                  tooltip: 'Delete Short',
+                                ),
+                              ],
+                            ),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 Expanded(
-                                  child: Container(
+                                  child: Padding(
                                     padding: EdgeInsets.only(
                                       left: width * 0.0125,
                                     ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            FutureBuilder(
-                                              future: getVendorInfo(
-                                                widget.data.values.toList()[0]
-                                                    [5],
-                                              ),
-                                              builder: (context, snapshot) {
-                                                if (snapshot.hasError) {
-                                                  return Container();
-                                                }
-
-                                                if (snapshot.hasData) {
-                                                  return Padding(
-                                                    padding: EdgeInsets.all(
-                                                      width * 0.006125,
-                                                    ),
-                                                    child: Text(
-                                                      snapshot.data!,
-                                                      style: TextStyle(
-                                                        color: white,
-                                                        fontSize: width * 0.05,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                    ),
-                                                  );
-                                                }
-
-                                                return Container();
-                                              },
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) => ProductPage(
+                                              productId: widget.data.values
+                                                  .toList()[0][1],
+                                              productName: widget.data.values
+                                                  .toList()[0][1],
                                             ),
-                                          ],
-                                        ),
-                                        Text(
-                                          widget.data.values.toList()[0][2],
-                                          style: TextStyle(
-                                            color: white,
-                                            fontSize: width * 0.05,
-                                            fontWeight: FontWeight.w500,
                                           ),
+                                        );
+                                      },
+                                      child: Text(
+                                        widget.data.values.toList()[0][2],
+                                        style: TextStyle(
+                                          color: white,
+                                          fontSize: width * 0.05,
+                                          fontWeight: FontWeight.w500,
                                         ),
-                                      ],
+                                      ),
                                     ),
                                   ),
                                 ),

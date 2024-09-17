@@ -305,6 +305,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
           ? SafeArea(
               child: GridView.builder(
                 shrinkWrap: true,
+                physics: ClampingScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 0,

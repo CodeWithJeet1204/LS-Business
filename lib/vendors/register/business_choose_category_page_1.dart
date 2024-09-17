@@ -117,6 +117,8 @@ class _BusinessChooseCategoryPage1State
                     width: width,
                     height: height * 0.8875,
                     child: GridView.builder(
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,

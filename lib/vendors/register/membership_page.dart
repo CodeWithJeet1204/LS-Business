@@ -406,7 +406,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
         final currentNoOfShorts = vendorData['noOfShorts'];
         final currentProductGallery = vendorData['productGallery'];
 
-        if (currentNoOfShorts == null || currentProductGallery == null) {
+        if (currentNoOfShorts == null && currentProductGallery == null) {
           await vendorDoc.update({
             'MembershipName': membershipName,
             'MembershipDuration': membershipDuration,
@@ -461,8 +461,13 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
 
           final membershipData = membershipSnap.data()!;
 
-          final productGallery = membershipData['productGallery'];
-          final noOfShorts = membershipData['noOfShorts'];
+          final productGallery = membershipData['quota']
+              [showReverseDuration(selectedDuration!)]['productGallery'];
+
+          final noOfShorts = membershipData['quota']
+              [showReverseDuration(selectedDuration!)]['noOfShorts'];
+
+          final maxImages = membershipData['maxImages'];
 
           final vendorDoc = await store
               .collection('Business')
@@ -476,7 +481,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
           final currentNoOfShorts = vendorData['noOfShorts'];
           final currentProductGallery = vendorData['productGallery'];
 
-          if (currentNoOfShorts == null || currentProductGallery == null) {
+          if (currentNoOfShorts == null && currentProductGallery == null) {
             await vendorDoc.update({
               'MembershipName': selectedMembership,
               'MembershipDuration': selectedDuration,
@@ -484,6 +489,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
               'MembershipEndDateTime': selectedDurationDateTime,
               'productGallery': productGallery,
               'noOfShorts': noOfShorts,
+              'maxImages': maxImages,
             });
           } else {
             await vendorDoc.update({
@@ -493,6 +499,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
               'MembershipEndDateTime': selectedDurationDateTime,
               'productGallery': currentProductGallery + productGallery,
               'noOfShorts': currentNoOfShorts + noOfShorts,
+              'maxImages': maxImages,
             });
           }
 

@@ -225,6 +225,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
               child: isGridView
                   ? GridView.builder(
                       shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 0,
@@ -247,6 +248,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                     )
                   : ListView.builder(
                       shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
                       itemCount: 4,
                       itemBuilder: (context, index) {
                         return Padding(

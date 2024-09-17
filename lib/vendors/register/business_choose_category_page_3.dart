@@ -131,6 +131,8 @@ class _BusinessChooseCategoryPage3State
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: width * 0.0125),
           child: ListView.builder(
+            shrinkWrap: true,
+            physics: ClampingScrollPhysics(),
             itemCount: widget.selectedCategories.length,
             itemBuilder: (context, index) {
               final subCategory = widget.selectedCategories[index];
@@ -157,7 +159,7 @@ class _BusinessChooseCategoryPage3State
                       if (future.hasData) {
                         return ListView.builder(
                           shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
+                          physics: ClampingScrollPhysics(),
                           itemCount: future.data!.length,
                           itemBuilder: (context, productIndex) {
                             final product = future.data![productIndex];

@@ -204,6 +204,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
               child: isGridView
                   ? GridView.builder(
                       shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 0,
@@ -225,6 +226,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                     )
                   : ListView.builder(
                       shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
                       itemCount: 4,
                       itemBuilder: (context, index) {
                         return Padding(
@@ -255,6 +257,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                           child: isGridView
                               ? GridView.builder(
                                   shrinkWrap: true,
+                                  physics: ClampingScrollPhysics(),
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
@@ -386,6 +389,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                                   width: width,
                                   child: ListView.builder(
                                       shrinkWrap: true,
+                                      physics: ClampingScrollPhysics(),
                                       itemCount: currentProducts.length,
                                       itemBuilder: (context, index) {
                                         final productData = currentProducts[

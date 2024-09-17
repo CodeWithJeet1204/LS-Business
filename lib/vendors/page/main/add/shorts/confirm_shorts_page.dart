@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Localsearch/vendors/page/main/add/shorts/select_product_for_shorts_page.dart';
 import 'package:Localsearch/vendors/page/main/main_page.dart';
@@ -56,7 +57,6 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
 
   // UPLOAD VIDEO
   Future<void> uploadVideo(
-    String productName,
     String productId,
     String videoPath,
   ) async {
@@ -101,13 +101,14 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
         .set({
       'datetime': DateTime.now(),
       'vendorId': auth.currentUser!.uid,
-      'productId': productId,
       'shortsURL': shortsDownloadUrl,
     });
 
     setState(() {
       isDone = false;
     });
+
+    mySnackBar(context, 'Shorts Added');
     if (mounted) {
       Navigator.of(context).pop();
       Navigator.of(context).pushAndRemoveUntil(
@@ -181,7 +182,7 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
                       setState(() {
                         isDone = true;
                       });
-                      await uploadVideo(data![0], data![0], widget.videoPath);
+                      await uploadVideo(data![0], widget.videoPath);
                       setState(() {
                         isDone = false;
                       });

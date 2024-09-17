@@ -298,8 +298,9 @@ class _AddStatusPageState extends State<AddStatusPage> {
                                     ),
                                     padding: EdgeInsets.all(width * 0.0125),
                                     child: ListView.builder(
-                                      shrinkWrap: true,
                                       scrollDirection: Axis.horizontal,
+                                      shrinkWrap: true,
+                                      physics: ClampingScrollPhysics(),
                                       itemCount: _image.length,
                                       itemBuilder: ((context, index) {
                                         return GestureDetector(

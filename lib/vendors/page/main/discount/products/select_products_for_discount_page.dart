@@ -154,6 +154,7 @@ class _SelectProductForDiscountPageState
               child: isGridView
                   ? GridView.builder(
                       shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 0,
@@ -175,6 +176,7 @@ class _SelectProductForDiscountPageState
                     )
                   : ListView.builder(
                       shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
                       itemCount: 4,
                       itemBuilder: (context, index) {
                         return Padding(
@@ -205,6 +207,7 @@ class _SelectProductForDiscountPageState
                           child: isGridView
                               ? GridView.builder(
                                   shrinkWrap: true,
+                                  physics: ClampingScrollPhysics(),
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
@@ -334,6 +337,7 @@ class _SelectProductForDiscountPageState
                                   width: width,
                                   child: ListView.builder(
                                       shrinkWrap: true,
+                                      physics: ClampingScrollPhysics(),
                                       itemCount: currentProducts.length,
                                       itemBuilder: (context, index) {
                                         final Map<String, dynamic> productData =

@@ -213,6 +213,7 @@ class _SelectProductsForCategoryPageState
               child: isGridView
                   ? GridView.builder(
                       shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 0,
@@ -235,6 +236,7 @@ class _SelectProductsForCategoryPageState
                   : ListView.builder(
                       shrinkWrap: true,
                       itemCount: 4,
+                      physics: ClampingScrollPhysics(),
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: EdgeInsets.all(
@@ -267,6 +269,7 @@ class _SelectProductsForCategoryPageState
                           child: isGridView
                               ? GridView.builder(
                                   shrinkWrap: true,
+                                  physics: ClampingScrollPhysics(),
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
@@ -435,6 +438,7 @@ class _SelectProductsForCategoryPageState
                                   width: width,
                                   child: ListView.builder(
                                       shrinkWrap: true,
+                                      physics: ClampingScrollPhysics(),
                                       itemCount: currentProducts.length,
                                       itemBuilder: (context, index) {
                                         final productData = currentProducts[

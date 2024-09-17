@@ -29,31 +29,35 @@ class _ShortsPageViewState extends State<ShortsPageView> {
 
   @override
   Widget build(BuildContext context) {
-    return PageView.builder(
-      controller: PageController(
-        initialPage: 0,
-        viewportFraction: 1,
-      ),
-      scrollDirection: Axis.vertical,
-      onPageChanged: (pageIndex) {
-        setState(() {
-          snappedPageIndex = pageIndex;
-        });
-      },
-      itemCount: widget.shorts.length,
-      itemBuilder: ((context, index) {
-        final String currentKey = widget.shorts.keys.toList()[index];
-        final List<dynamic> currentValue = widget.shorts.values.toList()[index];
-        final Map<String, dynamic> currentShort = {
-          currentKey: currentValue,
-        };
+    return SafeArea(
+      child: PageView.builder(
+        controller: PageController(
+          initialPage: 0,
+          viewportFraction: 1,
+        ),
+        scrollDirection: Axis.vertical,
+        physics: ClampingScrollPhysics(),
+        onPageChanged: (pageIndex) {
+          setState(() {
+            snappedPageIndex = pageIndex;
+          });
+        },
+        itemCount: widget.shorts.length,
+        itemBuilder: ((context, index) {
+          final String currentKey = widget.shorts.keys.toList()[index];
+          final List<dynamic> currentValue =
+              widget.shorts.values.toList()[index];
+          final Map<String, dynamic> currentShort = {
+            currentKey: currentValue,
+          };
 
-        return ShortsTile(
-          data: currentShort,
-          snappedPageIndex: index,
-          currentIndex: snappedPageIndex,
-        );
-      }),
+          return ShortsTile(
+            data: currentShort,
+            snappedPageIndex: index,
+            currentIndex: snappedPageIndex,
+          );
+        }),
+      ),
     );
   }
 }

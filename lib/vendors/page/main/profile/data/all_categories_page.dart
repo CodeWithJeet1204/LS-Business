@@ -158,6 +158,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
               child: isGridView
                   ? GridView.builder(
                       shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 0,
@@ -180,6 +181,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                     )
                   : ListView.builder(
                       shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
                       itemCount: 4,
                       itemBuilder: (context, index) {
                         return Padding(
@@ -450,6 +452,8 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                                         child: isGridView
                                             ? GridView.builder(
                                                 shrinkWrap: true,
+                                                physics:
+                                                    ClampingScrollPhysics(),
                                                 gridDelegate:
                                                     SliverGridDelegateWithFixedCrossAxisCount(
                                                   crossAxisCount: 2,
@@ -474,6 +478,8 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                                               )
                                             : ListView.builder(
                                                 shrinkWrap: true,
+                                                physics:
+                                                    ClampingScrollPhysics(),
                                                 itemCount: 4,
                                                 itemBuilder: (context, index) {
                                                   return Padding(

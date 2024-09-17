@@ -24,7 +24,6 @@ import 'package:Localsearch/vendors/provider/products_added_to_category_provider
 import 'package:Localsearch/vendors/provider/select_brand_for_product_provider.dart';
 import 'package:Localsearch/vendors/provider/shop_type_provider.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +36,7 @@ void main() async {
   );
 
   // await Messaging().initNotifications();
-  await FirebaseAppCheck.instance.activate();
+  // await FirebaseAppCheck.instance.activate();
 
   runApp(
     MultiProvider(

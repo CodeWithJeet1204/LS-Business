@@ -1181,6 +1181,8 @@ class DISCOUNT extends State<DiscountPage> {
                                           child: isGridView
                                               ? GridView.builder(
                                                   shrinkWrap: true,
+                                                  physics:
+                                                      ClampingScrollPhysics(),
                                                   gridDelegate:
                                                       SliverGridDelegateWithFixedCrossAxisCount(
                                                     crossAxisCount: 2,
@@ -1364,6 +1366,8 @@ class DISCOUNT extends State<DiscountPage> {
                                                   })
                                               : ListView.builder(
                                                   shrinkWrap: true,
+                                                  physics:
+                                                      ClampingScrollPhysics(),
                                                   itemCount: products!.length,
                                                   itemBuilder:
                                                       ((context, index) {
@@ -1558,6 +1562,8 @@ class DISCOUNT extends State<DiscountPage> {
                                             child: isGridView
                                                 ? GridView.builder(
                                                     shrinkWrap: true,
+                                                    physics:
+                                                        ClampingScrollPhysics(),
                                                     gridDelegate:
                                                         const SliverGridDelegateWithFixedCrossAxisCount(
                                                       crossAxisCount: 2,
@@ -1717,6 +1723,8 @@ class DISCOUNT extends State<DiscountPage> {
                                                     })
                                                 : ListView.builder(
                                                     shrinkWrap: true,
+                                                    physics:
+                                                        ClampingScrollPhysics(),
                                                     itemCount: brands!.length,
                                                     itemBuilder:
                                                         ((context, index) {
@@ -2066,6 +2074,8 @@ class DISCOUNT extends State<DiscountPage> {
                                                     })
                                                 : ListView.builder(
                                                     shrinkWrap: true,
+                                                    physics:
+                                                        ClampingScrollPhysics(),
                                                     itemCount:
                                                         categories!.length,
                                                     itemBuilder:
