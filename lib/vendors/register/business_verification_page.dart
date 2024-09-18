@@ -119,6 +119,9 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
               MaterialPageRoute(
                 builder: ((context) => const BusinessSocialMediaPage(
                       isChanging: false,
+                      instagram: '',
+                      facebook: '',
+                      website: '',
                     )),
               ),
             );

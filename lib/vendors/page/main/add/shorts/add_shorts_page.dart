@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:Localsearch/vendors/page/main/add/shorts/confirm_shorts_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
@@ -15,6 +17,46 @@ class AddShortsPage extends StatefulWidget {
 }
 
 class AddShortsPageState extends State<AddShortsPage> {
+  final auth = FirebaseAuth.instance;
+  final store = FirebaseFirestore.instance;
+  int? noOfShorts;
+
+  // INIT STATE
+  @override
+  void initState() {
+    getNoOfShorts();
+    super.initState();
+  }
+
+  // GET NO OF SHORTS
+  Future<void> getNoOfShorts() async {
+    final vendorSnap = await store
+        .collection('Business')
+        .doc('Owners')
+        .collection('Shops')
+        .doc(auth.currentUser!.uid)
+        .get();
+
+    final vendorData = vendorSnap.data()!;
+
+    final shortsQuota = vendorData['noOfShorts'];
+
+    final shortsSnap = await store
+        .collection('Business')
+        .doc('Data')
+        .collection('Shorts')
+        .where('vendorId', isEqualTo: auth.currentUser!.uid)
+        .get();
+
+    final currentShortsLength = shortsSnap.docs.length;
+
+    final remainingShorts = shortsQuota - currentShortsLength;
+
+    setState(() {
+      noOfShorts = remainingShorts;
+    });
+  }
+
   // SHOW OPTIONS DIALOG
   Future<void> showOptionsDialog(BuildContext context, double width) async {
     await showDialog(
@@ -180,43 +222,65 @@ class AddShortsPageState extends State<AddShortsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Shorts'),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(
-          MediaQuery.of(context).size.width * 0.006125,
-        ),
-        child: LayoutBuilder(builder: (context, constraints) {
-          final width = constraints.maxWidth;
-
-          return Center(
-            child: GestureDetector(
-              onTap: () async {
-                await showOptionsDialog(context, width);
-              },
-              child: Container(
-                width: 190,
-                height: 50,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: primary2,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Text(
-                  'Add Video',
-                  style: TextStyle(
-                    color: black,
-                    fontWeight: FontWeight.w500,
-                    fontSize: width * 0.055,
-                  ),
-                ),
+      body: noOfShorts == null
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Padding(
+              padding: EdgeInsets.all(
+                width * 0.006125,
               ),
+              child: LayoutBuilder(builder: (context, constraints) {
+                final width = constraints.maxWidth;
+                final height = constraints.maxHeight;
+
+                return noOfShorts == 0
+                    ? Center(
+                        child: Text(
+                          'Your Shorts Quota has exhausted\nDelete existing shorts or renew your membership to increase limit',
+                          textAlign: TextAlign.center,
+                        ),
+                      )
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text('Remaining Shorts Quota: $noOfShorts'),
+                          SizedBox(height: height * 0.025),
+                          Center(
+                            child: GestureDetector(
+                              onTap: () async {
+                                await showOptionsDialog(context, width);
+                              },
+                              child: Container(
+                                width: 190,
+                                height: 50,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: primary2,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  'Add Video',
+                                  style: TextStyle(
+                                    color: black,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: width * 0.055,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+              }),
             ),
-          );
-        }),
-      ),
     );
   }
 }

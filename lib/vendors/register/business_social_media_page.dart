@@ -10,9 +10,15 @@ class BusinessSocialMediaPage extends StatefulWidget {
   const BusinessSocialMediaPage({
     super.key,
     required this.isChanging,
+    required this.instagram,
+    required this.facebook,
+    required this.website,
   });
 
   final bool isChanging;
+  final String instagram;
+  final String facebook;
+  final String website;
 
   @override
   State<BusinessSocialMediaPage> createState() =>
@@ -27,6 +33,17 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
   final websiteController = TextEditingController();
   bool isNext = false;
 
+  // INIT STATE
+  @override
+  void initState() {
+    setState(() {
+      instaController.text = widget.instagram;
+      facebookController.text = widget.facebook;
+      websiteController.text = widget.website;
+    });
+    super.initState();
+  }
+
   // DISPOSE
   @override
   void dispose() {
@@ -38,11 +55,11 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
 
   // NEXT
   Future<void> next() async {
-    setState(() {
-      isNext = true;
-    });
-
     try {
+      setState(() {
+        isNext = true;
+      });
+
       await store
           .collection('Business')
           .doc('Owners')
@@ -54,6 +71,9 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
         'Website': websiteController.text,
       });
 
+      setState(() {
+        isNext = false;
+      });
       if (mounted) {
         Navigator.of(context).pop();
 
@@ -65,11 +85,10 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
                   )),
             ),
           );
+        } else {
+          Navigator.of(context).pop();
         }
       }
-      setState(() {
-        isNext = false;
-      });
     } catch (e) {
       setState(() {
         isNext = false;

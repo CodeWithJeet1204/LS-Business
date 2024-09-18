@@ -1,14 +1,13 @@
-import 'dart:convert';
 import 'dart:io';
+import 'package:Localsearch/auth/login_page.dart';
+import 'package:Localsearch/vendors/page/main/profile/details/location_page.dart';
 import 'package:Localsearch/vendors/page/main/profile/details/membership_details_page.dart';
 import 'package:Localsearch/vendors/register/business_social_media_page.dart';
-import 'package:Localsearch/widgets/pick_location.dart';
 import 'package:Localsearch/widgets/text_button.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:Localsearch/vendors/page/main/profile/details/change_timings_page.dart';
 import 'package:Localsearch/vendors/register/business_choose_category_page_1.dart';
 import 'package:Localsearch/vendors/register/business_choose_category_page_2.dart';
@@ -20,7 +19,6 @@ import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class BusinessDetailsPage extends StatefulWidget {
   const BusinessDetailsPage({super.key});
@@ -107,82 +105,6 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
     }
   }
 
-  // GET LOCATION
-  Future<Position?> getLocation() async {
-    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-
-    if (!serviceEnabled) {
-      if (mounted) {
-        mySnackBar(context, 'Turn ON Location Services to Continue');
-      }
-      return null;
-    } else {
-      LocationPermission permission = await Geolocator.checkPermission();
-
-      // LOCATION PERMISSION GIVEN
-      Future<Position> locationPermissionGiven() async {
-        return await Geolocator.getCurrentPosition();
-      }
-
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          if (mounted) {
-            mySnackBar(context, 'Pls give Location Permission to Continue');
-          }
-        }
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          setState(() {
-            latitude = 0;
-            longitude = 0;
-          });
-
-          setState(() {
-            isGettingAddress = false;
-          });
-          if (mounted) {
-            mySnackBar(context, 'Sorry, without location we can\'t Continue');
-          }
-        } else {
-          return await locationPermissionGiven();
-        }
-      } else {
-        return await locationPermissionGiven();
-      }
-    }
-    return null;
-  }
-
-  // GET ADDRESS
-  Future<String> getAddress(double lat, double long) async {
-    const apiKey = 'AIzaSyA-CD3MgDBzAsjmp_FlDbofynMMmW6fPsU';
-    final apiUrl =
-        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$long&key=$apiKey';
-
-    try {
-      final response = await http.get(Uri.parse(apiUrl));
-
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        if (data['status'] == 'OK') {
-          final address = data['results'][0]['address_components'];
-
-          print(data['results'][0]['address_components'][2]['long_name']);
-          return '${address[0]['long_name']}, ${address[1]['long_name']}, ${address[2]['long_name']}';
-        } else {
-          mySnackBar(context, 'Failed to get location');
-        }
-      } else {
-        mySnackBar(context, 'Failed to load data');
-      }
-    } catch (e) {
-      mySnackBar(context, e.toString());
-      return e.toString();
-    }
-    return 'Couldn\'t get Address';
-  }
-
   // SAVE
   Future<void> save(
     TextEditingController controller,
@@ -263,6 +185,66 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
     }
 
     return type;
+  }
+
+  // SIGN OUT
+  Future<void> signOut() async {
+    await showDialog(
+      context: context,
+      builder: ((context) {
+        return AlertDialog(
+          title: const Text(
+            'Sign Out?',
+          ),
+          content: const Text(
+            'Are you sure,\nYou want to Sign Out?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                'NO',
+                style: TextStyle(
+                  color: Colors.green,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                try {
+                  await auth.signOut();
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: ((context) => const LoginPage()),
+                      ),
+                      (route) => false,
+                    );
+                  }
+                } catch (e) {
+                  mySnackBar(context, e.toString());
+                }
+              },
+              child: const Text(
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                'YES',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
+        );
+      }),
+    );
   }
 
   @override
@@ -504,133 +486,59 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                 // horizontal: width * 0.006125,
                                 vertical: height * 0.0125,
                               ),
-                              child: isChangingAddress
-                                  ? Center(
-                                      child: CircularProgressIndicator(),
-                                    )
-                                  : Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                            left: width * 0.0335,
-                                          ),
-                                          child: SizedBox(
-                                            width: width * 0.625,
-                                            child: FutureBuilder(
-                                                future: getAddress(
-                                                  shopData['Latitude'],
-                                                  shopData['Longitude'],
-                                                ),
-                                                builder: (context, snapshot) {
-                                                  if (snapshot.hasData) {
-                                                    return Text(
-                                                      snapshot.data!,
-                                                      maxLines: 2,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: TextStyle(
-                                                        fontSize: width * 0.045,
-                                                        color: primaryDark2,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                    );
-                                                  }
-
-                                                  return Center(
-                                                    child:
-                                                        CircularProgressIndicator(),
-                                                  );
-                                                }),
-                                          ),
-                                        ),
-                                        IconButton(
-                                          onPressed: () async {
-                                            setState(() {
-                                              isChangingAddress = true;
-                                            });
-
-                                            double? latitude;
-                                            double? longitude;
-
-                                            await getLocation()
-                                                .then((coordinates) async {
-                                              if (coordinates != null) {
-                                                setState(() {
-                                                  latitude =
-                                                      coordinates.latitude;
-                                                  longitude =
-                                                      coordinates.longitude;
-                                                });
-
-                                                await store
-                                                    .collection('Business')
-                                                    .doc('Owners')
-                                                    .collection('Shops')
-                                                    .doc(auth.currentUser!.uid)
-                                                    .update({
-                                                  'Latitude': latitude,
-                                                  'Longitude': longitude,
-                                                });
-                                              }
-                                            });
-
-                                            setState(() {
-                                              isChangingAddress = false;
-                                            });
-                                          },
-                                          icon: const Icon(
-                                            FeatherIcons.refreshCw,
-                                          ),
-                                          tooltip: 'Relocate',
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                            right: width * 0.03,
-                                          ),
-                                          child: IconButton(
-                                            onPressed: () async {
-                                              double? latitude;
-                                              double? longitude;
-
-                                              Navigator.of(context)
-                                                  .push(
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      PickLocationPage(),
-                                                ),
-                                              )
-                                                  .then((address) async {
-                                                final coordinates = address[1];
-
-                                                setState(() {
-                                                  latitude =
-                                                      coordinates.latitude;
-                                                  longitude =
-                                                      coordinates.longitude;
-                                                });
-
-                                                await store
-                                                    .collection('Business')
-                                                    .doc('Owners')
-                                                    .collection('Shops')
-                                                    .doc(auth.currentUser!.uid)
-                                                    .update({
-                                                  'Latitude': latitude,
-                                                  'Longitude': longitude,
-                                                });
-                                              });
-                                            },
-                                            icon: const Icon(
-                                              FeatherIcons.mapPin,
-                                            ),
-                                            tooltip: 'Select on Map',
-                                          ),
-                                        ),
-                                      ],
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => LocationPage(
+                                        latitude: shopData['Latitude'],
+                                        longitude: shopData['Longitude'],
+                                      ),
                                     ),
+                                  );
+                                },
+                                customBorder: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Container(
+                                  width: width,
+                                  // height: 50,
+                                  decoration: BoxDecoration(
+                                    color: primary2.withOpacity(0.9),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                    // horizontal: width * 0.006125,
+                                    vertical: height * 0.0125,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          left: width * 0.0335,
+                                        ),
+                                        child: Text(
+                                          'Location',
+                                          style: TextStyle(
+                                            color: primaryDark,
+                                            fontSize: width * 0.05,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                      Icon(
+                                        FeatherIcons.chevronRight,
+                                        color: primaryDark,
+                                        size: width * 0.09,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
                             const SizedBox(height: 14),
 
@@ -1134,8 +1042,11 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        const BusinessSocialMediaPage(
+                                        BusinessSocialMediaPage(
                                       isChanging: true,
+                                      instagram: shopData['Instagram'],
+                                      facebook: shopData['Facebook'],
+                                      website: shopData['Website'],
                                     ),
                                   ),
                                 );
@@ -1179,6 +1090,58 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                     ),
                                   ],
                                 ),
+                              ),
+                            ),
+                            SizedBox(height: 14),
+
+                            // DESCRIPTION
+                            Container(
+                              width: width,
+                              decoration: BoxDecoration(
+                                color: Colors.red.withOpacity(0.25),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                // horizontal: width * 0.006125,
+                                vertical: height * 0.0125,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      left: width * 0.0335,
+                                    ),
+                                    child: SizedBox(
+                                      width: width * 0.725,
+                                      child: AutoSizeText(
+                                        'Sign Out',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: width * 0.055,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      right: width * 0.03,
+                                    ),
+                                    child: IconButton(
+                                      onPressed: () async {
+                                        await signOut();
+                                      },
+                                      icon: const Icon(
+                                        FeatherIcons.logOut,
+                                        color: Colors.red,
+                                      ),
+                                      color: Colors.red,
+                                      tooltip: 'Sign Out',
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                             isChangingName ||

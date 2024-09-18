@@ -307,7 +307,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
       body: remainingProducts == 0
           ? Center(
               child: Text(
-                'Your Product Gallery is full\nDelete older products or renew your membership',
+                'Your Product Gallery is full\nDelete older products or renew your membership to increase limit',
                 textAlign: TextAlign.center,
               ),
             )
