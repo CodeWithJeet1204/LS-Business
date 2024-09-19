@@ -178,12 +178,11 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       // NAME
                       SizedBox(
-                        width: width * (!isData ? 0.5 : 0.8),
-                        height: width * 0.0875,
+                        width: width * (!isData ? 0.33 : 0.8),
                         child: !isData
                             ? SkeletonContainer(
-                                width: width * 0.5,
-                                height: height * 0.025,
+                                width: width * 0.33,
+                                height: height * 0.05,
                               )
                             : Text(
                                 shopData['Name'],
@@ -200,14 +199,14 @@ class _ProfilePageState extends State<ProfilePage> {
                       SizedBox(
                         height: height * 0.0125,
                       ),
+
                       // TYPES
                       SizedBox(
-                        width: width * (!isData ? 0.25 : 0.8),
-                        height: width * 0.0875,
+                        width: width * (!isData ? 0.75 : 0.8),
                         child: !isData
                             ? SkeletonContainer(
-                                width: width * 0.5,
-                                height: height * 0.0175,
+                                width: width * 0.75,
+                                height: height * 0.025,
                               )
                             : Text(
                                 getShopTypes(shopData['Type']),

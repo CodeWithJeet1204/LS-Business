@@ -153,8 +153,9 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
                       isLoading: isNext,
                       horizontalPadding: 0,
                     ),
+                    const SizedBox(height: 24),
 
-                    // NEXT
+                    // SKIP
                     widget.isChanging
                         ? Container()
                         : MyButton(
@@ -169,7 +170,7 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
                                 ),
                               );
                             },
-                            text: 'DONE',
+                            text: 'SKIP',
                             isLoading: false,
                             horizontalPadding: 0,
                           ),

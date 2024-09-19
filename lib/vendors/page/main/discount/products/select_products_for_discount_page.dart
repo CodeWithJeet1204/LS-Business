@@ -20,27 +20,95 @@ class _SelectProductForDiscountPageState
     extends State<SelectProductForDiscountPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
-  bool isGridView = true;
   Map<String, Map<String, dynamic>> currentProducts = {};
   Map<String, Map<String, dynamic>> allProducts = {};
-  String? searchedProduct;
+  int? total;
+  int noOfGridView = 8;
+  bool isLoadMoreGridView = false;
+  final scrollControllerGridView = ScrollController();
+  int noOfListView = 20;
+  bool isLoadMoreListView = false;
+  final scrollControllerListView = ScrollController();
+  bool isGridView = true;
   bool isData = false;
 
   // INIT STATE
   @override
   void initState() {
-    getData();
+    getTotal();
+    getProductData();
+    scrollControllerGridView.addListener(scrollListenerGridView);
+    scrollControllerListView.addListener(scrollListenerListView);
     super.initState();
   }
 
-  // GET DATA
-  Future<void> getData() async {
+  // DISPOSE
+  @override
+  void dispose() {
+    scrollControllerGridView.dispose();
+    scrollControllerListView.dispose();
+    super.dispose();
+  }
+
+  // SCROLL LISTENER GRID VIEW
+  Future<void> scrollListenerGridView() async {
+    if (total != null && noOfGridView < total!) {
+      if (scrollControllerGridView.position.pixels ==
+          scrollControllerGridView.position.maxScrollExtent) {
+        setState(() {
+          isLoadMoreGridView = true;
+        });
+        noOfGridView = noOfGridView + 8;
+        await getProductData();
+        setState(() {
+          isLoadMoreGridView = false;
+        });
+      }
+    }
+  }
+
+  // SCROLL LISTENER LIST VIEW
+  Future<void> scrollListenerListView() async {
+    if (total != null && noOfListView < total!) {
+      if (scrollControllerListView.position.pixels ==
+          scrollControllerListView.position.maxScrollExtent) {
+        setState(() {
+          isLoadMoreListView = true;
+        });
+        noOfListView = noOfListView + 12;
+        await getProductData();
+        setState(() {
+          isLoadMoreListView = false;
+        });
+      }
+    }
+  }
+
+  // GET TOTAL
+  Future<void> getTotal() async {
+    final productSnap = await store
+        .collection('Business')
+        .doc('Data')
+        .collection('Products')
+        .where('vendorId', isEqualTo: auth.currentUser!.uid)
+        .get();
+
+    final productLength = productSnap.docs.length;
+
+    setState(() {
+      total = productLength;
+    });
+  }
+
+  // GET PRODUCT DATA
+  Future<void> getProductData() async {
     Map<String, Map<String, dynamic>> myProducts = {};
     final productSnap = await store
         .collection('Business')
         .doc('Data')
         .collection('Products')
         .where('vendorId', isEqualTo: auth.currentUser!.uid)
+        .limit(isGridView ? noOfGridView : noOfListView)
         .get();
 
     for (var product in productSnap.docs) {
@@ -85,8 +153,8 @@ class _SelectProductForDiscountPageState
           preferredSize: const Size(double.infinity, 80),
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.0166,
-              vertical: MediaQuery.of(context).size.width * 0.0225,
+              horizontal: width * 0.0166,
+              vertical: width * 0.0225,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -193,8 +261,11 @@ class _SelectProductForDiscountPageState
                     ),
             )
           : currentProducts.isEmpty
-              ? const Center(
-                  child: Text('No Products'),
+              ? SizedBox(
+                  height: 80,
+                  child: const Center(
+                    child: Text('No Products'),
+                  ),
                 )
               : SafeArea(
                   child: Padding(
@@ -202,24 +273,30 @@ class _SelectProductForDiscountPageState
                     child: LayoutBuilder(
                       builder: ((context, constraints) {
                         final width = constraints.maxWidth;
+                        final height = constraints.maxHeight;
 
                         return SafeArea(
                           child: isGridView
                               ? GridView.builder(
+                                  controller: scrollControllerGridView,
+                                  cacheExtent: height * 1.5,
+                                  addAutomaticKeepAlives: true,
                                   shrinkWrap: true,
                                   physics: ClampingScrollPhysics(),
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
-                                    childAspectRatio: width * 0.6875 / width,
+                                    childAspectRatio: 0.6875,
                                   ),
-                                  itemCount: currentProducts.length,
+                                  itemCount:
+                                      noOfGridView > currentProducts.length
+                                          ? currentProducts.length
+                                          : noOfGridView,
                                   itemBuilder: (context, index) {
                                     final Map<String, dynamic> productData =
                                         currentProducts[currentProducts.keys
                                             .toList()[index]]!;
 
-                                    // CARD
                                     return GestureDetector(
                                       onTap: () {
                                         selectedProductsProvider.selectProduct(
@@ -333,127 +410,128 @@ class _SelectProductForDiscountPageState
                                       ),
                                     );
                                   })
-                              : SizedBox(
-                                  width: width,
-                                  child: ListView.builder(
-                                      shrinkWrap: true,
-                                      physics: ClampingScrollPhysics(),
-                                      itemCount: currentProducts.length,
-                                      itemBuilder: (context, index) {
-                                        final Map<String, dynamic> productData =
-                                            currentProducts[currentProducts.keys
-                                                .toList()[index]]!;
+                              : ListView.builder(
+                                  controller: scrollControllerListView,
+                                  cacheExtent: height * 1.5,
+                                  addAutomaticKeepAlives: true,
+                                  shrinkWrap: true,
+                                  physics: ClampingScrollPhysics(),
+                                  itemCount:
+                                      noOfListView > currentProducts.length
+                                          ? currentProducts.length
+                                          : noOfListView,
+                                  itemBuilder: (context, index) {
+                                    final Map<String, dynamic> productData =
+                                        currentProducts[currentProducts.keys
+                                            .toList()[index]]!;
 
-                                        return Stack(
-                                          alignment: Alignment.centerRight,
-                                          children: [
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                color: white,
-                                                border: Border.all(
-                                                  width: 0.5,
-                                                  color: primaryDark,
-                                                ),
-                                                borderRadius:
-                                                    BorderRadius.circular(2),
+                                    return Stack(
+                                      alignment: Alignment.centerRight,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: white,
+                                            border: Border.all(
+                                              width: 0.5,
+                                              color: primaryDark,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(2),
+                                          ),
+                                          margin: EdgeInsets.all(
+                                            width * 0.0125,
+                                          ),
+                                          child: ListTile(
+                                            visualDensity:
+                                                VisualDensity.standard,
+                                            onTap: () {
+                                              selectedProductsProvider
+                                                  .selectProduct(
+                                                productData['productId'],
+                                                context,
+                                              );
+                                            },
+                                            // leading: CachedNetworkImage(
+                                            //   imageUrl: productData['images'][0],
+                                            //   imageBuilder:
+                                            //       (context, imageProvider) {
+                                            //     return ClipRRect(
+                                            //       borderRadius:
+                                            //           BorderRadius.circular(
+                                            //         4,
+                                            //       ),
+                                            //       child: Container(
+                                            //         width: width * 0.166,
+                                            //         height: width * 0.166,
+                                            //         decoration: BoxDecoration(
+                                            //           image: DecorationImage(
+                                            //             image: imageProvider,
+                                            //             fit: BoxFit.cover,
+                                            //           ),
+                                            //         ),
+                                            //       ),
+                                            //     );
+                                            //   },
+                                            // ),
+                                            leading: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                2,
                                               ),
-                                              margin: EdgeInsets.all(
-                                                width * 0.0125,
-                                              ),
-                                              child: ListTile(
-                                                visualDensity:
-                                                    VisualDensity.standard,
-                                                onTap: () {
-                                                  selectedProductsProvider
-                                                      .selectProduct(
-                                                    productData['productId'],
-                                                    context,
-                                                  );
-                                                },
-                                                // leading: CachedNetworkImage(
-                                                //   imageUrl: productData['images'][0],
-                                                //   imageBuilder:
-                                                //       (context, imageProvider) {
-                                                //     return ClipRRect(
-                                                //       borderRadius:
-                                                //           BorderRadius.circular(
-                                                //         4,
-                                                //       ),
-                                                //       child: Container(
-                                                //         width: width * 0.166,
-                                                //         height: width * 0.166,
-                                                //         decoration: BoxDecoration(
-                                                //           image: DecorationImage(
-                                                //             image: imageProvider,
-                                                //             fit: BoxFit.cover,
-                                                //           ),
-                                                //         ),
-                                                //       ),
-                                                //     );
-                                                //   },
-                                                // ),
-                                                leading: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                    2,
-                                                  ),
-                                                  child: Image.network(
-                                                    productData['images'][0],
-                                                    width: width * 0.15,
-                                                    height: width * 0.15,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                ),
-                                                title: Text(
-                                                  productData['productName'],
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                    fontSize: width * 0.05,
-                                                  ),
-                                                ),
-                                                subtitle: Text(
-                                                  'Rs. ${productData['productPrice']}',
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                    fontSize: width * 0.045,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                ),
+                                              child: Image.network(
+                                                productData['images'][0],
+                                                width: width * 0.15,
+                                                height: width * 0.15,
+                                                fit: BoxFit.cover,
                                               ),
                                             ),
-                                            selectedProductsProvider
-                                                    .selectedProducts
-                                                    .contains(
-                                              productData['productId'],
-                                            )
-                                                ? Padding(
-                                                    padding: EdgeInsets.only(
-                                                      right: width * 0.025,
-                                                    ),
-                                                    child: Container(
-                                                      padding: EdgeInsets.all(
-                                                        width * 0.00625,
-                                                      ),
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        color: primaryDark2,
-                                                      ),
-                                                      child: Icon(
-                                                        FeatherIcons.check,
-                                                        color: Colors.white,
-                                                        size: width * 0.1,
-                                                      ),
-                                                    ),
-                                                  )
-                                                : Container()
-                                          ],
-                                        );
-                                      }),
-                                ),
+                                            title: Text(
+                                              productData['productName'],
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize: width * 0.05,
+                                              ),
+                                            ),
+                                            subtitle: Text(
+                                              'Rs. ${productData['productPrice']}',
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize: width * 0.045,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        selectedProductsProvider
+                                                .selectedProducts
+                                                .contains(
+                                          productData['productId'],
+                                        )
+                                            ? Padding(
+                                                padding: EdgeInsets.only(
+                                                  right: width * 0.025,
+                                                ),
+                                                child: Container(
+                                                  padding: EdgeInsets.all(
+                                                    width * 0.00625,
+                                                  ),
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: primaryDark2,
+                                                  ),
+                                                  child: Icon(
+                                                    FeatherIcons.check,
+                                                    color: Colors.white,
+                                                    size: width * 0.1,
+                                                  ),
+                                                ),
+                                              )
+                                            : Container()
+                                      ],
+                                    );
+                                  }),
                         );
                       }),
                     ),

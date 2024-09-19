@@ -25,6 +25,7 @@ class _SelectBrandForBulkProductsPageState
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     final selectBrandProvider =
         Provider.of<SelectBrandForProductProvider>(context);
 
@@ -58,14 +59,11 @@ class _SelectBrandForBulkProductsPageState
           ),
         ],
         bottom: PreferredSize(
-          preferredSize: Size(
-            MediaQuery.of(context).size.width,
-            80,
-          ),
+          preferredSize: Size(width, 80),
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.0166,
-              vertical: MediaQuery.of(context).size.width * 0.0225,
+              horizontal: width * 0.0166,
+              vertical: width * 0.0225,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -200,10 +198,11 @@ class _SelectBrandForBulkProductsPageState
                                                         height: width * 0.375,
                                                         child: const Center(
                                                           child: Text(
+                                                            'No Image',
+                                                            maxLines: 1,
                                                             overflow:
                                                                 TextOverflow
                                                                     .ellipsis,
-                                                            'No Image',
                                                             style: TextStyle(
                                                               color:
                                                                   primaryDark2,
@@ -228,9 +227,9 @@ class _SelectBrandForBulkProductsPageState
                                                 width: width * 0.5,
                                                 child: Text(
                                                   brandData['brandName'],
+                                                  maxLines: 1,
                                                   overflow:
                                                       TextOverflow.ellipsis,
-                                                  maxLines: 1,
                                                   style: TextStyle(
                                                     fontSize: width * 0.06,
                                                     fontWeight: FontWeight.w500,
@@ -316,9 +315,10 @@ class _SelectBrandForBulkProductsPageState
                                                   height: width * 0.15,
                                                   child: const Center(
                                                     child: Text(
+                                                      'No Image',
+                                                      maxLines: 1,
                                                       overflow:
                                                           TextOverflow.ellipsis,
-                                                      'No Image',
                                                       style: TextStyle(
                                                         color: primaryDark2,
                                                         fontWeight:

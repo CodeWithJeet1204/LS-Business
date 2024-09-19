@@ -200,7 +200,7 @@ class _AddProductPage3State extends State<AddProductPage3> {
                 )
               : currentCategories.isEmpty
                   ? const SizedBox(
-                      height: 60,
+                      height: 80,
                       child: Center(
                         child: Text('No Categories'),
                       ),

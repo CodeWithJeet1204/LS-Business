@@ -80,7 +80,6 @@ class _BusinessChooseCategoryPage1State
     });
 
     if (mounted) {
-      // Navigator.of(context).pop();
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: ((context) => BusinessChooseCategoryPage2(

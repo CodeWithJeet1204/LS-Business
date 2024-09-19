@@ -469,7 +469,7 @@ class _CategoryPageState extends State<CategoryPage> {
                       child: isProductsData
                           ? currentProducts.isEmpty
                               ? const SizedBox(
-                                  height: 60,
+                                  height: 80,
                                   child: Center(
                                     child: Text('No Products'),
                                   ),

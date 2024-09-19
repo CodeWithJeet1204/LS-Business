@@ -221,11 +221,12 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                           }
 
                           if (!snapshot.hasData) {
-                            return const Center(
-                              child: Text(
-                                'No Data',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                            return SizedBox(
+                              height: 80,
+                              child: const Center(
+                                child: Text(
+                                  'No Data',
+                                ),
                               ),
                             );
                           }

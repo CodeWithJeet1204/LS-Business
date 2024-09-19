@@ -382,7 +382,7 @@
 //                                   gridDelegate:
 //                                       SliverGridDelegateWithFixedCrossAxisCount(
 //                                     crossAxisCount: 2,
-//                                     childAspectRatio: width * 0.6875 / width,
+//                                     childAspectRatio: 0.6875,
 //                                   ),
 //                                   itemCount: currentProducts.length,
 //                                   itemBuilder: (context, index) {

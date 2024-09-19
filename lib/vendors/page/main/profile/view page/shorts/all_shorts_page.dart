@@ -20,23 +20,71 @@ class _AllShortsPageState extends State<AllShortsPage> {
   final searchController = TextEditingController();
   Map<String, List> allShorts = {};
   Map<String, List> currentShorts = {};
+  int? total;
+  int noOf = 20;
+  bool isLoadMore = false;
+  final scrollController = ScrollController();
   bool isData = false;
 
   // INIT STATE
   @override
   void initState() {
-    getShorts();
+    getTotal();
+    getShortsData();
+    scrollController.addListener(scrollListener);
     super.initState();
   }
 
-  // GET SHORTS
-  Future<void> getShorts() async {
+  // DISPOSE
+  @override
+  void dispose() {
+    searchController.dispose();
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  // SCROLL LISTENER
+  Future<void> scrollListener() async {
+    if (total != null && noOf < total!) {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        setState(() {
+          isLoadMore = true;
+        });
+        noOf = noOf + 12;
+        await getShortsData();
+        setState(() {
+          isLoadMore = false;
+        });
+      }
+    }
+  }
+
+  // GET TOTAL
+  Future<void> getTotal() async {
+    final shortsSnap = await store
+        .collection('Business')
+        .doc('Data')
+        .collection('Shorts')
+        .where('vendorId', isEqualTo: auth.currentUser!.uid)
+        .get();
+
+    final shortsLength = shortsSnap.docs.length;
+
+    setState(() {
+      total = shortsLength;
+    });
+  }
+
+  // GET SHORTS DATA
+  Future<void> getShortsData() async {
     Map<String, List> myShorts = {};
     final shortsSnap = await store
         .collection('Business')
         .doc('Data')
         .collection('Shorts')
         .where('vendorId', isEqualTo: auth.currentUser!.uid)
+        .limit(noOf)
         .get();
 
     await Future.forEach(
@@ -96,13 +144,10 @@ class _AllShortsPageState extends State<AllShortsPage> {
       appBar: AppBar(
         title: Text('All Shorts'),
         bottom: PreferredSize(
-          preferredSize: Size(
-            MediaQuery.of(context).size.width,
-            60,
-          ),
+          preferredSize: Size(width, 60),
           child: Padding(
             padding: EdgeInsets.all(
-              MediaQuery.of(context).size.width * 0.0125,
+              width * 0.0125,
             ),
             child: SizedBox(
               width: width,
@@ -181,15 +226,21 @@ class _AllShortsPageState extends State<AllShortsPage> {
                   child: LayoutBuilder(
                     builder: (context, constraints) {
                       final width = constraints.maxWidth;
+                      final height = constraints.maxHeight;
 
                       return GridView.builder(
+                        controller: scrollController,
+                        cacheExtent: height * 1.5,
+                        addAutomaticKeepAlives: true,
                         shrinkWrap: true,
                         physics: ClampingScrollPhysics(),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3,
                           childAspectRatio: 9 / 15.66,
                         ),
-                        itemCount: currentShorts.length,
+                        itemCount: noOf > currentShorts.length
+                            ? currentShorts.length
+                            : noOf,
                         itemBuilder: (context, index) {
                           final shortsId = currentShorts.keys.toList()[index];
                           // final shortsURL = currentShorts.values.toList()[index][0];

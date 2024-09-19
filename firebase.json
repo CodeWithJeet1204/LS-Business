@@ -1,1 +1,24 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"find-easy-1204","appId":"1:851488762803:android:1598df55d39880003979c6","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"find-easy-1204","configurations":{"android":"1:851488762803:android:1598df55d39880003979c6"}}}}}}
+{
+    "flutter": {
+        "functions": {
+            "source": "C:/Users/Jeet/App Projects/Localsearch/functions/detectBlur.py"
+        },
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "find-easy-1204",
+                    "appId": "1:851488762803:android:1598df55d39880003979c6",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "find-easy-1204",
+                    "configurations": {
+                        "android": "1:851488762803:android:1598df55d39880003979c6"
+                    }
+                }
+            }
+        }
+    }
+}

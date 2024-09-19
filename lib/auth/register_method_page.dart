@@ -128,6 +128,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
               'Name': null,
               'Phone Number': null,
               'allowCalls': true,
+              'allowChats': true,
               'hasReviewed': false,
             });
 
@@ -373,6 +374,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
           'Name': null,
           'Phone Number': null,
           'allowCalls': true,
+          'allowChats': true,
           'hasReviewed': false,
         });
 
@@ -644,7 +646,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                           ),
                         );
                       },
-                      text: 'REGISTER',
+                      text: 'LOGIN',
                       textColor: buttonColor,
                     ),
                   ],

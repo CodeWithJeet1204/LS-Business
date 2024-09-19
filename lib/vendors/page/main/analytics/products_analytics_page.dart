@@ -278,20 +278,26 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                           }
 
                           if (!snapshot.hasData) {
-                            return const Center(
-                              child: Text(
-                                overflow: TextOverflow.ellipsis,
-                                'No Data',
+                            return SizedBox(
+                              height: 80,
+                              child: const Center(
+                                child: Text(
+                                  overflow: TextOverflow.ellipsis,
+                                  'No Data',
+                                ),
                               ),
                             );
                           }
 
                           if (snapshot.hasData) {
                             if (snapshot.data!.docs.isEmpty) {
-                              return const Center(
-                                child: Text(
-                                  'No Products Added',
-                                  overflow: TextOverflow.ellipsis,
+                              return SizedBox(
+                                height: 80,
+                                child: const Center(
+                                  child: Text(
+                                    'No Products Added',
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                               );
                             }

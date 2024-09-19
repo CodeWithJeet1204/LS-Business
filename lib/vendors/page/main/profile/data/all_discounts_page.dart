@@ -19,16 +19,26 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   final storage = FirebaseStorage.instance;
+  final searchController = TextEditingController();
   Map<String, Map<String, dynamic>> allDiscounts = {};
   Map<String, Map<String, dynamic>> currentDiscounts = {};
-  final searchController = TextEditingController();
+  int? total;
+  int noOfGridView = 8;
+  bool isLoadMoreGridView = false;
+  final scrollControllerGridView = ScrollController();
+  int noOfListView = 20;
+  bool isLoadMoreListView = false;
+  final scrollControllerListView = ScrollController();
   bool isGridView = true;
   bool isData = false;
 
   // INIT STATE
   @override
   void initState() {
-    getData();
+    getTotal();
+    getDiscountData();
+    scrollControllerGridView.addListener(scrollListenerGridView);
+    scrollControllerListView.addListener(scrollListenerListView);
     super.initState();
   }
 
@@ -36,17 +46,70 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
   @override
   void dispose() {
     searchController.dispose();
+    scrollControllerGridView.dispose();
+    scrollControllerListView.dispose();
     super.dispose();
   }
 
-  // GET DATA
-  Future<void> getData() async {
+  // SCROLL LISTENER GRID VIEW
+  Future<void> scrollListenerGridView() async {
+    if (total != null && noOfGridView < total!) {
+      if (scrollControllerGridView.position.pixels ==
+          scrollControllerGridView.position.maxScrollExtent) {
+        setState(() {
+          isLoadMoreGridView = true;
+        });
+        noOfGridView = noOfGridView + 4;
+        await getDiscountData();
+        setState(() {
+          isLoadMoreGridView = false;
+        });
+      }
+    }
+  }
+
+  // SCROLL LISTENER LIST VIEW
+  Future<void> scrollListenerListView() async {
+    if (total != null && noOfListView < total!) {
+      if (scrollControllerListView.position.pixels ==
+          scrollControllerListView.position.maxScrollExtent) {
+        setState(() {
+          isLoadMoreListView = true;
+        });
+        noOfListView = noOfListView + 12;
+        await getDiscountData();
+        setState(() {
+          isLoadMoreListView = false;
+        });
+      }
+    }
+  }
+
+  // GET TOTAL
+  Future<void> getTotal() async {
+    final discountSnap = await store
+        .collection('Business')
+        .doc('Data')
+        .collection('Discounts')
+        .where('vendorId', isEqualTo: auth.currentUser!.uid)
+        .get();
+
+    final discountLength = discountSnap.docs.length;
+
+    setState(() {
+      total = discountLength;
+    });
+  }
+
+  // GET DISCOUNT DATA
+  Future<void> getDiscountData() async {
     Map<String, Map<String, dynamic>> myDiscounts = {};
     final discountSnap = await store
         .collection('Business')
         .doc('Data')
         .collection('Discounts')
         .where('vendorId', isEqualTo: auth.currentUser!.uid)
+        .limit(isGridView ? noOfGridView : noOfListView)
         .get();
 
     for (var discount in discountSnap.docs) {
@@ -83,8 +146,6 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
               },
               child: const Text(
                 'NO',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.green,
                   fontWeight: FontWeight.bold,
@@ -106,8 +167,6 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
               },
               child: const Text(
                 'YES',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.w500,
@@ -278,18 +337,25 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                     padding: EdgeInsets.all(width * 0.006125),
                     child: LayoutBuilder(
                       builder: ((context, constraints) {
-                        double width = constraints.maxWidth;
+                        final width = constraints.maxWidth;
+                        final height = constraints.maxHeight;
 
                         return isGridView
                             ? GridView.builder(
+                                controller: scrollControllerGridView,
+                                cacheExtent: height * 1.5,
+                                addAutomaticKeepAlives: true,
                                 shrinkWrap: true,
                                 physics: const ClampingScrollPhysics(),
                                 gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 1,
-                                  childAspectRatio: width * 1.475 / width,
+                                  childAspectRatio: 1.475,
                                 ),
-                                itemCount: currentDiscounts.length,
+                                itemCount:
+                                    noOfGridView > currentDiscounts.length
+                                        ? currentDiscounts.length
+                                        : noOfGridView,
                                 itemBuilder: ((context, index) {
                                   final discountData = currentDiscounts[
                                       currentDiscounts.keys.toList()[index]]!;
@@ -378,9 +444,10 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                       height: width * 0.375,
                                                       child: const Center(
                                                         child: Text(
+                                                          'No Image',
+                                                          maxLines: 1,
                                                           overflow: TextOverflow
                                                               .ellipsis,
-                                                          'No Image',
                                                           style: TextStyle(
                                                             color: primaryDark2,
                                                             fontWeight:
@@ -416,6 +483,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                     child: Text(
                                                       discountData[
                                                           'discountName'],
+                                                      maxLines: 1,
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                       style: TextStyle(
@@ -438,12 +506,13 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                           top: width * 0.01,
                                                         ),
                                                         child: Text(
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
                                                           discountData[
                                                                   'isPercent']
                                                               ? '${discountData['discountAmount']}% off'
                                                               : 'Rs. ${discountData['discountAmount']} off',
+                                                          maxLines: 1,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
                                                           style: TextStyle(
                                                             color: const Color
                                                                 .fromRGBO(
@@ -462,9 +531,10 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
 
                                                       // DIVIDER
                                                       const Text(
+                                                        '  ●  ',
+                                                        maxLines: 1,
                                                         overflow: TextOverflow
                                                             .ellipsis,
-                                                        '  ●  ',
                                                         style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.w100,
@@ -479,8 +549,6 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                           top: width * 0.01,
                                                         ),
                                                         child: Text(
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
                                                           (discountData['discountStartDateTime']
                                                                       as Timestamp)
                                                                   .toDate()
@@ -512,6 +580,9 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                                           24
                                                                       ? 'Expired ${DateTime.now().difference((discountData['discountEndDateTime'] as Timestamp).toDate()).inHours} Hours Ago'
                                                                       : 'Expired ${DateTime.now().difference((discountData['discountEndDateTime'] as Timestamp).toDate()).inDays} Days Ago',
+                                                          maxLines: 1,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
                                                           style: TextStyle(
                                                             color: const Color
                                                                 .fromRGBO(
@@ -554,206 +625,209 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                   );
                                 }),
                               )
-                            : SizedBox(
-                                width: width,
-                                child: ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: const ClampingScrollPhysics(),
-                                  itemCount: currentDiscounts.length,
-                                  itemBuilder: ((context, index) {
-                                    final discountData = currentDiscounts[
-                                        currentDiscounts.keys.toList()[index]]!;
+                            : ListView.builder(
+                                controller: scrollControllerListView,
+                                cacheExtent: height * 1.5,
+                                addAutomaticKeepAlives: true,
+                                shrinkWrap: true,
+                                physics: const ClampingScrollPhysics(),
+                                itemCount:
+                                    noOfListView > currentDiscounts.length
+                                        ? currentDiscounts.length
+                                        : noOfListView,
+                                itemBuilder: ((context, index) {
+                                  final discountData = currentDiscounts[
+                                      currentDiscounts.keys.toList()[index]]!;
 
-                                    return GestureDetector(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: ((context) => DiscountPage(
-                                                  discountId: discountData[
-                                                      'discountId'],
-                                                  discountImageUrl:
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: ((context) => DiscountPage(
+                                                discountId:
+                                                    discountData['discountId'],
+                                                discountImageUrl: discountData[
+                                                    'discountImageUrl'],
+                                              )),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: white,
+                                        border: Border.all(
+                                          width: 0.5,
+                                          color: primaryDark,
+                                        ),
+                                        borderRadius: BorderRadius.circular(2),
+                                      ),
+                                      margin: EdgeInsets.all(
+                                        width * 0.0125,
+                                      ),
+                                      child: ListTile(
+                                        visualDensity: VisualDensity.standard,
+                                        leading:
+                                            discountData['discountImageUrl'] !=
+                                                    null
+                                                ? ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      2,
+                                                    ),
+                                                    child: Image.network(
                                                       discountData[
                                                           'discountImageUrl'],
-                                                )),
-                                          ),
-                                        );
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: white,
-                                          border: Border.all(
-                                            width: 0.5,
-                                            color: primaryDark,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(2),
-                                        ),
-                                        margin: EdgeInsets.all(
-                                          width * 0.0125,
-                                        ),
-                                        child: ListTile(
-                                          visualDensity: VisualDensity.standard,
-                                          leading: discountData[
-                                                      'discountImageUrl'] !=
-                                                  null
-                                              ? ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                    2,
-                                                  ),
-                                                  child: Image.network(
-                                                    discountData[
-                                                        'discountImageUrl'],
+                                                      width: width * 0.15,
+                                                      height: width * 0.15,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  )
+                                                : SizedBox(
                                                     width: width * 0.15,
                                                     height: width * 0.15,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                )
-                                              : SizedBox(
-                                                  width: width * 0.15,
-                                                  height: width * 0.15,
-                                                  child: const Center(
-                                                    child: Text(
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      'No Image',
-                                                      style: TextStyle(
-                                                        color: primaryDark2,
-                                                        fontWeight:
-                                                            FontWeight.w500,
+                                                    child: const Center(
+                                                      child: Text(
+                                                        'No Image',
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: TextStyle(
+                                                          color: primaryDark2,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
 
-                                          // NAME
-                                          title: Text(
-                                            discountData['discountName'],
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontSize: width * 0.05,
-                                            ),
+                                        // NAME
+                                        title: Text(
+                                          discountData['discountName'],
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: width * 0.05,
                                           ),
+                                        ),
 
-                                          // DISCOUNT &  TIME
-                                          subtitle: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              // DISCOUNT
-                                              Padding(
-                                                padding: EdgeInsets.only(
-                                                  left: width * 0.01,
-                                                  top: width * 0.01,
-                                                ),
-                                                child: Text(
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  discountData['isPercent']
-                                                      ? '${discountData['discountAmount']}% off'
-                                                      : 'Rs. ${discountData['discountAmount']} off',
-                                                  style: TextStyle(
-                                                    color: const Color.fromRGBO(
-                                                      0,
-                                                      72,
-                                                      2,
-                                                      1,
-                                                    ),
-                                                    fontSize: width * 0.035,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
+                                        // DISCOUNT &  TIME
+                                        subtitle: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            // DISCOUNT
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                left: width * 0.01,
+                                                top: width * 0.01,
                                               ),
-
-                                              // DIVIDER
-                                              const Text(
-                                                ' ● ',
+                                              child: Text(
+                                                discountData['isPercent']
+                                                    ? '${discountData['discountAmount']}% off'
+                                                    : 'Rs. ${discountData['discountAmount']} off',
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
-                                                  color: primaryDark2,
-                                                  fontWeight: FontWeight.w100,
-                                                ),
-                                              ),
-
-                                              // TIME
-                                              Padding(
-                                                padding: EdgeInsets.only(
-                                                  left: width * 0.01,
-                                                  top: width * 0.01,
-                                                ),
-                                                child: Text(
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  (discountData['discountStartDateTime']
-                                                              as Timestamp)
-                                                          .toDate()
-                                                          .isAfter(
-                                                              DateTime.now())
-                                                      ? (discountData['discountStartDateTime']
-                                                                      as Timestamp)
-                                                                  .toDate()
-                                                                  .difference(
-                                                                      DateTime
-                                                                          .now())
-                                                                  .inHours <
-                                                              24
-                                                          ? 'After ${(discountData['discountStartDateTime'] as Timestamp).toDate().difference(DateTime.now()).inHours} Hours'
-                                                          : 'After ${(discountData['discountStartDateTime'] as Timestamp).toDate().difference(DateTime.now()).inDays} Days'
-                                                      : (discountData['discountEndDateTime']
-                                                                  as Timestamp)
-                                                              .toDate()
-                                                              .isAfter(DateTime
-                                                                  .now())
-                                                          ? (discountData['discountEndDateTime']
-                                                                          as Timestamp)
-                                                                      .toDate()
-                                                                      .difference(
-                                                                          DateTime.now())
-                                                                      .inHours <
-                                                                  24
-                                                              ? '${(discountData['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inHours} Hours left'
-                                                              : '${(discountData['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inDays} Days left'
-                                                          : DateTime.now().difference((discountData['discountEndDateTime'] as Timestamp).toDate()).inHours < 24
-                                                              ? 'Expired ${DateTime.now().difference((discountData['discountEndDateTime'] as Timestamp).toDate()).inHours} Hours Ago'
-                                                              : 'Expired ${DateTime.now().difference((discountData['discountEndDateTime'] as Timestamp).toDate()).inDays} Days Ago',
-                                                  style: TextStyle(
-                                                    color: const Color.fromRGBO(
-                                                      211,
-                                                      80,
-                                                      71,
-                                                      1,
-                                                    ),
-                                                    fontSize: width * 0.035,
-                                                    fontWeight: FontWeight.w500,
+                                                  color: const Color.fromRGBO(
+                                                    0,
+                                                    72,
+                                                    2,
+                                                    1,
                                                   ),
+                                                  fontSize: width * 0.035,
+                                                  fontWeight: FontWeight.w500,
                                                 ),
                                               ),
-                                            ],
-                                          ),
-
-                                          // DELETE
-                                          trailing: IconButton(
-                                            onPressed: () async {
-                                              await confirmDelete(
-                                                discountData['discountId'],
-                                                discountData[
-                                                    'discountImageUrl'],
-                                              );
-                                            },
-                                            icon: Icon(
-                                              FeatherIcons.trash,
-                                              color: Colors.red,
-                                              size: width * 0.075,
                                             ),
-                                            tooltip: 'Delete Discount',
+
+                                            // DIVIDER
+                                            const Text(
+                                              ' ● ',
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                color: primaryDark2,
+                                                fontWeight: FontWeight.w100,
+                                              ),
+                                            ),
+
+                                            // TIME
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                left: width * 0.01,
+                                                top: width * 0.01,
+                                              ),
+                                              child: Text(
+                                                (discountData['discountStartDateTime']
+                                                            as Timestamp)
+                                                        .toDate()
+                                                        .isAfter(DateTime.now())
+                                                    ? (discountData['discountStartDateTime']
+                                                                    as Timestamp)
+                                                                .toDate()
+                                                                .difference(DateTime
+                                                                    .now())
+                                                                .inHours <
+                                                            24
+                                                        ? 'After ${(discountData['discountStartDateTime'] as Timestamp).toDate().difference(DateTime.now()).inHours} Hours'
+                                                        : 'After ${(discountData['discountStartDateTime'] as Timestamp).toDate().difference(DateTime.now()).inDays} Days'
+                                                    : (discountData['discountEndDateTime']
+                                                                as Timestamp)
+                                                            .toDate()
+                                                            .isAfter(
+                                                                DateTime.now())
+                                                        ? (discountData['discountEndDateTime']
+                                                                        as Timestamp)
+                                                                    .toDate()
+                                                                    .difference(
+                                                                        DateTime
+                                                                            .now())
+                                                                    .inHours <
+                                                                24
+                                                            ? '${(discountData['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inHours} Hours left'
+                                                            : '${(discountData['discountEndDateTime'] as Timestamp).toDate().difference(DateTime.now()).inDays} Days left'
+                                                        : DateTime.now()
+                                                                    .difference((discountData['discountEndDateTime'] as Timestamp).toDate())
+                                                                    .inHours <
+                                                                24
+                                                            ? 'Expired ${DateTime.now().difference((discountData['discountEndDateTime'] as Timestamp).toDate()).inHours} Hours Ago'
+                                                            : 'Expired ${DateTime.now().difference((discountData['discountEndDateTime'] as Timestamp).toDate()).inDays} Days Ago',
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  color: const Color.fromRGBO(
+                                                    211,
+                                                    80,
+                                                    71,
+                                                    1,
+                                                  ),
+                                                  fontSize: width * 0.035,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+
+                                        // DELETE
+                                        trailing: IconButton(
+                                          onPressed: () async {
+                                            await confirmDelete(
+                                              discountData['discountId'],
+                                              discountData['discountImageUrl'],
+                                            );
+                                          },
+                                          icon: Icon(
+                                            FeatherIcons.trash,
+                                            color: Colors.red,
+                                            size: width * 0.075,
                                           ),
+                                          tooltip: 'Delete Discount',
                                         ),
                                       ),
-                                    );
-                                  }),
-                                ),
+                                    ),
+                                  );
+                                }),
                               );
                       }),
                     ),

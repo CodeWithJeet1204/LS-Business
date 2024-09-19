@@ -158,8 +158,6 @@ class _AllPostsPageState extends State<AllPostsPage> {
               },
               child: const Text(
                 'NO',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.green,
                   fontWeight: FontWeight.bold,
@@ -175,8 +173,6 @@ class _AllPostsPageState extends State<AllPostsPage> {
               },
               child: const Text(
                 'YES',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.w500,
@@ -522,9 +518,11 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                                             const Center(
                                                                           child:
                                                                               Text(
+                                                                            'No Image',
+                                                                            maxLines:
+                                                                                1,
                                                                             overflow:
                                                                                 TextOverflow.ellipsis,
-                                                                            'No Image',
                                                                             style:
                                                                                 TextStyle(
                                                                               color: primaryDark2,
@@ -568,10 +566,10 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                                           child:
                                                                               Text(
                                                                             postData['postText'],
-                                                                            overflow:
-                                                                                TextOverflow.ellipsis,
                                                                             maxLines:
                                                                                 8,
+                                                                            overflow:
+                                                                                TextOverflow.ellipsis,
                                                                             style:
                                                                                 TextStyle(
                                                                               fontSize: width * 0.05,
@@ -706,10 +704,11 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                               child:
                                                                   const Center(
                                                                 child: Text(
+                                                                  'No Image',
+                                                                  maxLines: 1,
                                                                   overflow:
                                                                       TextOverflow
                                                                           .ellipsis,
-                                                                  'No Image',
                                                                   style:
                                                                       TextStyle(
                                                                     color:

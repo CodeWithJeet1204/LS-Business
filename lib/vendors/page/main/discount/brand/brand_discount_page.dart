@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:Localsearch/vendors/page/main/discount/brand/select_brand_for_discount_page.dart';
+import 'package:Localsearch/vendors/page/main/discount/brand/select_brands_for_discount_page.dart';
 import 'package:Localsearch/vendors/provider/discount_brand_provider.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:Localsearch/widgets/button.dart';

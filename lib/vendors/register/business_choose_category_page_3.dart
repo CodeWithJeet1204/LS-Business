@@ -92,7 +92,6 @@ class _BusinessChooseCategoryPage3State
     });
 
     if (mounted) {
-      Navigator.of(context).pop();
       if (widget.isEditing) {
         Navigator.of(context).pop();
         Navigator.of(context).pop();
@@ -211,6 +210,12 @@ class _BusinessChooseCategoryPage3State
                                                 1,
                                               ),
                                             ),
+                                            color: Color.fromRGBO(
+                                              133,
+                                              255,
+                                              137,
+                                              1,
+                                            ),
                                             onPressed: () {
                                               if (!selectedProducts
                                                   .contains(product)) {
@@ -219,6 +224,7 @@ class _BusinessChooseCategoryPage3State
                                                 });
                                               }
                                             },
+                                            tooltip: "Select",
                                           ),
                                         ),
                                         Visibility(

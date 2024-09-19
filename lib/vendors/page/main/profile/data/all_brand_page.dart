@@ -19,16 +19,26 @@ class _AllBrandPageState extends State<AllBrandPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   final storage = FirebaseStorage.instance;
+  final searchController = TextEditingController();
   Map<String, Map<String, dynamic>> allBrands = {};
   Map<String, Map<String, dynamic>> currentBrands = {};
-  final searchController = TextEditingController();
+  int? total;
+  int noOfGridView = 8;
+  bool isLoadMoreGridView = false;
+  final scrollControllerGridView = ScrollController();
+  int noOfListView = 20;
+  bool isLoadMoreListView = false;
+  final scrollControllerListView = ScrollController();
   bool isGridView = true;
   bool isData = false;
 
   // INIT STATE
   @override
   void initState() {
-    getData();
+    getTotal();
+    getBrandData();
+    scrollControllerGridView.addListener(scrollListenerGridView);
+    scrollControllerListView.addListener(scrollListenerListView);
     super.initState();
   }
 
@@ -36,17 +46,70 @@ class _AllBrandPageState extends State<AllBrandPage> {
   @override
   void dispose() {
     searchController.dispose();
+    scrollControllerGridView.dispose();
+    scrollControllerListView.dispose();
     super.dispose();
   }
 
-  // GET DATA
-  Future<void> getData() async {
+  // SCROLL LISTENER GRID VIEW
+  Future<void> scrollListenerGridView() async {
+    if (total != null && noOfGridView < total!) {
+      if (scrollControllerGridView.position.pixels ==
+          scrollControllerGridView.position.maxScrollExtent) {
+        setState(() {
+          isLoadMoreGridView = true;
+        });
+        noOfGridView = noOfGridView + 8;
+        await getBrandData();
+        setState(() {
+          isLoadMoreGridView = false;
+        });
+      }
+    }
+  }
+
+  // SCROLL LISTENER LIST VIEW
+  Future<void> scrollListenerListView() async {
+    if (total != null && noOfListView < total!) {
+      if (scrollControllerListView.position.pixels ==
+          scrollControllerListView.position.maxScrollExtent) {
+        setState(() {
+          isLoadMoreListView = true;
+        });
+        noOfListView = noOfListView + 12;
+        await getBrandData();
+        setState(() {
+          isLoadMoreListView = false;
+        });
+      }
+    }
+  }
+
+  // GET TOTAL
+  Future<void> getTotal() async {
+    final brandSnap = await store
+        .collection('Business')
+        .doc('Data')
+        .collection('Brands')
+        .where('vendorId', isEqualTo: auth.currentUser!.uid)
+        .get();
+
+    final brandLength = brandSnap.docs.length;
+
+    setState(() {
+      total = brandLength;
+    });
+  }
+
+  // GET BRAND DATA
+  Future<void> getBrandData() async {
     Map<String, Map<String, dynamic>> myBrands = {};
     final brandSnap = await store
         .collection('Business')
         .doc('Data')
         .collection('Brands')
         .where('vendorId', isEqualTo: auth.currentUser!.uid)
+        .limit(isGridView ? noOfGridView : noOfListView)
         .get();
 
     for (var brand in brandSnap.docs) {
@@ -61,6 +124,49 @@ class _AllBrandPageState extends State<AllBrandPage> {
       allBrands = myBrands;
       isData = true;
     });
+  }
+
+  // CONFIRM DELETE
+  Future<void> confirmDelete(String brandId, String? imageUrl) async {
+    await showDialog(
+      context: context,
+      builder: ((context) {
+        return AlertDialog(
+          title: const Text(
+            'Confirm DELETE',
+          ),
+          content: const Text(
+            'Are you sure you want to delete this Brand\nProducts in this brand will be set as \'No Brand\'',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'NO',
+                style: TextStyle(
+                  color: Colors.green,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                await delete(brandId, imageUrl);
+              },
+              child: const Text(
+                'YES',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
+        );
+      }),
+    );
   }
 
   // DELETE
@@ -104,55 +210,6 @@ class _AllBrandPageState extends State<AllBrandPage> {
     }
   }
 
-  // CONFIRM DELETE
-  Future<void> confirmDelete(String brandId, String? imageUrl) async {
-    await showDialog(
-      context: context,
-      builder: ((context) {
-        return AlertDialog(
-          title: const Text(
-            'Confirm DELETE',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          content: const Text(
-            'Are you sure you want to delete this Brand\nProducts in this brand will be set as \'No Brand\'',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text(
-                'NO',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: Colors.green,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: () async {
-                await delete(brandId, imageUrl);
-              },
-              child: const Text(
-                'YES',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: Colors.red,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ],
-        );
-      }),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -166,14 +223,11 @@ class _AllBrandPageState extends State<AllBrandPage> {
           overflow: TextOverflow.ellipsis,
         ),
         bottom: PreferredSize(
-          preferredSize: Size(
-            MediaQuery.of(context).size.width,
-            80,
-          ),
+          preferredSize: Size(width, 80),
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.0166,
-              vertical: MediaQuery.of(context).size.width * 0.0225,
+              horizontal: width * 0.0166,
+              vertical: width * 0.0225,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -289,12 +343,15 @@ class _AllBrandPageState extends State<AllBrandPage> {
                   child: Padding(
                     padding: EdgeInsets.all(width * 0.006125),
                     child: LayoutBuilder(
-                      builder:
-                          (BuildContext context, BoxConstraints constraints) {
-                        double width = constraints.maxWidth;
+                      builder: (context, constraints) {
+                        final width = constraints.maxWidth;
+                        final height = constraints.maxHeight;
 
                         return isGridView
                             ? GridView.builder(
+                                controller: scrollControllerGridView,
+                                cacheExtent: height * 1.5,
+                                addAutomaticKeepAlives: true,
                                 shrinkWrap: true,
                                 physics: const ClampingScrollPhysics(),
                                 gridDelegate:
@@ -302,7 +359,9 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                   crossAxisCount: 2,
                                   childAspectRatio: 0.725,
                                 ),
-                                itemCount: currentBrands.length,
+                                itemCount: noOfGridView > currentBrands.length
+                                    ? currentBrands.length
+                                    : noOfGridView,
                                 itemBuilder: ((context, index) {
                                   final brandData = currentBrands[
                                       currentBrands.keys.toList()[index]]!;
@@ -396,9 +455,10 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                                   height: width * 0.5,
                                                   child: const Center(
                                                     child: Text(
+                                                      'No Image',
+                                                      maxLines: 1,
                                                       overflow:
                                                           TextOverflow.ellipsis,
-                                                      'No Image',
                                                       style: TextStyle(
                                                         color: primaryDark2,
                                                         fontWeight:
@@ -427,9 +487,9 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                                   width: width * 0.275,
                                                   child: Text(
                                                     brandData['brandName'],
+                                                    maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
-                                                    maxLines: 1,
                                                     style: TextStyle(
                                                       color: primaryDark,
                                                       fontWeight:
@@ -469,132 +529,133 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                   );
                                 }),
                               )
-                            : SizedBox(
-                                width: width,
-                                child: ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: const ClampingScrollPhysics(),
-                                  itemCount: currentBrands.length,
-                                  itemBuilder: ((context, index) {
-                                    final brandData = currentBrands[
-                                        currentBrands.keys.toList()[index]]!;
+                            : ListView.builder(
+                                controller: scrollControllerListView,
+                                cacheExtent: height * 1.5,
+                                addAutomaticKeepAlives: true,
+                                shrinkWrap: true,
+                                physics: const ClampingScrollPhysics(),
+                                itemCount: noOfListView > currentBrands.length
+                                    ? currentBrands.length
+                                    : noOfListView,
+                                itemBuilder: ((context, index) {
+                                  final brandData = currentBrands[
+                                      currentBrands.keys.toList()[index]]!;
 
-                                    return GestureDetector(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: ((context) => BrandPage(
-                                                  brandId: brandData['brandId'],
-                                                  brandName:
-                                                      brandData['brandName'],
-                                                  imageUrl:
-                                                      brandData['imageUrl'],
-                                                )),
-                                          ),
-                                        );
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: white,
-                                          border: Border.all(
-                                            width: 0.5,
-                                            color: primaryDark,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(2),
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: ((context) => BrandPage(
+                                                brandId: brandData['brandId'],
+                                                brandName:
+                                                    brandData['brandName'],
+                                                imageUrl: brandData['imageUrl'],
+                                              )),
                                         ),
-                                        margin: EdgeInsets.all(
-                                          width * 0.0125,
+                                      );
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: white,
+                                        border: Border.all(
+                                          width: 0.5,
+                                          color: primaryDark,
                                         ),
-                                        child: ListTile(
-                                          visualDensity: VisualDensity.standard,
-                                          leading: brandData['imageUrl'] != null
-                                              // ? CachedNetworkImage(
-                                              //     imageUrl: brandData['imageUrl'],
-                                              //     imageBuilder:
-                                              //         (context, imageProvider) {
-                                              //       return ClipRRect(
-                                              //         borderRadius:
-                                              //             BorderRadius.circular(
-                                              //           4,
-                                              //         ),
-                                              //         child: Container(
-                                              //           width: width * 0.133,
-                                              //           height: width * 0.133,
-                                              //           decoration: BoxDecoration(
-                                              //             image: DecorationImage(
-                                              //               image: imageProvider,
-                                              //               fit: BoxFit.cover,
-                                              //             ),
-                                              //           ),
-                                              //         ),
-                                              //       );
-                                              //     },
-                                              //   )
-                                              ? ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                    2,
-                                                  ),
-                                                  child: Image.network(
-                                                    brandData['imageUrl'],
-                                                    width: width * 0.15,
-                                                    height: width * 0.15,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                )
-                                              : SizedBox(
+                                        borderRadius: BorderRadius.circular(2),
+                                      ),
+                                      margin: EdgeInsets.all(
+                                        width * 0.0125,
+                                      ),
+                                      child: ListTile(
+                                        visualDensity: VisualDensity.standard,
+                                        leading: brandData['imageUrl'] != null
+                                            // ? CachedNetworkImage(
+                                            //     imageUrl: brandData['imageUrl'],
+                                            //     imageBuilder:
+                                            //         (context, imageProvider) {
+                                            //       return ClipRRect(
+                                            //         borderRadius:
+                                            //             BorderRadius.circular(
+                                            //           4,
+                                            //         ),
+                                            //         child: Container(
+                                            //           width: width * 0.133,
+                                            //           height: width * 0.133,
+                                            //           decoration: BoxDecoration(
+                                            //             image: DecorationImage(
+                                            //               image: imageProvider,
+                                            //               fit: BoxFit.cover,
+                                            //             ),
+                                            //           ),
+                                            //         ),
+                                            //       );
+                                            //     },
+                                            //   )
+                                            ? ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  2,
+                                                ),
+                                                child: Image.network(
+                                                  brandData['imageUrl'],
                                                   width: width * 0.15,
                                                   height: width * 0.15,
-                                                  child: const Center(
-                                                    child: Text(
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      'No Image',
-                                                      style: TextStyle(
-                                                        color: primaryDark2,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              )
+                                            : SizedBox(
+                                                width: width * 0.15,
+                                                height: width * 0.15,
+                                                child: const Center(
+                                                  child: Text(
+                                                    'No Image',
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      color: primaryDark2,
+                                                      fontWeight:
+                                                          FontWeight.w500,
                                                     ),
                                                   ),
                                                 ),
-                                          title: Text(
-                                            brandData['brandName'],
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontSize: width * 0.06,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                          trailing: IconButton(
-                                            onPressed: () async {
-                                              await confirmDelete(
-                                                brandData['brandId'],
-                                                brandData['imageUrl'],
-                                              );
-                                              if (context.mounted) {
-                                                Navigator.of(context).pop();
-                                                Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          const AllBrandPage()),
-                                                );
-                                              }
-                                            },
-                                            icon: Icon(
-                                              FeatherIcons.trash,
-                                              color: Colors.red,
-                                              size: width * 0.075,
-                                            ),
-                                            tooltip: 'DELETE',
+                                              ),
+                                        title: Text(
+                                          brandData['brandName'],
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: width * 0.06,
+                                            fontWeight: FontWeight.w600,
                                           ),
                                         ),
+                                        trailing: IconButton(
+                                          onPressed: () async {
+                                            await confirmDelete(
+                                              brandData['brandId'],
+                                              brandData['imageUrl'],
+                                            );
+                                            if (context.mounted) {
+                                              Navigator.of(context).pop();
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const AllBrandPage()),
+                                              );
+                                            }
+                                          },
+                                          icon: Icon(
+                                            FeatherIcons.trash,
+                                            color: Colors.red,
+                                            size: width * 0.075,
+                                          ),
+                                          tooltip: 'DELETE',
+                                        ),
                                       ),
-                                    );
-                                  }),
-                                ),
+                                    ),
+                                  );
+                                }),
                               );
                       },
                     ),

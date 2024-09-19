@@ -20,21 +20,90 @@ class _SelectBrandForDiscountPageState
     extends State<SelectBrandForDiscountPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
+  final searchController = TextEditingController();
   Map<String, Map<String, dynamic>> currentBrands = {};
   Map<String, Map<String, dynamic>> allBrands = {};
+  int? total;
+  int noOfGridView = 8;
+  bool isLoadMoreGridView = false;
+  final scrollControllerGridView = ScrollController();
+  int noOfListView = 20;
+  bool isLoadMoreListView = false;
+  final scrollControllerListView = ScrollController();
   bool isGridView = true;
-  String? searchedBrand;
   bool isData = false;
 
   // INIT STATE
   @override
   void initState() {
-    getData();
+    getTotal();
+    getBrandData();
+    scrollControllerGridView.addListener(scrollListenerGridView);
+    scrollControllerListView.addListener(scrollListenerListView);
     super.initState();
   }
 
-  // GET DATA
-  Future<void> getData() async {
+  // DISPOSE
+  @override
+  void dispose() {
+    searchController.dispose();
+    scrollControllerGridView.dispose();
+    scrollControllerListView.dispose();
+    super.dispose();
+  }
+
+  // SCROLL LISTENER GRID VIEW
+  Future<void> scrollListenerGridView() async {
+    if (total != null && noOfGridView < total!) {
+      if (scrollControllerGridView.position.pixels ==
+          scrollControllerGridView.position.maxScrollExtent) {
+        setState(() {
+          isLoadMoreGridView = true;
+        });
+        noOfGridView = noOfGridView + 8;
+        await getBrandData();
+        setState(() {
+          isLoadMoreGridView = false;
+        });
+      }
+    }
+  }
+
+  // SCROLL LISTENER LIST VIEW
+  Future<void> scrollListenerListView() async {
+    if (total != null && noOfListView < total!) {
+      if (scrollControllerListView.position.pixels ==
+          scrollControllerListView.position.maxScrollExtent) {
+        setState(() {
+          isLoadMoreListView = true;
+        });
+        noOfListView = noOfListView + 12;
+        await getBrandData();
+        setState(() {
+          isLoadMoreListView = false;
+        });
+      }
+    }
+  }
+
+  // GET TOTAL
+  Future<void> getTotal() async {
+    final brandSnap = await store
+        .collection('Business')
+        .doc('Data')
+        .collection('Brands')
+        .where('vendorId', isEqualTo: auth.currentUser!.uid)
+        .get();
+
+    final brandLength = brandSnap.docs.length;
+
+    setState(() {
+      total = brandLength;
+    });
+  }
+
+  // GET BRAND DATA
+  Future<void> getBrandData() async {
     Map<String, Map<String, dynamic>> myBrands = {};
 
     final brandSnap = await store
@@ -42,6 +111,7 @@ class _SelectBrandForDiscountPageState
         .doc('Data')
         .collection('Brands')
         .where('vendorId', isEqualTo: auth.currentUser!.uid)
+        .limit(isGridView ? noOfGridView : noOfListView)
         .get();
 
     for (var brand in brandSnap.docs) {
@@ -62,7 +132,6 @@ class _SelectBrandForDiscountPageState
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-
     final selectBrandProvider =
         Provider.of<SelectBrandForDiscountProvider>(context);
 
@@ -83,14 +152,11 @@ class _SelectBrandForDiscountPageState
           ),
         ],
         bottom: PreferredSize(
-          preferredSize: Size(
-            MediaQuery.of(context).size.width,
-            80,
-          ),
+          preferredSize: Size(width, 80),
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.0166,
-              vertical: MediaQuery.of(context).size.width * 0.0225,
+              horizontal: width * 0.0166,
+              vertical: width * 0.0225,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -98,6 +164,7 @@ class _SelectBrandForDiscountPageState
                 // SEARCH
                 Expanded(
                   child: TextField(
+                    controller: searchController,
                     autocorrect: false,
                     onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     decoration: const InputDecoration(
@@ -197,8 +264,11 @@ class _SelectBrandForDiscountPageState
                     ),
             )
           : currentBrands.isEmpty
-              ? const Center(
-                  child: Text('No Brands'),
+              ? SizedBox(
+                  height: 80,
+                  child: const Center(
+                    child: Text('No Brands'),
+                  ),
                 )
               : SafeArea(
                   child: Padding(
@@ -206,10 +276,14 @@ class _SelectBrandForDiscountPageState
                     child: LayoutBuilder(
                       builder: ((context, constraints) {
                         final width = constraints.maxWidth;
+                        final height = constraints.maxHeight;
 
                         return SafeArea(
                           child: isGridView
                               ? GridView.builder(
+                                  controller: scrollControllerGridView,
+                                  cacheExtent: height * 1.5,
+                                  addAutomaticKeepAlives: true,
                                   shrinkWrap: true,
                                   physics: ClampingScrollPhysics(),
                                   gridDelegate:
@@ -217,7 +291,9 @@ class _SelectBrandForDiscountPageState
                                     crossAxisCount: 2,
                                     childAspectRatio: 0.775,
                                   ),
-                                  itemCount: currentBrands.length,
+                                  itemCount: noOfGridView > currentBrands.length
+                                      ? currentBrands.length
+                                      : noOfGridView,
                                   itemBuilder: (context, index) {
                                     final brandData = currentBrands[
                                         currentBrands.keys.toList()[index]]!;
@@ -277,10 +353,11 @@ class _SelectBrandForDiscountPageState
                                                         height: width * 0.5125,
                                                         child: const Center(
                                                           child: Text(
+                                                            'No Image',
+                                                            maxLines: 1,
                                                             overflow:
                                                                 TextOverflow
                                                                     .ellipsis,
-                                                            'No Image',
                                                             style: TextStyle(
                                                               color:
                                                                   primaryDark2,
@@ -339,116 +416,115 @@ class _SelectBrandForDiscountPageState
                                       ),
                                     );
                                   })
-                              : SizedBox(
-                                  width: width,
-                                  child: ListView.builder(
-                                      shrinkWrap: true,
-                                      physics: ClampingScrollPhysics(),
-                                      itemCount: currentBrands.length,
-                                      itemBuilder: (context, index) {
-                                        final brandData = currentBrands[
-                                            currentBrands.keys
-                                                .toList()[index]]!;
+                              : ListView.builder(
+                                  controller: scrollControllerListView,
+                                  cacheExtent: height * 1.5,
+                                  addAutomaticKeepAlives: true,
+                                  shrinkWrap: true,
+                                  physics: ClampingScrollPhysics(),
+                                  itemCount: noOfListView > currentBrands.length
+                                      ? currentBrands.length
+                                      : noOfListView,
+                                  itemBuilder: (context, index) {
+                                    final brandData = currentBrands[
+                                        currentBrands.keys.toList()[index]]!;
 
-                                        return Stack(
-                                          alignment: Alignment.centerRight,
-                                          children: [
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                color: white,
-                                                border: Border.all(
-                                                  width: 0.5,
-                                                  color: primaryDark,
-                                                ),
-                                                borderRadius:
-                                                    BorderRadius.circular(2),
+                                    return Stack(
+                                      alignment: Alignment.centerRight,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: white,
+                                            border: Border.all(
+                                              width: 0.5,
+                                              color: primaryDark,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(2),
+                                          ),
+                                          margin: EdgeInsets.all(
+                                            width * 0.0125,
+                                          ),
+                                          child: ListTile(
+                                            visualDensity:
+                                                VisualDensity.standard,
+                                            onTap: () {
+                                              selectBrandProvider.selectBrands(
+                                                brandData['brandId'],
+                                              );
+                                            },
+                                            // leading: CachedNetworkImage(
+                                            //   imageUrl: brandData['imageUrl'],
+                                            //   imageBuilder:
+                                            //       (context, imageProvider) {
+                                            //     return ClipRRect(
+                                            //       borderRadius:
+                                            //           BorderRadius.circular(
+                                            //         4,
+                                            //       ),
+                                            //       child: Container(
+                                            //         width: width * 0.155,
+                                            //         height: width * 0.175,
+                                            //         decoration: BoxDecoration(
+                                            //           image: DecorationImage(
+                                            //             image: imageProvider,
+                                            //             fit: BoxFit.cover,
+                                            //           ),
+                                            //         ),
+                                            //       ),
+                                            //     );
+                                            //   },
+                                            // ),
+                                            leading: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                2,
                                               ),
-                                              margin: EdgeInsets.all(
-                                                width * 0.0125,
-                                              ),
-                                              child: ListTile(
-                                                visualDensity:
-                                                    VisualDensity.standard,
-                                                onTap: () {
-                                                  selectBrandProvider
-                                                      .selectBrands(
-                                                    brandData['brandId'],
-                                                  );
-                                                },
-                                                // leading: CachedNetworkImage(
-                                                //   imageUrl: brandData['imageUrl'],
-                                                //   imageBuilder:
-                                                //       (context, imageProvider) {
-                                                //     return ClipRRect(
-                                                //       borderRadius:
-                                                //           BorderRadius.circular(
-                                                //         4,
-                                                //       ),
-                                                //       child: Container(
-                                                //         width: width * 0.155,
-                                                //         height: width * 0.175,
-                                                //         decoration: BoxDecoration(
-                                                //           image: DecorationImage(
-                                                //             image: imageProvider,
-                                                //             fit: BoxFit.cover,
-                                                //           ),
-                                                //         ),
-                                                //       ),
-                                                //     );
-                                                //   },
-                                                // ),
-                                                leading: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                    2,
-                                                  ),
-                                                  child: Image.network(
-                                                    brandData['imageUrl'],
-                                                    width: width * 0.15,
-                                                    height: width * 0.15,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                ),
-                                                title: Text(
-                                                  brandData['brandName'],
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                    fontSize: width * 0.05,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
+                                              child: Image.network(
+                                                brandData['imageUrl'],
+                                                width: width * 0.15,
+                                                height: width * 0.15,
+                                                fit: BoxFit.cover,
                                               ),
                                             ),
-                                            selectBrandProvider.selectedBrands
-                                                    .contains(
-                                              brandData['brandId'],
-                                            )
-                                                ? Padding(
-                                                    padding: EdgeInsets.only(
-                                                      right: width * 0.025,
-                                                    ),
-                                                    child: Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              2),
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        color: primaryDark2,
-                                                      ),
-                                                      child: Icon(
-                                                        FeatherIcons.check,
-                                                        color: Colors.white,
-                                                        size: width * 0.1,
-                                                      ),
-                                                    ),
-                                                  )
-                                                : Container()
-                                          ],
-                                        );
-                                      }),
-                                ),
+                                            title: Text(
+                                              brandData['brandName'],
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize: width * 0.05,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        selectBrandProvider.selectedBrands
+                                                .contains(
+                                          brandData['brandId'],
+                                        )
+                                            ? Padding(
+                                                padding: EdgeInsets.only(
+                                                  right: width * 0.025,
+                                                ),
+                                                child: Container(
+                                                  padding:
+                                                      const EdgeInsets.all(2),
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: primaryDark2,
+                                                  ),
+                                                  child: Icon(
+                                                    FeatherIcons.check,
+                                                    color: Colors.white,
+                                                    size: width * 0.1,
+                                                  ),
+                                                ),
+                                              )
+                                            : Container()
+                                      ],
+                                    );
+                                  }),
                         );
                       }),
                     ),

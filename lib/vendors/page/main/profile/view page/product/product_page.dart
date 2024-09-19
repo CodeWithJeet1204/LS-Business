@@ -604,8 +604,6 @@ class _ProductPageState extends State<ProductPage> {
               },
               child: const Text(
                 'NO',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.green,
                   fontWeight: FontWeight.bold,
@@ -630,8 +628,6 @@ class _ProductPageState extends State<ProductPage> {
               },
               child: const Text(
                 'YES',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.w500,
@@ -663,8 +659,6 @@ class _ProductPageState extends State<ProductPage> {
               },
               child: const Text(
                 'NO',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.green,
                   fontWeight: FontWeight.bold,
@@ -678,8 +672,6 @@ class _ProductPageState extends State<ProductPage> {
               },
               child: const Text(
                 'YES',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.w500,
@@ -1924,9 +1916,9 @@ class _ProductPageState extends State<ProductPage> {
                                                       ? 'No Category'
                                                       : productData[
                                                           'categoryName'],
+                                                  maxLines: 1,
                                                   overflow:
                                                       TextOverflow.ellipsis,
-                                                  maxLines: 1,
                                                   style: TextStyle(
                                                     color: primaryDark,
                                                     fontSize: width * 0.0575,

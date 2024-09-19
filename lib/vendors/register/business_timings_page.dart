@@ -232,7 +232,6 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
             (route) => false,
           );
         } else {
-          Navigator.of(context).pop();
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => const SelectMembershipPage(
@@ -327,7 +326,6 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
                                 children: [
                                   // START TIME
                                   Container(
-                                    height: 100,
                                     width: width * 0.45,
                                     decoration: BoxDecoration(
                                       color: primary3,
@@ -358,7 +356,6 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
                                                 style: TextStyle(
                                                   color: primaryDark2,
                                                   fontSize: width * 0.04,
-                                                  fontWeight: FontWeight.w500,
                                                 ),
                                               ),
                                               weekdayStartTime != null
@@ -407,7 +404,6 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
 
                                   // END TIME
                                   Container(
-                                    height: 100,
                                     width: width * 0.45,
                                     decoration: BoxDecoration(
                                       color: primary3,
@@ -438,7 +434,6 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
                                                 style: TextStyle(
                                                   color: primaryDark2,
                                                   fontSize: width * 0.04,
-                                                  fontWeight: FontWeight.w500,
                                                 ),
                                               ),
                                               weekdayEndTime != null
@@ -549,7 +544,6 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
                                 children: [
                                   // START TIME
                                   Container(
-                                    height: 100,
                                     width: width * 0.45,
                                     decoration: BoxDecoration(
                                       color: primary3,
@@ -580,7 +574,6 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
                                                 style: TextStyle(
                                                   color: primaryDark2,
                                                   fontSize: width * 0.04,
-                                                  fontWeight: FontWeight.w500,
                                                 ),
                                               ),
                                               saturdayStartTime != null
@@ -629,7 +622,6 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
 
                                   // END TIME
                                   Container(
-                                    height: 100,
                                     width: width * 0.45,
                                     decoration: BoxDecoration(
                                       color: primary3,
@@ -660,7 +652,6 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
                                                 style: TextStyle(
                                                   color: primaryDark2,
                                                   fontSize: width * 0.04,
-                                                  fontWeight: FontWeight.w500,
                                                 ),
                                               ),
                                               saturdayEndTime != null
@@ -771,7 +762,6 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
                                 children: [
                                   // START TIME
                                   Container(
-                                    height: 100,
                                     width: width * 0.45,
                                     decoration: BoxDecoration(
                                       color: primary3,
@@ -802,7 +792,6 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
                                                 style: TextStyle(
                                                   color: primaryDark2,
                                                   fontSize: width * 0.04,
-                                                  fontWeight: FontWeight.w500,
                                                 ),
                                               ),
                                               sundayStartTime != null
@@ -851,7 +840,6 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
 
                                   // END TIME
                                   Container(
-                                    height: 100,
                                     width: width * 0.45,
                                     decoration: BoxDecoration(
                                       color: primary3,
@@ -882,7 +870,6 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
                                                 style: TextStyle(
                                                   color: primaryDark2,
                                                   fontSize: width * 0.04,
-                                                  fontWeight: FontWeight.w500,
                                                 ),
                                               ),
                                               sundayEndTime != null

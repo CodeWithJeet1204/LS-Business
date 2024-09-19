@@ -30,6 +30,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
   bool isSaving = false;
   bool isDataLoaded = false;
   bool allowCall = true;
+  bool allowChat = true;
 
   // DISPOSE
   @override
@@ -56,7 +57,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
         };
         Reference ref = FirebaseStorage.instance
             .ref()
-            .child('VendorOwners')
+            .child('Vendor/Owners')
             .child(auth.currentUser!.uid);
         await ref
             .putFile(File(updatedUserImage['Image']!))
@@ -229,6 +230,22 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
         .doc(auth.currentUser!.uid)
         .update({
       'allowCalls': allowCall,
+    });
+  }
+
+  // TOGGLE ALLOW CHAT
+  Future<void> toggleAllowChat() async {
+    setState(() {
+      allowChat = !allowChat;
+    });
+
+    await store
+        .collection('Business')
+        .doc('Owners')
+        .collection('Users')
+        .doc(auth.currentUser!.uid)
+        .update({
+      'allowChats': allowChat,
     });
   }
 
@@ -485,6 +502,8 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                             ),
                           ),
                           const SizedBox(height: 14),
+
+                          // ALLOW CALLS
                           InkWell(
                             onTap: () async {
                               await toggleAllowCall();
@@ -524,7 +543,51 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                               ),
                             ),
                           ),
+                          const SizedBox(height: 14),
 
+                          // ALLOW CHATS
+                          InkWell(
+                            onTap: () async {
+                              await toggleAllowChat();
+                            },
+                            customBorder: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(width * 0.0125),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.only(left: width * 0.025),
+                                    child: SizedBox(
+                                      width: width * 0.75,
+                                      child: Text(
+                                        'Allow Chats from Users on Whatsapp',
+                                        style: TextStyle(
+                                          color: primaryDark,
+                                          fontSize: width * 0.04,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Switch(
+                                    value: allowChat,
+                                    onChanged: (value) async {
+                                      await toggleAllowChat();
+                                    },
+                                    activeColor: primary2,
+                                    activeTrackColor: primaryDark,
+                                    inactiveThumbColor: primaryDark,
+                                    inactiveTrackColor: primary2,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                           const SizedBox(height: 18),
 
                           // SAVE & CANCEL BUTTON

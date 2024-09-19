@@ -54,8 +54,12 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
 
   // GET DATA
   Future<void> getData() async {
-    final userSnap =
-        await store.collection('Users').doc(auth.currentUser!.uid).get();
+    final userSnap = await store
+        .collection('Business')
+        .doc('Owners')
+        .collection('Users')
+        .doc(auth.currentUser!.uid)
+        .get();
 
     final myUserData = userSnap.data()!;
 
@@ -179,7 +183,7 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
                     // const HeadText(
                     //   text: 'OWNER\nDETAILS',
                     // ),
-                    const SizedBox(height: 140),
+                    // const SizedBox(height: 140),
 
                     // IMAGE
                     isImageSelected

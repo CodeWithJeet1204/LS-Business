@@ -130,6 +130,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
             'Name': null,
             'numberVerified': true,
             'allowCalls': true,
+            'allowChats': true,
             'hasReviewed': false,
           });
 

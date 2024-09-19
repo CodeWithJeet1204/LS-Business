@@ -109,8 +109,6 @@ class _PostPageState extends State<PostPage> {
               },
               child: const Text(
                 'NO',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.green,
                   fontWeight: FontWeight.bold,
@@ -126,8 +124,6 @@ class _PostPageState extends State<PostPage> {
               },
               child: const Text(
                 'YES',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.w500,

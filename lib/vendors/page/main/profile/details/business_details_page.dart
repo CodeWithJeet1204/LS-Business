@@ -205,8 +205,6 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                 Navigator.of(context).pop();
               },
               child: const Text(
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
                 'NO',
                 style: TextStyle(
                   color: Colors.green,
@@ -232,8 +230,6 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                 }
               },
               child: const Text(
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
                 'YES',
                 style: TextStyle(
                   color: Colors.red,

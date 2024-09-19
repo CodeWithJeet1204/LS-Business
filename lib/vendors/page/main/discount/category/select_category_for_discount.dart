@@ -22,60 +22,144 @@ class _SelectCategoryForDiscountPageState
   final store = FirebaseFirestore.instance;
   Map<String, dynamic> allCategories = {};
   Map<String, dynamic> currentCategories = {};
-  String? searchedCategory;
+  Map<String, dynamic> everyCategories = {};
+  int? total;
+  int noOfGridView = 12;
+  bool isLoadMoreGridView = false;
+  final scrollControllerGridView = ScrollController();
+  int noOfListView = 20;
+  bool isLoadMoreListView = false;
+  final scrollControllerListView = ScrollController();
   bool isGridView = true;
   bool isData = false;
 
   // INIT STATE
   @override
   void initState() {
-    getData();
+    getCategoryData();
+    scrollControllerGridView.addListener(scrollListenerGridView);
+    scrollControllerListView.addListener(scrollListenerListView);
     super.initState();
   }
 
-  // GET DATA
-  Future<void> getData() async {
-    Map<String, dynamic> myCategories = {};
+  // DISPOSE
+  @override
+  void dispose() {
+    scrollControllerGridView.dispose();
+    scrollControllerListView.dispose();
+    super.dispose();
+  }
 
-    final vendorSnap = await store
-        .collection('Business')
-        .doc('Owners')
-        .collection('Shops')
-        .doc(auth.currentUser!.uid)
-        .get();
-
-    final vendorData = vendorSnap.data()!;
-
-    final List shopTypes = vendorData['Type'];
-
-    final categoriesSnap = await store
-        .collection('Shop Types And Category Data')
-        .doc('Category Data')
-        .get();
-
-    final categoriesData = categoriesSnap.data()!;
-
-    final categoryData = categoriesData['householdCategoryData'];
-
-    for (var shopType in shopTypes) {
-      final shopTypeCategories = categoryData[shopType]!;
-
-      shopTypeCategories.forEach((categoryName, categoryImageUrl) {
-        myCategories[categoryName] = categoryImageUrl;
-      });
+  // SCROLL LISTENER GRID VIEW
+  Future<void> scrollListenerGridView() async {
+    if (total != null && noOfGridView < total!) {
+      if (scrollControllerGridView.position.pixels ==
+          scrollControllerGridView.position.maxScrollExtent) {
+        setState(() {
+          isLoadMoreGridView = true;
+        });
+        noOfGridView = noOfGridView + 8;
+        await getCategoryData();
+        setState(() {
+          isLoadMoreGridView = false;
+        });
+      }
     }
+  }
 
-    setState(() {
-      allCategories = myCategories;
-      currentCategories = myCategories;
-      isData = true;
-    });
+  // SCROLL LISTENER LIST VIEW
+  Future<void> scrollListenerListView() async {
+    if (total != null && noOfListView < total!) {
+      if (scrollControllerListView.position.pixels ==
+          scrollControllerListView.position.maxScrollExtent) {
+        setState(() {
+          isLoadMoreListView = true;
+        });
+        noOfListView = noOfListView + 12;
+        await getCategoryData();
+        setState(() {
+          isLoadMoreListView = false;
+        });
+      }
+    }
+  }
+
+  // GET CATEGORY DATA
+  Future<void> getCategoryData() async {
+    if (everyCategories.isEmpty) {
+      Map<String, dynamic> myCategories = {};
+
+      final vendorSnap = await store
+          .collection('Business')
+          .doc('Owners')
+          .collection('Shops')
+          .doc(auth.currentUser!.uid)
+          .get();
+
+      final vendorData = vendorSnap.data()!;
+
+      final List shopTypes = vendorData['Type'];
+
+      final categoriesSnap = await store
+          .collection('Shop Types And Category Data')
+          .doc('Category Data')
+          .get();
+
+      final categoriesData = categoriesSnap.data()!;
+
+      final householdCategoryData = categoriesData['householdCategoryData'];
+
+      int addedCount = 0;
+      total = 0;
+      for (var shopType in shopTypes) {
+        final categories = householdCategoryData[shopType]!;
+        setState(() {
+          total = total! + (categories.length as int);
+          everyCategories.addAll(categories);
+        });
+
+        (categories as Map).forEach((categoryName, categoryImageUrl) {
+          if (addedCount < (isGridView ? noOfGridView : noOfListView)) {
+            myCategories[categoryName] = categoryImageUrl;
+            addedCount++;
+          } else {
+            return;
+          }
+        });
+      }
+
+      addedCount = 0;
+      for (var categoryName in myCategories.keys) {
+        if (addedCount < (isGridView ? noOfGridView : noOfListView)) {
+          currentCategories[categoryName] = myCategories[categoryName];
+          allCategories[categoryName] = myCategories[categoryName];
+          addedCount++;
+        } else {
+          break;
+        }
+      }
+
+      setState(() {
+        isData = true;
+      });
+    } else {
+      int addedCount = 0;
+      for (var categoryName in everyCategories.keys) {
+        if (addedCount >= (isGridView ? noOfGridView : noOfListView)) {
+          break;
+        }
+        if (!allCategories.containsKey(categoryName)) {
+          currentCategories[categoryName] = everyCategories[categoryName];
+          allCategories[categoryName] = everyCategories[categoryName];
+          addedCount++;
+        }
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-
     final selectCategoryProvider =
         Provider.of<SelectCategoryForDiscountProvider>(context);
 
@@ -96,14 +180,11 @@ class _SelectCategoryForDiscountPageState
           ),
         ],
         bottom: PreferredSize(
-          preferredSize: Size(
-            MediaQuery.of(context).size.width,
-            80,
-          ),
+          preferredSize: Size(width, 80),
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.0166,
-              vertical: MediaQuery.of(context).size.width * 0.0225,
+              horizontal: width * 0.0166,
+              vertical: width * 0.0225,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -207,130 +288,151 @@ class _SelectCategoryForDiscountPageState
                       },
                     ),
             )
-          : SafeArea(
-              child: Padding(
-                padding: EdgeInsets.all(width * 0.0125),
-                child: LayoutBuilder(
-                  builder: ((context, constraints) {
-                    final width = constraints.maxWidth;
+          : currentCategories.isEmpty
+              ? const SizedBox(
+                  height: 80,
+                  child: Center(
+                    child: Text('No Categories'),
+                  ),
+                )
+              : SafeArea(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: width * 0.0125),
+                    child: LayoutBuilder(
+                      builder: ((context, constraints) {
+                        final width = constraints.maxWidth;
+                        final height = constraints.maxWidth;
 
-                    return SafeArea(
-                      child: isGridView
-                          ? GridView.builder(
-                              shrinkWrap: true,
-                              physics: const ClampingScrollPhysics(),
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 0,
-                                mainAxisSpacing: 0,
-                                childAspectRatio: 0.7375,
-                              ),
-                              itemCount: currentCategories.length,
-                              itemBuilder: (context, index) {
-                                final categoryName =
-                                    currentCategories.keys.toList()[index];
-                                final categoryImageUrl =
-                                    currentCategories.values.toList()[index];
+                        return isGridView
+                            ? GridView.builder(
+                                controller: scrollControllerGridView,
+                                cacheExtent: height * 1.5,
+                                addAutomaticKeepAlives: true,
+                                shrinkWrap: true,
+                                physics: const ClampingScrollPhysics(),
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 0,
+                                  mainAxisSpacing: 0,
+                                  childAspectRatio: 0.7375,
+                                ),
+                                itemCount:
+                                    noOfGridView > currentCategories.length
+                                        ? currentCategories.length
+                                        : noOfGridView,
+                                itemBuilder: (context, index) {
+                                  final categoryName =
+                                      currentCategories.keys.toList()[index];
+                                  final categoryImageUrl =
+                                      currentCategories.values.toList()[index];
 
-                                return GestureDetector(
-                                  onTap: () {
-                                    selectCategoryProvider.selectCategory(
-                                      categoryName,
-                                    );
-                                  },
-                                  child: Stack(
-                                    alignment: Alignment.topRight,
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: white,
-                                          border: Border.all(
-                                            width: 0.25,
-                                            color: primaryDark,
+                                  return GestureDetector(
+                                    onTap: () {
+                                      selectCategoryProvider.selectCategory(
+                                        categoryName,
+                                      );
+                                    },
+                                    child: Stack(
+                                      alignment: Alignment.topRight,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: white,
+                                            border: Border.all(
+                                              width: 0.25,
+                                              color: primaryDark,
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                              2,
+                                            ),
                                           ),
-                                          borderRadius: BorderRadius.circular(
-                                            2,
-                                          ),
-                                        ),
-                                        margin: EdgeInsets.all(width * 0.00625),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Padding(
-                                              padding: EdgeInsets.all(
-                                                width * 0.0125,
-                                              ),
-                                              child: Center(
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                    2,
-                                                  ),
-                                                  child: Container(
-                                                    width: width * 0.5,
-                                                    height: width * 0.5,
-                                                    decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                        image: NetworkImage(
-                                                          categoryImageUrl,
+                                          margin:
+                                              EdgeInsets.all(width * 0.00625),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.all(
+                                                  width * 0.0125,
+                                                ),
+                                                child: Center(
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      2,
+                                                    ),
+                                                    child: Container(
+                                                      width: width * 0.5,
+                                                      height: width * 0.5,
+                                                      decoration: BoxDecoration(
+                                                        image: DecorationImage(
+                                                          image: NetworkImage(
+                                                            categoryImageUrl,
+                                                          ),
+                                                          fit: BoxFit.cover,
                                                         ),
-                                                        fit: BoxFit.cover,
                                                       ),
                                                     ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                vertical: width * 0.0125,
-                                              ),
-                                              child: Text(
-                                                categoryName,
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontSize: width * 0.06,
-                                                  fontWeight: FontWeight.w600,
+                                              Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                  vertical: width * 0.0125,
+                                                ),
+                                                child: Text(
+                                                  categoryName,
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontSize: width * 0.06,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      selectCategoryProvider.selectedCategories
-                                              .contains(
-                                        categoryName,
-                                      )
-                                          ? Container(
-                                              margin: EdgeInsets.all(
-                                                width * 0.01,
-                                              ),
-                                              padding: const EdgeInsets.all(2),
-                                              decoration: const BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: primaryDark2,
-                                              ),
-                                              child: Icon(
-                                                Icons.check,
-                                                color: Colors.white,
-                                                size: width * 0.1,
-                                              ),
-                                            )
-                                          : Container()
-                                    ],
-                                  ),
-                                );
-                              })
-                          : SizedBox(
-                              width: width,
-                              child: ListView.builder(
+                                        selectCategoryProvider
+                                                .selectedCategories
+                                                .contains(
+                                          categoryName,
+                                        )
+                                            ? Container(
+                                                margin: EdgeInsets.all(
+                                                  width * 0.01,
+                                                ),
+                                                padding:
+                                                    const EdgeInsets.all(2),
+                                                decoration: const BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: primaryDark2,
+                                                ),
+                                                child: Icon(
+                                                  Icons.check,
+                                                  color: Colors.white,
+                                                  size: width * 0.1,
+                                                ),
+                                              )
+                                            : Container()
+                                      ],
+                                    ),
+                                  );
+                                })
+                            : ListView.builder(
+                                controller: scrollControllerListView,
+                                cacheExtent: height * 1.5,
+                                addAutomaticKeepAlives: true,
                                 shrinkWrap: true,
                                 physics: const ClampingScrollPhysics(),
-                                itemCount: currentCategories.length,
+                                itemCount:
+                                    noOfListView > currentCategories.length
+                                        ? currentCategories.length
+                                        : noOfListView,
                                 itemBuilder: ((context, index) {
                                   final categoryName =
                                       currentCategories.keys.toList()[index];
@@ -409,13 +511,11 @@ class _SelectCategoryForDiscountPageState
                                     ],
                                   );
                                 }),
-                              ),
-                            ),
-                    );
-                  }),
+                              );
+                      }),
+                    ),
+                  ),
                 ),
-              ),
-            ),
     );
   }
 }

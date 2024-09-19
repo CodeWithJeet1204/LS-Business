@@ -24,15 +24,25 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
   final store = FirebaseFirestore.instance;
   final storage = FirebaseStorage.instance;
   final searchController = TextEditingController();
-  bool isGridView = true;
   Map<String, dynamic> currentCategories = {};
   Map<String, dynamic> allCategories = {};
-  bool getData = false;
+  Map<String, dynamic> everyCategories = {};
+  int? total;
+  int noOfGridView = 12;
+  bool isLoadMoreGridView = false;
+  final scrollControllerGridView = ScrollController();
+  int noOfListView = 20;
+  bool isLoadMoreListView = false;
+  final scrollControllerListView = ScrollController();
+  bool isGridView = true;
+  bool isData = false;
 
   // INIT STATE
   @override
   void initState() {
     getCategoryData();
+    scrollControllerGridView.addListener(scrollListenerGridView);
+    scrollControllerListView.addListener(scrollListenerListView);
     super.initState();
   }
 
@@ -40,35 +50,105 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
   @override
   void dispose() {
     searchController.dispose();
+    scrollControllerGridView.dispose();
+    scrollControllerListView.dispose();
     super.dispose();
+  }
+
+  // SCROLL LISTENER GRID VIEW
+  Future<void> scrollListenerGridView() async {
+    if (total != null && noOfGridView < total!) {
+      if (scrollControllerGridView.position.pixels ==
+          scrollControllerGridView.position.maxScrollExtent) {
+        setState(() {
+          isLoadMoreGridView = true;
+        });
+        noOfGridView = noOfGridView + 8;
+        await getCategoryData();
+        setState(() {
+          isLoadMoreGridView = false;
+        });
+      }
+    }
+  }
+
+  // SCROLL LISTENER LIST VIEW
+  Future<void> scrollListenerListView() async {
+    if (total != null && noOfListView < total!) {
+      if (scrollControllerListView.position.pixels ==
+          scrollControllerListView.position.maxScrollExtent) {
+        setState(() {
+          isLoadMoreListView = true;
+        });
+        noOfListView = noOfListView + 12;
+        await getCategoryData();
+        setState(() {
+          isLoadMoreListView = false;
+        });
+      }
+    }
   }
 
   // GET CATEGORY DATA
   Future<void> getCategoryData() async {
-    Map<String, dynamic> myCategories = {};
+    if (everyCategories.isEmpty) {
+      Map<String, dynamic> myCategories = {};
 
-    final categoriesSnap = await store
-        .collection('Shop Types And Category Data')
-        .doc('Category Data')
-        .get();
+      final categoriesSnap = await store
+          .collection('Shop Types And Category Data')
+          .doc('Category Data')
+          .get();
 
-    final categoriesData = categoriesSnap.data()!;
+      final categoriesData = categoriesSnap.data()!;
 
-    final householdCategoryData = categoriesData['householdCategoryData'];
+      final householdCategoryData = categoriesData['householdCategoryData'];
 
-    for (var shopType in widget.shopType) {
-      final categories = householdCategoryData[shopType]!;
+      int addedCount = 0;
+      total = 0;
+      for (var shopType in widget.shopType) {
+        final categories = householdCategoryData[shopType]!;
+        setState(() {
+          total = total! + (categories.length as int);
+          everyCategories.addAll(categories);
+        });
 
-      categories.forEach((categoryName, categoryImageUrl) {
-        myCategories[categoryName] = categoryImageUrl;
+        (categories as Map).forEach((categoryName, categoryImageUrl) {
+          if (addedCount < (isGridView ? noOfGridView : noOfListView)) {
+            myCategories[categoryName] = categoryImageUrl;
+            addedCount++;
+          } else {
+            return;
+          }
+        });
+      }
+
+      addedCount = 0;
+      for (var categoryName in myCategories.keys) {
+        if (addedCount < (isGridView ? noOfGridView : noOfListView)) {
+          currentCategories[categoryName] = myCategories[categoryName];
+          allCategories[categoryName] = myCategories[categoryName];
+          addedCount++;
+        } else {
+          break;
+        }
+      }
+
+      setState(() {
+        isData = true;
       });
+    } else {
+      int addedCount = 0;
+      for (var categoryName in everyCategories.keys) {
+        if (addedCount >= (isGridView ? noOfGridView : noOfListView)) {
+          break;
+        }
+        if (!allCategories.containsKey(categoryName)) {
+          currentCategories[categoryName] = everyCategories[categoryName];
+          allCategories[categoryName] = everyCategories[categoryName];
+          addedCount++;
+        }
+      }
     }
-
-    setState(() {
-      currentCategories = myCategories;
-      allCategories = myCategories;
-      getData = true;
-    });
   }
 
   @override
@@ -84,10 +164,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
           overflow: TextOverflow.ellipsis,
         ),
         bottom: PreferredSize(
-          preferredSize: Size(
-            width,
-            width * 0.2,
-          ),
+          preferredSize: Size(width, width * 0.2),
           child: Padding(
             padding: EdgeInsets.symmetric(
               horizontal: width * 0.0166,
@@ -153,7 +230,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
           ),
         ),
       ),
-      body: !getData
+      body: !isData
           ? SafeArea(
               child: isGridView
                   ? GridView.builder(
@@ -199,307 +276,241 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                     ),
             )
           : currentCategories.isEmpty
-              ? const SizedBox(
-                  height: 80,
-                  child: Center(
-                    child: Text('No Categories'),
-                  ),
+              ? Center(
+                  child: Text('No Categories'),
                 )
-              : Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * 0.0125,
-                  ),
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      double width = constraints.maxWidth;
+              : SafeArea(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: width * 0.0125,
+                    ),
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        final width = constraints.maxWidth;
+                        final height = constraints.maxWidth;
 
-                      return SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            isGridView
-                                ? SizedBox(
-                                    width: width,
-                                    child: GridView.builder(
-                                      shrinkWrap: true,
-                                      physics: const ClampingScrollPhysics(),
-                                      gridDelegate:
-                                          SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2,
-                                        childAspectRatio: width * 0.75 / width,
+                        return isGridView
+                            ? GridView.builder(
+                                controller: scrollControllerGridView,
+                                cacheExtent: height * 1.5,
+                                addAutomaticKeepAlives: true,
+                                shrinkWrap: true,
+                                physics: const ClampingScrollPhysics(),
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  childAspectRatio: 0.75,
+                                ),
+                                itemCount:
+                                    noOfGridView > currentCategories.length
+                                        ? currentCategories.length
+                                        : noOfGridView,
+                                itemBuilder: ((context, index) {
+                                  final name =
+                                      currentCategories.keys.toList()[index];
+                                  final imageUrl =
+                                      currentCategories.values.toList()[index];
+
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: ((context) => CategoryPage(
+                                                categoryName: name,
+                                              )),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: white,
+                                        border: Border.all(
+                                          width: 0.25,
+                                          color: primaryDark,
+                                        ),
+                                        borderRadius: BorderRadius.circular(
+                                          2,
+                                        ),
                                       ),
-                                      itemCount: currentCategories.length,
-                                      itemBuilder: ((context, index) {
-                                        final name = currentCategories.keys
-                                            .toList()[index];
-                                        final imageUrl = currentCategories
-                                            .values
-                                            .toList()[index];
-
-                                        return GestureDetector(
-                                          onTap: () {
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder: ((context) =>
-                                                    CategoryPage(
-                                                      categoryName: name,
-                                                    )),
-                                              ),
-                                            );
-                                          },
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              color: white,
-                                              border: Border.all(
-                                                width: 0.25,
-                                                color: primaryDark,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                2,
-                                              ),
+                                      margin: EdgeInsets.all(width * 0.00625),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          // CachedNetworkImage(
+                                          //   imageUrl: imageUrl,
+                                          //   imageBuilder:
+                                          //       (context, imageProvider) {
+                                          //     return Center(
+                                          //       child: ClipRRect(
+                                          //         borderRadius:
+                                          //             BorderRadius.circular(
+                                          //           12,
+                                          //         ),
+                                          //         child: Container(
+                                          //           width: width * 0.4,
+                                          //           height: width * 0.4,
+                                          //           decoration:
+                                          //               BoxDecoration(
+                                          //             image:
+                                          //                 DecorationImage(
+                                          //               image:
+                                          //                   imageProvider,
+                                          //               fit: BoxFit.cover,
+                                          //             ),
+                                          //           ),
+                                          //         ),
+                                          //       ),
+                                          //     );
+                                          //   },
+                                          // ),
+                                          Padding(
+                                            padding: EdgeInsets.all(
+                                              width * 0.0125,
                                             ),
-                                            margin:
-                                                EdgeInsets.all(width * 0.00625),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                // CachedNetworkImage(
-                                                //   imageUrl: imageUrl,
-                                                //   imageBuilder:
-                                                //       (context, imageProvider) {
-                                                //     return Center(
-                                                //       child: ClipRRect(
-                                                //         borderRadius:
-                                                //             BorderRadius.circular(
-                                                //           12,
-                                                //         ),
-                                                //         child: Container(
-                                                //           width: width * 0.4,
-                                                //           height: width * 0.4,
-                                                //           decoration:
-                                                //               BoxDecoration(
-                                                //             image:
-                                                //                 DecorationImage(
-                                                //               image:
-                                                //                   imageProvider,
-                                                //               fit: BoxFit.cover,
-                                                //             ),
-                                                //           ),
-                                                //         ),
-                                                //       ),
-                                                //     );
-                                                //   },
-                                                // ),
-                                                Padding(
-                                                  padding: EdgeInsets.all(
-                                                    width * 0.0125,
-                                                  ),
-                                                  child: Center(
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                        2,
+                                            child: Center(
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  2,
+                                                ),
+                                                child: Container(
+                                                  width: width * 0.5,
+                                                  height: width * 0.5,
+                                                  decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                      image: NetworkImage(
+                                                        imageUrl,
                                                       ),
-                                                      child: Container(
-                                                        width: width * 0.5,
-                                                        height: width * 0.5,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          image:
-                                                              DecorationImage(
-                                                            image: NetworkImage(
-                                                              imageUrl,
-                                                            ),
-                                                            fit: BoxFit.cover,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                    vertical: width * 0.0125,
-                                                  ),
-                                                  child: SizedBox(
-                                                    width: width * 0.5,
-                                                    child: Text(
-                                                      name,
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                        fontSize: width * 0.05,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      }),
-                                    ),
-                                  )
-                                : getData
-                                    ? SizedBox(
-                                        width: width,
-                                        child: ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount: currentCategories.length,
-                                          physics:
-                                              const ClampingScrollPhysics(),
-                                          itemBuilder: ((context, index) {
-                                            final name = currentCategories.keys
-                                                .toList()[index];
-                                            final imageUrl = currentCategories
-                                                .values
-                                                .toList()[index];
-
-                                            return GestureDetector(
-                                              onTap: () {
-                                                Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                    builder: ((context) =>
-                                                        CategoryPage(
-                                                          categoryName: name,
-                                                        )),
-                                                  ),
-                                                );
-                                              },
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  color: white,
-                                                  border: Border.all(
-                                                    width: 0.5,
-                                                    color: primaryDark,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(2),
-                                                ),
-                                                margin: EdgeInsets.all(
-                                                  width * 0.0125,
-                                                ),
-                                                child: ListTile(
-                                                  visualDensity:
-                                                      VisualDensity.standard,
-                                                  // leading: CachedNetworkImage(
-                                                  //   imageUrl: imageUrl,
-                                                  //   imageBuilder:
-                                                  //       (context, imageProvider) {
-                                                  //     return Padding(
-                                                  //       padding:
-                                                  //           EdgeInsets.symmetric(
-                                                  //         vertical:
-                                                  //             width * 0.0125,
-                                                  //       ),
-                                                  //       child: ClipRRect(
-                                                  //         borderRadius:
-                                                  //             BorderRadius
-                                                  //                 .circular(4),
-                                                  //         child: Container(
-                                                  //           width: width * 0.133,
-                                                  //           height: width * 0.133,
-                                                  //           decoration:
-                                                  //               BoxDecoration(
-                                                  //             image:
-                                                  //                 DecorationImage(
-                                                  //               image:
-                                                  //                   imageProvider,
-                                                  //               fit: BoxFit.cover,
-                                                  //             ),
-                                                  //           ),
-                                                  //         ),
-                                                  //       ),
-                                                  //     );
-                                                  //   },
-                                                  // ),
-                                                  leading: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                      2,
-                                                    ),
-                                                    child: Image.network(
-                                                      imageUrl,
-                                                      width: width * 0.15,
-                                                      height: width * 0.15,
                                                       fit: BoxFit.cover,
                                                     ),
                                                   ),
-                                                  title: Text(
-                                                    name,
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: TextStyle(
-                                                      fontSize: width * 0.05,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
                                                 ),
                                               ),
-                                            );
-                                          }),
-                                        ),
-                                      )
-                                    : SafeArea(
-                                        child: isGridView
-                                            ? GridView.builder(
-                                                shrinkWrap: true,
-                                                physics:
-                                                    ClampingScrollPhysics(),
-                                                gridDelegate:
-                                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                                  crossAxisCount: 2,
-                                                  crossAxisSpacing: 0,
-                                                  mainAxisSpacing: 0,
-                                                  childAspectRatio:
-                                                      width * 0.5 / width * 1.6,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              vertical: width * 0.0125,
+                                            ),
+                                            child: SizedBox(
+                                              width: width * 0.5,
+                                              child: Text(
+                                                name,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontSize: width * 0.05,
+                                                  fontWeight: FontWeight.w500,
                                                 ),
-                                                itemCount: 4,
-                                                itemBuilder: (context, index) {
-                                                  return Padding(
-                                                    padding: EdgeInsets.all(
-                                                      width * 0.02,
-                                                    ),
-                                                    child: GridViewSkeleton(
-                                                      width: width,
-                                                      isPrice: false,
-                                                      isDelete: true,
-                                                    ),
-                                                  );
-                                                },
-                                              )
-                                            : ListView.builder(
-                                                shrinkWrap: true,
-                                                physics:
-                                                    ClampingScrollPhysics(),
-                                                itemCount: 4,
-                                                itemBuilder: (context, index) {
-                                                  return Padding(
-                                                    padding: EdgeInsets.all(
-                                                      width * 0.02,
-                                                    ),
-                                                    child: ListViewSkeleton(
-                                                      width: width,
-                                                      isPrice: false,
-                                                      height: 30,
-                                                      isDelete: true,
-                                                    ),
-                                                  );
-                                                },
                                               ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                          ],
-                        ),
-                      );
-                    },
+                                    ),
+                                  );
+                                }),
+                              )
+                            : ListView.builder(
+                                controller: scrollControllerListView,
+                                cacheExtent: height * 1.5,
+                                addAutomaticKeepAlives: true,
+                                shrinkWrap: true,
+                                itemCount:
+                                    noOfListView > currentCategories.length
+                                        ? currentCategories.length
+                                        : noOfListView,
+                                physics: const ClampingScrollPhysics(),
+                                itemBuilder: ((context, index) {
+                                  final name =
+                                      currentCategories.keys.toList()[index];
+                                  final imageUrl =
+                                      currentCategories.values.toList()[index];
+
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: ((context) => CategoryPage(
+                                                categoryName: name,
+                                              )),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: white,
+                                        border: Border.all(
+                                          width: 0.5,
+                                          color: primaryDark,
+                                        ),
+                                        borderRadius: BorderRadius.circular(2),
+                                      ),
+                                      margin: EdgeInsets.all(
+                                        width * 0.0125,
+                                      ),
+                                      child: ListTile(
+                                        visualDensity: VisualDensity.standard,
+                                        // leading: CachedNetworkImage(
+                                        //   imageUrl: imageUrl,
+                                        //   imageBuilder:
+                                        //       (context, imageProvider) {
+                                        //     return Padding(
+                                        //       padding:
+                                        //           EdgeInsets.symmetric(
+                                        //         vertical:
+                                        //             width * 0.0125,
+                                        //       ),
+                                        //       child: ClipRRect(
+                                        //         borderRadius:
+                                        //             BorderRadius
+                                        //                 .circular(4),
+                                        //         child: Container(
+                                        //           width: width * 0.133,
+                                        //           height: width * 0.133,
+                                        //           decoration:
+                                        //               BoxDecoration(
+                                        //             image:
+                                        //                 DecorationImage(
+                                        //               image:
+                                        //                   imageProvider,
+                                        //               fit: BoxFit.cover,
+                                        //             ),
+                                        //           ),
+                                        //         ),
+                                        //       ),
+                                        //     );
+                                        //   },
+                                        // ),
+                                        leading: ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                            2,
+                                          ),
+                                          child: Image.network(
+                                            imageUrl,
+                                            width: width * 0.15,
+                                            height: width * 0.15,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        title: Text(
+                                          name,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: width * 0.05,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }),
+                              );
+                      },
+                    ),
                   ),
                 ),
     );

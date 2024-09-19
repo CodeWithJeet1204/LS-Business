@@ -204,7 +204,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                 )
               : currentShopTypes.isEmpty
                   ? const SizedBox(
-                      height: 60,
+                      height: 80,
                       child: Center(
                         child: Text('No Shop Types'),
                       ),

@@ -226,7 +226,7 @@ class _ChangeProductCategoryPageState extends State<ChangeProductCategoryPage> {
                       physics: ClampingScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                        childAspectRatio: width * 0.75 / width,
+                        childAspectRatio: 0.75,
                       ),
                       itemCount: currentCategories.length,
                       itemBuilder: (context, index) {
