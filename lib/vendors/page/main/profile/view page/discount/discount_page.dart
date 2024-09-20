@@ -920,19 +920,26 @@ class DISCOUNT extends State<DiscountPage> {
                         ),
 
                         // START DATE
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: width * 0.0133,
-                            horizontal: width * 0.01,
-                          ),
+                        GestureDetector(
+                          onTap: () async {
+                            await changeStartDate(
+                              (discountData['discountStartDateTime']
+                                      as Timestamp)
+                                  .toDate(),
+                            );
+                          },
                           child: Container(
+                            decoration: BoxDecoration(
+                              color: primary.withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                             padding: EdgeInsets.symmetric(
                               vertical: width * 0.025,
                               horizontal: width * 0.025,
                             ),
-                            decoration: BoxDecoration(
-                              color: primary.withOpacity(0.3),
-                              borderRadius: BorderRadius.circular(8),
+                            margin: EdgeInsets.symmetric(
+                              vertical: width * 0.0133,
+                              horizontal: width * 0.01,
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -985,19 +992,25 @@ class DISCOUNT extends State<DiscountPage> {
                         ),
 
                         // END DATE
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: width * 0.0133,
-                            horizontal: width * 0.01,
-                          ),
+                        GestureDetector(
+                          onTap: () async {
+                            await changeEndDate(
+                              (discountData['discountEndDateTime'] as Timestamp)
+                                  .toDate(),
+                            );
+                          },
                           child: Container(
+                            decoration: BoxDecoration(
+                              color: primary.withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                             padding: EdgeInsets.symmetric(
                               vertical: width * 0.025,
                               horizontal: width * 0.025,
                             ),
-                            decoration: BoxDecoration(
-                              color: primary.withOpacity(0.3),
-                              borderRadius: BorderRadius.circular(8),
+                            margin: EdgeInsets.symmetric(
+                              vertical: width * 0.0133,
+                              horizontal: width * 0.01,
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,

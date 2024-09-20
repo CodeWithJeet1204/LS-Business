@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,8 +7,8 @@ import 'package:Localsearch/vendors/page/main/profile/details/business_details_p
 import 'package:Localsearch/vendors/page/register/business_timings_page.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 
-class BusinessChooseSubCategoriesPage extends StatefulWidget {
-  const BusinessChooseSubCategoriesPage({
+class BusinessChooseProductsPage extends StatefulWidget {
+  const BusinessChooseProductsPage({
     super.key,
     required this.selectedCategories,
     required this.selectedTypes,
@@ -24,20 +22,26 @@ class BusinessChooseSubCategoriesPage extends StatefulWidget {
   final List? selectedProducts;
 
   @override
-  State<BusinessChooseSubCategoriesPage> createState() =>
-      _BusinessChooseSubCategoriesPageState();
+  State<BusinessChooseProductsPage> createState() =>
+      _BusinessChooseProductsPageState();
 }
 
-class _BusinessChooseSubCategoriesPageState
-    extends State<BusinessChooseSubCategoriesPage> {
+class _BusinessChooseProductsPageState
+    extends State<BusinessChooseProductsPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
-  bool isNext = false;
+  Map<String, dynamic>? allProducts;
   List selectedProducts = [];
+  bool isNext = false;
+  int? total;
+  int noOf = 4;
+  final scrollController = ScrollController();
 
   // INIT STATE
   @override
   void initState() {
+    getProductsForSubCategory();
+    scrollController.addListener(scrollListener);
     if (widget.selectedProducts != null) {
       setState(() {
         selectedProducts = widget.selectedProducts!;
@@ -46,8 +50,23 @@ class _BusinessChooseSubCategoriesPageState
     super.initState();
   }
 
+  // SCROLL LISTENER
+  void scrollListener() {
+    if (total != null && noOf < total!) {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        print('total: $total');
+        setState(() {
+          noOf = noOf + 4;
+        });
+      }
+    }
+  }
+
   // GET PRODUCTS FOR SUB CATEGORY
-  Future<List> getProductsForSubCategory(String subCategory) async {
+  Future<void> getProductsForSubCategory() async {
+    Map<String, dynamic> myProducts = {};
+    int totalSubCategories = 0;
     final catalogueSnap = await store
         .collection('Shop Types And Category Data')
         .doc('Catalogue')
@@ -55,17 +74,22 @@ class _BusinessChooseSubCategoriesPageState
 
     final catalogueData = catalogueSnap.data()!;
 
-    log('catalogueData: $catalogueData');
-
     final catalogue = catalogueData['catalogueData'];
 
     for (var shopType in widget.selectedTypes) {
-      final subCategories = catalogue[shopType.trim()];
-      if (subCategories != null && subCategories.containsKey(subCategory)) {
-        return subCategories[subCategory]!;
+      final subCategories = catalogue[shopType];
+      if (subCategories != null) {
+        totalSubCategories =
+            totalSubCategories + (subCategories as Map<String, dynamic>).length;
+        myProducts.addAll(subCategories);
       }
     }
-    return [];
+
+    setState(() {
+      total = totalSubCategories;
+      print('total: $total');
+      allProducts = myProducts;
+    });
   }
 
   // NEXT
@@ -120,48 +144,54 @@ class _BusinessChooseSubCategoriesPageState
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Choose Your Products'),
         automaticallyImplyLeading: false,
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: width * 0.0125),
-          child: ListView.builder(
-            shrinkWrap: true,
-            physics: ClampingScrollPhysics(),
-            itemCount: widget.selectedCategories.length,
-            itemBuilder: (context, index) {
-              final subCategory = widget.selectedCategories[index];
+      body: allProducts == null
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : SafeArea(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: width * 0.0125),
+                child: ListView.builder(
+                  controller: scrollController,
+                  cacheExtent: height * 1.5,
+                  addAutomaticKeepAlives: true,
+                  shrinkWrap: true,
+                  physics: ClampingScrollPhysics(),
+                  itemCount: noOf > widget.selectedCategories.length
+                      ? widget.selectedCategories.length
+                      : noOf,
+                  itemBuilder: (context, index) {
+                    final String? subCategory =
+                        widget.selectedCategories[index];
 
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: width * 0.0225,
-                      vertical: 8,
-                    ),
-                    child: Text(
-                      subCategory,
-                      style: TextStyle(
-                        fontSize: width * 0.055,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                  FutureBuilder(
-                    future: getProductsForSubCategory(subCategory),
-                    builder: (context, future) {
-                      if (future.hasData) {
-                        return ListView.builder(
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: width * 0.0225,
+                          ),
+                          child: Text(
+                            subCategory!,
+                            style: TextStyle(
+                              fontSize: width * 0.055,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        ListView.builder(
                           shrinkWrap: true,
                           physics: ClampingScrollPhysics(),
-                          itemCount: future.data!.length,
+                          itemCount: allProducts![subCategory].length,
                           itemBuilder: (context, productIndex) {
-                            final product = future.data![productIndex];
+                            final product =
+                                allProducts?[subCategory]?[productIndex];
 
                             return GestureDetector(
                               onTap: () {
@@ -176,7 +206,12 @@ class _BusinessChooseSubCategoriesPageState
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: selectedProducts.contains(product)
-                                      ? const Color.fromRGBO(133, 255, 137, 1)
+                                      ? const Color.fromRGBO(
+                                          133,
+                                          255,
+                                          137,
+                                          1,
+                                        )
                                       : Colors.white,
                                   borderRadius: BorderRadius.circular(12),
                                 ),
@@ -256,21 +291,14 @@ class _BusinessChooseSubCategoriesPageState
                               ),
                             );
                           },
-                        );
-                      }
-
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    },
-                  ),
-                  const Divider(),
-                ],
-              );
-            },
-          ),
-        ),
-      ),
+                        ),
+                        const Divider(),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await next();

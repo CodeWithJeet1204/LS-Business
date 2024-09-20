@@ -3,7 +3,7 @@ import 'package:Localsearch/auth/verify/number_verify.dart';
 import 'package:Localsearch/under_development_page.dart';
 import 'package:Localsearch/vendors/provider/main_page_provider.dart';
 import 'package:Localsearch/vendors/page/register/business_choose_categories_page.dart';
-import 'package:Localsearch/vendors/page/register/business_choose_sub_categories_page.dart';
+import 'package:Localsearch/vendors/page/register/business_choose_products_page.dart';
 import 'package:Localsearch/vendors/page/register/business_social_media_page.dart';
 import 'package:Localsearch/vendors/page/register/business_timings_page.dart';
 import 'package:Localsearch/vendors/page/register/get_location_page.dart';
@@ -130,7 +130,7 @@ class _MainPageState extends State<MainPage> {
             );
           } else if (getBusinessDetailsAddedData['Categories'] != null &&
               getBusinessDetailsAddedData['Products'] == null) {
-            detailsPage = BusinessChooseSubCategoriesPage(
+            detailsPage = BusinessChooseProductsPage(
               selectedTypes: getBusinessDetailsAddedData['Type'],
               selectedCategories: getBusinessDetailsAddedData['Categories'],
               isEditing: true,

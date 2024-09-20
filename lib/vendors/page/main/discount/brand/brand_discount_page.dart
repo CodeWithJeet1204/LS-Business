@@ -375,146 +375,158 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         // START DATE
-                        Container(
-                          height: 100,
-                          width: width * 0.475,
-                          decoration: BoxDecoration(
-                            color: primary3,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 12),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'Start Date',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        color: primaryDark2,
-                                        fontSize: width * 0.04,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    startDate != null
-                                        ? IconButton(
-                                            onPressed: () async {
-                                              await selectStartDate();
-                                            },
-                                            icon: Icon(
-                                              FeatherIcons.edit,
-                                              size: width * 0.075,
-                                            ),
-                                            tooltip: 'Change Date',
-                                          )
-                                        : Container(),
-                                  ],
-                                ),
-                              ),
-                              startDate == null
-                                  ? MyTextButton(
-                                      onPressed: () async {
-                                        await selectStartDate();
-                                      },
-                                      text: 'Select Date',
-                                    )
-                                  : Padding(
-                                      padding: EdgeInsets.only(
-                                        left: width * 0.04,
-                                        bottom: width * 0.025,
-                                      ),
-                                      child: Text(
-                                        startDate!,
+                        GestureDetector(
+                          onTap: () async {
+                            await selectStartDate();
+                          },
+                          child: Container(
+                            height: 100,
+                            width: width * 0.475,
+                            decoration: BoxDecoration(
+                              color: primary3,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Start Date',
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
-                                          color: primaryDark,
-                                          fontSize: width * 0.0575,
-                                          fontWeight: FontWeight.w600,
+                                          color: primaryDark2,
+                                          fontSize: width * 0.04,
+                                          fontWeight: FontWeight.w500,
                                         ),
                                       ),
-                                    ),
-                            ],
+                                      startDate != null
+                                          ? IconButton(
+                                              onPressed: () async {
+                                                await selectStartDate();
+                                              },
+                                              icon: Icon(
+                                                FeatherIcons.edit,
+                                                size: width * 0.075,
+                                              ),
+                                              tooltip: 'Change Date',
+                                            )
+                                          : Container(),
+                                    ],
+                                  ),
+                                ),
+                                startDate == null
+                                    ? MyTextButton(
+                                        onPressed: () async {
+                                          await selectStartDate();
+                                        },
+                                        text: 'Select Date',
+                                      )
+                                    : Padding(
+                                        padding: EdgeInsets.only(
+                                          left: width * 0.04,
+                                          bottom: width * 0.025,
+                                        ),
+                                        child: Text(
+                                          startDate!,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: primaryDark,
+                                            fontSize: width * 0.0575,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                              ],
+                            ),
                           ),
                         ),
 
                         // END DATE
-                        Container(
-                          height: 100,
-                          width: width * 0.475,
-                          decoration: BoxDecoration(
-                            color: primary3,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 12),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'End Date',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        color: primaryDark2,
-                                        fontSize: width * 0.04,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    endDate != null
-                                        ? IconButton(
-                                            onPressed: () async {
-                                              await selectEndDate();
-                                            },
-                                            icon: Icon(
-                                              FeatherIcons.edit,
-                                              size: width * 0.075,
-                                            ),
-                                            tooltip: 'Change Date',
-                                          )
-                                        : Container(),
-                                  ],
-                                ),
-                              ),
-                              endDate == null
-                                  ? MyTextButton(
-                                      onPressed: () async {
-                                        await selectEndDate();
-                                      },
-                                      text: 'Select Date',
-                                    )
-                                  : Padding(
-                                      padding: EdgeInsets.only(
-                                        left: width * 0.04,
-                                        bottom: width * 0.025,
-                                      ),
-                                      child: Text(
-                                        endDate!,
+                        GestureDetector(
+                          onTap: () async {
+                            await selectEndDate();
+                          },
+                          child: Container(
+                            height: 100,
+                            width: width * 0.475,
+                            decoration: BoxDecoration(
+                              color: primary3,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'End Date',
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
-                                          color: primaryDark,
-                                          fontSize: width * 0.0575,
-                                          fontWeight: FontWeight.w600,
+                                          color: primaryDark2,
+                                          fontSize: width * 0.04,
+                                          fontWeight: FontWeight.w500,
                                         ),
                                       ),
-                                    ),
-                            ],
+                                      endDate != null
+                                          ? IconButton(
+                                              onPressed: () async {
+                                                await selectEndDate();
+                                              },
+                                              icon: Icon(
+                                                FeatherIcons.edit,
+                                                size: width * 0.075,
+                                              ),
+                                              tooltip: 'Change Date',
+                                            )
+                                          : Container(),
+                                    ],
+                                  ),
+                                ),
+                                endDate == null
+                                    ? MyTextButton(
+                                        onPressed: () async {
+                                          await selectEndDate();
+                                        },
+                                        text: 'Select Date',
+                                      )
+                                    : Padding(
+                                        padding: EdgeInsets.only(
+                                          left: width * 0.04,
+                                          bottom: width * 0.025,
+                                        ),
+                                        child: Text(
+                                          endDate!,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: primaryDark,
+                                            fontSize: width * 0.0575,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                              ],
+                            ),
                           ),
                         ),
                       ],

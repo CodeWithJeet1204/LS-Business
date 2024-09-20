@@ -11,7 +11,7 @@ import 'package:feather_icons/feather_icons.dart';
 import 'package:Localsearch/vendors/page/main/profile/details/change_timings_page.dart';
 import 'package:Localsearch/vendors/page/register/business_choose_shop_types_page.dart';
 import 'package:Localsearch/vendors/page/register/business_choose_categories_page.dart';
-import 'package:Localsearch/vendors/page/register/business_choose_sub_categories_page.dart';
+import 'package:Localsearch/vendors/page/register/business_choose_products_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:Localsearch/widgets/button.dart';
 import 'package:Localsearch/widgets/image_pick_dialog.dart';
@@ -758,7 +758,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              BusinessChooseSubCategoriesPage(
+                                              BusinessChooseProductsPage(
                                             selectedTypes: shopData['Type'],
                                             isEditing: true,
                                             selectedCategories:

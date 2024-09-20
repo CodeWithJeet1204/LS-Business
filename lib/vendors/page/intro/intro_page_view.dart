@@ -3,7 +3,7 @@ import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:Localsearch/widgets/page_view.dart';
 import 'package:Localsearch/widgets/text_button.dart';
 import 'package:flutter/material.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+// import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class IntroPageView extends StatefulWidget {
   const IntroPageView({super.key});
@@ -113,10 +113,10 @@ class _IntroPageViewState extends State<IntroPageView> {
                   text: 'SKIP',
                   textColor: buttonColor,
                 ),
-                SmoothPageIndicator(
-                  controller: controller,
-                  count: 4,
-                ),
+                // SmoothPageIndicator(
+                //   controller: controller,
+                //   count: 4,
+                // ),
                 TextButton(
                   onPressed: onNext,
                   child: Text(

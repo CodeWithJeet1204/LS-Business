@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:Localsearch/vendors/page/register/business_choose_sub_categories_page.dart';
+import 'package:Localsearch/vendors/page/register/business_choose_products_page.dart';
 import 'package:Localsearch/widgets/select_container.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 
@@ -80,7 +80,7 @@ class _BusinessChooseCategoriesPageState
     if (mounted) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => BusinessChooseSubCategoriesPage(
+          builder: (context) => BusinessChooseProductsPage(
             selectedCategories: selectedCategories,
             selectedTypes: widget.selectedTypes,
             isEditing: widget.isEditing,

@@ -1768,7 +1768,8 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                                 setState(() {
                                                                   property5
                                                                       .removeAt(
-                                                                          index);
+                                                                    index,
+                                                                  );
                                                                 });
                                                               },
                                                               icon: const Icon(
@@ -1790,145 +1791,145 @@ class _AddProductPage4State extends State<AddProductPage4> {
                               : Container(),
 
                           // ADDITIONAL INFO
-                          Padding(
-                            padding: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).viewInsets.bottom,
-                            ),
-                            child: PropertyBox(
-                              headText: 'Additional Info ?',
-                              widget1: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  TextFormField(
-                                    controller: otherInfoController,
-                                    maxLines: 1,
-                                    minLines: 1,
-                                    keyboardType: TextInputType.text,
-                                    onTapOutside: (event) =>
-                                        FocusScope.of(context).unfocus(),
-                                    decoration: const InputDecoration(
-                                      hintText: 'Property Name',
-                                      border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: primaryDark2,
-                                          width: 2,
-                                        ),
-                                      ),
-                                    ),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        otherInfo = value;
-                                      });
-                                    },
-                                  ),
-                                  const SizedBox(height: 12),
-                                  otherInfo != null
-                                      ? Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Expanded(
-                                              child: TextFormField(
-                                                controller:
-                                                    otherInfoValueController,
-                                                onTapOutside: (event) =>
-                                                    FocusScope.of(context)
-                                                        .unfocus(),
-                                                maxLines: 1,
-                                                minLines: 1,
-                                                keyboardType:
-                                                    TextInputType.text,
-                                                decoration:
-                                                    const InputDecoration(
-                                                  hintText: 'Value',
-                                                  border: OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                      color: primaryDark2,
-                                                      width: 2,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            MyTextButton(
-                                              onPressed: () {
-                                                addOtherInfoValue();
-                                              },
-                                              text: 'Add Value',
-                                            ),
-                                          ],
-                                        )
-                                      : Container(),
-                                ],
-                              ),
-                              widget2: otherInfoList.isNotEmpty
-                                  ? SizedBox(
-                                      height: 50,
-                                      child: ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        shrinkWrap: true,
-                                        physics: ClampingScrollPhysics(),
-                                        itemCount: otherInfoList.length,
-                                        itemBuilder: ((context, index) {
-                                          return Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 4,
-                                              vertical: 2,
-                                            ),
-                                            child: Container(
-                                              alignment: Alignment.center,
-                                              decoration: BoxDecoration(
-                                                color: primaryDark2
-                                                    .withOpacity(0.75),
-                                                borderRadius:
-                                                    BorderRadius.circular(16),
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                      left: 12,
-                                                    ),
-                                                    child: Text(
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      otherInfoList[index],
-                                                      style: const TextStyle(
-                                                        color: white,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                      right: 2,
-                                                    ),
-                                                    child: IconButton(
-                                                      onPressed: () {
-                                                        removeOtherInfo(index);
-                                                      },
-                                                      icon: const Icon(
-                                                        Icons
-                                                            .highlight_remove_outlined,
-                                                        color: white,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        }),
-                                      ),
-                                    )
-                                  : Container(),
-                            ),
-                          ),
+                          // Padding(
+                          //   padding: EdgeInsets.only(
+                          //     bottom: MediaQuery.of(context).viewInsets.bottom,
+                          //   ),
+                          //   child: PropertyBox(
+                          //     headText: 'Additional Info ?',
+                          //     widget1: Column(
+                          //       mainAxisAlignment: MainAxisAlignment.start,
+                          //       children: [
+                          //         TextFormField(
+                          //           controller: otherInfoController,
+                          //           maxLines: 1,
+                          //           minLines: 1,
+                          //           keyboardType: TextInputType.text,
+                          //           onTapOutside: (event) =>
+                          //               FocusScope.of(context).unfocus(),
+                          //           decoration: const InputDecoration(
+                          //             hintText: 'Property Name',
+                          //             border: OutlineInputBorder(
+                          //               borderSide: BorderSide(
+                          //                 color: primaryDark2,
+                          //                 width: 2,
+                          //               ),
+                          //             ),
+                          //           ),
+                          //           onChanged: (value) {
+                          //             setState(() {
+                          //               otherInfo = value;
+                          //             });
+                          //           },
+                          //         ),
+                          //         const SizedBox(height: 12),
+                          //         otherInfo != null
+                          //             ? Row(
+                          //                 crossAxisAlignment:
+                          //                     CrossAxisAlignment.start,
+                          //                 children: [
+                          //                   Expanded(
+                          //                     child: TextFormField(
+                          //                       controller:
+                          //                           otherInfoValueController,
+                          //                       onTapOutside: (event) =>
+                          //                           FocusScope.of(context)
+                          //                               .unfocus(),
+                          //                       maxLines: 1,
+                          //                       minLines: 1,
+                          //                       keyboardType:
+                          //                           TextInputType.text,
+                          //                       decoration:
+                          //                           const InputDecoration(
+                          //                         hintText: 'Value',
+                          //                         border: OutlineInputBorder(
+                          //                           borderSide: BorderSide(
+                          //                             color: primaryDark2,
+                          //                             width: 2,
+                          //                           ),
+                          //                         ),
+                          //                       ),
+                          //                     ),
+                          //                   ),
+                          //                   MyTextButton(
+                          //                     onPressed: () {
+                          //                       addOtherInfoValue();
+                          //                     },
+                          //                     text: 'Add Value',
+                          //                   ),
+                          //                 ],
+                          //               )
+                          //             : Container(),
+                          //       ],
+                          //     ),
+                          //     widget2: otherInfoList.isNotEmpty
+                          //         ? SizedBox(
+                          //             height: 50,
+                          //             child: ListView.builder(
+                          //               scrollDirection: Axis.horizontal,
+                          //               shrinkWrap: true,
+                          //               physics: ClampingScrollPhysics(),
+                          //               itemCount: otherInfoList.length,
+                          //               itemBuilder: ((context, index) {
+                          //                 return Padding(
+                          //                   padding: const EdgeInsets.symmetric(
+                          //                     horizontal: 4,
+                          //                     vertical: 2,
+                          //                   ),
+                          //                   child: Container(
+                          //                     alignment: Alignment.center,
+                          //                     decoration: BoxDecoration(
+                          //                       color: primaryDark2
+                          //                           .withOpacity(0.75),
+                          //                       borderRadius:
+                          //                           BorderRadius.circular(16),
+                          //                     ),
+                          //                     child: Row(
+                          //                       mainAxisAlignment:
+                          //                           MainAxisAlignment.center,
+                          //                       children: [
+                          //                         Padding(
+                          //                           padding:
+                          //                               const EdgeInsets.only(
+                          //                             left: 12,
+                          //                           ),
+                          //                           child: Text(
+                          //                             overflow:
+                          //                                 TextOverflow.ellipsis,
+                          //                             otherInfoList[index],
+                          //                             style: const TextStyle(
+                          //                               color: white,
+                          //                               fontWeight:
+                          //                                   FontWeight.bold,
+                          //                             ),
+                          //                           ),
+                          //                         ),
+                          //                         Padding(
+                          //                           padding:
+                          //                               const EdgeInsets.only(
+                          //                             right: 2,
+                          //                           ),
+                          //                           child: IconButton(
+                          //                             onPressed: () {
+                          //                               removeOtherInfo(index);
+                          //                             },
+                          //                             icon: const Icon(
+                          //                               Icons
+                          //                                   .highlight_remove_outlined,
+                          //                               color: white,
+                          //                             ),
+                          //                           ),
+                          //                         ),
+                          //                       ],
+                          //                     ),
+                          //                   ),
+                          //                 );
+                          //               }),
+                          //             ),
+                          //           )
+                          //         : Container(),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
