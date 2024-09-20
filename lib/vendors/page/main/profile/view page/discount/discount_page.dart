@@ -45,7 +45,6 @@ class DISCOUNT extends State<DiscountPage> {
   bool isCategoryGridView = true;
   bool isImageChanging = false;
   bool isChangingName = false;
-  bool isFit = false;
   bool isAddingImage = false;
   bool isGridView = true;
 
@@ -717,13 +716,6 @@ class DISCOUNT extends State<DiscountPage> {
   //   );
   // }
 
-  // CHANGE FIT
-  void changeFit() {
-    setState(() {
-      isFit = !isFit;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final discountStream = store
@@ -817,31 +809,23 @@ class DISCOUNT extends State<DiscountPage> {
                                     ),
                                     child: isImageChanging
                                         ? const CircularProgressIndicator()
-                                        : GestureDetector(
-                                            onTap: changeFit,
+                                        : ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              10,
+                                            ),
                                             child: ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(
                                                 10,
                                               ),
-                                              child: InteractiveViewer(
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                    10,
-                                                  ),
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                        image: NetworkImage(
-                                                          discountData[
-                                                              'discountImageUrl'],
-                                                        ),
-                                                        fit: isFit
-                                                            ? null
-                                                            : BoxFit.cover,
-                                                      ),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                    image: NetworkImage(
+                                                      discountData[
+                                                          'discountImageUrl'],
                                                     ),
+                                                    fit: BoxFit.cover,
                                                   ),
                                                 ),
                                               ),

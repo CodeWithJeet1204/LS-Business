@@ -3,7 +3,7 @@ import 'package:Localsearch/vendors/page/main/main_page.dart';
 import 'package:Localsearch/widgets/text_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Localsearch/vendors/firebase/auth_methods.dart';
-import 'package:Localsearch/vendors/register/owner_register_details_page.dart';
+import 'package:Localsearch/vendors/page/register/owner_register_details_page.dart';
 import 'package:Localsearch/auth/verify/email_verify.dart';
 import 'package:Localsearch/auth/verify/number_verify.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';

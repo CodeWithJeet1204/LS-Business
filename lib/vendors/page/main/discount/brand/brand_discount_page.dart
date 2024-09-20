@@ -35,7 +35,6 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
   DateTime? startDateTime;
   DateTime? endDateTime;
   File? _image;
-  bool isFit = false;
   bool isUploading = false;
   String? imageUrl;
 
@@ -60,13 +59,6 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
         mySnackBar(context, 'Select an Image');
       }
     }
-  }
-
-  // CHANGE IMAGE FIT
-  void changeFit() {
-    setState(() {
-      isFit = !isFit;
-    });
   }
 
   // SELECT START DATE
@@ -272,7 +264,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                           ? () async {
                               await addDiscountImage();
                             }
-                          : changeFit,
+                          : null,
                       child: Container(
                         width: width,
                         height: width * 9 / 16,
@@ -308,12 +300,10 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                                   Center(
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(6),
-                                      child: InteractiveViewer(
-                                        child: Image.file(
-                                          _image!,
-                                          width: width,
-                                          fit: isFit ? null : BoxFit.cover,
-                                        ),
+                                      child: Image.file(
+                                        _image!,
+                                        width: width,
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
                                   ),

@@ -1,5 +1,5 @@
+import 'package:Localsearch/auth/register_method_page.dart';
 import 'package:Localsearch/vendors/page/main/main_page.dart';
-import 'package:Localsearch/auth/login_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
           MaterialPageRoute(
             builder: ((context) => widget.isLoggedIn
                 ? const MainPage()
-                : const LoginPage(
+                : const RegisterMethodPage(
                     // mode: 'vendor',
                     )),
           ),

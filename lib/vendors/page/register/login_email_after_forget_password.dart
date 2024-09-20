@@ -89,7 +89,7 @@ class _LoginEmailAfterForgetPasswordState
                   // ),
                   SizedBox(height: width * 0.65),
                   MyTextFormField(
-                    hintText: 'Email',
+                    hintText: 'Email*',
                     controller: emailController,
                     borderRadius: 16,
                     horizontalPadding: width * 0.066,
@@ -98,7 +98,7 @@ class _LoginEmailAfterForgetPasswordState
                   ),
                   const SizedBox(height: 8),
                   MyTextFormField(
-                    hintText: 'Password',
+                    hintText: 'Password*',
                     controller: passwordController,
                     borderRadius: 16,
                     horizontalPadding: width * 0.066,

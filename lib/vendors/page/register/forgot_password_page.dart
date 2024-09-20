@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:Localsearch/vendors/register/login_email_after_forget_password.dart';
+import 'package:Localsearch/vendors/page/register/login_email_after_forget_password.dart';
 import 'package:Localsearch/widgets/button.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:Localsearch/widgets/text_form_field.dart';
@@ -40,7 +40,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               children: [
                 SizedBox(height: width * 0.66),
                 MyTextFormField(
-                  hintText: 'Email',
+                  hintText: 'Email*',
                   controller: emailController,
                   borderRadius: 12,
                   horizontalPadding: 0,

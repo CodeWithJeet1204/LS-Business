@@ -1,4 +1,4 @@
-import 'package:Localsearch/vendors/register/membership_page.dart';
+import 'package:Localsearch/vendors/page/register/membership_page.dart';
 import 'package:Localsearch/widgets/text_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -74,7 +74,7 @@ class _MembershipDetailsPageState extends State<MembershipDetailsPage> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              text: 'CANCEL',
+              text: 'NO',
               textColor: darkColor!,
             ),
             MyTextButton(

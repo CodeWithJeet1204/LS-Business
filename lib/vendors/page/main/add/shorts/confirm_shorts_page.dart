@@ -157,6 +157,9 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
                 MyButton(
                   text: data != null ? data![1]! : 'Select Product',
                   onTap: () async {
+                    if (flickManager.flickVideoManager!.isPlaying) {
+                      flickManager.flickControlManager!.togglePlay();
+                    }
                     Navigator.of(context)
                         .push(
                       MaterialPageRoute(

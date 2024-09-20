@@ -37,7 +37,6 @@ class _BrandPageState extends State<BrandPage> {
   final searchController = TextEditingController();
   final brandNameKey = GlobalKey<FormState>();
   bool isImageChanging = false;
-  bool isFit = false;
   bool isChangingName = false;
   bool isGridView = true;
   bool isDiscount = false;
@@ -238,13 +237,6 @@ class _BrandPageState extends State<BrandPage> {
         );
       },
     );
-  }
-
-  // IMAGE FIT CHANGE
-  void changeFit() {
-    setState(() {
-      isFit = !isFit;
-    });
   }
 
   // REMOVE PRODUCT
@@ -516,43 +508,30 @@ class _BrandPageState extends State<BrandPage> {
                                   ),
                                   child: isImageChanging
                                       ? const CircularProgressIndicator()
-                                      : GestureDetector(
-                                          onTap: changeFit,
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(
-                                              10,
-                                            ),
-                                            child: InteractiveViewer(
-                                              child: CachedNetworkImage(
-                                                imageUrl: brandData['imageUrl'],
-                                                imageBuilder:
-                                                    (context, imageProvider) {
-                                                  return ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                      10,
-                                                    ),
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                          image: imageProvider,
-                                                          fit: isFit
-                                                              ? null
-                                                              : BoxFit.cover,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            ),
+                                      : ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                            10,
                                           ),
-                                          // child: Image.network(
-                                          //   brandData['imageUrl'],
-                                          //   fit: BoxFit.cover,
-                                          //   width: width,
-                                          //   height: width,
-                                          // ),
+                                          child: CachedNetworkImage(
+                                            imageUrl: brandData['imageUrl'],
+                                            imageBuilder:
+                                                (context, imageProvider) {
+                                              return ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  10,
+                                                ),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                      image: imageProvider,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
                                         ),
                                 ),
                                 // IMAGE CHANGING INDICATOR

@@ -1,3 +1,4 @@
+import 'package:Localsearch/auth/register_method_page.dart';
 import 'package:Localsearch/firebase_options.dart';
 import 'package:Localsearch/first_launch_detection.dart';
 import 'package:Localsearch/vendors/page/intro/intro_page_view.dart';
@@ -10,7 +11,6 @@ import 'package:Localsearch/vendors/page/main/profile/data/all_post_page.dart';
 import 'package:Localsearch/vendors/page/main/profile/data/all_product_page.dart';
 import 'package:Localsearch/vendors/page/main/profile/details/business_details_page.dart';
 import 'package:Localsearch/vendors/page/main/profile/details/owner_details_page.dart';
-import 'package:Localsearch/auth/login_page.dart';
 import 'package:Localsearch/vendors/page/main/profile/profile_page.dart';
 import 'package:Localsearch/auth/verify/email_verify.dart';
 import 'package:Localsearch/vendors/provider/add_product_provider.dart';
@@ -160,7 +160,7 @@ class MyApp extends StatelessWidget {
                         );
                       }
                     } else {
-                      return const LoginPage(
+                      return const RegisterMethodPage(
                           // mode: 'vendor',
                           );
                     }

@@ -6,11 +6,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:Localsearch/vendors/page/main/main_page.dart';
 import 'package:Localsearch/vendors/page/main/profile/details/business_details_page.dart';
-import 'package:Localsearch/vendors/register/business_timings_page.dart';
+import 'package:Localsearch/vendors/page/register/business_timings_page.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 
-class BusinessChooseCategoryPage3 extends StatefulWidget {
-  const BusinessChooseCategoryPage3({
+class BusinessChooseSubCategoriesPage extends StatefulWidget {
+  const BusinessChooseSubCategoriesPage({
     super.key,
     required this.selectedCategories,
     required this.selectedTypes,
@@ -24,12 +24,12 @@ class BusinessChooseCategoryPage3 extends StatefulWidget {
   final List? selectedProducts;
 
   @override
-  State<BusinessChooseCategoryPage3> createState() =>
-      _BusinessChooseCategoryPage3State();
+  State<BusinessChooseSubCategoriesPage> createState() =>
+      _BusinessChooseSubCategoriesPageState();
 }
 
-class _BusinessChooseCategoryPage3State
-    extends State<BusinessChooseCategoryPage3> {
+class _BusinessChooseSubCategoriesPageState
+    extends State<BusinessChooseSubCategoriesPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   bool isNext = false;

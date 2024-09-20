@@ -7,7 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
-import 'package:Localsearch/vendors/register/business_verification_page.dart';
+import 'package:Localsearch/vendors/page/register/business_verification_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:Localsearch/widgets/button.dart';
 import 'package:Localsearch/widgets/image_pick_dialog.dart';
@@ -198,9 +198,8 @@ class _BusinessRegisterDetailsPageState
             .doc(auth.currentUser!.uid)
             .update({
           'Name': nameController.text,
-          'Image': image != null
-              ? businessPhotoUrl
-              : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1fDf705o-VZ3lVxTLh0jLPyFApbnwGoNHhSpwODOC0g&s',
+          'Image': businessPhotoUrl ??
+              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1fDf705o-VZ3lVxTLh0jLPyFApbnwGoNHhSpwODOC0g&s',
           'Latitude': latitude,
           'Longitude': longitude,
           'City': cityDetectLocation ?? cityPickLocation,
@@ -310,7 +309,7 @@ class _BusinessRegisterDetailsPageState
                     children: [
                       // SHOP NAME
                       MyTextFormField(
-                        hintText: 'Shop Name',
+                        hintText: 'Shop Name*',
                         controller: nameController,
                         borderRadius: 12,
                         horizontalPadding: 0,

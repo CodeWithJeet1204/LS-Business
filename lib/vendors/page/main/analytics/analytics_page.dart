@@ -1,7 +1,7 @@
 import 'package:Localsearch/vendors/page/main/analytics/products_analytics_page.dart';
 import 'package:Localsearch/vendors/page/main/analytics/shop_analytics_page.dart';
 import 'package:Localsearch/vendors/provider/main_page_provider.dart';
-import 'package:Localsearch/vendors/register/membership_page.dart';
+import 'package:Localsearch/vendors/page/register/membership_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:Localsearch/widgets/text_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

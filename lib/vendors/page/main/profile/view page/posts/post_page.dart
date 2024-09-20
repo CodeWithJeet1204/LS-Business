@@ -269,7 +269,7 @@ class _PostPageState extends State<PostPage> {
                                                       decoration: BoxDecoration(
                                                         image: DecorationImage(
                                                           image: imageProvider,
-                                                          fit: BoxFit.contain,
+                                                          fit: BoxFit.cover,
                                                         ),
                                                       ),
                                                     ),

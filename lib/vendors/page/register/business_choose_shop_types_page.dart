@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:Localsearch/vendors/register/business_choose_category_page_2.dart';
+import 'package:Localsearch/vendors/page/register/business_choose_categories_page.dart';
 import 'package:Localsearch/widgets/select_container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 
-class BusinessChooseCategoryPage1 extends StatefulWidget {
-  const BusinessChooseCategoryPage1({
+class BusinessChooseShopTypesPage extends StatefulWidget {
+  const BusinessChooseShopTypesPage({
     super.key,
     this.selectedShopTypes,
     required this.isEditing,
@@ -16,12 +16,12 @@ class BusinessChooseCategoryPage1 extends StatefulWidget {
   final List? selectedShopTypes;
 
   @override
-  State<BusinessChooseCategoryPage1> createState() =>
-      _BusinessChooseCategoryPage1State();
+  State<BusinessChooseShopTypesPage> createState() =>
+      _BusinessChooseShopTypesPageState();
 }
 
-class _BusinessChooseCategoryPage1State
-    extends State<BusinessChooseCategoryPage1> {
+class _BusinessChooseShopTypesPageState
+    extends State<BusinessChooseShopTypesPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   Map<String, dynamic>? shopTypes;
@@ -82,7 +82,7 @@ class _BusinessChooseCategoryPage1State
     if (mounted) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: ((context) => BusinessChooseCategoryPage2(
+          builder: ((context) => BusinessChooseCategoriesPage(
                 selectedTypes: selected,
                 isEditing: widget.isEditing,
               )),

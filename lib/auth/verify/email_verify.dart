@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Localsearch/vendors/firebase/auth_methods.dart';
 import 'package:Localsearch/vendors/page/main/main_page.dart';
-import 'package:Localsearch/vendors/register/owner_register_details_page.dart';
+import 'package:Localsearch/vendors/page/register/owner_register_details_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:Localsearch/widgets/button.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';

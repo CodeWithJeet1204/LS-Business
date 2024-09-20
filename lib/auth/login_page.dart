@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Localsearch/auth/register_method_page.dart';
 import 'package:Localsearch/vendors/firebase/auth_methods.dart';
 import 'package:Localsearch/vendors/page/main/main_page.dart';
-import 'package:Localsearch/vendors/register/forgot_password_page.dart';
+import 'package:Localsearch/vendors/page/register/forgot_password_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:Localsearch/widgets/button.dart';
 import 'package:Localsearch/widgets/collapse_container.dart';

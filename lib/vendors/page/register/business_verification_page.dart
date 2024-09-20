@@ -1,10 +1,9 @@
-import 'package:Localsearch/vendors/register/business_social_media_page.dart';
+import 'package:Localsearch/vendors/page/register/business_social_media_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:Localsearch/widgets/button.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
-import 'package:Localsearch/widgets/text_button.dart';
 
 class BusinessVerificationPage extends StatefulWidget {
   const BusinessVerificationPage({
@@ -119,9 +118,7 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
               MaterialPageRoute(
                 builder: ((context) => const BusinessSocialMediaPage(
                       isChanging: false,
-                      instagram: '',
-                      facebook: '',
-                      website: '',
+                      fromMainPage: false,
                     )),
               ),
             );
@@ -185,7 +182,7 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
                                     color: Colors.cyan.shade700,
                                   ),
                                 ),
-                                hintText: 'Aadhaar Number',
+                                hintText: 'Aadhaar Number*',
                               ),
                               validator: (value) {
                                 if (value != null) {
@@ -202,8 +199,8 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
                             ),
 
                       // VALIDATE
-                      MyTextButton(
-                        onPressed: isAadhaarValidated
+                      MyButton(
+                        onTap: isAadhaarValidated
                             ? () {}
                             : () {
                                 validateAadhaarNumber(aadhaarController.text);
@@ -213,6 +210,8 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
                                 ? 'NOT VALID TRY AGAIN'
                                 : 'VALIDATE AADHAAR'
                             : 'AADHAAR VALIDATED',
+                        isLoading: false,
+                        horizontalPadding: 0,
                       ),
 
                       Divider(),

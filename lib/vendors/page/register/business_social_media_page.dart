@@ -1,4 +1,5 @@
-import 'package:Localsearch/vendors/register/business_choose_category_page_1.dart';
+import 'package:Localsearch/vendors/page/main/main_page.dart';
+import 'package:Localsearch/vendors/page/register/business_choose_shop_types_page.dart';
 import 'package:Localsearch/widgets/button.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:Localsearch/widgets/text_form_field.dart';
@@ -10,15 +11,17 @@ class BusinessSocialMediaPage extends StatefulWidget {
   const BusinessSocialMediaPage({
     super.key,
     required this.isChanging,
-    required this.instagram,
-    required this.facebook,
-    required this.website,
+    this.instagram,
+    this.facebook,
+    this.website,
+    required this.fromMainPage,
   });
 
   final bool isChanging;
-  final String instagram;
-  final String facebook;
-  final String website;
+  final bool fromMainPage;
+  final String? instagram;
+  final String? facebook;
+  final String? website;
 
   @override
   State<BusinessSocialMediaPage> createState() =>
@@ -37,9 +40,15 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
   @override
   void initState() {
     setState(() {
-      instaController.text = widget.instagram;
-      facebookController.text = widget.facebook;
-      websiteController.text = widget.website;
+      if (widget.instagram != null) {
+        instaController.text = widget.instagram!;
+      }
+      if (widget.facebook != null) {
+        facebookController.text = widget.facebook!;
+      }
+      if (widget.website != null) {
+        websiteController.text = widget.website!;
+      }
     });
     super.initState();
   }
@@ -77,10 +86,17 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
       if (mounted) {
         Navigator.of(context).pop();
 
-        if (!widget.isChanging) {
+        if (widget.fromMainPage) {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => MainPage(),
+            ),
+            (route) => false,
+          );
+        } else if (!widget.isChanging) {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: ((context) => const BusinessChooseCategoryPage1(
+              builder: ((context) => const BusinessChooseShopTypesPage(
                     isEditing: false,
                   )),
             ),
@@ -116,7 +132,7 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
                   children: [
                     // INSTAGRAM
                     MyTextFormField(
-                      hintText: 'Instagram',
+                      hintText: 'Instagram (Link)',
                       controller: instaController,
                       borderRadius: 12,
                       horizontalPadding: 0,
@@ -126,7 +142,7 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
 
                     // FACEBOOK
                     MyTextFormField(
-                      hintText: 'Facebook',
+                      hintText: 'Facebook (Link)',
                       controller: facebookController,
                       borderRadius: 12,
                       horizontalPadding: 0,
@@ -136,7 +152,7 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
 
                     // WEBSITE
                     MyTextFormField(
-                      hintText: 'Personal Website',
+                      hintText: 'Personal Website (Link)',
                       controller: websiteController,
                       borderRadius: 12,
                       horizontalPadding: 0,
@@ -164,7 +180,7 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: ((context) =>
-                                      const BusinessChooseCategoryPage1(
+                                      const BusinessChooseShopTypesPage(
                                         isEditing: false,
                                       )),
                                 ),

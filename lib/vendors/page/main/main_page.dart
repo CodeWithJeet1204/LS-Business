@@ -2,10 +2,11 @@ import 'package:Localsearch/auth/login_page.dart';
 import 'package:Localsearch/auth/verify/number_verify.dart';
 import 'package:Localsearch/under_development_page.dart';
 import 'package:Localsearch/vendors/provider/main_page_provider.dart';
-import 'package:Localsearch/vendors/register/business_choose_category_page_2.dart';
-import 'package:Localsearch/vendors/register/business_choose_category_page_3.dart';
-import 'package:Localsearch/vendors/register/business_timings_page.dart';
-import 'package:Localsearch/vendors/register/get_location_page.dart';
+import 'package:Localsearch/vendors/page/register/business_choose_categories_page.dart';
+import 'package:Localsearch/vendors/page/register/business_choose_sub_categories_page.dart';
+import 'package:Localsearch/vendors/page/register/business_social_media_page.dart';
+import 'package:Localsearch/vendors/page/register/business_timings_page.dart';
+import 'package:Localsearch/vendors/page/register/get_location_page.dart';
 import 'package:Localsearch/widgets/text_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
@@ -13,10 +14,10 @@ import 'package:Localsearch/vendors/page/main/add/add_page.dart';
 import 'package:Localsearch/vendors/page/main/analytics/analytics_page.dart';
 import 'package:Localsearch/vendors/page/main/discount/add_discount_page.dart';
 import 'package:Localsearch/vendors/page/main/profile/profile_page.dart';
-import 'package:Localsearch/vendors/register/business_choose_category_page_1.dart';
-import 'package:Localsearch/vendors/register/business_register_details_page.dart';
-import 'package:Localsearch/vendors/register/membership_page.dart';
-import 'package:Localsearch/vendors/register/owner_register_details_page.dart';
+import 'package:Localsearch/vendors/page/register/business_choose_shop_types_page.dart';
+import 'package:Localsearch/vendors/page/register/business_register_details_page.dart';
+import 'package:Localsearch/vendors/page/register/membership_page.dart';
+import 'package:Localsearch/vendors/page/register/owner_register_details_page.dart';
 import 'package:Localsearch/auth/verify/email_verify.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
@@ -106,20 +107,30 @@ class _MainPageState extends State<MainPage> {
             detailsPage = const BusinessRegisterDetailsPage(
               fromMainPage: true,
             );
-          } else if (getBusinessDetailsAddedData['AadhaarNumber'] != null &&
+          } else if (getBusinessDetailsAddedData['Instagram'] == null ||
+              getBusinessDetailsAddedData['Facebook'] == null ||
+              getBusinessDetailsAddedData['Website'] == null) {
+            detailsPage = BusinessSocialMediaPage(
+              isChanging: true,
+              instagram: getBusinessDetailsAddedData['Instagram'],
+              facebook: getBusinessDetailsAddedData['Facebook'],
+              website: getBusinessDetailsAddedData['Website'],
+              fromMainPage: true,
+            );
+          } else if (getBusinessDetailsAddedData['Instagram'] != null &&
               getBusinessDetailsAddedData['Type'] == null) {
-            detailsPage = const BusinessChooseCategoryPage1(
+            detailsPage = const BusinessChooseShopTypesPage(
               isEditing: true,
             );
           } else if (getBusinessDetailsAddedData['Type'] != null &&
               getBusinessDetailsAddedData['Categories'] == null) {
-            detailsPage = BusinessChooseCategoryPage2(
+            detailsPage = BusinessChooseCategoriesPage(
               selectedTypes: getBusinessDetailsAddedData['Type'],
               isEditing: true,
             );
           } else if (getBusinessDetailsAddedData['Categories'] != null &&
               getBusinessDetailsAddedData['Products'] == null) {
-            detailsPage = BusinessChooseCategoryPage3(
+            detailsPage = BusinessChooseSubCategoriesPage(
               selectedTypes: getBusinessDetailsAddedData['Type'],
               selectedCategories: getBusinessDetailsAddedData['Categories'],
               isEditing: true,

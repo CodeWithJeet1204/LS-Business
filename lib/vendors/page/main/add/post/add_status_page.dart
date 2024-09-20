@@ -27,7 +27,6 @@ class _AddStatusPageState extends State<AddStatusPage> {
   final postController = TextEditingController();
   List<File> _image = [];
   int currentImageIndex = 0;
-  bool isFit = false;
   bool isPosting = false;
   // int imagePostRemaining = 0;
 
@@ -158,13 +157,6 @@ class _AddStatusPageState extends State<AddStatusPage> {
     }
   }
 
-  // CHANGE FIT
-  void changeFit() {
-    setState(() {
-      isFit = !isFit;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -242,22 +234,18 @@ class _AddStatusPageState extends State<AddStatusPage> {
                                 child: Stack(
                                   alignment: Alignment.topRight,
                                   children: [
-                                    GestureDetector(
-                                      onTap: changeFit,
-                                      child: Container(
-                                        height: width,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          border: Border.all(
-                                            color: primaryDark,
-                                            width: 3,
-                                          ),
-                                          image: DecorationImage(
-                                            fit: isFit ? null : BoxFit.cover,
-                                            image: FileImage(
-                                              _image[currentImageIndex],
-                                            ),
+                                    Container(
+                                      height: width,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(
+                                          color: primaryDark,
+                                          width: 3,
+                                        ),
+                                        image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: FileImage(
+                                            _image[currentImageIndex],
                                           ),
                                         ),
                                       ),

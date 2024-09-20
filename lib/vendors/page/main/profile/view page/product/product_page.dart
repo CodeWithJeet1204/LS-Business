@@ -1148,7 +1148,7 @@ class _ProductPageState extends State<ProductPage> {
                                                               DecorationImage(
                                                             image:
                                                                 NetworkImage(e),
-                                                            fit: BoxFit.contain,
+                                                            fit: BoxFit.cover,
                                                           ),
                                                         ),
                                                       ),

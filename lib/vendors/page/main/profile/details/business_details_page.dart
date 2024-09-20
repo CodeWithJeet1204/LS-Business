@@ -2,16 +2,16 @@ import 'dart:io';
 import 'package:Localsearch/auth/login_page.dart';
 import 'package:Localsearch/vendors/page/main/profile/details/location_page.dart';
 import 'package:Localsearch/vendors/page/main/profile/details/membership_details_page.dart';
-import 'package:Localsearch/vendors/register/business_social_media_page.dart';
+import 'package:Localsearch/vendors/page/register/business_social_media_page.dart';
 import 'package:Localsearch/widgets/text_button.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:Localsearch/vendors/page/main/profile/details/change_timings_page.dart';
-import 'package:Localsearch/vendors/register/business_choose_category_page_1.dart';
-import 'package:Localsearch/vendors/register/business_choose_category_page_2.dart';
-import 'package:Localsearch/vendors/register/business_choose_category_page_3.dart';
+import 'package:Localsearch/vendors/page/register/business_choose_shop_types_page.dart';
+import 'package:Localsearch/vendors/page/register/business_choose_categories_page.dart';
+import 'package:Localsearch/vendors/page/register/business_choose_sub_categories_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:Localsearch/widgets/button.dart';
 import 'package:Localsearch/widgets/image_pick_dialog.dart';
@@ -648,7 +648,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              BusinessChooseCategoryPage1(
+                                              BusinessChooseShopTypesPage(
                                             isEditing: true,
                                             selectedShopTypes: shopData['Type'],
                                           ),
@@ -702,7 +702,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              BusinessChooseCategoryPage2(
+                                              BusinessChooseCategoriesPage(
                                             selectedTypes: shopData['Type'],
                                             isEditing: true,
                                             selectedCategories:
@@ -758,7 +758,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              BusinessChooseCategoryPage3(
+                                              BusinessChooseSubCategoriesPage(
                                             selectedTypes: shopData['Type'],
                                             isEditing: true,
                                             selectedCategories:
@@ -1043,6 +1043,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                       instagram: shopData['Instagram'],
                                       facebook: shopData['Facebook'],
                                       website: shopData['Website'],
+                                      fromMainPage: false,
                                     ),
                                   ),
                                 );

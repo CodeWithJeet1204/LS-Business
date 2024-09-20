@@ -34,7 +34,6 @@ class _LocationPageState extends State<LocationPage> {
   String? cityDetectLocation;
   String? cityPickLocation;
   bool isDetectingCity = false;
-  bool isPickingCity = false;
   String? address;
 
   // INIT STATE
@@ -165,11 +164,11 @@ class _LocationPageState extends State<LocationPage> {
       setState(() {
         address = e.toString();
       });
+      setState(() {
+        address = 'Couldn\'t get Address';
+      });
       mySnackBar(context, e.toString());
     }
-    setState(() {
-      address = 'Couldn\'t get Address';
-    });
   }
 
   @override
@@ -253,8 +252,9 @@ class _LocationPageState extends State<LocationPage> {
                                   : cityPickLocation != null
                                       ? Icon(FeatherIcons.mapPin)
                                       : AutoSizeText(
-                                          displayDetectCity ??
-                                              'Detect Location',
+                                          displayDetectCity != null
+                                              ? 'Detected'
+                                              : 'Detect Location',
                                           maxLines: cityDetectLocation != null
                                               ? 1
                                               : 2,
@@ -273,9 +273,6 @@ class _LocationPageState extends State<LocationPage> {
                           flex: cityPickLocation != null ? 3 : 1,
                           child: GestureDetector(
                             onTap: () async {
-                              setState(() {
-                                isPickingCity = true;
-                              });
                               Navigator.of(context)
                                   .push(
                                 MaterialPageRoute(
@@ -294,12 +291,11 @@ class _LocationPageState extends State<LocationPage> {
                                   });
 
                                   await getAddress(false, isDetect: false);
+                                  setState(() {
+                                    cityDetectLocation = null;
+                                  });
                                 },
                               );
-                              setState(() {
-                                cityDetectLocation = null;
-                                isPickingCity = false;
-                              });
                             },
                             child: Container(
                               alignment: Alignment.center,
@@ -308,21 +304,20 @@ class _LocationPageState extends State<LocationPage> {
                                 borderRadius: BorderRadius.circular(24),
                               ),
                               padding: EdgeInsets.all(width * 0.025),
-                              child: isPickingCity
-                                  ? CircularProgressIndicator()
-                                  : cityDetectLocation != null
-                                      ? Icon(FeatherIcons.map)
-                                      : AutoSizeText(
-                                          cityPickLocation ??
-                                              'Pick Location 🗺️',
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: width * 0.045,
-                                            color: primaryDark2,
-                                          ),
-                                        ),
+                              child: cityDetectLocation != null
+                                  ? Icon(FeatherIcons.map)
+                                  : AutoSizeText(
+                                      cityPickLocation != null
+                                          ? 'Picked'
+                                          : 'Pick Location 🗺️',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: width * 0.045,
+                                        color: primaryDark2,
+                                      ),
+                                    ),
                             ),
                           ),
                         ),

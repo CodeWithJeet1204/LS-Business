@@ -1,6 +1,6 @@
 import 'package:Localsearch/vendors/page/main/add/post/add_status_page.dart';
 import 'package:Localsearch/vendors/provider/main_page_provider.dart';
-import 'package:Localsearch/vendors/register/membership_page.dart';
+import 'package:Localsearch/vendors/page/register/membership_page.dart';
 import 'package:Localsearch/widgets/text_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';

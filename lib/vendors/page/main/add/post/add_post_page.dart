@@ -19,7 +19,6 @@
 // class _AddPostPageState extends State<AddPostPage> {
 //   final auth = FirebaseAuth.instance;
 //   final store = FirebaseFirestore.instance;
-//   bool isFit = false;
 //   int currentImageIndex = 0;
 //   bool isPosting = false;
 //   int textPostRemaining = 0;

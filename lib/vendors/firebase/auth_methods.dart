@@ -1,4 +1,4 @@
-import 'package:Localsearch/vendors/register/owner_register_details_page.dart';
+import 'package:Localsearch/vendors/page/register/owner_register_details_page.dart';
 import 'package:Localsearch/auth/verify/number_verify.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';

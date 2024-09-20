@@ -40,7 +40,6 @@ class _AddProductPage1State extends State<AddProductPage1> {
   int currentImageIndex = 0;
   final picker = ImagePicker();
   List<String> otherInfoList = [];
-  bool isFit = false;
   int isAvailable = 0;
   bool? isPost;
   int? remainingProducts;
@@ -265,13 +264,6 @@ class _AddProductPage1State extends State<AddProductPage1> {
     }
   }
 
-  // CHANGE FIT
-  void changeFit() {
-    setState(() {
-      isFit = !isFit;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -330,23 +322,19 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                     child: Stack(
                                       alignment: Alignment.topRight,
                                       children: [
-                                        GestureDetector(
-                                          onTap: changeFit,
-                                          child: Container(
-                                            height: width,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                              border: Border.all(
-                                                color: primaryDark,
-                                                width: 3,
-                                              ),
-                                              image: DecorationImage(
-                                                fit:
-                                                    isFit ? null : BoxFit.cover,
-                                                image: FileImage(
-                                                  _image[currentImageIndex],
-                                                ),
+                                        Container(
+                                          height: width,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            border: Border.all(
+                                              color: primaryDark,
+                                              width: 3,
+                                            ),
+                                            image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: FileImage(
+                                                _image[currentImageIndex],
                                               ),
                                             ),
                                           ),
@@ -494,14 +482,16 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                             fontWeight: FontWeight.w500,
                                           ),
                                         ),
-                                        Text(
-                                          'Max. $maxImages images',
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: width * 0.04,
-                                          ),
-                                        ),
+                                        maxImages == null
+                                            ? Container()
+                                            : Text(
+                                                'Max. $maxImages images',
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontSize: width * 0.04,
+                                                ),
+                                              ),
                                       ],
                                     ),
                                   ),

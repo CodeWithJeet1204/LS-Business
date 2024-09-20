@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:Localsearch/vendors/register/business_register_details_page.dart';
+import 'package:Localsearch/vendors/page/register/business_register_details_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:Localsearch/widgets/button.dart';
 import 'package:Localsearch/widgets/image_pick_dialog.dart';
@@ -87,13 +87,15 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
           isNext = true;
         });
 
-        Reference ref =
-            storage.ref().child('Vendor/Owners').child(auth.currentUser!.uid);
-        await ref.putFile(File(_image!.path)).whenComplete(() async {
-          await ref.getDownloadURL().then((value) {
-            userPhotoUrl = value;
+        if (_image != null) {
+          Reference ref =
+              storage.ref().child('Vendor/Owners').child(auth.currentUser!.uid);
+          await ref.putFile(File(_image!.path)).whenComplete(() async {
+            await ref.getDownloadURL().then((value) {
+              userPhotoUrl = value;
+            });
           });
-        });
+        }
 
         if (userData!['Name'] != null && userData!['Email'] != null) {
           await store
@@ -225,7 +227,7 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
                         children: [
                           // NAME
                           MyTextFormField(
-                            hintText: 'Your Name',
+                            hintText: 'Your Name*',
                             controller: nameController,
                             borderRadius: 12,
                             horizontalPadding: width * 0.055,
@@ -238,7 +240,7 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
                                   userData!['registration'] == 'google'
                               ? Container()
                               : MyTextFormField(
-                                  hintText: 'Email',
+                                  hintText: 'Email*',
                                   controller: emailController,
                                   borderRadius: 12,
                                   horizontalPadding: width * 0.055,
@@ -251,7 +253,7 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
                           userData!['registration'] == 'phone number'
                               ? Container()
                               : MyTextFormField(
-                                  hintText: 'Your Phone Number',
+                                  hintText: 'Your Phone Number*',
                                   controller: phoneController,
                                   borderRadius: 12,
                                   horizontalPadding: width * 0.055,

@@ -31,7 +31,6 @@
 //   final categoryController = TextEditingController();
 //   bool isSaving = false;
 //   File? _image;
-//   bool isFit = false;
 //   String? imageUrl;
 
 //   @override

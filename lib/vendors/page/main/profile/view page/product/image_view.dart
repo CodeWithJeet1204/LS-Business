@@ -1,6 +1,6 @@
-// import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
-// import 'package:carousel_slider/carousel_slider.dart' as cs;
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
@@ -22,7 +22,7 @@ class ImageView extends StatefulWidget {
 }
 
 class _ImageViewState extends State<ImageView> {
-  // final controller = cs.CarouselSliderController();
+  final carouselController = CarouselSliderController();
   late FlickManager flickManager;
   int currentIndex = 0;
 
@@ -33,6 +33,7 @@ class _ImageViewState extends State<ImageView> {
 
     if (widget.shortsURL != null) {
       flickManager = FlickManager(
+        autoPlay: false,
         videoPlayerController: VideoPlayerController.networkUrl(
           Uri.parse(
             widget.shortsURL!,
@@ -57,8 +58,9 @@ class _ImageViewState extends State<ImageView> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(),
       body: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          double width = constraints.maxWidth;
+        builder: (context, constraints) {
+          final width = constraints.maxWidth;
+          final height = constraints.maxHeight;
 
           if (widget.shortsURL == '' || widget.shortsURL == null) {
             if (widget.imagesUrl.contains(widget.shortsURL)) {
@@ -69,107 +71,109 @@ class _ImageViewState extends State<ImageView> {
             }
           }
 
-          return Column(
-            children: [
-              // cs.CarouselSlider(
-              //   carouselController: controller,
-              //   items: widget.imagesUrl
-              //       .map((e) => e == widget.shortsURL
-              //           ? AspectRatio(
-              //               aspectRatio: 9 / 16,
-              //               child: FlickVideoPlayer(
-              //                 flickManager: flickManager,
-              //               ),
-              //             )
-              //           : SizedBox(
-              //               height: width * 8,
-              //               child: ClipRRect(
-              //                 borderRadius: BorderRadius.circular(8),
-              //                 child: InteractiveViewer(
-              //                   child: CachedNetworkImage(
-              //                     imageUrl: e,
-              //                     imageBuilder: (context, imageProvider) {
-              //                       return Center(
-              //                         child: ClipRRect(
-              //                           borderRadius: BorderRadius.circular(
-              //                             8,
-              //                           ),
-              //                           child: Container(
-              //                             decoration: BoxDecoration(
-              //                               image: DecorationImage(
-              //                                 image: imageProvider,
-              //                                 fit: BoxFit.contain,
-              //                               ),
-              //                             ),
-              //                           ),
-              //                         ),
-              //                       );
-              //                     },
-              //                   ),
-              //                 ),
-              //               ),
-              //             ))
-              //       .toList(),
-              //   options: cs.CarouselOptions(
-              //     enableInfiniteScroll: false,
-              //     aspectRatio: 0.6125,
-              //     enlargeCenterPage: true,
-              //     onPageChanged: (index, reason) {
-              //       setState(() {
-              //         controller.animateToPage(index);
-              //       });
-              //     },
-              //   ),
-              // ),
-              const SizedBox(height: 12),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: width * 0.0125,
-                ),
-                child: SizedBox(
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(
                   width: width,
-                  height: width * 0.2,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    physics: ClampingScrollPhysics(),
-                    itemCount: widget.imagesUrl.length,
-                    itemBuilder: ((context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              // controller.animateToPage(index);
-                            });
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 1,
-                                color: primaryDark,
+                  height: height * 0.85,
+                  child: CarouselSlider(
+                    carouselController: carouselController,
+                    items: widget.imagesUrl
+                        .map((e) => e == widget.shortsURL
+                            ? FlickVideoPlayer(
+                                flickManager: flickManager,
+                              )
+                            : SizedBox(
+                                height: height * 0.85,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: InteractiveViewer(
+                                    child: CachedNetworkImage(
+                                      imageUrl: e,
+                                      imageBuilder: (context, imageProvider) {
+                                        return Center(
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              8,
+                                            ),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: imageProvider,
+                                                  fit: BoxFit.contain,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ))
+                        .toList(),
+                    options: CarouselOptions(
+                      enableInfiniteScroll: false,
+                      aspectRatio: 0.6125,
+                      enlargeCenterPage: true,
+                      onPageChanged: (index, reason) {
+                        setState(() {
+                          carouselController.animateToPage(index);
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: width * 0.0125,
+                  ),
+                  child: SizedBox(
+                    width: width,
+                    height: height * 0.1,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
+                      itemCount: widget.imagesUrl.length,
+                      itemBuilder: ((context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                carouselController.jumpToPage(index);
+                              });
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 1,
+                                  color: primaryDark,
+                                ),
+                                borderRadius: BorderRadius.circular(4),
                               ),
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(4),
-                              child: Image.network(
-                                widget.imagesUrl[index] == widget.shortsURL
-                                    ? widget.shortsThumbnail
-                                    : widget.imagesUrl[index],
-                                height: width * 0.175,
-                                width: width * 0.175,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(4),
+                                child: Image.network(
+                                  widget.imagesUrl[index] == widget.shortsURL
+                                      ? widget.shortsThumbnail
+                                      : widget.imagesUrl[index],
+                                  height: width * 0.175,
+                                  width: width * 0.175,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      );
-                    }),
+                        );
+                      }),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 12),
-            ],
+              ],
+            ),
           );
         },
       ),

@@ -28,7 +28,6 @@ class _CategoryPageState extends State<CategoryPage> {
   final searchController = TextEditingController();
   final categoryNameKey = GlobalKey<FormState>();
   bool isImageChanging = false;
-  bool isFit = false;
   bool isChangingName = false;
   bool isGridView = true;
   String? categoryImageUrl;
@@ -109,13 +108,6 @@ class _CategoryPageState extends State<CategoryPage> {
           searchedProducts[id] = value;
         }
       });
-    });
-  }
-
-  // IMAGE FIT CHANGE
-  void changeFit() {
-    setState(() {
-      isFit = !isFit;
     });
   }
 
@@ -246,27 +238,20 @@ class _CategoryPageState extends State<CategoryPage> {
                       ),
                       child: isImageChanging
                           ? const CircularProgressIndicator()
-                          : GestureDetector(
-                              onTap: changeFit,
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(
+                                11,
+                              ),
                               child: ClipRRect(
-                                borderRadius: BorderRadius.circular(
-                                  11,
-                                ),
-                                child: InteractiveViewer(
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(
-                                      11,
-                                    ),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                            categoryImageUrl ??
-                                                'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
-                                          ),
-                                          fit: isFit ? null : BoxFit.cover,
-                                        ),
+                                borderRadius: BorderRadius.circular(11),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                        categoryImageUrl ??
+                                            'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
                                       ),
+                                      fit: BoxFit.cover,
                                     ),
                                   ),
                                 ),

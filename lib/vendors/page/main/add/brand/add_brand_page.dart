@@ -29,7 +29,6 @@ class _AddBrandPageState extends State<AddBrandPage> {
   final brandKey = GlobalKey<FormState>();
   final brandNameController = TextEditingController();
   bool isSaving = false;
-  bool isFit = false;
   File? _image;
   String? imageUrl;
 
@@ -205,7 +204,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
                               children: [
                                 // NOT NULL
                                 Container(
-                                  height: width * 0.8725,
+                                  height: width,
                                   width: width,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
