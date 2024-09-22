@@ -209,9 +209,7 @@ class MyApp extends StatelessWidget {
           // const ConnectivityNotificationWidget(),
         ],
       ),
-      // home: BusinessChooseCategoryPage1(
-      //   isEditing: true,
-      // ),
+      // home: SelectMembershipPage(hasAvailedLaunchOffer: false),
     );
   }
 }

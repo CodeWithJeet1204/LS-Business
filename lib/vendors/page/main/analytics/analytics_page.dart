@@ -54,6 +54,7 @@ class _AnalyticsPageState extends State<AnalyticsPage>
   @override
   Widget build(BuildContext context) {
     final mainPageProvider = Provider.of<MainPageProvider>(context);
+    final width = MediaQuery.of(context).size.width;
     final TabController tabController = TabController(
       initialIndex: 1,
       length: 2,
@@ -105,8 +106,10 @@ class _AnalyticsPageState extends State<AnalyticsPage>
                     ),
                     forceMaterialTransparency: true,
                     bottom: PreferredSize(
-                      preferredSize: Size(MediaQuery.of(context).size.width,
-                          MediaQuery.of(context).size.width * 0.1),
+                      preferredSize: Size(
+                        width,
+                        width * 0.1,
+                      ),
                       child: TabBar(
                         indicator: BoxDecoration(
                           color: primary2,
@@ -117,10 +120,10 @@ class _AnalyticsPageState extends State<AnalyticsPage>
                         ),
                         isScrollable: false,
                         indicatorPadding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).size.width * 0.0266,
-                          top: MediaQuery.of(context).size.width * 0.0225,
-                          left: -MediaQuery.of(context).size.width * 0.045,
-                          right: -MediaQuery.of(context).size.width * 0.045,
+                          bottom: width * 0.0266,
+                          top: width * 0.0225,
+                          left: -width * 0.045,
+                          right: -width * 0.045,
                         ),
                         automaticIndicatorColorAdjustment: false,
                         indicatorWeight: 2,

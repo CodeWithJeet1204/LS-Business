@@ -1,5 +1,6 @@
 // ignore_for_file: unnecessary_null_comparison
 import 'dart:convert';
+import 'package:Localsearch/widgets/text_form_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Localsearch/vendors/page/main/main_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
@@ -28,19 +29,20 @@ class SelectMembershipPage extends StatefulWidget {
 class _SelectMembershipPageState extends State<SelectMembershipPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
-  bool isOffer = false;
-  Map<String, dynamic>? offerData;
-  String? selectedMembership;
-  bool isAvailingOffer = false;
-  bool isPaying = false;
-  String? selectedDuration;
-  DateTime? selectedDurationDateTime;
+  final leaderCodeController = TextEditingController();
   Map<String, List<String>> membershipDurations = {};
   Map<String, String> membershipReverseDurations = {};
   Map<String, Map<String, dynamic>> membershipDetails = {};
   Map<String, Map<String, dynamic>> membershipQuota = {};
+  Map<String, dynamic>? offerData;
+  String? selectedMembership;
+  String? selectedDuration;
   String? selectedPrice;
+  DateTime? selectedDurationDateTime;
   int? currentPrice;
+  bool isAvailingOffer = false;
+  bool isOffer = false;
+  bool isPaying = false;
   bool isData = false;
 
   // INIT STATE
@@ -347,10 +349,8 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
   }
 
   // PAY
-  Future<void> pay() async {
-    if (selectedMembership == null &&
-        // !isPremiumSelected &&
-        !isAvailingOffer) {
+  Future<void> pay(final width) async {
+    if (selectedMembership == null && !isAvailingOffer) {
       mySnackBar(
         context,
         'Please select a Membership',
@@ -360,6 +360,36 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
         isPaying = true;
       });
       try {
+        if (leaderCodeController.text.isNotEmpty) {
+          final leaderSnap = await store
+              .collection('Leaders')
+              .doc(leaderCodeController.text.toLowerCase())
+              .get();
+
+          if (leaderSnap.exists) {
+            final leaderData = leaderSnap.data()!;
+
+            var amount = leaderData['Amount'];
+
+            amount = amount + currentPrice;
+
+            await store
+                .collection('Leaders')
+                .doc(leaderCodeController.text.toLowerCase())
+                .update({
+              'Amount': amount,
+            });
+          } else {
+            setState(() {
+              isPaying = false;
+            });
+            return mySnackBar(
+              context,
+              'Leader Code Doesn\'t Exists, Check Again',
+            );
+          }
+        }
+
         // GET MEMBERSHIP DURATION
         Duration getMembershipDuration(String membershipDuration) {
           final now = DateTime.now();
@@ -454,6 +484,36 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
           isPaying = true;
         });
         try {
+          if (leaderCodeController.text.isNotEmpty) {
+            final leaderSnap = await store
+                .collection('Leaders')
+                .doc(leaderCodeController.text.toLowerCase())
+                .get();
+
+            if (leaderSnap.exists) {
+              final leaderData = leaderSnap.data()!;
+
+              var amount = leaderData['Amount'];
+
+              amount = amount + currentPrice;
+
+              await store
+                  .collection('Leaders')
+                  .doc(leaderCodeController.text.toLowerCase())
+                  .update({
+                'Amount': amount,
+              });
+            } else {
+              setState(() {
+                isPaying = false;
+              });
+              return mySnackBar(
+                context,
+                'Leader Code Doesn\'t Exists, Check Again',
+              );
+            }
+          }
+
           final membershipSnap = await store
               .collection('Membership')
               .doc(selectedMembership)
@@ -545,27 +605,22 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
       ),
       bottomSheet: // PAY BUTTON
           selectedDuration == 'Duration' && !isAvailingOffer
-              ? Container(
-                  width: 0,
-                  height: 0,
-                )
-              : SizedBox(
+              ? Container()
+              : Container(
                   width: width,
-                  height: width * 0.175,
-                  child: Padding(
-                    padding: EdgeInsets.only(bottom: width * 0.0225),
-                    child: MyButton(
-                      text: isAvailingOffer
-                          ? 'CONTINUE FREE'
-                          : currentPrice != null
-                              ? 'Pay - $currentPrice'
-                              : '❌❌',
-                      onTap: () async {
-                        await pay();
-                      },
-                      isLoading: isPaying,
-                      horizontalPadding: width * 0.01125,
-                    ),
+                  height: height * 0.07875,
+                  margin: EdgeInsets.only(bottom: width * 0.0225),
+                  child: MyButton(
+                    text: isAvailingOffer
+                        ? 'CONTINUE FREE'
+                        : currentPrice != null
+                            ? 'Pay - $currentPrice'
+                            : '❌❌',
+                    onTap: () async {
+                      await pay(width);
+                    },
+                    isLoading: isPaying,
+                    horizontalPadding: width * 0.01125,
                   ),
                 ),
       body: isData == false || isOffer == null
@@ -577,189 +632,217 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    !isOffer
+                    // LEADER CODE
+                    widget.hasAvailedLaunchOffer
                         ? Container()
-                        : Padding(
-                            padding: EdgeInsets.only(left: width * 0.033),
-                            child: Text(
-                              'Launch Offer',
-                              style: TextStyle(
-                                color: const Color.fromARGB(255, 63, 63, 63),
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              MyTextFormField(
+                                hintText: 'Leader Code',
+                                controller: leaderCodeController,
+                                borderRadius: 12,
+                                horizontalPadding: width * 0.025,
                               ),
-                            ),
+                              Divider(),
+                            ],
                           ),
 
+                    // OFFER
                     !isOffer
                         ? Container()
-                        : SizedBox(height: height * 0.006125),
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: width * 0.033),
+                                child: Text(
+                                  'Launch Offer',
+                                  style: TextStyle(
+                                    color:
+                                        const Color.fromARGB(255, 63, 63, 63),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: height * 0.006125),
+                              SizedBox(
+                                width: width,
+                                child: Builder(
+                                  builder: (context) {
+                                    final offerName = offerData!['name'];
+                                    final offerMembership =
+                                        offerData!['membership'];
+                                    final offerDuration =
+                                        offerData!['duration'];
+                                    final lightColor =
+                                        offerMembership == 'Basic'
+                                            ? white
+                                            : offerMembership == 'Gold'
+                                                ? const Color.fromARGB(
+                                                    255,
+                                                    253,
+                                                    243,
+                                                    154,
+                                                  )
+                                                : const Color.fromARGB(
+                                                    255,
+                                                    202,
+                                                    226,
+                                                    238,
+                                                  );
+                                    final darkColor = offerMembership == 'Basic'
+                                        ? black
+                                        : offerMembership == 'Gold'
+                                            ? const Color.fromARGB(
+                                                255,
+                                                93,
+                                                76,
+                                                0,
+                                              )
+                                            : Colors.blueGrey.shade600;
 
-                    !isOffer
-                        ? Container()
-                        : SizedBox(
-                            width: width,
-                            child: Builder(
-                              builder: (context) {
-                                final offerName = offerData!['name'];
-                                final offerMembership =
-                                    offerData!['membership'];
-                                final offerDuration = offerData!['duration'];
-                                final lightColor = offerMembership == 'Basic'
-                                    ? white
-                                    : offerMembership == 'Gold'
-                                        ? const Color.fromARGB(
-                                            255,
-                                            253,
-                                            243,
-                                            154,
-                                          )
-                                        : const Color.fromARGB(
-                                            255,
-                                            202,
-                                            226,
-                                            238,
-                                          );
-                                final darkColor = offerMembership == 'Basic'
-                                    ? black
-                                    : offerMembership == 'Gold'
-                                        ? const Color.fromARGB(
-                                            255,
-                                            93,
-                                            76,
-                                            0,
-                                          )
-                                        : Colors.blueGrey.shade600;
-
-                                return GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      isAvailingOffer = !isAvailingOffer;
-                                      selectedMembership = null;
-                                      // isPremiumSelected = false;
-                                    });
-                                  },
-                                  child: Opacity(
-                                    opacity: isAvailingOffer ? 1 : 0.9,
-                                    child: Container(
-                                      width: width,
-                                      decoration: BoxDecoration(
-                                        color: lightColor,
-                                        border: Border.all(
-                                          width: isAvailingOffer ? 3 : 1,
-                                          color: darkColor,
-                                        ),
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      padding: EdgeInsets.all(width * 0.025),
-                                      margin: EdgeInsets.all(
-                                        width *
-                                            (isAvailingOffer ? 0.025 : 0.04),
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            offerName,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
+                                    return GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          isAvailingOffer = !isAvailingOffer;
+                                          selectedMembership = null;
+                                          // isPremiumSelected = false;
+                                        });
+                                      },
+                                      child: Opacity(
+                                        opacity: isAvailingOffer ? 1 : 0.9,
+                                        child: Container(
+                                          width: width,
+                                          decoration: BoxDecoration(
+                                            color: lightColor,
+                                            border: Border.all(
+                                              width: isAvailingOffer ? 3 : 1,
                                               color: darkColor,
                                             ),
+                                            borderRadius:
+                                                BorderRadius.circular(12),
                                           ),
-                                          RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text: offerMembership,
-                                                  style: TextStyle(
-                                                    color: darkColor,
-                                                    fontSize: width * 0.066,
-                                                    fontWeight: FontWeight.w500,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                  text: ' Membership',
-                                                  style: TextStyle(
-                                                    color: darkColor,
-                                                    fontSize: width * 0.06,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
+                                          padding:
+                                              EdgeInsets.all(width * 0.025),
+                                          margin: EdgeInsets.all(
+                                            width *
+                                                (isAvailingOffer
+                                                    ? 0.025
+                                                    : 0.04),
                                           ),
-                                          RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text: 'Duration: ',
-                                                  style: TextStyle(
-                                                    color: darkColor,
-                                                    fontSize: width * 0.055,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                  text: offerDuration,
-                                                  style: TextStyle(
-                                                    color: darkColor,
-                                                    fontSize: width * 0.06,
-                                                    fontWeight: FontWeight.w500,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Row(
+                                          child: Column(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                                MainAxisAlignment.spaceAround,
                                             crossAxisAlignment:
-                                                CrossAxisAlignment.center,
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                'FREE',
+                                                offerName,
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
                                                   color: darkColor,
-                                                  fontSize: width * 0.0675,
-                                                  fontWeight: FontWeight.w600,
                                                 ),
                                               ),
-                                              MyTextButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    isAvailingOffer =
-                                                        !isAvailingOffer;
-                                                    selectedMembership = null;
-                                                    // isPremiumSelected = false;
-                                                  });
-                                                },
-                                                text: isAvailingOffer
-                                                    ? 'SELECTED'
-                                                    : 'Select',
-                                                textColor: darkColor,
+                                              RichText(
+                                                text: TextSpan(
+                                                  children: [
+                                                    TextSpan(
+                                                      text: offerMembership,
+                                                      style: TextStyle(
+                                                        color: darkColor,
+                                                        fontSize: width * 0.066,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
+                                                    ),
+                                                    TextSpan(
+                                                      text: ' Membership',
+                                                      style: TextStyle(
+                                                        color: darkColor,
+                                                        fontSize: width * 0.06,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              RichText(
+                                                text: TextSpan(
+                                                  children: [
+                                                    TextSpan(
+                                                      text: 'Duration: ',
+                                                      style: TextStyle(
+                                                        color: darkColor,
+                                                        fontSize: width * 0.055,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
+                                                    ),
+                                                    TextSpan(
+                                                      text: offerDuration,
+                                                      style: TextStyle(
+                                                        color: darkColor,
+                                                        fontSize: width * 0.06,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    'FREE',
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      color: darkColor,
+                                                      fontSize: width * 0.0675,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                  MyTextButton(
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        isAvailingOffer =
+                                                            !isAvailingOffer;
+                                                        selectedMembership =
+                                                            null;
+                                                        // isPremiumSelected = false;
+                                                      });
+                                                    },
+                                                    text: isAvailingOffer
+                                                        ? 'SELECTED'
+                                                        : 'Select',
+                                                    textColor: darkColor,
+                                                  ),
+                                                ],
                                               ),
                                             ],
                                           ),
-                                        ],
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
+                                    );
+                                  },
+                                ),
+                              ),
+                              Divider(),
+                            ],
                           ),
-
-                    !isOffer ? Container() : Divider(),
 
                     // MEMBERSHIPS
                     Padding(
