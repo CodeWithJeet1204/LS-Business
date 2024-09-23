@@ -81,7 +81,7 @@ class _ImageViewState extends State<ImageView> {
 
                 final Email email = Email(
                   body: feedback.text,
-                  subject: 'Localsearch Feedback',
+                  subject: 'LS Business Feedback',
                   recipients: ['infinitylab1204@gmail.com'],
                   attachmentPaths: [screenshotFilePath],
                   isHTML: false,
@@ -175,7 +175,7 @@ class _ImageViewState extends State<ImageView> {
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
+                      physics: const ClampingScrollPhysics(),
                       itemCount: widget.imagesUrl.length,
                       itemBuilder: ((context, index) {
                         return Padding(

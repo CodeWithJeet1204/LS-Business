@@ -83,7 +83,7 @@ class _AddProductPage3State extends State<AddProductPage3> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Select Category'),
+        title: const Text('Select Category'),
         actions: [
           IconButton(
             onPressed: () {
@@ -103,7 +103,7 @@ class _AddProductPage3State extends State<AddProductPage3> {
 
                 final Email email = Email(
                   body: feedback.text,
-                  subject: 'Localsearch Feedback',
+                  subject: 'LS Business Feedback',
                   recipients: ['infinitylab1204@gmail.com'],
                   attachmentPaths: [screenshotFilePath],
                   isHTML: false,
@@ -216,7 +216,7 @@ class _AddProductPage3State extends State<AddProductPage3> {
           return !isCategoryData
               ? GridView.builder(
                   shrinkWrap: true,
-                  physics: ClampingScrollPhysics(),
+                  physics: const ClampingScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: width * 0.5 / width * 1.6,

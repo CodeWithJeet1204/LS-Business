@@ -226,8 +226,6 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
       allowCall = !allowCall;
     });
 
-    print('allowCall: $allowCall');
-
     await store
         .collection('Business')
         .doc('Owners')
@@ -291,7 +289,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
 
                 final Email email = Email(
                   body: feedback.text,
-                  subject: 'Localsearch Feedback',
+                  subject: 'LS Business Feedback',
                   recipients: ['infinitylab1204@gmail.com'],
                   attachmentPaths: [screenshotFilePath],
                   isHTML: false,
@@ -314,7 +312,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                   ? Container(
                       alignment: Alignment.center,
                       width: double.infinity,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: buttonColor,
                       ),
                       child: const Center(
@@ -336,7 +334,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                       horizontalPadding: 0,
                     ),
             )
-          : Container(
+          : const SizedBox(
               width: 0,
               height: 0,
             ),

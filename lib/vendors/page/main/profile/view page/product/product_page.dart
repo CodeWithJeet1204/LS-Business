@@ -1,4 +1,3 @@
-// ignore_for_file: avoid_function_literals_in_foreach_calls
 import 'dart:io';
 import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -249,7 +248,7 @@ class _ProductPageState extends State<ProductPage> {
                                       child: ListView.builder(
                                         scrollDirection: Axis.horizontal,
                                         shrinkWrap: true,
-                                        physics: ClampingScrollPhysics(),
+                                        physics: const ClampingScrollPhysics(),
                                         itemCount: property.length,
                                         itemBuilder: ((context, index) {
                                           return Padding(
@@ -458,7 +457,7 @@ class _ProductPageState extends State<ProductPage> {
       final validImages = imageList.take(remainingSlots).toList();
 
       for (var im in validImages) {
-        final productImageId = Uuid().v4();
+        final productImageId = const Uuid().v4();
 
         Reference ref =
             storage.ref().child('Vendor/Products').child(productImageId);
@@ -483,26 +482,27 @@ class _ProductPageState extends State<ProductPage> {
       setState(() {
         isImageChanging = false;
       });
-
-      await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Max $maxImages Images Allowed'),
-            content: Text(
-              'Your current membership only supports $maxImages maximum',
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
+      if (mounted) {
+        await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Max $maxImages Images Allowed'),
+              content: Text(
+                'Your current membership only supports $maxImages maximum',
               ),
-            ],
-          );
-        },
-      );
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
 
       if (mounted) {
         Navigator.of(context).pop();
@@ -521,7 +521,7 @@ class _ProductPageState extends State<ProductPage> {
           isImageChanging = true;
         });
         for (var im in imageList) {
-          final productImageId = Uuid().v4();
+          final productImageId = const Uuid().v4();
 
           Reference ref =
               storage.ref().child('Vendor/Products').child(productImageId);
@@ -631,7 +631,9 @@ class _ProductPageState extends State<ProductPage> {
                     .update({
                   'images': images,
                 });
-                Navigator.of(context).pop();
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                }
               },
               child: const Text(
                 'YES',
@@ -767,9 +769,12 @@ class _ProductPageState extends State<ProductPage> {
 
       final List images = productData['images'];
 
-      images.forEach((image) async {
-        await storage.refFromURL(image).delete();
-      });
+      await Future.forEach(
+        images,
+        (image) async {
+          await storage.refFromURL(image).delete();
+        },
+      );
 
       await store
           .collection('Business')
@@ -904,7 +909,6 @@ class _ProductPageState extends State<ProductPage> {
             MyTextButton(
               onPressed: () async {
                 await deleteShort();
-                Navigator.of(context).pop();
               },
               text: 'YES',
               textColor: Colors.red,
@@ -936,6 +940,9 @@ class _ProductPageState extends State<ProductPage> {
 
     await storage.ref('Vendor/Shorts/${widget.productId}').delete();
     await storage.ref('Vendor/Thumbnails/${widget.productId}').delete();
+    if (mounted) {
+      Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -976,7 +983,7 @@ class _ProductPageState extends State<ProductPage> {
 
                 final Email email = Email(
                   body: feedback.text,
-                  subject: 'Localsearch Feedback',
+                  subject: 'LS Business Feedback',
                   recipients: ['infinitylab1204@gmail.com'],
                   attachmentPaths: [screenshotFilePath],
                   isHTML: false,

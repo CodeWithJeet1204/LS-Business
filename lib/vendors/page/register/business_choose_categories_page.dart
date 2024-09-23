@@ -122,7 +122,7 @@ class _BusinessChooseCategoriesPageState
 
                 final Email email = Email(
                   body: feedback.text,
-                  subject: 'Localsearch Feedback',
+                  subject: 'LS Business Feedback',
                   recipients: ['infinitylab1204@gmail.com'],
                   attachmentPaths: [screenshotFilePath],
                   isHTML: false,
@@ -151,7 +151,7 @@ class _BusinessChooseCategoriesPageState
         // ],
       ),
       body: categories == null
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : SafeArea(

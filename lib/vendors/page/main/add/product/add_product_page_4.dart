@@ -1,4 +1,3 @@
-// ignore_for_file: unnecessary_null_comparison
 import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Localsearch/vendors/page/main/add/product/add_product_page_5.dart';
@@ -148,8 +147,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
     if (productKey.currentState!.validate()) {
       if (property0.isEmpty && getCompulsory(0)) {
         if (getNoOfAnswers(0) == 1) {
-          if (property0Controller.text.isEmpty ||
-              property0Controller.text == null) {
+          if (property0Controller.text.isEmpty) {
             return mySnackBar(
                 context, 'Enter value for ${getPropertiesKeys(0)}');
           }
@@ -163,8 +161,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
       }
       if (property1.isEmpty && getCompulsory(1)) {
         if (getNoOfAnswers(1) == 1) {
-          if (property1Controller.text.isEmpty ||
-              property1Controller.text == null) {
+          if (property1Controller.text.isEmpty) {
             return mySnackBar(
                 context, 'Enter value for ${getPropertiesKeys(1)}');
           }
@@ -178,8 +175,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
       }
       if (property2.isEmpty && getCompulsory(2)) {
         if (getNoOfAnswers(2) == 1) {
-          if (property2Controller.text.isEmpty ||
-              property2Controller.text == null) {
+          if (property2Controller.text.isEmpty) {
             return mySnackBar(
                 context, 'Enter value for ${getPropertiesKeys(2)}');
           }
@@ -193,8 +189,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
       }
       if (property3.isEmpty && getCompulsory(3)) {
         if (getNoOfAnswers(3) == 1) {
-          if (property3Controller.text.isEmpty ||
-              property3Controller.text == null) {
+          if (property3Controller.text.isEmpty) {
             return mySnackBar(
                 context, 'Enter value for ${getPropertiesKeys(3)}');
           }
@@ -208,8 +203,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
       }
       if (property4.isEmpty && getCompulsory(4)) {
         if (getNoOfAnswers(4) == 1) {
-          if (property4Controller.text.isEmpty ||
-              property4Controller.text == null) {
+          if (property4Controller.text.isEmpty) {
             return mySnackBar(
                 context, 'Enter value for ${getPropertiesKeys(4)}');
           }
@@ -223,8 +217,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
       }
       if (property5.isEmpty && getCompulsory(5)) {
         if (getNoOfAnswers(5) == 1) {
-          if (property5Controller.text.isEmpty ||
-              property5Controller.text == null) {
+          if (property5Controller.text.isEmpty) {
             return mySnackBar(
                 context, 'Enter value for ${getPropertiesKeys(5)}');
           }
@@ -305,7 +298,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
         if (mounted) {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: ((context) => AddProductPage5()),
+              builder: ((context) => const AddProductPage5()),
             ),
           );
         }
@@ -322,8 +315,6 @@ class _AddProductPage4State extends State<AddProductPage4> {
 
   // GET PROPERTIES KEYS
   String getPropertiesKeys(int index) {
-    print(
-        '$index: ${householdCategoryProperties![widget.shopType]!.keys.toList()[index].toString()}');
     return householdCategoryProperties![widget.shopType]!
         .keys
         .toList()[index]
@@ -414,7 +405,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
 
                 final Email email = Email(
                   body: feedback.text,
-                  subject: 'Localsearch Feedback',
+                  subject: 'LS Business Feedback',
                   recipients: ['infinitylab1204@gmail.com'],
                   attachmentPaths: [screenshotFilePath],
                   isHTML: false,
@@ -516,7 +507,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                     child: ListView.builder(
                                       scrollDirection: Axis.horizontal,
                                       shrinkWrap: true,
-                                      physics: ClampingScrollPhysics(),
+                                      physics: const ClampingScrollPhysics(),
                                       itemCount: tagList.length,
                                       itemBuilder: ((context, index) {
                                         return Padding(
@@ -670,10 +661,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                 MyTextButton(
                                                   onPressed: () {
                                                     if (property0Controller
-                                                            .text.isNotEmpty &&
-                                                        property0Controller.text
-                                                                .toString() !=
-                                                            null) {
+                                                        .text.isNotEmpty) {
                                                       if (property0Controller
                                                               .text
                                                               .toString()
@@ -710,7 +698,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                     Axis.horizontal,
                                                 shrinkWrap: true,
                                                 physics:
-                                                    ClampingScrollPhysics(),
+                                                    const ClampingScrollPhysics(),
                                                 itemCount: property0.length,
                                                 itemBuilder: ((context, index) {
                                                   return Padding(
@@ -878,10 +866,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                 MyTextButton(
                                                   onPressed: () {
                                                     if (property1Controller
-                                                            .text.isNotEmpty &&
-                                                        property1Controller.text
-                                                                .toString() !=
-                                                            null) {
+                                                        .text.isNotEmpty) {
                                                       if (property1Controller
                                                               .text
                                                               .toString()
@@ -918,7 +903,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                     Axis.horizontal,
                                                 shrinkWrap: true,
                                                 physics:
-                                                    ClampingScrollPhysics(),
+                                                    const ClampingScrollPhysics(),
                                                 itemCount: property1.length,
                                                 itemBuilder: ((context, index) {
                                                   return Padding(
@@ -1086,10 +1071,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                 MyTextButton(
                                                   onPressed: () {
                                                     if (property2Controller
-                                                            .text.isNotEmpty &&
-                                                        property2Controller.text
-                                                                .toString() !=
-                                                            null) {
+                                                        .text.isNotEmpty) {
                                                       if (property2Controller
                                                               .text
                                                               .toString()
@@ -1126,7 +1108,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                     Axis.horizontal,
                                                 shrinkWrap: true,
                                                 physics:
-                                                    ClampingScrollPhysics(),
+                                                    const ClampingScrollPhysics(),
                                                 itemCount: property2.length,
                                                 itemBuilder: ((context, index) {
                                                   return Padding(
@@ -1294,10 +1276,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                 MyTextButton(
                                                   onPressed: () {
                                                     if (property3Controller
-                                                            .text.isNotEmpty &&
-                                                        property3Controller.text
-                                                                .toString() !=
-                                                            null) {
+                                                        .text.isNotEmpty) {
                                                       if (property3Controller
                                                               .text
                                                               .toString()
@@ -1334,7 +1313,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                     Axis.horizontal,
                                                 shrinkWrap: true,
                                                 physics:
-                                                    ClampingScrollPhysics(),
+                                                    const ClampingScrollPhysics(),
                                                 itemCount: property3.length,
                                                 itemBuilder: ((context, index) {
                                                   return Padding(
@@ -1502,10 +1481,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                 MyTextButton(
                                                   onPressed: () {
                                                     if (property4Controller
-                                                            .text.isNotEmpty &&
-                                                        property4Controller.text
-                                                                .toString() !=
-                                                            null) {
+                                                        .text.isNotEmpty) {
                                                       if (property4Controller
                                                               .text
                                                               .toString()
@@ -1542,7 +1518,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                     Axis.horizontal,
                                                 shrinkWrap: true,
                                                 physics:
-                                                    ClampingScrollPhysics(),
+                                                    const ClampingScrollPhysics(),
                                                 itemCount: property4.length,
                                                 itemBuilder: ((context, index) {
                                                   return Padding(
@@ -1710,10 +1686,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                 MyTextButton(
                                                   onPressed: () {
                                                     if (property5Controller
-                                                            .text.isNotEmpty &&
-                                                        property5Controller.text
-                                                                .toString() !=
-                                                            null) {
+                                                        .text.isNotEmpty) {
                                                       if (property5Controller
                                                               .text
                                                               .toString()
@@ -1750,7 +1723,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                     Axis.horizontal,
                                                 shrinkWrap: true,
                                                 physics:
-                                                    ClampingScrollPhysics(),
+                                                    const ClampingScrollPhysics(),
                                                 itemCount: property5.length,
                                                 itemBuilder: ((context, index) {
                                                   return Padding(

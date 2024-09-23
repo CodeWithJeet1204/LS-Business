@@ -233,7 +233,7 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
         if (widget.fromMainPage) {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-              builder: (context) => MainPage(),
+              builder: (context) => const MainPage(),
             ),
             (route) => false,
           );
@@ -282,7 +282,7 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
 
                 final Email email = Email(
                   body: feedback.text,
-                  subject: 'Localsearch Feedback',
+                  subject: 'LS Business Feedback',
                   recipients: ['infinitylab1204@gmail.com'],
                   attachmentPaths: [screenshotFilePath],
                   isHTML: false,

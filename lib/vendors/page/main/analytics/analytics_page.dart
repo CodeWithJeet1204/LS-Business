@@ -73,7 +73,7 @@ class _AnalyticsPageState extends State<AnalyticsPage>
         mainPageProvider.goToHomePage();
       },
       child: isRegistration == null
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : isRegistration!
@@ -81,7 +81,7 @@ class _AnalyticsPageState extends State<AnalyticsPage>
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Center(
+                    const Center(
                       child: Text(
                         'You are currently using \'FREE Registration\' Membership\nThis membership allows you to register your shop details & catalogue only\nThis does not allows you to see analytics\nGet a paid membership to get benefits',
                         textAlign: TextAlign.center,
@@ -91,7 +91,7 @@ class _AnalyticsPageState extends State<AnalyticsPage>
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => SelectMembershipPage(
+                            builder: (context) => const SelectMembershipPage(
                               hasAvailedLaunchOffer: true,
                             ),
                           ),
@@ -131,7 +131,7 @@ class _AnalyticsPageState extends State<AnalyticsPage>
 
                             final Email email = Email(
                               body: feedback.text,
-                              subject: 'Localsearch Feedback',
+                              subject: 'LS Business Feedback',
                               recipients: ['infinitylab1204@gmail.com'],
                               attachmentPaths: [screenshotFilePath],
                               isHTML: false,

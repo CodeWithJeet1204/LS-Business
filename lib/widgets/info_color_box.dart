@@ -12,7 +12,7 @@ class InfoColorBox extends StatelessWidget {
   });
 
   final String text;
-  final width;
+  final double width;
   final Color color;
   final dynamic property;
 

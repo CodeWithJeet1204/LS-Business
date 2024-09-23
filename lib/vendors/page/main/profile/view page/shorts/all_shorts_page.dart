@@ -147,7 +147,7 @@ class _AllShortsPageState extends State<AllShortsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('All Shorts'),
+        title: const Text('All Shorts'),
         actions: [
           IconButton(
             onPressed: () {
@@ -167,7 +167,7 @@ class _AllShortsPageState extends State<AllShortsPage> {
 
                 final Email email = Email(
                   body: feedback.text,
-                  subject: 'Localsearch Feedback',
+                  subject: 'LS Business Feedback',
                   recipients: ['infinitylab1204@gmail.com'],
                   attachmentPaths: [screenshotFilePath],
                   isHTML: false,
@@ -234,7 +234,7 @@ class _AllShortsPageState extends State<AllShortsPage> {
           ? SafeArea(
               child: GridView.builder(
                 shrinkWrap: true,
-                physics: ClampingScrollPhysics(),
+                physics: const ClampingScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 0,
@@ -271,8 +271,9 @@ class _AllShortsPageState extends State<AllShortsPage> {
                         cacheExtent: height * 1.5,
                         addAutomaticKeepAlives: true,
                         shrinkWrap: true,
-                        physics: ClampingScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        physics: const ClampingScrollPhysics(),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3,
                           childAspectRatio: 9 / 15.66,
                         ),
@@ -297,7 +298,7 @@ class _AllShortsPageState extends State<AllShortsPage> {
                               );
                             },
                             child: Container(
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 color: primaryDark,
                               ),
                               padding: EdgeInsets.all(

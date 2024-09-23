@@ -157,7 +157,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
         setState(() {
           isOTPVerifying = false;
         });
-        if (context.mounted) {
+        if (mounted) {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: ((context) {
               // if (widget.mode == 'vendor') {

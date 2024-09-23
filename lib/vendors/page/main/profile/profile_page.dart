@@ -44,7 +44,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   // GET SHOP TYPE
   Future<void> getShopType() async {
-    final ownersDoc = await store.collection('Business').doc('Owners');
+    final ownersDoc = store.collection('Business').doc('Owners');
 
     final vendorSnap =
         await ownersDoc.collection('Shops').doc(auth.currentUser!.uid).get();
@@ -154,7 +154,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                 final Email email = Email(
                   body: feedback.text,
-                  subject: 'Localsearch Feedback',
+                  subject: 'LS Business Feedback',
                   recipients: ['infinitylab1204@gmail.com'],
                   attachmentPaths: [screenshotFilePath],
                   isHTML: false,
@@ -199,7 +199,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ? CircleAvatar(
                                 radius: width * 0.1195,
                                 backgroundColor: primary2,
-                                child: Center(
+                                child: const Center(
                                   child: CircularProgressIndicator(),
                                 ),
                               )
@@ -273,7 +273,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => OwnerDetailsPage(),
+                              builder: (context) => const OwnerDetailsPage(),
                             ),
                           );
                         },
@@ -312,7 +312,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => BusinessDetailsPage(),
+                              builder: (context) => const BusinessDetailsPage(),
                             ),
                           );
                         },
@@ -366,7 +366,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => AllProductsPage(),
+                          builder: (context) => const AllProductsPage(),
                         ),
                       );
                     },
@@ -380,7 +380,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => AllShortsPage(),
+                          builder: (context) => const AllShortsPage(),
                         ),
                       );
                     },
@@ -394,7 +394,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => AllBrandPage(),
+                          builder: (context) => const AllBrandPage(),
                         ),
                       );
                     },
@@ -408,7 +408,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => AllDiscountPage(),
+                          builder: (context) => const AllDiscountPage(),
                         ),
                       );
                     },
@@ -431,9 +431,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     width: width,
                   ),
 
-                  hasReviewed ? Container() : SizedBox(height: 6),
+                  hasReviewed ? Container() : const SizedBox(height: 6),
 
-                  hasReviewed ? Container() : Divider(),
+                  hasReviewed ? Container() : const Divider(),
 
                   // RATE THIS APP
                   hasReviewed
@@ -456,10 +456,12 @@ class _ProfilePageState extends State<ProfilePage> {
                               if (await canLaunchUrl(Uri.parse(url))) {
                                 await launchUrl(Uri.parse(url));
                               } else {
-                                return mySnackBar(
-                                  context,
-                                  'Some error occured, Try Again Later',
-                                );
+                                if (context.mounted) {
+                                  return mySnackBar(
+                                    context,
+                                    'Some error occured, Try Again Later',
+                                  );
+                                }
                               }
                             },
                             customBorder: RoundedRectangleBorder(

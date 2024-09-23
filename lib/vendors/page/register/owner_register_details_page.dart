@@ -138,7 +138,7 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
                 'https://upload.wikimedia.org/wikipedia/commons/a/af/Default_avatar_profile.jpg',
           });
         } else {
-          if (context.mounted) {
+          if (mounted) {
             mySnackBar(context, 'Some error occured');
           }
         }
@@ -146,7 +146,7 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
         setState(() {
           isNext = false;
         });
-        if (context.mounted) {
+        if (mounted) {
           Navigator.of(context).pop();
           Navigator.of(context).push(
             MaterialPageRoute(
@@ -160,7 +160,7 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
         setState(() {
           isNext = false;
         });
-        if (context.mounted) {
+        if (mounted) {
           mySnackBar(context, e.toString());
         }
       }
@@ -174,7 +174,7 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Owner Details'),
+        title: const Text('Owner Details'),
         actions: [
           IconButton(
             onPressed: () {
@@ -194,7 +194,7 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
 
                 final Email email = Email(
                   body: feedback.text,
-                  subject: 'Localsearch Feedback',
+                  subject: 'LS Business Feedback',
                   recipients: ['infinitylab1204@gmail.com'],
                   attachmentPaths: [screenshotFilePath],
                   isHTML: false,
@@ -210,7 +210,7 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
         ],
       ),
       body: userData == null
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : SafeArea(

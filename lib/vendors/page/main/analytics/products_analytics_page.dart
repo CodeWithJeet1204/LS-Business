@@ -278,9 +278,9 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                           }
 
                           if (!snapshot.hasData) {
-                            return SizedBox(
+                            return const SizedBox(
                               height: 80,
-                              child: const Center(
+                              child: Center(
                                 child: Text(
                                   overflow: TextOverflow.ellipsis,
                                   'No Data',
@@ -291,9 +291,9 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
 
                           if (snapshot.hasData) {
                             if (snapshot.data!.docs.isEmpty) {
-                              return SizedBox(
+                              return const SizedBox(
                                 height: 80,
-                                child: const Center(
+                                child: Center(
                                   child: Text(
                                     'No Products Added',
                                     overflow: TextOverflow.ellipsis,

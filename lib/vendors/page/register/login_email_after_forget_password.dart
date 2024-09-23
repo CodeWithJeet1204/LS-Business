@@ -76,7 +76,7 @@ class _LoginEmailAfterForgetPasswordState
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Email Login'),
+        title: const Text('Email Login'),
         actions: [
           IconButton(
             onPressed: () {
@@ -96,7 +96,7 @@ class _LoginEmailAfterForgetPasswordState
 
                 final Email email = Email(
                   body: feedback.text,
-                  subject: 'Localsearch Feedback',
+                  subject: 'LS Business Feedback',
                   recipients: ['infinitylab1204@gmail.com'],
                   attachmentPaths: [screenshotFilePath],
                   isHTML: false,

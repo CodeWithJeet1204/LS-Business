@@ -113,8 +113,8 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
       isDone = false;
     });
 
-    mySnackBar(context, 'Shorts Added');
     if (mounted) {
+      mySnackBar(context, 'Shorts Added');
       Navigator.of(context).pop();
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
@@ -167,7 +167,7 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
 
                 final Email email = Email(
                   body: feedback.text,
-                  subject: 'Localsearch Feedback',
+                  subject: 'LS Business Feedback',
                   recipients: ['infinitylab1204@gmail.com'],
                   attachmentPaths: [screenshotFilePath],
                   isHTML: false,

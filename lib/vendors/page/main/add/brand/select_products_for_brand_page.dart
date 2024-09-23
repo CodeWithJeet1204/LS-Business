@@ -193,7 +193,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
 
                 final Email email = Email(
                   body: feedback.text,
-                  subject: 'Localsearch Feedback',
+                  subject: 'LS Business Feedback',
                   recipients: ['infinitylab1204@gmail.com'],
                   attachmentPaths: [screenshotFilePath],
                   isHTML: false,
@@ -228,7 +228,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
           ),
         ],
         bottom: PreferredSize(
-          preferredSize: Size(
+          preferredSize: const Size(
             double.infinity,
             80,
           ),
@@ -304,7 +304,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
               child: isGridView
                   ? GridView.builder(
                       shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
+                      physics: const ClampingScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 0,
@@ -326,7 +326,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                     )
                   : ListView.builder(
                       shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
+                      physics: const ClampingScrollPhysics(),
                       itemCount: 4,
                       itemBuilder: (context, index) {
                         return Padding(
@@ -343,9 +343,9 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                     ),
             )
           : currentProducts.isEmpty
-              ? SizedBox(
+              ? const SizedBox(
                   height: 80,
-                  child: const Center(
+                  child: Center(
                     child: Text('No Products'),
                   ),
                 )
@@ -364,9 +364,9 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                                   cacheExtent: height * 1.5,
                                   addAutomaticKeepAlives: true,
                                   shrinkWrap: true,
-                                  physics: ClampingScrollPhysics(),
+                                  physics: const ClampingScrollPhysics(),
                                   gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
                                     childAspectRatio: 0.6875,
                                   ),
@@ -500,7 +500,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                                   cacheExtent: height * 1.5,
                                   addAutomaticKeepAlives: true,
                                   shrinkWrap: true,
-                                  physics: ClampingScrollPhysics(),
+                                  physics: const ClampingScrollPhysics(),
                                   itemCount:
                                       noOfListView > currentProducts.length
                                           ? currentProducts.length

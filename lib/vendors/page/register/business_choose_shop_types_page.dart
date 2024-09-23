@@ -124,7 +124,7 @@ class _BusinessChooseShopTypesPageState
 
                 final Email email = Email(
                   body: feedback.text,
-                  subject: 'Localsearch Feedback',
+                  subject: 'LS Business Feedback',
                   recipients: ['infinitylab1204@gmail.com'],
                   attachmentPaths: [screenshotFilePath],
                   isHTML: false,
@@ -140,7 +140,7 @@ class _BusinessChooseShopTypesPageState
         ],
       ),
       body: shopTypes == null
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : SafeArea(
@@ -155,7 +155,7 @@ class _BusinessChooseShopTypesPageState
                     height: height * 0.8875,
                     child: GridView.builder(
                       shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
+                      physics: const ClampingScrollPhysics(),
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,

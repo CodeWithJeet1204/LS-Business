@@ -89,7 +89,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Select Shop Type'),
+        title: const Text('Select Shop Type'),
         actions: [
           IconButton(
             onPressed: () {
@@ -109,7 +109,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
 
                 final Email email = Email(
                   body: feedback.text,
-                  subject: 'Localsearch Feedback',
+                  subject: 'LS Business Feedback',
                   recipients: ['infinitylab1204@gmail.com'],
                   attachmentPaths: [screenshotFilePath],
                   isHTML: false,
@@ -220,7 +220,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
           return !isShopTypeData
               ? GridView.builder(
                   shrinkWrap: true,
-                  physics: ClampingScrollPhysics(),
+                  physics: const ClampingScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: width * 0.5 / width * 1.6,

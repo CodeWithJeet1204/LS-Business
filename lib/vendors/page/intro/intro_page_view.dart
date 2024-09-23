@@ -38,7 +38,7 @@ class _IntroPageViewState extends State<IntroPageView> {
       Navigator.of(context).pop();
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => MainPage(),
+          builder: (context) => const MainPage(),
         ),
       );
     }
@@ -70,7 +70,7 @@ class _IntroPageViewState extends State<IntroPageView> {
             },
             children: const [
               MyPageView(
-                text: 'Why\nLocalsearch ?',
+                text: 'Why\nLS Business ?',
                 animation:
                     'https://lottie.host/42f81d17-142d-477a-a114-0e8fd17cf3d1/BtWfHFygeT.json',
                 textColor: Color.fromARGB(255, 12, 0, 104),

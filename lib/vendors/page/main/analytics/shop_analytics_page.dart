@@ -221,9 +221,9 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                           }
 
                           if (!snapshot.hasData) {
-                            return SizedBox(
+                            return const SizedBox(
                               height: 80,
-                              child: const Center(
+                              child: Center(
                                 child: Text(
                                   'No Data',
                                 ),

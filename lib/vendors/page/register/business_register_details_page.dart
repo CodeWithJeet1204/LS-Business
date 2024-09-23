@@ -165,7 +165,9 @@ class _BusinessRegisterDetailsPageState
           cityDetectLocation = myCityName;
         });
       } else {
-        mySnackBar(context, 'Some error occured');
+        if (mounted) {
+          mySnackBar(context, 'Some error occured');
+        }
         setState(() {
           cityDetectLocation = 'Detect Location';
         });
@@ -223,7 +225,7 @@ class _BusinessRegisterDetailsPageState
           if (widget.fromMainPage) {
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (context) => MainPage(),
+                builder: (context) => const MainPage(),
               ),
               (route) => false,
             );
@@ -258,7 +260,7 @@ class _BusinessRegisterDetailsPageState
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Business Details'),
+        title: const Text('Business Details'),
         actions: [
           IconButton(
             onPressed: () {
@@ -278,7 +280,7 @@ class _BusinessRegisterDetailsPageState
 
                 final Email email = Email(
                   body: feedback.text,
-                  subject: 'Localsearch Feedback',
+                  subject: 'LS Business Feedback',
                   recipients: ['infinitylab1204@gmail.com'],
                   attachmentPaths: [screenshotFilePath],
                   isHTML: false,
@@ -396,9 +398,9 @@ class _BusinessRegisterDetailsPageState
                                 ),
                                 padding: EdgeInsets.all(width * 0.025),
                                 child: isDetectingCity
-                                    ? CircularProgressIndicator()
+                                    ? const CircularProgressIndicator()
                                     : cityPickLocation != null
-                                        ? Icon(FeatherIcons.mapPin)
+                                        ? const Icon(FeatherIcons.mapPin)
                                         : AutoSizeText(
                                             displayDetectCity ??
                                                 'Detect Location',
@@ -426,7 +428,8 @@ class _BusinessRegisterDetailsPageState
                                 Navigator.of(context)
                                     .push(
                                   MaterialPageRoute(
-                                    builder: (context) => PickLocationPage(),
+                                    builder: (context) =>
+                                        const PickLocationPage(),
                                   ),
                                 )
                                     .then(
@@ -455,9 +458,9 @@ class _BusinessRegisterDetailsPageState
                                 ),
                                 padding: EdgeInsets.all(width * 0.025),
                                 child: isPickingCity
-                                    ? CircularProgressIndicator()
+                                    ? const CircularProgressIndicator()
                                     : cityDetectLocation != null
-                                        ? Icon(FeatherIcons.map)
+                                        ? const Icon(FeatherIcons.map)
                                         : AutoSizeText(
                                             cityPickLocation ??
                                                 'Pick Location 🗺️',

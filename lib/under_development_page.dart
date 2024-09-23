@@ -13,7 +13,7 @@ class UnderDevelopmentPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('App Under Development'),
+        title: const Text('App Under Development'),
         actions: [
           IconButton(
             onPressed: () {
@@ -33,7 +33,7 @@ class UnderDevelopmentPage extends StatelessWidget {
 
                 final Email email = Email(
                   body: feedback.text,
-                  subject: 'Localsearch Feedback',
+                  subject: 'LS Business Feedback',
                   recipients: ['infinitylab1204@gmail.com'],
                   attachmentPaths: [screenshotFilePath],
                   isHTML: false,
@@ -53,13 +53,13 @@ class UnderDevelopmentPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Center(
+            const Center(
               child: Text(
                 'This app is currently under development\nTry again after some time',
                 textAlign: TextAlign.center,
               ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             MyTextButton(
               onPressed: () {
                 SystemNavigator.pop();

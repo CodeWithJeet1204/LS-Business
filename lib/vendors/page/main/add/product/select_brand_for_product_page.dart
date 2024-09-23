@@ -165,7 +165,7 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
 
                 final Email email = Email(
                   body: feedback.text,
-                  subject: 'Localsearch Feedback',
+                  subject: 'LS Business Feedback',
                   recipients: ['infinitylab1204@gmail.com'],
                   attachmentPaths: [screenshotFilePath],
                   isHTML: false,
@@ -259,7 +259,7 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
               child: isGridView
                   ? GridView.builder(
                       shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
+                      physics: const ClampingScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 0,
@@ -281,7 +281,7 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                     )
                   : ListView.builder(
                       shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
+                      physics: const ClampingScrollPhysics(),
                       itemCount: 4,
                       itemBuilder: (context, index) {
                         return Padding(
@@ -298,9 +298,9 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                     ),
             )
           : currentBrands.isEmpty
-              ? SizedBox(
+              ? const SizedBox(
                   height: 80,
-                  child: const Center(
+                  child: Center(
                     child: Text('No Brands'),
                   ),
                 )
@@ -318,7 +318,7 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                                 cacheExtent: height * 1.5,
                                 addAutomaticKeepAlives: true,
                                 shrinkWrap: true,
-                                physics: ClampingScrollPhysics(),
+                                physics: const ClampingScrollPhysics(),
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
@@ -450,7 +450,7 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
                                 cacheExtent: height * 1.5,
                                 addAutomaticKeepAlives: true,
                                 shrinkWrap: true,
-                                physics: ClampingScrollPhysics(),
+                                physics: const ClampingScrollPhysics(),
                                 itemCount: noOfListView > currentBrands.length
                                     ? currentBrands.length
                                     : noOfListView,

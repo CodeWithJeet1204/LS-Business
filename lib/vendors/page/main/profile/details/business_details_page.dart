@@ -147,7 +147,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
           Navigator.of(context).pop();
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-              builder: (context) => MainPage(),
+              builder: (context) => const MainPage(),
             ),
             (route) => false,
           );
@@ -239,7 +239,9 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                     );
                   }
                 } catch (e) {
-                  mySnackBar(context, e.toString());
+                  if (context.mounted) {
+                    mySnackBar(context, e.toString());
+                  }
                 }
               },
               child: const Text(
@@ -294,7 +296,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
 
                 final Email email = Email(
                   body: feedback.text,
-                  subject: 'Localsearch Feedback',
+                  subject: 'LS Business Feedback',
                   recipients: ['infinitylab1204@gmail.com'],
                   attachmentPaths: [screenshotFilePath],
                   isHTML: false,
@@ -344,7 +346,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                 horizontalPadding: 0,
               ),
             )
-          : Container(
+          : const SizedBox(
               width: 0,
               height: 0,
             ),
@@ -1098,7 +1100,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              MembershipDetailsPage(),
+                                              const MembershipDetailsPage(),
                                         ),
                                       );
                                     },
@@ -1187,7 +1189,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 14),
+                            const SizedBox(height: 14),
 
                             // SOCIAL MEDIA
                             InkWell(
@@ -1246,7 +1248,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 14),
+                            const SizedBox(height: 14),
 
                             // DESCRIPTION
                             Container(
@@ -1301,7 +1303,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             isChangingName ||
                                     isChangingAddress ||
                                     isChangingDescription
-                                ? SizedBox(height: 14)
+                                ? const SizedBox(height: 14)
                                 : Container(),
                           ],
                         ),

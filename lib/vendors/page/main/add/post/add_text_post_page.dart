@@ -83,7 +83,9 @@ class _AddTextPostPageState extends State<AddTextPostPage> {
         setState(() {
           isPosting = false;
         });
-        mySnackBar(context, e.toString());
+        if (mounted) {
+          mySnackBar(context, e.toString());
+        }
       }
     }
   }
@@ -92,7 +94,7 @@ class _AddTextPostPageState extends State<AddTextPostPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Text Post'),
+        title: const Text('Add Text Post'),
         actions: [
           IconButton(
             onPressed: () {
@@ -112,7 +114,7 @@ class _AddTextPostPageState extends State<AddTextPostPage> {
 
                 final Email email = Email(
                   body: feedback.text,
-                  subject: 'Localsearch Feedback',
+                  subject: 'LS Business Feedback',
                   recipients: ['infinitylab1204@gmail.com'],
                   attachmentPaths: [screenshotFilePath],
                   isHTML: false,

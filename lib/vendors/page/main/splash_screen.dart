@@ -1,83 +1,86 @@
-import 'package:Localsearch/auth/register_method_page.dart';
-import 'package:Localsearch/vendors/page/main/main_page.dart';
-import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:flutter/material.dart';
+// import 'package:Localsearch/auth/register_method_page.dart';
+// import 'package:Localsearch/vendors/page/main/main_page.dart';
+// import 'package:Localsearch/vendors/utils/colors.dart';
+// import 'package:flutter/material.dart';
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({
-    super.key,
-    required this.isLoggedIn,
-  });
+// class SplashScreen extends StatefulWidget {
+//   const SplashScreen({
+//     super.key,
+//     required this.isLoggedIn,
+//   });
 
-  final bool isLoggedIn;
+//   final bool isLoggedIn;
 
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
+//   @override
+//   State<SplashScreen> createState() => _SplashScreenState();
+// }
 
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
+// class _SplashScreenState extends State<SplashScreen> {
+//   @override
+//   void initState() {
+//     super.initState();
 
-    Future.delayed(
-      const Duration(milliseconds: 1500),
-      () {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: ((context) => widget.isLoggedIn
-                ? const MainPage()
-                : const RegisterMethodPage(
-                    // mode: 'vendor',
-                    )),
-          ),
-        );
-      },
-    );
-  }
+//     Future.delayed(
+//       const Duration(milliseconds: 1500),
+//       () {
+//         if (mounted) {
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
+//         Navigator.of(context).pushReplacement(
+//           MaterialPageRoute(
+//             builder: ((context) => widget.isLoggedIn
+//                 ? const MainPage()
+//                 : const RegisterMethodPage(
+//                     // mode: 'vendor',
+//                     )),
+//           ),
+//         );
+//         }
+//       },
+//     );
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+//   @override
+//   void dispose() {
+//     super.dispose();
+//   }
 
-    return Scaffold(
-      body: Container(
-        width: double.infinity,
-        alignment: Alignment.center,
-        decoration: const BoxDecoration(
-          gradient: RadialGradient(
-            colors: [
-              primary,
-              primary2,
-            ],
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'files/Localsearch Transparent.png',
-              width: width * 0.5,
-            ),
-            SizedBox(height: width * 0.25),
-            Text(
-              'Localsearch',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: primaryDark2,
-                fontSize: width * 0.08875,
-                fontWeight: FontWeight.w700,
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     final width = MediaQuery.of(context).size.width;
+
+//     return Scaffold(
+//       body: Container(
+//         width: double.infinity,
+//         alignment: Alignment.center,
+//         decoration: const BoxDecoration(
+//           gradient: RadialGradient(
+//             colors: [
+//               primary,
+//               primary2,
+//             ],
+//           ),
+//         ),
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             Image.asset(
+//               'files/LS Business Transparent.png',
+//               width: width * 0.5,
+//             ),
+//             SizedBox(height: width * 0.25),
+//             Text(
+//               'LS Business',
+//               maxLines: 1,
+//               overflow: TextOverflow.ellipsis,
+//               style: TextStyle(
+//                 color: primaryDark2,
+//                 fontSize: width * 0.08875,
+//                 fontWeight: FontWeight.w700,
+//               ),
+//             )
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }

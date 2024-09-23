@@ -95,7 +95,7 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
         if (widget.fromMainPage) {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-              builder: (context) => MainPage(),
+              builder: (context) => const MainPage(),
             ),
             (route) => false,
           );
@@ -115,7 +115,9 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
       setState(() {
         isNext = false;
       });
-      mySnackBar(context, e.toString());
+      if (mounted) {
+        mySnackBar(context, e.toString());
+      }
     }
   }
 
@@ -123,7 +125,7 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Social Media Info'),
+        title: const Text('Social Media Info'),
         actions: [
           IconButton(
             onPressed: () {
@@ -143,7 +145,7 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
 
                 final Email email = Email(
                   body: feedback.text,
-                  subject: 'Localsearch Feedback',
+                  subject: 'LS Business Feedback',
                   recipients: ['infinitylab1204@gmail.com'],
                   attachmentPaths: [screenshotFilePath],
                   isHTML: false,

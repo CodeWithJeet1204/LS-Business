@@ -125,7 +125,9 @@ class _GetLocationPageState extends State<GetLocationPage> {
           cityDetectLocation = myCityName;
         });
       } else {
-        mySnackBar(context, 'Some error occured');
+        if (mounted) {
+          mySnackBar(context, 'Some error occured');
+        }
         setState(() {
           cityDetectLocation = 'Detect Location';
         });
@@ -157,7 +159,7 @@ class _GetLocationPageState extends State<GetLocationPage> {
     if (mounted) {
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-          builder: (context) => MainPage(),
+          builder: (context) => const MainPage(),
         ),
         (route) => false,
       );
@@ -168,7 +170,7 @@ class _GetLocationPageState extends State<GetLocationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Get Location'),
+        title: const Text('Get Location'),
         actions: [
           IconButton(
             onPressed: () {
@@ -188,7 +190,7 @@ class _GetLocationPageState extends State<GetLocationPage> {
 
                 final Email email = Email(
                   body: feedback.text,
-                  subject: 'Localsearch Feedback',
+                  subject: 'LS Business Feedback',
                   recipients: ['infinitylab1204@gmail.com'],
                   attachmentPaths: [screenshotFilePath],
                   isHTML: false,
@@ -255,9 +257,9 @@ class _GetLocationPageState extends State<GetLocationPage> {
                   ),
                   padding: EdgeInsets.all(width * 0.025),
                   child: isDetectingCity
-                      ? CircularProgressIndicator()
+                      ? const CircularProgressIndicator()
                       : cityPickLocation != null
-                          ? Icon(FeatherIcons.mapPin)
+                          ? const Icon(FeatherIcons.mapPin)
                           : AutoSizeText(
                               displayDetectCity ?? 'Detect Location',
                               maxLines: cityDetectLocation != null ? 1 : 2,
@@ -271,7 +273,7 @@ class _GetLocationPageState extends State<GetLocationPage> {
                 ),
               ),
               SizedBox(height: width * 0.025),
-              Text('OR'),
+              const Text('OR'),
               SizedBox(height: width * 0.025),
               GestureDetector(
                 onTap: () async {
@@ -281,7 +283,7 @@ class _GetLocationPageState extends State<GetLocationPage> {
                   Navigator.of(context)
                       .push(
                     MaterialPageRoute(
-                      builder: (context) => PickLocationPage(),
+                      builder: (context) => const PickLocationPage(),
                     ),
                   )
                       .then(
@@ -309,9 +311,9 @@ class _GetLocationPageState extends State<GetLocationPage> {
                   ),
                   padding: EdgeInsets.all(width * 0.025),
                   child: isPickingCity
-                      ? CircularProgressIndicator()
+                      ? const CircularProgressIndicator()
                       : cityDetectLocation != null
-                          ? Icon(FeatherIcons.map)
+                          ? const Icon(FeatherIcons.map)
                           : AutoSizeText(
                               cityPickLocation ?? 'Pick Location 🗺️',
                               maxLines: cityPickLocation != null ? 1 : 2,

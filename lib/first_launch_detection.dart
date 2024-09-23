@@ -5,7 +5,6 @@ class SharedPref extends StatefulWidget {
   const SharedPref({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   SharedPrefState createState() => SharedPrefState();
 }
 

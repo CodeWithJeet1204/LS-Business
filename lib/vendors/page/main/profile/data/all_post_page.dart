@@ -232,7 +232,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
 
                 final Email email = Email(
                   body: feedback.text,
-                  subject: 'Localsearch Feedback',
+                  subject: 'LS Business Feedback',
                   recipients: ['infinitylab1204@gmail.com'],
                   attachmentPaths: [screenshotFilePath],
                   isHTML: false,
@@ -296,7 +296,6 @@ class _AllPostsPageState extends State<AllPostsPage> {
         //                         .toString()
         //                         .toLowerCase()
         //                         .contains(value.toLowerCase().trim())) {
-        //                       // ignore: unnecessary_null_comparison
         //                       if (!postData['postText'] != null &&
         //                           !postData['postText']
         //                               .toString()
@@ -339,7 +338,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
           ? SafeArea(
               child: GridView.builder(
                 shrinkWrap: true,
-                physics: ClampingScrollPhysics(),
+                physics: const ClampingScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 0,
@@ -420,13 +419,13 @@ class _AllPostsPageState extends State<AllPostsPage> {
                             ),
                           ],
                         ),
-                        Divider(
+                        const Divider(
                           height: 0,
                         ),
                         currentPosts.isEmpty
-                            ? SizedBox(
+                            ? const SizedBox(
                                 height: 80,
-                                child: const Center(
+                                child: Center(
                                   child: Text('No Posts'),
                                 ),
                               )
@@ -791,7 +790,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                           )
                                     : ListView.builder(
                                         shrinkWrap: true,
-                                        physics: ClampingScrollPhysics(),
+                                        physics: const ClampingScrollPhysics(),
                                         itemCount: currentPosts.length,
                                         itemBuilder: (context, index) {
                                           final postData = currentPosts[

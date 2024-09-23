@@ -178,7 +178,7 @@ class _SelectProductForShortsPageState
 
                 final Email email = Email(
                   body: feedback.text,
-                  subject: 'Localsearch Feedback',
+                  subject: 'LS Business Feedback',
                   recipients: ['infinitylab1204@gmail.com'],
                   attachmentPaths: [screenshotFilePath],
                   isHTML: false,
@@ -203,7 +203,7 @@ class _SelectProductForShortsPageState
           ),
         ],
         bottom: PreferredSize(
-          preferredSize: Size(double.infinity, 80),
+          preferredSize: const Size(double.infinity, 80),
           child: Padding(
             padding: EdgeInsets.symmetric(
               horizontal: width * 0.0166,
@@ -276,7 +276,7 @@ class _SelectProductForShortsPageState
               child: isGridView
                   ? GridView.builder(
                       shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
+                      physics: const ClampingScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 0,
@@ -299,7 +299,7 @@ class _SelectProductForShortsPageState
                   : ListView.builder(
                       shrinkWrap: true,
                       itemCount: 4,
-                      physics: ClampingScrollPhysics(),
+                      physics: const ClampingScrollPhysics(),
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: EdgeInsets.all(
@@ -315,7 +315,7 @@ class _SelectProductForShortsPageState
                     ),
             )
           : currentProducts.isEmpty
-              ? SizedBox(
+              ? const SizedBox(
                   height: 80,
                   child: Center(
                     child: Text(
@@ -341,9 +341,9 @@ class _SelectProductForShortsPageState
                                 cacheExtent: height * 1.5,
                                 addAutomaticKeepAlives: true,
                                 shrinkWrap: true,
-                                physics: ClampingScrollPhysics(),
+                                physics: const ClampingScrollPhysics(),
                                 gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
                                   childAspectRatio: 0.6875,
                                 ),
@@ -491,7 +491,7 @@ class _SelectProductForShortsPageState
                                 cacheExtent: height * 1.5,
                                 addAutomaticKeepAlives: true,
                                 shrinkWrap: true,
-                                physics: ClampingScrollPhysics(),
+                                physics: const ClampingScrollPhysics(),
                                 itemCount: noOfListView > currentProducts.length
                                     ? currentProducts.length
                                     : noOfListView,

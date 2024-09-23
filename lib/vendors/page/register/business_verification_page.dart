@@ -150,7 +150,7 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Verification'),
+        title: const Text('Verification'),
         actions: [
           IconButton(
             onPressed: () {
@@ -170,7 +170,7 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
 
                 final Email email = Email(
                   body: feedback.text,
-                  subject: 'Localsearch Feedback',
+                  subject: 'LS Business Feedback',
                   recipients: ['infinitylab1204@gmail.com'],
                   attachmentPaths: [screenshotFilePath],
                   isHTML: false,
@@ -199,7 +199,7 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // CANNOT BE CHANGED
-                      Text(
+                      const Text(
                         'Aadhaar & GST Number Cannot Be Changed Later',
                         textAlign: TextAlign.center,
                       ),
@@ -252,7 +252,7 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
                         horizontalPadding: 0,
                       ),
 
-                      Divider(),
+                      const Divider(),
 
                       // GST NUMBER
                       TextFormField(

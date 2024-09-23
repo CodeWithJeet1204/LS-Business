@@ -194,9 +194,9 @@ class AddShortsPageState extends State<AddShortsPage> {
       await controller.initialize();
       final duration = controller.value.duration;
 
-      if (duration <= Duration(seconds: 30)) {
-        Navigator.of(context).pop();
+      if (duration <= const Duration(seconds: 30)) {
         if (context.mounted) {
+          Navigator.of(context).pop();
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => ConfirmShortsPage(
@@ -207,8 +207,8 @@ class AddShortsPageState extends State<AddShortsPage> {
           );
         }
       } else {
-        Navigator.of(context).pop();
         if (context.mounted) {
+          Navigator.of(context).pop();
           return mySnackBar(
             context,
             'Video too long, please select a video of less than 30 seconds',
@@ -250,7 +250,7 @@ class AddShortsPageState extends State<AddShortsPage> {
 
                 final Email email = Email(
                   body: feedback.text,
-                  subject: 'Localsearch Feedback',
+                  subject: 'LS Business Feedback',
                   recipients: ['infinitylab1204@gmail.com'],
                   attachmentPaths: [screenshotFilePath],
                   isHTML: false,
@@ -266,7 +266,7 @@ class AddShortsPageState extends State<AddShortsPage> {
         ],
       ),
       body: noOfShorts == null
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : Padding(
@@ -278,7 +278,7 @@ class AddShortsPageState extends State<AddShortsPage> {
                 final height = constraints.maxHeight;
 
                 return noOfShorts == 0
-                    ? Center(
+                    ? const Center(
                         child: Text(
                           'Your Shorts Quota has exhausted\nDelete existing shorts or renew your membership to increase limit',
                           textAlign: TextAlign.center,

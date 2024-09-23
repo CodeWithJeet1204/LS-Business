@@ -36,7 +36,7 @@ class _ShortsPageViewState extends State<ShortsPageView> {
           viewportFraction: 1,
         ),
         scrollDirection: Axis.vertical,
-        physics: ClampingScrollPhysics(),
+        physics: const ClampingScrollPhysics(),
         onPageChanged: (pageIndex) {
           setState(() {
             snappedPageIndex = pageIndex;
