@@ -251,6 +251,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     final userStream = store
         .collection('Business')
         .doc('Owners')
@@ -267,6 +268,40 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
           overflow: TextOverflow.ellipsis,
         ),
       ),
+      bottomSheet: isChangingName || isChangingNumber
+          ? SizedBox(
+              width: width,
+              height: 80,
+              child: isSaving
+                  ? Container(
+                      alignment: Alignment.center,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: buttonColor,
+                      ),
+                      child: const Center(
+                        child: CircularProgressIndicator(
+                          color: white,
+                        ),
+                      ),
+                    )
+                  : MyButton(
+                      text: 'SAVE',
+                      onTap: () async {
+                        if (isChangingName) {
+                          await save();
+                        } else if (isChangingNumber) {
+                          await save();
+                        }
+                      },
+                      isLoading: false,
+                      horizontalPadding: 0,
+                    ),
+            )
+          : Container(
+              width: 0,
+              height: 0,
+            ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: LayoutBuilder(
@@ -588,54 +623,8 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 18),
-
-                          // SAVE & CANCEL BUTTON
                           isChangingName || isChangingNumber
-                              ? Column(
-                                  children: [
-                                    // SAVE
-                                    isSaving
-                                        ? Container(
-                                            padding: const EdgeInsets.symmetric(
-                                              vertical: 12,
-                                            ),
-                                            alignment: Alignment.center,
-                                            width: double.infinity,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              color: buttonColor,
-                                            ),
-                                            child: const Center(
-                                              child: CircularProgressIndicator(
-                                                color: white,
-                                              ),
-                                            ))
-                                        : MyButton(
-                                            text: 'SAVE',
-                                            onTap: () async {
-                                              await save();
-                                            },
-                                            isLoading: false,
-                                            horizontalPadding: 0,
-                                          ),
-                                    const SizedBox(height: 12),
-
-                                    // CANCEL
-                                    MyButton(
-                                      text: 'CANCEL',
-                                      onTap: () {
-                                        setState(() {
-                                          isChangingName = false;
-                                          isChangingNumber = false;
-                                        });
-                                      },
-                                      isLoading: false,
-                                      horizontalPadding: 0,
-                                    ),
-                                  ],
-                                )
+                              ? const SizedBox(height: 18)
                               : Container(),
                         ],
                       ),

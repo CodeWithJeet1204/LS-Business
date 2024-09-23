@@ -137,7 +137,12 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
           isChanging = false;
         });
         if (mounted) {
-          Navigator.of(context).popAndPushNamed('/businessDetails');
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => BusinessDetailsPage(),
+            ),
+            (route) => false,
+          );
         }
       }
     } catch (e) {
@@ -263,6 +268,48 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
           overflow: TextOverflow.ellipsis,
         ),
       ),
+      bottomSheet: isChangingName || isChangingDescription
+          ? SizedBox(
+              width: width,
+              height: 80,
+              child: isSaving
+                  ? Container(
+                      alignment: Alignment.center,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: buttonColor,
+                      ),
+                      child: const Center(
+                        child: CircularProgressIndicator(
+                          color: white,
+                        ),
+                      ),
+                    )
+                  : MyButton(
+                      text: 'SAVE',
+                      onTap: () async {
+                        if (isChangingName) {
+                          await save(
+                            nameController,
+                            'Name',
+                            isChangingName,
+                          );
+                        } else if (isChangingDescription) {
+                          await save(
+                            descriptionController,
+                            'Description',
+                            isChangingDescription,
+                          );
+                        }
+                      },
+                      isLoading: false,
+                      horizontalPadding: 0,
+                    ),
+            )
+          : Container(
+              width: 0,
+              height: 0,
+            ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(
@@ -1146,76 +1193,6 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                     isChangingDescription
                                 ? SizedBox(height: 14)
                                 : Container(),
-
-                            // SAVE & CANCEL BUTTON
-                            Padding(
-                              padding: EdgeInsets.only(
-                                bottom:
-                                    MediaQuery.of(context).viewInsets.bottom,
-                              ),
-                              child: isChangingName || isChangingDescription
-                                  ? Column(
-                                      children: [
-                                        isSaving
-                                            ? Container(
-                                                margin:
-                                                    const EdgeInsets.symmetric(
-                                                  horizontal: 0,
-                                                ),
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 12),
-                                                alignment: Alignment.center,
-                                                width: double.infinity,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  color: buttonColor,
-                                                ),
-                                                child: const Center(
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    color: white,
-                                                  ),
-                                                ))
-                                            : MyButton(
-                                                text: 'SAVE',
-                                                onTap: () async {
-                                                  if (isChangingName) {
-                                                    await save(
-                                                      nameController,
-                                                      'Name',
-                                                      isChangingName,
-                                                    );
-                                                  } else if (isChangingDescription) {
-                                                    await save(
-                                                      descriptionController,
-                                                      'Description',
-                                                      isChangingDescription,
-                                                    );
-                                                  }
-                                                },
-                                                isLoading: false,
-                                                horizontalPadding: 0,
-                                              ),
-                                        const SizedBox(height: 12),
-                                        MyButton(
-                                          text: 'CANCEL',
-                                          onTap: () {
-                                            setState(() {
-                                              isChangingName = false;
-                                              isChangingAddress = false;
-                                              isChangingAddress = false;
-                                            });
-                                          },
-                                          isLoading: false,
-                                          horizontalPadding: 0,
-                                        ),
-                                      ],
-                                    )
-                                  : Container(),
-                            ),
-                            const SizedBox(height: 12),
                           ],
                         ),
                       );

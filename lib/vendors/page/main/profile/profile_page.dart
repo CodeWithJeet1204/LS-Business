@@ -1,3 +1,8 @@
+import 'package:Localsearch/vendors/page/main/profile/data/all_brand_page.dart';
+import 'package:Localsearch/vendors/page/main/profile/data/all_discounts_page.dart';
+import 'package:Localsearch/vendors/page/main/profile/data/all_product_page.dart';
+import 'package:Localsearch/vendors/page/main/profile/details/business_details_page.dart';
+import 'package:Localsearch/vendors/page/main/profile/details/owner_details_page.dart';
 import 'package:Localsearch/vendors/page/main/profile/view%20page/shorts/all_shorts_page.dart';
 import 'package:Localsearch/widgets/skeleton_container.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -232,7 +237,11 @@ class _ProfilePageState extends State<ProfilePage> {
                       // OWNER DETAILS
                       InkWell(
                         onTap: () {
-                          Navigator.of(context).pushNamed('/ownerDetails');
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => OwnerDetailsPage(),
+                            ),
+                          );
                         },
                         splashColor: primary3,
                         customBorder: RoundedRectangleBorder(
@@ -267,7 +276,11 @@ class _ProfilePageState extends State<ProfilePage> {
                       // BUSINESS DETAILS
                       InkWell(
                         onTap: () {
-                          Navigator.of(context).pushNamed('/businessDetails');
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => BusinessDetailsPage(),
+                            ),
+                          );
                         },
                         splashColor: primary3,
                         customBorder: RoundedRectangleBorder(
@@ -317,7 +330,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   SmallTextContainer(
                     text: 'PRODUCTS',
                     onPressed: () {
-                      Navigator.of(context).pushNamed('/productsPage');
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => AllProductsPage(),
+                        ),
+                      );
                     },
                     width: width,
                   ),
@@ -341,7 +358,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   SmallTextContainer(
                     text: 'BRANDS',
                     onPressed: () {
-                      Navigator.of(context).pushNamed('/brandsPage');
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => AllBrandPage(),
+                        ),
+                      );
                     },
                     width: width,
                   ),
@@ -351,7 +372,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   SmallTextContainer(
                     text: 'DISCOUNTS',
                     onPressed: () {
-                      Navigator.of(context).pushNamed('/discountsPage');
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => AllDiscountPage(),
+                        ),
+                      );
                     },
                     width: width,
                   ),

@@ -1,3 +1,4 @@
+import 'package:Localsearch/vendors/page/main/add/brand/add_brand_page.dart';
 import 'package:Localsearch/vendors/page/main/add/post/add_status_page.dart';
 import 'package:Localsearch/vendors/provider/main_page_provider.dart';
 import 'package:Localsearch/vendors/page/register/membership_page.dart';
@@ -167,7 +168,11 @@ class _AddPageState extends State<AddPage> {
                                 icon: FeatherIcons.award,
                                 label: 'BRAND',
                                 onTap: () {
-                                  Navigator.of(context).pushNamed('/addBrand');
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => AddBrandPage(),
+                                    ),
+                                  );
                                 },
                               ),
 

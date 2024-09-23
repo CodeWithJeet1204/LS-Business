@@ -2,16 +2,7 @@ import 'package:Localsearch/auth/register_method_page.dart';
 import 'package:Localsearch/firebase_options.dart';
 import 'package:Localsearch/first_launch_detection.dart';
 import 'package:Localsearch/vendors/page/intro/intro_page_view.dart';
-import 'package:Localsearch/vendors/page/main/add/brand/add_brand_page.dart';
-import 'package:Localsearch/vendors/page/main/analytics/shop_analytics_page.dart';
 import 'package:Localsearch/vendors/page/main/main_page.dart';
-import 'package:Localsearch/vendors/page/main/profile/data/all_brand_page.dart';
-import 'package:Localsearch/vendors/page/main/profile/data/all_discounts_page.dart';
-import 'package:Localsearch/vendors/page/main/profile/data/all_post_page.dart';
-import 'package:Localsearch/vendors/page/main/profile/data/all_product_page.dart';
-import 'package:Localsearch/vendors/page/main/profile/details/business_details_page.dart';
-import 'package:Localsearch/vendors/page/main/profile/details/owner_details_page.dart';
-import 'package:Localsearch/vendors/page/main/profile/profile_page.dart';
 import 'package:Localsearch/auth/verify/email_verify.dart';
 import 'package:Localsearch/vendors/provider/add_product_provider.dart';
 import 'package:Localsearch/vendors/provider/change_category_provider.dart';
@@ -129,17 +120,6 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      routes: {
-        '/profile': (context) => const ProfilePage(),
-        '/ownerDetails': (context) => const OwnerDetailsPage(),
-        '/businessDetails': (context) => const BusinessDetailsPage(),
-        '/addBrand': (context) => const AddBrandPage(),
-        '/postsPage': (context) => const AllPostsPage(),
-        '/productsPage': (context) => const AllProductsPage(),
-        '/discountsPage': (context) => const AllDiscountPage(),
-        '/brandsPage': (context) => const AllBrandPage(),
-        '/analyticsPage': (context) => const ShopAnalyticsPage(),
-      },
       debugShowCheckedModeBanner: false,
       home: Stack(
         children: [
