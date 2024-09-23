@@ -264,18 +264,18 @@ class _ShortsTileState extends State<ShortsTile> {
                                     ),
                                   ),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.only(left: width * 0.05),
-                                  child: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      FeatherIcons.share2,
-                                      size: width * 0.095,
-                                      color: white,
-                                    ),
-                                    tooltip: 'SHARE',
-                                  ),
-                                ),
+                                // Padding(
+                                //   padding: EdgeInsets.only(left: width * 0.05),
+                                //   child: IconButton(
+                                //     onPressed: () {},
+                                //     icon: Icon(
+                                //       FeatherIcons.share2,
+                                //       size: width * 0.095,
+                                //       color: white,
+                                //     ),
+                                //     tooltip: 'SHARE',
+                                //   ),
+                                // ),
                               ],
                             ),
                           ],
@@ -335,18 +335,18 @@ class _ShortsTileState extends State<ShortsTile> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(left: width * 0.05),
-                          child: IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              FeatherIcons.share2,
-                              size: width * 0.095,
-                              color: white,
-                            ),
-                            tooltip: 'SHARE',
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: EdgeInsets.only(left: width * 0.05),
+                        //   child: IconButton(
+                        //     onPressed: () {},
+                        //     icon: Icon(
+                        //       FeatherIcons.share2,
+                        //       size: width * 0.095,
+                        //       color: white,
+                        //     ),
+                        //     tooltip: 'SHARE',
+                        //   ),
+                        // ),
                       ],
                     ),
                   ],

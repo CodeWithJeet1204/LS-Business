@@ -189,7 +189,7 @@ class MyApp extends StatelessWidget {
           // const ConnectivityNotificationWidget(),
         ],
       ),
-      // home: SelectMembershipPage(hasAvailedLaunchOffer: false),
+      // home: BusinessDetailsPage(),
     );
   }
 }

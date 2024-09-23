@@ -1,5 +1,4 @@
 // ignore_for_file: avoid_function_literals_in_foreach_calls
-
 import 'dart:io';
 import 'package:Localsearch/vendors/page/main/profile/data/all_discounts_page.dart';
 import 'package:Localsearch/widgets/show_loading_dialog.dart';
@@ -19,6 +18,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
+import 'dart:typed_data';
+import 'package:feedback/feedback.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:path_provider/path_provider.dart';
 
 class DiscountPage extends StatefulWidget {
   const DiscountPage({
@@ -724,6 +727,37 @@ class DISCOUNT extends State<DiscountPage> {
     return Scaffold(
       appBar: AppBar(
         actions: [
+          IconButton(
+            onPressed: () {
+              BetterFeedback.of(context).show((feedback) async {
+                Future<String> writeImageToStorage(
+                    Uint8List feedbackScreenshot) async {
+                  final Directory output = await getTemporaryDirectory();
+                  final String screenshotFilePath =
+                      '${output.path}/feedback.png';
+                  final File screenshotFile = File(screenshotFilePath);
+                  await screenshotFile.writeAsBytes(feedbackScreenshot);
+                  return screenshotFilePath;
+                }
+
+                final screenshotFilePath =
+                    await writeImageToStorage(feedback.screenshot);
+
+                final Email email = Email(
+                  body: feedback.text,
+                  subject: 'Localsearch Feedback',
+                  recipients: ['infinitylab1204@gmail.com'],
+                  attachmentPaths: [screenshotFilePath],
+                  isHTML: false,
+                );
+                await FlutterEmailSender.send(email);
+              });
+            },
+            icon: const Icon(
+              Icons.bug_report_outlined,
+            ),
+            tooltip: 'Report Problem',
+          ),
           IconButton(
             onPressed: () async {
               await showLoadingDialog(

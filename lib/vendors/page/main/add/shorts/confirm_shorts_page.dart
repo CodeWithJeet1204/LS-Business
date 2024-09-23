@@ -11,6 +11,10 @@ import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:video_player/video_player.dart';
+import 'dart:typed_data';
+import 'package:feedback/feedback.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ConfirmShortsPage extends StatefulWidget {
   const ConfirmShortsPage({
@@ -143,7 +147,41 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              BetterFeedback.of(context).show((feedback) async {
+                Future<String> writeImageToStorage(
+                    Uint8List feedbackScreenshot) async {
+                  final Directory output = await getTemporaryDirectory();
+                  final String screenshotFilePath =
+                      '${output.path}/feedback.png';
+                  final File screenshotFile = File(screenshotFilePath);
+                  await screenshotFile.writeAsBytes(feedbackScreenshot);
+                  return screenshotFilePath;
+                }
+
+                final screenshotFilePath =
+                    await writeImageToStorage(feedback.screenshot);
+
+                final Email email = Email(
+                  body: feedback.text,
+                  subject: 'Localsearch Feedback',
+                  recipients: ['infinitylab1204@gmail.com'],
+                  attachmentPaths: [screenshotFilePath],
+                  isHTML: false,
+                );
+                await FlutterEmailSender.send(email);
+              });
+            },
+            icon: const Icon(
+              Icons.bug_report_outlined,
+            ),
+            tooltip: 'Report Problem',
+          ),
+        ],
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(

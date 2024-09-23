@@ -8,8 +8,6 @@ import 'package:Localsearch/vendors/page/register/business_social_media_page.dar
 import 'package:Localsearch/vendors/page/register/business_timings_page.dart';
 import 'package:Localsearch/vendors/page/register/get_location_page.dart';
 import 'package:Localsearch/widgets/text_button.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:feather_icons/feather_icons.dart';
 import 'package:Localsearch/vendors/page/main/add/add_page.dart';
 import 'package:Localsearch/vendors/page/main/analytics/analytics_page.dart';
 import 'package:Localsearch/vendors/page/main/discount/add_discount_page.dart';
@@ -22,6 +20,8 @@ import 'package:Localsearch/auth/verify/email_verify.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -143,6 +143,17 @@ class _MainPageState extends State<MainPage> {
             detailsPage = SelectBusinessTimingsPage(
               fromMainPage: true,
             );
+          } else if (getUserDetailsAddedData['allowCall'] == null ||
+              getUserDetailsAddedData['allowChat'] == null) {
+            await store
+                .collection('Business')
+                .doc('Owners')
+                .collection('Users')
+                .doc(auth.currentUser!.uid)
+                .update({
+              'allowCall': true,
+              'allowChat': true,
+            });
           } else if (getUserDetailsAddedData['Image'] != null &&
               getBusinessDetailsAddedData['AadhaarNumber'] != null &&
               (getBusinessDetailsAddedData['MembershipName'] == null ||

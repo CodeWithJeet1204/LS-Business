@@ -6,7 +6,6 @@ import 'package:Localsearch/vendors/page/main/profile/details/owner_details_page
 import 'package:Localsearch/vendors/page/main/profile/view%20page/shorts/all_shorts_page.dart';
 import 'package:Localsearch/widgets/skeleton_container.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:feather_icons/feather_icons.dart';
 import 'package:Localsearch/vendors/page/main/profile/data/all_categories_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
 import 'package:Localsearch/widgets/small_text_container.dart';
@@ -14,6 +13,11 @@ import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:feedback/feedback.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -117,21 +121,51 @@ class _ProfilePageState extends State<ProfilePage> {
           'PROFILE',
         ),
         actions: [
-          // SIGN OUT
+          // IconButton(
+          //   onPressed: () async {},
+          //   // onPressed: () async {
+          //   //   await store
+          //   //       .collection('Shop Types And Category Data')
+          //   //       .doc('Category Properties')
+          //   //       .set({
+          //   //     'categoryPropertiesData': householdCategoryProperties,
+          //   //   });
+          //   // },
+          //   icon: const Icon(
+          //     FeatherIcons.share2,
+          //   ),
+          //   tooltip: 'Share Your Shop',
+          // ),
           IconButton(
-            onPressed: () async {},
-            // onPressed: () async {
-            //   await store
-            //       .collection('Shop Types And Category Data')
-            //       .doc('Category Properties')
-            //       .set({
-            //     'categoryPropertiesData': householdCategoryProperties,
-            //   });
-            // },
+            onPressed: () {
+              BetterFeedback.of(context).show((feedback) async {
+                Future<String> writeImageToStorage(
+                    Uint8List feedbackScreenshot) async {
+                  final Directory output = await getTemporaryDirectory();
+                  final String screenshotFilePath =
+                      '${output.path}/feedback.png';
+                  final File screenshotFile = File(screenshotFilePath);
+                  await screenshotFile.writeAsBytes(feedbackScreenshot);
+                  return screenshotFilePath;
+                }
+
+                final screenshotFilePath =
+                    await writeImageToStorage(feedback.screenshot);
+
+                final Email email = Email(
+                  body: feedback.text,
+                  subject: 'Localsearch Feedback',
+                  recipients: ['infinitylab1204@gmail.com'],
+                  attachmentPaths: [screenshotFilePath],
+                  isHTML: false,
+                );
+                await FlutterEmailSender.send(email);
+              });
+            },
             icon: const Icon(
-              FeatherIcons.share2,
+              Icons.bug_report_outlined,
             ),
-            tooltip: 'Share Your Shop',
+            tooltip: 'Report Problem',
           ),
         ],
       ),

@@ -18,6 +18,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:open_street_map_search_and_pick/open_street_map_search_and_pick.dart';
+import 'dart:typed_data';
+import 'package:feedback/feedback.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:path_provider/path_provider.dart';
 
 class BusinessRegisterDetailsPage extends StatefulWidget {
   const BusinessRegisterDetailsPage({
@@ -37,27 +41,29 @@ class _BusinessRegisterDetailsPageState
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   final storage = FirebaseStorage.instance;
-  final GlobalKey<FormState> businessFormKey = GlobalKey<FormState>();
+  final businessFormKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
+  final addressController = TextEditingController();
   final descriptionController = TextEditingController();
-  bool isNext = false;
-  String? selectedIndustrySegment;
-  bool isImageSelected = false;
+  // String? selectedIndustrySegment;
   File? image;
-  bool isDetectingCity = false;
-  bool isPickingCity = false;
+  String? uploadImagePath;
   double? latitude;
   double? longitude;
   String? displayDetectCity;
   String? cityDetectLocation;
   String? cityPickLocation;
-  String? uploadImagePath;
+  bool isImageSelected = false;
+  bool isDetectingCity = false;
+  bool isPickingCity = false;
+  bool isNext = false;
 
   // DISPOSE
   @override
   void dispose() {
     nameController.dispose();
     // gstController.dispose();
+    addressController.dispose();
     descriptionController.dispose();
     super.dispose();
   }
@@ -207,7 +213,8 @@ class _BusinessRegisterDetailsPageState
           'Open': true,
           'viewsTimestamp': [],
           'followersTimestamp': {},
-          'Description': descriptionController.text.toString(),
+          'Address': addressController.text,
+          'Description': descriptionController.text,
           // 'GSTNumber': gstController.text.toString(),
           // 'Industry': selectedIndustrySegment,
         });
@@ -252,6 +259,39 @@ class _BusinessRegisterDetailsPageState
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text('Business Details'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              BetterFeedback.of(context).show((feedback) async {
+                Future<String> writeImageToStorage(
+                    Uint8List feedbackScreenshot) async {
+                  final Directory output = await getTemporaryDirectory();
+                  final String screenshotFilePath =
+                      '${output.path}/feedback.png';
+                  final File screenshotFile = File(screenshotFilePath);
+                  await screenshotFile.writeAsBytes(feedbackScreenshot);
+                  return screenshotFilePath;
+                }
+
+                final screenshotFilePath =
+                    await writeImageToStorage(feedback.screenshot);
+
+                final Email email = Email(
+                  body: feedback.text,
+                  subject: 'Localsearch Feedback',
+                  recipients: ['infinitylab1204@gmail.com'],
+                  attachmentPaths: [screenshotFilePath],
+                  isHTML: false,
+                );
+                await FlutterEmailSender.send(email);
+              });
+            },
+            icon: const Icon(
+              Icons.bug_report_outlined,
+            ),
+            tooltip: 'Report Problem',
+          ),
+        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -315,9 +355,7 @@ class _BusinessRegisterDetailsPageState
                         borderRadius: 12,
                         horizontalPadding: 0,
                         verticalPadding: 0,
-                        autoFillHints: const [
-                          AutofillHints.streetAddressLevel1
-                        ],
+                        autoFillHints: const [],
                       ),
                       const SizedBox(height: 12),
 
@@ -436,6 +474,22 @@ class _BusinessRegisterDetailsPageState
                               ),
                             ),
                           ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+
+                      // ADDRESS
+                      MyTextFormField(
+                        hintText: 'Address',
+                        controller: addressController,
+                        borderRadius: 12,
+                        horizontalPadding: 0,
+                        verticalPadding: 0,
+                        autoFillHints: const [
+                          AutofillHints.streetAddressLevel1,
+                          AutofillHints.streetAddressLevel2,
+                          AutofillHints.streetAddressLevel3,
+                          AutofillHints.addressCity,
                         ],
                       ),
                       const SizedBox(height: 12),

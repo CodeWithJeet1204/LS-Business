@@ -1,5 +1,4 @@
 // ignore_for_file: avoid_function_literals_in_foreach_calls
-
 import 'dart:io';
 import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -25,6 +24,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
+import 'dart:typed_data';
+import 'package:feedback/feedback.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({
@@ -956,6 +959,37 @@ class _ProductPageState extends State<ProductPage> {
       appBar: AppBar(
         actions: [
           IconButton(
+            onPressed: () {
+              BetterFeedback.of(context).show((feedback) async {
+                Future<String> writeImageToStorage(
+                    Uint8List feedbackScreenshot) async {
+                  final Directory output = await getTemporaryDirectory();
+                  final String screenshotFilePath =
+                      '${output.path}/feedback.png';
+                  final File screenshotFile = File(screenshotFilePath);
+                  await screenshotFile.writeAsBytes(feedbackScreenshot);
+                  return screenshotFilePath;
+                }
+
+                final screenshotFilePath =
+                    await writeImageToStorage(feedback.screenshot);
+
+                final Email email = Email(
+                  body: feedback.text,
+                  subject: 'Localsearch Feedback',
+                  recipients: ['infinitylab1204@gmail.com'],
+                  attachmentPaths: [screenshotFilePath],
+                  isHTML: false,
+                );
+                await FlutterEmailSender.send(email);
+              });
+            },
+            icon: const Icon(
+              Icons.bug_report_outlined,
+            ),
+            tooltip: 'Report Problem',
+          ),
+          IconButton(
             onPressed: () async {
               await confirmDelete();
               if (context.mounted) {
@@ -963,7 +997,8 @@ class _ProductPageState extends State<ProductPage> {
                 Navigator.of(context).pop();
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                      builder: (context) => const AllProductsPage()),
+                    builder: (context) => const AllProductsPage(),
+                  ),
                 );
               }
             },

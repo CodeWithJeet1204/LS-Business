@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:Localsearch/auth/login_page.dart';
+import 'package:Localsearch/vendors/page/main/main_page.dart';
 import 'package:Localsearch/vendors/page/main/profile/details/location_page.dart';
 import 'package:Localsearch/vendors/page/main/profile/details/membership_details_page.dart';
 import 'package:Localsearch/vendors/page/register/business_social_media_page.dart';
@@ -20,6 +21,10 @@ import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'dart:typed_data';
+import 'package:feedback/feedback.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:path_provider/path_provider.dart';
 
 class BusinessDetailsPage extends StatefulWidget {
   const BusinessDetailsPage({super.key});
@@ -138,9 +143,11 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
           isChanging = false;
         });
         if (mounted) {
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-              builder: (context) => BusinessDetailsPage(),
+              builder: (context) => MainPage(),
             ),
             (route) => false,
           );
@@ -268,8 +275,41 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              BetterFeedback.of(context).show((feedback) async {
+                Future<String> writeImageToStorage(
+                    Uint8List feedbackScreenshot) async {
+                  final Directory output = await getTemporaryDirectory();
+                  final String screenshotFilePath =
+                      '${output.path}/feedback.png';
+                  final File screenshotFile = File(screenshotFilePath);
+                  await screenshotFile.writeAsBytes(feedbackScreenshot);
+                  return screenshotFilePath;
+                }
+
+                final screenshotFilePath =
+                    await writeImageToStorage(feedback.screenshot);
+
+                final Email email = Email(
+                  body: feedback.text,
+                  subject: 'Localsearch Feedback',
+                  recipients: ['infinitylab1204@gmail.com'],
+                  attachmentPaths: [screenshotFilePath],
+                  isHTML: false,
+                );
+                await FlutterEmailSender.send(email);
+              });
+            },
+            icon: const Icon(
+              Icons.bug_report_outlined,
+            ),
+            tooltip: 'Report Problem',
+          ),
+        ],
       ),
-      bottomSheet: isChangingName || isChangingDescription
+      bottomSheet: isChangingName || isChangingAddress || isChangingDescription
           ? SizedBox(
               width: width,
               height: 80,
@@ -279,7 +319,6 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                   await showLoadingDialog(
                     context,
                     () async {
-                      print('dialog');
                       if (isChangingName) {
                         await save(
                           nameController,
@@ -292,8 +331,13 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                           'Description',
                           isChangingDescription,
                         );
+                      } else if (isChangingAddress) {
+                        await save(
+                          addressController,
+                          'Address',
+                          isChangingAddress,
+                        );
                       }
-                      print('done');
                     },
                   );
                 },
@@ -579,6 +623,78 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             ),
                             const SizedBox(height: 14),
 
+                            // ADDRESS
+                            Container(
+                              width: width,
+                              // height: isChangingDescription
+                              //     ? width * 0.2775
+                              //     : width * 0.175,
+                              decoration: BoxDecoration(
+                                color: primary2.withOpacity(0.9),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                // horizontal: width * 0.006125,
+                                vertical: height * 0.0125,
+                              ),
+                              child: isChangingAddress
+                                  ? TextField(
+                                      controller: addressController,
+                                      maxLength: 32,
+                                      autofocus: true,
+                                      onTapOutside: (event) =>
+                                          FocusScope.of(context).unfocus(),
+                                      decoration: InputDecoration(
+                                        hintText: 'Change Address',
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                      ),
+                                    )
+                                  : Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            left: width * 0.0335,
+                                          ),
+                                          child: SizedBox(
+                                            width: width * 0.725,
+                                            child: AutoSizeText(
+                                              shopData['Address'] == ''
+                                                  ? 'Address: N/A'
+                                                  : shopData['Address'],
+                                              maxLines: 10,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize: width * 0.045,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            right: width * 0.03,
+                                          ),
+                                          child: IconButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                isChangingName = false;
+                                                isChangingAddress = true;
+                                                isChangingDescription = false;
+                                              });
+                                            },
+                                            icon: const Icon(FeatherIcons.edit),
+                                            tooltip: 'Edit Description',
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                            ),
+                            const SizedBox(height: 14),
+
                             // DESCRIPTION
                             Container(
                               width: width,
@@ -624,7 +740,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                               maxLines: 10,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
-                                                fontSize: width * 0.055,
+                                                fontSize: width * 0.045,
                                               ),
                                             ),
                                           ),

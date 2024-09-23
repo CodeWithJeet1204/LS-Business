@@ -4,6 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:Localsearch/vendors/page/register/business_choose_products_page.dart';
 import 'package:Localsearch/widgets/select_container.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:feedback/feedback.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:path_provider/path_provider.dart';
 
 class BusinessChooseCategoriesPage extends StatefulWidget {
   const BusinessChooseCategoriesPage({
@@ -98,6 +103,39 @@ class _BusinessChooseCategoriesPageState
       appBar: AppBar(
         title: const Text('Choose Your Categories'),
         automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            onPressed: () {
+              BetterFeedback.of(context).show((feedback) async {
+                Future<String> writeImageToStorage(
+                    Uint8List feedbackScreenshot) async {
+                  final Directory output = await getTemporaryDirectory();
+                  final String screenshotFilePath =
+                      '${output.path}/feedback.png';
+                  final File screenshotFile = File(screenshotFilePath);
+                  await screenshotFile.writeAsBytes(feedbackScreenshot);
+                  return screenshotFilePath;
+                }
+
+                final screenshotFilePath =
+                    await writeImageToStorage(feedback.screenshot);
+
+                final Email email = Email(
+                  body: feedback.text,
+                  subject: 'Localsearch Feedback',
+                  recipients: ['infinitylab1204@gmail.com'],
+                  attachmentPaths: [screenshotFilePath],
+                  isHTML: false,
+                );
+                await FlutterEmailSender.send(email);
+              });
+            },
+            icon: const Icon(
+              Icons.bug_report_outlined,
+            ),
+            tooltip: 'Report Problem',
+          ),
+        ],
         // actions: [
         //   MyTextButton(
         //     onPressed: () async {
