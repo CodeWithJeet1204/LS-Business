@@ -137,11 +137,6 @@ class _AddProductPage1State extends State<AddProductPage1> {
         });
       }
     }
-    if (images.isEmpty) {
-      if (mounted) {
-        mySnackBar(context, 'Select an Image');
-      }
-    }
   }
 
   // REMOVE PRODUCT IMAGE

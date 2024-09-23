@@ -549,10 +549,6 @@ class _ProductPageState extends State<ProductPage> {
           mySnackBar(context, e.toString());
         }
       }
-    } else {
-      if (mounted) {
-        mySnackBar(context, 'Select an Image');
-      }
     }
   }
 
@@ -577,10 +573,6 @@ class _ProductPageState extends State<ProductPage> {
   //       if (mounted) {
   //         mySnackBar(context, e.toString());
   //       }
-  //     }
-  //   } else {
-  //     if (mounted) {
-  //       mySnackBar(context, 'Select an Image');
   //     }
   //   }
   // }

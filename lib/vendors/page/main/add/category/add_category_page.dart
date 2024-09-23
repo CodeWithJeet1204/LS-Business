@@ -122,10 +122,6 @@
 //           setState(() {
 //             isSaving = false;
 //           });
-//         } else {
-//           if (mounted) {
-//             mySnackBar(context, 'Select an Image');
-//           }
 //         }
 //       }
 //     }
@@ -138,10 +134,6 @@
 //       setState(() {
 //         _image = (File(im.path));
 //       });
-//     } else {
-//       if (mounted) {
-//         mySnackBar(context, 'Select an Image');
-//       }
 //     }
 //   }
 

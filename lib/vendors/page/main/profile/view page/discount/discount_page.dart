@@ -217,10 +217,6 @@ class DISCOUNT extends State<DiscountPage> {
           mySnackBar(context, e.toString());
         }
       }
-    } else {
-      if (mounted) {
-        mySnackBar(context, 'Select an Image');
-      }
     }
   }
 
@@ -245,10 +241,6 @@ class DISCOUNT extends State<DiscountPage> {
         if (mounted) {
           mySnackBar(context, e.toString());
         }
-      }
-    } else {
-      if (mounted) {
-        mySnackBar(context, 'Select an Image');
       }
     }
   }

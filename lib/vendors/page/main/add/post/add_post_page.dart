@@ -55,10 +55,6 @@
 //           builder: (context) => AddStatusPage(),
 //         ),
 //       );
-//     } else {
-//       if (mounted) {
-//         mySnackBar(context, 'Select an Image');
-//       }
 //     }
 //   }
 

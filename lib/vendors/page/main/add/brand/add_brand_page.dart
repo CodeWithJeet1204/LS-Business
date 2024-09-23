@@ -54,10 +54,6 @@ class _AddBrandPageState extends State<AddBrandPage> {
       setState(() {
         _image = (File(im.path));
       });
-    } else {
-      if (mounted) {
-        mySnackBar(context, 'Select an Image');
-      }
     }
   }
 

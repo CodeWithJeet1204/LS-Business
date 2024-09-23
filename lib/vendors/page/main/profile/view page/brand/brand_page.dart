@@ -102,10 +102,6 @@ class _BrandPageState extends State<BrandPage> {
           mySnackBar(context, e.toString());
         }
       }
-    } else {
-      if (mounted) {
-        mySnackBar(context, 'Select an Image');
-      }
     }
   }
 

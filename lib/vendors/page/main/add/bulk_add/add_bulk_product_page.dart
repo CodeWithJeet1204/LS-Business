@@ -54,10 +54,6 @@
 //           image4 = File(im.path);
 //         }
 //       });
-//     } else {
-//       if (mounted) {
-//         mySnackBar(context, 'Select an Image');
-//       }
 //     }
 //   }
 

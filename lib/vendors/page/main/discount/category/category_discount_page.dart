@@ -53,10 +53,6 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
       setState(() {
         _image = File(im.path);
       });
-    } else {
-      if (mounted) {
-        mySnackBar(context, 'Select an Image');
-      }
     }
   }
 
