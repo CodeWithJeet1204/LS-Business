@@ -3,6 +3,7 @@ import 'package:Localsearch/auth/login_page.dart';
 import 'package:Localsearch/vendors/page/main/profile/details/location_page.dart';
 import 'package:Localsearch/vendors/page/main/profile/details/membership_details_page.dart';
 import 'package:Localsearch/vendors/page/register/business_social_media_page.dart';
+import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:Localsearch/widgets/text_button.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -13,7 +14,7 @@ import 'package:Localsearch/vendors/page/register/business_choose_shop_types_pag
 import 'package:Localsearch/vendors/page/register/business_choose_categories_page.dart';
 import 'package:Localsearch/vendors/page/register/business_choose_products_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/my_button.dart';
 import 'package:Localsearch/widgets/image_pick_dialog.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -272,39 +273,32 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
           ? SizedBox(
               width: width,
               height: 80,
-              child: isSaving
-                  ? Container(
-                      alignment: Alignment.center,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: buttonColor,
-                      ),
-                      child: const Center(
-                        child: CircularProgressIndicator(
-                          color: white,
-                        ),
-                      ),
-                    )
-                  : MyButton(
-                      text: 'SAVE',
-                      onTap: () async {
-                        if (isChangingName) {
-                          await save(
-                            nameController,
-                            'Name',
-                            isChangingName,
-                          );
-                        } else if (isChangingDescription) {
-                          await save(
-                            descriptionController,
-                            'Description',
-                            isChangingDescription,
-                          );
-                        }
-                      },
-                      isLoading: false,
-                      horizontalPadding: 0,
-                    ),
+              child: MyButton(
+                text: 'SAVE',
+                onTap: () async {
+                  await showLoadingDialog(
+                    context,
+                    () async {
+                      print('dialog');
+                      if (isChangingName) {
+                        await save(
+                          nameController,
+                          'Name',
+                          isChangingName,
+                        );
+                      } else if (isChangingDescription) {
+                        await save(
+                          descriptionController,
+                          'Description',
+                          isChangingDescription,
+                        );
+                      }
+                      print('done');
+                    },
+                  );
+                },
+                horizontalPadding: 0,
+              ),
             )
           : Container(
               width: 0,

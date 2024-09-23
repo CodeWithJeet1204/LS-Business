@@ -3,7 +3,7 @@ import 'package:feather_icons/feather_icons.dart';
 import 'package:Localsearch/vendors/page/main/add/category/select_products_for_category_page.dart';
 import 'package:Localsearch/vendors/page/main/profile/view%20page/product/product_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/my_button.dart';
 import 'package:Localsearch/widgets/shimmer_skeleton_container.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:Localsearch/widgets/text_button.dart';
@@ -398,7 +398,6 @@ class _CategoryPageState extends State<CategoryPage> {
                     );
                   },
                   text: 'ADD PRODUCT',
-                  isLoading: false,
                   horizontalPadding: 0,
                 ),
                 const SizedBox(height: 28),

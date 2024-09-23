@@ -1,10 +1,11 @@
 import 'dart:io';
+import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:Localsearch/vendors/page/main/add/brand/select_products_for_brand_page.dart';
 import 'package:Localsearch/vendors/provider/products_added_to_brand.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/my_button.dart';
 import 'package:Localsearch/widgets/image_pick_dialog.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:Localsearch/widgets/text_button.dart';
@@ -164,19 +165,19 @@ class _AddBrandPageState extends State<AddBrandPage> {
         actions: [
           MyTextButton(
             onPressed: () async {
-              await addBrand(productsAddedToBrandProvider);
+              await showLoadingDialog(
+                context,
+                () async {
+                  await addBrand(
+                    productsAddedToBrandProvider,
+                  );
+                },
+              );
             },
             text: 'DONE',
             textColor: primaryDark2,
           ),
         ],
-        bottom: PreferredSize(
-          preferredSize: Size(
-            MediaQuery.of(context).size.width,
-            isSaving ? 10 : 0,
-          ),
-          child: isSaving ? const LinearProgressIndicator() : Container(),
-        ),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(
@@ -318,7 +319,6 @@ class _AddBrandPageState extends State<AddBrandPage> {
                             ),
                           );
                         },
-                        isLoading: false,
                         horizontalPadding: 0,
                         verticalPadding: width * 0.05,
                       ),

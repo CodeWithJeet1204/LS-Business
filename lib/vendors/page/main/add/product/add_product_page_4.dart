@@ -1,4 +1,5 @@
 // ignore_for_file: unnecessary_null_comparison
+import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Localsearch/vendors/page/main/add/product/add_product_page_5.dart';
 import 'package:Localsearch/vendors/provider/add_product_provider.dart';
@@ -392,17 +393,17 @@ class _AddProductPage4State extends State<AddProductPage4> {
         actions: [
           MyTextButton(
             onPressed: () async {
-              await addProduct(addProductProvider);
+              await showLoadingDialog(
+                context,
+                () async {
+                  await addProduct(addProductProvider);
+                },
+              );
             },
             text: 'NEXT',
             textColor: primaryDark2,
           ),
         ],
-        bottom: PreferredSize(
-          preferredSize:
-              isSaving ? const Size(double.infinity, 10) : const Size(0, 0),
-          child: isSaving ? const LinearProgressIndicator() : Container(),
-        ),
       ),
       body: householdCategoryProperties == null
           ? const Center(

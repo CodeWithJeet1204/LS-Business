@@ -1,12 +1,13 @@
 // ignore_for_file: unnecessary_null_comparison
 import 'package:Localsearch/auth/verify/number_verify.dart';
+import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Localsearch/auth/register_method_page.dart';
 import 'package:Localsearch/vendors/firebase/auth_methods.dart';
 import 'package:Localsearch/vendors/page/main/main_page.dart';
 import 'package:Localsearch/vendors/page/register/forgot_password_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/my_button.dart';
 import 'package:Localsearch/widgets/collapse_container.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:Localsearch/widgets/text_button.dart';
@@ -706,10 +707,14 @@ class _LoginPageState extends State<LoginPage> {
                         MyButton(
                           text: 'LOGIN',
                           onTap: () async {
-                            await loginEmail();
+                            await showLoadingDialog(
+                              context,
+                              () async {
+                                await loginEmail();
+                              },
+                            );
                           },
                           horizontalPadding: width * 0.066,
-                          isLoading: isEmailLogging,
                         ),
                       ],
                     ),
@@ -771,10 +776,14 @@ class _LoginPageState extends State<LoginPage> {
                         MyButton(
                           text: phoneText,
                           onTap: () async {
-                            await loginPhone();
+                            await showLoadingDialog(
+                              context,
+                              () async {
+                                await loginPhone();
+                              },
+                            );
                           },
                           horizontalPadding: width * 0.066,
-                          isLoading: isPhoneLogging,
                         ),
                       ],
                     ),

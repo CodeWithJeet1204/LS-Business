@@ -180,13 +180,6 @@
 //             textColor: primaryDark2,
 //           ),
 //         ],
-//         bottom: PreferredSize(
-//           preferredSize: Size(
-//             MediaQuery.of(context).size.width,
-//             isSaving ? 10 : 0,
-//           ),
-//           child: isSaving ? const LinearProgressIndicator() : Container(),
-//         ),
 //       ),
 //       body: SafeArea(
 //         child: Padding(

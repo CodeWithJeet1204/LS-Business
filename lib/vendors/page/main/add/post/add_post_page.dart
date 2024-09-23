@@ -68,11 +68,6 @@
 //           maxLines: 1,
 //           overflow: TextOverflow.ellipsis,
 //         ),
-//         bottom: PreferredSize(
-//           preferredSize:
-//               isPosting ? const Size(double.infinity, 10) : const Size(0, 0),
-//           child: isPosting ? const LinearProgressIndicator() : Container(),
-//         ),
 //       ),
 //       body: LayoutBuilder(
 //         builder: ((context, constraints) {

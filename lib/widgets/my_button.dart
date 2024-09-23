@@ -8,14 +8,12 @@ class MyButton extends StatelessWidget {
     super.key,
     required this.text,
     required this.onTap,
-    required this.isLoading,
     this.width = double.infinity,
     required this.horizontalPadding,
     this.verticalPadding = 0,
   });
 
   final String text;
-  final bool isLoading;
   final width;
   final double horizontalPadding;
   final double verticalPadding;
@@ -41,23 +39,17 @@ class MyButton extends StatelessWidget {
           vertical: verticalPadding,
         ),
         alignment: Alignment.center,
-        child: isLoading
-            ? const Center(
-                child: CircularProgressIndicator(
-                  color: white,
-                ),
-              )
-            : AutoSizeText(
-                text,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: white,
-                  fontSize: MediaQuery.of(context).size.width < screenSize
-                      ? MediaQuery.of(context).size.width * 0.045
-                      : MediaQuery.of(context).size.width * 0.015,
-                ),
-              ),
+        child: AutoSizeText(
+          text,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            color: white,
+            fontSize: MediaQuery.of(context).size.width < screenSize
+                ? MediaQuery.of(context).size.width * 0.045
+                : MediaQuery.of(context).size.width * 0.015,
+          ),
+        ),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Localsearch/vendors/page/main/main_page.dart';
@@ -93,6 +94,9 @@ class _AddProductPage5State extends State<AddProductPage5> {
           .doc(provider.productInfo['productId'])
           .set(provider.productInfo);
 
+      setState(() {
+        isSaving = false;
+      });
       if (mounted) {
         mySnackBar(context, 'Product Added');
         Navigator.of(context).pushAndRemoveUntil(
@@ -102,9 +106,6 @@ class _AddProductPage5State extends State<AddProductPage5> {
           (route) => false,
         );
       }
-      setState(() {
-        isSaving = false;
-      });
     } catch (e) {
       setState(() {
         isSaving = false;
@@ -129,17 +130,17 @@ class _AddProductPage5State extends State<AddProductPage5> {
         actions: [
           MyTextButton(
             onPressed: () async {
-              await save(productProvider);
+              await showLoadingDialog(
+                context,
+                () async {
+                  await save(productProvider);
+                },
+              );
             },
             text: 'DONE',
             textColor: primaryDark2,
           ),
         ],
-        bottom: PreferredSize(
-          preferredSize:
-              isSaving ? const Size(double.infinity, 10) : const Size(0, 0),
-          child: isSaving ? const LinearProgressIndicator() : Container(),
-        ),
       ),
       body: LayoutBuilder(
         builder: ((context, constraints) {

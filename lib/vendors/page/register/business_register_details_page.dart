@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:Localsearch/vendors/page/main/main_page.dart';
 import 'package:Localsearch/widgets/pick_location.dart';
+import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
@@ -9,7 +10,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:Localsearch/vendors/page/register/business_verification_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/my_button.dart';
 import 'package:Localsearch/widgets/image_pick_dialog.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:Localsearch/widgets/text_form_field.dart';
@@ -501,9 +502,13 @@ class _BusinessRegisterDetailsPageState
                         child: MyButton(
                           text: widget.fromMainPage ? 'DONE' : 'NEXT',
                           onTap: () async {
-                            await next();
+                            await showLoadingDialog(
+                              context,
+                              () async {
+                                await next();
+                              },
+                            );
                           },
-                          isLoading: isNext,
                           horizontalPadding: width * 0.055,
                         ),
                       ),

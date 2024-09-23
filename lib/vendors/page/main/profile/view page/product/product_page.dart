@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_function_literals_in_foreach_calls
 
 import 'dart:io';
+import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,7 +13,7 @@ import 'package:Localsearch/vendors/page/main/profile/view%20page/category/categ
 import 'package:Localsearch/vendors/page/main/profile/view%20page/product/change_product_category_page.dart';
 import 'package:Localsearch/vendors/page/main/profile/view%20page/product/image_view.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/my_button.dart';
 import 'package:Localsearch/widgets/image_pick_dialog.dart';
 import 'package:Localsearch/widgets/info_box.dart';
 import 'package:Localsearch/widgets/info_color_box.dart';
@@ -355,63 +356,74 @@ class _ProductPageState extends State<ProductPage> {
                                       text: 'SAVE',
                                       onTap: () async {
                                         if (editKey.currentState!.validate()) {
-                                          setState(() {
-                                            isEditing = true;
-                                          });
-                                          try {
-                                            // 1 WORD PROPERTY
-                                            if (isProperty) {
-                                              Map<String, dynamic>
-                                                  newPropertyMap =
-                                                  propertyData['Properties'];
-
-                                              newPropertyMap[propertyValue] = [
-                                                editController.text
-                                                    .toString()
-                                                    .toUpperCase()
-                                              ];
-                                              await store
-                                                  .collection('Business')
-                                                  .doc('Data')
-                                                  .collection('Products')
-                                                  .doc(widget.productId)
-                                                  .update({
-                                                'Properties': newPropertyMap,
+                                          await showLoadingDialog(
+                                            context,
+                                            () async {
+                                              setState(() {
+                                                isEditing = true;
                                               });
-                                              editController.clear();
+                                              try {
+                                                // 1 WORD PROPERTY
+                                                if (isProperty) {
+                                                  Map<String, dynamic>
+                                                      newPropertyMap =
+                                                      propertyData[
+                                                          'Properties'];
 
-                                              // 1 WORD NOT PROPERTY
-                                            } else {
-                                              await store
-                                                  .collection('Business')
-                                                  .doc('Data')
-                                                  .collection('Products')
-                                                  .doc(widget.productId)
-                                                  .update({
-                                                propertyValue: propertyValue !=
-                                                        'productPrice'
-                                                    ? editController.text
+                                                  newPropertyMap[
+                                                      propertyValue] = [
+                                                    editController.text
                                                         .toString()
-                                                    : double.parse(
-                                                        editController.text),
+                                                        .toUpperCase()
+                                                  ];
+                                                  await store
+                                                      .collection('Business')
+                                                      .doc('Data')
+                                                      .collection('Products')
+                                                      .doc(widget.productId)
+                                                      .update({
+                                                    'Properties':
+                                                        newPropertyMap,
+                                                  });
+                                                  editController.clear();
+
+                                                  // 1 WORD NOT PROPERTY
+                                                } else {
+                                                  await store
+                                                      .collection('Business')
+                                                      .doc('Data')
+                                                      .collection('Products')
+                                                      .doc(widget.productId)
+                                                      .update({
+                                                    propertyValue:
+                                                        propertyValue !=
+                                                                'productPrice'
+                                                            ? editController
+                                                                .text
+                                                                .toString()
+                                                            : double.parse(
+                                                                editController
+                                                                    .text),
+                                                  });
+                                                  editController.clear();
+                                                }
+                                                editController.clear();
+                                                if (context.mounted) {
+                                                  Navigator.of(context).pop();
+                                                }
+                                              } catch (e) {
+                                                if (context.mounted) {
+                                                  mySnackBar(
+                                                      context, e.toString());
+                                                }
+                                              }
+                                              setState(() {
+                                                isEditing = false;
                                               });
-                                              editController.clear();
-                                            }
-                                            editController.clear();
-                                            if (context.mounted) {
-                                              Navigator.of(context).pop();
-                                            }
-                                          } catch (e) {
-                                            if (context.mounted) {
-                                              mySnackBar(context, e.toString());
-                                            }
-                                          }
-                                          setState(() {
-                                            isEditing = false;
-                                          });
+                                            },
+                                          );
                                         }
                                       },
-                                      isLoading: isEditing,
                                       horizontalPadding: 0,
                                     )
                                   : Container(),

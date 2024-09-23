@@ -1,7 +1,8 @@
+import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:Localsearch/vendors/page/main/main_page.dart';
-import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/my_button.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:Localsearch/widgets/text_form_field.dart';
 
@@ -109,10 +110,14 @@ class _LoginEmailAfterForgetPasswordState
                   MyButton(
                     text: 'LOGIN',
                     onTap: () async {
-                      await loginWithEmail();
+                      await showLoadingDialog(
+                        context,
+                        () async {
+                          await loginWithEmail();
+                        },
+                      );
                     },
                     horizontalPadding: width * 0.066,
-                    isLoading: isEmailLogging,
                   ),
                 ],
               ),

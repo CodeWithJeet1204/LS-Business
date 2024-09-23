@@ -1,5 +1,6 @@
 import 'package:Localsearch/auth/login_page.dart';
 import 'package:Localsearch/vendors/page/main/main_page.dart';
+import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:Localsearch/widgets/text_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Localsearch/vendors/firebase/auth_methods.dart';
@@ -7,7 +8,7 @@ import 'package:Localsearch/vendors/page/register/owner_register_details_page.da
 import 'package:Localsearch/auth/verify/email_verify.dart';
 import 'package:Localsearch/auth/verify/number_verify.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/my_button.dart';
 import 'package:Localsearch/widgets/collapse_container.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:Localsearch/widgets/text_form_field.dart';
@@ -512,10 +513,14 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                           MyButton(
                             text: 'SIGNUP',
                             onTap: () async {
-                              await registerEmail();
+                              await showLoadingDialog(
+                                context,
+                                () async {
+                                  await registerEmail();
+                                },
+                              );
                             },
                             horizontalPadding: width * 0.066,
-                            isLoading: isEmailRegistering,
                           ),
                         ],
                       ),
@@ -575,10 +580,14 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                           MyButton(
                             text: phoneText,
                             onTap: () async {
-                              await registerPhone();
+                              await showLoadingDialog(
+                                context,
+                                () async {
+                                  await registerPhone();
+                                },
+                              );
                             },
                             horizontalPadding: width * 0.066,
-                            isLoading: isPhoneRegistering,
                           ),
                         ],
                       ),

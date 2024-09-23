@@ -1,10 +1,11 @@
 import 'dart:io';
+import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:Localsearch/vendors/page/main/discount/brand/select_brands_for_discount_page.dart';
 import 'package:Localsearch/vendors/provider/discount_brand_provider.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/my_button.dart';
 import 'package:Localsearch/widgets/image_pick_dialog.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:Localsearch/widgets/text_button.dart';
@@ -220,16 +221,19 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
         actions: [
           MyTextButton(
             onPressed: () async {
-              await addDiscount(selectedBrandProvider, selectedBrands);
+              await showLoadingDialog(
+                context,
+                () async {
+                  await addDiscount(
+                    selectedBrandProvider,
+                    selectedBrands,
+                  );
+                },
+              );
             },
             text: 'DONE',
           ),
         ],
-        bottom: PreferredSize(
-          preferredSize:
-              isUploading ? const Size(double.infinity, 10) : const Size(0, 0),
-          child: isUploading ? const LinearProgressIndicator() : Container(),
-        ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
@@ -556,7 +560,6 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                           ),
                         );
                       },
-                      isLoading: false,
                       horizontalPadding: 0,
                     ),
                     const SizedBox(height: 20),

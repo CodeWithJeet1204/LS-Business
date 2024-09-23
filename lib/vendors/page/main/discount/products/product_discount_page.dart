@@ -1,11 +1,12 @@
 import 'dart:io';
+import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:Localsearch/vendors/page/main/discount/products/select_products_for_discount_page.dart';
 import 'package:Localsearch/vendors/page/main/profile/view%20page/product/product_page.dart';
 import 'package:Localsearch/vendors/provider/discount_products_provider.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/my_button.dart';
 import 'package:Localsearch/widgets/image_pick_dialog.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:Localsearch/widgets/text_button.dart';
@@ -101,8 +102,10 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
   }
 
   // ADD DISCOUNT
-  Future<void> addDiscount(SelectProductForDiscountProvider provider,
-      List<String> productIdList) async {
+  Future<void> addDiscount(
+    SelectProductForDiscountProvider provider,
+    List<String> productIdList,
+  ) async {
     // End date should be after start date
     if (discountKey.currentState!.validate()) {
       if (startDate == null) {
@@ -199,6 +202,10 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
         if (mounted) {
           mySnackBar(context, 'Discount Added');
         }
+
+        setState(() {
+          isUploading = false;
+        });
         if (widget.changeSelectedProductDiscount != null) {
           if (mounted) {
             Navigator.of(context).pop();
@@ -218,9 +225,6 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
             Navigator.of(context).pop();
           }
         }
-        setState(() {
-          isUploading = false;
-        });
       } catch (e) {
         setState(() {
           isUploading = false;
@@ -254,16 +258,19 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
         actions: [
           MyTextButton(
             onPressed: () async {
-              await addDiscount(selectedProductProvider, selectedProducts);
+              await showLoadingDialog(
+                context,
+                () async {
+                  await addDiscount(
+                    selectedProductProvider,
+                    selectedProducts,
+                  );
+                },
+              );
             },
             text: 'DONE',
           ),
         ],
-        bottom: PreferredSize(
-          preferredSize:
-              isUploading ? const Size(double.infinity, 10) : const Size(0, 0),
-          child: isUploading ? const LinearProgressIndicator() : Container(),
-        ),
       ),
       body: LayoutBuilder(
         builder: ((context, constraints) {
@@ -599,7 +606,6 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                 ),
                               );
                             },
-                      isLoading: false,
                       horizontalPadding: 0,
                     ),
                     const SizedBox(height: 20),

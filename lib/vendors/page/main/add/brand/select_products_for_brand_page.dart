@@ -1,3 +1,4 @@
+import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:Localsearch/vendors/provider/products_added_to_brand.dart';
@@ -173,7 +174,14 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
             onPressed: () async {
               if (widget.isFromBrandPage != null) {
                 if (widget.isFromBrandPage!) {
-                  await addProductToBrand(productsAddedToBrandProvider);
+                  await showLoadingDialog(
+                    context,
+                    () async {
+                      await addProductToBrand(
+                        productsAddedToBrandProvider,
+                      );
+                    },
+                  );
                 }
               }
               if (context.mounted) {
@@ -186,79 +194,72 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
         bottom: PreferredSize(
           preferredSize: Size(
             double.infinity,
-            isAdding ? 90 : 80,
+            80,
           ),
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: width * 0.0166,
-                  vertical: width * 0.0225,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: searchController,
-                        autocorrect: false,
-                        onTapOutside: (event) =>
-                            FocusScope.of(context).unfocus(),
-                        decoration: const InputDecoration(
-                          hintText: 'Search ...',
-                          border: OutlineInputBorder(),
-                        ),
-                        onChanged: (value) {
-                          setState(() {
-                            if (value.isEmpty) {
-                              currentProducts =
-                                  Map<String, Map<String, dynamic>>.from(
-                                allProducts,
-                              );
-                            } else {
-                              Map<String, Map<String, dynamic>>
-                                  filteredProducts =
-                                  Map<String, Map<String, dynamic>>.from(
-                                allProducts,
-                              );
-                              List<String> keysToRemove = [];
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: width * 0.0166,
+              vertical: width * 0.0225,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: searchController,
+                    autocorrect: false,
+                    onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                    decoration: const InputDecoration(
+                      hintText: 'Search ...',
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        if (value.isEmpty) {
+                          currentProducts =
+                              Map<String, Map<String, dynamic>>.from(
+                            allProducts,
+                          );
+                        } else {
+                          Map<String, Map<String, dynamic>> filteredProducts =
+                              Map<String, Map<String, dynamic>>.from(
+                            allProducts,
+                          );
+                          List<String> keysToRemove = [];
 
-                              filteredProducts.forEach((key, productData) {
-                                if (!productData['productName']
-                                    .toString()
-                                    .toLowerCase()
-                                    .contains(value.toLowerCase().trim())) {
-                                  keysToRemove.add(key);
-                                }
-                              });
-
-                              for (var key in keysToRemove) {
-                                filteredProducts.remove(key);
-                              }
-
-                              currentProducts = filteredProducts;
+                          filteredProducts.forEach((key, productData) {
+                            if (!productData['productName']
+                                .toString()
+                                .toLowerCase()
+                                .contains(value.toLowerCase().trim())) {
+                              keysToRemove.add(key);
                             }
                           });
-                        },
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          isGridView = !isGridView;
-                        });
-                      },
-                      icon: Icon(
-                        isGridView ? FeatherIcons.list : FeatherIcons.grid,
-                      ),
-                      iconSize: width * 0.08,
-                      tooltip: isGridView ? 'List View' : 'Grid View',
-                    ),
-                  ],
+
+                          for (var key in keysToRemove) {
+                            filteredProducts.remove(key);
+                          }
+
+                          currentProducts = filteredProducts;
+                        }
+                      });
+                    },
+                  ),
                 ),
-              ),
-              isAdding ? const LinearProgressIndicator() : Container(),
-            ],
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      isGridView = !isGridView;
+                    });
+                  },
+                  icon: Icon(
+                    isGridView ? FeatherIcons.list : FeatherIcons.grid,
+                  ),
+                  iconSize: width * 0.08,
+                  tooltip: isGridView ? 'List View' : 'Grid View',
+                ),
+              ],
+            ),
           ),
         ),
       ),

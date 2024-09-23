@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:Localsearch/vendors/page/main/main_page.dart';
+import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:Localsearch/widgets/text_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -147,12 +148,19 @@ class _GetLocationPageState extends State<GetLocationPage> {
     setState(() {
       isSaving = false;
     });
+
+    if (mounted) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => MainPage(),
+        ),
+        (route) => false,
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Get Location'),
@@ -162,23 +170,16 @@ class _GetLocationPageState extends State<GetLocationPage> {
               if (displayDetectCity == null && cityPickLocation == null) {
                 return mySnackBar(context, 'Detect / Pick Location');
               }
-
-              await done();
-
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(
-                  builder: (context) => MainPage(),
-                ),
-                (route) => false,
+              await showLoadingDialog(
+                context,
+                () async {
+                  await done();
+                },
               );
             },
             text: 'DONE',
           ),
         ],
-        bottom: PreferredSize(
-          preferredSize: Size(isSaving ? width : 0, isSaving ? 10 : 0),
-          child: isSaving ? LinearProgressIndicator() : Container(),
-        ),
       ),
       body: SafeArea(
         child: LayoutBuilder(builder: (context, constraints) {

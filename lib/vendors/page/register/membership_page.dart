@@ -1,10 +1,11 @@
 // ignore_for_file: unnecessary_null_comparison
 import 'dart:convert';
+import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:Localsearch/widgets/text_form_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Localsearch/vendors/page/main/main_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/my_button.dart';
 import 'package:Localsearch/widgets/membership_card.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:Localsearch/widgets/text_button.dart';
@@ -617,9 +618,13 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                             ? 'Pay - $currentPrice'
                             : '❌❌',
                     onTap: () async {
-                      await pay(width);
+                      await showLoadingDialog(
+                        context,
+                        () async {
+                          await pay(width);
+                        },
+                      );
                     },
-                    isLoading: isPaying,
                     horizontalPadding: width * 0.01125,
                   ),
                 ),

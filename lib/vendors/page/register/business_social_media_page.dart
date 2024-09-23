@@ -1,6 +1,7 @@
 import 'package:Localsearch/vendors/page/main/main_page.dart';
 import 'package:Localsearch/vendors/page/register/business_choose_shop_types_page.dart';
-import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/my_button.dart';
+import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:Localsearch/widgets/text_form_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -163,10 +164,14 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
                     // NEXT
                     MyButton(
                       onTap: () async {
-                        await next();
+                        await showLoadingDialog(
+                          context,
+                          () async {
+                            await next();
+                          },
+                        );
                       },
                       text: widget.isChanging ? 'DONE' : 'NEXT',
-                      isLoading: isNext,
                       horizontalPadding: 0,
                     ),
                     const SizedBox(height: 24),
@@ -187,7 +192,6 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
                               );
                             },
                             text: 'SKIP',
-                            isLoading: false,
                             horizontalPadding: 0,
                           ),
                   ],

@@ -2,13 +2,14 @@
 
 import 'dart:io';
 import 'package:Localsearch/vendors/page/main/profile/data/all_discounts_page.dart';
+import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:Localsearch/vendors/page/main/profile/view%20page/brand/brand_page.dart';
 import 'package:Localsearch/vendors/page/main/profile/view%20page/category/category_page.dart';
 import 'package:Localsearch/vendors/page/main/profile/view%20page/product/product_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/my_button.dart';
 import 'package:Localsearch/widgets/image_pick_dialog.dart';
 import 'package:Localsearch/widgets/info_edit_box.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
@@ -375,7 +376,6 @@ class DISCOUNT extends State<DiscountPage> {
       if (widget.discountImageUrl != null) {
         await storage.refFromURL(widget.discountImageUrl!).delete();
       }
-
       if (mounted) {
         Navigator.of(context).pop();
         Navigator.of(context).pop();
@@ -588,13 +588,17 @@ class DISCOUNT extends State<DiscountPage> {
                           MyButton(
                             text: 'SAVE',
                             onTap: () async {
-                              await changeNameBackend(
-                                discountProperty,
-                                propertyName,
-                                keyboardType,
+                              await showLoadingDialog(
+                                context,
+                                () async {
+                                  await changeNameBackend(
+                                    discountProperty,
+                                    propertyName,
+                                    keyboardType,
+                                  );
+                                },
                               );
                             },
-                            isLoading: isChangingName,
                             horizontalPadding: 0,
                           ),
                         ],
@@ -722,21 +726,26 @@ class DISCOUNT extends State<DiscountPage> {
         actions: [
           IconButton(
             onPressed: () async {
-              final discountSnap = await store
-                  .collection('Business')
-                  .doc('Data')
-                  .collection('Discounts')
-                  .doc(widget.discountId)
-                  .get();
+              await showLoadingDialog(
+                context,
+                () async {
+                  final discountSnap = await store
+                      .collection('Business')
+                      .doc('Data')
+                      .collection('Discounts')
+                      .doc(widget.discountId)
+                      .get();
 
-              final discountData = discountSnap.data()!;
+                  final discountData = discountSnap.data()!;
 
-              await confirmDelete(
-                discountData['isProducts']
-                    ? 'Product'
-                    : discountData['isBrands']
-                        ? 'Brand'
-                        : 'Category',
+                  await confirmDelete(
+                    discountData['isProducts']
+                        ? 'Product'
+                        : discountData['isBrands']
+                            ? 'Brand'
+                            : 'Category',
+                  );
+                },
               );
             },
             icon: const Icon(
@@ -747,13 +756,6 @@ class DISCOUNT extends State<DiscountPage> {
             tooltip: 'End Discount',
           ),
         ],
-        bottom: PreferredSize(
-          preferredSize: Size(
-            MediaQuery.of(context).size.width,
-            isAddingImage ? 10 : 0,
-          ),
-          child: isAddingImage ? const LinearProgressIndicator() : Container(),
-        ),
       ),
       body: LayoutBuilder(
         builder: ((context, constraints) {

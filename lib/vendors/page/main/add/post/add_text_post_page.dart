@@ -1,7 +1,8 @@
+import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/my_button.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:uuid/uuid.dart';
 
@@ -137,9 +138,13 @@ class _AddTextPostPageState extends State<AddTextPostPage> {
                     MyButton(
                       text: 'DONE',
                       onTap: () async {
-                        await post();
+                        await showLoadingDialog(
+                          context,
+                          () async {
+                            await post();
+                          },
+                        );
                       },
-                      isLoading: isPosting,
                       horizontalPadding: width * 0.0225,
                     ),
                   ],

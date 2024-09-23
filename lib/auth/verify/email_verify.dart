@@ -1,10 +1,11 @@
 import 'dart:async';
+import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Localsearch/vendors/firebase/auth_methods.dart';
 import 'package:Localsearch/vendors/page/main/main_page.dart';
 import 'package:Localsearch/vendors/page/register/owner_register_details_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/my_button.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -152,9 +153,13 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
             MyButton(
               text: 'I have Verified my Email',
               onTap: () async {
-                await checkEmailVerification(true);
+                await showLoadingDialog(
+                  context,
+                  () async {
+                    await checkEmailVerification(true);
+                  },
+                );
               },
-              isLoading: isCheckingEmailVerified,
               horizontalPadding: MediaQuery.of(context).size.width * 0.066,
             ),
             const SizedBox(height: 20),
@@ -164,12 +169,16 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
                 text: 'Resend Email',
                 onTap: canResendEmail
                     ? () async {
-                        await sendEmailVerification();
+                        await showLoadingDialog(
+                          context,
+                          () async {
+                            await sendEmailVerification();
+                          },
+                        );
                       }
                     : () {
                         return mySnackBar(context, 'Wait for 5 seconds');
                       },
-                isLoading: false,
                 horizontalPadding: MediaQuery.of(context).size.width * 0.066,
               ),
             ),

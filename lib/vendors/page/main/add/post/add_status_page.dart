@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,7 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/my_button.dart';
 import 'package:Localsearch/widgets/image_pick_dialog.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:uuid/uuid.dart';
@@ -51,11 +52,6 @@ class _AddStatusPageState extends State<AddStatusPage> {
         _image.add(File(im.path));
         currentImageIndex = _image.length - 1;
       });
-    }
-    if (images.isEmpty) {
-      if (mounted) {
-        mySnackBar(context, 'Select Image');
-      }
     }
   }
 
@@ -390,9 +386,13 @@ class _AddStatusPageState extends State<AddStatusPage> {
                           MyButton(
                             text: 'DONE',
                             onTap: () async {
-                              await post();
+                              await showLoadingDialog(
+                                context,
+                                () async {
+                                  await post();
+                                },
+                              );
                             },
-                            isLoading: isPosting,
                             horizontalPadding: 0,
                           ),
                         ],

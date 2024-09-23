@@ -1,8 +1,9 @@
 import 'dart:io';
+import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Localsearch/vendors/page/register/business_register_details_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/my_button.dart';
 import 'package:Localsearch/widgets/image_pick_dialog.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:Localsearch/widgets/text_form_field.dart';
@@ -272,9 +273,13 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
                             child: MyButton(
                               text: widget.fromMainPage ? 'DONE' : 'NEXT',
                               onTap: () async {
-                                await next();
+                                await showLoadingDialog(
+                                  context,
+                                  () async {
+                                    await next();
+                                  },
+                                );
                               },
-                              isLoading: isNext,
                               horizontalPadding: width * 0.055,
                             ),
                           ),

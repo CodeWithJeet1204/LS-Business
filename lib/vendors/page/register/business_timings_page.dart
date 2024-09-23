@@ -1,11 +1,12 @@
 import 'package:Localsearch/vendors/page/main/main_page.dart';
+import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:Localsearch/vendors/page/register/membership_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/my_button.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:Localsearch/widgets/text_button.dart';
 
@@ -975,9 +976,13 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
                   MyButton(
                     text: widget.fromMainPage ? 'DONE' : 'NEXT',
                     onTap: () async {
-                      await next();
+                      await showLoadingDialog(
+                        context,
+                        () async {
+                          await next();
+                        },
+                      );
                     },
-                    isLoading: isNext,
                     horizontalPadding: 0,
                   ),
                 ],

@@ -1,9 +1,10 @@
 import 'dart:io';
+import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Localsearch/vendors/page/main/add/shorts/select_product_for_shorts_page.dart';
 import 'package:Localsearch/vendors/page/main/main_page.dart';
-import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/my_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flick_video_player/flick_video_player.dart';
@@ -174,7 +175,6 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
                       });
                     });
                   },
-                  isLoading: false,
                   horizontalPadding: width * 0.025,
                 ),
                 const SizedBox(height: 15),
@@ -182,15 +182,13 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
                   MyButton(
                     text: 'DONE',
                     onTap: () async {
-                      setState(() {
-                        isDone = true;
-                      });
-                      await uploadVideo(data![0], widget.videoPath);
-                      setState(() {
-                        isDone = false;
-                      });
+                      await showLoadingDialog(
+                        context,
+                        () async {
+                          await uploadVideo(data![0], widget.videoPath);
+                        },
+                      );
                     },
-                    isLoading: isDone,
                     horizontalPadding: width * 0.025,
                   ),
                 const SizedBox(height: 20),

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
@@ -6,7 +7,7 @@ import 'package:Localsearch/vendors/page/main/add/brand/select_products_for_bran
 import 'package:Localsearch/vendors/page/main/profile/data/all_brand_page.dart';
 import 'package:Localsearch/vendors/page/main/profile/view%20page/product/product_page.dart';
 import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/my_button.dart';
 import 'package:Localsearch/widgets/image_pick_dialog.dart';
 import 'package:Localsearch/widgets/shimmer_skeleton_container.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
@@ -213,9 +214,13 @@ class _BrandPageState extends State<BrandPage> {
                           MyButton(
                             text: 'SAVE',
                             onTap: () async {
-                              await changeBrandName(brandName);
+                              await showLoadingDialog(
+                                context,
+                                () async {
+                                  await changeBrandName(brandName);
+                                },
+                              );
                             },
-                            isLoading: isChangingName,
                             horizontalPadding: 0,
                           ),
                         ],
@@ -742,7 +747,6 @@ class _BrandPageState extends State<BrandPage> {
                           );
                         },
                         text: 'ADD PRODUCT',
-                        isLoading: false,
                         horizontalPadding: 0,
                       ),
                       const SizedBox(height: 28),

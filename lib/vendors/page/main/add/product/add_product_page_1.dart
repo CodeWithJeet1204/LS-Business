@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_null_comparison
 import 'dart:io';
 import 'package:Localsearch/vendors/page/main/add/product/add_product_page_2.dart';
+import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
@@ -279,17 +280,20 @@ class _AddProductPage1State extends State<AddProductPage1> {
               ? Container()
               : MyTextButton(
                   onPressed: () async {
-                    await addProduct(addProductProvider, selectBrandProvider);
+                    await showLoadingDialog(
+                      context,
+                      () async {
+                        await addProduct(
+                          addProductProvider,
+                          selectBrandProvider,
+                        );
+                      },
+                    );
                   },
                   text: 'NEXT',
                   textColor: primaryDark2,
                 ),
         ],
-        bottom: PreferredSize(
-          preferredSize:
-              isSaving ? const Size(double.infinity, 10) : const Size(0, 0),
-          child: isSaving ? const LinearProgressIndicator() : Container(),
-        ),
       ),
       body: remainingProducts == 0
           ? Center(

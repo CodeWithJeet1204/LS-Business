@@ -1,8 +1,9 @@
+import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:Localsearch/vendors/page/register/login_email_after_forget_password.dart';
-import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/my_button.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 import 'package:Localsearch/widgets/text_form_field.dart';
 
@@ -52,54 +53,60 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   onTap: () async {
                     if (emailController.text.contains('@') &&
                         emailController.text.contains('.co')) {
-                      setState(() {
-                        isForget = true;
-                      });
-                      List myEmails = [];
-                      final userSnap = await store.collection('Users').get();
-
-                      for (var user in userSnap.docs) {
-                        final userData = user.data();
-
-                        final email = userData['Email'];
-
-                        myEmails.add(email);
-                      }
-
-                      if (myEmails.contains(emailController.text)) {
-                        try {
-                          await auth.sendPasswordResetEmail(
-                            email: emailController.text,
-                          );
+                      await showLoadingDialog(
+                        context,
+                        () async {
                           setState(() {
-                            isForget = false;
-                            isSent = true;
+                            isForget = true;
                           });
-                          if (context.mounted) {
-                            mySnackBar(context, 'Password Reset Email Sent');
+                          List myEmails = [];
+                          final userSnap =
+                              await store.collection('Users').get();
+
+                          for (var user in userSnap.docs) {
+                            final userData = user.data();
+
+                            final email = userData['Email'];
+
+                            myEmails.add(email);
                           }
-                        } catch (e) {
-                          setState(() {
-                            isForget = false;
-                          });
-                          if (context.mounted) {
-                            mySnackBar(context, e.toString());
+
+                          if (myEmails.contains(emailController.text)) {
+                            try {
+                              await auth.sendPasswordResetEmail(
+                                email: emailController.text,
+                              );
+                              setState(() {
+                                isForget = false;
+                                isSent = true;
+                              });
+                              if (context.mounted) {
+                                mySnackBar(
+                                    context, 'Password Reset Email Sent');
+                              }
+                            } catch (e) {
+                              setState(() {
+                                isForget = false;
+                              });
+                              if (context.mounted) {
+                                mySnackBar(context, e.toString());
+                              }
+                            }
+                          } else {
+                            setState(() {
+                              isForget = false;
+                            });
+                            if (context.mounted) {
+                              return mySnackBar(
+                                context,
+                                'This email was not used to create User account\nRegister first',
+                              );
+                            }
                           }
-                        }
-                      } else {
-                        setState(() {
-                          isForget = false;
-                        });
-                        if (context.mounted) {
-                          return mySnackBar(
-                            context,
-                            'This email was not used to create User account\nRegister first',
-                          );
-                        }
-                      }
+                        },
+                      );
                     }
                   },
-                  isLoading: isForget,
                   horizontalPadding: 0,
                 ),
                 !isSent ? Container() : const SizedBox(height: 12),
@@ -117,13 +124,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           Navigator.of(context).pop();
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    LoginEmailAfterForgetPassword(
-                                      email: emailController.text,
-                                    )),
+                              builder: (context) =>
+                                  LoginEmailAfterForgetPassword(
+                                email: emailController.text,
+                              ),
+                            ),
                           );
                         },
-                        isLoading: false,
                         horizontalPadding: 0,
                       ),
               ],

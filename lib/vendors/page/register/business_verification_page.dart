@@ -1,8 +1,9 @@
 import 'package:Localsearch/vendors/page/register/business_social_media_page.dart';
+import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:Localsearch/widgets/button.dart';
+import 'package:Localsearch/widgets/my_button.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
 
 class BusinessVerificationPage extends StatefulWidget {
@@ -210,7 +211,6 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
                                 ? 'NOT VALID TRY AGAIN'
                                 : 'VALIDATE AADHAAR'
                             : 'AADHAAR VALIDATED',
-                        isLoading: false,
                         horizontalPadding: 0,
                       ),
 
@@ -252,10 +252,14 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
                       // NEXT
                       MyButton(
                         onTap: () async {
-                          await next();
+                          await showLoadingDialog(
+                            context,
+                            () async {
+                              await next();
+                            },
+                          );
                         },
                         text: 'NEXT',
-                        isLoading: isNext,
                         horizontalPadding: 0,
                       ),
                     ],
