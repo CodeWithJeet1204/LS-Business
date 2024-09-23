@@ -89,7 +89,7 @@ class _ShortsTileState extends State<ShortsTile> {
       context: context,
       builder: ((context) {
         return isLoading
-            ? Center(
+            ? const Center(
                 child: CircularProgressIndicator(),
               )
             : AlertDialog(
@@ -113,14 +113,16 @@ class _ShortsTileState extends State<ShortsTile> {
                       setState(() {
                         isLoading = false;
                       });
-                      Navigator.of(context).pop();
-                      Navigator.of(context).pop();
-                      Navigator.of(context).pop();
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => AllShortsPage(),
-                        ),
-                      );
+                      if (context.mounted) {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const AllShortsPage(),
+                          ),
+                        );
+                      }
                     },
                     text: 'YES',
                     textColor: Colors.red,
@@ -209,7 +211,7 @@ class _ShortsTileState extends State<ShortsTile> {
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
-                                  icon: Icon(
+                                  icon: const Icon(
                                     FeatherIcons.arrowLeft,
                                     color: Colors.white,
                                   ),
@@ -221,7 +223,7 @@ class _ShortsTileState extends State<ShortsTile> {
                                   onPressed: () async {
                                     await confirmDeleteShort();
                                   },
-                                  icon: Icon(
+                                  icon: const Icon(
                                     FeatherIcons.trash,
                                     color: Colors.red,
                                   ),

@@ -1,4 +1,3 @@
-// ignore_for_file: unnecessary_null_comparison
 import 'package:Localsearch/auth/verify/number_verify.dart';
 import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -100,8 +99,8 @@ class _LoginPageState extends State<LoginPage> {
             await showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: Text('Not Registered'),
-                content: Text(
+                title: const Text('Not Registered'),
+                content: const Text(
                   'This account is not registered. Register with this Email',
                 ),
                 actions: [
@@ -114,12 +113,14 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
             );
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => RegisterMethodPage(),
-              ),
-              (route) => false,
-            );
+            if (mounted) {
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => const RegisterMethodPage(),
+                ),
+                (route) => false,
+              );
+            }
           }
           return;
         } else {
@@ -271,8 +272,8 @@ class _LoginPageState extends State<LoginPage> {
             await showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: Text('Not Registered'),
-                content: Text(
+                title: const Text('Not Registered'),
+                content: const Text(
                   'This account is not registered. Register with this Phone Number',
                 ),
                 actions: [
@@ -285,12 +286,14 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
             );
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => RegisterMethodPage(),
-              ),
-              (route) => false,
-            );
+            if (mounted) {
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => const RegisterMethodPage(),
+                ),
+                (route) => false,
+              );
+            }
           }
           return;
         } else {
@@ -449,16 +452,16 @@ class _LoginPageState extends State<LoginPage> {
             .get();
 
         if (vendorExistsSnap.docs.isEmpty) {
+          await auth.signOut();
+          setState(() {
+            isGoogleLogging = false;
+          });
           if (mounted) {
-            await auth.signOut();
-            setState(() {
-              isGoogleLogging = false;
-            });
             await showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: Text('Not Registered'),
-                content: Text(
+                title: const Text('Not Registered'),
+                content: const Text(
                   'This account is not registered. Register with this Google Account',
                 ),
                 actions: [
@@ -471,12 +474,14 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
             );
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => RegisterMethodPage(),
-              ),
-              (route) => false,
-            );
+            if (mounted) {
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => const RegisterMethodPage(),
+                ),
+                (route) => false,
+              );
+            }
           }
           return;
         } else {
@@ -586,7 +591,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Login'),
+        title: const Text('Login'),
       ),
       body: SafeArea(
           child: /* width < screenSize
@@ -842,7 +847,7 @@ class _LoginPageState extends State<LoginPage> {
                       Navigator.of(context).pop();
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: ((context) => RegisterMethodPage()),
+                          builder: ((context) => const RegisterMethodPage()),
                         ),
                       );
                     },

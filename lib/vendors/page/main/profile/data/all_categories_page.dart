@@ -235,7 +235,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
               child: isGridView
                   ? GridView.builder(
                       shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
+                      physics: const ClampingScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 0,
@@ -258,7 +258,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                     )
                   : ListView.builder(
                       shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
+                      physics: const ClampingScrollPhysics(),
                       itemCount: 4,
                       itemBuilder: (context, index) {
                         return Padding(
@@ -276,7 +276,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                     ),
             )
           : currentCategories.isEmpty
-              ? Center(
+              ? const Center(
                   child: Text('No Categories'),
                 )
               : SafeArea(
@@ -297,7 +297,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                                 shrinkWrap: true,
                                 physics: const ClampingScrollPhysics(),
                                 gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
                                   childAspectRatio: 0.75,
                                 ),

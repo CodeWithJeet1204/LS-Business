@@ -110,7 +110,6 @@ class _LocationPageState extends State<LocationPage> {
           setState(() {
             address =
                 '${myAddress[0]['long_name']}, ${myAddress[1]['long_name']}, ${myAddress[2]['long_name']}';
-            print('address updated');
             if (!fromInitState && isDetect != null && isDetect) {
               displayDetectCity =
                   '${myAddress[0]['long_name']}, ${myAddress[1]['long_name']}, ${myAddress[2]['long_name']}';
@@ -155,10 +154,14 @@ class _LocationPageState extends State<LocationPage> {
             });
           }
         } else {
-          mySnackBar(context, 'Failed to get location');
+          if (mounted) {
+            mySnackBar(context, 'Failed to get location');
+          }
         }
       } else {
-        mySnackBar(context, 'Failed to load data');
+        if (mounted) {
+          mySnackBar(context, 'Failed to load data');
+        }
       }
     } catch (e) {
       setState(() {
@@ -167,7 +170,9 @@ class _LocationPageState extends State<LocationPage> {
       setState(() {
         address = 'Couldn\'t get Address';
       });
-      mySnackBar(context, e.toString());
+      if (mounted) {
+        mySnackBar(context, e.toString());
+      }
     }
   }
 
@@ -177,7 +182,7 @@ class _LocationPageState extends State<LocationPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Location'),
+        title: const Text('Location'),
       ),
       body: SafeArea(
         child: Padding(
@@ -199,7 +204,7 @@ class _LocationPageState extends State<LocationPage> {
                       ),
                       padding: EdgeInsets.all(width * 0.025),
                       child: address == null
-                          ? Center(
+                          ? const Center(
                               child: CircularProgressIndicator(),
                             )
                           : Text(
@@ -248,9 +253,9 @@ class _LocationPageState extends State<LocationPage> {
                               ),
                               padding: EdgeInsets.all(width * 0.025),
                               child: isDetectingCity
-                                  ? CircularProgressIndicator()
+                                  ? const CircularProgressIndicator()
                                   : cityPickLocation != null
-                                      ? Icon(FeatherIcons.mapPin)
+                                      ? const Icon(FeatherIcons.mapPin)
                                       : AutoSizeText(
                                           displayDetectCity != null
                                               ? 'Detected'
@@ -276,7 +281,8 @@ class _LocationPageState extends State<LocationPage> {
                               Navigator.of(context)
                                   .push(
                                 MaterialPageRoute(
-                                  builder: (context) => PickLocationPage(),
+                                  builder: (context) =>
+                                      const PickLocationPage(),
                                 ),
                               )
                                   .then(
@@ -305,7 +311,7 @@ class _LocationPageState extends State<LocationPage> {
                               ),
                               padding: EdgeInsets.all(width * 0.025),
                               child: cityDetectLocation != null
-                                  ? Icon(FeatherIcons.map)
+                                  ? const Icon(FeatherIcons.map)
                                   : AutoSizeText(
                                       cityPickLocation != null
                                           ? 'Picked'

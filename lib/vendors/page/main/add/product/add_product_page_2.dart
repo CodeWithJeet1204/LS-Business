@@ -84,7 +84,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Select Shop Type'),
+        title: const Text('Select Shop Type'),
         actions: [
           MyTextButton(
             onPressed: () {
@@ -184,7 +184,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
           return !isShopTypeData
               ? GridView.builder(
                   shrinkWrap: true,
-                  physics: ClampingScrollPhysics(),
+                  physics: const ClampingScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: width * 0.5 / width * 1.6,

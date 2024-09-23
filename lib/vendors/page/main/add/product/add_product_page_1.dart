@@ -1,4 +1,3 @@
-// ignore_for_file: unnecessary_null_comparison
 import 'dart:io';
 import 'package:Localsearch/vendors/page/main/add/product/add_product_page_2.dart';
 import 'package:Localsearch/widgets/show_loading_dialog.dart';
@@ -110,26 +109,27 @@ class _AddProductPage1State extends State<AddProductPage1> {
           currentImageIndex = _image.length - 1;
         });
       }
-
-      await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Max $maxImages Images Allowed'),
-            content: Text(
-              'Your current membership only supports $maxImages maximum',
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
+      if (mounted) {
+        await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Max $maxImages Images Allowed'),
+              content: Text(
+                'Your current membership only supports $maxImages maximum',
               ),
-            ],
-          );
-        },
-      );
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
     } else {
       for (XFile im in images) {
         setState(() {
@@ -244,7 +244,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
           if (mounted) {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: ((context) => AddProductPage2()),
+                builder: ((context) => const AddProductPage2()),
               ),
             );
           }
@@ -296,7 +296,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
         ],
       ),
       body: remainingProducts == 0
-          ? Center(
+          ? const Center(
               child: Text(
                 'Your Product Gallery is full\nDelete older products or renew your membership to increase limit',
                 textAlign: TextAlign.center,
@@ -380,7 +380,8 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                         height: width * 0.225,
                                         child: ListView.builder(
                                           shrinkWrap: true,
-                                          physics: ClampingScrollPhysics(),
+                                          physics:
+                                              const ClampingScrollPhysics(),
                                           scrollDirection: Axis.horizontal,
                                           itemCount: _image.length,
                                           itemBuilder: ((context, index) {

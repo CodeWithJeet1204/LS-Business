@@ -78,7 +78,9 @@ class _AddTextPostPageState extends State<AddTextPostPage> {
         setState(() {
           isPosting = false;
         });
-        mySnackBar(context, e.toString());
+        if (mounted) {
+          mySnackBar(context, e.toString());
+        }
       }
     }
   }
@@ -87,7 +89,7 @@ class _AddTextPostPageState extends State<AddTextPostPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Text Post'),
+        title: const Text('Add Text Post'),
       ),
       body: SafeArea(
         child: LayoutBuilder(

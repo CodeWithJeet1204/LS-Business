@@ -197,7 +197,7 @@ class _SelectProductsForCategoryPageState
           ),
         ],
         bottom: PreferredSize(
-          preferredSize: Size(
+          preferredSize: const Size(
             double.infinity,
             80,
           ),
@@ -273,7 +273,7 @@ class _SelectProductsForCategoryPageState
               child: isGridView
                   ? GridView.builder(
                       shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
+                      physics: const ClampingScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 0,
@@ -296,7 +296,7 @@ class _SelectProductsForCategoryPageState
                   : ListView.builder(
                       shrinkWrap: true,
                       itemCount: 4,
-                      physics: ClampingScrollPhysics(),
+                      physics: const ClampingScrollPhysics(),
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: EdgeInsets.all(
@@ -332,9 +332,9 @@ class _SelectProductsForCategoryPageState
                                 cacheExtent: height * 1.5,
                                 addAutomaticKeepAlives: true,
                                 shrinkWrap: true,
-                                physics: ClampingScrollPhysics(),
+                                physics: const ClampingScrollPhysics(),
                                 gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
                                   crossAxisSpacing: 0,
                                   mainAxisSpacing: 0,
@@ -503,7 +503,7 @@ class _SelectProductsForCategoryPageState
                                     cacheExtent: height * 1.5,
                                     addAutomaticKeepAlives: true,
                                     shrinkWrap: true,
-                                    physics: ClampingScrollPhysics(),
+                                    physics: const ClampingScrollPhysics(),
                                     itemCount:
                                         noOfListView > currentProducts.length
                                             ? currentProducts.length

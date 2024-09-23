@@ -18,7 +18,7 @@ class InfoEditBox extends StatelessWidget {
   final dynamic content;
   final List<dynamic> propertyValue;
   final int noOfAnswers;
-  final width;
+  final double width;
   final int? maxLines;
   final void Function()? onPressed;
 
@@ -79,7 +79,7 @@ class InfoEditBox extends StatelessWidget {
                                   child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
                                     shrinkWrap: true,
-                                    physics: ClampingScrollPhysics(),
+                                    physics: const ClampingScrollPhysics(),
                                     itemCount: propertyValue.length,
                                     itemBuilder: (context, index) {
                                       final e = propertyValue[index];

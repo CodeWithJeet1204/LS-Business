@@ -78,7 +78,7 @@ class _AddProductPage3State extends State<AddProductPage3> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Select Category'),
+        title: const Text('Select Category'),
         actions: [
           MyTextButton(
             onPressed: () {
@@ -180,7 +180,7 @@ class _AddProductPage3State extends State<AddProductPage3> {
           return !isCategoryData
               ? GridView.builder(
                   shrinkWrap: true,
-                  physics: ClampingScrollPhysics(),
+                  physics: const ClampingScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: width * 0.5 / width * 1.6,

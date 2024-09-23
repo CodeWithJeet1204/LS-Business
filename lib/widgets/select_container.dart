@@ -12,11 +12,11 @@ class SelectContainer extends StatefulWidget {
     this.imageUrl,
   });
 
-  final width;
   final String text;
+  final double width;
   final bool isSelected;
-  final void Function()? onTap;
   final String? imageUrl;
+  final void Function()? onTap;
 
   @override
   State<SelectContainer> createState() => _SelectContainerState();

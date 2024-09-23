@@ -113,7 +113,7 @@ class _BusinessChooseCategoriesPageState
         // ],
       ),
       body: categories == null
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : SafeArea(

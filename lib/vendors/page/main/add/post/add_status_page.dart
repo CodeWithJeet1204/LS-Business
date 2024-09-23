@@ -26,7 +26,7 @@ class _AddStatusPageState extends State<AddStatusPage> {
   final store = FirebaseFirestore.instance;
   final postKey = GlobalKey<FormState>();
   final postController = TextEditingController();
-  List<File> _image = [];
+  List<File> image = [];
   int currentImageIndex = 0;
   bool isPosting = false;
   // int imagePostRemaining = 0;
@@ -49,8 +49,8 @@ class _AddStatusPageState extends State<AddStatusPage> {
     final images = await showImagePickDialog(context, false);
     for (XFile im in images) {
       setState(() {
-        _image.add(File(im.path));
-        currentImageIndex = _image.length - 1;
+        image.add(File(im.path));
+        currentImageIndex = image.length - 1;
       });
     }
   }
@@ -58,9 +58,9 @@ class _AddStatusPageState extends State<AddStatusPage> {
   // REMOVE STATUS IMAGE
   void removeStatusImages(int index) {
     setState(() {
-      _image.removeAt(index);
-      if (currentImageIndex == (_image.length)) {
-        currentImageIndex = _image.length - 1;
+      image.removeAt(index);
+      if (currentImageIndex == (image.length)) {
+        currentImageIndex = image.length - 1;
       }
     });
   }
@@ -75,7 +75,7 @@ class _AddStatusPageState extends State<AddStatusPage> {
       try {
         List imageDownloadUrl = [];
 
-        for (File img in _image) {
+        for (File img in image) {
           try {
             Reference ref = FirebaseStorage.instance
                 .ref()
@@ -148,7 +148,9 @@ class _AddStatusPageState extends State<AddStatusPage> {
         setState(() {
           isPosting = false;
         });
-        mySnackBar(context, e.toString());
+        if (mounted) {
+          mySnackBar(context, e.toString());
+        }
       }
     }
   }
@@ -157,7 +159,7 @@ class _AddStatusPageState extends State<AddStatusPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Status'),
+        title: const Text('Add Status'),
       ),
       body: SafeArea(
         child: LayoutBuilder(
@@ -180,7 +182,7 @@ class _AddStatusPageState extends State<AddStatusPage> {
                     //   ),
                     // ),
                     // SizedBox(height: 8),
-                    _image.isEmpty
+                    image.isEmpty
                         ? SizedOverflowBox(
                             size: Size(width, width),
                             child: InkWell(
@@ -241,7 +243,7 @@ class _AddStatusPageState extends State<AddStatusPage> {
                                         image: DecorationImage(
                                           fit: BoxFit.cover,
                                           image: FileImage(
-                                            _image[currentImageIndex],
+                                            image[currentImageIndex],
                                           ),
                                         ),
                                       ),
@@ -284,8 +286,8 @@ class _AddStatusPageState extends State<AddStatusPage> {
                                     child: ListView.builder(
                                       scrollDirection: Axis.horizontal,
                                       shrinkWrap: true,
-                                      physics: ClampingScrollPhysics(),
-                                      itemCount: _image.length,
+                                      physics: const ClampingScrollPhysics(),
+                                      itemCount: image.length,
                                       itemBuilder: ((context, index) {
                                         return GestureDetector(
                                           onTap: () {
@@ -308,7 +310,7 @@ class _AddStatusPageState extends State<AddStatusPage> {
                                                 image: DecorationImage(
                                                   fit: BoxFit.cover,
                                                   image: FileImage(
-                                                    _image[index],
+                                                    image[index],
                                                   ),
                                                 ),
                                               ),
@@ -343,7 +345,7 @@ class _AddStatusPageState extends State<AddStatusPage> {
                               ),
                             ],
                           ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Form(
                       key: postKey,
                       child: Column(
@@ -380,7 +382,7 @@ class _AddStatusPageState extends State<AddStatusPage> {
                             ),
                           ),
 
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
 
                           // DONE
                           MyButton(

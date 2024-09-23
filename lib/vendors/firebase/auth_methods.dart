@@ -82,7 +82,6 @@ class AuthMethods {
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-      // ignore: unused_local_variable
       UserCredential userCredential =
           await auth.signInWithCredential(credential);
       if (userCredential.user != null) {

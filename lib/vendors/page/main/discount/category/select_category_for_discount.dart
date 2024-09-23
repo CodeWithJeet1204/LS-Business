@@ -250,7 +250,7 @@ class _SelectCategoryForDiscountPageState
               child: isGridView
                   ? GridView.builder(
                       shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
+                      physics: const ClampingScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 0,
@@ -272,7 +272,7 @@ class _SelectCategoryForDiscountPageState
                     )
                   : ListView.builder(
                       shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
+                      physics: const ClampingScrollPhysics(),
                       itemCount: 4,
                       itemBuilder: (context, index) {
                         return Padding(

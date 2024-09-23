@@ -8,7 +8,7 @@ Future<void> showLoadingDialog(
     context: context,
     barrierDismissible: false,
     builder: (BuildContext context) {
-      return PopScope(
+      return const PopScope(
         canPop: false,
         child: Dialog(
           child: SizedBox.square(
@@ -23,8 +23,9 @@ Future<void> showLoadingDialog(
   );
 
   await action();
-
-  if (Navigator.of(context).canPop()) {
-    Navigator.of(context).pop();
+  if (context.mounted) {
+    if (Navigator.of(context).canPop()) {
+      Navigator.of(context).pop();
+    }
   }
 }

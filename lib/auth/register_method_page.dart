@@ -97,23 +97,31 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                 email: emailController.text.toString(),
                 password: passwordController.text.toString(),
               );
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(
-                  builder: (context) => MainPage(),
-                ),
-                (route) => false,
-              );
-              return mySnackBar(
-                context,
-                'This account is already registered. Signing you in',
-              );
+              if (mounted) {
+                if (mounted) {
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (context) => const MainPage(),
+                    ),
+                    (route) => false,
+                  );
+                }
+              }
+              if (mounted) {
+                return mySnackBar(
+                  context,
+                  'This account is already registered. Signing you in',
+                );
+              }
             }
           }
-          await authMethods.signUpWithEmail(
-            email: emailController.text,
-            password: passwordController.text,
-            context: context,
-          );
+          if (mounted) {
+            await authMethods.signUpWithEmail(
+              email: emailController.text,
+              password: passwordController.text,
+              context: context,
+            );
+          }
 
           if (auth.currentUser != null) {
             // if (widget.mode == 'vendor') {
@@ -172,7 +180,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
               Navigator.of(context).pop();
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => EmailVerifyPage(
+                  builder: (context) => const EmailVerifyPage(
                     fromMainPage: false,
                   ),
                 ),
@@ -237,7 +245,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
             });
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (context) => LoginPage(),
+                builder: (context) => const LoginPage(),
               ),
               (route) => false,
             );
@@ -351,7 +359,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
             });
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (context) => MainPage(),
+                builder: (context) => const MainPage(),
               ),
               (route) => false,
             );
@@ -449,7 +457,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Register'),
+        title: const Text('Register'),
       ),
       body: SafeArea(
         child: /* width < screenSize
@@ -651,7 +659,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                         Navigator.of(context).pop();
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: ((context) => LoginPage()),
+                            builder: ((context) => const LoginPage()),
                           ),
                         );
                       },

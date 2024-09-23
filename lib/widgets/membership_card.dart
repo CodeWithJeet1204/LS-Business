@@ -116,68 +116,62 @@ class _MembershipCardState extends State<MembershipCard> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Expanded(
-                          child: Container(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding:
-                                      EdgeInsets.only(right: width * 0.0125),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      AutoSizeText(
-                                        'Rs. ',
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        textAlign: TextAlign.end,
-                                        style: TextStyle(
-                                          fontSize: width * 0.0611,
-                                          fontWeight: FontWeight.w500,
-                                          color: widget.priceTextColor,
-                                        ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(right: width * 0.0125),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    AutoSizeText(
+                                      'Rs. ',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.end,
+                                      style: TextStyle(
+                                        fontSize: width * 0.0611,
+                                        fontWeight: FontWeight.w500,
+                                        color: widget.priceTextColor,
                                       ),
-                                      widget.discountPrice == null
-                                          ? Container()
-                                          : AutoSizeText(
-                                              widget.discountPrice!
-                                                  .toStringAsFixed(0),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.start,
-                                              style: TextStyle(
-                                                fontSize: width * 0.0611,
-                                                fontWeight: FontWeight.w600,
-                                                color: widget.priceTextColor,
-                                              ),
+                                    ),
+                                    widget.discountPrice == null
+                                        ? Container()
+                                        : AutoSizeText(
+                                            widget.discountPrice!
+                                                .toStringAsFixed(0),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              fontSize: width * 0.0611,
+                                              fontWeight: FontWeight.w600,
+                                              color: widget.priceTextColor,
                                             ),
-                                    ],
-                                  ),
+                                          ),
+                                  ],
                                 ),
-                                widget.originalPrice == null
-                                    ? Container()
-                                    : AutoSizeText(
-                                        widget.originalPrice!
-                                            .toStringAsFixed(0),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                          fontSize: width * 0.0475,
-                                          fontWeight: FontWeight.w500,
-                                          color: widget.priceTextColor,
-                                          decoration:
-                                              TextDecoration.lineThrough,
-                                          decorationColor: Colors.red,
-                                          decorationThickness: 2,
-                                        ),
+                              ),
+                              widget.originalPrice == null
+                                  ? Container()
+                                  : AutoSizeText(
+                                      widget.originalPrice!.toStringAsFixed(0),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                        fontSize: width * 0.0475,
+                                        fontWeight: FontWeight.w500,
+                                        color: widget.priceTextColor,
+                                        decoration: TextDecoration.lineThrough,
+                                        decorationColor: Colors.red,
+                                        decorationThickness: 2,
                                       ),
-                              ],
-                            ),
+                                    ),
+                            ],
                           ),
                         ),
                         widget.discount == null

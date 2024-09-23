@@ -143,7 +143,7 @@ class _ChangeProductCategoryPageState extends State<ChangeProductCategoryPage> {
           ),
         ],
         bottom: PreferredSize(
-          preferredSize: Size(
+          preferredSize: const Size(
             double.infinity,
             80,
           ),
@@ -223,8 +223,9 @@ class _ChangeProductCategoryPageState extends State<ChangeProductCategoryPage> {
               : isGridView
                   ? GridView.builder(
                       shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      physics: const ClampingScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         childAspectRatio: 0.75,
                       ),
@@ -323,7 +324,7 @@ class _ChangeProductCategoryPageState extends State<ChangeProductCategoryPage> {
                       width: width,
                       child: ListView.builder(
                         shrinkWrap: true,
-                        physics: ClampingScrollPhysics(),
+                        physics: const ClampingScrollPhysics(),
                         itemCount: currentCategories.length,
                         itemBuilder: ((context, index) {
                           final id = currentCategories.keys.toList()[index];

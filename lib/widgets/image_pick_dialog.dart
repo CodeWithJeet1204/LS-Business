@@ -19,7 +19,7 @@ Future<List<XFile>> showImagePickDialog(
           builder: (context, setState) {
             return Dialog(
               child: isLoading
-                  ? SizedBox(
+                  ? const SizedBox(
                       height: 100,
                       child: Center(
                         child: Text('Checking Image Quality'),

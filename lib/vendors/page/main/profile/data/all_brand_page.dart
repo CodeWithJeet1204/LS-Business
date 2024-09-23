@@ -295,7 +295,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
               child: isGridView
                   ? GridView.builder(
                       shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
+                      physics: const ClampingScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 0,
@@ -318,7 +318,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
                     )
                   : ListView.builder(
                       shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
+                      physics: const ClampingScrollPhysics(),
                       itemCount: 4,
                       itemBuilder: (context, index) {
                         return Padding(

@@ -1,4 +1,3 @@
-// ignore_for_file: unnecessary_null_comparison
 import 'dart:convert';
 import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:Localsearch/widgets/text_form_field.dart';
@@ -81,32 +80,34 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
         }
 
         if (permission == LocationPermission.deniedForever) {
-          ScaffoldMessenger.of(context).clearSnackBars();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'Location permissions are permanently denied. Enable them in Settings.',
-                style: const TextStyle(
-                  color: Color.fromARGB(255, 240, 252, 255),
+          if (mounted) {
+            ScaffoldMessenger.of(context).clearSnackBars();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: const Text(
+                  'Location permissions are permanently denied. Enable them in Settings.',
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 240, 252, 255),
+                  ),
                 ),
+                action: SnackBarAction(
+                  label: 'Open Settings',
+                  onPressed: () async {
+                    await Geolocator.openAppSettings();
+                  },
+                  textColor: primary2,
+                ),
+                elevation: 2,
+                backgroundColor: primaryDark,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                dismissDirection: DismissDirection.down,
+                behavior: SnackBarBehavior.floating,
               ),
-              action: SnackBarAction(
-                label: 'Open Settings',
-                onPressed: () async {
-                  await Geolocator.openAppSettings();
-                },
-                textColor: primary2,
-              ),
-              elevation: 2,
-              backgroundColor: primaryDark,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              dismissDirection: DismissDirection.down,
-              behavior: SnackBarBehavior.floating,
-            ),
-          );
-          await Future.delayed(Duration(seconds: 1));
+            );
+          }
+          await Future.delayed(const Duration(seconds: 3));
           continue;
         }
 
@@ -384,10 +385,12 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
             setState(() {
               isPaying = false;
             });
-            return mySnackBar(
-              context,
-              'Leader Code Doesn\'t Exists, Check Again',
-            );
+            if (mounted) {
+              return mySnackBar(
+                context,
+                'Leader Code Doesn\'t Exists, Check Again',
+              );
+            }
           }
         }
 
@@ -396,7 +399,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
           final now = DateTime.now();
 
           if (membershipDuration == '10 Days') {
-            return Duration(days: 10);
+            return const Duration(days: 10);
           } else if (membershipDuration == '1 Month') {
             return DateTime(now.year, now.month + 1, now.day).difference(now);
           } else if (membershipDuration == '3 Months') {
@@ -425,7 +428,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
         final productGallery = membershipData['productGallery'];
         final noOfShorts = membershipData['noOfShorts'];
 
-        final vendorDoc = await store
+        final vendorDoc = store
             .collection('Business')
             .doc('Owners')
             .collection('Shops')
@@ -461,7 +464,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
           isPaying = false;
         });
         if (auth.currentUser != null) {
-          if (context.mounted) {
+          if (mounted) {
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                 builder: (context) => const MainPage(),
@@ -474,7 +477,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
         setState(() {
           isPaying = false;
         });
-        if (context.mounted) {
+        if (mounted) {
           return mySnackBar(context, e.toString());
         }
       }
@@ -505,13 +508,15 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                 'Amount': amount,
               });
             } else {
+              if (mounted) {
+                return mySnackBar(
+                  context,
+                  'Leader Code Doesn\'t Exists, Check Again',
+                );
+              }
               setState(() {
                 isPaying = false;
               });
-              return mySnackBar(
-                context,
-                'Leader Code Doesn\'t Exists, Check Again',
-              );
             }
           }
 
@@ -530,7 +535,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
 
           final maxImages = membershipData['maxImages'];
 
-          final vendorDoc = await store
+          final vendorDoc = store
               .collection('Business')
               .doc('Owners')
               .collection('Shops')
@@ -568,7 +573,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
             isPaying = false;
           });
           if (auth.currentUser != null) {
-            if (context.mounted) {
+            if (mounted) {
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
                   builder: (context) => const MainPage(),
@@ -581,7 +586,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
           setState(() {
             isPaying = false;
           });
-          if (context.mounted) {
+          if (mounted) {
             return mySnackBar(context, e.toString());
           }
         }
@@ -602,7 +607,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Select Membership'),
+        title: const Text('Select Membership'),
       ),
       bottomSheet: // PAY BUTTON
           selectedDuration == 'Duration' && !isAvailingOffer
@@ -628,8 +633,8 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                     horizontalPadding: width * 0.01125,
                   ),
                 ),
-      body: isData == false || isOffer == null
-          ? Center(
+      body: isData == false
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : SafeArea(
@@ -649,7 +654,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                                 borderRadius: 12,
                                 horizontalPadding: width * 0.025,
                               ),
-                              Divider(),
+                              const Divider(),
                             ],
                           ),
 
@@ -661,11 +666,10 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                             children: [
                               Padding(
                                 padding: EdgeInsets.only(left: width * 0.033),
-                                child: Text(
+                                child: const Text(
                                   'Launch Offer',
                                   style: TextStyle(
-                                    color:
-                                        const Color.fromARGB(255, 63, 63, 63),
+                                    color: Color.fromARGB(255, 63, 63, 63),
                                   ),
                                 ),
                               ),
@@ -845,17 +849,17 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                                   },
                                 ),
                               ),
-                              Divider(),
+                              const Divider(),
                             ],
                           ),
 
                     // MEMBERSHIPS
                     Padding(
                       padding: EdgeInsets.only(left: width * 0.033),
-                      child: Text(
+                      child: const Text(
                         'Memberships',
                         style: TextStyle(
-                          color: const Color.fromARGB(255, 63, 63, 63),
+                          color: Color.fromARGB(255, 63, 63, 63),
                         ),
                       ),
                     ),
@@ -996,9 +1000,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                                 selectedMembership = 'Registration';
                                 // isPremiumSelected = false;
                                 currentPrice =
-                                    showDiscount('Registration') == null
-                                        ? null
-                                        : showDiscount('Registration')!.toInt();
+                                    showDiscount('Registration')?.toInt();
                               });
                             },
                           ),
@@ -1027,9 +1029,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                                 isAvailingOffer = false;
                                 selectedMembership = 'Basic';
                                 // isPremiumSelected = false;
-                                currentPrice = showDiscount('Basic') == null
-                                    ? null
-                                    : showDiscount('Basic')!.toInt();
+                                currentPrice = showDiscount('Basic')?.toInt();
                               });
                             },
                           ),
@@ -1063,9 +1063,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                                 isAvailingOffer = false;
                                 selectedMembership = 'Gold';
                                 // isPremiumSelected = false;
-                                currentPrice = showDiscount('Gold') == null
-                                    ? null
-                                    : showDiscount('Gold')!.toInt();
+                                currentPrice = showDiscount('Gold')?.toInt();
                               });
                             },
                           ),

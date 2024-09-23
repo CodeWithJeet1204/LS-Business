@@ -12,7 +12,7 @@ class CheckBoxContainer extends StatefulWidget {
   });
 
   final String text;
-  final width;
+  final double width;
   final bool value;
   final void Function(bool?)? function;
 

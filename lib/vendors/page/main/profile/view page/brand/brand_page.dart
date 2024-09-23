@@ -818,7 +818,8 @@ class _BrandPageState extends State<BrandPage> {
                                         // PRODUCTS IN GRIDVIEW
                                         ? GridView.builder(
                                             shrinkWrap: true,
-                                            physics: ClampingScrollPhysics(),
+                                            physics:
+                                                const ClampingScrollPhysics(),
                                             gridDelegate:
                                                 SliverGridDelegateWithFixedCrossAxisCount(
                                               crossAxisCount: 2,
@@ -1002,7 +1003,8 @@ class _BrandPageState extends State<BrandPage> {
                                         // PRODUCTS IN LISTVIEW
                                         : ListView.builder(
                                             shrinkWrap: true,
-                                            physics: ClampingScrollPhysics(),
+                                            physics:
+                                                const ClampingScrollPhysics(),
                                             itemCount:
                                                 snapshot.data!.docs.length,
                                             itemBuilder: ((context, index) {
@@ -1116,7 +1118,8 @@ class _BrandPageState extends State<BrandPage> {
                                   child: isGridView
                                       ? GridView.builder(
                                           shrinkWrap: true,
-                                          physics: ClampingScrollPhysics(),
+                                          physics:
+                                              const ClampingScrollPhysics(),
                                           gridDelegate:
                                               SliverGridDelegateWithFixedCrossAxisCount(
                                             crossAxisCount: 2,
@@ -1142,7 +1145,8 @@ class _BrandPageState extends State<BrandPage> {
                                         )
                                       : ListView.builder(
                                           shrinkWrap: true,
-                                          physics: ClampingScrollPhysics(),
+                                          physics:
+                                              const ClampingScrollPhysics(),
                                           itemCount: 4,
                                           itemBuilder: (context, index) {
                                             return Padding(

@@ -65,8 +65,8 @@ class _MembershipDetailsPageState extends State<MembershipDetailsPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Change Membership'),
-          content: Text(
+          title: const Text('Change Membership'),
+          content: const Text(
             'It will cancel this membership, and you have to get a new Membership by paying',
           ),
           actions: [
@@ -82,7 +82,7 @@ class _MembershipDetailsPageState extends State<MembershipDetailsPage> {
                 Navigator.of(context).pop();
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => SelectMembershipPage(
+                    builder: (context) => const SelectMembershipPage(
                       hasAvailedLaunchOffer: true,
                     ),
                   ),
@@ -101,11 +101,11 @@ class _MembershipDetailsPageState extends State<MembershipDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Membership Details'),
+        title: const Text('Membership Details'),
       ),
       body: SafeArea(
         child: data == null
-            ? Center(
+            ? const Center(
                 child: CircularProgressIndicator(),
               )
             : LayoutBuilder(
@@ -174,7 +174,7 @@ class _MembershipDetailsPageState extends State<MembershipDetailsPage> {
                                     fontSize: width * 0.03,
                                   ),
                                 ),
-                                SizedBox(height: 4),
+                                const SizedBox(height: 4),
                                 Text(
                                   DateFormat('dd MMMM yyyy').format(
                                       (data!['MembershipStartDateTime']
@@ -219,7 +219,7 @@ class _MembershipDetailsPageState extends State<MembershipDetailsPage> {
                                     fontSize: width * 0.03,
                                   ),
                                 ),
-                                SizedBox(height: 4),
+                                const SizedBox(height: 4),
                                 Text(
                                   DateFormat('dd MMMM yyyy').format(
                                       (data!['MembershipEndDateTime']
@@ -264,7 +264,7 @@ class _MembershipDetailsPageState extends State<MembershipDetailsPage> {
                                     fontSize: width * 0.03,
                                   ),
                                 ),
-                                SizedBox(height: 4),
+                                const SizedBox(height: 4),
                                 Builder(
                                   builder: (context) {
                                     Map<String, int> calculateMonthsAndDays(
@@ -319,7 +319,7 @@ class _MembershipDetailsPageState extends State<MembershipDetailsPage> {
                             ),
                           ),
 
-                          SizedBox(height: 24),
+                          const SizedBox(height: 24),
 
                           MyTextButton(
                             onPressed: () async {

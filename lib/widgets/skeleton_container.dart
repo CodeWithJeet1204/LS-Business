@@ -8,8 +8,8 @@ class SkeletonContainer extends StatelessWidget {
     required this.height,
   });
 
-  final width;
-  final height;
+  final double width;
+  final double height;
 
   @override
   Widget build(BuildContext context) {

@@ -102,7 +102,7 @@ class _BusinessChooseShopTypesPageState
         automaticallyImplyLeading: false,
       ),
       body: shopTypes == null
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : SafeArea(
@@ -117,7 +117,7 @@ class _BusinessChooseShopTypesPageState
                     height: height * 0.8875,
                     child: GridView.builder(
                       shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
+                      physics: const ClampingScrollPhysics(),
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,

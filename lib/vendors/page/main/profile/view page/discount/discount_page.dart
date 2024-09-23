@@ -127,14 +127,11 @@ class DISCOUNT extends State<DiscountPage> {
           .get();
 
       if (brandSnap.exists) {
-        print('oh yes');
         final brandData = brandSnap.data()!;
 
         myBrands.add(brandData);
       }
     });
-
-    print('myBrands: $myBrands');
 
     setState(() {
       brands = myBrands;
@@ -328,20 +325,23 @@ class DISCOUNT extends State<DiscountPage> {
             .where('discountId', isEqualTo: widget.discountId)
             .get();
 
-        productSnap.docs.forEach((product) async {
-          final productData = product.data();
+        await Future.forEach(
+          productSnap.docs,
+          (product) async {
+            final productData = product.data();
 
-          final productId = productData['productId'];
+            final productId = productData['productId'];
 
-          await store
-              .collection('Business')
-              .doc('Data')
-              .collection('Brands')
-              .doc(productId)
-              .update({
-            'discountId': '',
-          });
-        });
+            await store
+                .collection('Business')
+                .doc('Data')
+                .collection('Brands')
+                .doc(productId)
+                .update({
+              'discountId': '',
+            });
+          },
+        );
       } else if (type == 'Brand') {
         final brandSnap = await store
             .collection('Business')
@@ -350,7 +350,7 @@ class DISCOUNT extends State<DiscountPage> {
             .where('discountId', isEqualTo: widget.discountId)
             .get();
 
-        brandSnap.docs.forEach((brand) async {
+        await Future.forEach(brandSnap.docs, (brand) async {
           final brandData = brand.data();
 
           final brandId = brandData['brandId'];
@@ -382,7 +382,7 @@ class DISCOUNT extends State<DiscountPage> {
         Navigator.of(context).pop();
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => AllDiscountPage(),
+            builder: (context) => const AllDiscountPage(),
           ),
         );
         mySnackBar(context, 'Discount Deleted');
@@ -409,7 +409,7 @@ class DISCOUNT extends State<DiscountPage> {
         'discountId': '',
       });
 
-      final discountDoc = await store
+      final discountDoc = store
           .collection('Business')
           .doc('Data')
           .collection('Discounts')
@@ -436,7 +436,7 @@ class DISCOUNT extends State<DiscountPage> {
         'discountId': '',
       });
 
-      final discountDoc = await store
+      final discountDoc = store
           .collection('Business')
           .doc('Data')
           .collection('Discounts')
@@ -454,7 +454,7 @@ class DISCOUNT extends State<DiscountPage> {
         'brands': brands,
       });
     } else if (type == 'Category') {
-      final discountDoc = await store
+      final discountDoc = store
           .collection('Business')
           .doc('Data')
           .collection('Discounts')
@@ -1169,9 +1169,9 @@ class DISCOUNT extends State<DiscountPage> {
                                               ? GridView.builder(
                                                   shrinkWrap: true,
                                                   physics:
-                                                      ClampingScrollPhysics(),
+                                                      const ClampingScrollPhysics(),
                                                   gridDelegate:
-                                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                                      const SliverGridDelegateWithFixedCrossAxisCount(
                                                     crossAxisCount: 2,
                                                     childAspectRatio: 0.65,
                                                   ),
@@ -1354,7 +1354,7 @@ class DISCOUNT extends State<DiscountPage> {
                                               : ListView.builder(
                                                   shrinkWrap: true,
                                                   physics:
-                                                      ClampingScrollPhysics(),
+                                                      const ClampingScrollPhysics(),
                                                   itemCount: products!.length,
                                                   itemBuilder:
                                                       ((context, index) {
@@ -1550,7 +1550,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                 ? GridView.builder(
                                                     shrinkWrap: true,
                                                     physics:
-                                                        ClampingScrollPhysics(),
+                                                        const ClampingScrollPhysics(),
                                                     gridDelegate:
                                                         const SliverGridDelegateWithFixedCrossAxisCount(
                                                       crossAxisCount: 2,
@@ -1711,7 +1711,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                 : ListView.builder(
                                                     shrinkWrap: true,
                                                     physics:
-                                                        ClampingScrollPhysics(),
+                                                        const ClampingScrollPhysics(),
                                                     itemCount: brands!.length,
                                                     itemBuilder:
                                                         ((context, index) {
@@ -2062,7 +2062,7 @@ class DISCOUNT extends State<DiscountPage> {
                                                 : ListView.builder(
                                                     shrinkWrap: true,
                                                     physics:
-                                                        ClampingScrollPhysics(),
+                                                        const ClampingScrollPhysics(),
                                                     itemCount:
                                                         categories!.length,
                                                     itemBuilder:

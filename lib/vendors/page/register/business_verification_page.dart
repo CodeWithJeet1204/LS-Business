@@ -145,7 +145,7 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Verification'),
+        title: const Text('Verification'),
       ),
       body: SafeArea(
         child: LayoutBuilder(
@@ -161,7 +161,7 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // CANNOT BE CHANGED
-                      Text(
+                      const Text(
                         'Aadhaar & GST Number Cannot Be Changed Later',
                         textAlign: TextAlign.center,
                       ),
@@ -214,7 +214,7 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
                         horizontalPadding: 0,
                       ),
 
-                      Divider(),
+                      const Divider(),
 
                       // GST NUMBER
                       TextFormField(

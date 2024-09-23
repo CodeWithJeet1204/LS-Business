@@ -15,10 +15,10 @@ class DetailsContainer extends StatefulWidget {
 
   final String text;
   final String? value;
+  final double width;
   final TextEditingController controller;
-  final void Function() onTap;
   final bool isChanging;
-  final width;
+  final void Function() onTap;
 
   @override
   State<DetailsContainer> createState() => _DetailsContainerState();

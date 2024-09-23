@@ -71,7 +71,7 @@ class _LoginEmailAfterForgetPasswordState
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Email Login'),
+        title: const Text('Email Login'),
       ),
       body: SafeArea(
         child: Padding(

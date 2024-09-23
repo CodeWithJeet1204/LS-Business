@@ -55,7 +55,6 @@ class _BusinessChooseProductsPageState
     if (total != null && noOf < total!) {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
-        print('total: $total');
         setState(() {
           noOf = noOf + 4;
         });
@@ -87,7 +86,6 @@ class _BusinessChooseProductsPageState
 
     setState(() {
       total = totalSubCategories;
-      print('total: $total');
       allProducts = myProducts;
     });
   }
@@ -152,7 +150,7 @@ class _BusinessChooseProductsPageState
         automaticallyImplyLeading: false,
       ),
       body: allProducts == null
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : SafeArea(
@@ -163,7 +161,7 @@ class _BusinessChooseProductsPageState
                   cacheExtent: height * 1.5,
                   addAutomaticKeepAlives: true,
                   shrinkWrap: true,
-                  physics: ClampingScrollPhysics(),
+                  physics: const ClampingScrollPhysics(),
                   itemCount: noOf > widget.selectedCategories.length
                       ? widget.selectedCategories.length
                       : noOf,
@@ -187,7 +185,7 @@ class _BusinessChooseProductsPageState
                         ),
                         ListView.builder(
                           shrinkWrap: true,
-                          physics: ClampingScrollPhysics(),
+                          physics: const ClampingScrollPhysics(),
                           itemCount: allProducts![subCategory].length,
                           itemBuilder: (context, productIndex) {
                             final product =
@@ -245,7 +243,7 @@ class _BusinessChooseProductsPageState
                                                 1,
                                               ),
                                             ),
-                                            color: Color.fromRGBO(
+                                            color: const Color.fromRGBO(
                                               133,
                                               255,
                                               137,

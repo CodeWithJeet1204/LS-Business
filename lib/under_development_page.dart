@@ -9,20 +9,20 @@ class UnderDevelopmentPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('App Under Development'),
+        title: const Text('App Under Development'),
       ),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Center(
+            const Center(
               child: Text(
                 'This app is currently under development\nTry again after some time',
                 textAlign: TextAlign.center,
               ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             MyTextButton(
               onPressed: () {
                 SystemNavigator.pop();

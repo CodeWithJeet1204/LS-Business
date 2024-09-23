@@ -228,7 +228,7 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
         if (widget.fromMainPage) {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-              builder: (context) => MainPage(),
+              builder: (context) => const MainPage(),
             ),
             (route) => false,
           );

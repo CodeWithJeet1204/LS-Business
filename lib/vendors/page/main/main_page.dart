@@ -58,7 +58,7 @@ class _MainPageState extends State<MainPage> {
           developmentData['businessUnderDevelopment'];
 
       if (businessUnderDevelopment) {
-        detailsPage = UnderDevelopmentPage();
+        detailsPage = const UnderDevelopmentPage();
       } else {
         final getUserDetailsAdded = await store
             .collection('Business')
@@ -137,10 +137,10 @@ class _MainPageState extends State<MainPage> {
             );
           } else if (getBusinessDetailsAddedData['City'] == null ||
               getBusinessDetailsAddedData['Latitude'] == null) {
-            detailsPage = GetLocationPage();
+            detailsPage = const GetLocationPage();
           } else if (getBusinessDetailsAddedData['weekdayStartTime'] == null ||
               getBusinessDetailsAddedData['weekdayEndTime'] == null) {
-            detailsPage = SelectBusinessTimingsPage(
+            detailsPage = const SelectBusinessTimingsPage(
               fromMainPage: true,
             );
           } else if (getUserDetailsAddedData['Image'] != null &&
@@ -163,8 +163,8 @@ class _MainPageState extends State<MainPage> {
                 context: context,
                 builder: (context) {
                   return AlertDialog(
-                    title: Text('Your Membership Has Expired'),
-                    content: Text('Select New Membership to continue'),
+                    title: const Text('Your Membership Has Expired'),
+                    content: const Text('Select New Membership to continue'),
                     actions: [
                       MyTextButton(
                         onPressed: () {
@@ -187,7 +187,7 @@ class _MainPageState extends State<MainPage> {
           if (mounted) {
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (context) => LoginPage(),
+                builder: (context) => const LoginPage(),
               ),
               (route) => false,
             );
@@ -199,7 +199,9 @@ class _MainPageState extends State<MainPage> {
         }
       }
     } catch (e) {
-      mySnackBar(context, e.toString());
+      if (mounted) {
+        mySnackBar(context, e.toString());
+      }
     }
 
     setState(() {});
@@ -212,9 +214,9 @@ class _MainPageState extends State<MainPage> {
     final current = mainPageProvider.index;
 
     List<Widget> allPages = [
-      loadedPages.contains(0) ? AnalyticsPage() : Container(),
-      loadedPages.contains(1) ? AddPage() : Container(),
-      loadedPages.contains(2) ? AddDiscountPage() : Container(),
+      loadedPages.contains(0) ? const AnalyticsPage() : Container(),
+      loadedPages.contains(1) ? const AddPage() : Container(),
+      loadedPages.contains(2) ? const AddDiscountPage() : Container(),
       const ProfilePage(),
     ];
 

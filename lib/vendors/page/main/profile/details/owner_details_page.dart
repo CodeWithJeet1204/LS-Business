@@ -277,7 +277,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                   ? Container(
                       alignment: Alignment.center,
                       width: double.infinity,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: buttonColor,
                       ),
                       child: const Center(
@@ -299,7 +299,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                       horizontalPadding: 0,
                     ),
             )
-          : Container(
+          : const SizedBox(
               width: 0,
               height: 0,
             ),

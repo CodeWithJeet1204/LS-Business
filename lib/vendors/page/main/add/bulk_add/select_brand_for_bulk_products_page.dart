@@ -133,7 +133,7 @@ class _SelectBrandForBulkProductsPageState
                       child: isGridView
                           ? GridView.builder(
                               shrinkWrap: true,
-                              physics: ClampingScrollPhysics(),
+                              physics: const ClampingScrollPhysics(),
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
@@ -266,7 +266,7 @@ class _SelectBrandForBulkProductsPageState
                               width: width,
                               child: ListView.builder(
                                 shrinkWrap: true,
-                                physics: ClampingScrollPhysics(),
+                                physics: const ClampingScrollPhysics(),
                                 itemCount: snapshot.data!.docs.length,
                                 itemBuilder: ((context, index) {
                                   final brandSnap = snapshot.data!.docs[index];
@@ -371,7 +371,7 @@ class _SelectBrandForBulkProductsPageState
                     child: isGridView
                         ? GridView.builder(
                             shrinkWrap: true,
-                            physics: ClampingScrollPhysics(),
+                            physics: const ClampingScrollPhysics(),
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
@@ -394,7 +394,7 @@ class _SelectBrandForBulkProductsPageState
                           )
                         : ListView.builder(
                             shrinkWrap: true,
-                            physics: ClampingScrollPhysics(),
+                            physics: const ClampingScrollPhysics(),
                             itemCount: 4,
                             itemBuilder: (context, index) {
                               return Padding(

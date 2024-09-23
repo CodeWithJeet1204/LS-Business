@@ -140,7 +140,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
         if (mounted) {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-              builder: (context) => BusinessDetailsPage(),
+              builder: (context) => const BusinessDetailsPage(),
             ),
             (route) => false,
           );
@@ -232,7 +232,9 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                     );
                   }
                 } catch (e) {
-                  mySnackBar(context, e.toString());
+                  if (context.mounted) {
+                    mySnackBar(context, e.toString());
+                  }
                 }
               },
               child: const Text(
@@ -279,7 +281,6 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                   await showLoadingDialog(
                     context,
                     () async {
-                      print('dialog');
                       if (isChangingName) {
                         await save(
                           nameController,
@@ -293,14 +294,13 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                           isChangingDescription,
                         );
                       }
-                      print('done');
                     },
                   );
                 },
                 horizontalPadding: 0,
               ),
             )
-          : Container(
+          : const SizedBox(
               width: 0,
               height: 0,
             ),
@@ -982,7 +982,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              MembershipDetailsPage(),
+                                              const MembershipDetailsPage(),
                                         ),
                                       );
                                     },
@@ -1071,7 +1071,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 14),
+                            const SizedBox(height: 14),
 
                             // SOCIAL MEDIA
                             InkWell(
@@ -1130,7 +1130,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 14),
+                            const SizedBox(height: 14),
 
                             // DESCRIPTION
                             Container(
@@ -1185,7 +1185,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                             isChangingName ||
                                     isChangingAddress ||
                                     isChangingDescription
-                                ? SizedBox(height: 14)
+                                ? const SizedBox(height: 14)
                                 : Container(),
                           ],
                         ),

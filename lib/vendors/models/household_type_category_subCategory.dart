@@ -1,4 +1,3 @@
-// // ignore_for_file: file_names
 // Map<String, Map<String, List<String>>> householdTypeCategorySubCategory = {
 //   'Fashion & Clothing': {
 //     // 'Men Wear': [
@@ -1478,4 +1477,6 @@
 //       'Other Specific Festive Products',
 //     ],
 //   }
+// ignore_for_file: file_names
+
 // };

@@ -246,7 +246,7 @@ class _ProductPageState extends State<ProductPage> {
                                       child: ListView.builder(
                                         scrollDirection: Axis.horizontal,
                                         shrinkWrap: true,
-                                        physics: ClampingScrollPhysics(),
+                                        physics: const ClampingScrollPhysics(),
                                         itemCount: property.length,
                                         itemBuilder: ((context, index) {
                                           return Padding(
@@ -455,7 +455,7 @@ class _ProductPageState extends State<ProductPage> {
       final validImages = imageList.take(remainingSlots).toList();
 
       for (var im in validImages) {
-        final productImageId = Uuid().v4();
+        final productImageId = const Uuid().v4();
 
         Reference ref =
             storage.ref().child('Vendor/Products').child(productImageId);
@@ -480,26 +480,27 @@ class _ProductPageState extends State<ProductPage> {
       setState(() {
         isImageChanging = false;
       });
-
-      await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Max $maxImages Images Allowed'),
-            content: Text(
-              'Your current membership only supports $maxImages maximum',
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
+      if (mounted) {
+        await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Max $maxImages Images Allowed'),
+              content: Text(
+                'Your current membership only supports $maxImages maximum',
               ),
-            ],
-          );
-        },
-      );
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
 
       if (mounted) {
         Navigator.of(context).pop();
@@ -518,7 +519,7 @@ class _ProductPageState extends State<ProductPage> {
           isImageChanging = true;
         });
         for (var im in imageList) {
-          final productImageId = Uuid().v4();
+          final productImageId = const Uuid().v4();
 
           Reference ref =
               storage.ref().child('Vendor/Products').child(productImageId);
@@ -628,7 +629,9 @@ class _ProductPageState extends State<ProductPage> {
                     .update({
                   'images': images,
                 });
-                Navigator.of(context).pop();
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                }
               },
               child: const Text(
                 'YES',
@@ -764,9 +767,12 @@ class _ProductPageState extends State<ProductPage> {
 
       final List images = productData['images'];
 
-      images.forEach((image) async {
-        await storage.refFromURL(image).delete();
-      });
+      await Future.forEach(
+        images,
+        (image) async {
+          await storage.refFromURL(image).delete();
+        },
+      );
 
       await store
           .collection('Business')
@@ -901,7 +907,6 @@ class _ProductPageState extends State<ProductPage> {
             MyTextButton(
               onPressed: () async {
                 await deleteShort();
-                Navigator.of(context).pop();
               },
               text: 'YES',
               textColor: Colors.red,
@@ -933,6 +938,9 @@ class _ProductPageState extends State<ProductPage> {
 
     await storage.ref('Vendor/Shorts/${widget.productId}').delete();
     await storage.ref('Vendor/Thumbnails/${widget.productId}').delete();
+    if (mounted) {
+      Navigator.of(context).pop();
+    }
   }
 
   @override

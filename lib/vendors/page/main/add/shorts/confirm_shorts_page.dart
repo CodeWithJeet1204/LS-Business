@@ -109,8 +109,8 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
       isDone = false;
     });
 
-    mySnackBar(context, 'Shorts Added');
     if (mounted) {
+      mySnackBar(context, 'Shorts Added');
       Navigator.of(context).pop();
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(

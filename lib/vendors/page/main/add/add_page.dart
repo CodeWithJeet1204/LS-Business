@@ -64,7 +64,7 @@ class _AddPageState extends State<AddPage> {
         mainPageProvider.goToHomePage();
       },
       child: isRegistration == null
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : isRegistration!
@@ -72,7 +72,7 @@ class _AddPageState extends State<AddPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Center(
+                    const Center(
                       child: Text(
                         'You are currently using \'FREE Registration\' Membership\nThis membership allows you to register your shop details & catalogue only\nThis does not allows you to add products/brands/shorts/status\nGet a paid membership to get benefits',
                         textAlign: TextAlign.center,
@@ -82,7 +82,7 @@ class _AddPageState extends State<AddPage> {
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => SelectMembershipPage(
+                            builder: (context) => const SelectMembershipPage(
                               hasAvailedLaunchOffer: true,
                             ),
                           ),
@@ -170,7 +170,8 @@ class _AddPageState extends State<AddPage> {
                                 onTap: () {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
-                                      builder: (context) => AddBrandPage(),
+                                      builder: (context) =>
+                                          const AddBrandPage(),
                                     ),
                                   );
                                 },
