@@ -6,10 +6,12 @@ class ShortsPageView extends StatefulWidget {
     super.key,
     required this.shorts,
     required this.shortsId,
+    required this.index,
   });
 
-  final Map<String, dynamic> shorts;
+  final Map<String, Map<String, dynamic>> shorts;
   final String shortsId;
+  final int index;
 
   @override
   State<ShortsPageView> createState() => _ShortsPageViewState();
@@ -22,7 +24,7 @@ class _ShortsPageViewState extends State<ShortsPageView> {
   @override
   void initState() {
     setState(() {
-      snappedPageIndex = widget.shorts.keys.toList().indexOf(widget.shortsId);
+      snappedPageIndex = widget.index;
     });
     super.initState();
   }
@@ -32,7 +34,7 @@ class _ShortsPageViewState extends State<ShortsPageView> {
     return SafeArea(
       child: PageView.builder(
         controller: PageController(
-          initialPage: 0,
+          initialPage: snappedPageIndex,
           viewportFraction: 1,
         ),
         scrollDirection: Axis.vertical,
@@ -44,17 +46,11 @@ class _ShortsPageViewState extends State<ShortsPageView> {
         },
         itemCount: widget.shorts.length,
         itemBuilder: ((context, index) {
-          final String currentKey = widget.shorts.keys.toList()[index];
-          final List<dynamic> currentValue =
+          final Map<String, dynamic> shortsData =
               widget.shorts.values.toList()[index];
-          final Map<String, dynamic> currentShort = {
-            currentKey: currentValue,
-          };
 
           return ShortsTile(
-            data: currentShort,
-            snappedPageIndex: index,
-            currentIndex: snappedPageIndex,
+            data: shortsData,
           );
         }),
       ),

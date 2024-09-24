@@ -18,8 +18,8 @@ class _AllShortsPageState extends State<AllShortsPage> {
   final store = FirebaseFirestore.instance;
   final storage = FirebaseStorage.instance;
   final searchController = TextEditingController();
-  Map<String, List> allShorts = {};
-  Map<String, List> currentShorts = {};
+  Map<String, Map<String, dynamic>> allShorts = {};
+  Map<String, Map<String, dynamic>> currentShorts = {};
   int? total;
   int noOf = 20;
   bool isLoadMore = false;
@@ -78,7 +78,7 @@ class _AllShortsPageState extends State<AllShortsPage> {
 
   // GET SHORTS DATA
   Future<void> getShortsData() async {
-    Map<String, List> myShorts = {};
+    Map<String, Map<String, dynamic>> myShorts = {};
     final shortsSnap = await store
         .collection('Business')
         .doc('Data')
@@ -93,41 +93,35 @@ class _AllShortsPageState extends State<AllShortsPage> {
         final shortsData = short.data();
 
         final shortsId = short.id;
-        final datetime = shortsData['datetime'];
         final shortsURL = shortsData['shortsURL'];
+        final shortsThumbnail = shortsData['shortsThumbnail'];
+        final String? productId = shortsData['productId'];
+        final String? productName = shortsData['productName'];
+        final String? caption = shortsData['caption'];
+        final datetime = shortsData['datetime'];
         final vendorId = auth.currentUser!.uid;
 
-        final productSnap = await store
-            .collection('Business')
-            .doc('Data')
-            .collection('Products')
-            .doc(shortsId)
-            .get();
-
-        final productData = productSnap.data()!;
-
-        final productName = productData['productName'];
-
-        Reference thumbnailRef = FirebaseStorage.instance
-            .ref()
-            .child('Vendor/Thumbnails')
-            .child(shortsId);
-
-        String thumbnailDownloadUrl = await thumbnailRef.getDownloadURL();
-
-        myShorts[shortsId] = [
-          shortsURL,
-          shortsId,
-          productName,
-          datetime,
-          thumbnailDownloadUrl,
-          vendorId,
-        ];
+        myShorts[shortsId] = {
+          'shortsURL': shortsURL,
+          'shortsId': shortsId,
+          'shortsThumbnail': shortsThumbnail,
+          'productId': productId,
+          'productName': productName,
+          'caption': caption,
+          'datetime': datetime,
+          'vendorId': vendorId,
+        };
       },
     );
 
-    myShorts = Map.fromEntries(myShorts.entries.toList()
-      ..sort((a, b) => (b.value[3] as Timestamp).compareTo(a.value[3])));
+    myShorts = Map.fromEntries(
+      myShorts.entries.toList()
+        ..sort(
+          (a, b) => (b.value['datetime'] as Timestamp).compareTo(
+            a.value['datetime'],
+          ),
+        ),
+    );
 
     setState(() {
       allShorts = myShorts;
@@ -162,17 +156,22 @@ class _AllShortsPageState extends State<AllShortsPage> {
                 onChanged: (value) {
                   setState(() {
                     if (value.isEmpty) {
-                      currentShorts = Map<String, List>.from(allShorts);
+                      currentShorts =
+                          Map<String, Map<String, dynamic>>.from(allShorts);
                     } else {
-                      Map<String, List> filteredShorts =
-                          Map<String, List>.from(allShorts);
+                      Map<String, Map<String, dynamic>> filteredShorts =
+                          Map<String, Map<String, dynamic>>.from(allShorts);
                       List<String> keysToRemove = [];
 
                       filteredShorts.forEach((key, shortsData) {
-                        if (!shortsData[2]
-                            .toString()
-                            .toLowerCase()
-                            .contains(value.toLowerCase().trim())) {
+                        if (!shortsData['productName']
+                                .toString()
+                                .toLowerCase()
+                                .contains(value.toLowerCase().trim()) &&
+                            !shortsData['caption']
+                                .toString()
+                                .toLowerCase()
+                                .contains(value.toLowerCase().trim())) {
                           keysToRemove.add(key);
                         }
                       });
@@ -246,7 +245,7 @@ class _AllShortsPageState extends State<AllShortsPage> {
                           final shortsId = currentShorts.keys.toList()[index];
                           // final shortsURL = currentShorts.values.toList()[index][0];
                           final shortsThumbnail =
-                              currentShorts.values.toList()[index][4];
+                              currentShorts[shortsId]!['shortsThumbnail'];
 
                           return GestureDetector(
                             onTap: () {
@@ -255,6 +254,7 @@ class _AllShortsPageState extends State<AllShortsPage> {
                                   builder: (context) => ShortsPageView(
                                     shorts: currentShorts,
                                     shortsId: shortsId,
+                                    index: index,
                                   ),
                                 ),
                               );

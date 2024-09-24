@@ -14,13 +14,9 @@ class ShortsTile extends StatefulWidget {
   const ShortsTile({
     super.key,
     required this.data,
-    required this.snappedPageIndex,
-    required this.currentIndex,
   });
 
   final Map<String, dynamic> data;
-  final int snappedPageIndex;
-  final int currentIndex;
 
   @override
   State<ShortsTile> createState() => _ShortsTileState();
@@ -42,7 +38,7 @@ class _ShortsTileState extends State<ShortsTile> {
     flickManager = FlickManager(
       videoPlayerController: VideoPlayerController.networkUrl(
         Uri.parse(
-          widget.data.values.toList()[0][0],
+          widget.data['shortsURL'],
         ),
       ),
     );
@@ -139,31 +135,30 @@ class _ShortsTileState extends State<ShortsTile> {
         .collection('Business')
         .doc('Data')
         .collection('Shorts')
-        .doc(widget.data.values.toList()[0][1])
+        .doc(widget.data['shortsId'])
         .delete();
 
-    await store
-        .collection('Business')
-        .doc('Data')
-        .collection('Products')
-        .doc(widget.data.values.toList()[0][1])
-        .update({
-      'shortsThumbnail': '',
-      'shortsURL': '',
-    });
+    if (widget.data['productId'] != null) {
+      await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Products')
+          .doc(widget.data['productId'])
+          .update({
+        'shortsThumbnail': '',
+        'shortsURL': '',
+      });
+    }
 
-    await storage
-        .ref('Vendor/Shorts/${widget.data.values.toList()[0][1]}')
-        .delete();
+    await storage.ref('Vendor/Shorts/${widget.data['shortsId']}').delete();
 
-    await storage
-        .ref('Vendor/Thumbnails/${widget.data.values.toList()[0][1]}')
-        .delete();
+    await storage.ref('Vendor/Thumbnails/${widget.data['shortsId']}').delete();
   }
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+    print('widget.data: ${widget.data}');
 
     return isData
         ? Scaffold(
@@ -243,20 +238,24 @@ class _ShortsTileState extends State<ShortsTile> {
                                       left: width * 0.0125,
                                     ),
                                     child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) => ProductPage(
-                                              productId: widget.data.values
-                                                  .toList()[0][1],
-                                              productName: widget.data.values
-                                                  .toList()[0][1],
-                                            ),
-                                          ),
-                                        );
-                                      },
+                                      onTap: widget.data['productId'] == null
+                                          ? null
+                                          : () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ProductPage(
+                                                    productId: widget
+                                                        .data['productId'],
+                                                    productName: widget
+                                                        .data['productName'],
+                                                  ),
+                                                ),
+                                              );
+                                            },
                                       child: Text(
-                                        widget.data.values.toList()[0][2],
+                                        widget.data['productName'] ??
+                                            widget.data['caption'],
                                         style: TextStyle(
                                           color: white,
                                           fontSize: width * 0.05,
@@ -340,7 +339,7 @@ class _ShortsTileState extends State<ShortsTile> {
                         Padding(
                           padding: EdgeInsets.only(left: width * 0.05),
                           child: IconButton(
-                            onPressed: () {},
+                            onPressed: () async {},
                             icon: Icon(
                               FeatherIcons.share2,
                               size: width * 0.095,

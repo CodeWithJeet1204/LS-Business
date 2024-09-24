@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:Localsearch/widgets/show_loading_dialog.dart';
 import 'package:Localsearch/widgets/snack_bar.dart';
+import 'package:Localsearch/widgets/text_form_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Localsearch/vendors/page/main/add/shorts/select_product_for_shorts_page.dart';
 import 'package:Localsearch/vendors/page/main/main_page.dart';
@@ -9,6 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:video_player/video_player.dart';
 
@@ -30,10 +32,10 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   final storage = FirebaseStorage.instance;
-  final nameController = TextEditingController();
+  final captionController = TextEditingController();
   late FlickManager flickManager;
   bool isDone = false;
-  List? data;
+  Map<String, dynamic>? data;
 
   // INIT STATE
   @override
@@ -51,21 +53,24 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
   // DISPOSE
   @override
   void dispose() {
-    nameController.dispose();
+    captionController.dispose();
     flickManager.dispose();
     super.dispose();
   }
 
   // UPLOAD VIDEO
   Future<void> uploadVideo(
-    String productId,
+    String? productId,
+    String? productName,
     String videoPath,
   ) async {
     setState(() {
       isDone = true;
     });
 
-    Reference shortsRef = storage.ref().child('Vendor/Shorts').child(productId);
+    final shortsId = Uuid().v4();
+
+    Reference shortsRef = storage.ref().child('Vendor/Shorts').child(shortsId);
 
     UploadTask uploadShortsTask = shortsRef.putFile(
       await compressVideo(videoPath),
@@ -75,7 +80,7 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
     String shortsDownloadUrl = await shortsSnap.ref.getDownloadURL();
 
     Reference thumbnailRef =
-        storage.ref().child('Vendor/Thumbnails').child(productId);
+        storage.ref().child('Vendor/Thumbnails').child(shortsId);
 
     UploadTask uploadThumbnailTask = thumbnailRef.putFile(
       await getThumbnail(videoPath),
@@ -84,25 +89,31 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
     TaskSnapshot thumbnailSnap = await uploadThumbnailTask;
     String thumbnailDownloadUrl = await thumbnailSnap.ref.getDownloadURL();
 
-    await store
-        .collection('Business')
-        .doc('Data')
-        .collection('Products')
-        .doc(productId)
-        .update({
-      'shortsURL': shortsDownloadUrl,
-      'shortsThumbnail': thumbnailDownloadUrl,
-    });
+    if (productId != null) {
+      await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Products')
+          .doc(productId)
+          .update({
+        'shortsURL': shortsDownloadUrl,
+        'shortsThumbnail': thumbnailDownloadUrl,
+      });
+    }
 
     await store
         .collection('Business')
         .doc('Data')
         .collection('Shorts')
-        .doc(productId)
+        .doc(shortsId)
         .set({
-      'datetime': DateTime.now(),
       'vendorId': auth.currentUser!.uid,
       'shortsURL': shortsDownloadUrl,
+      'shortsThumbnail': thumbnailDownloadUrl,
+      'productId': productId,
+      'productName': productName,
+      'caption': productId != null ? null : captionController.text,
+      'datetime': DateTime.now(),
     });
 
     setState(() {
@@ -114,7 +125,7 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
       Navigator.of(context).pop();
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-          builder: ((context) => const MainPage()),
+          builder: (context) => const MainPage(),
         ),
         (route) => false,
       );
@@ -154,9 +165,16 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
                 FlickVideoPlayer(
                   flickManager: flickManager,
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
+                MyTextFormField(
+                  hintText: 'Caption',
+                  controller: captionController,
+                  borderRadius: 12,
+                  horizontalPadding: 0,
+                ),
+                const SizedBox(height: 15),
                 MyButton(
-                  text: data != null ? data![1]! : 'Select Product',
+                  text: data != null ? data!['productName']! : 'Select Product',
                   onTap: () async {
                     if (flickManager.flickVideoManager!.isPlaying) {
                       flickManager.flickControlManager!.togglePlay();
@@ -165,7 +183,7 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
                         .push(
                       MaterialPageRoute(
                         builder: (context) => SelectProductForShortsPage(
-                          selectedProduct: data?[0],
+                          selectedProduct: data?['productId'],
                         ),
                       ),
                     )
@@ -175,23 +193,26 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
                       });
                     });
                   },
-                  horizontalPadding: width * 0.025,
+                  horizontalPadding: 0,
                 ),
                 const SizedBox(height: 15),
-                if (data != null)
-                  MyButton(
-                    text: 'DONE',
-                    onTap: () async {
-                      await showLoadingDialog(
-                        context,
-                        () async {
-                          await uploadVideo(data![0], widget.videoPath);
-                        },
-                      );
-                    },
-                    horizontalPadding: width * 0.025,
-                  ),
-                const SizedBox(height: 20),
+                MyButton(
+                  text: 'DONE',
+                  onTap: () async {
+                    await showLoadingDialog(
+                      context,
+                      () async {
+                        await uploadVideo(
+                          data?['productId'],
+                          data?['productName'],
+                          widget.videoPath,
+                        );
+                      },
+                    );
+                  },
+                  horizontalPadding: 0,
+                ),
+                const SizedBox(height: 12),
               ],
             ),
           ),

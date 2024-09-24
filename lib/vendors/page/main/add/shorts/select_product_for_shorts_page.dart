@@ -27,8 +27,8 @@ class _SelectProductForShortsPageState
   final searchController = TextEditingController();
   Map<String, Map<String, dynamic>> currentProducts = {};
   Map<String, Map<String, dynamic>> allProducts = {};
-  List? data;
-  String? selectedProduct;
+  Map<String, dynamic>? data;
+  String? selectedProductId;
   int? total;
   int noOfGridView = 8;
   bool isLoadMoreGridView = false;
@@ -50,7 +50,7 @@ class _SelectProductForShortsPageState
     super.initState();
     if (widget.selectedProduct != null) {
       setState(() {
-        selectedProduct = widget.selectedProduct;
+        selectedProductId = widget.selectedProduct;
       });
     }
   }
@@ -157,7 +157,7 @@ class _SelectProductForShortsPageState
         actions: [
           MyTextButton(
             onPressed: () {
-              if (selectedProduct != null) {
+              if (selectedProductId != null) {
                 Navigator.of(context).pop(data);
               } else {
                 return mySnackBar(context, 'Select Product');
@@ -320,23 +320,22 @@ class _SelectProductForShortsPageState
 
                                   return GestureDetector(
                                     onTap: () {
-                                      if (selectedProduct ==
-                                          productData['productName']) {
+                                      if (selectedProductId ==
+                                          productData['productId']) {
                                         setState(() {
-                                          selectedProduct = null;
-                                          data = [];
+                                          selectedProductId = null;
+                                          data = {};
                                         });
                                       } else {
                                         setState(() {
-                                          selectedProduct =
-                                              productData['productName'];
-                                          data = [
-                                            productData['productId'],
-                                            productData['productName'],
-                                            productData['productPrice'],
-                                            productData['productDescription'],
-                                            productData['vendorId'],
-                                          ];
+                                          selectedProductId =
+                                              productData['productId'];
+                                          data = {
+                                            'productId':
+                                                productData['productId'],
+                                            'productName':
+                                                productData['productName'],
+                                          };
                                         });
                                       }
                                     },
@@ -425,8 +424,8 @@ class _SelectProductForShortsPageState
                                             ],
                                           ),
                                         ),
-                                        selectedProduct ==
-                                                productData['productName']
+                                        selectedProductId ==
+                                                productData['productId']
                                             ? Container(
                                                 margin: EdgeInsets.all(
                                                   width * 0.005,
@@ -482,24 +481,22 @@ class _SelectProductForShortsPageState
                                         child: ListTile(
                                           visualDensity: VisualDensity.standard,
                                           onTap: () {
-                                            if (selectedProduct ==
-                                                productData['productName']) {
+                                            if (selectedProductId ==
+                                                productData['productId']) {
                                               setState(() {
-                                                selectedProduct = null;
-                                                data = [];
+                                                selectedProductId = null;
+                                                data = {};
                                               });
                                             } else {
                                               setState(() {
-                                                selectedProduct =
-                                                    productData['productName'];
-                                                data = [
-                                                  productData['productId'],
-                                                  productData['productName'],
-                                                  productData['productPrice'],
-                                                  productData[
-                                                      'productDescription'],
-                                                  productData['vendorId'],
-                                                ];
+                                                selectedProductId =
+                                                    productData['productId'];
+                                                data = {
+                                                  'productId':
+                                                      productData['productId'],
+                                                  'productName': productData[
+                                                      'productName'],
+                                                };
                                               });
                                             }
                                           },
@@ -556,8 +553,8 @@ class _SelectProductForShortsPageState
                                           ),
                                         ),
                                       ),
-                                      selectedProduct ==
-                                              productData['productName']
+                                      selectedProductId ==
+                                              productData['productId']
                                           ? Padding(
                                               padding: EdgeInsets.only(
                                                 right: width * 0.025,
