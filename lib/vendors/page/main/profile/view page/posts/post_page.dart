@@ -2,10 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:Localsearch/vendors/page/main/profile/view%20page/product/image_view.dart';
-import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:Localsearch/widgets/info_box.dart';
-import 'package:Localsearch/widgets/snack_bar.dart';
+import 'package:ls_business/vendors/page/main/profile/view%20page/product/image_view.dart';
+import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/info_box.dart';
+import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

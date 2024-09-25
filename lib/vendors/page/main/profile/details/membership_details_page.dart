@@ -1,5 +1,5 @@
-import 'package:Localsearch/vendors/page/register/membership_page.dart';
-import 'package:Localsearch/widgets/text_button.dart';
+import 'package:ls_business/vendors/page/register/membership_page.dart';
+import 'package:ls_business/widgets/text_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

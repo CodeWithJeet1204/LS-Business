@@ -1,7 +1,7 @@
 {
   "flutter": {
     "functions": {
-      "source": "C:/Users/Jeet/App Projects/LS Business/functions/detectBlur.py"
+      "source": "C:/Users/Jeet/App Projects/ls_business/functions/detectBlur.py"
     },
     "platforms": {
       "android": {

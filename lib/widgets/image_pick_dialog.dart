@@ -1,5 +1,5 @@
-import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:Localsearch/widgets/image_pick.dart';
+import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/image_pick.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 

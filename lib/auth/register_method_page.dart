@@ -1,17 +1,17 @@
-import 'package:Localsearch/auth/login_page.dart';
-import 'package:Localsearch/vendors/page/main/main_page.dart';
-import 'package:Localsearch/widgets/show_loading_dialog.dart';
-import 'package:Localsearch/widgets/text_button.dart';
+import 'package:ls_business/auth/login_page.dart';
+import 'package:ls_business/vendors/page/main/main_page.dart';
+import 'package:ls_business/widgets/show_loading_dialog.dart';
+import 'package:ls_business/widgets/text_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:Localsearch/vendors/firebase/auth_methods.dart';
-import 'package:Localsearch/vendors/page/register/owner_register_details_page.dart';
-import 'package:Localsearch/auth/verify/email_verify.dart';
-import 'package:Localsearch/auth/verify/number_verify.dart';
-import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:Localsearch/widgets/my_button.dart';
-import 'package:Localsearch/widgets/collapse_container.dart';
-import 'package:Localsearch/widgets/snack_bar.dart';
-import 'package:Localsearch/widgets/text_form_field.dart';
+import 'package:ls_business/vendors/firebase/auth_methods.dart';
+import 'package:ls_business/vendors/page/register/owner_register_details_page.dart';
+import 'package:ls_business/auth/verify/email_verify.dart';
+import 'package:ls_business/auth/verify/number_verify.dart';
+import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/my_button.dart';
+import 'package:ls_business/widgets/collapse_container.dart';
+import 'package:ls_business/widgets/snack_bar.dart';
+import 'package:ls_business/widgets/text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -153,7 +153,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
               'Description': null,
               // 'Industry': null,
               'Image': null,
-              'Type': [],
+              'Type': null,
               'MembershipName': null,
               'MembershipDuration': null,
               'MembershipStartDateTime': null,
@@ -399,7 +399,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
           'Description': null,
           // 'Industry': null,
           'Image': null,
-          'Type': [],
+          'Type': null,
           'MembershipName': null,
           'MembershipDuration': null,
           'MembershipStartDateTime': null,

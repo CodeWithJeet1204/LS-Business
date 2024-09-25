@@ -1,4 +1,4 @@
-import 'package:Localsearch/vendors/page/main/profile/view%20page/shorts/shorts_tile.dart';
+import 'package:ls_business/vendors/page/main/profile/view%20page/shorts/shorts_tile.dart';
 import 'package:flutter/material.dart';
 
 class ShortsPageView extends StatefulWidget {

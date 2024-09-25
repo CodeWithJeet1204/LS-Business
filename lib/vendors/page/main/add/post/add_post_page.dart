@@ -1,13 +1,13 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:image_picker/image_picker.dart';
-// import 'package:Localsearch/vendors/page/main/add/post/add_status_page.dart';
-// import 'package:Localsearch/vendors/page/main/add/post/add_text_post_page.dart';
-// import 'package:Localsearch/vendors/utils/colors.dart';
-// import 'package:Localsearch/widgets/button.dart';
+// import 'package:ls_business/vendors/page/main/add/post/add_status_page.dart';
+// import 'package:ls_business/vendors/page/main/add/post/add_text_post_page.dart';
+// import 'package:ls_business/vendors/utils/colors.dart';
+// import 'package:ls_business/widgets/button.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter/material.dart';
-// import 'package:Localsearch/widgets/image_pick_dialog.dart';
-// import 'package:Localsearch/widgets/snack_bar.dart';
+// import 'package:ls_business/widgets/image_pick_dialog.dart';
+// import 'package:ls_business/widgets/snack_bar.dart';
 
 // class AddPostPage extends StatefulWidget {
 //   const AddPostPage({super.key});

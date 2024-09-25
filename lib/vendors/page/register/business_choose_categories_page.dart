@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:Localsearch/vendors/page/register/business_choose_products_page.dart';
-import 'package:Localsearch/widgets/select_container.dart';
-import 'package:Localsearch/widgets/snack_bar.dart';
+import 'package:ls_business/vendors/page/register/business_choose_products_page.dart';
+import 'package:ls_business/widgets/select_container.dart';
+import 'package:ls_business/widgets/snack_bar.dart';
 
 class BusinessChooseCategoriesPage extends StatefulWidget {
   const BusinessChooseCategoriesPage({
@@ -116,59 +116,64 @@ class _BusinessChooseCategoriesPageState
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : SafeArea(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: width * 0.0125),
-                child: Column(
-                  children: widget.selectedTypes.map((category) {
-                    final categoryData = categories![category.trim()];
+          : PopScope(
+              canPop: false,
+              child: SafeArea(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(horizontal: width * 0.0125),
+                  child: Column(
+                    children: widget.selectedTypes.map((category) {
+                      final categoryData = categories![category.trim()];
 
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Text(
-                            category,
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w500,
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Text(
+                              category,
+                              style: const TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
-                        ),
-                        GridView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 16 / 9,
-                          ),
-                          itemCount: categoryData?.length ?? 0,
-                          itemBuilder: (context, index) {
-                            final entry = categoryData!.entries.toList()[index];
-                            final category = entry.key;
+                          GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 16 / 9,
+                            ),
+                            itemCount: categoryData?.length ?? 0,
+                            itemBuilder: (context, index) {
+                              final entry =
+                                  categoryData!.entries.toList()[index];
+                              final category = entry.key;
 
-                            return SelectContainer(
-                              width: width,
-                              text: category,
-                              isSelected: selectedCategories.contains(category),
-                              onTap: () {
-                                setState(() {
-                                  if (selectedCategories.contains(category)) {
-                                    selectedCategories.remove(category);
-                                  } else {
-                                    selectedCategories.add(category);
-                                  }
-                                });
-                              },
-                              imageUrl: null,
-                            );
-                          },
-                        ),
-                      ],
-                    );
-                  }).toList(),
+                              return SelectContainer(
+                                width: width,
+                                text: category,
+                                isSelected:
+                                    selectedCategories.contains(category),
+                                onTap: () {
+                                  setState(() {
+                                    if (selectedCategories.contains(category)) {
+                                      selectedCategories.remove(category);
+                                    } else {
+                                      selectedCategories.add(category);
+                                    }
+                                  });
+                                },
+                                imageUrl: null,
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    }).toList(),
+                  ),
                 ),
               ),
             ),

@@ -1,6 +1,6 @@
-// import 'package:Localsearch/auth/register_method_page.dart';
-// import 'package:Localsearch/vendors/page/main/main_page.dart';
-// import 'package:Localsearch/vendors/utils/colors.dart';
+// import 'package:ls_business/auth/register_method_page.dart';
+// import 'package:ls_business/vendors/page/main/main_page.dart';
+// import 'package:ls_business/vendors/utils/colors.dart';
 // import 'package:flutter/material.dart';
 
 // class SplashScreen extends StatefulWidget {
@@ -64,12 +64,12 @@
 //           mainAxisAlignment: MainAxisAlignment.center,
 //           children: [
 //             Image.asset(
-//               'files/LS Business Transparent.png',
+//               'files/ls_business Transparent.png',
 //               width: width * 0.5,
 //             ),
 //             SizedBox(height: width * 0.25),
 //             Text(
-//               'LS Business',
+//               'ls_business',
 //               maxLines: 1,
 //               overflow: TextOverflow.ellipsis,
 //               style: TextStyle(

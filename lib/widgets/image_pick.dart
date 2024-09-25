@@ -1,4 +1,4 @@
-import 'package:Localsearch/widgets/snack_bar.dart';
+import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';

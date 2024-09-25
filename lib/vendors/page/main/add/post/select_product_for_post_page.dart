@@ -1,9 +1,9 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:feather_icons/feather_icons.dart';
-// import 'package:Localsearch/vendors/utils/colors.dart';
-// import 'package:Localsearch/widgets/shimmer_skeleton_container.dart';
-// import 'package:Localsearch/widgets/snack_bar.dart';
-// import 'package:Localsearch/widgets/text_button.dart';
+// import 'package:ls_business/vendors/utils/colors.dart';
+// import 'package:ls_business/widgets/shimmer_skeleton_container.dart';
+// import 'package:ls_business/widgets/snack_bar.dart';
+// import 'package:ls_business/widgets/text_button.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter/material.dart';
 // import 'package:uuid/uuid.dart';

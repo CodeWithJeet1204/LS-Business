@@ -1,9 +1,9 @@
-import 'package:Localsearch/vendors/page/main/analytics/products_analytics_page.dart';
-import 'package:Localsearch/vendors/page/main/analytics/shop_analytics_page.dart';
-import 'package:Localsearch/vendors/provider/main_page_provider.dart';
-import 'package:Localsearch/vendors/page/register/membership_page.dart';
-import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:Localsearch/widgets/text_button.dart';
+import 'package:ls_business/vendors/page/main/analytics/products_analytics_page.dart';
+import 'package:ls_business/vendors/page/main/analytics/shop_analytics_page.dart';
+import 'package:ls_business/vendors/provider/main_page_provider.dart';
+import 'package:ls_business/vendors/page/register/membership_page.dart';
+import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/text_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

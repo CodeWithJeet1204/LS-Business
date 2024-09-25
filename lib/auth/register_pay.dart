@@ -1,10 +1,10 @@
-// import 'package:Localsearch/auth/login_page.dart';
-// import 'package:Localsearch/auth/register_method_page.dart';
-// import 'package:Localsearch/vendors/utils/colors.dart';
-// import 'package:Localsearch/vendors/utils/size.dart';
-// import 'package:Localsearch/widgets/button.dart';
-// import 'package:Localsearch/widgets/snack_bar.dart';
-// import 'package:Localsearch/widgets/text_button.dart';
+// import 'package:ls_business/auth/login_page.dart';
+// import 'package:ls_business/auth/register_method_page.dart';
+// import 'package:ls_business/vendors/utils/colors.dart';
+// import 'package:ls_business/vendors/utils/size.dart';
+// import 'package:ls_business/widgets/button.dart';
+// import 'package:ls_business/widgets/snack_bar.dart';
+// import 'package:ls_business/widgets/text_button.dart';
 // import 'package:flutter/material.dart';
 
 // class RegisterPayPage extends StatefulWidget {

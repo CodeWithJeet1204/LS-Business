@@ -1,4 +1,4 @@
-import 'package:Localsearch/vendors/utils/colors.dart';
+import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class AllCommentPage extends StatelessWidget {

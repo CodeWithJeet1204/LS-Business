@@ -2,10 +2,10 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:Localsearch/vendors/page/main/main_page.dart';
-import 'package:Localsearch/vendors/page/main/profile/details/business_details_page.dart';
-import 'package:Localsearch/vendors/page/register/business_timings_page.dart';
-import 'package:Localsearch/widgets/snack_bar.dart';
+import 'package:ls_business/vendors/page/main/main_page.dart';
+import 'package:ls_business/vendors/page/main/profile/details/business_details_page.dart';
+import 'package:ls_business/vendors/page/register/business_timings_page.dart';
+import 'package:ls_business/widgets/snack_bar.dart';
 
 class BusinessChooseProductsPage extends StatefulWidget {
   const BusinessChooseProductsPage({
@@ -153,147 +153,151 @@ class _BusinessChooseProductsPageState
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : SafeArea(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: width * 0.0125),
-                child: ListView.builder(
-                  controller: scrollController,
-                  cacheExtent: height * 1.5,
-                  addAutomaticKeepAlives: true,
-                  shrinkWrap: true,
-                  physics: const ClampingScrollPhysics(),
-                  itemCount: noOf > widget.selectedCategories.length
-                      ? widget.selectedCategories.length
-                      : noOf,
-                  itemBuilder: (context, index) {
-                    final String? subCategory =
-                        widget.selectedCategories[index];
+          : PopScope(
+              canPop: false,
+              child: SafeArea(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: width * 0.0125),
+                  child: ListView.builder(
+                    controller: scrollController,
+                    cacheExtent: height * 1.5,
+                    addAutomaticKeepAlives: true,
+                    shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
+                    itemCount: noOf > widget.selectedCategories.length
+                        ? widget.selectedCategories.length
+                        : noOf,
+                    itemBuilder: (context, index) {
+                      final String? subCategory =
+                          widget.selectedCategories[index];
 
-                    return Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: width * 0.0225,
-                          ),
-                          child: Text(
-                            subCategory!,
-                            style: TextStyle(
-                              fontSize: width * 0.055,
-                              fontWeight: FontWeight.w500,
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: width * 0.0225,
+                            ),
+                            child: Text(
+                              subCategory!,
+                              style: TextStyle(
+                                fontSize: width * 0.055,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
-                        ),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: const ClampingScrollPhysics(),
-                          itemCount: allProducts![subCategory].length,
-                          itemBuilder: (context, productIndex) {
-                            final product =
-                                allProducts?[subCategory]?[productIndex];
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: const ClampingScrollPhysics(),
+                            itemCount: allProducts![subCategory].length,
+                            itemBuilder: (context, productIndex) {
+                              final product =
+                                  allProducts?[subCategory]?[productIndex];
 
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  if (!selectedProducts.contains(product)) {
-                                    selectedProducts.add(product);
-                                  } else {
-                                    selectedProducts.remove(product);
-                                  }
-                                });
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: selectedProducts.contains(product)
-                                      ? const Color.fromRGBO(
-                                          133,
-                                          255,
-                                          137,
-                                          1,
-                                        )
-                                      : Colors.white,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                padding: EdgeInsets.all(width * 0.0225),
-                                margin: EdgeInsets.all(width * 0.0125),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    SizedBox(
-                                      width: width * 0.66,
-                                      child: AutoSizeText(
-                                        product,
-                                        style: TextStyle(
-                                          fontSize: width * 0.04,
+                              return GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    if (!selectedProducts.contains(product)) {
+                                      selectedProducts.add(product);
+                                    } else {
+                                      selectedProducts.remove(product);
+                                    }
+                                  });
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: selectedProducts.contains(product)
+                                        ? const Color.fromRGBO(
+                                            133,
+                                            255,
+                                            137,
+                                            1,
+                                          )
+                                        : Colors.white,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  padding: EdgeInsets.all(width * 0.0225),
+                                  margin: EdgeInsets.all(width * 0.0125),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      SizedBox(
+                                        width: width * 0.66,
+                                        child: AutoSizeText(
+                                          product,
+                                          style: TextStyle(
+                                            fontSize: width * 0.04,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Visibility(
-                                          visible: !selectedProducts
-                                              .contains(product),
-                                          child: IconButton(
-                                            icon: const Icon(
-                                              Icons.check,
-                                              color: Color.fromRGBO(
+                                      Row(
+                                        children: [
+                                          Visibility(
+                                            visible: !selectedProducts
+                                                .contains(product),
+                                            child: IconButton(
+                                              icon: const Icon(
+                                                Icons.check,
+                                                color: Color.fromRGBO(
+                                                  133,
+                                                  255,
+                                                  137,
+                                                  1,
+                                                ),
+                                              ),
+                                              color: const Color.fromRGBO(
                                                 133,
                                                 255,
                                                 137,
                                                 1,
                                               ),
+                                              onPressed: () {
+                                                if (!selectedProducts
+                                                    .contains(product)) {
+                                                  setState(() {
+                                                    selectedProducts
+                                                        .add(product);
+                                                  });
+                                                }
+                                              },
+                                              tooltip: "Select",
                                             ),
-                                            color: const Color.fromRGBO(
-                                              133,
-                                              255,
-                                              137,
-                                              1,
-                                            ),
-                                            onPressed: () {
-                                              if (!selectedProducts
-                                                  .contains(product)) {
-                                                setState(() {
-                                                  selectedProducts.add(product);
-                                                });
-                                              }
-                                            },
-                                            tooltip: "Select",
                                           ),
-                                        ),
-                                        Visibility(
-                                          visible: selectedProducts
-                                              .contains(product),
-                                          child: IconButton(
-                                            icon: Icon(
-                                              Icons.close,
-                                              color: selectedProducts
-                                                      .contains(product)
-                                                  ? Colors.red
-                                                  : Colors.grey,
+                                          Visibility(
+                                            visible: selectedProducts
+                                                .contains(product),
+                                            child: IconButton(
+                                              icon: Icon(
+                                                Icons.close,
+                                                color: selectedProducts
+                                                        .contains(product)
+                                                    ? Colors.red
+                                                    : Colors.grey,
+                                              ),
+                                              onPressed: () {
+                                                if (selectedProducts
+                                                    .contains(product)) {
+                                                  setState(() {
+                                                    selectedProducts
+                                                        .remove(product);
+                                                  });
+                                                }
+                                              },
                                             ),
-                                            onPressed: () {
-                                              if (selectedProducts
-                                                  .contains(product)) {
-                                                setState(() {
-                                                  selectedProducts
-                                                      .remove(product);
-                                                });
-                                              }
-                                            },
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
-                        ),
-                        const Divider(),
-                      ],
-                    );
-                  },
+                              );
+                            },
+                          ),
+                          const Divider(),
+                        ],
+                      );
+                    },
+                  ),
                 ),
               ),
             ),

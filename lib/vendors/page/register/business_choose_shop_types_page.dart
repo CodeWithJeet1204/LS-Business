@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:Localsearch/vendors/page/register/business_choose_categories_page.dart';
-import 'package:Localsearch/widgets/select_container.dart';
+import 'package:ls_business/vendors/page/register/business_choose_categories_page.dart';
+import 'package:ls_business/widgets/select_container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:Localsearch/widgets/snack_bar.dart';
+import 'package:ls_business/widgets/snack_bar.dart';
 
 class BusinessChooseShopTypesPage extends StatefulWidget {
   const BusinessChooseShopTypesPage({
@@ -105,17 +105,15 @@ class _BusinessChooseShopTypesPageState
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : SafeArea(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: width * 0.0125),
-                child: LayoutBuilder(builder: (context, constraints) {
-                  final width = constraints.maxWidth;
-                  final height = constraints.maxHeight;
+          : PopScope(
+              canPop: false,
+              child: SafeArea(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: width * 0.0125),
+                  child: LayoutBuilder(builder: (context, constraints) {
+                    final width = constraints.maxWidth;
 
-                  return SizedBox(
-                    width: width,
-                    height: height * 0.8875,
-                    child: GridView.builder(
+                    return GridView.builder(
                       shrinkWrap: true,
                       physics: const ClampingScrollPhysics(),
                       gridDelegate:
@@ -144,9 +142,9 @@ class _BusinessChooseShopTypesPageState
                           },
                         );
                       },
-                    ),
-                  );
-                }),
+                    );
+                  }),
+                ),
               ),
             ),
       floatingActionButton: FloatingActionButton(

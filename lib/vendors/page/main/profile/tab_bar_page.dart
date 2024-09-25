@@ -1,5 +1,5 @@
-import 'package:Localsearch/vendors/page/main/profile/data/all_post_page.dart';
-import 'package:Localsearch/vendors/utils/colors.dart';
+import 'package:ls_business/vendors/page/main/profile/data/all_post_page.dart';
+import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class TabBarPage extends StatefulWidget {

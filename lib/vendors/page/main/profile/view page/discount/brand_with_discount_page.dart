@@ -1,6 +1,6 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:Localsearch/vendors/utils/colors.dart';
-// import 'package:Localsearch/widgets/text_button.dart';
+// import 'package:ls_business/vendors/utils/colors.dart';
+// import 'package:ls_business/widgets/text_button.dart';
 // import 'package:flutter/material.dart';
 // import 'package:rxdart/rxdart.dart';
 

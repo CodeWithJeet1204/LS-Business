@@ -1,16 +1,16 @@
-import 'package:Localsearch/vendors/page/main/profile/data/all_brand_page.dart';
-import 'package:Localsearch/vendors/page/main/profile/data/all_discounts_page.dart';
-import 'package:Localsearch/vendors/page/main/profile/data/all_product_page.dart';
-import 'package:Localsearch/vendors/page/main/profile/details/business_details_page.dart';
-import 'package:Localsearch/vendors/page/main/profile/details/owner_details_page.dart';
-import 'package:Localsearch/vendors/page/main/profile/view%20page/shorts/all_shorts_page.dart';
-import 'package:Localsearch/widgets/skeleton_container.dart';
+import 'package:ls_business/vendors/page/main/profile/data/all_brand_page.dart';
+import 'package:ls_business/vendors/page/main/profile/data/all_discounts_page.dart';
+import 'package:ls_business/vendors/page/main/profile/data/all_product_page.dart';
+import 'package:ls_business/vendors/page/main/profile/details/business_details_page.dart';
+import 'package:ls_business/vendors/page/main/profile/details/owner_details_page.dart';
+import 'package:ls_business/vendors/page/main/profile/view%20page/shorts/all_shorts_page.dart';
+import 'package:ls_business/widgets/skeleton_container.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:Localsearch/vendors/page/main/profile/data/all_categories_page.dart';
-import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:Localsearch/widgets/small_text_container.dart';
-import 'package:Localsearch/widgets/snack_bar.dart';
+import 'package:ls_business/vendors/page/main/profile/data/all_categories_page.dart';
+import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/small_text_container.dart';
+import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -418,7 +418,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               });
 
                               const url =
-                                  'https://play.google.com/store/apps/details?id=com.localsearch.package';
+                                  'https://play.google.com/store/apps/details?id=com.ls_business.package';
                               if (await canLaunchUrl(Uri.parse(url))) {
                                 await launchUrl(Uri.parse(url));
                               } else {

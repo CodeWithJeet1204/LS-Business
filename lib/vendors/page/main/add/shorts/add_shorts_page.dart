@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:Localsearch/vendors/page/main/add/shorts/confirm_shorts_page.dart';
-import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:Localsearch/widgets/snack_bar.dart';
+import 'package:ls_business/vendors/page/main/add/shorts/confirm_shorts_page.dart';
+import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

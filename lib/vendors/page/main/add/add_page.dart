@@ -1,16 +1,16 @@
-import 'package:Localsearch/vendors/page/main/add/brand/add_brand_page.dart';
-import 'package:Localsearch/vendors/page/main/add/post/add_status_page.dart';
-import 'package:Localsearch/vendors/provider/main_page_provider.dart';
-import 'package:Localsearch/vendors/page/register/membership_page.dart';
-import 'package:Localsearch/widgets/text_button.dart';
+import 'package:ls_business/vendors/page/main/add/brand/add_brand_page.dart';
+import 'package:ls_business/vendors/page/main/add/post/add_status_page.dart';
+import 'package:ls_business/vendors/provider/main_page_provider.dart';
+import 'package:ls_business/vendors/page/register/membership_page.dart';
+import 'package:ls_business/widgets/text_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:Localsearch/vendors/page/main/add/product/add_product_page_1.dart';
-import 'package:Localsearch/vendors/page/main/add/shorts/add_shorts_page.dart';
-import 'package:Localsearch/vendors/utils/colors.dart';
+import 'package:ls_business/vendors/page/main/add/product/add_product_page_1.dart';
+import 'package:ls_business/vendors/page/main/add/shorts/add_shorts_page.dart';
+import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:Localsearch/widgets/add_box.dart';
+import 'package:ls_business/widgets/add_box.dart';
 import 'package:provider/provider.dart';
 
 class AddPage extends StatefulWidget {

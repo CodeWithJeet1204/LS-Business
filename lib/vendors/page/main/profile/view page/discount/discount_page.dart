@@ -1,19 +1,19 @@
 // ignore_for_file: avoid_function_literals_in_foreach_calls
 
 import 'dart:io';
-import 'package:Localsearch/vendors/page/main/profile/data/all_discounts_page.dart';
-import 'package:Localsearch/widgets/show_loading_dialog.dart';
+import 'package:ls_business/vendors/page/main/profile/data/all_discounts_page.dart';
+import 'package:ls_business/widgets/show_loading_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:Localsearch/vendors/page/main/profile/view%20page/brand/brand_page.dart';
-import 'package:Localsearch/vendors/page/main/profile/view%20page/category/category_page.dart';
-import 'package:Localsearch/vendors/page/main/profile/view%20page/product/product_page.dart';
-import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:Localsearch/widgets/my_button.dart';
-import 'package:Localsearch/widgets/image_pick_dialog.dart';
-import 'package:Localsearch/widgets/info_edit_box.dart';
-import 'package:Localsearch/widgets/snack_bar.dart';
-import 'package:Localsearch/widgets/text_button.dart';
+import 'package:ls_business/vendors/page/main/profile/view%20page/brand/brand_page.dart';
+import 'package:ls_business/vendors/page/main/profile/view%20page/category/category_page.dart';
+import 'package:ls_business/vendors/page/main/profile/view%20page/product/product_page.dart';
+import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/my_button.dart';
+import 'package:ls_business/widgets/image_pick_dialog.dart';
+import 'package:ls_business/widgets/info_edit_box.dart';
+import 'package:ls_business/widgets/snack_bar.dart';
+import 'package:ls_business/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';

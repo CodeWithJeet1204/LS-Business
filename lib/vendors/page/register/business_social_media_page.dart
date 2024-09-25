@@ -1,9 +1,9 @@
-import 'package:Localsearch/vendors/page/main/main_page.dart';
-import 'package:Localsearch/vendors/page/register/business_choose_shop_types_page.dart';
-import 'package:Localsearch/widgets/my_button.dart';
-import 'package:Localsearch/widgets/show_loading_dialog.dart';
-import 'package:Localsearch/widgets/snack_bar.dart';
-import 'package:Localsearch/widgets/text_form_field.dart';
+import 'package:ls_business/vendors/page/main/main_page.dart';
+import 'package:ls_business/vendors/page/register/business_choose_shop_types_page.dart';
+import 'package:ls_business/widgets/my_button.dart';
+import 'package:ls_business/widgets/show_loading_dialog.dart';
+import 'package:ls_business/widgets/snack_bar.dart';
+import 'package:ls_business/widgets/text_form_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -85,8 +85,6 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
         isNext = false;
       });
       if (mounted) {
-        Navigator.of(context).pop();
-
         if (widget.fromMainPage) {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
@@ -94,7 +92,9 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
             ),
             (route) => false,
           );
-        } else if (!widget.isChanging) {
+        } else if (widget.isChanging) {
+          Navigator.of(context).pop();
+        } else {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: ((context) => const BusinessChooseShopTypesPage(
@@ -102,8 +102,6 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
                   )),
             ),
           );
-        } else {
-          Navigator.of(context).pop();
         }
       }
     } catch (e) {
@@ -183,7 +181,6 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
                         ? Container()
                         : MyButton(
                             onTap: () async {
-                              Navigator.of(context).pop();
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: ((context) =>

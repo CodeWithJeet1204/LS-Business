@@ -1,7 +1,7 @@
-import 'package:Localsearch/vendors/page/main/main_page.dart';
-import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:Localsearch/widgets/page_view.dart';
-import 'package:Localsearch/widgets/text_button.dart';
+import 'package:ls_business/vendors/page/main/main_page.dart';
+import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/page_view.dart';
+import 'package:ls_business/widgets/text_button.dart';
 import 'package:flutter/material.dart';
 // import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -70,7 +70,7 @@ class _IntroPageViewState extends State<IntroPageView> {
             },
             children: const [
               MyPageView(
-                text: 'Why\nLS Business ?',
+                text: 'Why\nls_business ?',
                 animation:
                     'https://lottie.host/42f81d17-142d-477a-a114-0e8fd17cf3d1/BtWfHFygeT.json',
                 textColor: Color.fromARGB(255, 12, 0, 104),

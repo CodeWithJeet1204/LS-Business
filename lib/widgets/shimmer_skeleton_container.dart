@@ -1,4 +1,4 @@
-import 'package:Localsearch/widgets/skeleton_container.dart';
+import 'package:ls_business/widgets/skeleton_container.dart';
 import 'package:flutter/material.dart';
 
 class GridViewSkeleton extends StatelessWidget {

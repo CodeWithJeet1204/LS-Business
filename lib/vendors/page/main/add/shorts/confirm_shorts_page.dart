@@ -1,11 +1,11 @@
 import 'dart:io';
-import 'package:Localsearch/widgets/show_loading_dialog.dart';
-import 'package:Localsearch/widgets/snack_bar.dart';
-import 'package:Localsearch/widgets/text_form_field.dart';
+import 'package:ls_business/widgets/show_loading_dialog.dart';
+import 'package:ls_business/widgets/snack_bar.dart';
+import 'package:ls_business/widgets/text_form_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:Localsearch/vendors/page/main/add/shorts/select_product_for_shorts_page.dart';
-import 'package:Localsearch/vendors/page/main/main_page.dart';
-import 'package:Localsearch/widgets/my_button.dart';
+import 'package:ls_business/vendors/page/main/add/shorts/select_product_for_shorts_page.dart';
+import 'package:ls_business/vendors/page/main/main_page.dart';
+import 'package:ls_business/widgets/my_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flick_video_player/flick_video_player.dart';

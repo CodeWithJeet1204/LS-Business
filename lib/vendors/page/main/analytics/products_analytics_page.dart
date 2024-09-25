@@ -1,8 +1,8 @@
 import 'dart:math';
-import 'package:Localsearch/vendors/provider/main_page_provider.dart';
+import 'package:ls_business/vendors/provider/main_page_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:Localsearch/widgets/info_color_box.dart';
+import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/info_color_box.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';

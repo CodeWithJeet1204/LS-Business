@@ -1,6 +1,6 @@
-import 'package:Localsearch/vendors/page/main/profile/view%20page/shorts/shorts_page_view.dart';
-import 'package:Localsearch/vendors/utils/colors.dart';
-import 'package:Localsearch/widgets/shimmer_skeleton_container.dart';
+import 'package:ls_business/vendors/page/main/profile/view%20page/shorts/shorts_page_view.dart';
+import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/shimmer_skeleton_container.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';

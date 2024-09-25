@@ -1,14 +1,14 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:Localsearch/vendors/models/business_special_categories_images.dart';
-// import 'package:Localsearch/vendors/models/household_special_categories_images.dart';
-// import 'package:Localsearch/vendors/register/business_timings_page.dart';
-// import 'package:Localsearch/vendors/utils/colors.dart';
-// import 'package:Localsearch/widgets/button.dart';
-// import 'package:Localsearch/widgets/head_text.dart';
-// import 'package:Localsearch/widgets/image_container.dart';
-// import 'package:Localsearch/widgets/image_text_container.dart';
-// import 'package:Localsearch/widgets/snack_bar.dart';
-// import 'package:Localsearch/widgets/text_form_field.dart';
+// import 'package:ls_business/vendors/models/business_special_categories_images.dart';
+// import 'package:ls_business/vendors/models/household_special_categories_images.dart';
+// import 'package:ls_business/vendors/register/business_timings_page.dart';
+// import 'package:ls_business/vendors/utils/colors.dart';
+// import 'package:ls_business/widgets/button.dart';
+// import 'package:ls_business/widgets/head_text.dart';
+// import 'package:ls_business/widgets/image_container.dart';
+// import 'package:ls_business/widgets/image_text_container.dart';
+// import 'package:ls_business/widgets/snack_bar.dart';
+// import 'package:ls_business/widgets/text_form_field.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter/material.dart';
 

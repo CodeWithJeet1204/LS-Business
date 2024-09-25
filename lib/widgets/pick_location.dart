@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:Localsearch/vendors/utils/colors.dart';
+import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:open_street_map_search_and_pick/open_street_map_search_and_pick.dart';
 
 class PickLocationPage extends StatefulWidget {
