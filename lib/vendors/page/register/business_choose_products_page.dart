@@ -147,7 +147,6 @@ class _BusinessChooseProductsPageState
     return Scaffold(
       appBar: AppBar(
         title: const Text('Choose Your Products'),
-        automaticallyImplyLeading: false,
       ),
       body: allProducts == null
           ? const Center(

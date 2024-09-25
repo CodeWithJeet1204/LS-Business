@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:ls_business/vendors/page/main/add/product/add_product_page_2.dart';
-import 'package:ls_business/widgets/show_loading_dialog.dart';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
@@ -15,6 +15,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -35,15 +36,16 @@ class _AddProductPage1State extends State<AddProductPage1> {
   final descriptionController = TextEditingController();
   final otherInfoController = TextEditingController();
   final otherInfoValueController = TextEditingController();
-  bool isSaving = false;
+  List<String> otherInfoList = [];
+  final picker = ImagePicker();
   final List<File> _image = [];
   int currentImageIndex = 0;
-  final picker = ImagePicker();
-  List<String> otherInfoList = [];
-  int isAvailable = 0;
-  bool? isPost;
   int? remainingProducts;
+  int isAvailable = 0;
   int? maxImages;
+  bool? isPost;
+  bool isSaving = false;
+  bool isDialog = false;
 
   // INIT STATE
   @override
@@ -206,6 +208,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
         if (productDoesntExists) {
           setState(() {
             isSaving = true;
+            isDialog = true;
           });
 
           final String productId = const Uuid().v4();
@@ -240,6 +243,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
           brandProvider.clear();
           setState(() {
             isSaving = false;
+            isDialog = false;
           });
           if (mounted) {
             Navigator.of(context).push(
@@ -252,6 +256,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
       } catch (e) {
         setState(() {
           isSaving = false;
+          isDialog = false;
         });
         if (mounted) {
           mySnackBar(context, e.toString());
@@ -267,539 +272,545 @@ class _AddProductPage1State extends State<AddProductPage1> {
         Provider.of<SelectBrandForProductProvider>(context);
     final addProductProvider = Provider.of<AddProductProvider>(context);
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: Text(
-          remainingProducts == 0 ? 'Product Gallery Full' : 'Basic Info',
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+    return ModalProgressHUD(
+      inAsyncCall: isDialog,
+      color: primaryDark,
+      blur: 0.5,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          title: Text(
+            remainingProducts == 0 ? 'Product Gallery Full' : 'Basic Info',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          actions: [
+            remainingProducts == 0
+                ? Container()
+                : MyTextButton(
+                    onPressed: () async {
+                      await addProduct(
+                        addProductProvider,
+                        selectBrandProvider,
+                      );
+                    },
+                    text: 'NEXT',
+                    textColor: primaryDark2,
+                  ),
+          ],
         ),
-        actions: [
-          remainingProducts == 0
-              ? Container()
-              : MyTextButton(
-                  onPressed: () async {
-                    await showLoadingDialog(
-                      context,
-                      () async {
-                        await addProduct(
-                          addProductProvider,
-                          selectBrandProvider,
-                        );
-                      },
-                    );
-                  },
-                  text: 'NEXT',
-                  textColor: primaryDark2,
+        body: remainingProducts == 0
+            ? const Center(
+                child: Text(
+                  'Your Product Gallery is full\nDelete older products or renew your membership to increase limit',
+                  textAlign: TextAlign.center,
                 ),
-        ],
-      ),
-      body: remainingProducts == 0
-          ? const Center(
-              child: Text(
-                'Your Product Gallery is full\nDelete older products or renew your membership to increase limit',
-                textAlign: TextAlign.center,
-              ),
-            )
-          : Padding(
-              padding: EdgeInsets.all(
-                width * 0.0225,
-              ),
-              child: LayoutBuilder(
-                builder: ((context, constraints) {
-                  double width = constraints.maxWidth;
-                  return SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // IMAGE
-                        _image.isNotEmpty
-                            ? Column(
-                                children: [
-                                  Center(
-                                    child: Stack(
-                                      alignment: Alignment.topRight,
+              )
+            : Padding(
+                padding: EdgeInsets.all(
+                  width * 0.0225,
+                ),
+                child: LayoutBuilder(
+                  builder: ((context, constraints) {
+                    double width = constraints.maxWidth;
+                    return SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // IMAGE
+                          _image.isNotEmpty
+                              ? Column(
+                                  children: [
+                                    Center(
+                                      child: Stack(
+                                        alignment: Alignment.topRight,
+                                        children: [
+                                          Container(
+                                            height: width,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              border: Border.all(
+                                                color: primaryDark,
+                                                width: 3,
+                                              ),
+                                              image: DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image: FileImage(
+                                                  _image[currentImageIndex],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                              top: width * 0.015,
+                                              right: width * 0.015,
+                                            ),
+                                            child: IconButton.filledTonal(
+                                              onPressed: () {
+                                                removeProductImages(
+                                                  currentImageIndex,
+                                                );
+                                              },
+                                              icon: Icon(
+                                                FeatherIcons.x,
+                                                size: width * 0.1,
+                                              ),
+                                              tooltip: 'Remove Image',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(height: 16),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
                                       children: [
                                         Container(
-                                          height: width,
                                           decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(12),
                                             border: Border.all(
                                               color: primaryDark,
                                               width: 3,
                                             ),
-                                            image: DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: FileImage(
-                                                _image[currentImageIndex],
-                                              ),
-                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(12),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                            top: width * 0.015,
-                                            right: width * 0.015,
-                                          ),
-                                          child: IconButton.filledTonal(
-                                            onPressed: () {
-                                              removeProductImages(
-                                                currentImageIndex,
-                                              );
-                                            },
-                                            icon: Icon(
-                                              FeatherIcons.x,
-                                              size: width * 0.1,
-                                            ),
-                                            tooltip: 'Remove Image',
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(height: 16),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: primaryDark,
-                                            width: 3,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        padding: const EdgeInsets.all(4),
-                                        width: _image.length - maxImages! == 0
-                                            ? width * 0.975
-                                            : width * 0.775,
-                                        height: width * 0.225,
-                                        child: ListView.builder(
-                                          shrinkWrap: true,
-                                          physics:
-                                              const ClampingScrollPhysics(),
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: _image.length,
-                                          itemBuilder: ((context, index) {
-                                            return GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  currentImageIndex = index;
-                                                });
-                                              },
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(2),
-                                                child: Container(
-                                                  height: width * 0.18,
-                                                  width: width * 0.18,
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                      width: 0.3,
-                                                      color: primaryDark,
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            4),
-                                                    image: DecorationImage(
-                                                      fit: BoxFit.cover,
-                                                      image: FileImage(
-                                                        _image[index],
+                                          padding: const EdgeInsets.all(4),
+                                          width: _image.length - maxImages! == 0
+                                              ? width * 0.975
+                                              : width * 0.775,
+                                          height: width * 0.225,
+                                          child: ListView.builder(
+                                            shrinkWrap: true,
+                                            physics:
+                                                const ClampingScrollPhysics(),
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: _image.length,
+                                            itemBuilder: ((context, index) {
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    currentImageIndex = index;
+                                                  });
+                                                },
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(2),
+                                                  child: Container(
+                                                    height: width * 0.18,
+                                                    width: width * 0.18,
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                        width: 0.3,
+                                                        color: primaryDark,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              4),
+                                                      image: DecorationImage(
+                                                        fit: BoxFit.cover,
+                                                        image: FileImage(
+                                                          _image[index],
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                            );
-                                          }),
-                                        ),
-                                      ),
-                                      _image.length - maxImages! == 0
-                                          ? Container()
-                                          : Container(
-                                              height: width * 0.19,
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                  color: primaryDark,
-                                                  width: 3,
-                                                ),
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                              ),
-                                              child: IconButton(
-                                                splashRadius: width * 0.095,
-                                                onPressed: () async {
-                                                  await addProductImages();
-                                                },
-                                                icon: Icon(
-                                                  FeatherIcons.plus,
-                                                  size: width * 0.115,
-                                                ),
-                                              ),
-                                            ),
-                                    ],
-                                  ),
-                                ],
-                              )
-                            : SizedOverflowBox(
-                                size: Size(width, width),
-                                child: InkWell(
-                                  onTap: () async {
-                                    await addProductImages();
-                                  },
-                                  customBorder: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(32),
-                                  ),
-                                  child: Container(
-                                    width: width,
-                                    height: width,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: primaryDark,
-                                        width: 3,
-                                      ),
-                                      borderRadius: BorderRadius.circular(32),
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Icon(
-                                          FeatherIcons.upload,
-                                          size: width * 0.4,
-                                        ),
-                                        Text(
-                                          'Select Image',
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: width * 0.09,
-                                            fontWeight: FontWeight.w500,
+                                              );
+                                            }),
                                           ),
                                         ),
-                                        maxImages == null
+                                        _image.length - maxImages! == 0
                                             ? Container()
-                                            : Text(
-                                                'Max. $maxImages images',
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                  fontSize: width * 0.04,
+                                            : Container(
+                                                height: width * 0.19,
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                    color: primaryDark,
+                                                    width: 3,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                ),
+                                                child: IconButton(
+                                                  splashRadius: width * 0.095,
+                                                  onPressed: () async {
+                                                    await addProductImages();
+                                                  },
+                                                  icon: Icon(
+                                                    FeatherIcons.plus,
+                                                    size: width * 0.115,
+                                                  ),
                                                 ),
                                               ),
                                       ],
                                     ),
-                                  ),
-                                ),
-                              ),
-                        const SizedBox(height: 28),
-
-                        Form(
-                          key: productKey,
-                          child: Column(
-                            children: [
-                              // NAME
-                              TextFormField(
-                                controller: nameController,
-                                onTapOutside: (event) =>
-                                    FocusScope.of(context).unfocus(),
-                                maxLength: 60,
-                                decoration: const InputDecoration(
-                                  hintText: 'Product Name',
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: primaryDark2,
-                                      width: 2,
+                                  ],
+                                )
+                              : SizedOverflowBox(
+                                  size: Size(width, width),
+                                  child: InkWell(
+                                    onTap: () async {
+                                      await addProductImages();
+                                    },
+                                    customBorder: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(32),
+                                    ),
+                                    child: Container(
+                                      width: width,
+                                      height: width,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: primaryDark,
+                                          width: 3,
+                                        ),
+                                        borderRadius: BorderRadius.circular(32),
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Icon(
+                                            FeatherIcons.upload,
+                                            size: width * 0.4,
+                                          ),
+                                          Text(
+                                            'Select Image',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: width * 0.09,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          maxImages == null
+                                              ? Container()
+                                              : Text(
+                                                  'Max. $maxImages images',
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                    fontSize: width * 0.04,
+                                                  ),
+                                                ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                                validator: (value) {
-                                  if (value != null && value.isNotEmpty) {
-                                    return null;
-                                  } else {
-                                    return 'Enter Name';
-                                  }
-                                },
-                              ),
-                              const SizedBox(height: 12),
+                          const SizedBox(height: 28),
 
-                              // PRICE
-                              TextFormField(
-                                controller: priceController,
-                                onTapOutside: (event) =>
-                                    FocusScope.of(context).unfocus(),
-                                keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
-                                  hintText: 'Price',
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: primaryDark2,
-                                      width: 2,
+                          Form(
+                            key: productKey,
+                            child: Column(
+                              children: [
+                                // NAME
+                                TextFormField(
+                                  controller: nameController,
+                                  onTapOutside: (event) =>
+                                      FocusScope.of(context).unfocus(),
+                                  maxLength: 60,
+                                  decoration: const InputDecoration(
+                                    hintText: 'Product Name',
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: primaryDark2,
+                                        width: 2,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                validator: (value) {
-                                  if (value != null && value.isNotEmpty) {
-                                    if (int.parse(value) >= 1) {
+                                  validator: (value) {
+                                    if (value != null && value.isNotEmpty) {
                                       return null;
                                     } else {
-                                      return 'Price should be greater than Rs. 1';
+                                      return 'Enter Name';
                                     }
-                                  } else {
-                                    return 'Enter Price';
-                                  }
-                                },
-                              ),
-                              const SizedBox(height: 12),
+                                  },
+                                ),
+                                const SizedBox(height: 12),
 
-                              // DESCRIPTION
-                              TextFormField(
-                                controller: descriptionController,
-                                onTapOutside: (event) =>
-                                    FocusScope.of(context).unfocus(),
-                                minLines: 1,
-                                maxLines: 10,
-                                maxLength: 500,
-                                keyboardType: TextInputType.multiline,
-                                decoration: const InputDecoration(
-                                  hintText: 'Description',
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: primaryDark2,
-                                      width: 2,
+                                // PRICE
+                                TextFormField(
+                                  controller: priceController,
+                                  onTapOutside: (event) =>
+                                      FocusScope.of(context).unfocus(),
+                                  keyboardType: TextInputType.number,
+                                  decoration: const InputDecoration(
+                                    hintText: 'Price',
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: primaryDark2,
+                                        width: 2,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                validator: (value) {
-                                  if (value != null && value.isNotEmpty) {
-                                    if (value.isNotEmpty) {
-                                      return null;
+                                  validator: (value) {
+                                    if (value != null && value.isNotEmpty) {
+                                      if (int.parse(value) >= 1) {
+                                        return null;
+                                      } else {
+                                        return 'Price should be greater than Rs. 1';
+                                      }
                                     } else {
-                                      return 'Description should be atleast 1 chars long';
+                                      return 'Enter Price';
                                     }
-                                  } else {
-                                    return 'Enter Description';
-                                  }
-                                },
-                              ),
-                              const SizedBox(height: 12),
-
-                              // BRAND
-                              InkWell(
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: ((context) =>
-                                          const SelectBrandForProductPage()),
-                                    ),
-                                  );
-                                },
-                                splashColor: primary2,
-                                radius: width * 0.5,
-                                customBorder: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
+                                  },
                                 ),
-                                child: Container(
-                                  height: width * 0.16,
-                                  width: width,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: width * 0.025),
-                                  alignment: Alignment.centerLeft,
-                                  decoration: BoxDecoration(
-                                    color: primary2.withOpacity(0.5),
+                                const SizedBox(height: 12),
+
+                                // DESCRIPTION
+                                TextFormField(
+                                  controller: descriptionController,
+                                  onTapOutside: (event) =>
+                                      FocusScope.of(context).unfocus(),
+                                  minLines: 1,
+                                  maxLines: 10,
+                                  maxLength: 500,
+                                  keyboardType: TextInputType.multiline,
+                                  decoration: const InputDecoration(
+                                    hintText: 'Description',
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: primaryDark2,
+                                        width: 2,
+                                      ),
+                                    ),
+                                  ),
+                                  validator: (value) {
+                                    if (value != null && value.isNotEmpty) {
+                                      if (value.isNotEmpty) {
+                                        return null;
+                                      } else {
+                                        return 'Description should be atleast 1 chars long';
+                                      }
+                                    } else {
+                                      return 'Enter Description';
+                                    }
+                                  },
+                                ),
+                                const SizedBox(height: 12),
+
+                                // BRAND
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: ((context) =>
+                                            const SelectBrandForProductPage()),
+                                      ),
+                                    );
+                                  },
+                                  splashColor: primary2,
+                                  radius: width * 0.5,
+                                  customBorder: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
                                   ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        selectBrandProvider.selectedBrandName ==
-                                                'No Brand'
-                                            ? 'Select Brand'
-                                            : selectBrandProvider
-                                                .selectedBrandName!,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
+                                  child: Container(
+                                    height: width * 0.16,
+                                    width: width,
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: width * 0.025),
+                                    alignment: Alignment.centerLeft,
+                                    decoration: BoxDecoration(
+                                      color: primary2.withOpacity(0.5),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          selectBrandProvider
+                                                      .selectedBrandName ==
+                                                  'No Brand'
+                                              ? 'Select Brand'
+                                              : selectBrandProvider
+                                                  .selectedBrandName!,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: primaryDark,
+                                            fontSize: width * 0.055,
+                                          ),
+                                        ),
+                                        Icon(
+                                          FeatherIcons.chevronRight,
                                           color: primaryDark,
-                                          fontSize: width * 0.055,
+                                          size: width * 0.09,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+
+                                // AVAILABLE / OUT OF STOCK
+                                Container(
+                                  width: width,
+                                  decoration: BoxDecoration(
+                                    color: primary2.withOpacity(0.75),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  margin: EdgeInsets.only(
+                                    bottom: MediaQuery.of(context)
+                                        .viewInsets
+                                        .bottom,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            isAvailable = 0;
+                                          });
+                                        },
+                                        child: SizedBox(
+                                          width: width,
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: width * 0.025,
+                                              vertical: 4,
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                SizedBox(
+                                                  width: width * 0.8,
+                                                  child: AutoSizeText(
+                                                    'Available',
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      color: primaryDark,
+                                                      fontSize: width * 0.05,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Checkbox(
+                                                  activeColor: primaryDark,
+                                                  checkColor: white,
+                                                  value: isAvailable == 0,
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      isAvailable = 0;
+                                                    });
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                      Icon(
-                                        FeatherIcons.chevronRight,
-                                        color: primaryDark,
-                                        size: width * 0.09,
+                                      const Divider(),
+                                      GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            isAvailable = 1;
+                                          });
+                                        },
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: width * 0.025,
+                                            vertical: 4,
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              SizedBox(
+                                                width: width * 0.8,
+                                                child: AutoSizeText(
+                                                  'Will be Available Within a Week',
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                    color: primaryDark,
+                                                    fontSize: width * 0.05,
+                                                  ),
+                                                ),
+                                              ),
+                                              Checkbox(
+                                                activeColor: primaryDark,
+                                                checkColor: white,
+                                                value: isAvailable == 1,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    isAvailable = 1;
+                                                  });
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      const Divider(),
+                                      GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            isAvailable = 2;
+                                          });
+                                        },
+                                        child: SizedBox(
+                                          width: width,
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: width * 0.025,
+                                              vertical: 4,
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                SizedBox(
+                                                  width: width * 0.8,
+                                                  child: AutoSizeText(
+                                                    'Out Of Stock',
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      color: primaryDark,
+                                                      fontSize: width * 0.05,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Checkbox(
+                                                  activeColor: primaryDark,
+                                                  checkColor: white,
+                                                  value: isAvailable == 2,
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      isAvailable = 2;
+                                                    });
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),
                                 ),
-                              ),
-                              const SizedBox(height: 16),
-
-                              // AVAILABLE / OUT OF STOCK
-                              Container(
-                                width: width,
-                                decoration: BoxDecoration(
-                                  color: primary2.withOpacity(0.75),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                margin: EdgeInsets.only(
-                                  bottom:
-                                      MediaQuery.of(context).viewInsets.bottom,
-                                ),
-                                child: Column(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          isAvailable = 0;
-                                        });
-                                      },
-                                      child: SizedBox(
-                                        width: width,
-                                        child: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: width * 0.025,
-                                            vertical: 4,
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              SizedBox(
-                                                width: width * 0.8,
-                                                child: AutoSizeText(
-                                                  'Available',
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                    color: primaryDark,
-                                                    fontSize: width * 0.05,
-                                                  ),
-                                                ),
-                                              ),
-                                              Checkbox(
-                                                activeColor: primaryDark,
-                                                checkColor: white,
-                                                value: isAvailable == 0,
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    isAvailable = 0;
-                                                  });
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    const Divider(),
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          isAvailable = 1;
-                                        });
-                                      },
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: width * 0.025,
-                                          vertical: 4,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            SizedBox(
-                                              width: width * 0.8,
-                                              child: AutoSizeText(
-                                                'Will be Available Within a Week',
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                  color: primaryDark,
-                                                  fontSize: width * 0.05,
-                                                ),
-                                              ),
-                                            ),
-                                            Checkbox(
-                                              activeColor: primaryDark,
-                                              checkColor: white,
-                                              value: isAvailable == 1,
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  isAvailable = 1;
-                                                });
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    const Divider(),
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          isAvailable = 2;
-                                        });
-                                      },
-                                      child: SizedBox(
-                                        width: width,
-                                        child: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: width * 0.025,
-                                            vertical: 4,
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              SizedBox(
-                                                width: width * 0.8,
-                                                child: AutoSizeText(
-                                                  'Out Of Stock',
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                    color: primaryDark,
-                                                    fontSize: width * 0.05,
-                                                  ),
-                                                ),
-                                              ),
-                                              Checkbox(
-                                                activeColor: primaryDark,
-                                                checkColor: white,
-                                                value: isAvailable == 2,
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    isAvailable = 2;
-                                                  });
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  );
-                }),
+                        ],
+                      ),
+                    );
+                  }),
+                ),
               ),
-            ),
+      ),
     );
   }
 }

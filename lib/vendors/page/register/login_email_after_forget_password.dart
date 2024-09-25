@@ -1,10 +1,11 @@
-import 'package:ls_business/widgets/show_loading_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ls_business/vendors/page/main/main_page.dart';
+import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:ls_business/widgets/text_form_field.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class LoginEmailAfterForgetPassword extends StatefulWidget {
   const LoginEmailAfterForgetPassword({
@@ -25,14 +26,16 @@ class _LoginEmailAfterForgetPasswordState
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool isEmailLogging = false;
+  bool isDialog = false;
 
   // LOGIN WITH EMAIL
   Future<void> loginWithEmail() async {
     if (passwordController.text.length > 6) {
+      setState(() {
+        isEmailLogging = true;
+        isDialog = true;
+      });
       try {
-        setState(() {
-          isEmailLogging = true;
-        });
         await auth.signInWithEmailAndPassword(
           email: emailController.text.toString(),
           password: passwordController.text.toString(),
@@ -50,16 +53,15 @@ class _LoginEmailAfterForgetPasswordState
         }
         setState(() {
           isEmailLogging = false;
+          isDialog = false;
         });
       } catch (e) {
         setState(() {
           isEmailLogging = false;
+          isDialog = false;
         });
         if (mounted) {
-          mySnackBar(
-            context,
-            e.toString(),
-          );
+          mySnackBar(context, e.toString());
         }
       }
     }
@@ -69,60 +71,60 @@ class _LoginEmailAfterForgetPasswordState
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Email Login'),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(
-            width * 0.0125,
-          ),
-          child: LayoutBuilder(builder: (context, constraints) {
-            final width = constraints.maxWidth;
+    return ModalProgressHUD(
+      inAsyncCall: isDialog,
+      color: primaryDark,
+      blur: 0.5,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Email Login'),
+        ),
+        body: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.all(
+              width * 0.0125,
+            ),
+            child: LayoutBuilder(builder: (context, constraints) {
+              final width = constraints.maxWidth;
 
-            return SingleChildScrollView(
-              child: Column(
-                children: [
-                  // SizedBox(height: width * 0.35),
-                  // const HeadText(
-                  //   text: 'LOGIN WITH EMAIL',
-                  // ),
-                  SizedBox(height: width * 0.65),
-                  MyTextFormField(
-                    hintText: 'Email*',
-                    controller: emailController,
-                    borderRadius: 16,
-                    horizontalPadding: width * 0.066,
-                    keyboardType: TextInputType.emailAddress,
-                    autoFillHints: const [AutofillHints.email],
-                  ),
-                  const SizedBox(height: 8),
-                  MyTextFormField(
-                    hintText: 'Password*',
-                    controller: passwordController,
-                    borderRadius: 16,
-                    horizontalPadding: width * 0.066,
-                    isPassword: true,
-                    autoFillHints: const [AutofillHints.password],
-                  ),
-                  const SizedBox(height: 8),
-                  MyButton(
-                    text: 'LOGIN',
-                    onTap: () async {
-                      await showLoadingDialog(
-                        context,
-                        () async {
-                          await loginWithEmail();
-                        },
-                      );
-                    },
-                    horizontalPadding: width * 0.066,
-                  ),
-                ],
-              ),
-            );
-          }),
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    // SizedBox(height: width * 0.35),
+                    // const HeadText(
+                    //   text: 'LOGIN WITH EMAIL',
+                    // ),
+                    SizedBox(height: width * 0.65),
+                    MyTextFormField(
+                      hintText: 'Email*',
+                      controller: emailController,
+                      borderRadius: 16,
+                      horizontalPadding: width * 0.066,
+                      keyboardType: TextInputType.emailAddress,
+                      autoFillHints: const [AutofillHints.email],
+                    ),
+                    const SizedBox(height: 8),
+                    MyTextFormField(
+                      hintText: 'Password*',
+                      controller: passwordController,
+                      borderRadius: 16,
+                      horizontalPadding: width * 0.066,
+                      isPassword: true,
+                      autoFillHints: const [AutofillHints.password],
+                    ),
+                    const SizedBox(height: 8),
+                    MyButton(
+                      text: 'LOGIN',
+                      onTap: () async {
+                        await loginWithEmail();
+                      },
+                      horizontalPadding: width * 0.066,
+                    ),
+                  ],
+                ),
+              );
+            }),
+          ),
         ),
       ),
     );

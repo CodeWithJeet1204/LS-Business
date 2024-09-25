@@ -99,52 +99,48 @@ class _BusinessChooseShopTypesPageState
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: const Text('Choose Your Type'),
-        automaticallyImplyLeading: false,
       ),
       body: shopTypes == null
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : PopScope(
-              canPop: false,
-              child: SafeArea(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: width * 0.0125),
-                  child: LayoutBuilder(builder: (context, constraints) {
-                    final width = constraints.maxWidth;
+          : SafeArea(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: width * 0.0125),
+                child: LayoutBuilder(builder: (context, constraints) {
+                  final width = constraints.maxWidth;
 
-                    return GridView.builder(
-                      shrinkWrap: true,
-                      physics: const ClampingScrollPhysics(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: 16 / 9,
-                      ),
-                      itemCount: shopTypes!.length,
-                      itemBuilder: (context, index) {
-                        final name = shopTypes!.keys.toList()[index];
-                        final imageUrl = shopTypes!.values.toList()[index];
+                  return GridView.builder(
+                    shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 16 / 9,
+                    ),
+                    itemCount: shopTypes!.length,
+                    itemBuilder: (context, index) {
+                      final name = shopTypes!.keys.toList()[index];
+                      final imageUrl = shopTypes!.values.toList()[index];
 
-                        return SelectContainer(
-                          width: width,
-                          text: name,
-                          isSelected: selected.contains(name),
-                          imageUrl: imageUrl,
-                          onTap: () {
-                            setState(() {
-                              if (selected.contains(name)) {
-                                selected.remove(name);
-                              } else {
-                                selected.add(name);
-                              }
-                            });
-                          },
-                        );
-                      },
-                    );
-                  }),
-                ),
+                      return SelectContainer(
+                        width: width,
+                        text: name,
+                        isSelected: selected.contains(name),
+                        imageUrl: imageUrl,
+                        onTap: () {
+                          setState(() {
+                            if (selected.contains(name)) {
+                              selected.remove(name);
+                            } else {
+                              selected.add(name);
+                            }
+                          });
+                        },
+                      );
+                    },
+                  );
+                }),
               ),
             ),
       floatingActionButton: FloatingActionButton(

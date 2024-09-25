@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:ls_business/vendors/page/main/main_page.dart';
-import 'package:ls_business/widgets/show_loading_dialog.dart';
+
 import 'package:ls_business/widgets/text_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,6 +12,7 @@ import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:open_street_map_search_and_pick/open_street_map_search_and_pick.dart';
 
 class GetLocationPage extends StatefulWidget {
@@ -32,6 +33,7 @@ class _GetLocationPageState extends State<GetLocationPage> {
   bool isDetectingCity = false;
   bool isPickingCity = false;
   bool isSaving = false;
+  bool isDialog = false;
 
   // GET LOCATION
   Future<Position?> getLocation() async {
@@ -134,165 +136,175 @@ class _GetLocationPageState extends State<GetLocationPage> {
   Future<void> done() async {
     setState(() {
       isSaving = true;
+      isDialog = true;
     });
 
-    await store
-        .collection('Business')
-        .doc('Owners')
-        .collection('Shops')
-        .doc(auth.currentUser!.uid)
-        .update({
-      'Latitude': latitude,
-      'Longitude': longitude,
-      'City': cityDetectLocation ?? cityPickLocation,
-    });
+    try {
+      await store
+          .collection('Business')
+          .doc('Owners')
+          .collection('Shops')
+          .doc(auth.currentUser!.uid)
+          .update({
+        'Latitude': latitude,
+        'Longitude': longitude,
+        'City': cityDetectLocation ?? cityPickLocation,
+      });
 
-    setState(() {
-      isSaving = false;
-    });
+      setState(() {
+        isSaving = false;
+        isDialog = false;
+      });
 
-    if (mounted) {
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: (context) => const MainPage(),
-        ),
-        (route) => false,
-      );
+      if (mounted) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => const MainPage(),
+          ),
+          (route) => false,
+        );
+      }
+    } catch (e) {
+      setState(() {
+        isSaving = false;
+        isDialog = false;
+      });
+      return mySnackBar(context, 'Error occured: ${e.toString()}');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Get Location'),
-        actions: [
-          MyTextButton(
-            onPressed: () async {
-              if (displayDetectCity == null && cityPickLocation == null) {
-                return mySnackBar(context, 'Detect / Pick Location');
-              }
-              await showLoadingDialog(
-                context,
-                () async {
-                  await done();
-                },
-              );
-            },
-            text: 'DONE',
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child: LayoutBuilder(builder: (context, constraints) {
-          final width = constraints.maxWidth;
+    return ModalProgressHUD(
+      inAsyncCall: isDialog,
+      color: primaryDark,
+      blur: 0.5,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Get Location'),
+          actions: [
+            MyTextButton(
+              onPressed: () async {
+                if (displayDetectCity == null && cityPickLocation == null) {
+                  return mySnackBar(context, 'Detect / Pick Location');
+                }
+                await done();
+              },
+              text: 'DONE',
+            ),
+          ],
+        ),
+        body: SafeArea(
+          child: LayoutBuilder(builder: (context, constraints) {
+            final width = constraints.maxWidth;
 
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: () async {
-                  setState(() {
-                    isDetectingCity = true;
-                  });
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () async {
+                    setState(() {
+                      isDetectingCity = true;
+                    });
 
-                  await getLocation().then((value) async {
-                    if (value != null) {
-                      setState(() {
-                        latitude = value.latitude;
-                        longitude = value.longitude;
-                      });
-                    }
+                    await getLocation().then((value) async {
+                      if (value != null) {
+                        setState(() {
+                          latitude = value.latitude;
+                          longitude = value.longitude;
+                        });
+                      }
 
-                    await getAddress(latitude!, longitude!);
-                  });
+                      await getAddress(latitude!, longitude!);
+                    });
 
-                  setState(() {
-                    cityPickLocation = null;
-                    isDetectingCity = false;
-                  });
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: primary2,
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  padding: EdgeInsets.all(width * 0.025),
-                  child: isDetectingCity
-                      ? const CircularProgressIndicator()
-                      : cityPickLocation != null
-                          ? const Icon(FeatherIcons.mapPin)
-                          : AutoSizeText(
-                              displayDetectCity ?? 'Detect Location',
-                              maxLines: cityDetectLocation != null ? 1 : 2,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: width * 0.045,
-                                color: primaryDark2,
-                              ),
-                            ),
-                ),
-              ),
-              SizedBox(height: width * 0.025),
-              const Text('OR'),
-              SizedBox(height: width * 0.025),
-              GestureDetector(
-                onTap: () async {
-                  setState(() {
-                    isPickingCity = true;
-                  });
-                  Navigator.of(context)
-                      .push(
-                    MaterialPageRoute(
-                      builder: (context) => const PickLocationPage(),
+                    setState(() {
+                      cityPickLocation = null;
+                      isDetectingCity = false;
+                    });
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: primary2,
+                      borderRadius: BorderRadius.circular(24),
                     ),
-                  )
-                      .then(
-                    (pickedData) {
-                      final cityName = pickedData[0] as String;
-                      final coordinates = pickedData[1] as LatLong;
-
-                      setState(() {
-                        latitude = coordinates.latitude;
-                        longitude = coordinates.longitude;
-                        cityPickLocation = cityName;
-                      });
-                    },
-                  );
-                  setState(() {
-                    cityDetectLocation = null;
-                    isPickingCity = false;
-                  });
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: primary2,
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  padding: EdgeInsets.all(width * 0.025),
-                  child: isPickingCity
-                      ? const CircularProgressIndicator()
-                      : cityDetectLocation != null
-                          ? const Icon(FeatherIcons.map)
-                          : AutoSizeText(
-                              cityPickLocation ?? 'Pick Location 🗺️',
-                              maxLines: cityPickLocation != null ? 1 : 2,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: width * 0.045,
-                                color: primaryDark2,
+                    padding: EdgeInsets.all(width * 0.025),
+                    child: isDetectingCity
+                        ? const CircularProgressIndicator()
+                        : cityPickLocation != null
+                            ? const Icon(FeatherIcons.mapPin)
+                            : AutoSizeText(
+                                displayDetectCity ?? 'Detect Location',
+                                maxLines: cityDetectLocation != null ? 1 : 2,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: width * 0.045,
+                                  color: primaryDark2,
+                                ),
                               ),
-                            ),
+                  ),
                 ),
-              ),
-            ],
-          );
-        }),
+                SizedBox(height: width * 0.025),
+                const Text('OR'),
+                SizedBox(height: width * 0.025),
+                GestureDetector(
+                  onTap: () async {
+                    setState(() {
+                      isPickingCity = true;
+                    });
+                    Navigator.of(context)
+                        .push(
+                      MaterialPageRoute(
+                        builder: (context) => const PickLocationPage(),
+                      ),
+                    )
+                        .then(
+                      (pickedData) {
+                        final cityName = pickedData[0] as String;
+                        final coordinates = pickedData[1] as LatLong;
+
+                        setState(() {
+                          latitude = coordinates.latitude;
+                          longitude = coordinates.longitude;
+                          cityPickLocation = cityName;
+                        });
+                      },
+                    );
+                    setState(() {
+                      cityDetectLocation = null;
+                      isPickingCity = false;
+                    });
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: primary2,
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    padding: EdgeInsets.all(width * 0.025),
+                    child: isPickingCity
+                        ? const CircularProgressIndicator()
+                        : cityDetectLocation != null
+                            ? const Icon(FeatherIcons.map)
+                            : AutoSizeText(
+                                cityPickLocation ?? 'Pick Location 🗺️',
+                                maxLines: cityPickLocation != null ? 1 : 2,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: width * 0.045,
+                                  color: primaryDark2,
+                                ),
+                              ),
+                  ),
+                ),
+              ],
+            );
+          }),
+        ),
       ),
     );
   }

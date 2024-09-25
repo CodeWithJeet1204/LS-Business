@@ -1,9 +1,10 @@
-import 'package:ls_business/widgets/show_loading_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:uuid/uuid.dart';
 
 class AddTextPostPage extends StatefulWidget {
@@ -24,12 +25,14 @@ class _AddTextPostPageState extends State<AddTextPostPage> {
   final postKey = GlobalKey<FormState>();
   final postController = TextEditingController();
   bool isPosting = false;
+  bool isDialog = false;
 
   // POST
   Future<void> post() async {
     if (postKey.currentState!.validate()) {
       setState(() {
         isPosting = true;
+        isDialog = true;
       });
 
       try {
@@ -67,6 +70,7 @@ class _AddTextPostPageState extends State<AddTextPostPage> {
 
         setState(() {
           isPosting = false;
+          isDialog = false;
         });
 
         if (mounted) {
@@ -77,6 +81,7 @@ class _AddTextPostPageState extends State<AddTextPostPage> {
       } catch (e) {
         setState(() {
           isPosting = false;
+          isDialog = false;
         });
         if (mounted) {
           mySnackBar(context, e.toString());
@@ -87,73 +92,73 @@ class _AddTextPostPageState extends State<AddTextPostPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add Text Post'),
-      ),
-      body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final width = constraints.maxWidth;
+    return ModalProgressHUD(
+      inAsyncCall: isDialog,
+      color: primaryDark,
+      blur: 0.5,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Add Text Post'),
+        ),
+        body: SafeArea(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final width = constraints.maxWidth;
 
-            return SingleChildScrollView(
-              child: Form(
-                key: postKey,
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: width,
-                      child: Padding(
-                        padding: EdgeInsets.all(width * 0.0225),
-                        child: TextFormField(
-                          autofocus: true,
-                          controller: postController,
-                          minLines: 1,
-                          maxLines: 10,
-                          maxLength: 1000,
-                          onTapOutside: (event) =>
-                              FocusScope.of(context).unfocus(),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(4),
-                              borderSide: BorderSide(
-                                color: Colors.cyan.shade700,
+              return SingleChildScrollView(
+                child: Form(
+                  key: postKey,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: width,
+                        child: Padding(
+                          padding: EdgeInsets.all(width * 0.0225),
+                          child: TextFormField(
+                            autofocus: true,
+                            controller: postController,
+                            minLines: 1,
+                            maxLines: 10,
+                            maxLength: 1000,
+                            onTapOutside: (event) =>
+                                FocusScope.of(context).unfocus(),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide: BorderSide(
+                                  color: Colors.cyan.shade700,
+                                ),
                               ),
+                              hintText: 'Post...',
                             ),
-                            hintText: 'Post...',
-                          ),
-                          validator: (value) {
-                            if (value != null) {
-                              if (value.isNotEmpty) {
-                                return null;
-                              } else {
-                                return 'Pls enter something';
+                            validator: (value) {
+                              if (value != null) {
+                                if (value.isNotEmpty) {
+                                  return null;
+                                } else {
+                                  return 'Pls enter something';
+                                }
                               }
-                            }
-                            return null;
-                          },
+                              return null;
+                            },
+                          ),
                         ),
                       ),
-                    ),
 
-                    // DONE
-                    MyButton(
-                      text: 'DONE',
-                      onTap: () async {
-                        await showLoadingDialog(
-                          context,
-                          () async {
-                            await post();
-                          },
-                        );
-                      },
-                      horizontalPadding: width * 0.0225,
-                    ),
-                  ],
+                      // DONE
+                      MyButton(
+                        text: 'DONE',
+                        onTap: () async {
+                          await post();
+                        },
+                        horizontalPadding: width * 0.0225,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );

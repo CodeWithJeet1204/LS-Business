@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:ls_business/widgets/show_loading_dialog.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:ls_business/vendors/page/main/discount/brand/select_brands_for_discount_page.dart';
@@ -13,6 +13,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -30,14 +31,15 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
   final nameController = TextEditingController();
   final discountController = TextEditingController();
   final discountKey = GlobalKey<FormState>();
-  bool isPercentSelected = true;
+  File? _image;
+  String? imageUrl;
   String? startDate;
   String? endDate;
   DateTime? startDateTime;
   DateTime? endDateTime;
-  File? _image;
+  bool isPercentSelected = true;
   bool isUploading = false;
-  String? imageUrl;
+  bool isDialog = false;
 
   // DISPOSE
   @override
@@ -115,6 +117,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
 
       setState(() {
         isUploading = true;
+        isDialog = true;
       });
       try {
         String discountId = const Uuid().v4();
@@ -184,6 +187,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
         }
         setState(() {
           isUploading = false;
+          isDialog = false;
         });
         if (mounted) {
           Navigator.of(context).pop();
@@ -191,6 +195,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
       } catch (e) {
         setState(() {
           isUploading = false;
+          isDialog = false;
         });
         if (mounted) {
           mySnackBar(context, e.toString());
@@ -205,461 +210,152 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
         Provider.of<SelectBrandForDiscountProvider>(context);
     final selectedBrands = selectedBrandProvider.selectedBrands;
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            selectedBrandProvider.clear();
-            Navigator.of(context).pop();
-          },
-          icon: const Icon(
-            FeatherIcons.arrowLeft,
-          ),
-          tooltip: 'Back',
-        ),
-        actions: [
-          MyTextButton(
-            onPressed: () async {
-              await showLoadingDialog(
-                context,
-                () async {
-                  await addDiscount(
-                    selectedBrandProvider,
-                    selectedBrands,
-                  );
-                },
-              );
+    return ModalProgressHUD(
+      inAsyncCall: isDialog,
+      color: primaryDark,
+      blur: 0.5,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              selectedBrandProvider.clear();
+              Navigator.of(context).pop();
             },
-            text: 'DONE',
+            icon: const Icon(
+              FeatherIcons.arrowLeft,
+            ),
+            tooltip: 'Back',
           ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-        child: LayoutBuilder(
-          builder: ((context, constraints) {
-            double width = constraints.maxWidth;
+          actions: [
+            MyTextButton(
+              onPressed: () async {
+                await addDiscount(
+                  selectedBrandProvider,
+                  selectedBrands,
+                );
+              },
+              text: 'DONE',
+            ),
+          ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+          child: LayoutBuilder(
+            builder: ((context, constraints) {
+              double width = constraints.maxWidth;
 
-            return SingleChildScrollView(
-              child: Form(
-                key: discountKey,
-                child: Column(
-                  children: [
-                    // DISCLAIMER
-                    const Text(
-                      'If your brand has ongoing discount, then this discount will be applied, after that discount ends (if this discount ends after that)',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: primaryDark2,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-
-                    // IMAGE
-                    GestureDetector(
-                      onTap: _image == null
-                          ? () async {
-                              await addDiscountImage();
-                            }
-                          : null,
-                      child: Container(
-                        width: width,
-                        height: width * 9 / 16,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: primaryDark,
-                            width: 2,
-                          ),
-                          borderRadius: BorderRadius.circular(8),
+              return SingleChildScrollView(
+                child: Form(
+                  key: discountKey,
+                  child: Column(
+                    children: [
+                      // DISCLAIMER
+                      const Text(
+                        'If your brand has ongoing discount, then this discount will be applied, after that discount ends (if this discount ends after that)',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: primaryDark2,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
                         ),
-                        child: _image == null
-                            ? Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Icon(
-                                    FeatherIcons.upload,
-                                    size: width * 0.25,
-                                  ),
-                                  Text(
-                                    'SELECT IMAGE',
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      color: primaryDark,
-                                      fontSize: width * 0.06,
+                      ),
+                      const SizedBox(height: 8),
+
+                      // IMAGE
+                      GestureDetector(
+                        onTap: _image == null
+                            ? () async {
+                                await addDiscountImage();
+                              }
+                            : null,
+                        child: Container(
+                          width: width,
+                          height: width * 9 / 16,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: primaryDark,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: _image == null
+                              ? Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Icon(
+                                      FeatherIcons.upload,
+                                      size: width * 0.25,
                                     ),
-                                  ),
-                                ],
-                              )
-                            : Stack(
-                                children: [
-                                  Center(
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(6),
-                                      child: Image.file(
-                                        _image!,
-                                        width: width,
-                                        fit: BoxFit.cover,
+                                    Text(
+                                      'SELECT IMAGE',
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color: primaryDark,
+                                        fontSize: width * 0.06,
                                       ),
                                     ),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(4),
-                                        child: IconButton.filledTonal(
-                                          onPressed: () async {
-                                            await addDiscountImage();
-                                          },
-                                          icon: Icon(
-                                            FeatherIcons.camera,
-                                            size: width * 0.115,
-                                          ),
-                                          tooltip: 'Change Image',
+                                  ],
+                                )
+                              : Stack(
+                                  children: [
+                                    Center(
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(6),
+                                        child: Image.file(
+                                          _image!,
+                                          width: width,
+                                          fit: BoxFit.cover,
                                         ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(4),
-                                        child: IconButton.filledTonal(
-                                          onPressed: () {
-                                            setState(() {
-                                              _image = null;
-                                            });
-                                          },
-                                          icon: Icon(
-                                            FeatherIcons.x,
-                                            size: width * 0.115,
-                                          ),
-                                          tooltip: 'Remove Image',
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-
-                    // NAME
-                    TextFormField(
-                      controller: nameController,
-                      onTapOutside: (event) => FocusScope.of(context).unfocus(),
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                            color: Colors.cyan.shade700,
-                          ),
-                        ),
-                        hintText: 'Discount / Sale Name',
-                      ),
-                      validator: (value) {
-                        if (value != null && value.isEmpty) {
-                          return 'Please enter Discount Amount';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 20),
-
-                    // DATES
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        // START DATE
-                        GestureDetector(
-                          onTap: () async {
-                            await selectStartDate();
-                          },
-                          child: Container(
-                            height: 100,
-                            width: width * 0.475,
-                            decoration: BoxDecoration(
-                              color: primary3,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 12),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Start Date',
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          color: primaryDark2,
-                                          fontSize: width * 0.04,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      startDate != null
-                                          ? IconButton(
-                                              onPressed: () async {
-                                                await selectStartDate();
-                                              },
-                                              icon: Icon(
-                                                FeatherIcons.edit,
-                                                size: width * 0.075,
-                                              ),
-                                              tooltip: 'Change Date',
-                                            )
-                                          : Container(),
-                                    ],
-                                  ),
-                                ),
-                                startDate == null
-                                    ? MyTextButton(
-                                        onPressed: () async {
-                                          await selectStartDate();
-                                        },
-                                        text: 'Select Date',
-                                      )
-                                    : Padding(
-                                        padding: EdgeInsets.only(
-                                          left: width * 0.04,
-                                          bottom: width * 0.025,
-                                        ),
-                                        child: Text(
-                                          startDate!,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            color: primaryDark,
-                                            fontSize: width * 0.0575,
-                                            fontWeight: FontWeight.w600,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(4),
+                                          child: IconButton.filledTonal(
+                                            onPressed: () async {
+                                              await addDiscountImage();
+                                            },
+                                            icon: Icon(
+                                              FeatherIcons.camera,
+                                              size: width * 0.115,
+                                            ),
+                                            tooltip: 'Change Image',
                                           ),
                                         ),
-                                      ),
-                              ],
-                            ),
-                          ),
-                        ),
-
-                        // END DATE
-                        GestureDetector(
-                          onTap: () async {
-                            await selectEndDate();
-                          },
-                          child: Container(
-                            height: 100,
-                            width: width * 0.475,
-                            decoration: BoxDecoration(
-                              color: primary3,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 12),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'End Date',
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          color: primaryDark2,
-                                          fontSize: width * 0.04,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      endDate != null
-                                          ? IconButton(
-                                              onPressed: () async {
-                                                await selectEndDate();
-                                              },
-                                              icon: Icon(
-                                                FeatherIcons.edit,
-                                                size: width * 0.075,
-                                              ),
-                                              tooltip: 'Change Date',
-                                            )
-                                          : Container(),
-                                    ],
-                                  ),
-                                ),
-                                endDate == null
-                                    ? MyTextButton(
-                                        onPressed: () async {
-                                          await selectEndDate();
-                                        },
-                                        text: 'Select Date',
-                                      )
-                                    : Padding(
-                                        padding: EdgeInsets.only(
-                                          left: width * 0.04,
-                                          bottom: width * 0.025,
-                                        ),
-                                        child: Text(
-                                          endDate!,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            color: primaryDark,
-                                            fontSize: width * 0.0575,
-                                            fontWeight: FontWeight.w600,
+                                        Padding(
+                                          padding: const EdgeInsets.all(4),
+                                          child: IconButton.filledTonal(
+                                            onPressed: () {
+                                              setState(() {
+                                                _image = null;
+                                              });
+                                            },
+                                            icon: Icon(
+                                              FeatherIcons.x,
+                                              size: width * 0.115,
+                                            ),
+                                            tooltip: 'Remove Image',
                                           ),
                                         ),
-                                      ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-
-                    // DISCLAIMER
-                    Text(
-                      'If you select 1 jan as end date, discount will end at 31 dec 11:59 pm',
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: primaryDark2,
-                        fontSize: width * 0.04,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 20),
-
-                    // SELECT BRAND
-                    MyButton(
-                      text: selectedBrands.isEmpty
-                          ? 'SELECT BRANDS'
-                          : 'SELECTED BRANDS - ${selectedBrands.length}',
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const SelectBrandForDiscountPage(),
-                          ),
-                        );
-                      },
-                      horizontalPadding: 0,
-                    ),
-                    const SizedBox(height: 20),
-
-                    // PERCENT / RUPEES
-                    Container(
-                      width: width,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: primary2.withOpacity(0.5),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            // PERCENT
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  isPercentSelected = true;
-                                });
-                              },
-                              child: Container(
-                                width: width * 0.4,
-                                height: 48,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: isPercentSelected
-                                      ? primary2.withOpacity(0.75)
-                                      : primary2.withOpacity(0.005),
-                                  borderRadius: BorderRadius.circular(12),
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                                child: Text(
-                                  'PERCENT %',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    color: !isPercentSelected
-                                        ? primaryDark.withOpacity(0.33)
-                                        : primaryDark.withOpacity(0.9),
-                                    fontSize: width * 0.05,
-                                    fontWeight: isPercentSelected
-                                        ? FontWeight.w600
-                                        : FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ),
-
-                            // PRICE
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  isPercentSelected = false;
-                                });
-                              },
-                              child: Container(
-                                width: width * 0.4,
-                                height: 48,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: !isPercentSelected
-                                      ? primary2.withOpacity(0.75)
-                                      : primary2.withOpacity(0.005),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Text(
-                                  'PRICE ₹',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    color: isPercentSelected
-                                        ? primaryDark.withOpacity(0.33)
-                                        : primaryDark.withOpacity(0.9),
-                                    fontSize: width * 0.05,
-                                    fontWeight: !isPercentSelected
-                                        ? FontWeight.w600
-                                        : FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 20),
+                      const SizedBox(height: 16),
 
-                    // AMOUNT
-                    Padding(
-                      padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom,
-                      ),
-                      child: TextFormField(
-                        controller: discountController,
+                      // NAME
+                      TextFormField(
+                        controller: nameController,
                         onTapOutside: (event) =>
                             FocusScope.of(context).unfocus(),
-                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -667,8 +363,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                               color: Colors.cyan.shade700,
                             ),
                           ),
-                          hintText:
-                              isPercentSelected ? 'eg. 20%' : 'eg. Rs. 200 off',
+                          hintText: 'Discount / Sale Name',
                         ),
                         validator: (value) {
                           if (value != null && value.isEmpty) {
@@ -677,12 +372,326 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                           return null;
                         },
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 20),
+
+                      // DATES
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          // START DATE
+                          GestureDetector(
+                            onTap: () async {
+                              await selectStartDate();
+                            },
+                            child: Container(
+                              height: 100,
+                              width: width * 0.475,
+                              decoration: BoxDecoration(
+                                color: primary3,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 12),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Start Date',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: primaryDark2,
+                                            fontSize: width * 0.04,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                        startDate != null
+                                            ? IconButton(
+                                                onPressed: () async {
+                                                  await selectStartDate();
+                                                },
+                                                icon: Icon(
+                                                  FeatherIcons.edit,
+                                                  size: width * 0.075,
+                                                ),
+                                                tooltip: 'Change Date',
+                                              )
+                                            : Container(),
+                                      ],
+                                    ),
+                                  ),
+                                  startDate == null
+                                      ? MyTextButton(
+                                          onPressed: () async {
+                                            await selectStartDate();
+                                          },
+                                          text: 'Select Date',
+                                        )
+                                      : Padding(
+                                          padding: EdgeInsets.only(
+                                            left: width * 0.04,
+                                            bottom: width * 0.025,
+                                          ),
+                                          child: Text(
+                                            startDate!,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              color: primaryDark,
+                                              fontSize: width * 0.0575,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                          // END DATE
+                          GestureDetector(
+                            onTap: () async {
+                              await selectEndDate();
+                            },
+                            child: Container(
+                              height: 100,
+                              width: width * 0.475,
+                              decoration: BoxDecoration(
+                                color: primary3,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 12),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'End Date',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: primaryDark2,
+                                            fontSize: width * 0.04,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                        endDate != null
+                                            ? IconButton(
+                                                onPressed: () async {
+                                                  await selectEndDate();
+                                                },
+                                                icon: Icon(
+                                                  FeatherIcons.edit,
+                                                  size: width * 0.075,
+                                                ),
+                                                tooltip: 'Change Date',
+                                              )
+                                            : Container(),
+                                      ],
+                                    ),
+                                  ),
+                                  endDate == null
+                                      ? MyTextButton(
+                                          onPressed: () async {
+                                            await selectEndDate();
+                                          },
+                                          text: 'Select Date',
+                                        )
+                                      : Padding(
+                                          padding: EdgeInsets.only(
+                                            left: width * 0.04,
+                                            bottom: width * 0.025,
+                                          ),
+                                          child: Text(
+                                            endDate!,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              color: primaryDark,
+                                              fontSize: width * 0.0575,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+
+                      // DISCLAIMER
+                      Text(
+                        'If you select 1 jan as end date, discount will end at 31 dec 11:59 pm',
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: primaryDark2,
+                          fontSize: width * 0.04,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 20),
+
+                      // SELECT BRAND
+                      MyButton(
+                        text: selectedBrands.isEmpty
+                            ? 'SELECT BRANDS'
+                            : 'SELECTED BRANDS - ${selectedBrands.length}',
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const SelectBrandForDiscountPage(),
+                            ),
+                          );
+                        },
+                        horizontalPadding: 0,
+                      ),
+                      const SizedBox(height: 20),
+
+                      // PERCENT / RUPEES
+                      Container(
+                        width: width,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: primary2.withOpacity(0.5),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              // PERCENT
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    isPercentSelected = true;
+                                  });
+                                },
+                                child: Container(
+                                  width: width * 0.4,
+                                  height: 48,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: isPercentSelected
+                                        ? primary2.withOpacity(0.75)
+                                        : primary2.withOpacity(0.005),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Text(
+                                    'PERCENT %',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: !isPercentSelected
+                                          ? primaryDark.withOpacity(0.33)
+                                          : primaryDark.withOpacity(0.9),
+                                      fontSize: width * 0.05,
+                                      fontWeight: isPercentSelected
+                                          ? FontWeight.w600
+                                          : FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              // PRICE
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    isPercentSelected = false;
+                                  });
+                                },
+                                child: Container(
+                                  width: width * 0.4,
+                                  height: 48,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: !isPercentSelected
+                                        ? primary2.withOpacity(0.75)
+                                        : primary2.withOpacity(0.005),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Text(
+                                    'PRICE ₹',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: isPercentSelected
+                                          ? primaryDark.withOpacity(0.33)
+                                          : primaryDark.withOpacity(0.9),
+                                      fontSize: width * 0.05,
+                                      fontWeight: !isPercentSelected
+                                          ? FontWeight.w600
+                                          : FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+
+                      // AMOUNT
+                      Padding(
+                        padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom,
+                        ),
+                        child: TextFormField(
+                          controller: discountController,
+                          onTapOutside: (event) =>
+                              FocusScope.of(context).unfocus(),
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: Colors.cyan.shade700,
+                              ),
+                            ),
+                            hintText: isPercentSelected
+                                ? 'eg. 20%'
+                                : 'eg. Rs. 200 off',
+                          ),
+                          validator: (value) {
+                            if (value != null && value.isEmpty) {
+                              return 'Please enter Discount Amount';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          }),
+              );
+            }),
+          ),
         ),
       ),
     );

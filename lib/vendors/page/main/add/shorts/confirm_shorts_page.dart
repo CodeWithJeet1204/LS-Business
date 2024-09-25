@@ -1,5 +1,6 @@
 import 'dart:io';
-import 'package:ls_business/widgets/show_loading_dialog.dart';
+
+import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:ls_business/widgets/text_form_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:uuid/uuid.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:video_player/video_player.dart';
@@ -34,8 +36,9 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
   final storage = FirebaseStorage.instance;
   final captionController = TextEditingController();
   late FlickManager flickManager;
-  bool isDone = false;
   Map<String, dynamic>? data;
+  bool isDone = false;
+  bool isDialog = false;
 
   // INIT STATE
   @override
@@ -66,6 +69,7 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
   ) async {
     setState(() {
       isDone = true;
+      isDialog = true;
     });
 
     final shortsId = Uuid().v4();
@@ -118,6 +122,7 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
 
     setState(() {
       isDone = false;
+      isDialog = false;
     });
 
     if (mounted) {
@@ -153,67 +158,68 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      appBar: AppBar(),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: width * 0.05),
-            child: Column(
-              children: [
-                const SizedBox(height: 4),
-                FlickVideoPlayer(
-                  flickManager: flickManager,
-                ),
-                SizedBox(height: 20),
-                MyTextFormField(
-                  hintText: 'Caption',
-                  controller: captionController,
-                  borderRadius: 12,
-                  horizontalPadding: 0,
-                ),
-                const SizedBox(height: 15),
-                MyButton(
-                  text: data != null ? data!['productName']! : 'Select Product',
-                  onTap: () async {
-                    if (flickManager.flickVideoManager!.isPlaying) {
-                      flickManager.flickControlManager!.togglePlay();
-                    }
-                    Navigator.of(context)
-                        .push(
-                      MaterialPageRoute(
-                        builder: (context) => SelectProductForShortsPage(
-                          selectedProduct: data?['productId'],
+    return ModalProgressHUD(
+      inAsyncCall: isDialog,
+      color: primaryDark,
+      blur: 0.5,
+      child: Scaffold(
+        appBar: AppBar(),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+              child: Column(
+                children: [
+                  const SizedBox(height: 4),
+                  FlickVideoPlayer(
+                    flickManager: flickManager,
+                  ),
+                  SizedBox(height: 20),
+                  MyTextFormField(
+                    hintText: 'Caption',
+                    controller: captionController,
+                    borderRadius: 12,
+                    horizontalPadding: 0,
+                  ),
+                  const SizedBox(height: 15),
+                  MyButton(
+                    text:
+                        data != null ? data!['productName']! : 'Select Product',
+                    onTap: () async {
+                      if (flickManager.flickVideoManager!.isPlaying) {
+                        flickManager.flickControlManager!.togglePlay();
+                      }
+                      Navigator.of(context)
+                          .push(
+                        MaterialPageRoute(
+                          builder: (context) => SelectProductForShortsPage(
+                            selectedProduct: data?['productId'],
+                          ),
                         ),
-                      ),
-                    )
-                        .then((value) {
-                      setState(() {
-                        data = value;
+                      )
+                          .then((value) {
+                        setState(() {
+                          data = value;
+                        });
                       });
-                    });
-                  },
-                  horizontalPadding: 0,
-                ),
-                const SizedBox(height: 15),
-                MyButton(
-                  text: 'DONE',
-                  onTap: () async {
-                    await showLoadingDialog(
-                      context,
-                      () async {
-                        await uploadVideo(
-                          data?['productId'],
-                          data?['productName'],
-                          widget.videoPath,
-                        );
-                      },
-                    );
-                  },
-                  horizontalPadding: 0,
-                ),
-                const SizedBox(height: 12),
-              ],
+                    },
+                    horizontalPadding: 0,
+                  ),
+                  const SizedBox(height: 15),
+                  MyButton(
+                    text: 'DONE',
+                    onTap: () async {
+                      await uploadVideo(
+                        data?['productId'],
+                        data?['productName'],
+                        widget.videoPath,
+                      );
+                    },
+                    horizontalPadding: 0,
+                  ),
+                  const SizedBox(height: 12),
+                ],
+              ),
             ),
           ),
         ),

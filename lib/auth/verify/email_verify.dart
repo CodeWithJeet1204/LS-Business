@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:ls_business/widgets/show_loading_dialog.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ls_business/vendors/firebase/auth_methods.dart';
 import 'package:ls_business/vendors/page/main/main_page.dart';
@@ -28,10 +28,9 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
   final auth = FirebaseAuth.instance;
   final AuthMethods authMethods = AuthMethods();
   final store = FirebaseFirestore.instance;
-  bool isCheckingEmailVerified = false;
-  bool canResendEmail = false;
   Timer? timer;
   bool isEmailVerified = false;
+  bool canResendEmail = false;
 
   // INIT STATE
   @override
@@ -153,12 +152,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
             MyButton(
               text: 'I have Verified my Email',
               onTap: () async {
-                await showLoadingDialog(
-                  context,
-                  () async {
-                    await checkEmailVerification(true);
-                  },
-                );
+                await checkEmailVerification(true);
               },
               horizontalPadding: MediaQuery.of(context).size.width * 0.066,
             ),
@@ -169,12 +163,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
                 text: 'Resend Email',
                 onTap: canResendEmail
                     ? () async {
-                        await showLoadingDialog(
-                          context,
-                          () async {
-                            await sendEmailVerification();
-                          },
-                        );
+                        await sendEmailVerification();
                       }
                     : () {
                         return mySnackBar(context, 'Wait for 5 seconds');

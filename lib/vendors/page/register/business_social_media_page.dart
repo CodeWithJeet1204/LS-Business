@@ -1,12 +1,14 @@
 import 'package:ls_business/vendors/page/main/main_page.dart';
 import 'package:ls_business/vendors/page/register/business_choose_shop_types_page.dart';
+import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/my_button.dart';
-import 'package:ls_business/widgets/show_loading_dialog.dart';
+
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:ls_business/widgets/text_form_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class BusinessSocialMediaPage extends StatefulWidget {
   const BusinessSocialMediaPage({
@@ -36,6 +38,7 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
   final facebookController = TextEditingController();
   final websiteController = TextEditingController();
   bool isNext = false;
+  bool isDialog = false;
 
   // INIT STATE
   @override
@@ -68,6 +71,7 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
     try {
       setState(() {
         isNext = true;
+        isDialog = true;
       });
 
       await store
@@ -83,6 +87,7 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
 
       setState(() {
         isNext = false;
+        isDialog = false;
       });
       if (mounted) {
         if (widget.fromMainPage) {
@@ -107,6 +112,50 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
     } catch (e) {
       setState(() {
         isNext = false;
+        isDialog = false;
+      });
+      if (mounted) {
+        mySnackBar(context, e.toString());
+      }
+    }
+  }
+
+  // SKIP
+  Future<void> skip() async {
+    try {
+      setState(() {
+        isNext = true;
+        isDialog = true;
+      });
+
+      await store
+          .collection('Business')
+          .doc('Owners')
+          .collection('Shops')
+          .doc(auth.currentUser!.uid)
+          .update({
+        'Instagram': '',
+        'Facebook': '',
+        'Website': '',
+      });
+
+      setState(() {
+        isNext = false;
+        isDialog = false;
+      });
+      if (mounted) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const BusinessChooseShopTypesPage(
+              isEditing: false,
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      setState(() {
+        isNext = false;
+        isDialog = false;
       });
       if (mounted) {
         mySnackBar(context, e.toString());
@@ -116,88 +165,81 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Social Media Info'),
-      ),
-      body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final width = constraints.maxWidth;
+    return ModalProgressHUD(
+      inAsyncCall: isDialog,
+      color: primaryDark,
+      blur: 0.5,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Social Media Info'),
+        ),
+        body: SafeArea(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final width = constraints.maxWidth;
 
-            return SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.all(width * 0.0225),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // INSTAGRAM
-                    MyTextFormField(
-                      hintText: 'Instagram (Link)',
-                      controller: instaController,
-                      borderRadius: 12,
-                      horizontalPadding: 0,
-                    ),
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.all(width * 0.0225),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // INSTAGRAM
+                      MyTextFormField(
+                        hintText: 'Instagram (Link)',
+                        controller: instaController,
+                        borderRadius: 12,
+                        horizontalPadding: 0,
+                      ),
 
-                    const SizedBox(height: 12),
+                      const SizedBox(height: 12),
 
-                    // FACEBOOK
-                    MyTextFormField(
-                      hintText: 'Facebook (Link)',
-                      controller: facebookController,
-                      borderRadius: 12,
-                      horizontalPadding: 0,
-                    ),
+                      // FACEBOOK
+                      MyTextFormField(
+                        hintText: 'Facebook (Link)',
+                        controller: facebookController,
+                        borderRadius: 12,
+                        horizontalPadding: 0,
+                      ),
 
-                    const SizedBox(height: 12),
+                      const SizedBox(height: 12),
 
-                    // WEBSITE
-                    MyTextFormField(
-                      hintText: 'Personal Website (Link)',
-                      controller: websiteController,
-                      borderRadius: 12,
-                      horizontalPadding: 0,
-                    ),
+                      // WEBSITE
+                      MyTextFormField(
+                        hintText: 'Personal Website (Link)',
+                        controller: websiteController,
+                        borderRadius: 12,
+                        horizontalPadding: 0,
+                      ),
 
-                    const SizedBox(height: 24),
+                      const SizedBox(height: 24),
 
-                    // NEXT
-                    MyButton(
-                      onTap: () async {
-                        await showLoadingDialog(
-                          context,
-                          () async {
-                            await next();
-                          },
-                        );
-                      },
-                      text: widget.isChanging ? 'DONE' : 'NEXT',
-                      horizontalPadding: 0,
-                    ),
-                    const SizedBox(height: 24),
+                      // NEXT
+                      MyButton(
+                        onTap: () async {
+                          await next();
+                        },
+                        text: widget.isChanging ? 'DONE' : 'NEXT',
+                        horizontalPadding: 0,
+                      ),
+                      const SizedBox(height: 24),
 
-                    // SKIP
-                    widget.isChanging
-                        ? Container()
-                        : MyButton(
-                            onTap: () async {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: ((context) =>
-                                      const BusinessChooseShopTypesPage(
-                                        isEditing: false,
-                                      )),
-                                ),
-                              );
-                            },
-                            text: 'SKIP',
-                            horizontalPadding: 0,
-                          ),
-                  ],
+                      // SKIP
+                      widget.isChanging
+                          ? Container()
+                          : MyButton(
+                              onTap: () async {
+                                await skip();
+                              },
+                              text: 'SKIP',
+                              horizontalPadding: 0,
+                            ),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );

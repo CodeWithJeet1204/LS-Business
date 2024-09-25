@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:ls_business/widgets/show_loading_dialog.dart';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,6 +11,7 @@ import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class OwnerDetailsPage extends StatefulWidget {
   const OwnerDetailsPage({super.key});
@@ -28,10 +29,11 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
   bool isChangingName = false;
   bool isChangingNumber = false;
   bool isChangingImage = false;
-  bool isSaving = false;
   bool isDataLoaded = false;
   bool allowCall = true;
   bool allowChat = true;
+  bool isSaving = false;
+  bool isDialog = false;
 
   // DISPOSE
   @override
@@ -53,29 +55,24 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
         });
         await storage.refFromURL(previousUrl).delete();
 
-        Map<String, dynamic> updatedUserImage = {
-          'Image': im.path,
-        };
         Reference ref = FirebaseStorage.instance
             .ref()
             .child('Vendor/Owners')
             .child(auth.currentUser!.uid);
-        await ref
-            .putFile(File(updatedUserImage['Image']!))
-            .whenComplete(() async {
+        await ref.putFile(File(im.path)).whenComplete(() async {
           await ref.getDownloadURL().then((value) {
             userPhotoUrl = value;
           });
         });
-        updatedUserImage = {
-          'Image': userPhotoUrl,
-        };
+
         await store
             .collection('Business')
             .doc('Owners')
             .collection('Users')
             .doc(auth.currentUser!.uid)
-            .update(updatedUserImage);
+            .update({
+          'Image': userPhotoUrl,
+        });
         setState(() {
           isChangingImage = false;
         });
@@ -99,27 +96,29 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
     try {
       setState(() {
         isSaving = true;
+        isDialog = true;
       });
       if (isChangingName && !isChangingNumber) {
         if (nameController.text.isEmpty) {
           mySnackBar(context, 'Name should be atleast 1 characters long');
           setState(() {
             isSaving = false;
+            isDialog = false;
           });
           return;
         } else {
-          Map<String, dynamic> updatedUserName = {
-            'Name': nameController.text.toString(),
-          };
           await store
               .collection('Business')
               .doc('Owners')
               .collection('Users')
               .doc(auth.currentUser!.uid)
-              .update(updatedUserName);
+              .update({
+            'Name': nameController.text.toString(),
+          });
         }
         setState(() {
           isSaving = false;
+          isDialog = false;
           isChangingName = false;
           isChangingNumber = false;
         });
@@ -128,20 +127,21 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
           mySnackBar(context, 'Number should be 10 characters long');
           setState(() {
             isSaving = false;
+            isDialog = false;
           });
           return;
         } else {
-          Map<String, dynamic> updatedUserNumber = {
-            'Phone Number': numberController.text.toString(),
-          };
           await store
               .collection('Business')
               .doc('Owners')
               .collection('Users')
               .doc(auth.currentUser!.uid)
-              .update(updatedUserNumber);
+              .update({
+            'Phone Number': numberController.text.toString(),
+          });
           setState(() {
             isSaving = false;
+            isDialog = false;
             isChangingName = false;
             isChangingNumber = false;
           });
@@ -150,6 +150,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
         if (nameController.text.isEmpty) {
           setState(() {
             isSaving = false;
+            isDialog = false;
           });
           return mySnackBar(
             context,
@@ -159,32 +160,22 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
         if (numberController.text.length != 10) {
           setState(() {
             isSaving = false;
+            isDialog = false;
           });
           return mySnackBar(context, 'Number should be 10 characters long');
         } else {
-          // NAME
-          Map<String, dynamic> updatedUserName = {
+          await store
+              .collection('Business')
+              .doc('Owners')
+              .collection('Users')
+              .doc(auth.currentUser!.uid)
+              .update({
             'Name': nameController.text.toString(),
-          };
-          await store
-              .collection('Business')
-              .doc('Owners')
-              .collection('Users')
-              .doc(auth.currentUser!.uid)
-              .update(updatedUserName);
-
-          // NUMBER
-          Map<String, dynamic> updatedUserNumber = {
             'Phone Number': numberController.text.toString(),
-          };
-          await store
-              .collection('Business')
-              .doc('Owners')
-              .collection('Users')
-              .doc(auth.currentUser!.uid)
-              .update(updatedUserNumber);
+          });
           setState(() {
             isSaving = false;
+            isDialog = false;
             isChangingName = false;
             isChangingNumber = false;
           });
@@ -192,6 +183,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
       }
       setState(() {
         isSaving = false;
+        isDialog = false;
       });
     } catch (e) {
       if (mounted) {
@@ -260,383 +252,388 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
         .doc(auth.currentUser!.uid)
         .snapshots();
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: const Text(
-          'Owner Details',
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+    return ModalProgressHUD(
+      inAsyncCall: isDialog,
+      color: primaryDark,
+      blur: 0.5,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          title: const Text(
+            'Owner Details',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
-      ),
-      bottomSheet: isChangingName || isChangingNumber
-          ? SizedBox(
-              width: width,
-              height: 80,
-              child: isSaving
-                  ? Container(
-                      alignment: Alignment.center,
-                      width: double.infinity,
-                      decoration: const BoxDecoration(
-                        color: buttonColor,
-                      ),
-                      child: const Center(
-                        child: CircularProgressIndicator(
-                          color: white,
+        bottomSheet: isChangingName || isChangingNumber
+            ? SizedBox(
+                width: width,
+                height: 80,
+                child: isSaving
+                    ? Container(
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        decoration: const BoxDecoration(
+                          color: buttonColor,
                         ),
+                        child: const Center(
+                          child: CircularProgressIndicator(
+                            color: white,
+                          ),
+                        ),
+                      )
+                    : MyButton(
+                        text: 'SAVE',
+                        onTap: () async {
+                          await save();
+                        },
+                        horizontalPadding: 0,
                       ),
-                    )
-                  : MyButton(
-                      text: 'SAVE',
-                      onTap: () async {
-                        await showLoadingDialog(
-                          context,
-                          () async {
-                            await save();
-                          },
-                        );
-                      },
-                      horizontalPadding: 0,
-                    ),
-            )
-          : const SizedBox(
-              width: 0,
-              height: 0,
-            ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: LayoutBuilder(
-          builder: ((context, constraints) {
-            double width = constraints.maxWidth;
+              )
+            : const SizedBox(
+                width: 0,
+                height: 0,
+              ),
+        body: Padding(
+          padding: const EdgeInsets.all(16),
+          child: LayoutBuilder(
+            builder: ((context, constraints) {
+              double width = constraints.maxWidth;
 
-            return StreamBuilder(
-                stream: userStream,
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return const Center(
-                      child: Text(
-                        'Something went wrong',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    );
-                  }
+              return StreamBuilder(
+                  stream: userStream,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return const Center(
+                        child: Text(
+                          'Something went wrong',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      );
+                    }
 
-                  if (snapshot.hasData) {
-                    final userData = snapshot.data!;
+                    if (snapshot.hasData) {
+                      final userData = snapshot.data!;
 
-                    return SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(height: width * 0.1111125),
-                          isChangingImage
-                              ? Container(
-                                  width: width * 0.3,
-                                  height: width * 0.3,
-                                  decoration: BoxDecoration(
-                                    color: primary,
-                                    borderRadius: BorderRadius.circular(100),
-                                  ),
-                                  child: const Center(
-                                    child: CircularProgressIndicator(
-                                      color: primaryDark,
+                      return SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(height: width * 0.1111125),
+                            isChangingImage
+                                ? Container(
+                                    width: width * 0.3,
+                                    height: width * 0.3,
+                                    decoration: BoxDecoration(
+                                      color: primary,
+                                      borderRadius: BorderRadius.circular(100),
                                     ),
-                                  ),
-                                )
-                              : Stack(
-                                  alignment: Alignment.bottomRight,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () async {
-                                        await showImage(
-                                          userData['Image'] ??
-                                              'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
-                                        );
-                                      },
-                                      child: CircleAvatar(
-                                        radius: width * 0.15,
-                                        backgroundImage:
-                                            CachedNetworkImageProvider(
-                                          userData['Image'] ??
-                                              'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
-                                        ),
-                                        backgroundColor: primary2,
+                                    child: const Center(
+                                      child: CircularProgressIndicator(
+                                        color: primaryDark,
                                       ),
                                     ),
-                                    Positioned(
-                                      right: -(width * 0.0015),
-                                      bottom: -(width * 0.0015),
-                                      child: IconButton.filledTonal(
-                                        onPressed: () async {
-                                          await changeImage(userData['Image']);
+                                  )
+                                : Stack(
+                                    alignment: Alignment.bottomRight,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () async {
+                                          await showImage(
+                                            userData['Image'] ??
+                                                'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
+                                          );
                                         },
-                                        icon: Icon(
-                                          FeatherIcons.camera,
-                                          size: width * 0.1,
-                                        ),
-                                        tooltip: 'Change Photo',
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                          const SizedBox(height: 14),
-
-                          // NAME
-                          Container(
-                            width: width,
-                            height:
-                                isChangingName ? width * 0.2775 : width * 0.175,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: primary2.withOpacity(0.9),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: isChangingName
-                                ? TextField(
-                                    controller: nameController,
-                                    autofocus: true,
-                                    onTapOutside: (event) =>
-                                        FocusScope.of(context).unfocus(),
-                                    decoration: InputDecoration(
-                                      hintText: 'Change Name',
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                    ),
-                                  )
-                                : Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            EdgeInsets.only(left: width * 0.05),
-                                        child: SizedBox(
-                                          width: width * 0.725,
-                                          child: AutoSizeText(
-                                            userData['Name'],
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontSize: width * 0.06,
-                                            ),
+                                        child: CircleAvatar(
+                                          radius: width * 0.15,
+                                          backgroundImage:
+                                              CachedNetworkImageProvider(
+                                            userData['Image'] ??
+                                                'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
                                           ),
+                                          backgroundColor: primary2,
                                         ),
                                       ),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                          right: width * 0.03,
-                                        ),
-                                        child: IconButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              isChangingName = true;
-                                            });
+                                      Positioned(
+                                        right: -(width * 0.0015),
+                                        bottom: -(width * 0.0015),
+                                        child: IconButton.filledTonal(
+                                          onPressed: () async {
+                                            await changeImage(
+                                                userData['Image']);
                                           },
-                                          icon: const Icon(FeatherIcons.edit),
-                                          tooltip: 'Edit Name',
+                                          icon: Icon(
+                                            FeatherIcons.camera,
+                                            size: width * 0.1,
+                                          ),
+                                          tooltip: 'Change Photo',
                                         ),
                                       ),
                                     ],
                                   ),
-                          ),
-                          const SizedBox(height: 14),
+                            const SizedBox(height: 14),
 
-                          // PHONE NUMBER
-                          Container(
-                            width: width,
-                            height: isChangingNumber
-                                ? width * 0.2775
-                                : width * 0.175,
-                            decoration: BoxDecoration(
-                              color: primary2.withOpacity(0.9),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: isChangingNumber
-                                ? TextField(
-                                    controller: numberController,
-                                    autofocus: true,
-                                    onTapOutside: (event) =>
-                                        FocusScope.of(context).unfocus(),
-                                    decoration: InputDecoration(
-                                      hintText: 'Change Number',
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                    ),
-                                  )
-                                : Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                          left: width * 0.055,
+                            // NAME
+                            Container(
+                              width: width,
+                              height: isChangingName
+                                  ? width * 0.2775
+                                  : width * 0.175,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: primary2.withOpacity(0.9),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: isChangingName
+                                  ? TextField(
+                                      controller: nameController,
+                                      autofocus: true,
+                                      onTapOutside: (event) =>
+                                          FocusScope.of(context).unfocus(),
+                                      decoration: InputDecoration(
+                                        hintText: 'Change Name',
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
                                         ),
-                                        child: SizedBox(
-                                          width: width * 0.725,
-                                          child: AutoSizeText(
-                                            userData['Phone Number'],
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontSize: width * 0.055,
+                                      ),
+                                    )
+                                  : Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              left: width * 0.05),
+                                          child: SizedBox(
+                                            width: width * 0.725,
+                                            child: AutoSizeText(
+                                              userData['Name'],
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize: width * 0.06,
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                          right: width * 0.03,
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            right: width * 0.03,
+                                          ),
+                                          child: IconButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                isChangingName = true;
+                                              });
+                                            },
+                                            icon: const Icon(FeatherIcons.edit),
+                                            tooltip: 'Edit Name',
+                                          ),
                                         ),
-                                        child: IconButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              isChangingNumber = true;
-                                            });
-                                          },
-                                          icon: const Icon(FeatherIcons.edit),
-                                          tooltip: 'Edit Phone Number',
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                          ),
-                          const SizedBox(height: 14),
-
-                          // EMAIL ADDRESS
-                          Container(
-                            width: width,
-                            height: width * 0.16,
-                            decoration: BoxDecoration(
-                              color: primary2.withOpacity(0.9),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    left: width * 0.055,
-                                  ),
-                                  child: SizedBox(
-                                    width: width * 0.725,
-                                    child: AutoSizeText(
-                                      userData['Email'] == ''
-                                          ? auth.currentUser!.email
-                                          : userData['Email'] ?? 'N/A',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontSize: width * 0.055,
-                                      ),
+                                      ],
                                     ),
-                                  ),
-                                ),
-                              ],
                             ),
-                          ),
-                          const SizedBox(height: 14),
+                            const SizedBox(height: 14),
 
-                          // ALLOW CALLS
-                          InkWell(
-                            onTap: () async {
-                              await toggleAllowCall();
-                            },
-                            customBorder: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                            // PHONE NUMBER
+                            Container(
+                              width: width,
+                              height: isChangingNumber
+                                  ? width * 0.2775
+                                  : width * 0.175,
+                              decoration: BoxDecoration(
+                                color: primary2.withOpacity(0.9),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: isChangingNumber
+                                  ? TextField(
+                                      controller: numberController,
+                                      autofocus: true,
+                                      onTapOutside: (event) =>
+                                          FocusScope.of(context).unfocus(),
+                                      decoration: InputDecoration(
+                                        hintText: 'Change Number',
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                      ),
+                                    )
+                                  : Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            left: width * 0.055,
+                                          ),
+                                          child: SizedBox(
+                                            width: width * 0.725,
+                                            child: AutoSizeText(
+                                              userData['Phone Number'],
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize: width * 0.055,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            right: width * 0.03,
+                                          ),
+                                          child: IconButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                isChangingNumber = true;
+                                              });
+                                            },
+                                            icon: const Icon(FeatherIcons.edit),
+                                            tooltip: 'Edit Phone Number',
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                             ),
-                            child: Padding(
-                              padding: EdgeInsets.all(width * 0.0125),
+                            const SizedBox(height: 14),
+
+                            // EMAIL ADDRESS
+                            Container(
+                              width: width,
+                              height: width * 0.16,
+                              decoration: BoxDecoration(
+                                color: primary2.withOpacity(0.9),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Padding(
-                                    padding:
-                                        EdgeInsets.only(left: width * 0.025),
-                                    child: Text(
-                                      'Allow Calls from Users',
-                                      style: TextStyle(
-                                        color: primaryDark,
-                                        fontSize: width * 0.04,
+                                    padding: EdgeInsets.only(
+                                      left: width * 0.055,
+                                    ),
+                                    child: SizedBox(
+                                      width: width * 0.725,
+                                      child: AutoSizeText(
+                                        userData['Email'] == ''
+                                            ? auth.currentUser!.email
+                                            : userData['Email'] ?? 'N/A',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: width * 0.055,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Switch(
-                                    value: allowCall,
-                                    onChanged: (value) async {
-                                      await toggleAllowCall();
-                                    },
-                                    activeColor: primary2,
-                                    activeTrackColor: primaryDark,
-                                    inactiveThumbColor: primaryDark,
-                                    inactiveTrackColor: primary2,
                                   ),
                                 ],
                               ),
                             ),
-                          ),
-                          const SizedBox(height: 14),
+                            const SizedBox(height: 14),
 
-                          // ALLOW CHATS
-                          InkWell(
-                            onTap: () async {
-                              await toggleAllowChat();
-                            },
-                            customBorder: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.all(width * 0.0125),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.only(left: width * 0.025),
-                                    child: SizedBox(
-                                      width: width * 0.75,
+                            // ALLOW CALLS
+                            InkWell(
+                              onTap: () async {
+                                await toggleAllowCall();
+                              },
+                              customBorder: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.all(width * 0.0125),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.only(left: width * 0.025),
                                       child: Text(
-                                        'Allow Chats from Users on Whatsapp',
+                                        'Allow Calls from Users',
                                         style: TextStyle(
                                           color: primaryDark,
                                           fontSize: width * 0.04,
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  Switch(
-                                    value: allowChat,
-                                    onChanged: (value) async {
-                                      await toggleAllowChat();
-                                    },
-                                    activeColor: primary2,
-                                    activeTrackColor: primaryDark,
-                                    inactiveThumbColor: primaryDark,
-                                    inactiveTrackColor: primary2,
-                                  ),
-                                ],
+                                    Switch(
+                                      value: allowCall,
+                                      onChanged: (value) async {
+                                        await toggleAllowCall();
+                                      },
+                                      activeColor: primary2,
+                                      activeTrackColor: primaryDark,
+                                      inactiveThumbColor: primaryDark,
+                                      inactiveTrackColor: primary2,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                          isChangingName || isChangingNumber
-                              ? const SizedBox(height: 18)
-                              : Container(),
-                        ],
-                      ),
-                    );
-                  }
+                            const SizedBox(height: 14),
 
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                });
-          }),
+                            // ALLOW CHATS
+                            InkWell(
+                              onTap: () async {
+                                await toggleAllowChat();
+                              },
+                              customBorder: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.all(width * 0.0125),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.only(left: width * 0.025),
+                                      child: SizedBox(
+                                        width: width * 0.75,
+                                        child: Text(
+                                          'Allow Chats from Users on Whatsapp',
+                                          style: TextStyle(
+                                            color: primaryDark,
+                                            fontSize: width * 0.04,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Switch(
+                                      value: allowChat,
+                                      onChanged: (value) async {
+                                        await toggleAllowChat();
+                                      },
+                                      activeColor: primary2,
+                                      activeTrackColor: primaryDark,
+                                      inactiveThumbColor: primaryDark,
+                                      inactiveTrackColor: primary2,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            isChangingName || isChangingNumber
+                                ? const SizedBox(height: 18)
+                                : Container(),
+                          ],
+                        ),
+                      );
+                    }
+
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  });
+            }),
+          ),
         ),
       ),
     );

@@ -1,4 +1,3 @@
-import 'package:ls_business/widgets/show_loading_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ls_business/vendors/page/main/main_page.dart';
 import 'package:ls_business/vendors/page/register/owner_register_details_page.dart';
@@ -8,6 +7,7 @@ import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:ls_business/widgets/text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class NumberVerifyPage extends StatefulWidget {
   const NumberVerifyPage({
@@ -34,6 +34,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
   String? verificationId;
   bool isPhoneRegistering = false;
   bool isOTPVerifying = false;
+  bool isDialog = false;
 
   // INIT STATE
   @override
@@ -65,11 +66,13 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
       verificationCompleted: (_) {
         setState(() {
           isPhoneRegistering = false;
+          isDialog = false;
         });
       },
       verificationFailed: (e) {
         setState(() {
           isPhoneRegistering = false;
+          isDialog = false;
         });
         if (mounted) {
           mySnackBar(
@@ -105,6 +108,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
     if (otpController.text.length == 6) {
       setState(() {
         isOTPVerifying = true;
+        isDialog = true;
       });
 
       final credential = PhoneAuthProvider.credential(
@@ -156,6 +160,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
         }
         setState(() {
           isOTPVerifying = false;
+          isDialog = false;
         });
         if (mounted) {
           Navigator.of(context).pushAndRemoveUntil(
@@ -189,6 +194,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
       } catch (e) {
         setState(() {
           isOTPVerifying = false;
+          isDialog = false;
         });
         setState(() {
           if (mounted) {
@@ -209,65 +215,65 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            children: [
-              Expanded(
-                child: Container(),
-              ),
-              Text(
-                'An OTP has been sent to your Phone Number\nPls enter the OTP below',
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: primaryDark,
-                  fontSize: MediaQuery.of(context).size.width * 0.045,
+    return ModalProgressHUD(
+      inAsyncCall: isDialog,
+      color: primaryDark,
+      blur: 0.5,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: SafeArea(
+          child: Center(
+            child: Column(
+              children: [
+                Expanded(
+                  child: Container(),
                 ),
-              ),
-              const SizedBox(height: 10),
-              MyTextFormField(
-                hintText: 'OTP - 6 Digits',
-                controller: otpController,
-                borderRadius: 12,
-                horizontalPadding: MediaQuery.of(context).size.width * 0.066,
-                keyboardType: TextInputType.number,
-                autoFillHints: const [AutofillHints.oneTimeCode],
-              ),
-              const SizedBox(height: 20),
-              isOTPVerifying
-                  ? Container(
-                      margin: EdgeInsets.symmetric(
-                        horizontal: width * 0.055,
+                Text(
+                  'An OTP has been sent to your Phone Number\nPls enter the OTP below',
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: primaryDark,
+                    fontSize: MediaQuery.of(context).size.width * 0.045,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                MyTextFormField(
+                  hintText: 'OTP - 6 Digits',
+                  controller: otpController,
+                  borderRadius: 12,
+                  horizontalPadding: MediaQuery.of(context).size.width * 0.066,
+                  keyboardType: TextInputType.number,
+                  autoFillHints: const [AutofillHints.oneTimeCode],
+                ),
+                const SizedBox(height: 20),
+                isOTPVerifying
+                    ? Container(
+                        margin: EdgeInsets.symmetric(
+                          horizontal: width * 0.055,
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: buttonColor,
+                        ),
+                        child: const Center(
+                          child: CircularProgressIndicator(color: white),
+                        ),
+                      )
+                    : MyButton(
+                        text: 'Verify',
+                        onTap: () async {
+                          await verify();
+                        },
+                        horizontalPadding:
+                            MediaQuery.of(context).size.width * 0.066,
                       ),
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      alignment: Alignment.center,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: buttonColor,
-                      ),
-                      child: const Center(
-                        child: CircularProgressIndicator(color: white),
-                      ),
-                    )
-                  : MyButton(
-                      text: 'Verify',
-                      onTap: () async {
-                        await showLoadingDialog(
-                          context,
-                          () async {
-                            await verify();
-                          },
-                        );
-                      },
-                      horizontalPadding:
-                          MediaQuery.of(context).size.width * 0.066,
-                    ),
-              Expanded(child: Container()),
-            ],
+                Expanded(child: Container()),
+              ],
+            ),
           ),
         ),
       ),

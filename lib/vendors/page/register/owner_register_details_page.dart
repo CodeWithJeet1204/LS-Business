@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:ls_business/widgets/show_loading_dialog.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ls_business/vendors/page/register/business_register_details_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
@@ -10,6 +10,7 @@ import 'package:ls_business/widgets/text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class OwnerRegisterDetailsPage extends StatefulWidget {
   const OwnerRegisterDetailsPage({
@@ -33,10 +34,11 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
   final emailController = TextEditingController();
   final phoneController = TextEditingController();
   Map<String, dynamic>? userData;
-  bool isImageSelected = false;
-  File? _image;
-  bool isNext = false;
   String? uploadImagePath;
+  File? _image;
+  bool isImageSelected = false;
+  bool isNext = false;
+  bool isDialog = false;
 
   // INIT STATE
   @override
@@ -86,6 +88,7 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
         String? userPhotoUrl;
         setState(() {
           isNext = true;
+          isDialog = true;
         });
 
         if (_image != null) {
@@ -141,6 +144,7 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
 
         setState(() {
           isNext = false;
+          isDialog = false;
         });
         if (mounted) {
           Navigator.of(context).pop();
@@ -155,6 +159,7 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
       } catch (e) {
         setState(() {
           isNext = false;
+          isDialog = false;
         });
         if (mounted) {
           mySnackBar(context, e.toString());
@@ -167,130 +172,131 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: const Text('Owner Details'),
-      ),
-      body: userData == null
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : SafeArea(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // USER DETAILS HEADTEXT
-                    // const SizedBox(height: 100),
-                    // const HeadText(
-                    //   text: 'OWNER\nDETAILS',
-                    // ),
-                    // const SizedBox(height: 140),
+    return ModalProgressHUD(
+      inAsyncCall: isDialog,
+      color: primaryDark,
+      blur: 0.5,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          title: const Text('Owner Details'),
+        ),
+        body: userData == null
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : SafeArea(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // USER DETAILS HEADTEXT
+                      // const SizedBox(height: 100),
+                      // const HeadText(
+                      //   text: 'OWNER\nDETAILS',
+                      // ),
+                      // const SizedBox(height: 140),
 
-                    // IMAGE
-                    isImageSelected
-                        ? Stack(
-                            alignment: Alignment.bottomRight,
-                            children: [
-                              CircleAvatar(
-                                radius: width * 0.14,
-                                backgroundImage: FileImage(_image!),
-                              ),
-                              IconButton.filledTonal(
-                                icon: const Icon(Icons.camera_alt_outlined),
-                                iconSize: width * 0.09,
-                                tooltip: 'Change Owner Picture',
+                      // IMAGE
+                      isImageSelected
+                          ? Stack(
+                              alignment: Alignment.bottomRight,
+                              children: [
+                                CircleAvatar(
+                                  radius: width * 0.14,
+                                  backgroundImage: FileImage(_image!),
+                                ),
+                                IconButton.filledTonal(
+                                  icon: const Icon(Icons.camera_alt_outlined),
+                                  iconSize: width * 0.09,
+                                  tooltip: 'Change Owner Picture',
+                                  onPressed: () async {
+                                    await selectImage();
+                                  },
+                                  color: primaryDark,
+                                ),
+                              ],
+                            )
+                          : CircleAvatar(
+                              radius: 50,
+                              child: IconButton(
+                                icon: const Icon(
+                                  Icons.camera_alt_outlined,
+                                  size: 60,
+                                ),
                                 onPressed: () async {
                                   await selectImage();
                                 },
-                                color: primaryDark,
                               ),
-                            ],
-                          )
-                        : CircleAvatar(
-                            radius: 50,
-                            child: IconButton(
-                              icon: const Icon(
-                                Icons.camera_alt_outlined,
-                                size: 60,
-                              ),
-                              onPressed: () async {
-                                await selectImage();
-                              },
                             ),
-                          ),
-                    const SizedBox(height: 12),
+                      const SizedBox(height: 12),
 
-                    Form(
-                      key: userFormKey,
-                      child: Column(
-                        children: [
-                          // NAME
-                          MyTextFormField(
-                            hintText: 'Your Name*',
-                            controller: nameController,
-                            borderRadius: 12,
-                            horizontalPadding: width * 0.055,
-                            verticalPadding: width * 0.033,
-                            autoFillHints: const [AutofillHints.name],
-                          ),
-
-                          // EMAIL
-                          userData!['registration'] == 'email' ||
-                                  userData!['registration'] == 'google'
-                              ? Container()
-                              : MyTextFormField(
-                                  hintText: 'Email*',
-                                  controller: emailController,
-                                  borderRadius: 12,
-                                  horizontalPadding: width * 0.055,
-                                  verticalPadding: width * 0.033,
-                                  keyboardType: TextInputType.emailAddress,
-                                  autoFillHints: const [AutofillHints.email],
-                                ),
-
-                          // NUMBER
-                          userData!['registration'] == 'phone number'
-                              ? Container()
-                              : MyTextFormField(
-                                  hintText: 'Your Phone Number*',
-                                  controller: phoneController,
-                                  borderRadius: 12,
-                                  horizontalPadding: width * 0.055,
-                                  verticalPadding: width * 0.033,
-                                  keyboardType: TextInputType.number,
-                                  autoFillHints: const [
-                                    AutofillHints.telephoneNumber,
-                                  ],
-                                ),
-
-                          // NEXT BUTTON
-                          Padding(
-                            padding: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).viewInsets.bottom,
-                            ),
-                            child: MyButton(
-                              text: widget.fromMainPage ? 'DONE' : 'NEXT',
-                              onTap: () async {
-                                await showLoadingDialog(
-                                  context,
-                                  () async {
-                                    await next();
-                                  },
-                                );
-                              },
+                      Form(
+                        key: userFormKey,
+                        child: Column(
+                          children: [
+                            // NAME
+                            MyTextFormField(
+                              hintText: 'Your Name*',
+                              controller: nameController,
+                              borderRadius: 12,
                               horizontalPadding: width * 0.055,
+                              verticalPadding: width * 0.033,
+                              autoFillHints: const [AutofillHints.name],
                             ),
-                          ),
-                          const SizedBox(height: 12),
-                        ],
+
+                            // EMAIL
+                            userData!['registration'] == 'email' ||
+                                    userData!['registration'] == 'google'
+                                ? Container()
+                                : MyTextFormField(
+                                    hintText: 'Email*',
+                                    controller: emailController,
+                                    borderRadius: 12,
+                                    horizontalPadding: width * 0.055,
+                                    verticalPadding: width * 0.033,
+                                    keyboardType: TextInputType.emailAddress,
+                                    autoFillHints: const [AutofillHints.email],
+                                  ),
+
+                            // NUMBER
+                            userData!['registration'] == 'phone number'
+                                ? Container()
+                                : MyTextFormField(
+                                    hintText: 'Your Phone Number*',
+                                    controller: phoneController,
+                                    borderRadius: 12,
+                                    horizontalPadding: width * 0.055,
+                                    verticalPadding: width * 0.033,
+                                    keyboardType: TextInputType.number,
+                                    autoFillHints: const [
+                                      AutofillHints.telephoneNumber,
+                                    ],
+                                  ),
+
+                            // NEXT BUTTON
+                            Padding(
+                              padding: EdgeInsets.only(
+                                bottom:
+                                    MediaQuery.of(context).viewInsets.bottom,
+                              ),
+                              child: MyButton(
+                                text: widget.fromMainPage ? 'DONE' : 'NEXT',
+                                onTap: () async {
+                                  await next();
+                                },
+                                horizontalPadding: width * 0.055,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
+      ),
     );
   }
 }

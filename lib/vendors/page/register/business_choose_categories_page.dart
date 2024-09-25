@@ -97,7 +97,6 @@ class _BusinessChooseCategoriesPageState
     return Scaffold(
       appBar: AppBar(
         title: const Text('Choose Your Categories'),
-        automaticallyImplyLeading: false,
         // actions: [
         //   MyTextButton(
         //     onPressed: () async {
