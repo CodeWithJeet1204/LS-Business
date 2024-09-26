@@ -164,7 +164,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
         });
         if (mounted) {
           Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: ((context) {
+            MaterialPageRoute(builder: (context) {
               // if (widget.mode == 'vendor') {
               if (widget.fromMainPage) {
                 return const MainPage();
@@ -187,7 +187,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
               //   }
               // }
               // return const MainPage();
-            })),
+            }),
             (route) => false,
           );
         }
@@ -215,64 +215,68 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    return ModalProgressHUD(
-      inAsyncCall: isDialog,
-      color: primaryDark,
-      blur: 0.5,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: SafeArea(
-          child: Center(
-            child: Column(
-              children: [
-                Expanded(
-                  child: Container(),
-                ),
-                Text(
-                  'An OTP has been sent to your Phone Number\nPls enter the OTP below',
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: primaryDark,
-                    fontSize: MediaQuery.of(context).size.width * 0.045,
+    return PopScope(
+      canPop: isDialog ? false : true,
+      child: ModalProgressHUD(
+        inAsyncCall: isDialog,
+        color: primaryDark,
+        blur: 0.5,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: SafeArea(
+            child: Center(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Container(),
                   ),
-                ),
-                const SizedBox(height: 10),
-                MyTextFormField(
-                  hintText: 'OTP - 6 Digits',
-                  controller: otpController,
-                  borderRadius: 12,
-                  horizontalPadding: MediaQuery.of(context).size.width * 0.066,
-                  keyboardType: TextInputType.number,
-                  autoFillHints: const [AutofillHints.oneTimeCode],
-                ),
-                const SizedBox(height: 20),
-                isOTPVerifying
-                    ? Container(
-                        margin: EdgeInsets.symmetric(
-                          horizontal: width * 0.055,
+                  Text(
+                    'An OTP has been sent to your Phone Number\nPls enter the OTP below',
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: primaryDark,
+                      fontSize: MediaQuery.of(context).size.width * 0.045,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  MyTextFormField(
+                    hintText: 'OTP - 6 Digits',
+                    controller: otpController,
+                    borderRadius: 12,
+                    horizontalPadding:
+                        MediaQuery.of(context).size.width * 0.066,
+                    keyboardType: TextInputType.number,
+                    autoFillHints: const [AutofillHints.oneTimeCode],
+                  ),
+                  const SizedBox(height: 20),
+                  isOTPVerifying
+                      ? Container(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: width * 0.055,
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          alignment: Alignment.center,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: buttonColor,
+                          ),
+                          child: const Center(
+                            child: CircularProgressIndicator(color: white),
+                          ),
+                        )
+                      : MyButton(
+                          text: 'Verify',
+                          onTap: () async {
+                            await verify();
+                          },
+                          horizontalPadding:
+                              MediaQuery.of(context).size.width * 0.066,
                         ),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        alignment: Alignment.center,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: buttonColor,
-                        ),
-                        child: const Center(
-                          child: CircularProgressIndicator(color: white),
-                        ),
-                      )
-                    : MyButton(
-                        text: 'Verify',
-                        onTap: () async {
-                          await verify();
-                        },
-                        horizontalPadding:
-                            MediaQuery.of(context).size.width * 0.066,
-                      ),
-                Expanded(child: Container()),
-              ],
+                  Expanded(child: Container()),
+                ],
+              ),
             ),
           ),
         ),

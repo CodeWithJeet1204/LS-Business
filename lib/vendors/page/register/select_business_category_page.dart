@@ -39,9 +39,9 @@
 //   Future<void> showCategoryDialog() async {
 //     await showDialog(
 //       context: context,
-//       builder: ((context) => ImageContainer(
+//       builder: (context) => ImageContainer(
 //             isShop: isShop,
-//           )),
+//           ),
 //     );
 //     setState(() {});
 //   }

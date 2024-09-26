@@ -102,9 +102,9 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
         } else {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: ((context) => const BusinessChooseShopTypesPage(
-                    isEditing: false,
-                  )),
+              builder: (context) => const BusinessChooseShopTypesPage(
+                isEditing: false,
+              ),
             ),
           );
         }
@@ -165,80 +165,83 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ModalProgressHUD(
-      inAsyncCall: isDialog,
-      color: primaryDark,
-      blur: 0.5,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Social Media Info'),
-        ),
-        body: SafeArea(
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final width = constraints.maxWidth;
+    return PopScope(
+      canPop: isDialog ? false : true,
+      child: ModalProgressHUD(
+        inAsyncCall: isDialog,
+        color: primaryDark,
+        blur: 0.5,
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Social Media Info'),
+          ),
+          body: SafeArea(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final width = constraints.maxWidth;
 
-              return SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.all(width * 0.0225),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // INSTAGRAM
-                      MyTextFormField(
-                        hintText: 'Instagram (Link)',
-                        controller: instaController,
-                        borderRadius: 12,
-                        horizontalPadding: 0,
-                      ),
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.all(width * 0.0225),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // INSTAGRAM
+                        MyTextFormField(
+                          hintText: 'Instagram (Link)',
+                          controller: instaController,
+                          borderRadius: 12,
+                          horizontalPadding: 0,
+                        ),
 
-                      const SizedBox(height: 12),
+                        const SizedBox(height: 12),
 
-                      // FACEBOOK
-                      MyTextFormField(
-                        hintText: 'Facebook (Link)',
-                        controller: facebookController,
-                        borderRadius: 12,
-                        horizontalPadding: 0,
-                      ),
+                        // FACEBOOK
+                        MyTextFormField(
+                          hintText: 'Facebook (Link)',
+                          controller: facebookController,
+                          borderRadius: 12,
+                          horizontalPadding: 0,
+                        ),
 
-                      const SizedBox(height: 12),
+                        const SizedBox(height: 12),
 
-                      // WEBSITE
-                      MyTextFormField(
-                        hintText: 'Personal Website (Link)',
-                        controller: websiteController,
-                        borderRadius: 12,
-                        horizontalPadding: 0,
-                      ),
+                        // WEBSITE
+                        MyTextFormField(
+                          hintText: 'Personal Website (Link)',
+                          controller: websiteController,
+                          borderRadius: 12,
+                          horizontalPadding: 0,
+                        ),
 
-                      const SizedBox(height: 24),
+                        const SizedBox(height: 24),
 
-                      // NEXT
-                      MyButton(
-                        onTap: () async {
-                          await next();
-                        },
-                        text: widget.isChanging ? 'DONE' : 'NEXT',
-                        horizontalPadding: 0,
-                      ),
-                      const SizedBox(height: 24),
+                        // NEXT
+                        MyButton(
+                          onTap: () async {
+                            await next();
+                          },
+                          text: widget.isChanging ? 'DONE' : 'NEXT',
+                          horizontalPadding: 0,
+                        ),
+                        const SizedBox(height: 24),
 
-                      // SKIP
-                      widget.isChanging
-                          ? Container()
-                          : MyButton(
-                              onTap: () async {
-                                await skip();
-                              },
-                              text: 'SKIP',
-                              horizontalPadding: 0,
-                            ),
-                    ],
+                        // SKIP
+                        widget.isChanging
+                            ? Container()
+                            : MyButton(
+                                onTap: () async {
+                                  await skip();
+                                },
+                                text: 'SKIP',
+                                horizontalPadding: 0,
+                              ),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ),
       ),

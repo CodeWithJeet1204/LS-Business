@@ -143,7 +143,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
   Future<void> confirmDelete(String postId, bool isTextPost) async {
     await showDialog(
       context: context,
-      builder: ((context) {
+      builder: (context) {
         return AlertDialog(
           title: const Text(
             'Confirm DELETE',
@@ -181,7 +181,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
             ),
           ],
         );
-      }),
+      },
     );
   }
 
@@ -418,11 +418,11 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                             .push(
                                                           MaterialPageRoute(
                                                             builder:
-                                                                ((context) =>
+                                                                (context) =>
                                                                     PostPage(
-                                                                      postId: postData[
-                                                                          'postId'],
-                                                                    )),
+                                                              postId: postData[
+                                                                  'postId'],
+                                                            ),
                                                           ),
                                                         );
                                                       },
@@ -624,11 +624,11 @@ class _AllPostsPageState extends State<AllPostsPage> {
                                                   onTap: () {
                                                     Navigator.of(context).push(
                                                       MaterialPageRoute(
-                                                        builder: ((context) =>
+                                                        builder: (context) =>
                                                             PostPage(
-                                                              postId: postData[
-                                                                  'postId'],
-                                                            )),
+                                                          postId: postData[
+                                                              'postId'],
+                                                        ),
                                                       ),
                                                     );
                                                   },

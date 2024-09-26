@@ -170,7 +170,7 @@
 //         ),
 //       ),
 //       body: LayoutBuilder(
-//         builder: ((context, constraints) {
+//         builder: (context, constraints) {
 //           double width = constraints.maxWidth;
 
 //           return StreamBuilder(

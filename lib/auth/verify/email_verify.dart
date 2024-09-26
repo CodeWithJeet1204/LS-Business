@@ -64,7 +64,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
     if (isEmailVerified) {
       if (mounted) {
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: ((context) {
+          MaterialPageRoute(builder: (context) {
             // if (widget.mode == 'vendor') {
             if (widget.fromMainPage) {
               return const MainPage();
@@ -87,7 +87,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
             //   }
             // }
             // return const MainPage();
-          })),
+          }),
           (route) => false,
         );
       }

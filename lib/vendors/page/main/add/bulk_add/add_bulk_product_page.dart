@@ -722,7 +722,7 @@
 //             horizontal: MediaQuery.of(context).size.width * 0.003125,
 //           ),
 //           child: LayoutBuilder(
-//             builder: ((context, constraints) {
+//             builder: (context, constraints) {
 //               final width = constraints.maxWidth;
 
 //               return SingleChildScrollView(
@@ -735,8 +735,8 @@
 //                         Navigator.of(context)
 //                             .push(
 //                           MaterialPageRoute(
-//                             builder: ((context) =>
-//                                 const SelectCategoryForBulkProductsPage()),
+//                             builder: (context) =>
+//                                 const SelectCategoryForBulkProductsPage(),
 //                           ),
 //                         )
 //                             .then((value) {
@@ -759,8 +759,8 @@
 //                         Navigator.of(context)
 //                             .push(
 //                           MaterialPageRoute(
-//                             builder: ((context) =>
-//                                 const SelectBrandForBulkProductsPage()),
+//                             builder: (context) =>
+//                                 const SelectBrandForBulkProductsPage(),
 //                           ),
 //                         )
 //                             .then((value) {

@@ -167,7 +167,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
     await showDialog(
       barrierDismissible: true,
       context: context,
-      builder: ((context) {
+      builder: (context) {
         return Dialog(
           elevation: 20,
           child: InteractiveViewer(
@@ -176,7 +176,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
             ),
           ),
         );
-      }),
+      },
     );
   }
 
@@ -202,7 +202,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
   Future<void> signOut() async {
     await showDialog(
       context: context,
-      builder: ((context) {
+      builder: (context) {
         return AlertDialog(
           title: const Text(
             'Sign Out?',
@@ -231,7 +231,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                     Navigator.of(context).pop();
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
-                        builder: ((context) => const LoginPage()),
+                        builder: (context) => const LoginPage(),
                       ),
                       (route) => false,
                     );
@@ -252,7 +252,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
             ),
           ],
         );
-      }),
+      },
     );
   }
 
@@ -267,55 +267,56 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
         .doc(auth.currentUser!.uid)
         .snapshots();
 
-    return ModalProgressHUD(
-      inAsyncCall: isDialog,
-      color: primaryDark,
-      blur: 0.5,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          title: const Text(
-            'Business Details',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-        bottomSheet: isChangingName || isChangingDescription
-            ? SizedBox(
-                width: width,
-                height: 80,
-                child: MyButton(
-                  text: 'SAVE',
-                  onTap: () async {
-                    if (isChangingName) {
-                      await save(
-                        nameController,
-                        'Name',
-                        isChangingName,
-                      );
-                    } else if (isChangingDescription) {
-                      await save(
-                        descriptionController,
-                        'Description',
-                        isChangingDescription,
-                      );
-                    }
-                  },
-                  horizontalPadding: 0,
-                ),
-              )
-            : const SizedBox(
-                width: 0,
-                height: 0,
-              ),
-        body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: width * 0.025,
-              vertical: width * 0.006125,
+    return PopScope(
+      canPop: isDialog ? false : true,
+      child: ModalProgressHUD(
+        inAsyncCall: isDialog,
+        color: primaryDark,
+        blur: 0.5,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            title: const Text(
+              'Business Details',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-            child: LayoutBuilder(
-              builder: ((context, constraints) {
+          ),
+          bottomSheet: isChangingName || isChangingDescription
+              ? SizedBox(
+                  width: width,
+                  height: 80,
+                  child: MyButton(
+                    text: 'SAVE',
+                    onTap: () async {
+                      if (isChangingName) {
+                        await save(
+                          nameController,
+                          'Name',
+                          isChangingName,
+                        );
+                      } else if (isChangingDescription) {
+                        await save(
+                          descriptionController,
+                          'Description',
+                          isChangingDescription,
+                        );
+                      }
+                    },
+                    horizontalPadding: 0,
+                  ),
+                )
+              : const SizedBox(
+                  width: 0,
+                  height: 0,
+                ),
+          body: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: width * 0.025,
+                vertical: width * 0.006125,
+              ),
+              child: LayoutBuilder(builder: (context, constraints) {
                 double width = constraints.maxWidth;
                 double height = constraints.maxHeight;
 

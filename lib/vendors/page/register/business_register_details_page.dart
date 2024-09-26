@@ -228,7 +228,7 @@ class _BusinessRegisterDetailsPageState
           } else {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: ((context) => const BusinessVerificationPage()),
+                builder: (context) => const BusinessVerificationPage(),
               ),
             );
           }
@@ -254,276 +254,281 @@ class _BusinessRegisterDetailsPageState
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    return ModalProgressHUD(
-      inAsyncCall: isDialog,
-      color: primaryDark,
-      blur: 0.5,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          title: const Text('Business Details'),
-        ),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // const SizedBox(height: 100),
-                // SizedBox(
-                //   width: width * 0.875,
-                //   child: const HeadText(
-                //     text: 'BUSINESS\nDETAILS',
-                //   ),
-                // ),
-                // const SizedBox(height: 140),
+    return PopScope(
+      canPop: isDialog ? false : true,
+      child: ModalProgressHUD(
+        inAsyncCall: isDialog,
+        color: primaryDark,
+        blur: 0.5,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            title: const Text('Business Details'),
+          ),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // const SizedBox(height: 100),
+                  // SizedBox(
+                  //   width: width * 0.875,
+                  //   child: const HeadText(
+                  //     text: 'BUSINESS\nDETAILS',
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 140),
 
-                // IMAGE
-                isImageSelected
-                    ? Stack(
-                        alignment: Alignment.bottomRight,
-                        children: [
-                          CircleAvatar(
-                            radius: width * 0.13885,
-                            backgroundImage: FileImage(image!),
-                          ),
-                          IconButton.filledTonal(
-                            icon: const Icon(Icons.camera_alt_outlined),
-                            iconSize: width * 0.1,
-                            tooltip: 'Change Shop Image',
+                  // IMAGE
+                  isImageSelected
+                      ? Stack(
+                          alignment: Alignment.bottomRight,
+                          children: [
+                            CircleAvatar(
+                              radius: width * 0.13885,
+                              backgroundImage: FileImage(image!),
+                            ),
+                            IconButton.filledTonal(
+                              icon: const Icon(Icons.camera_alt_outlined),
+                              iconSize: width * 0.1,
+                              tooltip: 'Change Shop Image',
+                              onPressed: () async {
+                                await selectImage();
+                              },
+                              color: primaryDark,
+                            ),
+                          ],
+                        )
+                      : CircleAvatar(
+                          radius: width * 0.13885,
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.camera_alt_outlined,
+                              size: width * 0.166,
+                            ),
                             onPressed: () async {
                               await selectImage();
                             },
-                            color: primaryDark,
+                          ),
+                        ),
+
+                  const SizedBox(height: 16),
+
+                  Form(
+                    key: businessFormKey,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: width * 0.025),
+                      child: Column(
+                        children: [
+                          // SHOP NAME
+                          MyTextFormField(
+                            hintText: 'Shop Name*',
+                            controller: nameController,
+                            borderRadius: 12,
+                            horizontalPadding: 0,
+                            verticalPadding: 0,
+                            autoFillHints: const [
+                              AutofillHints.streetAddressLevel1
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+
+                          // LOCATION
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                flex: cityDetectLocation != null ? 3 : 1,
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    setState(() {
+                                      isDetectingCity = true;
+                                    });
+
+                                    await getLocation().then((value) async {
+                                      if (value != null) {
+                                        setState(() {
+                                          latitude = value.latitude;
+                                          longitude = value.longitude;
+                                        });
+                                      }
+
+                                      await getAddress(latitude!, longitude!);
+                                    });
+
+                                    setState(() {
+                                      cityPickLocation = null;
+                                      isDetectingCity = false;
+                                    });
+                                  },
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: primary2,
+                                      borderRadius: BorderRadius.circular(24),
+                                    ),
+                                    padding: EdgeInsets.all(width * 0.025),
+                                    child: isDetectingCity
+                                        ? const CircularProgressIndicator()
+                                        : cityPickLocation != null
+                                            ? const Icon(FeatherIcons.mapPin)
+                                            : AutoSizeText(
+                                                displayDetectCity ??
+                                                    'Detect Location',
+                                                maxLines:
+                                                    cityDetectLocation != null
+                                                        ? 1
+                                                        : 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontSize: width * 0.045,
+                                                  color: primaryDark2,
+                                                ),
+                                              ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: width * 0.0125),
+                              Expanded(
+                                flex: cityPickLocation != null ? 3 : 1,
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    setState(() {
+                                      isPickingCity = true;
+                                    });
+                                    Navigator.of(context)
+                                        .push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const PickLocationPage(),
+                                      ),
+                                    )
+                                        .then(
+                                      (pickedData) {
+                                        final cityName =
+                                            pickedData[0] as String;
+                                        final coordinates =
+                                            pickedData[1] as LatLong;
+
+                                        setState(() {
+                                          latitude = coordinates.latitude;
+                                          longitude = coordinates.longitude;
+                                          cityPickLocation = cityName;
+                                        });
+                                      },
+                                    );
+                                    setState(() {
+                                      cityDetectLocation = null;
+                                      isPickingCity = false;
+                                    });
+                                  },
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: primary2,
+                                      borderRadius: BorderRadius.circular(24),
+                                    ),
+                                    padding: EdgeInsets.all(width * 0.025),
+                                    child: isPickingCity
+                                        ? const CircularProgressIndicator()
+                                        : cityDetectLocation != null
+                                            ? const Icon(FeatherIcons.map)
+                                            : AutoSizeText(
+                                                cityPickLocation ??
+                                                    'Pick Location 🗺️',
+                                                maxLines:
+                                                    cityPickLocation != null
+                                                        ? 1
+                                                        : 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontSize: width * 0.045,
+                                                  color: primaryDark2,
+                                                ),
+                                              ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+
+                          // INDUSTRY SEGMENT
+                          // Padding(
+                          //   padding: const EdgeInsets.symmetric(horizontal: 20),
+                          //   child: DropdownButtonFormField(
+                          //     decoration: InputDecoration(
+                          //       border: OutlineInputBorder(
+                          //         borderRadius: BorderRadius.circular(12),
+                          //         borderSide: BorderSide(
+                          //           color: primary2,
+                          //           width: 1,
+                          //         ),
+                          //       ),
+                          //     ),
+                          //     elevation: 0,
+                          //     isDense: false,
+                          //     menuMaxHeight: 700,
+                          //     itemHeight: 48,
+                          //     dropdownColor: primary2,
+                          //     hint: const Text(
+                          //       'Select Industry Segment',
+                          //       maxLines: 1,
+                          //       overflow: TextOverflow.ellipsis,
+                          //     ),
+                          //     items: industrySegments
+                          //         .map((element) => DropdownMenuItem(
+                          //               value: element,
+                          //               child: Text(
+                          //                 element,
+                          //                 maxLines: 1,
+                          //                 overflow: TextOverflow.ellipsis,
+                          //               ),
+                          //             ))
+                          //         .toList(),
+                          //     onChanged: (value) {
+                          //       setState(() {
+                          //         selectedIndustrySegment = value;
+                          //       });
+                          //     },
+                          //   ),
+                          // ),
+                          // const SizedBox(height: 20),
+
+                          // DESCRIPTION
+                          MyTextFormField(
+                            hintText: 'Description',
+                            controller: descriptionController,
+                            borderRadius: 12,
+                            horizontalPadding: 0,
+                            autoFillHints: null,
+                            maxLines: 10,
+                            keyboardType: TextInputType.multiline,
+                          ),
+                          const SizedBox(height: 12),
+
+                          // NEXT
+                          Padding(
+                            padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).viewInsets.bottom,
+                            ),
+                            child: MyButton(
+                              text: widget.fromMainPage ? 'DONE' : 'NEXT',
+                              onTap: () async {
+                                await next();
+                              },
+                              horizontalPadding: width * 0.055,
+                            ),
                           ),
                         ],
-                      )
-                    : CircleAvatar(
-                        radius: width * 0.13885,
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.camera_alt_outlined,
-                            size: width * 0.166,
-                          ),
-                          onPressed: () async {
-                            await selectImage();
-                          },
-                        ),
                       ),
-
-                const SizedBox(height: 16),
-
-                Form(
-                  key: businessFormKey,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: width * 0.025),
-                    child: Column(
-                      children: [
-                        // SHOP NAME
-                        MyTextFormField(
-                          hintText: 'Shop Name*',
-                          controller: nameController,
-                          borderRadius: 12,
-                          horizontalPadding: 0,
-                          verticalPadding: 0,
-                          autoFillHints: const [
-                            AutofillHints.streetAddressLevel1
-                          ],
-                        ),
-                        const SizedBox(height: 12),
-
-                        // LOCATION
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              flex: cityDetectLocation != null ? 3 : 1,
-                              child: GestureDetector(
-                                onTap: () async {
-                                  setState(() {
-                                    isDetectingCity = true;
-                                  });
-
-                                  await getLocation().then((value) async {
-                                    if (value != null) {
-                                      setState(() {
-                                        latitude = value.latitude;
-                                        longitude = value.longitude;
-                                      });
-                                    }
-
-                                    await getAddress(latitude!, longitude!);
-                                  });
-
-                                  setState(() {
-                                    cityPickLocation = null;
-                                    isDetectingCity = false;
-                                  });
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    color: primary2,
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
-                                  padding: EdgeInsets.all(width * 0.025),
-                                  child: isDetectingCity
-                                      ? const CircularProgressIndicator()
-                                      : cityPickLocation != null
-                                          ? const Icon(FeatherIcons.mapPin)
-                                          : AutoSizeText(
-                                              displayDetectCity ??
-                                                  'Detect Location',
-                                              maxLines:
-                                                  cityDetectLocation != null
-                                                      ? 1
-                                                      : 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontSize: width * 0.045,
-                                                color: primaryDark2,
-                                              ),
-                                            ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: width * 0.0125),
-                            Expanded(
-                              flex: cityPickLocation != null ? 3 : 1,
-                              child: GestureDetector(
-                                onTap: () async {
-                                  setState(() {
-                                    isPickingCity = true;
-                                  });
-                                  Navigator.of(context)
-                                      .push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const PickLocationPage(),
-                                    ),
-                                  )
-                                      .then(
-                                    (pickedData) {
-                                      final cityName = pickedData[0] as String;
-                                      final coordinates =
-                                          pickedData[1] as LatLong;
-
-                                      setState(() {
-                                        latitude = coordinates.latitude;
-                                        longitude = coordinates.longitude;
-                                        cityPickLocation = cityName;
-                                      });
-                                    },
-                                  );
-                                  setState(() {
-                                    cityDetectLocation = null;
-                                    isPickingCity = false;
-                                  });
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    color: primary2,
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
-                                  padding: EdgeInsets.all(width * 0.025),
-                                  child: isPickingCity
-                                      ? const CircularProgressIndicator()
-                                      : cityDetectLocation != null
-                                          ? const Icon(FeatherIcons.map)
-                                          : AutoSizeText(
-                                              cityPickLocation ??
-                                                  'Pick Location 🗺️',
-                                              maxLines: cityPickLocation != null
-                                                  ? 1
-                                                  : 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontSize: width * 0.045,
-                                                color: primaryDark2,
-                                              ),
-                                            ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 12),
-
-                        // INDUSTRY SEGMENT
-                        // Padding(
-                        //   padding: const EdgeInsets.symmetric(horizontal: 20),
-                        //   child: DropdownButtonFormField(
-                        //     decoration: InputDecoration(
-                        //       border: OutlineInputBorder(
-                        //         borderRadius: BorderRadius.circular(12),
-                        //         borderSide: BorderSide(
-                        //           color: primary2,
-                        //           width: 1,
-                        //         ),
-                        //       ),
-                        //     ),
-                        //     elevation: 0,
-                        //     isDense: false,
-                        //     menuMaxHeight: 700,
-                        //     itemHeight: 48,
-                        //     dropdownColor: primary2,
-                        //     hint: const Text(
-                        //       'Select Industry Segment',
-                        //       maxLines: 1,
-                        //       overflow: TextOverflow.ellipsis,
-                        //     ),
-                        //     items: industrySegments
-                        //         .map((element) => DropdownMenuItem(
-                        //               value: element,
-                        //               child: Text(
-                        //                 element,
-                        //                 maxLines: 1,
-                        //                 overflow: TextOverflow.ellipsis,
-                        //               ),
-                        //             ))
-                        //         .toList(),
-                        //     onChanged: (value) {
-                        //       setState(() {
-                        //         selectedIndustrySegment = value;
-                        //       });
-                        //     },
-                        //   ),
-                        // ),
-                        // const SizedBox(height: 20),
-
-                        // DESCRIPTION
-                        MyTextFormField(
-                          hintText: 'Description',
-                          controller: descriptionController,
-                          borderRadius: 12,
-                          horizontalPadding: 0,
-                          autoFillHints: null,
-                          maxLines: 10,
-                          keyboardType: TextInputType.multiline,
-                        ),
-                        const SizedBox(height: 12),
-
-                        // NEXT
-                        Padding(
-                          padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).viewInsets.bottom,
-                          ),
-                          child: MyButton(
-                            text: widget.fromMainPage ? 'DONE' : 'NEXT',
-                            onTap: () async {
-                              await next();
-                            },
-                            horizontalPadding: width * 0.055,
-                          ),
-                        ),
-                      ],
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

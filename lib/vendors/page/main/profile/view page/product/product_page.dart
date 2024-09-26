@@ -1,12 +1,10 @@
 // ignore_for_file: avoid_function_literals_in_foreach_calls
 
 import 'dart:io';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:ls_business/vendors/page/main/analytics/analytics_page.dart';
 import 'package:ls_business/vendors/page/main/discount/products/product_discount_page.dart';
 import 'package:ls_business/vendors/page/main/profile/data/all_product_page.dart';
 import 'package:ls_business/vendors/page/main/profile/view%20page/category/category_page.dart';
@@ -155,7 +153,7 @@ class _ProductPageState extends State<ProductPage> {
                                         onTapOutside: (event) =>
                                             FocusScope.of(context).unfocus(),
                                         keyboardType: inputType
-                                            ? TextInputType.text
+                                            ? TextInputType.name
                                             : TextInputType.number,
                                         decoration: InputDecoration(
                                           hintText: 'Enter $propertyValue',
@@ -500,10 +498,10 @@ class _ProductPageState extends State<ProductPage> {
         Navigator.of(context).pop();
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: ((context) => ProductPage(
-                  productId: widget.productId,
-                  productName: widget.productName,
-                )),
+            builder: (context) => ProductPage(
+              productId: widget.productId,
+              productName: widget.productName,
+            ),
           ),
         );
       }
@@ -543,10 +541,10 @@ class _ProductPageState extends State<ProductPage> {
           Navigator.of(context).pop();
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: ((context) => ProductPage(
-                    productId: widget.productId,
-                    productName: widget.productName,
-                  )),
+              builder: (context) => ProductPage(
+                productId: widget.productId,
+                productName: widget.productName,
+              ),
             ),
           );
         }
@@ -591,7 +589,7 @@ class _ProductPageState extends State<ProductPage> {
   Future<void> removeProductImages(int index, List images) async {
     await showDialog(
       context: context,
-      builder: ((context) {
+      builder: (context) {
         return AlertDialog(
           title: const Text(
             'Confirm REMOVE',
@@ -640,7 +638,7 @@ class _ProductPageState extends State<ProductPage> {
             ),
           ],
         );
-      }),
+      },
     );
   }
 
@@ -648,7 +646,7 @@ class _ProductPageState extends State<ProductPage> {
   Future<void> confirmDelete() async {
     await showDialog(
       context: context,
-      builder: ((context) {
+      builder: (context) {
         return AlertDialog(
           title: const Text(
             'Confirm DELETE',
@@ -684,7 +682,7 @@ class _ProductPageState extends State<ProductPage> {
             ),
           ],
         );
-      }),
+      },
     );
   }
 
@@ -892,7 +890,7 @@ class _ProductPageState extends State<ProductPage> {
   Future<void> confirmDeleteShort() async {
     await showDialog(
       context: context,
-      builder: ((context) {
+      builder: (context) {
         return AlertDialog(
           title: const Text('Delete Short'),
           content: const Text('Are you sure you want to delete this short?'),
@@ -913,7 +911,7 @@ class _ProductPageState extends State<ProductPage> {
             ),
           ],
         );
-      }),
+      },
     );
   }
 
@@ -959,39 +957,40 @@ class _ProductPageState extends State<ProductPage> {
         .where('vendorId', isEqualTo: auth.currentUser!.uid)
         .snapshots();
 
-    return ModalProgressHUD(
-      inAsyncCall: isDialog,
-      color: primaryDark,
-      blur: 0.5,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          actions: [
-            IconButton(
-              onPressed: () async {
-                await confirmDelete();
-                if (context.mounted) {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const AllProductsPage(),
-                    ),
-                  );
-                }
-              },
-              icon: const Icon(
-                FeatherIcons.trash,
-                color: Colors.red,
+    return PopScope(
+      canPop: isDialog ? false : true,
+      child: ModalProgressHUD(
+        inAsyncCall: isDialog,
+        color: primaryDark,
+        blur: 0.5,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  await confirmDelete();
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const AllProductsPage(),
+                      ),
+                    );
+                  }
+                },
+                icon: const Icon(
+                  FeatherIcons.trash,
+                  color: Colors.red,
+                ),
+                tooltip: 'DELETE',
               ),
-              tooltip: 'DELETE',
-            ),
-          ],
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(8),
-          child: LayoutBuilder(
-            builder: ((context, constraints) {
+            ],
+          ),
+          body: Padding(
+            padding: const EdgeInsets.all(8),
+            child: LayoutBuilder(builder: (context, constraints) {
               double width = constraints.maxWidth;
 
               return SingleChildScrollView(
@@ -1138,15 +1137,14 @@ class _ProductPageState extends State<ProductPage> {
                                                             .push(
                                                           MaterialPageRoute(
                                                             builder:
-                                                                ((context) =>
+                                                                (context) =>
                                                                     ImageView(
-                                                                      imagesUrl:
-                                                                          images,
-                                                                      shortsThumbnail:
-                                                                          shortsThumbnail,
-                                                                      shortsURL:
-                                                                          shortsURL,
-                                                                    )),
+                                                              imagesUrl: images,
+                                                              shortsThumbnail:
+                                                                  shortsThumbnail,
+                                                              shortsURL:
+                                                                  shortsURL,
+                                                            ),
                                                           ),
                                                         )
                                                             .then((value) {
@@ -1292,14 +1290,13 @@ class _ProductPageState extends State<ProductPage> {
                                                   Navigator.of(context)
                                                       .push(
                                                     MaterialPageRoute(
-                                                      builder: ((context) =>
+                                                      builder: (context) =>
                                                           ImageView(
-                                                            imagesUrl: images,
-                                                            shortsThumbnail:
-                                                                shortsThumbnail,
-                                                            shortsURL:
-                                                                shortsURL,
-                                                          )),
+                                                        imagesUrl: images,
+                                                        shortsThumbnail:
+                                                            shortsThumbnail,
+                                                        shortsURL: shortsURL,
+                                                      ),
                                                     ),
                                                   )
                                                       .then((value) {
@@ -1642,17 +1639,17 @@ class _ProductPageState extends State<ProductPage> {
                                             onPressed: () async {
                                               Navigator.of(context).push(
                                                 MaterialPageRoute(
-                                                  builder: ((context) =>
+                                                  builder: (context) =>
                                                       ProductDiscountPage(
-                                                        changeSelectedProductDiscount:
-                                                            true,
-                                                        changeSelectedProductDiscountId:
-                                                            productData[
-                                                                'productId'],
-                                                        changeSelectedProductDiscountName:
-                                                            productData[
-                                                                'productName'],
-                                                      )),
+                                                    changeSelectedProductDiscount:
+                                                        true,
+                                                    changeSelectedProductDiscountId:
+                                                        productData[
+                                                            'productId'],
+                                                    changeSelectedProductDiscountName:
+                                                        productData[
+                                                            'productName'],
+                                                  ),
                                                 ),
                                               );
                                             },
@@ -1913,12 +1910,11 @@ class _ProductPageState extends State<ProductPage> {
                                             onTap: () {
                                               Navigator.of(context).push(
                                                 MaterialPageRoute(
-                                                  builder: ((context) =>
+                                                  builder: (context) =>
                                                       CategoryPage(
-                                                        categoryName:
-                                                            productData[
-                                                                'categoryName'],
-                                                      )),
+                                                    categoryName: productData[
+                                                        'categoryName'],
+                                                  ),
                                                 ),
                                               );
                                             },
@@ -1983,16 +1979,15 @@ class _ProductPageState extends State<ProductPage> {
                                             onPressed: () async {
                                               await Navigator.of(context).push(
                                                 MaterialPageRoute(
-                                                  builder: ((context) =>
+                                                  builder: (context) =>
                                                       ChangeProductCategoryPage(
-                                                        productId: productData[
-                                                            'productId'],
-                                                        shopTypes: category[
-                                                            'shopTypes'],
-                                                        productName:
-                                                            productData[
-                                                                'productName'],
-                                                      )),
+                                                    productId: productData[
+                                                        'productId'],
+                                                    shopTypes:
+                                                        category['shopTypes'],
+                                                    productName: productData[
+                                                        'productName'],
+                                                  ),
                                                 ),
                                               );
                                               await getCategoryInfo();
@@ -2237,66 +2232,67 @@ class _ProductPageState extends State<ProductPage> {
                             ),
 
                             // VIEW ALL INSIGHTS
-                            Padding(
-                              padding: EdgeInsets.only(
-                                top: width * 0.0125,
-                                bottom: width * 0.0125,
-                                left: width * 0.025,
-                              ),
-                              child: InkWell(
-                                customBorder: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(14),
-                                ),
-                                radius: width * 0.2,
-                                splashColor: primary2,
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: ((context) =>
-                                          const AnalyticsPage()),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  width: width * 0.95,
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    color: primary2.withOpacity(0.4),
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                      left: width * 0.033,
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        SizedBox(
-                                          width: width * 0.5,
-                                          child: Text(
-                                            'View All Products Insights',
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              color: primaryDark2,
-                                              fontSize: width * 0.04,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        ),
-                                        Icon(
-                                          FeatherIcons.chevronRight,
-                                          size: width * 0.095,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
+                            // Padding(
+                            //   padding: EdgeInsets.only(
+                            //     top: width * 0.0125,
+                            //     bottom: width * 0.0125,
+                            //     left: width * 0.025,
+                            //   ),
+                            //   child: InkWell(
+                            //     customBorder: RoundedRectangleBorder(
+                            //       borderRadius: BorderRadius.circular(14),
+                            //     ),
+                            //     radius: width * 0.2,
+                            //     splashColor: primary2,
+                            //     onTap: () {
+                            //       Navigator.of(context).push(
+                            //         MaterialPageRoute(
+                            //           builder: (context) => const AnalyticsPage(
+                            //             fromProductPage: true,
+                            //           ),
+                            //         ),
+                            //       );
+                            //     },
+                            //     child: Container(
+                            //       width: width * 0.95,
+                            //       height: 100,
+                            //       decoration: BoxDecoration(
+                            //         color: primary2.withOpacity(0.4),
+                            //         borderRadius: BorderRadius.circular(16),
+                            //       ),
+                            //       child: Padding(
+                            //         padding: EdgeInsets.only(
+                            //           left: width * 0.033,
+                            //         ),
+                            //         child: Row(
+                            //           mainAxisAlignment:
+                            //               MainAxisAlignment.spaceAround,
+                            //           crossAxisAlignment:
+                            //               CrossAxisAlignment.center,
+                            //           children: [
+                            //             SizedBox(
+                            //               width: width * 0.5,
+                            //               child: Text(
+                            //                 'View All Products Insights',
+                            //                 maxLines: 2,
+                            //                 overflow: TextOverflow.ellipsis,
+                            //                 style: TextStyle(
+                            //                   color: primaryDark2,
+                            //                   fontSize: width * 0.04,
+                            //                   fontWeight: FontWeight.w500,
+                            //                 ),
+                            //               ),
+                            //             ),
+                            //             Icon(
+                            //               FeatherIcons.chevronRight,
+                            //               size: width * 0.095,
+                            //             ),
+                            //           ],
+                            //         ),
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         );
                       }

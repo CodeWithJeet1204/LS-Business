@@ -271,249 +271,241 @@ class _SelectBrandForProductPageState extends State<SelectBrandForProductPage> {
               : SafeArea(
                   child: Padding(
                     padding: EdgeInsets.all(width * 0.006125),
-                    child: LayoutBuilder(
-                      builder: ((context, constraints) {
-                        final width = constraints.maxWidth;
-                        final height = constraints.maxHeight;
+                    child: LayoutBuilder(builder: (context, constraints) {
+                      final width = constraints.maxWidth;
+                      final height = constraints.maxHeight;
 
-                        return isGridView
-                            ? GridView.builder(
-                                controller: scrollControllerGridView,
-                                cacheExtent: height * 1.5,
-                                addAutomaticKeepAlives: true,
-                                shrinkWrap: true,
-                                physics: const ClampingScrollPhysics(),
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  childAspectRatio: 0.75,
-                                ),
-                                itemCount: noOfGridView > currentBrands.length
-                                    ? currentBrands.length
-                                    : noOfGridView,
-                                itemBuilder: ((context, index) {
-                                  final brandData = currentBrands[
-                                      currentBrands.keys.toList()[index]]!;
+                      return isGridView
+                          ? GridView.builder(
+                              controller: scrollControllerGridView,
+                              cacheExtent: height * 1.5,
+                              addAutomaticKeepAlives: true,
+                              shrinkWrap: true,
+                              physics: const ClampingScrollPhysics(),
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 0.75,
+                              ),
+                              itemCount: noOfGridView > currentBrands.length
+                                  ? currentBrands.length
+                                  : noOfGridView,
+                              itemBuilder: ((context, index) {
+                                final brandData = currentBrands[
+                                    currentBrands.keys.toList()[index]]!;
 
-                                  return GestureDetector(
-                                    onTap: () {
-                                      selectBrandProvider.selectBrand(
-                                        brandData['brandName'],
-                                        brandData['brandId'],
-                                      );
-                                    },
-                                    child: Stack(
-                                      alignment: Alignment.topRight,
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: white,
-                                            border: Border.all(
-                                              width: 0.25,
-                                              color: primaryDark,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(2),
+                                return GestureDetector(
+                                  onTap: () {
+                                    selectBrandProvider.selectBrand(
+                                      brandData['brandName'],
+                                      brandData['brandId'],
+                                    );
+                                  },
+                                  child: Stack(
+                                    alignment: Alignment.topRight,
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: white,
+                                          border: Border.all(
+                                            width: 0.25,
+                                            color: primaryDark,
                                           ),
-                                          margin:
-                                              EdgeInsets.all(width * 0.00625),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              brandData['imageUrl'] != null
-                                                  ? Padding(
-                                                      padding: EdgeInsets.all(
-                                                        width * 0.0125,
-                                                      ),
-                                                      child: Center(
-                                                        child: ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                            2,
-                                                          ),
-                                                          child: Image.network(
-                                                            brandData[
-                                                                'imageUrl'],
-                                                            width: width * 0.5,
-                                                            height: width * 0.5,
-                                                            fit: BoxFit.cover,
-                                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(2),
+                                        ),
+                                        margin: EdgeInsets.all(width * 0.00625),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            brandData['imageUrl'] != null
+                                                ? Padding(
+                                                    padding: EdgeInsets.all(
+                                                      width * 0.0125,
+                                                    ),
+                                                    child: Center(
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                          2,
                                                         ),
-                                                      ),
-                                                    )
-                                                  : SizedBox(
-                                                      width: width,
-                                                      height: width * 0.525,
-                                                      child: const Center(
-                                                        child: Text(
-                                                          'No Image',
-                                                          maxLines: 1,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style: TextStyle(
-                                                            color: primaryDark2,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
+                                                        child: Image.network(
+                                                          brandData['imageUrl'],
+                                                          width: width * 0.5,
+                                                          height: width * 0.5,
+                                                          fit: BoxFit.cover,
                                                         ),
                                                       ),
                                                     ),
-                                              Padding(
-                                                padding: EdgeInsets.fromLTRB(
-                                                  width * 0.0125,
-                                                  0,
-                                                  width * 0.0125,
-                                                  0,
+                                                  )
+                                                : SizedBox(
+                                                    width: width,
+                                                    height: width * 0.525,
+                                                    child: const Center(
+                                                      child: Text(
+                                                        'No Image',
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: TextStyle(
+                                                          color: primaryDark2,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                            Padding(
+                                              padding: EdgeInsets.fromLTRB(
+                                                width * 0.0125,
+                                                0,
+                                                width * 0.0125,
+                                                0,
+                                              ),
+                                              child: SizedBox(
+                                                width: width * 0.5,
+                                                child: Text(
+                                                  brandData['brandName'],
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                    fontSize: width * 0.06,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
                                                 ),
-                                                child: SizedBox(
-                                                  width: width * 0.5,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      selectBrandProvider.selectedBrandId ==
+                                              brandData['brandId']
+                                          ? Container(
+                                              margin: EdgeInsets.all(
+                                                width * 0.01,
+                                              ),
+                                              padding: const EdgeInsets.all(2),
+                                              decoration: const BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: primaryDark2,
+                                              ),
+                                              child: Icon(
+                                                FeatherIcons.check,
+                                                color: Colors.white,
+                                                size: width * 0.1,
+                                              ),
+                                            )
+                                          : Container()
+                                    ],
+                                  ),
+                                );
+                              }),
+                            )
+                          : ListView.builder(
+                              controller: scrollControllerListView,
+                              cacheExtent: height * 1.5,
+                              addAutomaticKeepAlives: true,
+                              shrinkWrap: true,
+                              physics: const ClampingScrollPhysics(),
+                              itemCount: noOfListView > currentBrands.length
+                                  ? currentBrands.length
+                                  : noOfListView,
+                              itemBuilder: ((context, index) {
+                                final brandData = currentBrands[
+                                    currentBrands.keys.toList()[index]]!;
+
+                                return Stack(
+                                  alignment: Alignment.centerRight,
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: white,
+                                        border: Border.all(
+                                          width: 0.5,
+                                          color: primaryDark,
+                                        ),
+                                        borderRadius: BorderRadius.circular(2),
+                                      ),
+                                      margin: EdgeInsets.all(
+                                        width * 0.0125,
+                                      ),
+                                      child: ListTile(
+                                        visualDensity: VisualDensity.standard,
+                                        onTap: () {
+                                          selectBrandProvider.selectBrand(
+                                            brandData['brandName'],
+                                            brandData['brandId'],
+                                          );
+                                        },
+                                        leading: brandData['imageUrl'] != null
+                                            ? ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  2,
+                                                ),
+                                                child: Image.network(
+                                                  brandData['imageUrl'],
+                                                  width: width * 0.15,
+                                                  height: width * 0.15,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              )
+                                            : SizedBox(
+                                                width: width * 0.15,
+                                                height: width * 0.15,
+                                                child: const Center(
                                                   child: Text(
-                                                    brandData['brandName'],
+                                                    'No Image',
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                     style: TextStyle(
-                                                      fontSize: width * 0.06,
+                                                      color: primaryDark2,
                                                       fontWeight:
                                                           FontWeight.w500,
                                                     ),
                                                   ),
                                                 ),
                                               ),
-                                            ],
-                                          ),
-                                        ),
-                                        selectBrandProvider.selectedBrandId ==
-                                                brandData['brandId']
-                                            ? Container(
-                                                margin: EdgeInsets.all(
-                                                  width * 0.01,
-                                                ),
-                                                padding:
-                                                    const EdgeInsets.all(2),
-                                                decoration: const BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: primaryDark2,
-                                                ),
-                                                child: Icon(
-                                                  FeatherIcons.check,
-                                                  color: Colors.white,
-                                                  size: width * 0.1,
-                                                ),
-                                              )
-                                            : Container()
-                                      ],
-                                    ),
-                                  );
-                                }),
-                              )
-                            : ListView.builder(
-                                controller: scrollControllerListView,
-                                cacheExtent: height * 1.5,
-                                addAutomaticKeepAlives: true,
-                                shrinkWrap: true,
-                                physics: const ClampingScrollPhysics(),
-                                itemCount: noOfListView > currentBrands.length
-                                    ? currentBrands.length
-                                    : noOfListView,
-                                itemBuilder: ((context, index) {
-                                  final brandData = currentBrands[
-                                      currentBrands.keys.toList()[index]]!;
-
-                                  return Stack(
-                                    alignment: Alignment.centerRight,
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: white,
-                                          border: Border.all(
-                                            width: 0.5,
-                                            color: primaryDark,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(2),
-                                        ),
-                                        margin: EdgeInsets.all(
-                                          width * 0.0125,
-                                        ),
-                                        child: ListTile(
-                                          visualDensity: VisualDensity.standard,
-                                          onTap: () {
-                                            selectBrandProvider.selectBrand(
-                                              brandData['brandName'],
-                                              brandData['brandId'],
-                                            );
-                                          },
-                                          leading: brandData['imageUrl'] != null
-                                              ? ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                    2,
-                                                  ),
-                                                  child: Image.network(
-                                                    brandData['imageUrl'],
-                                                    width: width * 0.15,
-                                                    height: width * 0.15,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                )
-                                              : SizedBox(
-                                                  width: width * 0.15,
-                                                  height: width * 0.15,
-                                                  child: const Center(
-                                                    child: Text(
-                                                      'No Image',
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: TextStyle(
-                                                        color: primaryDark2,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                          title: Text(
-                                            brandData['brandName'],
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontSize: width * 0.06,
-                                              fontWeight: FontWeight.w600,
-                                            ),
+                                        title: Text(
+                                          brandData['brandName'],
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: width * 0.06,
+                                            fontWeight: FontWeight.w600,
                                           ),
                                         ),
                                       ),
-                                      selectBrandProvider.selectedBrandId ==
-                                              brandData['brandId']
-                                          ? Padding(
-                                              padding: EdgeInsets.only(
-                                                right: width * 0.025,
+                                    ),
+                                    selectBrandProvider.selectedBrandId ==
+                                            brandData['brandId']
+                                        ? Padding(
+                                            padding: EdgeInsets.only(
+                                              right: width * 0.025,
+                                            ),
+                                            child: Container(
+                                              padding: const EdgeInsets.all(2),
+                                              decoration: const BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: primaryDark2,
                                               ),
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.all(2),
-                                                decoration: const BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: primaryDark2,
-                                                ),
-                                                child: Icon(
-                                                  FeatherIcons.check,
-                                                  color: Colors.white,
-                                                  size: width * 0.1,
-                                                ),
+                                              child: Icon(
+                                                FeatherIcons.check,
+                                                color: Colors.white,
+                                                size: width * 0.1,
                                               ),
-                                            )
-                                          : Container()
-                                    ],
-                                  );
-                                }),
-                              );
-                      }),
-                    ),
+                                            ),
+                                          )
+                                        : Container()
+                                  ],
+                                );
+                              }),
+                            );
+                    }),
                   ),
                 ),
     );

@@ -158,67 +158,71 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    return ModalProgressHUD(
-      inAsyncCall: isDialog,
-      color: primaryDark,
-      blur: 0.5,
-      child: Scaffold(
-        appBar: AppBar(),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: width * 0.05),
-              child: Column(
-                children: [
-                  const SizedBox(height: 4),
-                  FlickVideoPlayer(
-                    flickManager: flickManager,
-                  ),
-                  SizedBox(height: 20),
-                  MyTextFormField(
-                    hintText: 'Caption',
-                    controller: captionController,
-                    borderRadius: 12,
-                    horizontalPadding: 0,
-                  ),
-                  const SizedBox(height: 15),
-                  MyButton(
-                    text:
-                        data != null ? data!['productName']! : 'Select Product',
-                    onTap: () async {
-                      if (flickManager.flickVideoManager!.isPlaying) {
-                        flickManager.flickControlManager!.togglePlay();
-                      }
-                      Navigator.of(context)
-                          .push(
-                        MaterialPageRoute(
-                          builder: (context) => SelectProductForShortsPage(
-                            selectedProduct: data?['productId'],
+    return PopScope(
+      canPop: isDialog ? false : true,
+      child: ModalProgressHUD(
+        inAsyncCall: isDialog,
+        color: primaryDark,
+        blur: 0.5,
+        child: Scaffold(
+          appBar: AppBar(),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 4),
+                    FlickVideoPlayer(
+                      flickManager: flickManager,
+                    ),
+                    SizedBox(height: 20),
+                    MyTextFormField(
+                      hintText: 'Caption',
+                      controller: captionController,
+                      borderRadius: 12,
+                      horizontalPadding: 0,
+                    ),
+                    const SizedBox(height: 15),
+                    MyButton(
+                      text: data != null
+                          ? data!['productName']!
+                          : 'Select Product',
+                      onTap: () async {
+                        if (flickManager.flickVideoManager!.isPlaying) {
+                          flickManager.flickControlManager!.togglePlay();
+                        }
+                        Navigator.of(context)
+                            .push(
+                          MaterialPageRoute(
+                            builder: (context) => SelectProductForShortsPage(
+                              selectedProduct: data?['productId'],
+                            ),
                           ),
-                        ),
-                      )
-                          .then((value) {
-                        setState(() {
-                          data = value;
+                        )
+                            .then((value) {
+                          setState(() {
+                            data = value;
+                          });
                         });
-                      });
-                    },
-                    horizontalPadding: 0,
-                  ),
-                  const SizedBox(height: 15),
-                  MyButton(
-                    text: 'DONE',
-                    onTap: () async {
-                      await uploadVideo(
-                        data?['productId'],
-                        data?['productName'],
-                        widget.videoPath,
-                      );
-                    },
-                    horizontalPadding: 0,
-                  ),
-                  const SizedBox(height: 12),
-                ],
+                      },
+                      horizontalPadding: 0,
+                    ),
+                    const SizedBox(height: 15),
+                    MyButton(
+                      text: 'DONE',
+                      onTap: () async {
+                        await uploadVideo(
+                          data?['productId'],
+                          data?['productName'],
+                          widget.videoPath,
+                        );
+                      },
+                      horizontalPadding: 0,
+                    ),
+                    const SizedBox(height: 12),
+                  ],
+                ),
               ),
             ),
           ),

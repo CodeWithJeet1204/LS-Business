@@ -92,72 +92,75 @@ class _AddTextPostPageState extends State<AddTextPostPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ModalProgressHUD(
-      inAsyncCall: isDialog,
-      color: primaryDark,
-      blur: 0.5,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Add Text Post'),
-        ),
-        body: SafeArea(
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final width = constraints.maxWidth;
+    return PopScope(
+      canPop: isDialog ? false : true,
+      child: ModalProgressHUD(
+        inAsyncCall: isDialog,
+        color: primaryDark,
+        blur: 0.5,
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Add Text Post'),
+          ),
+          body: SafeArea(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final width = constraints.maxWidth;
 
-              return SingleChildScrollView(
-                child: Form(
-                  key: postKey,
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        width: width,
-                        child: Padding(
-                          padding: EdgeInsets.all(width * 0.0225),
-                          child: TextFormField(
-                            autofocus: true,
-                            controller: postController,
-                            minLines: 1,
-                            maxLines: 10,
-                            maxLength: 1000,
-                            onTapOutside: (event) =>
-                                FocusScope.of(context).unfocus(),
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
-                                  color: Colors.cyan.shade700,
+                return SingleChildScrollView(
+                  child: Form(
+                    key: postKey,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: width,
+                          child: Padding(
+                            padding: EdgeInsets.all(width * 0.0225),
+                            child: TextFormField(
+                              autofocus: true,
+                              controller: postController,
+                              minLines: 1,
+                              maxLines: 10,
+                              maxLength: 1000,
+                              onTapOutside: (event) =>
+                                  FocusScope.of(context).unfocus(),
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                  borderSide: BorderSide(
+                                    color: Colors.cyan.shade700,
+                                  ),
                                 ),
+                                hintText: 'Post...',
                               ),
-                              hintText: 'Post...',
-                            ),
-                            validator: (value) {
-                              if (value != null) {
-                                if (value.isNotEmpty) {
-                                  return null;
-                                } else {
-                                  return 'Pls enter something';
+                              validator: (value) {
+                                if (value != null) {
+                                  if (value.isNotEmpty) {
+                                    return null;
+                                  } else {
+                                    return 'Pls enter something';
+                                  }
                                 }
-                              }
-                              return null;
-                            },
+                                return null;
+                              },
+                            ),
                           ),
                         ),
-                      ),
 
-                      // DONE
-                      MyButton(
-                        text: 'DONE',
-                        onTap: () async {
-                          await post();
-                        },
-                        horizontalPadding: width * 0.0225,
-                      ),
-                    ],
+                        // DONE
+                        MyButton(
+                          text: 'DONE',
+                          onTap: () async {
+                            await post();
+                          },
+                          horizontalPadding: width * 0.0225,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ),
       ),

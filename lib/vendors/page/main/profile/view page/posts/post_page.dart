@@ -94,7 +94,7 @@ class _PostPageState extends State<PostPage> {
   Future<void> confirmDelete(bool isTextPost) async {
     await showDialog(
       context: context,
-      builder: ((context) {
+      builder: (context) {
         return AlertDialog(
           title: const Text(
             'Confirm DELETE',
@@ -132,7 +132,7 @@ class _PostPageState extends State<PostPage> {
             ),
           ],
         );
-      }),
+      },
     );
   }
 
@@ -196,216 +196,212 @@ class _PostPageState extends State<PostPage> {
           vertical: MediaQuery.of(context).size.width * 0.0166,
           horizontal: MediaQuery.of(context).size.width * 0.0225,
         ),
-        child: LayoutBuilder(
-          builder: ((context, constraints) {
-            double width = constraints.maxWidth;
+        child: LayoutBuilder(builder: (context, constraints) {
+          double width = constraints.maxWidth;
 
-            return SingleChildScrollView(
-              child: SizedBox(
-                width: width,
-                child: StreamBuilder(
-                  stream: postStream,
-                  builder: ((context, snapshot) {
-                    if (snapshot.hasError) {
-                      return const Center(
-                        child: Text(
-                          'Something went wrong',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      );
-                    }
+          return SingleChildScrollView(
+            child: SizedBox(
+              width: width,
+              child: StreamBuilder(
+                stream: postStream,
+                builder: ((context, snapshot) {
+                  if (snapshot.hasError) {
+                    return const Center(
+                      child: Text(
+                        'Something went wrong',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    );
+                  }
 
-                    if (snapshot.hasData) {
-                      final postData = snapshot.data!;
-                      final bool isTextPost = postData['isTextPost'];
-                      final String? name = postData['postText'];
-                      final int likes = postData['postLikes'];
-                      final int views = postData['postViews'];
-                      final Map comments = postData['postComments'];
-                      final List images =
-                          isTextPost ? [] : postData['postImages'];
+                  if (snapshot.hasData) {
+                    final postData = snapshot.data!;
+                    final bool isTextPost = postData['isTextPost'];
+                    final String? name = postData['postText'];
+                    final int likes = postData['postLikes'];
+                    final int views = postData['postViews'];
+                    final Map comments = postData['postComments'];
+                    final List images =
+                        isTextPost ? [] : postData['postImages'];
 
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          !isTextPost
-                              // IMAGE
-                              ? CarouselSlider(
-                                  items: images
-                                      .map(
-                                        (e) => Container(
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: primaryDark2,
-                                              width: 1,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(12),
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        !isTextPost
+                            // IMAGE
+                            ? CarouselSlider(
+                                items: images
+                                    .map(
+                                      (e) => Container(
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: primaryDark2,
+                                            width: 1,
                                           ),
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                  builder: ((context) =>
-                                                      ImageView(
-                                                        imagesUrl: images,
-                                                      )),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) => ImageView(
+                                                  imagesUrl: images,
                                                 ),
-                                              );
-                                            },
-                                            child: CachedNetworkImage(
-                                              imageUrl: e,
-                                              imageBuilder:
-                                                  (context, imageProvider) {
-                                                return Center(
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                      11,
-                                                    ),
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                          image: imageProvider,
-                                                          fit: BoxFit.cover,
-                                                        ),
+                                              ),
+                                            );
+                                          },
+                                          child: CachedNetworkImage(
+                                            imageUrl: e,
+                                            imageBuilder:
+                                                (context, imageProvider) {
+                                              return Center(
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    11,
+                                                  ),
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                        image: imageProvider,
+                                                        fit: BoxFit.cover,
                                                       ),
                                                     ),
                                                   ),
-                                                );
-                                              },
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                      .toList(),
-                                  options: CarouselOptions(
-                                    enableInfiniteScroll:
-                                        images.length > 1 ? true : false,
-                                    aspectRatio: 1.2,
-                                    enlargeCenterPage: true,
-                                    onPageChanged: (index, reason) {
-                                      setState(() {
-                                        _currentIndex = index;
-                                      });
-                                    },
-                                  ),
-                                )
-                              : Container(),
-
-                          // DOTS
-                          !isTextPost
-                              ? images.length > 1
-                                  ? Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.symmetric(
-                                            vertical: width * 0.035,
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: (images).map((e) {
-                                              int index = images.indexOf(e);
-
-                                              return Container(
-                                                width: _currentIndex == index
-                                                    ? 12
-                                                    : 8,
-                                                height: _currentIndex == index
-                                                    ? 12
-                                                    : 8,
-                                                margin: const EdgeInsets.all(4),
-                                                decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: _currentIndex == index
-                                                      ? primaryDark
-                                                      : primary2,
                                                 ),
                                               );
-                                            }).toList(),
+                                            },
                                           ),
-                                        )
-                                      ],
-                                    )
-                                  : Container()
-                              : Container(),
-
-                          images.isEmpty ? Container() : const Divider(),
-
-                          // NAME
-                          name == null
-                              ? Container()
-                              : Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: width * 0.0225,
-                                  ),
-                                  child: SizedBox(
-                                    width: width * 0.785,
-                                    child: Text(
-                                      name,
-                                      maxLines: 10,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        color: primaryDark,
-                                        fontSize: width * 0.06,
-                                        fontWeight: FontWeight.w500,
+                                        ),
                                       ),
+                                    )
+                                    .toList(),
+                                options: CarouselOptions(
+                                  enableInfiniteScroll:
+                                      images.length > 1 ? true : false,
+                                  aspectRatio: 1.2,
+                                  enlargeCenterPage: true,
+                                  onPageChanged: (index, reason) {
+                                    setState(() {
+                                      _currentIndex = index;
+                                    });
+                                  },
+                                ),
+                              )
+                            : Container(),
+
+                        // DOTS
+                        !isTextPost
+                            ? images.length > 1
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: width * 0.035,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: (images).map((e) {
+                                            int index = images.indexOf(e);
+
+                                            return Container(
+                                              width: _currentIndex == index
+                                                  ? 12
+                                                  : 8,
+                                              height: _currentIndex == index
+                                                  ? 12
+                                                  : 8,
+                                              margin: const EdgeInsets.all(4),
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: _currentIndex == index
+                                                    ? primaryDark
+                                                    : primary2,
+                                              ),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      )
+                                    ],
+                                  )
+                                : Container()
+                            : Container(),
+
+                        images.isEmpty ? Container() : const Divider(),
+
+                        // NAME
+                        name == null
+                            ? Container()
+                            : Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: width * 0.0225,
+                                ),
+                                child: SizedBox(
+                                  width: width * 0.785,
+                                  child: Text(
+                                    name,
+                                    maxLines: 10,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: primaryDark,
+                                      fontSize: width * 0.06,
+                                      fontWeight: FontWeight.w500,
                                     ),
                                   ),
                                 ),
+                              ),
 
-                          name == null ? Container() : const Divider(),
+                        name == null ? Container() : const Divider(),
 
-                          // LIKES
-                          InfoBox(
-                            text: 'LIKES',
-                            value: likes.toString(),
+                        // LIKES
+                        InfoBox(
+                          text: 'LIKES',
+                          value: likes.toString(),
+                        ),
+
+                        // VIEWS
+                        InfoBox(
+                          text: 'VIEWS',
+                          value: views.toString(),
+                        ),
+
+                        // COMMENTS
+                        InkWell(
+                          onTap: () {},
+                          splashColor: primary2,
+                          child: Stack(
+                            alignment: Alignment.centerRight,
+                            children: [
+                              InfoBox(
+                                text: 'COMMENTS',
+                                value: comments.length.toString(),
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.only(right: 8),
+                                child: Icon(FeatherIcons.chevronRight),
+                              ),
+                            ],
                           ),
-
-                          // VIEWS
-                          InfoBox(
-                            text: 'VIEWS',
-                            value: views.toString(),
-                          ),
-
-                          // COMMENTS
-                          InkWell(
-                            onTap: () {},
-                            splashColor: primary2,
-                            child: Stack(
-                              alignment: Alignment.centerRight,
-                              children: [
-                                InfoBox(
-                                  text: 'COMMENTS',
-                                  value: comments.length.toString(),
-                                ),
-                                const Padding(
-                                  padding: EdgeInsets.only(right: 8),
-                                  child: Icon(FeatherIcons.chevronRight),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      );
-                    }
-
-                    return const Center(
-                      child: CircularProgressIndicator(),
+                        ),
+                      ],
                     );
-                  }),
-                ),
+                  }
+
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }),
               ),
-            );
-          }),
-        ),
+            ),
+          );
+        }),
       ),
     );
   }

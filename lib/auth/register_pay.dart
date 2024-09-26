@@ -76,7 +76,7 @@
 //                           Navigator.of(context).pop();
 //                           Navigator.of(context).push(
 //                             MaterialPageRoute(
-//                               builder: ((context) => RegisterMethodPage()),
+//                               builder: (context) => RegisterMethodPage(),
 //                             ),
 //                           );
 //                         }
@@ -114,7 +114,7 @@
 //                             Navigator.of(context).pop();
 //                             Navigator.of(context).push(
 //                               MaterialPageRoute(
-//                                 builder: ((context) => const LoginPage()),
+//                                 builder: (context) => const LoginPage(),
 //                               ),
 //                             );
 //                           }
@@ -175,7 +175,7 @@
 //                                 Navigator.of(context).pop();
 //                                 Navigator.of(context).push(
 //                                   MaterialPageRoute(
-//                                     builder: ((context) =>
+//                                     builder:  =>
 //                                         RegisterMethodPage()),
 //                                   ),
 //                                 );

@@ -175,135 +175,138 @@ class _GetLocationPageState extends State<GetLocationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ModalProgressHUD(
-      inAsyncCall: isDialog,
-      color: primaryDark,
-      blur: 0.5,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Get Location'),
-          actions: [
-            MyTextButton(
-              onPressed: () async {
-                if (displayDetectCity == null && cityPickLocation == null) {
-                  return mySnackBar(context, 'Detect / Pick Location');
-                }
-                await done();
-              },
-              text: 'DONE',
-            ),
-          ],
-        ),
-        body: SafeArea(
-          child: LayoutBuilder(builder: (context, constraints) {
-            final width = constraints.maxWidth;
+    return PopScope(
+      canPop: isDialog ? false : true,
+      child: ModalProgressHUD(
+        inAsyncCall: isDialog,
+        color: primaryDark,
+        blur: 0.5,
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Get Location'),
+            actions: [
+              MyTextButton(
+                onPressed: () async {
+                  if (displayDetectCity == null && cityPickLocation == null) {
+                    return mySnackBar(context, 'Detect / Pick Location');
+                  }
+                  await done();
+                },
+                text: 'DONE',
+              ),
+            ],
+          ),
+          body: SafeArea(
+            child: LayoutBuilder(builder: (context, constraints) {
+              final width = constraints.maxWidth;
 
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () async {
-                    setState(() {
-                      isDetectingCity = true;
-                    });
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () async {
+                      setState(() {
+                        isDetectingCity = true;
+                      });
 
-                    await getLocation().then((value) async {
-                      if (value != null) {
-                        setState(() {
-                          latitude = value.latitude;
-                          longitude = value.longitude;
-                        });
-                      }
+                      await getLocation().then((value) async {
+                        if (value != null) {
+                          setState(() {
+                            latitude = value.latitude;
+                            longitude = value.longitude;
+                          });
+                        }
 
-                      await getAddress(latitude!, longitude!);
-                    });
+                        await getAddress(latitude!, longitude!);
+                      });
 
-                    setState(() {
-                      cityPickLocation = null;
-                      isDetectingCity = false;
-                    });
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: primary2,
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    padding: EdgeInsets.all(width * 0.025),
-                    child: isDetectingCity
-                        ? const CircularProgressIndicator()
-                        : cityPickLocation != null
-                            ? const Icon(FeatherIcons.mapPin)
-                            : AutoSizeText(
-                                displayDetectCity ?? 'Detect Location',
-                                maxLines: cityDetectLocation != null ? 1 : 2,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: width * 0.045,
-                                  color: primaryDark2,
-                                ),
-                              ),
-                  ),
-                ),
-                SizedBox(height: width * 0.025),
-                const Text('OR'),
-                SizedBox(height: width * 0.025),
-                GestureDetector(
-                  onTap: () async {
-                    setState(() {
-                      isPickingCity = true;
-                    });
-                    Navigator.of(context)
-                        .push(
-                      MaterialPageRoute(
-                        builder: (context) => const PickLocationPage(),
+                      setState(() {
+                        cityPickLocation = null;
+                        isDetectingCity = false;
+                      });
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: primary2,
+                        borderRadius: BorderRadius.circular(24),
                       ),
-                    )
-                        .then(
-                      (pickedData) {
-                        final cityName = pickedData[0] as String;
-                        final coordinates = pickedData[1] as LatLong;
-
-                        setState(() {
-                          latitude = coordinates.latitude;
-                          longitude = coordinates.longitude;
-                          cityPickLocation = cityName;
-                        });
-                      },
-                    );
-                    setState(() {
-                      cityDetectLocation = null;
-                      isPickingCity = false;
-                    });
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: primary2,
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    padding: EdgeInsets.all(width * 0.025),
-                    child: isPickingCity
-                        ? const CircularProgressIndicator()
-                        : cityDetectLocation != null
-                            ? const Icon(FeatherIcons.map)
-                            : AutoSizeText(
-                                cityPickLocation ?? 'Pick Location 🗺️',
-                                maxLines: cityPickLocation != null ? 1 : 2,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: width * 0.045,
-                                  color: primaryDark2,
+                      padding: EdgeInsets.all(width * 0.025),
+                      child: isDetectingCity
+                          ? const CircularProgressIndicator()
+                          : cityPickLocation != null
+                              ? const Icon(FeatherIcons.mapPin)
+                              : AutoSizeText(
+                                  displayDetectCity ?? 'Detect Location',
+                                  maxLines: cityDetectLocation != null ? 1 : 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: width * 0.045,
+                                    color: primaryDark2,
+                                  ),
                                 ),
-                              ),
+                    ),
                   ),
-                ),
-              ],
-            );
-          }),
+                  SizedBox(height: width * 0.025),
+                  const Text('OR'),
+                  SizedBox(height: width * 0.025),
+                  GestureDetector(
+                    onTap: () async {
+                      setState(() {
+                        isPickingCity = true;
+                      });
+                      Navigator.of(context)
+                          .push(
+                        MaterialPageRoute(
+                          builder: (context) => const PickLocationPage(),
+                        ),
+                      )
+                          .then(
+                        (pickedData) {
+                          final cityName = pickedData[0] as String;
+                          final coordinates = pickedData[1] as LatLong;
+
+                          setState(() {
+                            latitude = coordinates.latitude;
+                            longitude = coordinates.longitude;
+                            cityPickLocation = cityName;
+                          });
+                        },
+                      );
+                      setState(() {
+                        cityDetectLocation = null;
+                        isPickingCity = false;
+                      });
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: primary2,
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      padding: EdgeInsets.all(width * 0.025),
+                      child: isPickingCity
+                          ? const CircularProgressIndicator()
+                          : cityDetectLocation != null
+                              ? const Icon(FeatherIcons.map)
+                              : AutoSizeText(
+                                  cityPickLocation ?? 'Pick Location 🗺️',
+                                  maxLines: cityPickLocation != null ? 1 : 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: width * 0.045,
+                                    color: primaryDark2,
+                                  ),
+                                ),
+                    ),
+                  ),
+                ],
+              );
+            }),
+          ),
         ),
       ),
     );

@@ -83,139 +83,141 @@ class _ChangeProductCategoryPageState extends State<ChangeProductCategoryPage> {
   Widget build(BuildContext context) {
     final changeCategoryProvider = Provider.of<ChangeCategoryProvider>(context);
 
-    return ModalProgressHUD(
-      inAsyncCall: isDialog,
-      color: primaryDark,
-      blur: 0.5,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          title: const Text(
-            'Select Category',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          actions: [
-            MyTextButton(
-              onPressed: () async {
-                setState(() {
-                  isAdding = true;
-                  isDialog = true;
-                });
-                if (changeCategoryProvider.selectedCategory.isEmpty) {
-                  await store
-                      .collection('Business')
-                      .doc('Data')
-                      .collection('Products')
-                      .doc(widget.productId)
-                      .update({
-                    'categoryName': '0',
+    return PopScope(
+      canPop: isDialog ? false : true,
+      child: ModalProgressHUD(
+        inAsyncCall: isDialog,
+        color: primaryDark,
+        blur: 0.5,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            title: const Text(
+              'Select Category',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            actions: [
+              MyTextButton(
+                onPressed: () async {
+                  setState(() {
+                    isAdding = true;
+                    isDialog = true;
                   });
-                } else {
-                  await store
-                      .collection('Business')
-                      .doc('Data')
-                      .collection('Products')
-                      .doc(widget.productId)
-                      .update({
-                    'categoryName': changeCategoryProvider.selectedCategory,
+                  if (changeCategoryProvider.selectedCategory.isEmpty) {
+                    await store
+                        .collection('Business')
+                        .doc('Data')
+                        .collection('Products')
+                        .doc(widget.productId)
+                        .update({
+                      'categoryName': '0',
+                    });
+                  } else {
+                    await store
+                        .collection('Business')
+                        .doc('Data')
+                        .collection('Products')
+                        .doc(widget.productId)
+                        .update({
+                      'categoryName': changeCategoryProvider.selectedCategory,
+                    });
+                    changeCategoryProvider.clear();
+                  }
+                  setState(() {
+                    isAdding = false;
+                    isDialog = false;
                   });
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => ProductPage(
+                          productId: widget.productId,
+                          productName: widget.productId,
+                        ),
+                      ),
+                    );
+                  }
                   changeCategoryProvider.clear();
-                }
-                setState(() {
-                  isAdding = false;
-                  isDialog = false;
-                });
-                if (context.mounted) {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => ProductPage(
-                        productId: widget.productId,
-                        productName: widget.productId,
+                },
+                text: 'DONE',
+                textColor: primaryDark2,
+              ),
+            ],
+            bottom: PreferredSize(
+              preferredSize: const Size(
+                double.infinity,
+                80,
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 6,
+                  vertical: MediaQuery.of(context).size.width * 0.0225,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: searchController,
+                        autocorrect: false,
+                        onTapOutside: (event) =>
+                            FocusScope.of(context).unfocus(),
+                        decoration: const InputDecoration(
+                          hintText: 'Search ...',
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            if (value.isEmpty) {
+                              currentCategories = Map<String, dynamic>.from(
+                                allCategories,
+                              );
+                            } else {
+                              Map<String, dynamic> filteredCategories =
+                                  Map<String, dynamic>.from(
+                                allCategories,
+                              );
+                              List<String> keysToRemove = [];
+
+                              filteredCategories.forEach((key, imageUrl) {
+                                if (!key
+                                    .toString()
+                                    .toLowerCase()
+                                    .contains(value.toLowerCase())) {
+                                  keysToRemove.add(key);
+                                }
+                              });
+
+                              for (var key in keysToRemove) {
+                                filteredCategories.remove(key);
+                              }
+
+                              currentCategories = filteredCategories;
+                            }
+                          });
+                        },
                       ),
                     ),
-                  );
-                }
-                changeCategoryProvider.clear();
-              },
-              text: 'DONE',
-              textColor: primaryDark2,
-            ),
-          ],
-          bottom: PreferredSize(
-            preferredSize: const Size(
-              double.infinity,
-              80,
-            ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 6,
-                vertical: MediaQuery.of(context).size.width * 0.0225,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: searchController,
-                      autocorrect: false,
-                      onTapOutside: (event) => FocusScope.of(context).unfocus(),
-                      decoration: const InputDecoration(
-                        hintText: 'Search ...',
-                        border: OutlineInputBorder(),
-                      ),
-                      onChanged: (value) {
+                    IconButton(
+                      onPressed: () {
                         setState(() {
-                          if (value.isEmpty) {
-                            currentCategories = Map<String, dynamic>.from(
-                              allCategories,
-                            );
-                          } else {
-                            Map<String, dynamic> filteredCategories =
-                                Map<String, dynamic>.from(
-                              allCategories,
-                            );
-                            List<String> keysToRemove = [];
-
-                            filteredCategories.forEach((key, imageUrl) {
-                              if (!key
-                                  .toString()
-                                  .toLowerCase()
-                                  .contains(value.toLowerCase())) {
-                                keysToRemove.add(key);
-                              }
-                            });
-
-                            for (var key in keysToRemove) {
-                              filteredCategories.remove(key);
-                            }
-
-                            currentCategories = filteredCategories;
-                          }
+                          isGridView = !isGridView;
                         });
                       },
+                      icon: Icon(
+                        isGridView ? FeatherIcons.list : FeatherIcons.grid,
+                      ),
+                      tooltip: isGridView ? 'List View' : 'Grid View',
                     ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        isGridView = !isGridView;
-                      });
-                    },
-                    icon: Icon(
-                      isGridView ? FeatherIcons.list : FeatherIcons.grid,
-                    ),
-                    tooltip: isGridView ? 'List View' : 'Grid View',
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-        body: LayoutBuilder(
-          builder: ((context, constraints) {
+          body: LayoutBuilder(builder: (context, constraints) {
             final width = constraints.maxWidth;
 
             return !isData

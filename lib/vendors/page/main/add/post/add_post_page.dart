@@ -70,7 +70,7 @@
 //         ),
 //       ),
 //       body: LayoutBuilder(
-//         builder: ((context, constraints) {
+//         builder: (context, constraints) {
 //           double width = constraints.maxWidth;
 
 //           return Column(
@@ -202,11 +202,11 @@
 //               //         ? () {
 //               //             Navigator.of(context).push(
 //               //               MaterialPageRoute(
-//               //                 builder: ((context) => SelectProductForPostPage(
+//               //                 builder: (context) => SelectProductForPostPage(
 //               //                       isTextPost: true,
 //               //                       textPostRemaining: textPostRemaining,
 //               //                       imagePostRemaining: imagePostRemaining,
-//               //                     )),
+//               //                     ),
 //               //               ),
 //               //             );
 //               //           }
@@ -224,11 +224,11 @@
 //               //         ? () {
 //               //             Navigator.of(context).push(
 //               //               MaterialPageRoute(
-//               //                 builder: ((context) => SelectProductForPostPage(
+//               //                 builder: (context) => SelectProductForPostPage(
 //               //                       isTextPost: false,
 //               //                       textPostRemaining: textPostRemaining,
 //               //                       imagePostRemaining: imagePostRemaining,
-//               //                     )),
+//               //                     ),
 //               //               ),
 //               //             );
 //               //           }

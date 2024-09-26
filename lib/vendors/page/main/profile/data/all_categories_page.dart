@@ -315,9 +315,9 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                                     onTap: () {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
-                                          builder: ((context) => CategoryPage(
-                                                categoryName: name,
-                                              )),
+                                          builder: (context) => CategoryPage(
+                                            categoryName: name,
+                                          ),
                                         ),
                                       );
                                     },
@@ -433,9 +433,9 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                                     onTap: () {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
-                                          builder: ((context) => CategoryPage(
-                                                categoryName: name,
-                                              )),
+                                          builder: (context) => CategoryPage(
+                                            categoryName: name,
+                                          ),
                                         ),
                                       );
                                     },

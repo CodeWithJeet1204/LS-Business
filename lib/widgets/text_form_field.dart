@@ -11,7 +11,7 @@ class MyTextFormField extends StatefulWidget {
     this.autoFillHints,
     this.verticalPadding = 0,
     this.isPassword = false,
-    this.keyboardType = TextInputType.text,
+    this.keyboardType = TextInputType.name,
     this.autoFocus = false,
     this.maxLines = 1,
   });

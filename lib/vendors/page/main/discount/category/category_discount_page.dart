@@ -219,39 +219,40 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
         Provider.of<SelectCategoryForDiscountProvider>(context);
     final selectedCategories = selectedCategoryProvider.selectedCategories;
 
-    return ModalProgressHUD(
-      inAsyncCall: isDialog,
-      color: primaryDark,
-      blur: 0.5,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              selectedCategoryProvider.clear();
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(
-              FeatherIcons.arrowLeft,
-            ),
-            tooltip: 'Back',
-          ),
-          actions: [
-            MyTextButton(
-              onPressed: () async {
-                await addDiscount(
-                  selectedCategoryProvider,
-                  selectedCategories,
-                );
+    return PopScope(
+      canPop: isDialog ? false : true,
+      child: ModalProgressHUD(
+        inAsyncCall: isDialog,
+        color: primaryDark,
+        blur: 0.5,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            leading: IconButton(
+              onPressed: () {
+                selectedCategoryProvider.clear();
+                Navigator.of(context).pop();
               },
-              text: 'DONE',
+              icon: const Icon(
+                FeatherIcons.arrowLeft,
+              ),
+              tooltip: 'Back',
             ),
-          ],
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-          child: LayoutBuilder(
-            builder: ((context, constraints) {
+            actions: [
+              MyTextButton(
+                onPressed: () async {
+                  await addDiscount(
+                    selectedCategoryProvider,
+                    selectedCategories,
+                  );
+                },
+                text: 'DONE',
+              ),
+            ],
+          ),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+            child: LayoutBuilder(builder: (context, constraints) {
               double width = constraints.maxWidth;
 
               return SingleChildScrollView(

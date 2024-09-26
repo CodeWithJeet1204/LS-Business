@@ -372,7 +372,7 @@
 //                   child: Padding(
 //                     padding: EdgeInsets.all(width * 0.006125),
 //                     child: LayoutBuilder(
-//                       builder: ((context, constraints) {
+//                       builder: (context, constraints) {
 //                         final width = constraints.maxWidth;
 
 //                         return SafeArea(

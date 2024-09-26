@@ -90,7 +90,7 @@ class _ProfilePageState extends State<ProfilePage> {
     await showDialog(
       barrierDismissible: true,
       context: context,
-      builder: ((context) {
+      builder: (context) {
         return Dialog(
           elevation: 20,
           child: InteractiveViewer(
@@ -99,7 +99,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
         );
-      }),
+      },
     );
   }
 
@@ -388,9 +388,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: ((context) => AllCategoriesPage(
-                                shopType: shopData['Type'],
-                              )),
+                          builder: (context) => AllCategoriesPage(
+                            shopType: shopData['Type'],
+                          ),
                         ),
                       );
                     },

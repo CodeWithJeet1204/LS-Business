@@ -216,10 +216,10 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
             Navigator.of(context).pop();
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: ((context) => ProductPage(
-                      productId: widget.changeSelectedProductDiscountId!,
-                      productName: widget.changeSelectedProductDiscountName!,
-                    )),
+                builder: (context) => ProductPage(
+                  productId: widget.changeSelectedProductDiscountId!,
+                  productName: widget.changeSelectedProductDiscountName!,
+                ),
               ),
             );
           }
@@ -246,37 +246,38 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
         Provider.of<SelectProductForDiscountProvider>(context);
     final selectedProducts = selectedProductProvider.selectedProducts;
 
-    return ModalProgressHUD(
-      inAsyncCall: isDialog,
-      color: primaryDark,
-      blur: 0.5,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              selectedProductProvider.clear();
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(
-              FeatherIcons.arrowLeft,
-            ),
-            tooltip: 'Back',
-          ),
-          actions: [
-            MyTextButton(
-              onPressed: () async {
-                await addDiscount(
-                  selectedProductProvider,
-                  selectedProducts,
-                );
+    return PopScope(
+      canPop: isDialog ? false : true,
+      child: ModalProgressHUD(
+        inAsyncCall: isDialog,
+        color: primaryDark,
+        blur: 0.5,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            leading: IconButton(
+              onPressed: () {
+                selectedProductProvider.clear();
+                Navigator.of(context).pop();
               },
-              text: 'DONE',
+              icon: const Icon(
+                FeatherIcons.arrowLeft,
+              ),
+              tooltip: 'Back',
             ),
-          ],
-        ),
-        body: LayoutBuilder(
-          builder: ((context, constraints) {
+            actions: [
+              MyTextButton(
+                onPressed: () async {
+                  await addDiscount(
+                    selectedProductProvider,
+                    selectedProducts,
+                  );
+                },
+                text: 'DONE',
+              ),
+            ],
+          ),
+          body: LayoutBuilder(builder: (context, constraints) {
             double width = constraints.maxWidth;
 
             return SingleChildScrollView(

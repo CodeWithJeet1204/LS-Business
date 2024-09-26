@@ -103,65 +103,63 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                   ),
                   body: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: LayoutBuilder(
-                      builder: ((context, constraints) {
-                        double width = constraints.maxWidth;
+                    child: LayoutBuilder(builder: (context, constraints) {
+                      double width = constraints.maxWidth;
 
-                        return SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              // PRODUCT
-                              AddBox(
-                                context: context,
-                                width: width,
-                                icon: FeatherIcons.box,
-                                label: 'PRODUCT',
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ProductDiscountPage(),
-                                    ),
-                                  );
-                                },
-                              ),
+                      return SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            // PRODUCT
+                            AddBox(
+                              context: context,
+                              width: width,
+                              icon: FeatherIcons.box,
+                              label: 'PRODUCT',
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ProductDiscountPage(),
+                                  ),
+                                );
+                              },
+                            ),
 
-                              // BRAND
-                              AddBox(
-                                context: context,
-                                width: width,
-                                icon: FeatherIcons.award,
-                                label: 'BRAND',
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const BrandDiscountPage(),
-                                    ),
-                                  );
-                                },
-                              ),
+                            // BRAND
+                            AddBox(
+                              context: context,
+                              width: width,
+                              icon: FeatherIcons.award,
+                              label: 'BRAND',
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const BrandDiscountPage(),
+                                  ),
+                                );
+                              },
+                            ),
 
-                              // CATEGORY
-                              AddBox(
-                                context: context,
-                                width: width,
-                                icon: FeatherIcons.box,
-                                label: 'CATEGORY',
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const CategoryDiscountPage(),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        );
-                      }),
-                    ),
+                            // CATEGORY
+                            AddBox(
+                              context: context,
+                              width: width,
+                              icon: FeatherIcons.box,
+                              label: 'CATEGORY',
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const CategoryDiscountPage(),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
                   ),
                 ),
     );

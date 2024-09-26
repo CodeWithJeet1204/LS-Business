@@ -121,10 +121,10 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
           if (mounted) {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: ((context) => const BusinessSocialMediaPage(
-                      isChanging: false,
-                      fromMainPage: false,
-                    )),
+                builder: (context) => const BusinessSocialMediaPage(
+                  isChanging: false,
+                  fromMainPage: false,
+                ),
               ),
             );
           }
@@ -149,130 +149,134 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ModalProgressHUD(
-      inAsyncCall: isDialog,
-      color: primaryDark,
-      blur: 0.5,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Verification'),
-        ),
-        body: SafeArea(
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final width = constraints.maxWidth;
+    return PopScope(
+      canPop: isDialog ? false : true,
+      child: ModalProgressHUD(
+        inAsyncCall: isDialog,
+        color: primaryDark,
+        blur: 0.5,
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Verification'),
+          ),
+          body: SafeArea(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final width = constraints.maxWidth;
 
-              return SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.all(width * 0.0225),
-                  child: Form(
-                    key: verifyKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // CANNOT BE CHANGED
-                        const Text(
-                          'Aadhaar & GST Number Cannot Be Changed Later',
-                          textAlign: TextAlign.center,
-                        ),
-
-                        // AADHAAR
-                        isAadhaarValidated
-                            ? Container()
-                            : TextFormField(
-                                controller: aadhaarController,
-                                minLines: 1,
-                                maxLines: 1,
-                                maxLength: 12,
-                                onTapOutside: (event) =>
-                                    FocusScope.of(context).unfocus(),
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide(
-                                      color: Colors.cyan.shade700,
-                                    ),
-                                  ),
-                                  hintText: 'Aadhaar Number*',
-                                ),
-                                validator: (value) {
-                                  if (value != null) {
-                                    if (value.isNotEmpty) {
-                                      if (value.length != 12) {
-                                        return 'Aadhaar Number should be exactly 12 chars long';
-                                      }
-                                    } else {
-                                      return 'Pls enter Aadhaar Number';
-                                    }
-                                  }
-                                  return null;
-                                },
-                              ),
-
-                        // VALIDATE
-                        MyButton(
-                          onTap: isAadhaarValidated
-                              ? () {}
-                              : () {
-                                  validateAadhaarNumber(aadhaarController.text);
-                                },
-                          text: !isAadhaarValidated
-                              ? isAadhaarNotValidated
-                                  ? 'NOT VALID TRY AGAIN'
-                                  : 'VALIDATE AADHAAR'
-                              : 'AADHAAR VALIDATED',
-                          horizontalPadding: 0,
-                        ),
-
-                        const Divider(),
-
-                        // GST NUMBER
-                        TextFormField(
-                          controller: gstController,
-                          minLines: 1,
-                          maxLines: 1,
-                          maxLength: 15,
-                          onTapOutside: (event) =>
-                              FocusScope.of(context).unfocus(),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(
-                                color: Colors.cyan.shade700,
-                              ),
-                            ),
-                            hintText: 'GST Number',
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.all(width * 0.0225),
+                    child: Form(
+                      key: verifyKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // CANNOT BE CHANGED
+                          const Text(
+                            'Aadhaar & GST Number Cannot Be Changed Later',
+                            textAlign: TextAlign.center,
                           ),
-                          validator: (value) {
-                            if (value != null) {
-                              if (value.isNotEmpty) {
-                                if (value.length != 15) {
-                                  return 'GST Number should be exactly 15 chars long';
+
+                          // AADHAAR
+                          isAadhaarValidated
+                              ? Container()
+                              : TextFormField(
+                                  controller: aadhaarController,
+                                  minLines: 1,
+                                  maxLines: 1,
+                                  maxLength: 12,
+                                  onTapOutside: (event) =>
+                                      FocusScope.of(context).unfocus(),
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      borderSide: BorderSide(
+                                        color: Colors.cyan.shade700,
+                                      ),
+                                    ),
+                                    hintText: 'Aadhaar Number*',
+                                  ),
+                                  validator: (value) {
+                                    if (value != null) {
+                                      if (value.isNotEmpty) {
+                                        if (value.length != 12) {
+                                          return 'Aadhaar Number should be exactly 12 chars long';
+                                        }
+                                      } else {
+                                        return 'Pls enter Aadhaar Number';
+                                      }
+                                    }
+                                    return null;
+                                  },
+                                ),
+
+                          // VALIDATE
+                          MyButton(
+                            onTap: isAadhaarValidated
+                                ? () {}
+                                : () {
+                                    validateAadhaarNumber(
+                                        aadhaarController.text);
+                                  },
+                            text: !isAadhaarValidated
+                                ? isAadhaarNotValidated
+                                    ? 'NOT VALID TRY AGAIN'
+                                    : 'VALIDATE AADHAAR'
+                                : 'AADHAAR VALIDATED',
+                            horizontalPadding: 0,
+                          ),
+
+                          const Divider(),
+
+                          // GST NUMBER
+                          TextFormField(
+                            controller: gstController,
+                            minLines: 1,
+                            maxLines: 1,
+                            maxLength: 15,
+                            onTapOutside: (event) =>
+                                FocusScope.of(context).unfocus(),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide(
+                                  color: Colors.cyan.shade700,
+                                ),
+                              ),
+                              hintText: 'GST Number',
+                            ),
+                            validator: (value) {
+                              if (value != null) {
+                                if (value.isNotEmpty) {
+                                  if (value.length != 15) {
+                                    return 'GST Number should be exactly 15 chars long';
+                                  }
+                                } else {
+                                  return null;
                                 }
-                              } else {
-                                return null;
                               }
-                            }
-                            return null;
-                          },
-                        ),
+                              return null;
+                            },
+                          ),
 
-                        const SizedBox(height: 24),
+                          const SizedBox(height: 24),
 
-                        // NEXT
-                        MyButton(
-                          onTap: () async {
-                            await next();
-                          },
-                          text: 'NEXT',
-                          horizontalPadding: 0,
-                        ),
-                      ],
+                          // NEXT
+                          MyButton(
+                            onTap: () async {
+                              await next();
+                            },
+                            text: 'NEXT',
+                            horizontalPadding: 0,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ),
       ),

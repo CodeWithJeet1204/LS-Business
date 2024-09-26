@@ -167,162 +167,166 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
     final productsAddedToBrandProvider =
         Provider.of<ProductAddedToBrandProvider>(context);
 
-    return ModalProgressHUD(
-      inAsyncCall: isDialog,
-      color: primaryDark,
-      blur: 0.5,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          title: const Text(
-            'Select Products',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          actions: [
-            MyTextButton(
-              onPressed: () async {
-                if (widget.isFromBrandPage != null) {
-                  if (widget.isFromBrandPage!) {
-                    await addProductToBrand(
-                      productsAddedToBrandProvider,
-                    );
+    return PopScope(
+      canPop: isDialog ? false : true,
+      child: ModalProgressHUD(
+        inAsyncCall: isDialog,
+        color: primaryDark,
+        blur: 0.5,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            title: const Text(
+              'Select Products',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            actions: [
+              MyTextButton(
+                onPressed: () async {
+                  if (widget.isFromBrandPage != null) {
+                    if (widget.isFromBrandPage!) {
+                      await addProductToBrand(
+                        productsAddedToBrandProvider,
+                      );
+                    }
                   }
-                }
-                if (context.mounted) {
-                  Navigator.of(context).pop();
-                }
-              },
-              text: 'DONE',
-            ),
-          ],
-          bottom: PreferredSize(
-            preferredSize: const Size(
-              double.infinity,
-              80,
-            ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: width * 0.0166,
-                vertical: width * 0.0225,
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                  }
+                },
+                text: 'DONE',
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: searchController,
-                      autocorrect: false,
-                      onTapOutside: (event) => FocusScope.of(context).unfocus(),
-                      decoration: const InputDecoration(
-                        hintText: 'Search ...',
-                        border: OutlineInputBorder(),
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          if (value.isEmpty) {
-                            currentProducts =
-                                Map<String, Map<String, dynamic>>.from(
-                              allProducts,
-                            );
-                          } else {
-                            Map<String, Map<String, dynamic>> filteredProducts =
-                                Map<String, Map<String, dynamic>>.from(
-                              allProducts,
-                            );
-                            List<String> keysToRemove = [];
+            ],
+            bottom: PreferredSize(
+              preferredSize: const Size(
+                double.infinity,
+                80,
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: width * 0.0166,
+                  vertical: width * 0.0225,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: searchController,
+                        autocorrect: false,
+                        onTapOutside: (event) =>
+                            FocusScope.of(context).unfocus(),
+                        decoration: const InputDecoration(
+                          hintText: 'Search ...',
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            if (value.isEmpty) {
+                              currentProducts =
+                                  Map<String, Map<String, dynamic>>.from(
+                                allProducts,
+                              );
+                            } else {
+                              Map<String, Map<String, dynamic>>
+                                  filteredProducts =
+                                  Map<String, Map<String, dynamic>>.from(
+                                allProducts,
+                              );
+                              List<String> keysToRemove = [];
 
-                            filteredProducts.forEach((key, productData) {
-                              if (!productData['productName']
-                                  .toString()
-                                  .toLowerCase()
-                                  .contains(value.toLowerCase().trim())) {
-                                keysToRemove.add(key);
+                              filteredProducts.forEach((key, productData) {
+                                if (!productData['productName']
+                                    .toString()
+                                    .toLowerCase()
+                                    .contains(value.toLowerCase().trim())) {
+                                  keysToRemove.add(key);
+                                }
+                              });
+
+                              for (var key in keysToRemove) {
+                                filteredProducts.remove(key);
                               }
-                            });
 
-                            for (var key in keysToRemove) {
-                              filteredProducts.remove(key);
+                              currentProducts = filteredProducts;
                             }
-
-                            currentProducts = filteredProducts;
-                          }
+                          });
+                        },
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          isGridView = !isGridView;
                         });
                       },
+                      icon: Icon(
+                        isGridView ? FeatherIcons.list : FeatherIcons.grid,
+                      ),
+                      iconSize: width * 0.08,
+                      tooltip: isGridView ? 'List View' : 'Grid View',
                     ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        isGridView = !isGridView;
-                      });
-                    },
-                    icon: Icon(
-                      isGridView ? FeatherIcons.list : FeatherIcons.grid,
-                    ),
-                    iconSize: width * 0.08,
-                    tooltip: isGridView ? 'List View' : 'Grid View',
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-        body: !isData
-            ? SafeArea(
-                child: isGridView
-                    ? GridView.builder(
-                        shrinkWrap: true,
-                        physics: const ClampingScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 0,
-                          mainAxisSpacing: 0,
-                          childAspectRatio: width * 0.5 / width * 1.6,
+          body: !isData
+              ? SafeArea(
+                  child: isGridView
+                      ? GridView.builder(
+                          shrinkWrap: true,
+                          physics: const ClampingScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 0,
+                            mainAxisSpacing: 0,
+                            childAspectRatio: width * 0.5 / width * 1.6,
+                          ),
+                          itemCount: 4,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.all(
+                                width * 0.02,
+                              ),
+                              child: GridViewSkeleton(
+                                width: width,
+                                isPrice: true,
+                              ),
+                            );
+                          },
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          physics: const ClampingScrollPhysics(),
+                          itemCount: 4,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.all(
+                                width * 0.02,
+                              ),
+                              child: ListViewSkeleton(
+                                width: width,
+                                isPrice: true,
+                                height: 30,
+                              ),
+                            );
+                          },
                         ),
-                        itemCount: 4,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.all(
-                              width * 0.02,
-                            ),
-                            child: GridViewSkeleton(
-                              width: width,
-                              isPrice: true,
-                            ),
-                          );
-                        },
-                      )
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        physics: const ClampingScrollPhysics(),
-                        itemCount: 4,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.all(
-                              width * 0.02,
-                            ),
-                            child: ListViewSkeleton(
-                              width: width,
-                              isPrice: true,
-                              height: 30,
-                            ),
-                          );
-                        },
+                )
+              : currentProducts.isEmpty
+                  ? const SizedBox(
+                      height: 80,
+                      child: Center(
+                        child: Text('No Products'),
                       ),
-              )
-            : currentProducts.isEmpty
-                ? const SizedBox(
-                    height: 80,
-                    child: Center(
-                      child: Text('No Products'),
-                    ),
-                  )
-                : SafeArea(
-                    child: Padding(
-                      padding: EdgeInsets.all(width * 0.006125),
-                      child: LayoutBuilder(
-                        builder: ((context, constraints) {
+                    )
+                  : SafeArea(
+                      child: Padding(
+                        padding: EdgeInsets.all(width * 0.006125),
+                        child: LayoutBuilder(builder: (context, constraints) {
                           final width = constraints.maxWidth;
                           final height = constraints.maxHeight;
 
@@ -580,7 +584,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                         }),
                       ),
                     ),
-                  ),
+        ),
       ),
     );
   }

@@ -148,9 +148,9 @@
 //   void addProduct() {
 //     Navigator.of(context).push(
 //       MaterialPageRoute(
-//         builder: ((context) => const SelectProductsForCategoryPage(
+//         builder: (context) => const SelectProductsForCategoryPage(
 //               fromAddCategoryPage: true,
-//             )),
+//             ),
 //       ),
 //     );
 //   }

@@ -100,7 +100,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
     if (tagController.text.toString().length > 1) {
       if (!tagList.contains(tagController.text.toString().toUpperCase())) {
         setState(() {
-          tagList.add(tagController.text.toString().toUpperCase());
+          tagList.insert(0, tagController.text.toString().toUpperCase());
           tagController.clear();
         });
       } else {
@@ -139,7 +139,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
   }
 
   // ADD PRODUCT
-  Future<void> addProduct(AddProductProvider provider) async {
+  void addProduct(AddProductProvider provider) {
     if (productKey.currentState!.validate()) {
       if (property0.isEmpty && getCompulsory(0)) {
         if (getNoOfAnswers(0) == 1) {
@@ -256,12 +256,24 @@ class _AddProductPage4State extends State<AddProductPage4> {
           'propertyChangable3': getChangeBool(3),
           'propertyChangable4': getChangeBool(4),
           'propertyChangable5': getChangeBool(5),
-          'propertyInputType0': getPropertiesInputType(0) == TextInputType.text,
-          'propertyInputType1': getPropertiesInputType(1) == TextInputType.text,
-          'propertyInputType2': getPropertiesInputType(2) == TextInputType.text,
-          'propertyInputType3': getPropertiesInputType(3) == TextInputType.text,
-          'propertyInputType4': getPropertiesInputType(4) == TextInputType.text,
-          'propertyInputType5': getPropertiesInputType(5) == TextInputType.text,
+          'propertyInputType0':
+              getPropertiesInputType(0) == TextInputType.text ||
+                  getPropertiesInputType(0) == TextInputType.name,
+          'propertyInputType1':
+              getPropertiesInputType(1) == TextInputType.text ||
+                  getPropertiesInputType(1) == TextInputType.name,
+          'propertyInputType2':
+              getPropertiesInputType(2) == TextInputType.text ||
+                  getPropertiesInputType(2) == TextInputType.name,
+          'propertyInputType3':
+              getPropertiesInputType(3) == TextInputType.text ||
+                  getPropertiesInputType(3) == TextInputType.name,
+          'propertyInputType4':
+              getPropertiesInputType(4) == TextInputType.text ||
+                  getPropertiesInputType(4) == TextInputType.name,
+          'propertyInputType5':
+              getPropertiesInputType(5) == TextInputType.text ||
+                  getPropertiesInputType(5) == TextInputType.name,
         });
 
         // await store
@@ -296,7 +308,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
         if (mounted) {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: ((context) => const AddProductPage5()),
+              builder: (context) => const AddProductPage5(),
             ),
           );
         }
@@ -348,7 +360,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
     } else if (number == 1) {
       return TextInputType.number;
     } else {
-      return TextInputType.text;
+      return TextInputType.name;
     }
   }
 
@@ -377,38 +389,39 @@ class _AddProductPage4State extends State<AddProductPage4> {
   Widget build(BuildContext context) {
     final addProductProvider = Provider.of<AddProductProvider>(context);
 
-    return ModalProgressHUD(
-      inAsyncCall: isDialog,
-      color: primaryDark,
-      blur: 0.5,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          title: const Text(
-            'Additional Info',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          actions: [
-            MyTextButton(
-              onPressed: () async {
-                await addProduct(addProductProvider);
-              },
-              text: 'NEXT',
-              textColor: primaryDark2,
+    return PopScope(
+      canPop: isDialog ? false : true,
+      child: ModalProgressHUD(
+        inAsyncCall: isDialog,
+        color: primaryDark,
+        blur: 0.5,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            title: const Text(
+              'Additional Info',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-          ],
-        ),
-        body: householdCategoryProperties == null
-            ? const Center(
-                child: CircularProgressIndicator(
-                  color: primaryDark,
-                ),
-              )
-            : Padding(
-                padding: const EdgeInsets.all(8),
-                child: LayoutBuilder(
-                  builder: ((context, constraints) {
+            actions: [
+              MyTextButton(
+                onPressed: () {
+                  addProduct(addProductProvider);
+                },
+                text: 'NEXT',
+                textColor: primaryDark2,
+              ),
+            ],
+          ),
+          body: householdCategoryProperties == null
+              ? const Center(
+                  child: CircularProgressIndicator(
+                    color: primaryDark,
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: LayoutBuilder(builder: (context, constraints) {
                     double width = constraints.maxWidth;
 
                     return SingleChildScrollView(
@@ -455,9 +468,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                     ),
                                   ),
                                   MyTextButton(
-                                    onPressed: () {
-                                      addTag();
-                                    },
+                                    onPressed: addTag,
                                     text: 'Add',
                                     textColor: primaryDark2,
                                   ),
@@ -646,7 +657,8 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                           );
                                                         }
                                                         setState(() {
-                                                          property0.add(
+                                                          property0.insert(
+                                                            0,
                                                             property0Controller
                                                                 .text
                                                                 .toString()
@@ -861,7 +873,8 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                           );
                                                         }
                                                         setState(() {
-                                                          property1.add(
+                                                          property1.insert(
+                                                            0,
                                                             property1Controller
                                                                 .text
                                                                 .toString()
@@ -1076,7 +1089,8 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                           );
                                                         }
                                                         setState(() {
-                                                          property2.add(
+                                                          property2.insert(
+                                                            0,
                                                             property2Controller
                                                                 .text
                                                                 .toString()
@@ -1291,7 +1305,8 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                           );
                                                         }
                                                         setState(() {
-                                                          property3.add(
+                                                          property3.insert(
+                                                            0,
                                                             property3Controller
                                                                 .text
                                                                 .toString()
@@ -1506,7 +1521,8 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                           );
                                                         }
                                                         setState(() {
-                                                          property4.add(
+                                                          property4.insert(
+                                                            0,
                                                             property4Controller
                                                                 .text
                                                                 .toString()
@@ -1721,7 +1737,8 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                           );
                                                         }
                                                         setState(() {
-                                                          property5.add(
+                                                          property5.insert(
+                                                            0,
                                                             property5Controller
                                                                 .text
                                                                 .toString()
@@ -1974,7 +1991,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                     );
                   }),
                 ),
-              ),
+        ),
       ),
     );
   }

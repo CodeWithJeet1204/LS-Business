@@ -105,7 +105,7 @@ class _AddProductPage5State extends State<AddProductPage5> {
         mySnackBar(context, 'Product Added');
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-            builder: ((context) => const MainPage()),
+            builder: (context) => const MainPage(),
           ),
           (route) => false,
         );
@@ -125,29 +125,30 @@ class _AddProductPage5State extends State<AddProductPage5> {
   Widget build(BuildContext context) {
     final productProvider = Provider.of<AddProductProvider>(context);
 
-    return ModalProgressHUD(
-      inAsyncCall: isDialog,
-      color: primaryDark,
-      blur: 0.5,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'Services Available',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          actions: [
-            MyTextButton(
-              onPressed: () async {
-                await save(productProvider);
-              },
-              text: 'DONE',
-              textColor: primaryDark2,
+    return PopScope(
+      canPop: isDialog ? false : true,
+      child: ModalProgressHUD(
+        inAsyncCall: isDialog,
+        color: primaryDark,
+        blur: 0.5,
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text(
+              'Services Available',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-          ],
-        ),
-        body: LayoutBuilder(
-          builder: ((context, constraints) {
+            actions: [
+              MyTextButton(
+                onPressed: () async {
+                  await save(productProvider);
+                },
+                text: 'DONE',
+                textColor: primaryDark2,
+              ),
+            ],
+          ),
+          body: LayoutBuilder(builder: (context, constraints) {
             final width = constraints.maxWidth;
 
             return SingleChildScrollView(

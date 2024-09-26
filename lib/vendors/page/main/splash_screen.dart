@@ -27,11 +27,11 @@
 
 //         Navigator.of(context).pushReplacement(
 //           MaterialPageRoute(
-//             builder: ((context) => widget.isLoggedIn
+//             builder: (context) => widget.isLoggedIn
 //                 ? const MainPage()
 //                 : const RegisterMethodPage(
 //                     // mode: 'vendor',
-//                     )),
+//                     ),
 //           ),
 //         );
 //         }

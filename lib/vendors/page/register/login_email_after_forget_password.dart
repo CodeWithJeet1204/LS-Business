@@ -46,7 +46,7 @@ class _LoginEmailAfterForgetPasswordState
         if (mounted) {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-              builder: ((context) => const MainPage()),
+              builder: (context) => const MainPage(),
             ),
             (route) => false,
           );
@@ -71,59 +71,62 @@ class _LoginEmailAfterForgetPasswordState
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    return ModalProgressHUD(
-      inAsyncCall: isDialog,
-      color: primaryDark,
-      blur: 0.5,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Email Login'),
-        ),
-        body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.all(
-              width * 0.0125,
-            ),
-            child: LayoutBuilder(builder: (context, constraints) {
-              final width = constraints.maxWidth;
+    return PopScope(
+      canPop: isDialog ? false : true,
+      child: ModalProgressHUD(
+        inAsyncCall: isDialog,
+        color: primaryDark,
+        blur: 0.5,
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Email Login'),
+          ),
+          body: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.all(
+                width * 0.0125,
+              ),
+              child: LayoutBuilder(builder: (context, constraints) {
+                final width = constraints.maxWidth;
 
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    // SizedBox(height: width * 0.35),
-                    // const HeadText(
-                    //   text: 'LOGIN WITH EMAIL',
-                    // ),
-                    SizedBox(height: width * 0.65),
-                    MyTextFormField(
-                      hintText: 'Email*',
-                      controller: emailController,
-                      borderRadius: 16,
-                      horizontalPadding: width * 0.066,
-                      keyboardType: TextInputType.emailAddress,
-                      autoFillHints: const [AutofillHints.email],
-                    ),
-                    const SizedBox(height: 8),
-                    MyTextFormField(
-                      hintText: 'Password*',
-                      controller: passwordController,
-                      borderRadius: 16,
-                      horizontalPadding: width * 0.066,
-                      isPassword: true,
-                      autoFillHints: const [AutofillHints.password],
-                    ),
-                    const SizedBox(height: 8),
-                    MyButton(
-                      text: 'LOGIN',
-                      onTap: () async {
-                        await loginWithEmail();
-                      },
-                      horizontalPadding: width * 0.066,
-                    ),
-                  ],
-                ),
-              );
-            }),
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      // SizedBox(height: width * 0.35),
+                      // const HeadText(
+                      //   text: 'LOGIN WITH EMAIL',
+                      // ),
+                      SizedBox(height: width * 0.65),
+                      MyTextFormField(
+                        hintText: 'Email*',
+                        controller: emailController,
+                        borderRadius: 16,
+                        horizontalPadding: width * 0.066,
+                        keyboardType: TextInputType.emailAddress,
+                        autoFillHints: const [AutofillHints.email],
+                      ),
+                      const SizedBox(height: 8),
+                      MyTextFormField(
+                        hintText: 'Password*',
+                        controller: passwordController,
+                        borderRadius: 16,
+                        horizontalPadding: width * 0.066,
+                        isPassword: true,
+                        autoFillHints: const [AutofillHints.password],
+                      ),
+                      const SizedBox(height: 8),
+                      MyButton(
+                        text: 'LOGIN',
+                        onTap: () async {
+                          await loginWithEmail();
+                        },
+                        horizontalPadding: width * 0.066,
+                      ),
+                    ],
+                  ),
+                );
+              }),
+            ),
           ),
         ),
       ),

@@ -283,7 +283,7 @@ class DISCOUNT extends State<DiscountPage> {
   Future<void> confirmDelete(String type) async {
     await showDialog(
       context: context,
-      builder: ((context) {
+      builder: (context) {
         return AlertDialog(
           title: const Text(
             'Confirm DELETE',
@@ -318,7 +318,7 @@ class DISCOUNT extends State<DiscountPage> {
             ),
           ],
         );
-      }),
+      },
     );
   }
 
@@ -726,43 +726,44 @@ class DISCOUNT extends State<DiscountPage> {
         .doc(widget.discountId)
         .snapshots();
 
-    return ModalProgressHUD(
-      inAsyncCall: isDialog,
-      color: primaryDark,
-      blur: 0.5,
-      child: Scaffold(
-        appBar: AppBar(
-          actions: [
-            IconButton(
-              onPressed: () async {
-                final discountSnap = await store
-                    .collection('Business')
-                    .doc('Data')
-                    .collection('Discounts')
-                    .doc(widget.discountId)
-                    .get();
+    return PopScope(
+      canPop: isDialog ? false : true,
+      child: ModalProgressHUD(
+        inAsyncCall: isDialog,
+        color: primaryDark,
+        blur: 0.5,
+        child: Scaffold(
+          appBar: AppBar(
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  final discountSnap = await store
+                      .collection('Business')
+                      .doc('Data')
+                      .collection('Discounts')
+                      .doc(widget.discountId)
+                      .get();
 
-                final discountData = discountSnap.data()!;
+                  final discountData = discountSnap.data()!;
 
-                await confirmDelete(
-                  discountData['isProducts']
-                      ? 'Product'
-                      : discountData['isBrands']
-                          ? 'Brand'
-                          : 'Category',
-                );
-              },
-              icon: const Icon(
-                FeatherIcons.trash,
+                  await confirmDelete(
+                    discountData['isProducts']
+                        ? 'Product'
+                        : discountData['isBrands']
+                            ? 'Brand'
+                            : 'Category',
+                  );
+                },
+                icon: const Icon(
+                  FeatherIcons.trash,
+                  color: Colors.red,
+                ),
                 color: Colors.red,
+                tooltip: 'End Discount',
               ),
-              color: Colors.red,
-              tooltip: 'End Discount',
-            ),
-          ],
-        ),
-        body: LayoutBuilder(
-          builder: ((context, constraints) {
+            ],
+          ),
+          body: LayoutBuilder(builder: (context, constraints) {
             double width = constraints.maxWidth;
 
             return SingleChildScrollView(
@@ -1198,13 +1199,15 @@ class DISCOUNT extends State<DiscountPage> {
                                                               .push(
                                                             MaterialPageRoute(
                                                               builder:
-                                                                  ((context) =>
+                                                                  (context) =>
                                                                       ProductPage(
-                                                                        productId:
-                                                                            productData['productId'],
-                                                                        productName:
-                                                                            productData['productName'],
-                                                                      )),
+                                                                productId:
+                                                                    productData[
+                                                                        'productId'],
+                                                                productName:
+                                                                    productData[
+                                                                        'productName'],
+                                                              ),
                                                             ),
                                                           );
                                                         },
@@ -1386,13 +1389,15 @@ class DISCOUNT extends State<DiscountPage> {
                                                                 .push(
                                                               MaterialPageRoute(
                                                                 builder:
-                                                                    ((context) =>
+                                                                    (context) =>
                                                                         ProductPage(
-                                                                          productId:
-                                                                              productData['productId'],
-                                                                          productName:
-                                                                              productData['productName'],
-                                                                        )),
+                                                                  productId:
+                                                                      productData[
+                                                                          'productId'],
+                                                                  productName:
+                                                                      productData[
+                                                                          'productName'],
+                                                                ),
                                                               ),
                                                             );
                                                           },
@@ -1586,15 +1591,18 @@ class DISCOUNT extends State<DiscountPage> {
                                                                 .push(
                                                               MaterialPageRoute(
                                                                 builder:
-                                                                    ((context) =>
+                                                                    (context) =>
                                                                         BrandPage(
-                                                                          brandId:
-                                                                              brandData['brandId'],
-                                                                          brandName:
-                                                                              brandData['brandName'],
-                                                                          imageUrl:
-                                                                              brandData['imageUrl'],
-                                                                        )),
+                                                                  brandId:
+                                                                      brandData[
+                                                                          'brandId'],
+                                                                  brandName:
+                                                                      brandData[
+                                                                          'brandName'],
+                                                                  imageUrl:
+                                                                      brandData[
+                                                                          'imageUrl'],
+                                                                ),
                                                               ),
                                                             );
                                                           },
@@ -1751,15 +1759,18 @@ class DISCOUNT extends State<DiscountPage> {
                                                                   .push(
                                                                 MaterialPageRoute(
                                                                   builder:
-                                                                      ((context) =>
+                                                                      (context) =>
                                                                           BrandPage(
-                                                                            brandId:
-                                                                                brandData['brandId'],
-                                                                            brandName:
-                                                                                brandData['brandName'],
-                                                                            imageUrl:
-                                                                                brandData['imageUrl'],
-                                                                          )),
+                                                                    brandId:
+                                                                        brandData[
+                                                                            'brandId'],
+                                                                    brandName:
+                                                                        brandData[
+                                                                            'brandName'],
+                                                                    imageUrl:
+                                                                        brandData[
+                                                                            'imageUrl'],
+                                                                  ),
                                                                 ),
                                                               );
                                                             },
@@ -1946,11 +1957,11 @@ class DISCOUNT extends State<DiscountPage> {
                                                                 .push(
                                                               MaterialPageRoute(
                                                                 builder:
-                                                                    ((context) =>
+                                                                    (context) =>
                                                                         CategoryPage(
-                                                                          categoryName:
-                                                                              categoryName,
-                                                                        )),
+                                                                  categoryName:
+                                                                      categoryName,
+                                                                ),
                                                               ),
                                                             );
                                                           },
@@ -2112,11 +2123,11 @@ class DISCOUNT extends State<DiscountPage> {
                                                                   .push(
                                                                 MaterialPageRoute(
                                                                   builder:
-                                                                      ((context) =>
+                                                                      (context) =>
                                                                           CategoryPage(
-                                                                            categoryName:
-                                                                                categoryName,
-                                                                          )),
+                                                                    categoryName:
+                                                                        categoryName,
+                                                                  ),
                                                                 ),
                                                               );
                                                             },

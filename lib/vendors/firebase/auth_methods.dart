@@ -89,9 +89,9 @@ class AuthMethods {
           if (context.mounted) {
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: ((context) => const OwnerRegisterDetailsPage(
-                      fromMainPage: false,
-                    )),
+                builder: (context) => const OwnerRegisterDetailsPage(
+                  fromMainPage: false,
+                ),
               ),
               (route) => false,
             );

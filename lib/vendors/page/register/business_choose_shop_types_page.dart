@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ls_business/vendors/page/register/business_choose_categories_page.dart';
+import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/select_container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class BusinessChooseShopTypesPage extends StatefulWidget {
   const BusinessChooseShopTypesPage({
@@ -27,6 +29,7 @@ class _BusinessChooseShopTypesPageState
   Map<String, dynamic>? shopTypes;
   List selected = [];
   bool isNext = false;
+  bool isDialog = false;
 
   // INIT STATE
   @override
@@ -64,6 +67,7 @@ class _BusinessChooseShopTypesPageState
 
     setState(() {
       isNext = true;
+      isDialog = true;
     });
 
     await store
@@ -77,15 +81,16 @@ class _BusinessChooseShopTypesPageState
 
     setState(() {
       isNext = false;
+      isDialog = false;
     });
 
     if (mounted) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: ((context) => BusinessChooseCategoriesPage(
-                selectedTypes: selected,
-                isEditing: widget.isEditing,
-              )),
+          builder: (context) => BusinessChooseCategoriesPage(
+            selectedTypes: selected,
+            isEditing: widget.isEditing,
+          ),
         ),
       );
     }
@@ -95,59 +100,67 @@ class _BusinessChooseShopTypesPageState
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        title: const Text('Choose Your Type'),
-      ),
-      body: shopTypes == null
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : SafeArea(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: width * 0.0125),
-                child: LayoutBuilder(builder: (context, constraints) {
-                  final width = constraints.maxWidth;
+    return PopScope(
+      canPop: isDialog ? false : true,
+      child: ModalProgressHUD(
+        inAsyncCall: isDialog,
+        color: primaryDark,
+        blur: 0.5,
+        child: Scaffold(
+          extendBodyBehindAppBar: true,
+          appBar: AppBar(
+            title: const Text('Choose Types'),
+          ),
+          body: shopTypes == null
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : SafeArea(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: width * 0.0125),
+                    child: LayoutBuilder(builder: (context, constraints) {
+                      final width = constraints.maxWidth;
 
-                  return GridView.builder(
-                    shrinkWrap: true,
-                    physics: const ClampingScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 16 / 9,
-                    ),
-                    itemCount: shopTypes!.length,
-                    itemBuilder: (context, index) {
-                      final name = shopTypes!.keys.toList()[index];
-                      final imageUrl = shopTypes!.values.toList()[index];
+                      return GridView.builder(
+                        shrinkWrap: true,
+                        physics: const ClampingScrollPhysics(),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 16 / 9,
+                        ),
+                        itemCount: shopTypes!.length,
+                        itemBuilder: (context, index) {
+                          final name = shopTypes!.keys.toList()[index];
+                          final imageUrl = shopTypes!.values.toList()[index];
 
-                      return SelectContainer(
-                        width: width,
-                        text: name,
-                        isSelected: selected.contains(name),
-                        imageUrl: imageUrl,
-                        onTap: () {
-                          setState(() {
-                            if (selected.contains(name)) {
-                              selected.remove(name);
-                            } else {
-                              selected.add(name);
-                            }
-                          });
+                          return SelectContainer(
+                            width: width,
+                            text: name,
+                            isSelected: selected.contains(name),
+                            imageUrl: imageUrl,
+                            onTap: () {
+                              setState(() {
+                                if (selected.contains(name)) {
+                                  selected.remove(name);
+                                } else {
+                                  selected.add(name);
+                                }
+                              });
+                            },
+                          );
                         },
                       );
-                    },
-                  );
-                }),
-              ),
-            ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await next();
-        },
-        child: const Icon(Icons.arrow_forward),
+                    }),
+                  ),
+                ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () async {
+              await next();
+            },
+            child: const Icon(Icons.arrow_forward),
+          ),
+        ),
       ),
     );
   }

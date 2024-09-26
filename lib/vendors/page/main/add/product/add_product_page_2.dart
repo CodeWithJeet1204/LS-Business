@@ -106,9 +106,9 @@ class _AddProductPage2State extends State<AddProductPage2> {
               if (mounted) {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: ((context) => AddProductPage3(
-                          shopType: selectedShopType!,
-                        )),
+                    builder: (context) => AddProductPage3(
+                      shopType: selectedShopType!,
+                    ),
                   ),
                 );
               }
@@ -118,62 +118,65 @@ class _AddProductPage2State extends State<AddProductPage2> {
         ],
         bottom: PreferredSize(
           preferredSize: Size(width, 60),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: searchController,
-                  autocorrect: false,
-                  onTapOutside: (event) => FocusScope.of(context).unfocus(),
-                  decoration: const InputDecoration(
-                    hintText: 'Search ...',
-                    border: OutlineInputBorder(),
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      if (value.isEmpty) {
-                        currentShopTypes = Map<String, dynamic>.from(
-                          allShopTypes,
-                        );
-                      } else {
-                        Map<String, dynamic> filteredShopTypes =
-                            Map<String, dynamic>.from(
-                          allShopTypes,
-                        );
-                        List<String> keysToRemove = [];
+          child: Padding(
+            padding: EdgeInsets.all(width * 0.0125),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: searchController,
+                    autocorrect: false,
+                    onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                    decoration: const InputDecoration(
+                      hintText: 'Search ...',
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        if (value.isEmpty) {
+                          currentShopTypes = Map<String, dynamic>.from(
+                            allShopTypes,
+                          );
+                        } else {
+                          Map<String, dynamic> filteredShopTypes =
+                              Map<String, dynamic>.from(
+                            allShopTypes,
+                          );
+                          List<String> keysToRemove = [];
 
-                        filteredShopTypes.forEach((key, imageUrl) {
-                          if (!key
-                              .toString()
-                              .toLowerCase()
-                              .contains(value.toLowerCase())) {
-                            keysToRemove.add(key);
+                          filteredShopTypes.forEach((key, imageUrl) {
+                            if (!key
+                                .toString()
+                                .toLowerCase()
+                                .contains(value.toLowerCase())) {
+                              keysToRemove.add(key);
+                            }
+                          });
+
+                          for (var key in keysToRemove) {
+                            filteredShopTypes.remove(key);
                           }
-                        });
 
-                        for (var key in keysToRemove) {
-                          filteredShopTypes.remove(key);
+                          currentShopTypes = filteredShopTypes;
                         }
-
-                        currentShopTypes = filteredShopTypes;
-                      }
+                      });
+                    },
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      isGridView = !isGridView;
                     });
                   },
+                  icon: Icon(
+                    isGridView ? FeatherIcons.list : FeatherIcons.grid,
+                  ),
+                  tooltip: isGridView ? 'List View' : 'Grid View',
                 ),
-              ),
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    isGridView = !isGridView;
-                  });
-                },
-                icon: Icon(
-                  isGridView ? FeatherIcons.list : FeatherIcons.grid,
-                ),
-                tooltip: isGridView ? 'List View' : 'Grid View',
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

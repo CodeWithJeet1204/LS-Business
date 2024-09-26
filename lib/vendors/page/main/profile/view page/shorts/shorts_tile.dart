@@ -83,7 +83,7 @@ class _ShortsTileState extends State<ShortsTile> {
 
     await showDialog(
       context: context,
-      builder: ((context) {
+      builder: (context) {
         return isLoading
             ? const Center(
                 child: CircularProgressIndicator(),
@@ -125,7 +125,7 @@ class _ShortsTileState extends State<ShortsTile> {
                   ),
                 ],
               );
-      }),
+      },
     );
   }
 

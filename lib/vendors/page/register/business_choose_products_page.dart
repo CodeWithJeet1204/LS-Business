@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:ls_business/vendors/page/main/main_page.dart';
 import 'package:ls_business/vendors/page/main/profile/details/business_details_page.dart';
 import 'package:ls_business/vendors/page/register/business_timings_page.dart';
+import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class BusinessChooseProductsPage extends StatefulWidget {
   const BusinessChooseProductsPage({
@@ -32,15 +34,16 @@ class _BusinessChooseProductsPageState
   final store = FirebaseFirestore.instance;
   Map<String, dynamic>? allProducts;
   List selectedProducts = [];
-  bool isNext = false;
   int? total;
   int noOf = 4;
   final scrollController = ScrollController();
+  bool isNext = false;
+  bool isDialog = false;
 
   // INIT STATE
   @override
   void initState() {
-    getProductsForSubCategory();
+    getProductsForCategory();
     scrollController.addListener(scrollListener);
     if (widget.selectedProducts != null) {
       setState(() {
@@ -62,8 +65,8 @@ class _BusinessChooseProductsPageState
     }
   }
 
-  // GET PRODUCTS FOR SUB CATEGORY
-  Future<void> getProductsForSubCategory() async {
+  // GET PRODUCTS FOR CATEGORY
+  Future<void> getProductsForCategory() async {
     Map<String, dynamic> myProducts = {};
     int totalSubCategories = 0;
     final catalogueSnap = await store
@@ -98,6 +101,7 @@ class _BusinessChooseProductsPageState
 
     setState(() {
       isNext = true;
+      isDialog = true;
     });
 
     await store
@@ -111,28 +115,28 @@ class _BusinessChooseProductsPageState
 
     setState(() {
       isNext = false;
+      isDialog = false;
     });
 
     if (mounted) {
       if (widget.isEditing) {
-        Navigator.of(context).pop();
-        Navigator.of(context).pop();
-        Navigator.of(context).push(
+        Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-            builder: ((context) => const MainPage()),
+            builder: (context) => const MainPage(),
           ),
+          (route) => false,
         );
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: ((context) => const BusinessDetailsPage()),
+            builder: (context) => const BusinessDetailsPage(),
           ),
         );
       } else {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: ((context) => const SelectBusinessTimingsPage(
-                  fromMainPage: false,
-                )),
+            builder: (context) => const SelectBusinessTimingsPage(
+              fromMainPage: false,
+            ),
           ),
         );
       }
@@ -144,169 +148,174 @@ class _BusinessChooseProductsPageState
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Choose Your Products'),
-      ),
-      body: allProducts == null
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : PopScope(
-              canPop: false,
-              child: SafeArea(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: width * 0.0125),
-                  child: ListView.builder(
-                    controller: scrollController,
-                    cacheExtent: height * 1.5,
-                    addAutomaticKeepAlives: true,
-                    shrinkWrap: true,
-                    physics: const ClampingScrollPhysics(),
-                    itemCount: noOf > widget.selectedCategories.length
-                        ? widget.selectedCategories.length
-                        : noOf,
-                    itemBuilder: (context, index) {
-                      final String? subCategory =
-                          widget.selectedCategories[index];
+    return PopScope(
+      canPop: isDialog ? false : true,
+      child: ModalProgressHUD(
+        inAsyncCall: isDialog,
+        color: primaryDark,
+        blur: 0.5,
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Choose Products'),
+          ),
+          body: allProducts == null
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : SafeArea(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: width * 0.0125),
+                    child: ListView.builder(
+                      controller: scrollController,
+                      cacheExtent: height * 1.5,
+                      addAutomaticKeepAlives: true,
+                      shrinkWrap: true,
+                      physics: const ClampingScrollPhysics(),
+                      itemCount: noOf > widget.selectedCategories.length
+                          ? widget.selectedCategories.length
+                          : noOf,
+                      itemBuilder: (context, index) {
+                        final String? subCategory =
+                            widget.selectedCategories[index];
 
-                      return Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: width * 0.0225,
-                            ),
-                            child: Text(
-                              subCategory!,
-                              style: TextStyle(
-                                fontSize: width * 0.055,
-                                fontWeight: FontWeight.w500,
+                        return Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.0225,
+                              ),
+                              child: Text(
+                                subCategory!,
+                                style: TextStyle(
+                                  fontSize: width * 0.05,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
-                          ),
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: const ClampingScrollPhysics(),
-                            itemCount: allProducts![subCategory].length,
-                            itemBuilder: (context, productIndex) {
-                              final product =
-                                  allProducts?[subCategory]?[productIndex];
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: const ClampingScrollPhysics(),
+                              itemCount: allProducts![subCategory].length,
+                              itemBuilder: (context, productIndex) {
+                                final product =
+                                    allProducts?[subCategory]?[productIndex];
 
-                              return GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    if (!selectedProducts.contains(product)) {
-                                      selectedProducts.add(product);
-                                    } else {
-                                      selectedProducts.remove(product);
-                                    }
-                                  });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: selectedProducts.contains(product)
-                                        ? const Color.fromRGBO(
-                                            133,
-                                            255,
-                                            137,
-                                            1,
-                                          )
-                                        : Colors.white,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  padding: EdgeInsets.all(width * 0.0225),
-                                  margin: EdgeInsets.all(width * 0.0125),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      SizedBox(
-                                        width: width * 0.66,
-                                        child: AutoSizeText(
-                                          product,
-                                          style: TextStyle(
-                                            fontSize: width * 0.04,
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      if (!selectedProducts.contains(product)) {
+                                        selectedProducts.add(product);
+                                      } else {
+                                        selectedProducts.remove(product);
+                                      }
+                                    });
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: selectedProducts.contains(product)
+                                          ? const Color.fromRGBO(
+                                              133,
+                                              255,
+                                              137,
+                                              1,
+                                            )
+                                          : Colors.white,
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    padding: EdgeInsets.all(width * 0.0225),
+                                    margin: EdgeInsets.all(width * 0.0125),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        SizedBox(
+                                          width: width * 0.66,
+                                          child: AutoSizeText(
+                                            product,
+                                            style: TextStyle(
+                                              fontSize: width * 0.04,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          Visibility(
-                                            visible: !selectedProducts
-                                                .contains(product),
-                                            child: IconButton(
-                                              icon: const Icon(
-                                                Icons.check,
-                                                color: Color.fromRGBO(
+                                        Row(
+                                          children: [
+                                            Visibility(
+                                              visible: !selectedProducts
+                                                  .contains(product),
+                                              child: IconButton(
+                                                icon: const Icon(
+                                                  Icons.check,
+                                                  color: Color.fromRGBO(
+                                                    133,
+                                                    255,
+                                                    137,
+                                                    1,
+                                                  ),
+                                                ),
+                                                color: const Color.fromRGBO(
                                                   133,
                                                   255,
                                                   137,
                                                   1,
                                                 ),
+                                                onPressed: () {
+                                                  if (!selectedProducts
+                                                      .contains(product)) {
+                                                    setState(() {
+                                                      selectedProducts
+                                                          .add(product);
+                                                    });
+                                                  }
+                                                },
+                                                tooltip: "Select",
                                               ),
-                                              color: const Color.fromRGBO(
-                                                133,
-                                                255,
-                                                137,
-                                                1,
-                                              ),
-                                              onPressed: () {
-                                                if (!selectedProducts
-                                                    .contains(product)) {
-                                                  setState(() {
-                                                    selectedProducts
-                                                        .add(product);
-                                                  });
-                                                }
-                                              },
-                                              tooltip: "Select",
                                             ),
-                                          ),
-                                          Visibility(
-                                            visible: selectedProducts
-                                                .contains(product),
-                                            child: IconButton(
-                                              icon: Icon(
-                                                Icons.close,
-                                                color: selectedProducts
-                                                        .contains(product)
-                                                    ? Colors.red
-                                                    : Colors.grey,
+                                            Visibility(
+                                              visible: selectedProducts
+                                                  .contains(product),
+                                              child: IconButton(
+                                                icon: Icon(
+                                                  Icons.close,
+                                                  color: selectedProducts
+                                                          .contains(product)
+                                                      ? Colors.red
+                                                      : Colors.grey,
+                                                ),
+                                                onPressed: () {
+                                                  if (selectedProducts
+                                                      .contains(product)) {
+                                                    setState(() {
+                                                      selectedProducts
+                                                          .remove(product);
+                                                    });
+                                                  }
+                                                },
                                               ),
-                                              onPressed: () {
-                                                if (selectedProducts
-                                                    .contains(product)) {
-                                                  setState(() {
-                                                    selectedProducts
-                                                        .remove(product);
-                                                  });
-                                                }
-                                              },
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                          ),
-                          const Divider(),
-                        ],
-                      );
-                    },
+                                );
+                              },
+                            ),
+                            const Divider(),
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
-            ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await next();
-        },
-        child: isNext
-            ? const CircularProgressIndicator()
-            : Icon(widget.isEditing ? Icons.done : Icons.arrow_forward),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () async {
+              await next();
+            },
+            child: isNext
+                ? const CircularProgressIndicator()
+                : Icon(widget.isEditing ? Icons.done : Icons.arrow_forward),
+          ),
+        ),
       ),
     );
   }

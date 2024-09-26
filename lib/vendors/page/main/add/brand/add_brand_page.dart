@@ -159,178 +159,183 @@ class _AddBrandPageState extends State<AddBrandPage> {
     final productsAddedToBrandProvider =
         Provider.of<ProductAddedToBrandProvider>(context);
 
-    return ModalProgressHUD(
-      inAsyncCall: isDialog,
-      color: primaryDark,
-      blur: 0.5,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'ADD BRAND',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          actions: [
-            MyTextButton(
-              onPressed: () async {
-                await addBrand(
-                  productsAddedToBrandProvider,
-                );
-              },
-              text: 'DONE',
-              textColor: primaryDark2,
+    return PopScope(
+      canPop: isDialog ? false : true,
+      child: ModalProgressHUD(
+        inAsyncCall: isDialog,
+        color: primaryDark,
+        blur: 0.5,
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text(
+              'ADD BRAND',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-          ],
-        ),
-        body: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * 0.0125,
+            actions: [
+              MyTextButton(
+                onPressed: () async {
+                  await addBrand(
+                    productsAddedToBrandProvider,
+                  );
+                },
+                text: 'DONE',
+                textColor: primaryDark2,
+              ),
+            ],
           ),
-          child: LayoutBuilder(
-            builder: ((context, constraints) {
-              final width = constraints.maxWidth;
+          body: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.0125,
+            ),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final width = constraints.maxWidth;
 
-              return SingleChildScrollView(
-                child: Form(
-                  key: brandKey,
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 4),
-                      // IMAGE
-                      _image != null
-                          ? Center(
-                              child: Stack(
-                                alignment: Alignment.topRight,
-                                children: [
-                                  // NOT NULL
-                                  Container(
-                                    height: width,
-                                    width: width,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      border: Border.all(
-                                        color: primaryDark,
-                                        width: 2,
-                                      ),
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(18),
-                                      child: Image(
-                                        image: FileImage(_image!),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                  // ICONS
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      // Padding(
-                                      //   padding: EdgeInsets.all(width * 0.0125),
-                                      //   child: IconButton.filledTonal(
-                                      //     onPressed: selectImage,
-                                      //     icon: Icon(
-                                      //       FeatherIcons.camera,
-                                      //       size: width * 0.1125,
-                                      //     ),
-                                      //     tooltip: 'Change Image',
-                                      //   ),
-                                      // ),
-                                      // REMOVE IMAGE
-                                      Padding(
-                                        padding: EdgeInsets.all(width * 0.0125),
-                                        child: IconButton.filledTonal(
-                                          onPressed: removeImage,
-                                          icon: Icon(
-                                            FeatherIcons.x,
-                                            size: width * 0.1125,
-                                          ),
-                                          tooltip: 'Remove Image',
+                return SingleChildScrollView(
+                  child: Form(
+                    key: brandKey,
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 4),
+                        // IMAGE
+                        _image != null
+                            ? Center(
+                                child: Stack(
+                                  alignment: Alignment.topRight,
+                                  children: [
+                                    // NOT NULL
+                                    Container(
+                                      height: width,
+                                      width: width,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        border: Border.all(
+                                          color: primaryDark,
+                                          width: 2,
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            )
-                          : SizedOverflowBox(
-                              size: Size(width, width),
-                              child: InkWell(
-                                onTap: () async {
-                                  await selectImage();
-                                },
-                                customBorder: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(32),
-                                ),
-                                child: Container(
-                                  width: width,
-                                  height: width,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: primaryDark,
-                                      width: 3,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(18),
+                                        child: Image(
+                                          image: FileImage(_image!),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
                                     ),
+                                    // ICONS
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        // Padding(
+                                        //   padding: EdgeInsets.all(width * 0.0125),
+                                        //   child: IconButton.filledTonal(
+                                        //     onPressed: selectImage,
+                                        //     icon: Icon(
+                                        //       FeatherIcons.camera,
+                                        //       size: width * 0.1125,
+                                        //     ),
+                                        //     tooltip: 'Change Image',
+                                        //   ),
+                                        // ),
+                                        // REMOVE IMAGE
+                                        Padding(
+                                          padding:
+                                              EdgeInsets.all(width * 0.0125),
+                                          child: IconButton.filledTonal(
+                                            onPressed: removeImage,
+                                            icon: Icon(
+                                              FeatherIcons.x,
+                                              size: width * 0.1125,
+                                            ),
+                                            tooltip: 'Remove Image',
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : SizedOverflowBox(
+                                size: Size(width, width),
+                                child: InkWell(
+                                  onTap: () async {
+                                    await selectImage();
+                                  },
+                                  customBorder: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(32),
                                   ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        FeatherIcons.upload,
-                                        size: width * 0.4,
+                                  child: Container(
+                                    width: width,
+                                    height: width,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: primaryDark,
+                                        width: 3,
                                       ),
-                                      SizedBox(height: width * 0.09),
-                                      Text(
-                                        'Select Image',
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: width * 0.09,
-                                          fontWeight: FontWeight.w500,
+                                      borderRadius: BorderRadius.circular(32),
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          FeatherIcons.upload,
+                                          size: width * 0.4,
                                         ),
-                                      ),
-                                    ],
+                                        SizedBox(height: width * 0.09),
+                                        Text(
+                                          'Select Image',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: width * 0.09,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                      const SizedBox(height: 20),
+                        const SizedBox(height: 20),
 
-                      // NAME
-                      MyTextFormField(
-                        hintText: 'Brand Name',
-                        controller: brandNameController,
-                        borderRadius: 12,
-                        horizontalPadding: 0,
-                        autoFillHints: null,
-                      ),
-
-                      // ADD PRODUCTS
-                      Padding(
-                        padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).viewInsets.bottom,
-                        ),
-                        child: MyButton(
-                          text:
-                              'Add Products (${productsAddedToBrandProvider.selectedProducts.length})',
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: ((context) =>
-                                    const AddProductsToBrandPage()),
-                              ),
-                            );
-                          },
+                        // NAME
+                        MyTextFormField(
+                          hintText: 'Brand Name',
+                          controller: brandNameController,
+                          borderRadius: 12,
                           horizontalPadding: 0,
-                          verticalPadding: width * 0.05,
+                          autoFillHints: null,
                         ),
-                      ),
-                    ],
+
+                        // ADD PRODUCTS
+                        Padding(
+                          padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom,
+                          ),
+                          child: MyButton(
+                            text:
+                                'Add Products (${productsAddedToBrandProvider.selectedProducts.length})',
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const AddProductsToBrandPage(),
+                                ),
+                              );
+                            },
+                            horizontalPadding: 0,
+                            verticalPadding: width * 0.05,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            }),
+                );
+              },
+            ),
           ),
         ),
       ),

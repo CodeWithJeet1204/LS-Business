@@ -27,116 +27,121 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    return ModalProgressHUD(
-      inAsyncCall: isDialog,
-      color: primaryDark,
-      blur: 0.5,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Forgot Password'),
-        ),
-        body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.all(
-              width * 0.025,
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(height: width * 0.66),
-                  MyTextFormField(
-                    hintText: 'Email*',
-                    controller: emailController,
-                    borderRadius: 12,
-                    horizontalPadding: 0,
-                    autoFillHints: const [],
-                  ),
-                  const SizedBox(height: 20),
-                  MyButton(
-                    text: 'FORGET',
-                    onTap: () async {
-                      if (emailController.text.contains('@') &&
-                          emailController.text.contains('.co')) {
-                        setState(() {
-                          isForget = true;
-                          isDialog = true;
-                        });
-                        List myEmails = [];
-                        final userSnap = await store.collection('Users').get();
-
-                        for (var user in userSnap.docs) {
-                          final userData = user.data();
-
-                          final email = userData['Email'];
-
-                          myEmails.add(email);
-                        }
-
-                        if (myEmails.contains(emailController.text)) {
-                          try {
-                            await auth.sendPasswordResetEmail(
-                              email: emailController.text,
-                            );
-                            setState(() {
-                              isForget = false;
-                              isDialog = false;
-                              isSent = true;
-                            });
-                            if (context.mounted) {
-                              mySnackBar(context, 'Password Reset Email Sent');
-                            }
-                          } catch (e) {
-                            setState(() {
-                              isForget = false;
-                              isDialog = false;
-                            });
-                            if (context.mounted) {
-                              mySnackBar(context, e.toString());
-                            }
-                          }
-                        } else {
+    return PopScope(
+      canPop: isDialog ? false : true,
+      child: ModalProgressHUD(
+        inAsyncCall: isDialog,
+        color: primaryDark,
+        blur: 0.5,
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Forgot Password'),
+          ),
+          body: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.all(
+                width * 0.025,
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: width * 0.66),
+                    MyTextFormField(
+                      hintText: 'Email*',
+                      controller: emailController,
+                      borderRadius: 12,
+                      horizontalPadding: 0,
+                      autoFillHints: const [],
+                    ),
+                    const SizedBox(height: 20),
+                    MyButton(
+                      text: 'FORGET',
+                      onTap: () async {
+                        if (emailController.text.contains('@') &&
+                            emailController.text.contains('.co')) {
                           setState(() {
-                            isForget = false;
-                            isDialog = false;
+                            isForget = true;
+                            isDialog = true;
                           });
-                          if (context.mounted) {
-                            return mySnackBar(
-                              context,
-                              'This email was not used to create User account\nRegister first',
-                            );
+                          List myEmails = [];
+                          final userSnap =
+                              await store.collection('Users').get();
+
+                          for (var user in userSnap.docs) {
+                            final userData = user.data();
+
+                            final email = userData['Email'];
+
+                            myEmails.add(email);
+                          }
+
+                          if (myEmails.contains(emailController.text)) {
+                            try {
+                              await auth.sendPasswordResetEmail(
+                                email: emailController.text,
+                              );
+                              setState(() {
+                                isForget = false;
+                                isDialog = false;
+                                isSent = true;
+                              });
+                              if (context.mounted) {
+                                mySnackBar(
+                                    context, 'Password Reset Email Sent');
+                              }
+                            } catch (e) {
+                              setState(() {
+                                isForget = false;
+                                isDialog = false;
+                              });
+                              if (context.mounted) {
+                                mySnackBar(context, e.toString());
+                              }
+                            }
+                          } else {
+                            setState(() {
+                              isForget = false;
+                              isDialog = false;
+                            });
+                            if (context.mounted) {
+                              return mySnackBar(
+                                context,
+                                'This email was not used to create User account\nRegister first',
+                              );
+                            }
                           }
                         }
-                      }
-                    },
-                    horizontalPadding: 0,
-                  ),
-                  !isSent ? Container() : const SizedBox(height: 12),
-                  !isSent
-                      ? Container()
-                      : const Text(
-                          'After resetting password, click below to Login',
-                        ),
-                  !isSent ? Container() : const SizedBox(height: 12),
-                  !isSent
-                      ? Container()
-                      : MyButton(
-                          text: 'LOGIN',
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    LoginEmailAfterForgetPassword(
-                                  email: emailController.text,
+                      },
+                      horizontalPadding: 0,
+                    ),
+                    !isSent ? Container() : const SizedBox(height: 12),
+                    !isSent
+                        ? Container()
+                        : const Text(
+                            'After resetting password, click below to Login',
+                          ),
+                    !isSent ? Container() : const SizedBox(height: 12),
+                    !isSent
+                        ? Container()
+                        : MyButton(
+                            text: 'LOGIN',
+                            onTap: () {
+                              Navigator.of(context).pop();
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      LoginEmailAfterForgetPassword(
+                                    email: emailController.text,
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
-                          horizontalPadding: 0,
-                        ),
-                ],
+                              );
+                            },
+                            horizontalPadding: 0,
+                          ),
+                  ],
+                ),
               ),
             ),
           ),

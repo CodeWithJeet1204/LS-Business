@@ -210,39 +210,40 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
         Provider.of<SelectBrandForDiscountProvider>(context);
     final selectedBrands = selectedBrandProvider.selectedBrands;
 
-    return ModalProgressHUD(
-      inAsyncCall: isDialog,
-      color: primaryDark,
-      blur: 0.5,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              selectedBrandProvider.clear();
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(
-              FeatherIcons.arrowLeft,
-            ),
-            tooltip: 'Back',
-          ),
-          actions: [
-            MyTextButton(
-              onPressed: () async {
-                await addDiscount(
-                  selectedBrandProvider,
-                  selectedBrands,
-                );
+    return PopScope(
+      canPop: isDialog ? false : true,
+      child: ModalProgressHUD(
+        inAsyncCall: isDialog,
+        color: primaryDark,
+        blur: 0.5,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            leading: IconButton(
+              onPressed: () {
+                selectedBrandProvider.clear();
+                Navigator.of(context).pop();
               },
-              text: 'DONE',
+              icon: const Icon(
+                FeatherIcons.arrowLeft,
+              ),
+              tooltip: 'Back',
             ),
-          ],
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-          child: LayoutBuilder(
-            builder: ((context, constraints) {
+            actions: [
+              MyTextButton(
+                onPressed: () async {
+                  await addDiscount(
+                    selectedBrandProvider,
+                    selectedBrands,
+                  );
+                },
+                text: 'DONE',
+              ),
+            ],
+          ),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+            child: LayoutBuilder(builder: (context, constraints) {
               double width = constraints.maxWidth;
 
               return SingleChildScrollView(

@@ -197,7 +197,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
     await showDialog(
       barrierDismissible: true,
       context: context,
-      builder: ((context) {
+      builder: (context) {
         return Dialog(
           elevation: 20,
           child: InteractiveViewer(
@@ -206,7 +206,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
             ),
           ),
         );
-      }),
+      },
     );
   }
 
@@ -252,52 +252,53 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
         .doc(auth.currentUser!.uid)
         .snapshots();
 
-    return ModalProgressHUD(
-      inAsyncCall: isDialog,
-      color: primaryDark,
-      blur: 0.5,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          title: const Text(
-            'Owner Details',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
+    return PopScope(
+      canPop: isDialog ? false : true,
+      child: ModalProgressHUD(
+        inAsyncCall: isDialog,
+        color: primaryDark,
+        blur: 0.5,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            title: const Text(
+              'Owner Details',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
-        ),
-        bottomSheet: isChangingName || isChangingNumber
-            ? SizedBox(
-                width: width,
-                height: 80,
-                child: isSaving
-                    ? Container(
-                        alignment: Alignment.center,
-                        width: double.infinity,
-                        decoration: const BoxDecoration(
-                          color: buttonColor,
-                        ),
-                        child: const Center(
-                          child: CircularProgressIndicator(
-                            color: white,
+          bottomSheet: isChangingName || isChangingNumber
+              ? SizedBox(
+                  width: width,
+                  height: 80,
+                  child: isSaving
+                      ? Container(
+                          alignment: Alignment.center,
+                          width: double.infinity,
+                          decoration: const BoxDecoration(
+                            color: buttonColor,
                           ),
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              color: white,
+                            ),
+                          ),
+                        )
+                      : MyButton(
+                          text: 'SAVE',
+                          onTap: () async {
+                            await save();
+                          },
+                          horizontalPadding: 0,
                         ),
-                      )
-                    : MyButton(
-                        text: 'SAVE',
-                        onTap: () async {
-                          await save();
-                        },
-                        horizontalPadding: 0,
-                      ),
-              )
-            : const SizedBox(
-                width: 0,
-                height: 0,
-              ),
-        body: Padding(
-          padding: const EdgeInsets.all(16),
-          child: LayoutBuilder(
-            builder: ((context, constraints) {
+                )
+              : const SizedBox(
+                  width: 0,
+                  height: 0,
+                ),
+          body: Padding(
+            padding: const EdgeInsets.all(16),
+            child: LayoutBuilder(builder: (context, constraints) {
               double width = constraints.maxWidth;
 
               return StreamBuilder(

@@ -61,9 +61,9 @@
 //       if (mounted) {
 //         Navigator.of(context).push(
 //           MaterialPageRoute(
-//             builder: ((context) => const LoginPage(
+//             builder: (context) => const LoginPage(
 //                   mode: 'vendor',
-//                 )),
+//                 ),
 //           ),
 //         );
 //       }
@@ -71,9 +71,9 @@
 //       if (mounted) {
 //         Navigator.of(context).push(
 //           MaterialPageRoute(
-//             builder: ((context) => const LoginPage(
+//             builder: (context) => const LoginPage(
 //                   mode: 'services',
-//                 )),
+//                 ),
 //           ),
 //         );
 //       }
@@ -81,9 +81,9 @@
 //       if (mounted) {
 //         Navigator.of(context).push(
 //           MaterialPageRoute(
-//             builder: ((context) => const LoginPage(
+//             builder: (context) => const LoginPage(
 //                   mode: 'events',
-//                 )),
+//                 ),
 //           ),
 //         );
 //       }

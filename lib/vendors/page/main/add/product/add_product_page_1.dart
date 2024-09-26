@@ -248,7 +248,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
           if (mounted) {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: ((context) => const AddProductPage2()),
+                builder: (context) => const AddProductPage2(),
               ),
             );
           }
@@ -272,46 +272,47 @@ class _AddProductPage1State extends State<AddProductPage1> {
         Provider.of<SelectBrandForProductProvider>(context);
     final addProductProvider = Provider.of<AddProductProvider>(context);
 
-    return ModalProgressHUD(
-      inAsyncCall: isDialog,
-      color: primaryDark,
-      blur: 0.5,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          title: Text(
-            remainingProducts == 0 ? 'Product Gallery Full' : 'Basic Info',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
+    return PopScope(
+      canPop: isDialog ? false : true,
+      child: ModalProgressHUD(
+        inAsyncCall: isDialog,
+        color: primaryDark,
+        blur: 0.5,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            title: Text(
+              remainingProducts == 0 ? 'Product Gallery Full' : 'Basic Info',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            actions: [
+              remainingProducts == 0
+                  ? Container()
+                  : MyTextButton(
+                      onPressed: () async {
+                        await addProduct(
+                          addProductProvider,
+                          selectBrandProvider,
+                        );
+                      },
+                      text: 'NEXT',
+                      textColor: primaryDark2,
+                    ),
+            ],
           ),
-          actions: [
-            remainingProducts == 0
-                ? Container()
-                : MyTextButton(
-                    onPressed: () async {
-                      await addProduct(
-                        addProductProvider,
-                        selectBrandProvider,
-                      );
-                    },
-                    text: 'NEXT',
-                    textColor: primaryDark2,
+          body: remainingProducts == 0
+              ? const Center(
+                  child: Text(
+                    'Your Product Gallery is full\nDelete older products or renew your membership to increase limit',
+                    textAlign: TextAlign.center,
                   ),
-          ],
-        ),
-        body: remainingProducts == 0
-            ? const Center(
-                child: Text(
-                  'Your Product Gallery is full\nDelete older products or renew your membership to increase limit',
-                  textAlign: TextAlign.center,
-                ),
-              )
-            : Padding(
-                padding: EdgeInsets.all(
-                  width * 0.0225,
-                ),
-                child: LayoutBuilder(
-                  builder: ((context, constraints) {
+                )
+              : Padding(
+                  padding: EdgeInsets.all(
+                    width * 0.0225,
+                  ),
+                  child: LayoutBuilder(builder: (context, constraints) {
                     double width = constraints.maxWidth;
                     return SingleChildScrollView(
                       child: Column(
@@ -599,8 +600,8 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                   onTap: () {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
-                                        builder: ((context) =>
-                                            const SelectBrandForProductPage()),
+                                        builder: (context) =>
+                                            const SelectBrandForProductPage(),
                                       ),
                                     );
                                   },
@@ -809,7 +810,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                     );
                   }),
                 ),
-              ),
+        ),
       ),
     );
   }

@@ -159,7 +159,7 @@
 //         ),
 //       ),
 //       body: LayoutBuilder(
-//         builder: ((context, constraints) {
+//         builder: (context, constraints) {
 //           final width = constraints.maxWidth;
 
 //           return !getData

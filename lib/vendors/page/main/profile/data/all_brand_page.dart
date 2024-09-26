@@ -130,7 +130,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
   Future<void> confirmDelete(String brandId, String? imageUrl) async {
     await showDialog(
       context: context,
-      builder: ((context) {
+      builder: (context) {
         return AlertDialog(
           title: const Text(
             'Confirm DELETE',
@@ -165,7 +165,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
             ),
           ],
         );
-      }),
+      },
     );
   }
 
@@ -370,12 +370,11 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                     onTap: () {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
-                                          builder: ((context) => BrandPage(
-                                                brandId: brandData['brandId'],
-                                                brandName:
-                                                    brandData['brandName'],
-                                                imageUrl: brandData['imageUrl'],
-                                              )),
+                                          builder: (context) => BrandPage(
+                                            brandId: brandData['brandId'],
+                                            brandName: brandData['brandName'],
+                                            imageUrl: brandData['imageUrl'],
+                                          ),
                                         ),
                                       );
                                     },
@@ -546,12 +545,11 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                     onTap: () {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
-                                          builder: ((context) => BrandPage(
-                                                brandId: brandData['brandId'],
-                                                brandName:
-                                                    brandData['brandName'],
-                                                imageUrl: brandData['imageUrl'],
-                                              )),
+                                          builder: (context) => BrandPage(
+                                            brandId: brandData['brandId'],
+                                            brandName: brandData['brandName'],
+                                            imageUrl: brandData['imageUrl'],
+                                          ),
                                         ),
                                       );
                                     },
