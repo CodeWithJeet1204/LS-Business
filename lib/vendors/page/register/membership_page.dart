@@ -513,16 +513,13 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
           isDialog = true;
         });
         try {
-          print('starting');
           if (leaderNameController.text.isNotEmpty) {
-            print('not empty');
             final leaderSnap = await store
                 .collection('Leaders')
                 .doc(leaderNameController.text.toLowerCase())
                 .get();
 
             if (leaderSnap.exists) {
-              print('exists');
               final leaderData = leaderSnap.data()!;
 
               var amount = leaderData['Amount'];
@@ -535,9 +532,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                   .update({
                 'Amount': amount,
               });
-              print('updated');
             } else {
-              print('does not exist');
               setState(() {
                 isPaying = false;
                 isDialog = false;

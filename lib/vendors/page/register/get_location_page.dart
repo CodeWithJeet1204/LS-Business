@@ -169,7 +169,10 @@ class _GetLocationPageState extends State<GetLocationPage> {
         isSaving = false;
         isDialog = false;
       });
-      return mySnackBar(context, 'Error occured: ${e.toString()}');
+      if (mounted) {
+        mySnackBar(context, 'Error occured: ${e.toString()}');
+      }
+      return;
     }
   }
 

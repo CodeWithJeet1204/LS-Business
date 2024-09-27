@@ -158,7 +158,6 @@ class _ShortsTileState extends State<ShortsTile> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    print('widget.data: ${widget.data}');
 
     return isData
         ? Scaffold(

@@ -120,11 +120,13 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
             }
           }
 
-          await authMethods.signUpWithEmail(
-            email: emailController.text,
-            password: passwordController.text,
-            context: context,
-          );
+          if (mounted) {
+            await authMethods.signUpWithEmail(
+              email: emailController.text,
+              password: passwordController.text,
+              context: context,
+            );
+          }
 
           if (auth.currentUser != null) {
             // if (widget.mode == 'vendor') {
