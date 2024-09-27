@@ -875,11 +875,11 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       MyTextButton(
                         onPressed: () {
-                          Navigator.of(context).pop();
-                          Navigator.of(context).push(
+                          Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
                               builder: (context) => const RegisterMethodPage(),
                             ),
+                            (route) => false,
                           );
                         },
                         text: 'REGISTER',

@@ -171,7 +171,7 @@
 //       ),
 //       body: LayoutBuilder(
 //         builder: (context, constraints) {
-//           double width = constraints.maxWidth;
+//           final width = constraints.maxWidth;
 
 //           return StreamBuilder(
 //             stream: discountCategoriesStream,

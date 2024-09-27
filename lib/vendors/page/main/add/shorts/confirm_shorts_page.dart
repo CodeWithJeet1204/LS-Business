@@ -61,6 +61,23 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
     super.dispose();
   }
 
+  // COMPRESS VIDEO
+  Future<File> compressVideo(String videoPath) async {
+    final compressedVideo = await VideoCompress.compressVideo(
+      videoPath,
+      quality: VideoQuality.MediumQuality,
+    );
+
+    return compressedVideo!.file!;
+  }
+
+  // GET THUMBNAIL
+  Future<File> getThumbnail(String videoPath) async {
+    final thumbnail = await VideoCompress.getFileThumbnail(videoPath);
+
+    return thumbnail;
+  }
+
   // UPLOAD VIDEO
   Future<void> uploadVideo(
     String? productId,
@@ -114,6 +131,7 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
       'vendorId': auth.currentUser!.uid,
       'shortsURL': shortsDownloadUrl,
       'shortsThumbnail': thumbnailDownloadUrl,
+      'viewsTimestamp': [],
       'productId': productId,
       'productName': productName,
       'caption': productId != null ? null : captionController.text,
@@ -135,23 +153,6 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
         (route) => false,
       );
     }
-  }
-
-  // COMPRESS VIDEO
-  Future<File> compressVideo(String videoPath) async {
-    final compressedVideo = await VideoCompress.compressVideo(
-      videoPath,
-      quality: VideoQuality.MediumQuality,
-    );
-
-    return compressedVideo!.file!;
-  }
-
-  // GET THUMBNAIL
-  Future<File> getThumbnail(String videoPath) async {
-    final thumbnail = await VideoCompress.getFileThumbnail(videoPath);
-
-    return thumbnail;
   }
 
   @override

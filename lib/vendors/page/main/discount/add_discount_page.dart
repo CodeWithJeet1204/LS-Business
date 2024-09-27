@@ -96,11 +96,7 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                   resizeToAvoidBottomInset: false,
                   backgroundColor: primary,
                   appBar: AppBar(
-                    title: const Text(
-                      'DISCOUNTS',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    title: const Text('DISCOUNTS'),
                     actions: [
                       IconButton(
                         onPressed: () async {
@@ -121,7 +117,7 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                   body: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: LayoutBuilder(builder: (context, constraints) {
-                      double width = constraints.maxWidth;
+                      final width = constraints.maxWidth;
 
                       return SingleChildScrollView(
                         child: Column(
@@ -132,14 +128,7 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                               width: width,
                               icon: FeatherIcons.box,
                               label: 'PRODUCT',
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const ProductDiscountPage(),
-                                  ),
-                                );
-                              },
+                              page: ProductDiscountPage(),
                             ),
 
                             // BRAND
@@ -148,14 +137,7 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                               width: width,
                               icon: FeatherIcons.award,
                               label: 'BRAND',
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const BrandDiscountPage(),
-                                  ),
-                                );
-                              },
+                              page: BrandDiscountPage(),
                             ),
 
                             // CATEGORY
@@ -164,14 +146,7 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                               width: width,
                               icon: FeatherIcons.box,
                               label: 'CATEGORY',
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const CategoryDiscountPage(),
-                                  ),
-                                );
-                              },
+                              page: CategoryDiscountPage(),
                             ),
                           ],
                         ),

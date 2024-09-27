@@ -112,11 +112,7 @@ class _ProfilePageState extends State<ProfilePage> {
       resizeToAvoidBottomInset: false,
       backgroundColor: primary,
       appBar: AppBar(
-        title: const Text(
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          'PROFILE',
-        ),
+        title: const Text('PROFILE'),
         actions: [
           IconButton(
             onPressed: () async {

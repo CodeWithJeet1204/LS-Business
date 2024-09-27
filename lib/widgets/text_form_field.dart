@@ -107,6 +107,11 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
                 ),
                 hintText: widget.hintText,
               ),
+              maxLength: widget.hintText == 'Name'
+                  ? 60
+                  : widget.hintText == 'Description'
+                      ? 500
+                      : null,
               validator: (value) {
                 if (value != null) {
                   if (value.isNotEmpty) {
@@ -116,7 +121,11 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
                       }
                     } else if (widget.hintText == 'Phone Number') {
                       if (value.length != 10) {
-                        return 'Nnumber should be 10 chars long';
+                        return 'Number should be 10 chars long';
+                      }
+                    } else if (widget.hintText == 'Price') {
+                      if (int.parse(value) < 1) {
+                        return 'Minimum Price Rs. 1';
                       }
                     } else if (widget.hintText == 'GST Number') {
                       if (value.length < 15) {

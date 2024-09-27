@@ -260,9 +260,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
-            title: const Text(
-              'Owner Details',
-            ),
+            title: const Text('Owner Details'),
             actions: [
               IconButton(
                 onPressed: () async {

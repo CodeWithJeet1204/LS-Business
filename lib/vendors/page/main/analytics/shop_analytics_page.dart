@@ -791,6 +791,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                         255,
                                         166,
                                       ),
+                                      isHalf: true,
                                     ),
 
                                     // ALL FOLLOWERS
@@ -808,6 +809,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                                 163,
                                                 1,
                                               ),
+                                              isHalf: true,
                                             );
                                           }
 

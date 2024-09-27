@@ -211,7 +211,7 @@ class _PostPageState extends State<PostPage> {
           horizontal: MediaQuery.of(context).size.width * 0.0225,
         ),
         child: LayoutBuilder(builder: (context, constraints) {
-          double width = constraints.maxWidth;
+          final width = constraints.maxWidth;
 
           return SingleChildScrollView(
             child: SizedBox(
@@ -276,7 +276,7 @@ class _PostPageState extends State<PostPage> {
                                               child: Container(
                                                 decoration: BoxDecoration(
                                                   image: DecorationImage(
-                                                    image: e,
+                                                    image: NetworkImage(e),
                                                     fit: BoxFit.cover,
                                                   ),
                                                 ),

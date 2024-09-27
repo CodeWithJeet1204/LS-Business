@@ -206,9 +206,7 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'All Discounts',
-        ),
+        title: const Text('All Discounts'),
         actions: [
           IconButton(
             onPressed: () async {

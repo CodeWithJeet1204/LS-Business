@@ -270,10 +270,10 @@ class _AddStatusPageState extends State<AddStatusPage> {
                                               width: 3,
                                             ),
                                             image: DecorationImage(
-                                              fit: BoxFit.cover,
                                               image: FileImage(
                                                 image[currentImageIndex],
                                               ),
+                                              fit: BoxFit.cover,
                                             ),
                                           ),
                                         ),
@@ -341,10 +341,10 @@ class _AddStatusPageState extends State<AddStatusPage> {
                                                         BorderRadius.circular(
                                                             4),
                                                     image: DecorationImage(
-                                                      fit: BoxFit.cover,
                                                       image: FileImage(
                                                         image[index],
                                                       ),
+                                                      fit: BoxFit.cover,
                                                     ),
                                                   ),
                                                 ),

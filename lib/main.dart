@@ -10,7 +10,6 @@ import 'package:ls_business/vendors/provider/discount_products_provider.dart';
 import 'package:ls_business/vendors/provider/main_page_provider.dart';
 import 'package:ls_business/vendors/provider/products_added_to_brand.dart';
 import 'package:ls_business/vendors/provider/products_added_to_category_provider.dart';
-import 'package:ls_business/vendors/provider/select_brand_for_product_provider.dart';
 import 'package:ls_business/vendors/provider/shop_type_provider.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -57,9 +56,9 @@ void main() async {
         ChangeNotifierProvider(
           create: (_) => SelectBrandForDiscountProvider(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => SelectBrandForProductProvider(),
-        ),
+        // ChangeNotifierProvider(
+        //   create: (_) => SelectBrandForProductProvider(),
+        // ),
         // ChangeNotifierProvider(
         //   create: (_) => PickLocationProvider(),
         // ),

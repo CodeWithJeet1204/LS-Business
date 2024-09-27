@@ -10,7 +10,7 @@ class GridViewSkeleton extends StatelessWidget {
     this.isDiscount = false,
   });
 
-  final double width;
+  final width;
   final bool isPrice;
   final bool isDelete;
   final bool isDiscount;
@@ -149,7 +149,7 @@ class ListViewSkeleton extends StatelessWidget {
     this.isDiscount = false,
   });
 
-  final double width;
+  final width;
   final double height;
   final bool isPrice;
   final bool isDelete;

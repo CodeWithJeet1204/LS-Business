@@ -133,11 +133,7 @@ class _AddProductPage5State extends State<AddProductPage5> {
         blur: 0.5,
         child: Scaffold(
           appBar: AppBar(
-            title: const Text(
-              'Services Available',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
+            title: const Text('Services Available'),
             actions: [
               IconButton(
                 onPressed: () async {

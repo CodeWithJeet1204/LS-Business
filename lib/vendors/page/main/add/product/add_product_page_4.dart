@@ -399,9 +399,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
-            title: const Text(
-              'Additional Info',
-            ),
+            title: const Text('Additional Info'),
             actions: [
               IconButton(
                 onPressed: () async {
@@ -435,7 +433,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
               : Padding(
                   padding: const EdgeInsets.all(8),
                   child: LayoutBuilder(builder: (context, constraints) {
-                    double width = constraints.maxWidth;
+                    final width = constraints.maxWidth;
 
                     return SingleChildScrollView(
                       child: Form(

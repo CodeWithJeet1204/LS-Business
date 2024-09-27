@@ -168,7 +168,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
         child: Scaffold(
           appBar: AppBar(
             title: const Text(
-              'ADD BRAND',
+              'Add Brand',
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -331,7 +331,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
                           ),
                           child: MyButton(
                             text:
-                                'Add Products (${productsAddedToBrandProvider.selectedProducts.length})',
+                                'Add Products - ${productsAddedToBrandProvider.selectedProducts.length}',
                             onTap: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(

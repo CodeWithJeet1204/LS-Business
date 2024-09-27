@@ -99,11 +99,7 @@ class _AnalyticsPageState extends State<AnalyticsPage>
                 )
               : Scaffold(
                   appBar: AppBar(
-                    title: const Text(
-                      'ANALYTICS',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    title: const Text('ANALYTICS'),
                     actions: [
                       IconButton(
                         onPressed: () async {

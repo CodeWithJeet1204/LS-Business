@@ -3,9 +3,7 @@ import 'package:ls_business/vendors/page/main/add/product/add_product_page_2.dar
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:ls_business/vendors/page/main/add/product/select_brand_for_product_page.dart';
 import 'package:ls_business/vendors/provider/add_product_provider.dart';
-import 'package:ls_business/vendors/provider/select_brand_for_product_provider.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/image_pick_dialog.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
@@ -14,6 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ls_business/widgets/text_form_field.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -155,7 +154,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
   // ADD PRODUCT
   Future<void> addProduct(
     AddProductProvider productProvider,
-    SelectBrandForProductProvider brandProvider,
+    // SelectBrandForProductProvider brandProvider,
   ) async {
     if (productKey.currentState!.validate()) {
       if (_image.length < 2) {
@@ -217,8 +216,8 @@ class _AddProductPage1State extends State<AddProductPage1> {
               'productName': nameController.text,
               'productPrice': double.parse(priceController.text),
               'productDescription': descriptionController.text,
-              'productBrand': brandProvider.selectedBrandName,
-              'productBrandId': brandProvider.selectedBrandId,
+              'productBrand': 'No Brand',
+              'productBrandId': '0',
               'productShares': 0,
               'productViewsTimestamp': [],
               'productLikesTimestamp': {},
@@ -240,7 +239,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
             },
             false,
           );
-          brandProvider.clear();
+          // brandProvider.clear();
           setState(() {
             isSaving = false;
             isDialog = false;
@@ -268,8 +267,8 @@ class _AddProductPage1State extends State<AddProductPage1> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    final selectBrandProvider =
-        Provider.of<SelectBrandForProductProvider>(context);
+    // final selectBrandProvider =
+    //     Provider.of<SelectBrandForProductProvider>(context);
     final addProductProvider = Provider.of<AddProductProvider>(context);
 
     return PopScope(
@@ -305,7 +304,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                       onPressed: () async {
                         await addProduct(
                           addProductProvider,
-                          selectBrandProvider,
+                          // selectBrandProvider,
                         );
                       },
                       text: 'NEXT',
@@ -325,7 +324,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                     width * 0.0225,
                   ),
                   child: LayoutBuilder(builder: (context, constraints) {
-                    double width = constraints.maxWidth;
+                    final width = constraints.maxWidth;
                     return SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -348,10 +347,10 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                                 width: 3,
                                               ),
                                               image: DecorationImage(
-                                                fit: BoxFit.cover,
                                                 image: FileImage(
                                                   _image[currentImageIndex],
                                                 ),
+                                                fit: BoxFit.cover,
                                               ),
                                             ),
                                           ),
@@ -423,10 +422,10 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                                           BorderRadius.circular(
                                                               4),
                                                       image: DecorationImage(
-                                                        fit: BoxFit.cover,
                                                         image: FileImage(
                                                           _image[index],
                                                         ),
+                                                        fit: BoxFit.cover,
                                                       ),
                                                     ),
                                                   ),
@@ -522,144 +521,85 @@ class _AddProductPage1State extends State<AddProductPage1> {
                             child: Column(
                               children: [
                                 // NAME
-                                TextFormField(
+                                MyTextFormField(
                                   controller: nameController,
-                                  onTapOutside: (event) =>
-                                      FocusScope.of(context).unfocus(),
-                                  maxLength: 60,
-                                  decoration: const InputDecoration(
-                                    hintText: 'Product Name',
-                                    border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: primaryDark2,
-                                        width: 2,
-                                      ),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value != null && value.isNotEmpty) {
-                                      return null;
-                                    } else {
-                                      return 'Enter Name';
-                                    }
-                                  },
+                                  hintText: 'Name',
+                                  borderRadius: 12,
+                                  horizontalPadding: 0,
                                 ),
                                 const SizedBox(height: 12),
 
                                 // PRICE
-                                TextFormField(
+                                MyTextFormField(
                                   controller: priceController,
-                                  onTapOutside: (event) =>
-                                      FocusScope.of(context).unfocus(),
-                                  keyboardType: TextInputType.number,
-                                  decoration: const InputDecoration(
-                                    hintText: 'Price',
-                                    border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: primaryDark2,
-                                        width: 2,
-                                      ),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value != null && value.isNotEmpty) {
-                                      if (int.parse(value) >= 1) {
-                                        return null;
-                                      } else {
-                                        return 'Price should be greater than Rs. 1';
-                                      }
-                                    } else {
-                                      return 'Enter Price';
-                                    }
-                                  },
+                                  hintText: 'Price',
+                                  borderRadius: 12,
+                                  horizontalPadding: 0,
                                 ),
                                 const SizedBox(height: 12),
 
                                 // DESCRIPTION
-                                TextFormField(
+                                MyTextFormField(
                                   controller: descriptionController,
-                                  onTapOutside: (event) =>
-                                      FocusScope.of(context).unfocus(),
-                                  minLines: 1,
-                                  maxLines: 10,
-                                  maxLength: 500,
-                                  keyboardType: TextInputType.multiline,
-                                  decoration: const InputDecoration(
-                                    hintText: 'Description',
-                                    border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: primaryDark2,
-                                        width: 2,
-                                      ),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value != null && value.isNotEmpty) {
-                                      if (value.isNotEmpty) {
-                                        return null;
-                                      } else {
-                                        return 'Description should be atleast 1 chars long';
-                                      }
-                                    } else {
-                                      return 'Enter Description';
-                                    }
-                                  },
-                                ),
-                                const SizedBox(height: 12),
-
-                                // BRAND
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const SelectBrandForProductPage(),
-                                      ),
-                                    );
-                                  },
-                                  splashColor: primary2,
-                                  radius: width * 0.5,
-                                  customBorder: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Container(
-                                    height: width * 0.16,
-                                    width: width,
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: width * 0.025),
-                                    alignment: Alignment.centerLeft,
-                                    decoration: BoxDecoration(
-                                      color: primary2.withOpacity(0.5),
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          selectBrandProvider
-                                                      .selectedBrandName ==
-                                                  'No Brand'
-                                              ? 'Select Brand'
-                                              : selectBrandProvider
-                                                  .selectedBrandName!,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            color: primaryDark,
-                                            fontSize: width * 0.055,
-                                          ),
-                                        ),
-                                        Icon(
-                                          FeatherIcons.chevronRight,
-                                          color: primaryDark,
-                                          size: width * 0.09,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                  hintText: 'Description',
+                                  borderRadius: 12,
+                                  horizontalPadding: 0,
                                 ),
                                 const SizedBox(height: 16),
+
+                                // BRAND
+                                // InkWell(
+                                //   onTap: () {
+                                //     Navigator.of(context).push(
+                                //       MaterialPageRoute(
+                                //         builder: (context) =>
+                                //             const SelectBrandForProductPage(),
+                                //       ),
+                                //     );
+                                //   },
+                                //   splashColor: primary2,
+                                //   radius: width * 0.5,
+                                //   customBorder: RoundedRectangleBorder(
+                                //     borderRadius: BorderRadius.circular(12),
+                                //   ),
+                                //   child: Container(
+                                //     height: width * 0.16,
+                                //     width: width,
+                                //     padding: EdgeInsets.symmetric(
+                                //         horizontal: width * 0.025),
+                                //     alignment: Alignment.centerLeft,
+                                //     decoration: BoxDecoration(
+                                //       color: primary2.withOpacity(0.5),
+                                //       borderRadius: BorderRadius.circular(12),
+                                //     ),
+                                //     child: Row(
+                                //       mainAxisAlignment:
+                                //           MainAxisAlignment.spaceBetween,
+                                //       children: [
+                                //         Text(
+                                //           selectBrandProvider
+                                //                       .selectedBrandName ==
+                                //                   'No Brand'
+                                //               ? 'Select Brand'
+                                //               : selectBrandProvider
+                                //                   .selectedBrandName!,
+                                //           maxLines: 1,
+                                //           overflow: TextOverflow.ellipsis,
+                                //           style: TextStyle(
+                                //             color: primaryDark,
+                                //             fontSize: width * 0.055,
+                                //           ),
+                                //         ),
+                                //         Icon(
+                                //           FeatherIcons.chevronRight,
+                                //           color: primaryDark,
+                                //           size: width * 0.09,
+                                //         ),
+                                //       ],
+                                //     ),
+                                //   ),
+                                // ),
+                                // const SizedBox(height: 16),
 
                                 // AVAILABLE / OUT OF STOCK
                                 Container(

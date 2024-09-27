@@ -139,11 +139,7 @@ class _SelectBrandForDiscountPageState
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text(
-          'Select Brands',
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
+        title: const Text('Select Brands'),
         actions: [
           IconButton(
             onPressed: () async {

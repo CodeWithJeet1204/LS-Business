@@ -150,9 +150,7 @@ class _SelectProductForShortsPageState
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text(
-          'Select Product',
-        ),
+        title: const Text('Select Product'),
         actions: [
           IconButton(
             onPressed: () async {

@@ -15,7 +15,7 @@ class DetailsContainer extends StatefulWidget {
 
   final String text;
   final String? value;
-  final double width;
+  final width;
   final TextEditingController controller;
   final bool isChanging;
   final void Function() onTap;

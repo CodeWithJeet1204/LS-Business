@@ -503,7 +503,7 @@ class _BrandPageState extends State<BrandPage> {
               ],
             ),
             body: LayoutBuilder(builder: (context, constraints) {
-              double width = constraints.maxWidth;
+              final width = constraints.maxWidth;
 
               return SingleChildScrollView(
                 child: StreamBuilder(
@@ -560,8 +560,9 @@ class _BrandPageState extends State<BrandPage> {
                                                   child: Container(
                                                     decoration: BoxDecoration(
                                                       image: DecorationImage(
-                                                        image: brandData[
-                                                            'imageUrl'],
+                                                        image: NetworkImage(
+                                                          brandData['imageUrl'],
+                                                        ),
                                                         fit: BoxFit.cover,
                                                       ),
                                                     ),
@@ -1038,7 +1039,7 @@ class _BrandPageState extends State<BrandPage> {
                                                                   },
                                                                   icon: Icon(
                                                                     FeatherIcons
-                                                                        .trash,
+                                                                        .x,
                                                                     color: const Color
                                                                         .fromARGB(
                                                                       255,
@@ -1172,8 +1173,7 @@ class _BrandPageState extends State<BrandPage> {
                                                                 );
                                                               },
                                                               icon: Icon(
-                                                                FeatherIcons
-                                                                    .trash,
+                                                                FeatherIcons.x,
                                                                 color: const Color
                                                                     .fromRGBO(
                                                                   215,

@@ -276,9 +276,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
-            title: const Text(
-              'Business Details',
-            ),
+            title: const Text('Business Details'),
             actions: [
               IconButton(
                 onPressed: () async {
@@ -331,7 +329,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                 vertical: width * 0.006125,
               ),
               child: LayoutBuilder(builder: (context, constraints) {
-                double width = constraints.maxWidth;
+                final width = constraints.maxWidth;
                 double height = constraints.maxHeight;
 
                 return StreamBuilder(

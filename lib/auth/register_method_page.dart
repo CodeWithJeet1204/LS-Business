@@ -681,6 +681,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                         ),
                       ),
                     ),
+                    SizedBox(height: width * 0.33),
 
                     // ALREADY HAVE AN ACCOUNT ? TEXT
                     Row(
@@ -692,11 +693,11 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                         ),
                         MyTextButton(
                           onPressed: () {
-                            Navigator.of(context).pop();
-                            Navigator.of(context).push(
+                            Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
                                 builder: (context) => const LoginPage(),
                               ),
+                              (route) => false,
                             );
                           },
                           text: 'LOGIN',

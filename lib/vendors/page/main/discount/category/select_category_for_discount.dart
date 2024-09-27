@@ -167,11 +167,7 @@ class _SelectCategoryForDiscountPageState
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text(
-          'Select Categories',
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
+        title: const Text('Select Categories'),
         actions: [
           IconButton(
             onPressed: () async {

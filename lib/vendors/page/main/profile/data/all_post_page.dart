@@ -204,9 +204,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text(
-          'All Posts',
-        ),
+        title: const Text('All Posts'),
         actions: [
           IconButton(
             onPressed: () async {
@@ -344,7 +342,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
                 ),
                 child: LayoutBuilder(
                   builder: (context, constraints) {
-                    double width = constraints.maxWidth;
+                    final width = constraints.maxWidth;
 
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

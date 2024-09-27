@@ -232,7 +232,7 @@ class _CategoryPageState extends State<CategoryPage> {
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          double width = constraints.maxWidth;
+          final width = constraints.maxWidth;
 
           return SingleChildScrollView(
             child: Padding(

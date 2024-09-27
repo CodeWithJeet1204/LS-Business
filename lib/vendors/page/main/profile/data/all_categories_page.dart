@@ -159,9 +159,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text(
-          'All Categories',
-        ),
+        title: const Text('All Categories'),
         actions: [
           IconButton(
             onPressed: () async {

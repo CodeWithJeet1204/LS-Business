@@ -186,7 +186,7 @@
 //           padding: const EdgeInsets.all(8),
 //           child: LayoutBuilder(
 //             builder: (context, constraints) {
-//               double width = constraints.maxWidth;
+//               final width = constraints.maxWidth;
 //               return SingleChildScrollView(
 //                 child: Column(
 //                   children: [

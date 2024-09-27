@@ -37,6 +37,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
   DateTime? endDateTime;
   File? _image;
   String? imageUrl;
+  bool isAddingImage = false;
   bool isPercentSelected = true;
   bool isUploading = false;
   bool isDialog = false;
@@ -50,6 +51,10 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
 
   // ADD DISCOUNT IMAGE
   Future<void> addDiscountImage() async {
+    setState(() {
+      isAddingImage = true;
+      isDialog = true;
+    });
     final images = await showImagePickDialog(context, true);
     if (images.isNotEmpty) {
       final im = images[0];
@@ -57,6 +62,10 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
         _image = File(im.path);
       });
     }
+    setState(() {
+      isAddingImage = false;
+      isDialog = false;
+    });
   }
 
   // SELECT START DATE
@@ -267,7 +276,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
             child: LayoutBuilder(builder: (context, constraints) {
-              double width = constraints.maxWidth;
+              final width = constraints.maxWidth;
 
               return SingleChildScrollView(
                 child: Form(
@@ -275,16 +284,16 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                   child: Column(
                     children: [
                       // DISCLAIMER
-                      const Text(
-                        'If your category has ongoing discount, then this discount will be applied, after that discount ends (if this discount ends after that)',
+                      Text(
+                        'If your selected category has ongoing discount, then this discount will be shown instead of that discount',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: primaryDark2,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
+                          fontSize: width * 0.03,
                         ),
                       ),
-                      const SizedBox(height: 8),
+
+                      Divider(),
 
                       // IMAGE
                       InkWell(
@@ -303,74 +312,79 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                             ),
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          child: _image == null
-                              ? Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Icon(
-                                      FeatherIcons.upload,
-                                      size: width * 0.25,
-                                    ),
-                                    Text(
-                                      'SELECT IMAGE',
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        color: primaryDark,
-                                        fontSize: width * 0.06,
-                                      ),
-                                    ),
-                                  ],
+                          child: isAddingImage
+                              ? Center(
+                                  child: CircularProgressIndicator(),
                                 )
-                              : Stack(
-                                  children: [
-                                    Center(
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(6),
-                                        child: Image.file(
-                                          _image!,
-                                          width: width,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    Row(
+                              : _image == null
+                                  ? Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceAround,
                                       children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(4),
-                                          child: IconButton.filledTonal(
-                                            onPressed: () async {
-                                              await addDiscountImage();
-                                            },
-                                            icon: Icon(
-                                              FeatherIcons.camera,
-                                              size: width * 0.115,
-                                            ),
-                                            tooltip: 'Change Image',
-                                          ),
+                                        Icon(
+                                          FeatherIcons.upload,
+                                          size: width * 0.25,
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(4),
-                                          child: IconButton.filledTonal(
-                                            onPressed: () {
-                                              setState(() {
-                                                _image = null;
-                                              });
-                                            },
-                                            icon: Icon(
-                                              FeatherIcons.x,
-                                              size: width * 0.115,
-                                            ),
-                                            tooltip: 'Remove Image',
+                                        Text(
+                                          'SELECT IMAGE',
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: primaryDark,
+                                            fontSize: width * 0.06,
                                           ),
                                         ),
                                       ],
+                                    )
+                                  : Stack(
+                                      children: [
+                                        Center(
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(6),
+                                            child: Image.file(
+                                              _image!,
+                                              width: width,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.all(4),
+                                              child: IconButton.filledTonal(
+                                                onPressed: () async {
+                                                  await addDiscountImage();
+                                                },
+                                                icon: Icon(
+                                                  FeatherIcons.camera,
+                                                  size: width * 0.115,
+                                                ),
+                                                tooltip: 'Change Image',
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.all(4),
+                                              child: IconButton.filledTonal(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    _image = null;
+                                                  });
+                                                },
+                                                icon: Icon(
+                                                  FeatherIcons.x,
+                                                  size: width * 0.115,
+                                                ),
+                                                tooltip: 'Remove Image',
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -390,8 +404,8 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                           hintText: 'Discount / Sale Name',
                         ),
                         validator: (value) {
-                          if (value != null && value.isEmpty) {
-                            return 'Please enter Discount Amount';
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Discount Name';
                           }
                           return null;
                         },

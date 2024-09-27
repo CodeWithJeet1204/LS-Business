@@ -186,7 +186,7 @@ class DISCOUNT extends State<DiscountPage> {
       try {
         setState(() {
           isAddingImage = true;
-          isDialog = false;
+          isDialog = true;
         });
         Reference ref =
             storage.ref().child('Vendor/Products').child(const Uuid().v4());
@@ -776,7 +776,7 @@ class DISCOUNT extends State<DiscountPage> {
             ],
           ),
           body: LayoutBuilder(builder: (context, constraints) {
-            double width = constraints.maxWidth;
+            final width = constraints.maxWidth;
 
             return SingleChildScrollView(
               child: StreamBuilder(

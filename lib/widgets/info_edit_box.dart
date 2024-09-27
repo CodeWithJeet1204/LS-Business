@@ -18,7 +18,7 @@ class InfoEditBox extends StatelessWidget {
   final dynamic content;
   final List<dynamic> propertyValue;
   final int noOfAnswers;
-  final double width;
+  final width;
   final int? maxLines;
   final void Function()? onPressed;
 

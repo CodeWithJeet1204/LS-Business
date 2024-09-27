@@ -1009,7 +1009,7 @@ class _ProductPageState extends State<ProductPage> {
           body: Padding(
             padding: const EdgeInsets.all(8),
             child: LayoutBuilder(builder: (context, constraints) {
-              double width = constraints.maxWidth;
+              final width = constraints.maxWidth;
 
               return SingleChildScrollView(
                 child: StreamBuilder(
@@ -1129,7 +1129,9 @@ class _ProductPageState extends State<ProductPage> {
                                                   width: 2,
                                                 ),
                                                 borderRadius:
-                                                    BorderRadius.circular(12),
+                                                    BorderRadius.circular(
+                                                  12,
+                                                ),
                                               ),
                                               child: isImageChanging
                                                   ? const CircularProgressIndicator()
@@ -1188,7 +1190,7 @@ class _ProductPageState extends State<ProductPage> {
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(
-                                                          12,
+                                                          10,
                                                         ),
                                                         child: Container(
                                                           decoration:
@@ -1197,7 +1199,8 @@ class _ProductPageState extends State<ProductPage> {
                                                                 DecorationImage(
                                                               image:
                                                                   NetworkImage(
-                                                                      e),
+                                                                e,
+                                                              ),
                                                               fit: BoxFit.cover,
                                                             ),
                                                           ),
@@ -2208,15 +2211,25 @@ class _ProductPageState extends State<ProductPage> {
                                     text: 'LIKES',
                                     width: width,
                                     property: likes,
-                                    color:
-                                        const Color.fromRGBO(189, 225, 255, 1),
+                                    color: const Color.fromRGBO(
+                                      189,
+                                      225,
+                                      255,
+                                      1,
+                                    ),
+                                    isHalf: true,
                                   ), // VIEWS
                                   InfoColorBox(
                                     text: 'VIEWS',
                                     width: width,
                                     property: views.length,
-                                    color:
-                                        const Color.fromRGBO(255, 248, 184, 1),
+                                    color: const Color.fromRGBO(
+                                      255,
+                                      248,
+                                      184,
+                                      1,
+                                    ),
+                                    isHalf: true,
                                   ),
                                 ],
                               ),
@@ -2235,15 +2248,25 @@ class _ProductPageState extends State<ProductPage> {
                                     text: 'SHARES',
                                     width: width,
                                     property: shares,
-                                    color:
-                                        const Color.fromRGBO(193, 255, 195, 1),
+                                    color: const Color.fromRGBO(
+                                      193,
+                                      255,
+                                      195,
+                                      1,
+                                    ),
+                                    isHalf: true,
                                   ), // WISHLIST
                                   InfoColorBox(
                                     text: 'WISHLIST',
                                     width: width,
                                     property: wishList.length,
-                                    color:
-                                        const Color.fromRGBO(255, 176, 170, 1),
+                                    color: const Color.fromRGBO(
+                                      255,
+                                      176,
+                                      170,
+                                      1,
+                                    ),
+                                    isHalf: true,
                                   ),
                                 ],
                               ),

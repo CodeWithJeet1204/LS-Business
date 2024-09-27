@@ -93,9 +93,7 @@ class _ChangeProductCategoryPageState extends State<ChangeProductCategoryPage> {
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
-            title: const Text(
-              'Select Category',
-            ),
+            title: const Text('Select Category'),
             actions: [
               IconButton(
                 onPressed: () async {

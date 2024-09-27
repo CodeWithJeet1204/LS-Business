@@ -112,7 +112,7 @@ class _ImageViewState extends State<ImageView> {
                                         child: Container(
                                           decoration: BoxDecoration(
                                             image: DecorationImage(
-                                              image: e,
+                                              image: NetworkImage(e),
                                               fit: BoxFit.contain,
                                             ),
                                           ),

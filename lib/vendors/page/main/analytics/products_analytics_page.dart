@@ -18,10 +18,42 @@ class ProductAnalyticsPage extends StatefulWidget {
 class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
+  Map<String, Map<String, dynamic>> shorts = {};
   String? selectedStringDuration = '7 Days';
   DateTime? selectedDuration = DateTime.now().subtract(
-    const Duration(days: 7),
+    const Duration(
+      days: 7,
+    ),
   );
+
+  // INIT STATE
+  @override
+  void initState() {
+    getShortsData();
+    super.initState();
+  }
+
+  // GET SHORTS DATA
+  Future<void> getShortsData() async {
+    Map<String, Map<String, dynamic>> myShorts = {};
+    final shortsSnap = await store
+        .collection('Business')
+        .doc('Data')
+        .collection('Shorts')
+        .where('vendorId', isEqualTo: auth.currentUser!.uid)
+        .get();
+
+    for (var shorts in shortsSnap.docs) {
+      final shortsData = shorts.data();
+
+      final shortsKey = shorts.id;
+      myShorts[shortsKey] = shortsData;
+    }
+
+    setState(() {
+      shorts = myShorts;
+    });
+  }
 
   // SELECTING DURATION
   void selectDate(String date) {
@@ -136,23 +168,19 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
   Color getRandomColor() {
     Random random = Random();
 
-    // Define the three base colors
     Color baseColor1 = Colors.red;
     Color baseColor2 = Colors.green;
     Color baseColor3 = Colors.blue;
 
-    // Define the weights for each color (random)
     double weight1 = random.nextDouble();
     double weight2 = random.nextDouble();
     double weight3 = random.nextDouble();
     double sumWeights = weight1 + weight2 + weight3;
 
-    // Normalize the weights to sum up to 1
     weight1 /= sumWeights;
     weight2 /= sumWeights;
     weight3 /= sumWeights;
 
-    // Calculate the weighted average of the RGB components
     int red = (weight1 * baseColor1.red +
             weight2 * baseColor2.red +
             weight3 * baseColor3.red)
@@ -166,7 +194,6 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
             weight3 * baseColor3.blue)
         .toInt();
 
-    // Create the new color
     return Color.fromARGB(255, red, green, blue);
   }
 
@@ -199,92 +226,65 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      // TITLE & TIME
-                      Padding(
-                        padding: EdgeInsets.only(
-                          bottom: width * 0.033,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            // TITLE
-                            Text(
-                              'PRODUCT DATA',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                color: primaryDark,
-                                fontSize: width * 0.045,
-                              ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'PRODUCT DATA',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: primaryDark,
+                              fontSize: width * 0.045,
                             ),
-                            // TIME
-                            Container(
-                              decoration: BoxDecoration(
-                                color: primary2,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                horizontal: width * 0.025,
-                              ),
-                              child: DropdownButton(
-                                // hint: const Text(
-                                //   'Select Duration',
-                                //   maxLines: 1,
-                                //   overflow: TextOverflow.ellipsis,
-                                // ),
-                                value:
-                                    selectedStringDuration ?? 'Select Duration',
-                                underline: const SizedBox(),
-                                dropdownColor: primary2,
-                                items: [
-                                  '24 Hours',
-                                  '7 Days',
-                                  '4 Weeks',
-                                  '365 Days',
-                                  'Lifetime'
-                                ]
-                                    .map((e) => DropdownMenuItem(
-                                          value: e,
-                                          child: Text(
-                                            e,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ))
-                                    .toList(),
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedStringDuration = value;
-                                  });
-                                  selectDate(selectedStringDuration!);
-                                },
-                              ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: primary2,
+                              borderRadius: BorderRadius.circular(8),
                             ),
-                          ],
-                        ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: width * 0.025,
+                            ),
+                            child: DropdownButton(
+                              value:
+                                  selectedStringDuration ?? 'Select Duration',
+                              underline: const SizedBox(),
+                              dropdownColor: primary2,
+                              items: [
+                                '24 Hours',
+                                '7 Days',
+                                '4 Weeks',
+                                '365 Days',
+                                'Lifetime'
+                              ]
+                                  .map((e) => DropdownMenuItem(
+                                        value: e,
+                                        child: Text(
+                                          e,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ))
+                                  .toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedStringDuration = value;
+                                });
+                                selectDate(selectedStringDuration!);
+                              },
+                            ),
+                          ),
+                        ],
                       ),
-
-                      // PRODUCT STREAM
+                      SizedBox(height: 12),
                       StreamBuilder(
                         stream: productStream,
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
                             return const Center(
                               child: Text(
-                                overflow: TextOverflow.ellipsis,
                                 'Something went wrong',
-                              ),
-                            );
-                          }
-
-                          if (!snapshot.hasData) {
-                            return const SizedBox(
-                              height: 80,
-                              child: Center(
-                                child: Text(
-                                  overflow: TextOverflow.ellipsis,
-                                  'No Data',
-                                ),
                               ),
                             );
                           }
@@ -296,11 +296,12 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                 child: Center(
                                   child: Text(
                                     'No Products Added',
-                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
                                   ),
                                 ),
                               );
                             }
+
                             final productSnap = snapshot.data!.docs;
                             Map<String, dynamic> productData = {
                               'productViewsTimestamp': [],
@@ -308,14 +309,17 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                               'productLikesTimestamp': {},
                               'shares': 0,
                             };
+                            Map<String, dynamic> shortsData = {
+                              'shortsViewsTimestamp': [],
+                            };
                             int index = 0;
-                            for (var element in productSnap) {
+                            for (var product in productSnap) {
                               productData['productViewsTimestamp'] +=
-                                  element['productViewsTimestamp'];
+                                  product['productViewsTimestamp'];
 
                               (productData['productWishlistTimestamp'] as Map)
                                   .addAll(
-                                (element['productWishlistTimestamp'] as Map)
+                                (product['productWishlistTimestamp'] as Map)
                                     .map(
                                   (key, value) => MapEntry(
                                     '$key$index',
@@ -326,7 +330,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
 
                               (productData['productLikesTimestamp'] as Map)
                                   .addAll(
-                                (element['productLikesTimestamp'] as Map).map(
+                                (product['productLikesTimestamp'] as Map).map(
                                   (key, value) => MapEntry(
                                     '$key$index',
                                     value,
@@ -334,13 +338,19 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                 ),
                               );
 
-                              productData['shares'] += element['productShares'];
+                              productData['shares'] += product['productShares'];
 
                               index++;
                             }
 
-                            List<DateTime> viewTimestamps = [];
-                            List<DateTime> wishlistTimestamps = [];
+                            for (var short in shorts.entries) {
+                              shortsData['shortsViewsTimestamp'] +=
+                                  short.value['shortsViewsTimestamp'];
+                            }
+
+                            List<DateTime> productViewTimestamps = [];
+                            List<DateTime> productWishlistTimestamps = [];
+                            List<DateTime> shortsViewsTimestamps = [];
 
                             for (Timestamp viewDate
                                 in productData['productViewsTimestamp']) {
@@ -348,10 +358,10 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                 if (viewDate
                                     .toDate()
                                     .isAfter(selectedDuration!)) {
-                                  viewTimestamps.add(viewDate.toDate());
+                                  productViewTimestamps.add(viewDate.toDate());
                                 }
                               } else {
-                                viewTimestamps.add(viewDate.toDate());
+                                productViewTimestamps.add(viewDate.toDate());
                               }
                             }
 
@@ -363,33 +373,50 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                 if (wishlistTimestamp
                                     .toDate()
                                     .isAfter(selectedDuration!)) {
-                                  wishlistTimestamps
+                                  productWishlistTimestamps
                                       .add(wishlistTimestamp.toDate());
                                 }
                               } else {
-                                wishlistTimestamps
+                                productWishlistTimestamps
                                     .add(wishlistTimestamp.toDate());
                               }
                             }
 
-                            Map<String, int> productWiseViews = {};
-
-                            for (var element in productSnap) {
-                              productWiseViews.addAll({
-                                element['productName'].toString():
-                                    ((element['productViewsTimestamp'] as List)
-                                        .length),
-                              });
+                            for (Timestamp viewDate
+                                in shortsData['shortsViewsTimestamp']) {
+                              if (selectedDuration != null) {
+                                if (viewDate
+                                    .toDate()
+                                    .isAfter(selectedDuration!)) {
+                                  shortsViewsTimestamps.add(viewDate.toDate());
+                                }
+                              } else {
+                                shortsViewsTimestamps.add(viewDate.toDate());
+                              }
                             }
 
+                            Map<String, int> productWiseViews = {};
                             Map<String, int> productWiseWishlist = {};
+                            Map<String, int> shortsWiseViews = {};
 
-                            for (var element in productSnap) {
-                              productWiseWishlist.addAll({
-                                element['productName'].toString():
-                                    (element['productWishlistTimestamp'] as Map)
-                                        .length,
-                              });
+                            for (var product in productSnap) {
+                              productWiseViews[product['productName']] =
+                                  (product['productViewsTimestamp'] as List)
+                                      .length;
+                            }
+
+                            for (var product in productSnap) {
+                              productWiseWishlist[product['productName']] =
+                                  (product['productWishlistTimestamp'] as Map)
+                                      .length;
+                            }
+
+                            for (var short in shorts.entries) {
+                              print('short.value: ${short.value}');
+                              shortsWiseViews[short.value['productName'] ??
+                                      short.value['caption']] =
+                                  (short.value['shortsViewsTimestamp'] as List)
+                                      .length;
                             }
 
                             String maxProductViewsKey = '-';
@@ -410,9 +437,17 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                               }
                             });
 
+                            String maxShortsViewsKey = '-';
+                            int maxShortsViewsValue = 0;
+                            shortsWiseViews.forEach((key, value) {
+                              if (value > maxShortsViewsValue) {
+                                maxShortsViewsKey = key;
+                                maxShortsViewsValue = value;
+                              }
+                            });
+
                             return Column(
                               children: [
-                                // TIMED VIEWS
                                 Container(
                                   width: width,
                                   height: width * 0.5,
@@ -429,7 +464,6 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      // PROPERTY & VALUE
                                       Padding(
                                         padding: EdgeInsets.symmetric(
                                           horizontal: width * 0.0225,
@@ -439,7 +473,6 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            // PROPERTY
                                             Text(
                                               'Product Views',
                                               maxLines: 1,
@@ -450,13 +483,16 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                 fontSize: width * 0.05,
                                               ),
                                             ),
-                                            // VALUE
                                             Text(
-                                              viewTimestamps.length > 1000000
-                                                  ? '${viewTimestamps.length.toString().substring(0)}.${viewTimestamps.length.toString().substring(1, 3)}M'
-                                                  : viewTimestamps.length > 1000
-                                                      ? '${viewTimestamps.length.toString().substring(0)}.${viewTimestamps.length.toString().substring(1, 3)}k'
-                                                      : viewTimestamps.length
+                                              productViewTimestamps.length >
+                                                      1000000
+                                                  ? '${productViewTimestamps.length.toString().substring(0)}.${productViewTimestamps.length.toString().substring(1, 3)}M'
+                                                  : productViewTimestamps
+                                                              .length >
+                                                          1000
+                                                      ? '${productViewTimestamps.length.toString().substring(0)}.${productViewTimestamps.length.toString().substring(1, 3)}k'
+                                                      : productViewTimestamps
+                                                          .length
                                                           .toString(),
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
@@ -469,14 +505,12 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                           ],
                                         ),
                                       ),
-
-                                      // GRAPH
                                       SizedBox(
                                         width: width,
                                         height: width * 0.3625,
                                         child: BarChart(
                                           BarChartData(
-                                            maxY: viewTimestamps.length
+                                            maxY: productViewTimestamps.length
                                                 .toDouble(),
                                             gridData: const FlGridData(
                                               drawVerticalLine: false,
@@ -544,7 +578,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                               const Duration(
                                                                   days: 1),
                                                             ),
-                                                            viewTimestamps,
+                                                            productViewTimestamps,
                                                             24,
                                                           ),
                                                           groupNumber,
@@ -569,7 +603,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                                   const Duration(
                                                                       days: 7),
                                                                 ),
-                                                                viewTimestamps,
+                                                                productViewTimestamps,
                                                                 7,
                                                               ),
                                                               groupNumber,
@@ -596,7 +630,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                                             28,
                                                                       ),
                                                                     ),
-                                                                    viewTimestamps,
+                                                                    productViewTimestamps,
                                                                     4,
                                                                   ),
                                                                   groupNumber,
@@ -623,7 +657,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                                                 365,
                                                                           ),
                                                                         ),
-                                                                        viewTimestamps,
+                                                                        productViewTimestamps,
                                                                         12,
                                                                       ),
                                                                       groupNumber,
@@ -649,7 +683,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                                                 days: 10000,
                                                                               ),
                                                                             ),
-                                                                            viewTimestamps,
+                                                                            productViewTimestamps,
                                                                             10,
                                                                           ),
                                                                           groupNumber,
@@ -664,8 +698,6 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                     ],
                                   ),
                                 ),
-
-                                // TIMED WISHLIST
                                 Container(
                                   width: width,
                                   height: width * 0.5,
@@ -682,7 +714,6 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      // PROPERTY & VALUE
                                       Padding(
                                         padding: EdgeInsets.symmetric(
                                           horizontal: width * 0.0225,
@@ -692,7 +723,6 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            // PROPERTY
                                             Text(
                                               'Product Wishlist',
                                               maxLines: 1,
@@ -703,15 +733,15 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                 fontSize: width * 0.05,
                                               ),
                                             ),
-                                            // VALUE
                                             Text(
-                                              wishlistTimestamps.length >
+                                              productWishlistTimestamps.length >
                                                       1000000
-                                                  ? '${wishlistTimestamps.length.toString().substring(0)}.${wishlistTimestamps.length.toString().substring(1, 3)}M'
-                                                  : wishlistTimestamps.length >
+                                                  ? '${productWishlistTimestamps.length.toString().substring(0)}.${productWishlistTimestamps.length.toString().substring(1, 3)}M'
+                                                  : productWishlistTimestamps
+                                                              .length >
                                                           1000
-                                                      ? '${wishlistTimestamps.length.toString().substring(0)}.${wishlistTimestamps.length.toString().substring(1, 3)}k'
-                                                      : wishlistTimestamps
+                                                      ? '${productWishlistTimestamps.length.toString().substring(0)}.${productWishlistTimestamps.length.toString().substring(1, 3)}k'
+                                                      : productWishlistTimestamps
                                                           .length
                                                           .toString(),
                                               maxLines: 1,
@@ -725,14 +755,13 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                           ],
                                         ),
                                       ),
-
-                                      // GRAPH
                                       SizedBox(
                                         width: width,
                                         height: width * 0.3625,
                                         child: BarChart(
                                           BarChartData(
-                                            maxY: wishlistTimestamps.length
+                                            maxY: productWishlistTimestamps
+                                                .length
                                                 .toDouble(),
                                             gridData: const FlGridData(
                                               drawVerticalLine: false,
@@ -800,7 +829,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                                 days: 1,
                                                               ),
                                                             ),
-                                                            wishlistTimestamps,
+                                                            productWishlistTimestamps,
                                                             24,
                                                           ),
                                                           groupNumber,
@@ -826,7 +855,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                                     days: 7,
                                                                   ),
                                                                 ),
-                                                                wishlistTimestamps,
+                                                                productWishlistTimestamps,
                                                                 7,
                                                               ),
                                                               groupNumber,
@@ -853,7 +882,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                                             28,
                                                                       ),
                                                                     ),
-                                                                    wishlistTimestamps,
+                                                                    productWishlistTimestamps,
                                                                     4,
                                                                   ),
                                                                   groupNumber,
@@ -880,7 +909,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                                                 365,
                                                                           ),
                                                                         ),
-                                                                        wishlistTimestamps,
+                                                                        productWishlistTimestamps,
                                                                         12,
                                                                       ),
                                                                       groupNumber,
@@ -906,7 +935,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                                                 days: 10000,
                                                                               ),
                                                                             ),
-                                                                            wishlistTimestamps,
+                                                                            productWishlistTimestamps,
                                                                             10,
                                                                           ),
                                                                           groupNumber,
@@ -921,13 +950,261 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                     ],
                                   ),
                                 ),
-
-                                // ALL TIME VIEWS AND WISHLIST
+                                Container(
+                                  width: width,
+                                  height: width * 0.5,
+                                  margin: EdgeInsets.symmetric(
+                                    vertical: width * 0.0125,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: primary2.withOpacity(0.25),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: width * 0.0225,
+                                          vertical: width * 0.0125,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              'Shorts Views',
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                color: primaryDark2,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: width * 0.05,
+                                              ),
+                                            ),
+                                            Text(
+                                              shortsViewsTimestamps.length >
+                                                      1000000
+                                                  ? '${shortsViewsTimestamps.length.toString().substring(0)}.${shortsViewsTimestamps.length.toString().substring(1, 3)}M'
+                                                  : shortsViewsTimestamps
+                                                              .length >
+                                                          1000
+                                                      ? '${shortsViewsTimestamps.length.toString().substring(0)}.${shortsViewsTimestamps.length.toString().substring(1, 3)}k'
+                                                      : shortsViewsTimestamps
+                                                          .length
+                                                          .toString(),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                color: primaryDark,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: width * 0.06,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: width,
+                                        height: width * 0.3625,
+                                        child: BarChart(
+                                          BarChartData(
+                                            maxY: shortsViewsTimestamps.length
+                                                .toDouble(),
+                                            gridData: const FlGridData(
+                                              drawVerticalLine: false,
+                                            ),
+                                            titlesData: FlTitlesData(
+                                              leftTitles: AxisTitles(
+                                                sideTitles: SideTitles(
+                                                  showTitles: true,
+                                                  reservedSize: width * 0.0685,
+                                                ),
+                                              ),
+                                              topTitles: const AxisTitles(
+                                                sideTitles: SideTitles(
+                                                  showTitles: false,
+                                                ),
+                                              ),
+                                              rightTitles: const AxisTitles(
+                                                sideTitles: SideTitles(
+                                                  showTitles: false,
+                                                ),
+                                              ),
+                                              bottomTitles: AxisTitles(
+                                                sideTitles: SideTitles(
+                                                  showTitles: true,
+                                                  reservedSize: width * 0.065,
+                                                  getTitlesWidget:
+                                                      (value, meta) {
+                                                    return Text(
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      value.toStringAsFixed(0),
+                                                      style: TextStyle(
+                                                        fontSize:
+                                                            selectedStringDuration ==
+                                                                    '24 Hours'
+                                                                ? width * 0.0266
+                                                                : width *
+                                                                    0.0375,
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                            alignment:
+                                                BarChartAlignment.spaceAround,
+                                            barTouchData: BarTouchData(
+                                              enabled: true,
+                                            ),
+                                            barGroups: selectedStringDuration ==
+                                                    '24 Hours'
+                                                ? List.generate(
+                                                    24,
+                                                    (index) {
+                                                      int groupNumber =
+                                                          index + 1;
+                                                      return BarChartGroupData(
+                                                        x: groupNumber,
+                                                        barRods:
+                                                            convertMapToBarChartRodData(
+                                                          groupDateTimeIntervals(
+                                                            DateTime.now()
+                                                                .subtract(
+                                                              const Duration(
+                                                                days: 1,
+                                                              ),
+                                                            ),
+                                                            shortsViewsTimestamps,
+                                                            24,
+                                                          ),
+                                                          groupNumber,
+                                                        ),
+                                                      );
+                                                    },
+                                                  ).toList()
+                                                : selectedStringDuration ==
+                                                        '7 Days'
+                                                    ? List.generate(
+                                                        7,
+                                                        (index) {
+                                                          int groupNumber =
+                                                              index + 1;
+                                                          return BarChartGroupData(
+                                                            x: groupNumber,
+                                                            barRods:
+                                                                convertMapToBarChartRodData(
+                                                              groupDateTimeIntervals(
+                                                                DateTime.now()
+                                                                    .subtract(
+                                                                  const Duration(
+                                                                    days: 7,
+                                                                  ),
+                                                                ),
+                                                                shortsViewsTimestamps,
+                                                                7,
+                                                              ),
+                                                              groupNumber,
+                                                            ),
+                                                          );
+                                                        },
+                                                      ).toList()
+                                                    : selectedStringDuration ==
+                                                            '4 Weeks'
+                                                        ? List.generate(
+                                                            4,
+                                                            (index) {
+                                                              int groupNumber =
+                                                                  index + 1;
+                                                              return BarChartGroupData(
+                                                                x: groupNumber,
+                                                                barRods:
+                                                                    convertMapToBarChartRodData(
+                                                                  groupDateTimeIntervals(
+                                                                    DateTime.now()
+                                                                        .subtract(
+                                                                      const Duration(
+                                                                        days:
+                                                                            28,
+                                                                      ),
+                                                                    ),
+                                                                    shortsViewsTimestamps,
+                                                                    4,
+                                                                  ),
+                                                                  groupNumber,
+                                                                ),
+                                                              );
+                                                            },
+                                                          ).toList()
+                                                        : selectedStringDuration ==
+                                                                '365 Days'
+                                                            ? List.generate(
+                                                                12,
+                                                                (index) {
+                                                                  int groupNumber =
+                                                                      index + 1;
+                                                                  return BarChartGroupData(
+                                                                    x: groupNumber,
+                                                                    barRods:
+                                                                        convertMapToBarChartRodData(
+                                                                      groupDateTimeIntervals(
+                                                                        DateTime.now()
+                                                                            .subtract(
+                                                                          const Duration(
+                                                                            days:
+                                                                                365,
+                                                                          ),
+                                                                        ),
+                                                                        shortsViewsTimestamps,
+                                                                        12,
+                                                                      ),
+                                                                      groupNumber,
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ).toList()
+                                                            : selectedStringDuration ==
+                                                                    'Lifetime'
+                                                                ? List.generate(
+                                                                    10,
+                                                                    (index) {
+                                                                      int groupNumber =
+                                                                          index +
+                                                                              1;
+                                                                      return BarChartGroupData(
+                                                                        x: groupNumber,
+                                                                        barRods:
+                                                                            convertMapToBarChartRodData(
+                                                                          groupDateTimeIntervals(
+                                                                            DateTime.now().subtract(
+                                                                              const Duration(
+                                                                                days: 10000,
+                                                                              ),
+                                                                            ),
+                                                                            shortsViewsTimestamps,
+                                                                            10,
+                                                                          ),
+                                                                          groupNumber,
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  ).toList()
+                                                                : null,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    // ALL VIEWS
                                     InfoColorBox(
                                       text: 'VIEWS',
                                       width: width,
@@ -936,10 +1213,13 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                   as List)
                                               .length,
                                       color: const Color.fromRGBO(
-                                          163, 255, 166, 1),
+                                        163,
+                                        255,
+                                        166,
+                                        1,
+                                      ),
+                                      isHalf: true,
                                     ),
-
-                                    // ALL LIKES
                                     InfoColorBox(
                                       text: 'LIKES',
                                       width: width,
@@ -948,12 +1228,15 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                   as Map)
                                               .length,
                                       color: const Color.fromRGBO(
-                                          237, 255, 163, 1),
+                                        237,
+                                        255,
+                                        163,
+                                        1,
+                                      ),
+                                      isHalf: true,
                                     ),
                                   ],
                                 ),
-
-                                // WISHLIST & SHARES
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                     vertical: width * 0.015,
@@ -962,7 +1245,6 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      // ALL TIME WISHLIST
                                       InfoColorBox(
                                         text: 'WISHLISTS',
                                         property: (productData[
@@ -976,21 +1258,23 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                           201,
                                           1,
                                         ),
+                                        isHalf: true,
                                       ),
-
-                                      // ALL TIME SHARES
                                       InfoColorBox(
                                         text: 'SHARES',
                                         property: productData['shares'],
                                         width: width,
                                         color: const Color.fromRGBO(
-                                            253, 182, 255, 1),
+                                          253,
+                                          182,
+                                          255,
+                                          1,
+                                        ),
+                                        isHalf: true,
                                       ),
                                     ],
                                   ),
                                 ),
-
-                                // PRODUCT WISE VIEWS
                                 Container(
                                   width: width,
                                   decoration: BoxDecoration(
@@ -1075,8 +1359,6 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                     ],
                                   ),
                                 ),
-
-                                // PRODUCT WISE WISHLIST
                                 Container(
                                   width: width,
                                   decoration: BoxDecoration(
@@ -1163,30 +1445,134 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                     ],
                                   ),
                                 ),
-
-                                // VIEWS & WISHLIST
+                                Container(
+                                  width: width,
+                                  decoration: BoxDecoration(
+                                    color: primary2.withOpacity(0.25),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: width * 0.0066,
+                                    horizontal: width * 0.0066,
+                                  ),
+                                  margin: EdgeInsets.symmetric(
+                                    vertical: width * 0.0125,
+                                    horizontal: width * 0.01,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Shorts Wise Views',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              color: primaryDark2,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: width * 0.05,
+                                            ),
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                  left: width * 0.05,
+                                                ),
+                                                child: Text(
+                                                  (shortsData['shortsViewsTimestamp']
+                                                                  as List)
+                                                              .length >
+                                                          1000000
+                                                      ? '${(shortsData['shortsViewsTimestamp'] as List).length.toString().substring(0, 1)}.${(shortsData['shortsViewsTimestamp'] as List).length.toString().substring(1, 4)}M'
+                                                      : (shortsData['shortsViewsTimestamp']
+                                                                      as List)
+                                                                  .length >
+                                                              1000
+                                                          ? '${(shortsData['shortsViewsTimestamp'] as List).length.toString().substring(0, 1)}.${(shortsData['shortsViewsTimestamp'] as List).length.toString().substring(1, 4)}k'
+                                                          : (shortsData[
+                                                                      'shortsViewsTimestamp']
+                                                                  as List)
+                                                              .length
+                                                              .toString(),
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                    color: primaryDark2,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: width * 0.15,
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: width * 0.5,
+                                                height: width * 0.5,
+                                                child: PieChart(
+                                                  PieChartData(
+                                                    sections: productWiseData(
+                                                      shortsWiseViews,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    // PRODUCT WITH MOST VIEWS
                                     InfoColorBox(
                                       text: 'Most Viewed',
                                       property: maxProductViewsKey,
                                       width: width,
                                       color: const Color.fromRGBO(
-                                          255, 135, 175, 1),
+                                        255,
+                                        135,
+                                        175,
+                                        1,
+                                      ),
+                                      isHalf: true,
                                     ),
-
-                                    // PRODUCT WITH MOST WISHLIST
                                     InfoColorBox(
                                       text: 'Most Wishlisted',
                                       property: maxProductWishlistKey,
                                       width: width,
                                       color: const Color.fromRGBO(
-                                          251, 135, 255, 1),
+                                        251,
+                                        135,
+                                        255,
+                                        1,
+                                      ),
+                                      isHalf: true,
                                     ),
                                   ],
+                                ),
+                                SizedBox(
+                                  height: width * 0.375,
+                                  child: InfoColorBox(
+                                    text: 'Most Viewed Shorts',
+                                    property: maxShortsViewsKey,
+                                    width: width,
+                                    color: const Color.fromRGBO(
+                                      251,
+                                      135,
+                                      255,
+                                      1,
+                                    ),
+                                    isHalf: false,
+                                  ),
                                 ),
                               ],
                             );

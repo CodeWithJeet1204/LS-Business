@@ -122,7 +122,7 @@ class _AddPageState extends State<AddPage> {
                   body: SafeArea(
                     child: LayoutBuilder(
                       builder: (context, constraints) {
-                        double width = constraints.maxWidth;
+                        final width = constraints.maxWidth;
                         return SingleChildScrollView(
                           child: Column(
                             mainAxisSize: MainAxisSize.max,
@@ -134,14 +134,7 @@ class _AddPageState extends State<AddPage> {
                                 width: width,
                                 icon: FeatherIcons.box,
                                 label: 'PRODUCT',
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const AddProductPage1(),
-                                    ),
-                                  );
-                                },
+                                page: AddProductPage1(),
                               ),
 
                               // STATUS
@@ -150,14 +143,7 @@ class _AddPageState extends State<AddPage> {
                                 width: width,
                                 icon: FeatherIcons.upload,
                                 label: 'STATUS',
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const AddStatusPage(),
-                                    ),
-                                  );
-                                },
+                                page: AddStatusPage(),
                               ),
 
                               // SHORTS
@@ -166,14 +152,7 @@ class _AddPageState extends State<AddPage> {
                                 width: width,
                                 icon: FeatherIcons.playCircle,
                                 label: 'SHORTS',
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const AddShortsPage(),
-                                    ),
-                                  );
-                                },
+                                page: AddShortsPage(),
                               ),
 
                               // BRAND
@@ -182,14 +161,7 @@ class _AddPageState extends State<AddPage> {
                                 width: width,
                                 icon: FeatherIcons.award,
                                 label: 'BRAND',
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const AddBrandPage(),
-                                    ),
-                                  );
-                                },
+                                page: AddBrandPage(),
                               ),
 
                               // BULK PRODUCTS

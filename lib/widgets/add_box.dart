@@ -9,14 +9,14 @@ class AddBox extends StatefulWidget {
     required this.width,
     required this.icon,
     required this.label,
-    required this.onTap,
+    required this.page,
   });
 
   final BuildContext context;
-  final double width;
+  final width;
   final IconData icon;
   final String label;
-  final VoidCallback onTap;
+  final Widget page;
 
   @override
   State<AddBox> createState() => _AddBoxState();
@@ -45,7 +45,13 @@ class _AddBoxState extends State<AddBox> {
         vertical: widget.width * 0.0225,
       ),
       child: GestureDetector(
-        onTap: widget.onTap,
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => widget.page,
+            ),
+          );
+        },
         child: Row(
           children: [
             Container(

@@ -205,9 +205,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text(
-          'All Products',
-        ),
+        title: const Text('All Products'),
         actions: [
           IconButton(
             onPressed: () async {

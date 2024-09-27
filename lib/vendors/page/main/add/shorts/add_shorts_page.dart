@@ -59,7 +59,7 @@ class AddShortsPageState extends State<AddShortsPage> {
   }
 
   // SHOW OPTIONS DIALOG
-  Future<void> showOptionsDialog(BuildContext context, double width) async {
+  Future<void> showOptionsDialog(BuildContext context, final width) async {
     await showDialog(
       context: context,
       builder: (context) {
