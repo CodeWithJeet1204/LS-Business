@@ -5,7 +5,6 @@ import 'package:ls_business/vendors/page/main/profile/details/membership_details
 import 'package:ls_business/vendors/page/register/business_social_media_page.dart';
 import 'package:ls_business/widgets/text_button.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:ls_business/vendors/page/main/profile/details/change_timings_page.dart';
@@ -386,8 +385,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                                 },
                                           child: CircleAvatar(
                                             radius: width * 0.15,
-                                            backgroundImage:
-                                                CachedNetworkImageProvider(
+                                            backgroundImage: NetworkImage(
                                               shopData['Image'] ??
                                                   'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
                                             ),

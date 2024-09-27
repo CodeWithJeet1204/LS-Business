@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:ls_business/vendors/provider/products_added_to_category_provider.dart';
@@ -568,35 +567,25 @@ class _SelectProductsForCategoryPageState
                                                         vertical:
                                                             width * 0.00125,
                                                       ),
-                                                      child: CachedNetworkImage(
-                                                        imageUrl: productData[
-                                                            'images'][0],
-                                                        imageBuilder: (context,
-                                                            imageProvider) {
-                                                          return ClipRRect(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                              4,
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                          4,
+                                                        ),
+                                                        child: Container(
+                                                          width: width * 0.15,
+                                                          height: width * 0.166,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            image:
+                                                                DecorationImage(
+                                                              image: productData[
+                                                                  'images'][0],
+                                                              fit: BoxFit.cover,
                                                             ),
-                                                            child: Container(
-                                                              width:
-                                                                  width * 0.15,
-                                                              height:
-                                                                  width * 0.166,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                image:
-                                                                    DecorationImage(
-                                                                  image:
-                                                                      imageProvider,
-                                                                  fit: BoxFit
-                                                                      .cover,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          );
-                                                        },
+                                                          ),
+                                                        ),
                                                       ),
                                                     ),
                                                     title: Text(

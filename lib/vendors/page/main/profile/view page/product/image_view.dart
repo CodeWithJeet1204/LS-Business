@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flick_video_player/flick_video_player.dart';
@@ -107,25 +106,18 @@ class _ImageViewState extends State<ImageView> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(8),
                                   child: InteractiveViewer(
-                                    child: CachedNetworkImage(
-                                      imageUrl: e,
-                                      imageBuilder: (context, imageProvider) {
-                                        return Center(
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(
-                                              8,
-                                            ),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                  image: imageProvider,
-                                                  fit: BoxFit.contain,
-                                                ),
-                                              ),
+                                    child: Center(
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(8),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: e,
+                                              fit: BoxFit.contain,
                                             ),
                                           ),
-                                        );
-                                      },
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),

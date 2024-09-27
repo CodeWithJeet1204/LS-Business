@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:ls_business/vendors/page/main/add/brand/select_products_for_brand_page.dart';
@@ -553,29 +552,20 @@ class _BrandPageState extends State<BrandPage> {
                                                     BorderRadius.circular(
                                                   10,
                                                 ),
-                                                child: CachedNetworkImage(
-                                                  imageUrl:
-                                                      brandData['imageUrl'],
-                                                  imageBuilder:
-                                                      (context, imageProvider) {
-                                                    return ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                        10,
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    10,
+                                                  ),
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                        image: brandData[
+                                                            'imageUrl'],
+                                                        fit: BoxFit.cover,
                                                       ),
-                                                      child: Container(
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          image:
-                                                              DecorationImage(
-                                                            image:
-                                                                imageProvider,
-                                                            fit: BoxFit.cover,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                       ),

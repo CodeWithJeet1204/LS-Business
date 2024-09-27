@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
@@ -268,27 +267,21 @@ class _PostPageState extends State<PostPage> {
                                               ),
                                             );
                                           },
-                                          child: CachedNetworkImage(
-                                            imageUrl: e,
-                                            imageBuilder:
-                                                (context, imageProvider) {
-                                              return Center(
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                    11,
-                                                  ),
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                        image: imageProvider,
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    ),
+                                          child: Center(
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                11,
+                                              ),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                    image: e,
+                                                    fit: BoxFit.cover,
                                                   ),
                                                 ),
-                                              );
-                                            },
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ),

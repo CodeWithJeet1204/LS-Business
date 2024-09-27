@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
@@ -357,17 +356,16 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                         onTap: () async {
                                           await showImage(
                                             userData['Image'] ??
-                                                'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
+                                                'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
                                           );
                                         },
                                         child: CircleAvatar(
                                           radius: width * 0.15,
-                                          backgroundImage:
-                                              CachedNetworkImageProvider(
-                                            userData['Image'] ??
-                                                'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
-                                          ),
                                           backgroundColor: primary2,
+                                          backgroundImage: NetworkImage(
+                                            userData['Image'] ??
+                                                'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+                                          ),
                                         ),
                                       ),
                                       Positioned(
