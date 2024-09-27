@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,6 +11,7 @@ import 'package:ls_business/widgets/image_pick_dialog.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:uuid/uuid.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class AddStatusPage extends StatefulWidget {
   const AddStatusPage({
@@ -171,6 +171,22 @@ class _AddStatusPageState extends State<AddStatusPage> {
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Add Status'),
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  await showYouTubePlayerDialog(
+                    context,
+                    getYoutubeVideoId(
+                      '',
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.question_mark_outlined,
+                ),
+                tooltip: 'Help',
+              ),
+            ],
           ),
           body: SafeArea(
             child: LayoutBuilder(

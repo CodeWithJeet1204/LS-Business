@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:ls_business/vendors/page/main/add/brand/select_products_for_brand_page.dart';
@@ -16,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class AddBrandPage extends StatefulWidget {
   const AddBrandPage({super.key});
@@ -173,6 +173,20 @@ class _AddBrandPageState extends State<AddBrandPage> {
               overflow: TextOverflow.ellipsis,
             ),
             actions: [
+              IconButton(
+                onPressed: () async {
+                  await showYouTubePlayerDialog(
+                    context,
+                    getYoutubeVideoId(
+                      '',
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.question_mark_outlined,
+                ),
+                tooltip: 'Help',
+              ),
               MyTextButton(
                 onPressed: () async {
                   await addBrand(

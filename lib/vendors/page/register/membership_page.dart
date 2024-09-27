@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class SelectMembershipPage extends StatefulWidget {
   const SelectMembershipPage({
@@ -641,6 +642,22 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: const Text('Select Membership'),
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  await showYouTubePlayerDialog(
+                    context,
+                    getYoutubeVideoId(
+                      '',
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.question_mark_outlined,
+                ),
+                tooltip: 'Help',
+              ),
+            ],
           ),
           bottomSheet: // PAY BUTTON
               selectedDuration == 'Duration' && !isAvailingOffer

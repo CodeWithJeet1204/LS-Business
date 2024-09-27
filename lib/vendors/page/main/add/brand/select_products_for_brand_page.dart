@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class AddProductsToBrandPage extends StatefulWidget {
   const AddProductsToBrandPage({
@@ -182,6 +183,20 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
               overflow: TextOverflow.ellipsis,
             ),
             actions: [
+              IconButton(
+                onPressed: () async {
+                  await showYouTubePlayerDialog(
+                    context,
+                    getYoutubeVideoId(
+                      '',
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.question_mark_outlined,
+                ),
+                tooltip: 'Help',
+              ),
               MyTextButton(
                 onPressed: () async {
                   if (widget.isFromBrandPage != null) {

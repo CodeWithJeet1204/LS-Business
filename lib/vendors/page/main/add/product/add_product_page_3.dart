@@ -9,6 +9,7 @@ import 'package:feather_icons/feather_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class AddProductPage3 extends StatefulWidget {
   const AddProductPage3({
@@ -86,6 +87,20 @@ class _AddProductPage3State extends State<AddProductPage3> {
       appBar: AppBar(
         title: const Text('Select Category'),
         actions: [
+          IconButton(
+            onPressed: () async {
+              await showYouTubePlayerDialog(
+                context,
+                getYoutubeVideoId(
+                  '',
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.question_mark_outlined,
+            ),
+            tooltip: 'Help',
+          ),
           MyTextButton(
             onPressed: () {
               if (selectedCategory != null) {

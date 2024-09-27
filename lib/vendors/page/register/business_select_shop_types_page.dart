@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ls_business/vendors/page/register/business_choose_categories_page.dart';
+import 'package:ls_business/vendors/page/register/business_select_categories_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/select_container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class BusinessChooseShopTypesPage extends StatefulWidget {
   const BusinessChooseShopTypesPage({
@@ -109,7 +110,23 @@ class _BusinessChooseShopTypesPageState
         child: Scaffold(
           extendBodyBehindAppBar: true,
           appBar: AppBar(
-            title: const Text('Choose Types'),
+            title: const Text('Select Shop Types'),
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  await showYouTubePlayerDialog(
+                    context,
+                    getYoutubeVideoId(
+                      '',
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.question_mark_outlined,
+                ),
+                tooltip: 'Help',
+              ),
+            ],
           ),
           body: shopTypes == null
               ? const Center(

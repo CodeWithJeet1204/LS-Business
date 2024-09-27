@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:ls_business/widgets/text_form_field.dart';
@@ -15,6 +14,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:uuid/uuid.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:video_player/video_player.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class ConfirmShortsPage extends StatefulWidget {
   const ConfirmShortsPage({
@@ -165,7 +165,24 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
         color: primaryDark,
         blur: 0.5,
         child: Scaffold(
-          appBar: AppBar(),
+          appBar: AppBar(
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  await showYouTubePlayerDialog(
+                    context,
+                    getYoutubeVideoId(
+                      '',
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.question_mark_outlined,
+                ),
+                tooltip: 'Help',
+              ),
+            ],
+          ),
           body: SafeArea(
             child: SingleChildScrollView(
               child: Padding(

@@ -7,6 +7,7 @@ import 'package:ls_business/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class SelectProductForDiscountPage extends StatefulWidget {
   const SelectProductForDiscountPage({super.key});
@@ -142,6 +143,20 @@ class _SelectProductForDiscountPageState
           overflow: TextOverflow.ellipsis,
         ),
         actions: [
+          IconButton(
+            onPressed: () async {
+              await showYouTubePlayerDialog(
+                context,
+                getYoutubeVideoId(
+                  '',
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.question_mark_outlined,
+            ),
+            tooltip: 'Help',
+          ),
           MyTextButton(
             onPressed: () {
               Navigator.of(context).pop();

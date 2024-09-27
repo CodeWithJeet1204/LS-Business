@@ -6,6 +6,7 @@ import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:ls_business/widgets/text_form_field.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class LoginEmailAfterForgetPassword extends StatefulWidget {
   const LoginEmailAfterForgetPassword({
@@ -80,6 +81,22 @@ class _LoginEmailAfterForgetPasswordState
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Email Login'),
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  await showYouTubePlayerDialog(
+                    context,
+                    getYoutubeVideoId(
+                      '',
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.question_mark_outlined,
+                ),
+                tooltip: 'Help',
+              ),
+            ],
           ),
           body: SafeArea(
             child: Padding(

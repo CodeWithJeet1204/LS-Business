@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class MembershipDetailsPage extends StatefulWidget {
   const MembershipDetailsPage({super.key});
@@ -102,6 +103,22 @@ class _MembershipDetailsPageState extends State<MembershipDetailsPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Membership Details'),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await showYouTubePlayerDialog(
+                context,
+                getYoutubeVideoId(
+                  '',
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.question_mark_outlined,
+            ),
+            tooltip: 'Help',
+          ),
+        ],
       ),
       body: SafeArea(
         child: data == null

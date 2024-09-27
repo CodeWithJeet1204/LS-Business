@@ -6,6 +6,7 @@ import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:uuid/uuid.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class AddTextPostPage extends StatefulWidget {
   const AddTextPostPage({
@@ -101,6 +102,22 @@ class _AddTextPostPageState extends State<AddTextPostPage> {
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Add Text Post'),
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  await showYouTubePlayerDialog(
+                    context,
+                    getYoutubeVideoId(
+                      '',
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.question_mark_outlined,
+                ),
+                tooltip: 'Help',
+              ),
+            ],
           ),
           body: SafeArea(
             child: LayoutBuilder(

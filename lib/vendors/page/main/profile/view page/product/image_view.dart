@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class ImageView extends StatefulWidget {
   const ImageView({
@@ -56,7 +57,24 @@ class _ImageViewState extends State<ImageView> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await showYouTubePlayerDialog(
+                context,
+                getYoutubeVideoId(
+                  '',
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.question_mark_outlined,
+            ),
+            tooltip: 'Help',
+          ),
+        ],
+      ),
       body: LayoutBuilder(
         builder: (context, constraints) {
           final width = constraints.maxWidth;

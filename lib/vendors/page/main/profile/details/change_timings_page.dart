@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/text_button.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class ChangeTimingsPage extends StatefulWidget {
   const ChangeTimingsPage({super.key});
@@ -280,15 +281,31 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Change Timings'),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await showYouTubePlayerDialog(
+                context,
+                getYoutubeVideoId(
+                  '',
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.question_mark_outlined,
+            ),
+            tooltip: 'Help',
+          ),
+        ],
       ),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(
-            MediaQuery.of(context).size.width * 0.0125,
-          ),
+          padding: EdgeInsets.all(width * 0.0125),
           child: LayoutBuilder(builder: (context, constraints) {
             final width = constraints.maxWidth;
 

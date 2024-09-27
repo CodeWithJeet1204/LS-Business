@@ -9,9 +9,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:ls_business/vendors/page/main/profile/details/change_timings_page.dart';
-import 'package:ls_business/vendors/page/register/business_choose_shop_types_page.dart';
-import 'package:ls_business/vendors/page/register/business_choose_categories_page.dart';
-import 'package:ls_business/vendors/page/register/business_choose_products_page.dart';
+import 'package:ls_business/vendors/page/register/business_select_shop_types_page.dart';
+import 'package:ls_business/vendors/page/register/business_select_categories_page.dart';
+import 'package:ls_business/vendors/page/register/business_select_products_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/image_pick_dialog.dart';
@@ -20,6 +20,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class BusinessDetailsPage extends StatefulWidget {
   const BusinessDetailsPage({super.key});
@@ -278,9 +279,23 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
           appBar: AppBar(
             title: const Text(
               'Business Details',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
             ),
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  await showYouTubePlayerDialog(
+                    context,
+                    getYoutubeVideoId(
+                      '',
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.question_mark_outlined,
+                ),
+                tooltip: 'Help',
+              ),
+            ],
           ),
           bottomSheet: isChangingName || isChangingDescription
               ? SizedBox(

@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:ls_business/vendors/page/main/add/product/add_product_page_2.dart';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
@@ -18,6 +17,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class AddProductPage1 extends StatefulWidget {
   const AddProductPage1({super.key});
@@ -283,10 +283,22 @@ class _AddProductPage1State extends State<AddProductPage1> {
           appBar: AppBar(
             title: Text(
               remainingProducts == 0 ? 'Product Gallery Full' : 'Basic Info',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
             ),
             actions: [
+              IconButton(
+                onPressed: () async {
+                  await showYouTubePlayerDialog(
+                    context,
+                    getYoutubeVideoId(
+                      '',
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.question_mark_outlined,
+                ),
+                tooltip: 'Help',
+              ),
               remainingProducts == 0
                   ? Container()
                   : MyTextButton(

@@ -8,6 +8,7 @@ import 'package:ls_business/widgets/text_button.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class ChangeProductCategoryPage extends StatefulWidget {
   const ChangeProductCategoryPage({
@@ -94,10 +95,22 @@ class _ChangeProductCategoryPageState extends State<ChangeProductCategoryPage> {
           appBar: AppBar(
             title: const Text(
               'Select Category',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
             ),
             actions: [
+              IconButton(
+                onPressed: () async {
+                  await showYouTubePlayerDialog(
+                    context,
+                    getYoutubeVideoId(
+                      '',
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.question_mark_outlined,
+                ),
+                tooltip: 'Help',
+              ),
               MyTextButton(
                 onPressed: () async {
                   setState(() {

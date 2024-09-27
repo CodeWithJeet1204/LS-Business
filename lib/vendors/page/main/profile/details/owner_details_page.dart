@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class OwnerDetailsPage extends StatefulWidget {
   const OwnerDetailsPage({super.key});
@@ -263,9 +263,23 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
           appBar: AppBar(
             title: const Text(
               'Owner Details',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
             ),
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  await showYouTubePlayerDialog(
+                    context,
+                    getYoutubeVideoId(
+                      '',
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.question_mark_outlined,
+                ),
+                tooltip: 'Help',
+              ),
+            ],
           ),
           bottomSheet: isChangingName || isChangingNumber
               ? SizedBox(

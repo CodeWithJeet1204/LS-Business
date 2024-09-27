@@ -1,5 +1,6 @@
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class AllCommentPage extends StatelessWidget {
   const AllCommentPage({super.key});
@@ -15,6 +16,22 @@ class AllCommentPage extends StatelessWidget {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await showYouTubePlayerDialog(
+                context,
+                getYoutubeVideoId(
+                  '',
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.question_mark_outlined,
+            ),
+            tooltip: 'Help',
+          ),
+        ],
       ),
       body: const Center(
         child: Text(

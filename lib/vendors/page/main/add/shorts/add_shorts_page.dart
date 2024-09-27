@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class AddShortsPage extends StatefulWidget {
   const AddShortsPage({super.key});
@@ -227,6 +228,22 @@ class AddShortsPageState extends State<AddShortsPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Shorts'),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await showYouTubePlayerDialog(
+                context,
+                getYoutubeVideoId(
+                  '',
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.question_mark_outlined,
+            ),
+            tooltip: 'Help',
+          ),
+        ],
       ),
       body: noOfShorts == null
           ? const Center(

@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class AnalyticsPage extends StatefulWidget {
   const AnalyticsPage({super.key});
@@ -97,14 +98,28 @@ class _AnalyticsPageState extends State<AnalyticsPage>
                   ],
                 )
               : Scaffold(
-                  backgroundColor: primary,
                   appBar: AppBar(
                     title: const Text(
                       'ANALYTICS',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    forceMaterialTransparency: true,
+                    actions: [
+                      IconButton(
+                        onPressed: () async {
+                          await showYouTubePlayerDialog(
+                            context,
+                            getYoutubeVideoId(
+                              '',
+                            ),
+                          );
+                        },
+                        icon: const Icon(
+                          Icons.question_mark_outlined,
+                        ),
+                        tooltip: 'Help',
+                      ),
+                    ],
                     bottom: PreferredSize(
                       preferredSize: Size(
                         width,

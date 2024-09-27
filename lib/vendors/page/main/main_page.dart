@@ -2,8 +2,8 @@ import 'package:ls_business/auth/login_page.dart';
 import 'package:ls_business/auth/verify/number_verify.dart';
 import 'package:ls_business/under_development_page.dart';
 import 'package:ls_business/vendors/provider/main_page_provider.dart';
-import 'package:ls_business/vendors/page/register/business_choose_categories_page.dart';
-import 'package:ls_business/vendors/page/register/business_choose_products_page.dart';
+import 'package:ls_business/vendors/page/register/business_select_categories_page.dart';
+import 'package:ls_business/vendors/page/register/business_select_products_page.dart';
 import 'package:ls_business/vendors/page/register/business_social_media_page.dart';
 import 'package:ls_business/vendors/page/register/business_timings_page.dart';
 import 'package:ls_business/vendors/page/register/get_location_page.dart';
@@ -14,7 +14,7 @@ import 'package:ls_business/vendors/page/main/add/add_page.dart';
 import 'package:ls_business/vendors/page/main/analytics/analytics_page.dart';
 import 'package:ls_business/vendors/page/main/discount/add_discount_page.dart';
 import 'package:ls_business/vendors/page/main/profile/profile_page.dart';
-import 'package:ls_business/vendors/page/register/business_choose_shop_types_page.dart';
+import 'package:ls_business/vendors/page/register/business_select_shop_types_page.dart';
 import 'package:ls_business/vendors/page/register/business_register_details_page.dart';
 import 'package:ls_business/vendors/page/register/membership_page.dart';
 import 'package:ls_business/vendors/page/register/owner_register_details_page.dart';
@@ -88,7 +88,7 @@ class _MainPageState extends State<MainPage> {
             detailsPage = const OwnerRegisterDetailsPage(
               fromMainPage: true,
             );
-          } else if (getUserDetailsAddedData['registration'] ==
+          } else if (getUserDetailsAddedData['Registration'] ==
                   'phone number' &&
               getUserDetailsAddedData['numberVerified'] == false) {
             detailsPage = NumberVerifyPage(

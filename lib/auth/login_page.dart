@@ -1,5 +1,4 @@
 import 'package:ls_business/auth/verify/number_verify.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ls_business/auth/register_method_page.dart';
 import 'package:ls_business/vendors/firebase/auth_methods.dart';
@@ -14,6 +13,7 @@ import 'package:ls_business/widgets/text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({
@@ -69,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
         final userExistsSnap = await store
             .collection('Users')
             .where('Email', isEqualTo: emailController.text)
-            .where('registration', isEqualTo: 'email')
+            .where('Registration', isEqualTo: 'email')
             .get();
 
         if (userExistsSnap.docs.isNotEmpty) {
@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
             .doc('Owners')
             .collection('Users')
             .where('Email', isEqualTo: emailController.text)
-            .where('registration', isEqualTo: 'email')
+            .where('Registration', isEqualTo: 'email')
             .get();
 
         if (vendorExistsSnap.docs.isEmpty) {
@@ -247,7 +247,7 @@ class _LoginPageState extends State<LoginPage> {
         final userExistsSnap = await store
             .collection('Users')
             .where('Email', isEqualTo: '+91 ${phoneController.text}')
-            .where('registration', isEqualTo: 'phone number')
+            .where('Registration', isEqualTo: 'phone number')
             .get();
 
         if (userExistsSnap.docs.isNotEmpty) {
@@ -268,7 +268,7 @@ class _LoginPageState extends State<LoginPage> {
             .doc('Owners')
             .collection('Users')
             .where('Phone Number', isEqualTo: '+91 ${phoneController.text}')
-            .where('registration', isEqualTo: 'phone number')
+            .where('Registration', isEqualTo: 'phone number')
             .get();
 
         if (vendorExistsSnap.docs.isEmpty) {
@@ -442,7 +442,7 @@ class _LoginPageState extends State<LoginPage> {
         final userExistsSnap = await store
             .collection('Users')
             .where('Email', isEqualTo: auth.currentUser!.email)
-            .where('registration', isEqualTo: 'google')
+            .where('Registration', isEqualTo: 'google')
             .get();
 
         if (userExistsSnap.docs.isNotEmpty) {
@@ -463,7 +463,7 @@ class _LoginPageState extends State<LoginPage> {
             .doc('Owners')
             .collection('Users')
             .where('Email', isEqualTo: auth.currentUser!.email)
-            .where('registration', isEqualTo: 'google')
+            .where('Registration', isEqualTo: 'google')
             .get();
 
         if (vendorExistsSnap.docs.isEmpty) {
@@ -617,6 +617,22 @@ class _LoginPageState extends State<LoginPage> {
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: const Text('Login'),
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  await showYouTubePlayerDialog(
+                    context,
+                    getYoutubeVideoId(
+                      '',
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.question_mark_outlined,
+                ),
+                tooltip: 'Help',
+              ),
+            ],
           ),
           body: SafeArea(
               child: /* width < screenSize

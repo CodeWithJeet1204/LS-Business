@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:ls_business/vendors/page/main/main_page.dart';
-
 import 'package:ls_business/widgets/text_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,6 +13,7 @@ import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:open_street_map_search_and_pick/open_street_map_search_and_pick.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class GetLocationPage extends StatefulWidget {
   const GetLocationPage({super.key});
@@ -185,6 +185,20 @@ class _GetLocationPageState extends State<GetLocationPage> {
           appBar: AppBar(
             title: const Text('Get Location'),
             actions: [
+              IconButton(
+                onPressed: () async {
+                  await showYouTubePlayerDialog(
+                    context,
+                    getYoutubeVideoId(
+                      '',
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.question_mark_outlined,
+                ),
+                tooltip: 'Help',
+              ),
               MyTextButton(
                 onPressed: () async {
                   if (displayDetectCity == null && cityPickLocation == null) {

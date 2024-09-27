@@ -1,11 +1,10 @@
-// ignore_for_file: avoid_function_literals_in_foreach_calls
-
 import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:ls_business/vendors/page/main/discount/products/product_discount_page.dart';
+import 'package:ls_business/vendors/page/main/main_page.dart';
 import 'package:ls_business/vendors/page/main/profile/data/all_product_page.dart';
 import 'package:ls_business/vendors/page/main/profile/view%20page/category/category_page.dart';
 import 'package:ls_business/vendors/page/main/profile/view%20page/product/change_product_category_page.dart';
@@ -24,6 +23,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:uuid/uuid.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({
@@ -969,10 +969,28 @@ class _ProductPageState extends State<ProductPage> {
             actions: [
               IconButton(
                 onPressed: () async {
+                  await showYouTubePlayerDialog(
+                    context,
+                    getYoutubeVideoId(
+                      '',
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.question_mark_outlined,
+                ),
+                tooltip: 'Help',
+              ),
+              IconButton(
+                onPressed: () async {
                   await confirmDelete();
                   if (context.mounted) {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pop();
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => MainPage(),
+                      ),
+                      (route) => false,
+                    );
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const AllProductsPage(),

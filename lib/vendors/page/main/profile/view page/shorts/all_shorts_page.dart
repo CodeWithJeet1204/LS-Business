@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class AllShortsPage extends StatefulWidget {
   const AllShortsPage({super.key});
@@ -137,6 +138,22 @@ class _AllShortsPageState extends State<AllShortsPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('All Shorts'),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await showYouTubePlayerDialog(
+                context,
+                getYoutubeVideoId(
+                  '',
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.question_mark_outlined,
+            ),
+            tooltip: 'Help',
+          ),
+        ],
         bottom: PreferredSize(
           preferredSize: Size(width, 60),
           child: Padding(

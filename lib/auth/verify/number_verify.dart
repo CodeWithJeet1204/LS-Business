@@ -129,7 +129,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
               .doc(auth.currentUser!.uid)
               .set({
             'Phone Number': '+91 ${widget.phoneNumber}',
-            'registration': 'phone number',
+            'Registration': 'phone number',
             'Image': null,
             'Email': null,
             'Name': null,
@@ -146,7 +146,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
               .doc(auth.currentUser!.uid)
               .set({
             'Name': null,
-            'registration': 'phone number',
+            'Registration': 'phone number',
             'GSTNumber': null,
             'Description': null,
             // 'Industry': null,

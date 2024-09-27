@@ -1,6 +1,5 @@
 import 'package:ls_business/auth/login_page.dart';
 import 'package:ls_business/vendors/page/main/main_page.dart';
-
 import 'package:ls_business/widgets/text_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ls_business/vendors/firebase/auth_methods.dart';
@@ -15,6 +14,7 @@ import 'package:ls_business/widgets/text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class RegisterMethodPage extends StatefulWidget {
   const RegisterMethodPage({
@@ -68,7 +68,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
           final userExistsSnap = await store
               .collection('Users')
               .where('Email', isEqualTo: emailController.text)
-              .where('registration', isEqualTo: 'email')
+              .where('Registration', isEqualTo: 'email')
               .get();
 
           if (userExistsSnap.docs.isNotEmpty) {
@@ -89,7 +89,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
               .doc('Owners')
               .collection('Users')
               .where('Email', isEqualTo: emailController.text)
-              .where('registration', isEqualTo: 'email')
+              .where('Registration', isEqualTo: 'email')
               .get();
 
           if (vendorExistsSnap.docs.isNotEmpty) {
@@ -135,7 +135,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                 .doc(auth.currentUser!.uid)
                 .set({
               'Email': emailController.text.toString(),
-              'registration': 'email',
+              'Registration': 'email',
               'Image': null,
               'Name': null,
               'Phone Number': null,
@@ -151,7 +151,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
                 .doc(auth.currentUser!.uid)
                 .set({
               'Name': null,
-              'registration': 'email',
+              'Registration': 'email',
               'GSTNumber': null,
               'Description': null,
               // 'Industry': null,
@@ -221,7 +221,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
         final userExistsSnap = await store
             .collection('Users')
             .where('Phone Number', isEqualTo: '+91 ${phoneController.text}')
-            .where('registration', isEqualTo: 'phone number')
+            .where('Registration', isEqualTo: 'phone number')
             .get();
 
         if (userExistsSnap.docs.isNotEmpty) {
@@ -242,7 +242,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
             .doc('Owners')
             .collection('Users')
             .where('Phone Number', isEqualTo: '+91 ${phoneController.text}')
-            .where('registration', isEqualTo: 'phone number')
+            .where('Registration', isEqualTo: 'phone number')
             .get();
 
         if (vendorExistsSnap.docs.isNotEmpty) {
@@ -341,7 +341,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
         final userExistsSnap = await store
             .collection('Users')
             .where('Email', isEqualTo: auth.currentUser!.email)
-            .where('registration', isEqualTo: 'google')
+            .where('Registration', isEqualTo: 'google')
             .get();
 
         if (userExistsSnap.docs.isNotEmpty) {
@@ -363,7 +363,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
             .doc('Owners')
             .collection('Users')
             .where('Email', isEqualTo: auth.currentUser!.email)
-            .where('registration', isEqualTo: 'google')
+            .where('Registration', isEqualTo: 'google')
             .get();
 
         if (vendorExistsSnap.docs.isNotEmpty) {
@@ -393,7 +393,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
             .doc(auth.currentUser!.uid)
             .set({
           'Email': auth.currentUser!.email,
-          'registration': 'google',
+          'Registration': 'google',
           'Image': null,
           'Name': null,
           'Phone Number': null,
@@ -409,7 +409,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
             .doc(auth.currentUser!.uid)
             .set({
           'Name': null,
-          'registration': 'google',
+          'Registration': 'google',
           'GSTNumber': null,
           'Description': null,
           // 'Industry': null,
@@ -482,6 +482,22 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: const Text('Register'),
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  await showYouTubePlayerDialog(
+                    context,
+                    getYoutubeVideoId(
+                      '',
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.question_mark_outlined,
+                ),
+                tooltip: 'Help',
+              ),
+            ],
           ),
           body: SafeArea(
             child: /* width < screenSize

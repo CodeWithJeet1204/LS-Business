@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ls_business/vendors/page/main/main_page.dart';
@@ -14,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class AddProductPage5 extends StatefulWidget {
   const AddProductPage5({
@@ -139,6 +139,20 @@ class _AddProductPage5State extends State<AddProductPage5> {
               overflow: TextOverflow.ellipsis,
             ),
             actions: [
+              IconButton(
+                onPressed: () async {
+                  await showYouTubePlayerDialog(
+                    context,
+                    getYoutubeVideoId(
+                      '',
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.question_mark_outlined,
+                ),
+                tooltip: 'Help',
+              ),
               MyTextButton(
                 onPressed: () async {
                   await save(productProvider);

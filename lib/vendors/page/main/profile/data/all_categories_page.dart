@@ -6,6 +6,7 @@ import 'package:ls_business/widgets/shimmer_skeleton_container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class AllCategoriesPage extends StatefulWidget {
   const AllCategoriesPage({
@@ -160,9 +161,23 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
       appBar: AppBar(
         title: const Text(
           'All Categories',
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
         ),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await showYouTubePlayerDialog(
+                context,
+                getYoutubeVideoId(
+                  '',
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.question_mark_outlined,
+            ),
+            tooltip: 'Help',
+          ),
+        ],
         bottom: PreferredSize(
           preferredSize: Size(width, width * 0.2),
           child: Padding(

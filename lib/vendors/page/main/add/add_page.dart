@@ -12,6 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ls_business/widgets/add_box.dart';
 import 'package:provider/provider.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class AddPage extends StatefulWidget {
   const AddPage({super.key});
@@ -101,8 +102,22 @@ class _AddPageState extends State<AddPage> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    elevation: 0,
-                    shadowColor: primary2,
+                    actions: [
+                      IconButton(
+                        onPressed: () async {
+                          await showYouTubePlayerDialog(
+                            context,
+                            getYoutubeVideoId(
+                              '',
+                            ),
+                          );
+                        },
+                        icon: const Icon(
+                          Icons.question_mark_outlined,
+                        ),
+                        tooltip: 'Help',
+                      ),
+                    ],
                   ),
                   body: SafeArea(
                     child: LayoutBuilder(

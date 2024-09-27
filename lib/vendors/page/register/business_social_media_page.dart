@@ -1,14 +1,14 @@
 import 'package:ls_business/vendors/page/main/main_page.dart';
-import 'package:ls_business/vendors/page/register/business_choose_shop_types_page.dart';
+import 'package:ls_business/vendors/page/register/business_select_shop_types_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/my_button.dart';
-
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:ls_business/widgets/text_form_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class BusinessSocialMediaPage extends StatefulWidget {
   const BusinessSocialMediaPage({
@@ -174,6 +174,22 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Social Media Info'),
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  await showYouTubePlayerDialog(
+                    context,
+                    getYoutubeVideoId(
+                      '',
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.question_mark_outlined,
+                ),
+                tooltip: 'Help',
+              ),
+            ],
           ),
           body: SafeArea(
             child: LayoutBuilder(

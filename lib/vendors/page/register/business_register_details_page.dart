@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:ls_business/vendors/page/main/main_page.dart';
 import 'package:ls_business/widgets/pick_location.dart';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
@@ -19,6 +18,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:open_street_map_search_and_pick/open_street_map_search_and_pick.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class BusinessRegisterDetailsPage extends StatefulWidget {
   const BusinessRegisterDetailsPage({
@@ -38,9 +38,10 @@ class _BusinessRegisterDetailsPageState
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   final storage = FirebaseStorage.instance;
-  final GlobalKey<FormState> businessFormKey = GlobalKey<FormState>();
+  final businessFormKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
+  final addressController = TextEditingController();
   String? selectedIndustrySegment;
   File? image;
   double? latitude;
@@ -60,6 +61,7 @@ class _BusinessRegisterDetailsPageState
   void dispose() {
     nameController.dispose();
     // gstController.dispose();
+    addressController.dispose();
     descriptionController.dispose();
     super.dispose();
   }
@@ -209,6 +211,7 @@ class _BusinessRegisterDetailsPageState
           'Latitude': latitude,
           'Longitude': longitude,
           'City': cityDetectLocation ?? cityPickLocation,
+          'Address': addressController.text,
           'Open': true,
           'viewsTimestamp': [],
           'followersTimestamp': {},
@@ -264,6 +267,22 @@ class _BusinessRegisterDetailsPageState
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: const Text('Business Details'),
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  await showYouTubePlayerDialog(
+                    context,
+                    getYoutubeVideoId(
+                      '',
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.question_mark_outlined,
+                ),
+                tooltip: 'Help',
+              ),
+            ],
           ),
           body: SafeArea(
             child: SingleChildScrollView(
@@ -327,9 +346,18 @@ class _BusinessRegisterDetailsPageState
                             borderRadius: 12,
                             horizontalPadding: 0,
                             verticalPadding: 0,
-                            autoFillHints: const [
-                              AutofillHints.streetAddressLevel1
-                            ],
+                            autoFillHints: const [],
+                          ),
+                          const SizedBox(height: 12),
+
+                          // ADDRESS
+                          MyTextFormField(
+                            hintText: 'Address',
+                            controller: addressController,
+                            borderRadius: 12,
+                            horizontalPadding: 0,
+                            verticalPadding: 0,
+                            autoFillHints: const [],
                           ),
                           const SizedBox(height: 12),
 

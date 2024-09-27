@@ -6,6 +6,7 @@ import 'package:ls_business/widgets/shimmer_skeleton_container.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class AllProductsPage extends StatefulWidget {
   const AllProductsPage({super.key});
@@ -207,6 +208,22 @@ class _AllProductsPageState extends State<AllProductsPage> {
         title: const Text(
           'All Products',
         ),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await showYouTubePlayerDialog(
+                context,
+                getYoutubeVideoId(
+                  '',
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.question_mark_outlined,
+            ),
+            tooltip: 'Help',
+          ),
+        ],
         bottom: PreferredSize(
           preferredSize: Size(
             width,

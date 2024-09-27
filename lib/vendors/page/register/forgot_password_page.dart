@@ -7,6 +7,7 @@ import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:ls_business/widgets/text_form_field.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -36,12 +37,26 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Forgot Password'),
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  await showYouTubePlayerDialog(
+                    context,
+                    getYoutubeVideoId(
+                      '',
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.question_mark_outlined,
+                ),
+                tooltip: 'Help',
+              ),
+            ],
           ),
           body: SafeArea(
             child: Padding(
-              padding: EdgeInsets.all(
-                width * 0.025,
-              ),
+              padding: EdgeInsets.all(width * 0.025),
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

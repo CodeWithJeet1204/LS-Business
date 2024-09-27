@@ -9,6 +9,7 @@ import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:ls_business/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class CategoryPage extends StatefulWidget {
   const CategoryPage({
@@ -210,9 +211,27 @@ class _CategoryPageState extends State<CategoryPage> {
         .snapshots();
 
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(),
-        body: LayoutBuilder(builder: (context, constraints) {
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await showYouTubePlayerDialog(
+                context,
+                getYoutubeVideoId(
+                  '',
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.question_mark_outlined,
+            ),
+            tooltip: 'Help',
+          ),
+        ],
+      ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
           double width = constraints.maxWidth;
 
           return SingleChildScrollView(
@@ -821,6 +840,8 @@ class _CategoryPageState extends State<CategoryPage> {
               ),
             ),
           );
-        }));
+        },
+      ),
+    );
   }
 }

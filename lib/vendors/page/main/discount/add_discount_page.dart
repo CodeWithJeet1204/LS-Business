@@ -11,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ls_business/widgets/add_box.dart';
 import 'package:provider/provider.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class AddDiscountPage extends StatefulWidget {
   const AddDiscountPage({super.key});
@@ -100,6 +101,22 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
+                    actions: [
+                      IconButton(
+                        onPressed: () async {
+                          await showYouTubePlayerDialog(
+                            context,
+                            getYoutubeVideoId(
+                              '',
+                            ),
+                          );
+                        },
+                        icon: const Icon(
+                          Icons.question_mark_outlined,
+                        ),
+                        tooltip: 'Help',
+                      ),
+                    ],
                   ),
                   body: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8),

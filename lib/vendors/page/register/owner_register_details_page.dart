@@ -11,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class OwnerRegisterDetailsPage extends StatefulWidget {
   const OwnerRegisterDetailsPage({
@@ -182,6 +183,22 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: const Text('Owner Details'),
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  await showYouTubePlayerDialog(
+                    context,
+                    getYoutubeVideoId(
+                      '',
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.question_mark_outlined,
+                ),
+                tooltip: 'Help',
+              ),
+            ],
           ),
           body: userData == null
               ? const Center(
@@ -248,8 +265,8 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
                               ),
 
                               // EMAIL
-                              userData!['registration'] == 'email' ||
-                                      userData!['registration'] == 'google'
+                              userData!['Registration'] == 'email' ||
+                                      userData!['Registration'] == 'google'
                                   ? Container()
                                   : MyTextFormField(
                                       hintText: 'Email*',
@@ -264,7 +281,7 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
                                     ),
 
                               // NUMBER
-                              userData!['registration'] == 'phone number'
+                              userData!['Registration'] == 'phone number'
                                   ? Container()
                                   : MyTextFormField(
                                       hintText: 'Your Phone Number*',

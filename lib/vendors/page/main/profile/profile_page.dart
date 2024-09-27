@@ -14,6 +14,7 @@ import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -117,7 +118,20 @@ class _ProfilePageState extends State<ProfilePage> {
           'PROFILE',
         ),
         actions: [
-          // SIGN OUT
+          IconButton(
+            onPressed: () async {
+              await showYouTubePlayerDialog(
+                context,
+                getYoutubeVideoId(
+                  '',
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.question_mark_outlined,
+            ),
+            tooltip: 'Help',
+          ),
           IconButton(
             onPressed: () async {},
             // onPressed: () async {

@@ -7,6 +7,7 @@ import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
 
 class AllPostsPage extends StatefulWidget {
   const AllPostsPage({super.key});
@@ -205,9 +206,23 @@ class _AllPostsPageState extends State<AllPostsPage> {
       appBar: AppBar(
         title: const Text(
           'All Posts',
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
         ),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await showYouTubePlayerDialog(
+                context,
+                getYoutubeVideoId(
+                  '',
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.question_mark_outlined,
+            ),
+            tooltip: 'Help',
+          ),
+        ],
         // bottom: PreferredSize(
         //   preferredSize: Size(
         //     MediaQuery.of(context).size.width,
