@@ -10,11 +10,11 @@ import 'package:feather_icons/feather_icons.dart';
 import 'package:ls_business/vendors/page/main/profile/data/all_categories_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/small_text_container.dart';
-import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:ls_business/widgets/video_tutorial.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -29,7 +29,7 @@ class _ProfilePageState extends State<ProfilePage> {
   bool hideNameOverflow = true;
   bool showbtn = true;
   Map shopData = {};
-  bool hasReviewed = true;
+  // bool hasReviewed = true;
   bool isData = false;
 
   // INIT STATE
@@ -46,16 +46,16 @@ class _ProfilePageState extends State<ProfilePage> {
     final vendorSnap =
         await ownersDoc.collection('Shops').doc(auth.currentUser!.uid).get();
 
-    final userSnap =
-        await ownersDoc.collection('Users').doc(auth.currentUser!.uid).get();
+    // final userSnap =
+    //     await ownersDoc.collection('Users').doc(auth.currentUser!.uid).get();
 
     final vendorData = vendorSnap.data()!;
     final shopName = vendorData['Name'];
     final imageUrl = vendorData['Image'];
     final shopType = vendorData['Type'];
 
-    final userData = userSnap.data()!;
-    final myHasReviewed = userData['hasReviewed'];
+    // final userData = userSnap.data()!;
+    // final myHasReviewed = userData['hasReviewed'];
 
     setState(() {
       shopData = {
@@ -63,7 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
         'Image': imageUrl,
         'Type': shopType,
       };
-      hasReviewed = myHasReviewed;
+      // hasReviewed = myHasReviewed;
       isData = true;
     });
   }
@@ -172,7 +172,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         onTap: () async {
                           await showImage(
                             shopData['Image'] ??
-                                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpFN1Tvo80rYwu-eXsDNNzsuPITOdtyRPlYIsIqKaIbw&s',
+                                'https://img.freepik.com/premium-vector/shop-clipart-cartoon-style-vector-illustration_761413-4813.jpg?semt=ais_hybrid',
                           );
                         },
                         child: !isData
@@ -188,7 +188,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 backgroundColor: primary2,
                                 backgroundImage: NetworkImage(
                                   shopData['Image'] ??
-                                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpFN1Tvo80rYwu-eXsDNNzsuPITOdtyRPlYIsIqKaIbw&s',
+                                      'https://img.freepik.com/premium-vector/shop-clipart-cartoon-style-vector-illustration_761413-4813.jpg?semt=ais_hybrid',
                                 ),
                               ),
                       ),
@@ -249,95 +249,97 @@ class _ProfilePageState extends State<ProfilePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       // OWNER DETAILS
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const OwnerDetailsPage(),
-                            ),
-                          );
-                        },
-                        splashColor: primary3,
-                        customBorder: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Container(
-                          alignment: Alignment.center,
-                          width: width * 0.45,
-                          padding: EdgeInsets.symmetric(
-                            vertical: width * 0.02,
-                            horizontal: width * 0.005,
-                          ),
-                          decoration: BoxDecoration(
-                            color: primary3,
-                            border: Border.all(
-                              width: 0.125,
-                              color: primaryDark,
-                            ),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const OwnerDetailsPage(),
+                              ),
+                            );
+                          },
+                          splashColor: primary3,
+                          customBorder: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          child: Text(
-                            'Owner Details',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: width * 0.045,
-                              color: primaryDark,
+                          child: Container(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: primary3,
+                              border: Border.all(
+                                width: 0.125,
+                                color: primaryDark,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              vertical: width * 0.02,
+                              horizontal: width * 0.005,
+                            ),
+                            margin: EdgeInsets.symmetric(
+                              horizontal: width * 0.0125,
+                            ),
+                            child: Text(
+                              'Owner Details',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: width * 0.045,
+                                color: primaryDark,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                      // BUSINESS DETAILS
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const BusinessDetailsPage(),
-                            ),
-                          );
-                        },
-                        splashColor: primary3,
-                        customBorder: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Container(
-                          width: width * 0.45,
-                          padding: EdgeInsets.symmetric(
-                            vertical: width * 0.02,
-                            horizontal: width * 0.005,
-                          ),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: primary3,
-                            border: Border.all(
-                              width: 0.125,
-                              color: primaryDark,
-                            ),
+
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const BusinessDetailsPage(),
+                              ),
+                            );
+                          },
+                          splashColor: primary3,
+                          customBorder: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          child: Text(
-                            'Business Details',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: width * 0.0425,
-                              color: primaryDark,
+                          child: Container(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: primary3,
+                              border: Border.all(
+                                width: 0.125,
+                                color: primaryDark,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              vertical: width * 0.02,
+                              horizontal: width * 0.005,
+                            ),
+                            margin: EdgeInsets.symmetric(
+                              horizontal: width * 0.0125,
+                            ),
+                            child: Text(
+                              'Business Details',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: width * 0.045,
+                                color: primaryDark,
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: height * 0.0125,
-                  ),
 
                   Divider(
-                    height: height * 0.025,
-                  ),
-
-                  SizedBox(
-                    height: height * 0.0125,
+                    height: height * 0.05,
                   ),
 
                   // PRODUCTS
@@ -411,66 +413,66 @@ class _ProfilePageState extends State<ProfilePage> {
                     width: width,
                   ),
 
-                  hasReviewed ? Container() : const SizedBox(height: 6),
+                  // hasReviewed ? Container() : const SizedBox(height: 6),
 
-                  hasReviewed ? Container() : const Divider(),
+                  // hasReviewed ? Container() : const Divider(),
 
                   // RATE THIS APP
-                  hasReviewed
-                      ? Container()
-                      : Padding(
-                          padding: EdgeInsets.all(width * 0.0225),
-                          child: InkWell(
-                            onTap: () async {
-                              await store
-                                  .collection('Business')
-                                  .doc('Owners')
-                                  .collection('Users')
-                                  .doc(auth.currentUser!.uid)
-                                  .update({
-                                'hasReviewed': true,
-                              });
+                  // hasReviewed
+                  //     ? Container()
+                  //    :
+                  Padding(
+                    padding: EdgeInsets.all(width * 0.0225),
+                    child: InkWell(
+                      onTap: () async {
+                        // await store
+                        //     .collection('Business')
+                        //     .doc('Owners')
+                        //     .collection('Users')
+                        //     .doc(auth.currentUser!.uid)
+                        //     .update({
+                        //   'hasReviewed': true,
+                        // });
 
-                              const url =
-                                  'https://play.google.com/store/apps/details?id=com.ls_business.package';
-                              if (await canLaunchUrl(Uri.parse(url))) {
-                                await launchUrl(Uri.parse(url));
-                              } else {
-                                if (context.mounted) {
-                                  return mySnackBar(
-                                    context,
-                                    'Some error occured, Try Again Later',
-                                  );
-                                }
-                              }
-                            },
-                            customBorder: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.all(width * 0.0225),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Rate This App',
-                                    style: TextStyle(
-                                      fontSize: width * 0.0425,
-                                      color: primaryDark,
-                                    ),
-                                  ),
-                                  Icon(
-                                    Icons.star,
-                                    size: width * 0.075,
-                                    color: Colors.yellow,
-                                  ),
-                                ],
+                        const url =
+                            'https://play.google.com/store/apps/details?id=com.ls_business.package';
+                        if (await canLaunchUrl(Uri.parse(url))) {
+                          await launchUrl(Uri.parse(url));
+                        } else {
+                          if (context.mounted) {
+                            return mySnackBar(
+                              context,
+                              'Some error occured, Try Again Later',
+                            );
+                          }
+                        }
+                      },
+                      customBorder: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(width * 0.025),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Rate This App',
+                              style: TextStyle(
+                                fontSize: width * 0.0425,
+                                color: primaryDark,
                               ),
                             ),
-                          ),
+                            Icon(
+                              Icons.star,
+                              size: width * 0.075,
+                              color: Colors.yellow,
+                            ),
+                          ],
                         ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             );

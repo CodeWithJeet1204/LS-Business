@@ -136,7 +136,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
             'numberVerified': true,
             'allowCalls': true,
             'allowChats': true,
-            'hasReviewed': false,
+            // 'hasReviewed': false,
           });
 
           await store

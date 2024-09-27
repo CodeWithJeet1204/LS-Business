@@ -309,375 +309,386 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                   width: 0,
                   height: 0,
                 ),
-          body: Padding(
-            padding: const EdgeInsets.all(16),
-            child: LayoutBuilder(builder: (context, constraints) {
-              double width = constraints.maxWidth;
+          body: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.all(width * 0.0225),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final width = constraints.maxWidth;
 
-              return StreamBuilder(
-                  stream: userStream,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return const Center(
-                        child: Text(
-                          'Something went wrong',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      );
-                    }
+                  return StreamBuilder(
+                    stream: userStream,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return const Center(
+                          child: Text(
+                            'Something went wrong',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        );
+                      }
 
-                    if (snapshot.hasData) {
-                      final userData = snapshot.data!;
+                      if (snapshot.hasData) {
+                        final userData = snapshot.data!;
+                        print('Image: ${userData['Image']}');
 
-                      return SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(height: width * 0.1111125),
-                            isChangingImage
-                                ? Container(
-                                    width: width * 0.3,
-                                    height: width * 0.3,
-                                    decoration: BoxDecoration(
-                                      color: primary,
-                                      borderRadius: BorderRadius.circular(100),
-                                    ),
-                                    child: const Center(
-                                      child: CircularProgressIndicator(
-                                        color: primaryDark,
+                        return SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(height: width * 0.1111125),
+                              isChangingImage
+                                  ? Container(
+                                      width: width * 0.3,
+                                      height: width * 0.3,
+                                      decoration: BoxDecoration(
+                                        color: primary,
+                                        borderRadius:
+                                            BorderRadius.circular(100),
                                       ),
-                                    ),
-                                  )
-                                : Stack(
-                                    alignment: Alignment.bottomRight,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () async {
-                                          await showImage(
-                                            userData['Image'] ??
-                                                'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
-                                          );
-                                        },
-                                        child: CircleAvatar(
-                                          radius: width * 0.15,
-                                          backgroundColor: primary2,
-                                          backgroundImage: NetworkImage(
-                                            userData['Image'] ??
-                                                'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
-                                          ),
+                                      child: const Center(
+                                        child: CircularProgressIndicator(
+                                          color: primaryDark,
                                         ),
                                       ),
-                                      Positioned(
-                                        right: -(width * 0.0015),
-                                        bottom: -(width * 0.0015),
-                                        child: IconButton.filledTonal(
-                                          onPressed: () async {
-                                            await changeImage(
-                                                userData['Image']);
+                                    )
+                                  : Stack(
+                                      alignment: Alignment.bottomRight,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () async {
+                                            await showImage(
+                                              userData['Image'] ??
+                                                  'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+                                            );
                                           },
-                                          icon: Icon(
-                                            FeatherIcons.camera,
-                                            size: width * 0.1,
-                                          ),
-                                          tooltip: 'Change Photo',
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                            const SizedBox(height: 14),
-
-                            // NAME
-                            Container(
-                              width: width,
-                              height: isChangingName
-                                  ? width * 0.2775
-                                  : width * 0.175,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: primary2.withOpacity(0.9),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: isChangingName
-                                  ? TextField(
-                                      controller: nameController,
-                                      autofocus: true,
-                                      onTapOutside: (event) =>
-                                          FocusScope.of(context).unfocus(),
-                                      decoration: InputDecoration(
-                                        hintText: 'Change Name',
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                      ),
-                                    )
-                                  : Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                            left: width * 0.05,
-                                          ),
-                                          child: SizedBox(
-                                            width: width * 0.725,
-                                            child: AutoSizeText(
-                                              userData['Name'],
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                fontSize: width * 0.06,
-                                              ),
+                                          child: CircleAvatar(
+                                            radius: width * 0.15,
+                                            backgroundColor: primary2,
+                                            backgroundImage: NetworkImage(
+                                              userData['Image'] ??
+                                                  'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
                                             ),
                                           ),
                                         ),
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                            right: width * 0.03,
-                                          ),
-                                          child: IconButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                isChangingName = true;
-                                              });
+                                        Positioned(
+                                          right: -(width * 0.0015),
+                                          bottom: -(width * 0.0015),
+                                          child: IconButton.filledTonal(
+                                            onPressed: () async {
+                                              await changeImage(
+                                                  userData['Image']);
                                             },
-                                            icon: const Icon(FeatherIcons.edit),
-                                            tooltip: 'Edit Name',
+                                            icon: Icon(
+                                              FeatherIcons.camera,
+                                              size: width * 0.1,
+                                            ),
+                                            tooltip: 'Change Photo',
                                           ),
                                         ),
                                       ],
                                     ),
-                            ),
-                            const SizedBox(height: 14),
+                              const SizedBox(height: 14),
 
-                            // PHONE NUMBER
-                            Container(
-                              width: width,
-                              height: isChangingNumber
-                                  ? width * 0.2775
-                                  : width * 0.175,
-                              decoration: BoxDecoration(
-                                color: primary2.withOpacity(0.9),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: isChangingNumber
-                                  ? TextField(
-                                      controller: numberController,
-                                      autofocus: true,
-                                      onTapOutside: (event) =>
-                                          FocusScope.of(context).unfocus(),
-                                      decoration: InputDecoration(
-                                        hintText: 'Change Number',
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                      ),
-                                    )
-                                  : Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                            left: width * 0.055,
+                              // NAME
+                              Container(
+                                width: width,
+                                height: isChangingName
+                                    ? width * 0.2775
+                                    : width * 0.175,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: primary2.withOpacity(0.9),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: isChangingName
+                                    ? TextField(
+                                        controller: nameController,
+                                        autofocus: true,
+                                        onTapOutside: (event) =>
+                                            FocusScope.of(context).unfocus(),
+                                        decoration: InputDecoration(
+                                          hintText: 'Change Name',
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
                                           ),
-                                          child: SizedBox(
-                                            width: width * 0.725,
-                                            child: AutoSizeText(
-                                              userData['Phone Number'],
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                fontSize: width * 0.055,
+                                        ),
+                                      )
+                                    : Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                              left: width * 0.05,
+                                            ),
+                                            child: SizedBox(
+                                              width: width * 0.725,
+                                              child: AutoSizeText(
+                                                userData['Name'],
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontSize: width * 0.06,
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                            right: width * 0.03,
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                              right: width * 0.03,
+                                            ),
+                                            child: IconButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  isChangingName = true;
+                                                });
+                                              },
+                                              icon:
+                                                  const Icon(FeatherIcons.edit),
+                                              tooltip: 'Edit Name',
+                                            ),
                                           ),
-                                          child: IconButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                isChangingNumber = true;
-                                              });
-                                            },
-                                            icon: const Icon(FeatherIcons.edit),
-                                            tooltip: 'Edit Phone Number',
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                            ),
-                            const SizedBox(height: 14),
-
-                            // EMAIL ADDRESS
-                            Container(
-                              width: width,
-                              height: width * 0.16,
-                              decoration: BoxDecoration(
-                                color: primary2.withOpacity(0.9),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      left: width * 0.055,
-                                    ),
-                                    child: SizedBox(
-                                      width: width * 0.9,
-                                      child: AutoSizeText(
-                                        userData['Email'] == ''
-                                            ? auth.currentUser!.email
-                                            : userData['Email'] ?? 'N/A',
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: width * 0.055,
-                                        ),
+                                        ],
                                       ),
-                                    ),
-                                  ),
-                                ],
                               ),
-                            ),
-                            const SizedBox(height: 14),
+                              const SizedBox(height: 14),
 
-                            // AADHAAR
-                            Container(
-                              width: width,
-                              height: width * 0.16,
-                              alignment: Alignment.centerLeft,
-                              decoration: BoxDecoration(
-                                color: primary2.withOpacity(0.9),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                  left: width * 0.0335,
+                              // PHONE NUMBER
+                              Container(
+                                width: width,
+                                height: isChangingNumber
+                                    ? width * 0.2775
+                                    : width * 0.175,
+                                decoration: BoxDecoration(
+                                  color: primary2.withOpacity(0.9),
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
-                                child: SizedBox(
-                                  width: width * 0.9,
-                                  child: AutoSizeText(
-                                    userData['AadhaarNumber'] == '' ||
-                                            userData['AadhaarNumber'] == null
-                                        ? 'Aadhaar Number: N/A'
-                                        : 'Aadhaar: ${userData['AadhaarNumber']}',
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ),
+                                child: isChangingNumber
+                                    ? TextField(
+                                        controller: numberController,
+                                        autofocus: true,
+                                        onTapOutside: (event) =>
+                                            FocusScope.of(context).unfocus(),
+                                        decoration: InputDecoration(
+                                          hintText: 'Change Number',
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                          ),
+                                        ),
+                                      )
+                                    : Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                              left: width * 0.055,
+                                            ),
+                                            child: SizedBox(
+                                              width: width * 0.725,
+                                              child: AutoSizeText(
+                                                userData['Phone Number'],
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontSize: width * 0.055,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                              right: width * 0.03,
+                                            ),
+                                            child: IconButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  isChangingNumber = true;
+                                                });
+                                              },
+                                              icon:
+                                                  const Icon(FeatherIcons.edit),
+                                              tooltip: 'Edit Phone Number',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                               ),
-                            ),
-                            const SizedBox(height: 14),
+                              const SizedBox(height: 14),
 
-                            // ALLOW CALLS
-                            InkWell(
-                              onTap: () async {
-                                await toggleAllowCall();
-                              },
-                              customBorder: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.all(width * 0.0125),
+                              // EMAIL ADDRESS
+                              Container(
+                                width: width,
+                                height: width * 0.16,
+                                decoration: BoxDecoration(
+                                  color: primary2.withOpacity(0.9),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Padding(
-                                      padding:
-                                          EdgeInsets.only(left: width * 0.025),
-                                      child: Text(
-                                        'Allow Calls from Users',
-                                        style: TextStyle(
-                                          color: primaryDark,
-                                          fontSize: width * 0.04,
+                                      padding: EdgeInsets.only(
+                                        left: width * 0.055,
+                                      ),
+                                      child: SizedBox(
+                                        width: width * 0.9,
+                                        child: AutoSizeText(
+                                          userData['Email'] == ''
+                                              ? auth.currentUser!.email
+                                              : userData['Email'] ?? 'N/A',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: width * 0.055,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    Switch(
-                                      value: allowCall,
-                                      onChanged: (value) async {
-                                        await toggleAllowCall();
-                                      },
-                                      activeColor: primary2,
-                                      activeTrackColor: primaryDark,
-                                      inactiveThumbColor: primaryDark,
-                                      inactiveTrackColor: primary2,
                                     ),
                                   ],
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 14),
+                              const SizedBox(height: 14),
 
-                            // ALLOW CHATS
-                            InkWell(
-                              onTap: () async {
-                                await toggleAllowChat();
-                              },
-                              customBorder: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                              // AADHAAR
+                              Container(
+                                width: width,
+                                height: width * 0.16,
+                                alignment: Alignment.centerLeft,
+                                decoration: BoxDecoration(
+                                  color: primary2.withOpacity(0.9),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    left: width * 0.0335,
+                                  ),
+                                  child: SizedBox(
+                                    width: width * 0.9,
+                                    child: AutoSizeText(
+                                      userData['AadhaarNumber'] == '' ||
+                                              userData['AadhaarNumber'] == null
+                                          ? 'Aadhaar Number: N/A'
+                                          : 'Aadhaar: ${userData['AadhaarNumber']}',
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
-                              child: Padding(
-                                padding: EdgeInsets.all(width * 0.0125),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(left: width * 0.025),
-                                      child: SizedBox(
-                                        width: width * 0.75,
+                              const SizedBox(height: 14),
+
+                              // ALLOW CALLS
+                              InkWell(
+                                onTap: () async {
+                                  await toggleAllowCall();
+                                },
+                                customBorder: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.all(width * 0.0125),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            left: width * 0.025),
                                         child: Text(
-                                          'Allow Chats from Users on Whatsapp',
+                                          'Allow Calls from Users',
                                           style: TextStyle(
                                             color: primaryDark,
                                             fontSize: width * 0.04,
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    Switch(
-                                      value: allowChat,
-                                      onChanged: (value) async {
-                                        await toggleAllowChat();
-                                      },
-                                      activeColor: primary2,
-                                      activeTrackColor: primaryDark,
-                                      inactiveThumbColor: primaryDark,
-                                      inactiveTrackColor: primary2,
-                                    ),
-                                  ],
+                                      Switch(
+                                        value: allowCall,
+                                        onChanged: (value) async {
+                                          await toggleAllowCall();
+                                        },
+                                        activeColor: primary2,
+                                        activeTrackColor: primaryDark,
+                                        inactiveThumbColor: primaryDark,
+                                        inactiveTrackColor: primary2,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            isChangingName || isChangingNumber
-                                ? const SizedBox(height: 18)
-                                : Container(),
-                          ],
-                        ),
-                      );
-                    }
+                              const SizedBox(height: 14),
 
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  });
-            }),
+                              // ALLOW CHATS
+                              InkWell(
+                                onTap: () async {
+                                  await toggleAllowChat();
+                                },
+                                customBorder: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.all(width * 0.0125),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            left: width * 0.025),
+                                        child: SizedBox(
+                                          width: width * 0.75,
+                                          child: Text(
+                                            'Allow Chats from Users on Whatsapp',
+                                            style: TextStyle(
+                                              color: primaryDark,
+                                              fontSize: width * 0.04,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Switch(
+                                        value: allowChat,
+                                        onChanged: (value) async {
+                                          await toggleAllowChat();
+                                        },
+                                        activeColor: primary2,
+                                        activeTrackColor: primaryDark,
+                                        inactiveThumbColor: primaryDark,
+                                        inactiveTrackColor: primary2,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              isChangingName || isChangingNumber
+                                  ? const SizedBox(height: 18)
+                                  : Container(),
+                            ],
+                          ),
+                        );
+                      }
+
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
           ),
         ),
       ),

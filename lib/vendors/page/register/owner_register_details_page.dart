@@ -111,7 +111,7 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
               .update({
             'Phone Number': phoneController.text,
             'Image': userPhotoUrl ??
-                'https://upload.wikimedia.org/wikipedia/commons/a/af/Default_avatar_profile.jpg',
+                'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
           });
         } else if (userData!['Phone Number'] != null) {
           await store
@@ -123,7 +123,7 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
             'Name': nameController.text.toString(),
             'Email': emailController.text.toString(),
             'Image': userPhotoUrl ??
-                'https://upload.wikimedia.org/wikipedia/commons/a/af/Default_avatar_profile.jpg',
+                'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
           });
         } else if (userData!['Email'] != null && userData!['Name'] == null) {
           await store
@@ -135,7 +135,7 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
             'Name': nameController.text.toString(),
             'Phone Number': phoneController.text.toString(),
             'Image': userPhotoUrl ??
-                'https://upload.wikimedia.org/wikipedia/commons/a/af/Default_avatar_profile.jpg',
+                'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
           });
         } else {
           if (mounted) {

@@ -143,7 +143,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
               'Phone Number': null,
               'allowCalls': true,
               'allowChats': true,
-              'hasReviewed': false,
+              // 'hasReviewed': false,
             });
 
             await store
@@ -401,7 +401,7 @@ class _RegisterMethodPageState extends State<RegisterMethodPage> {
           'Phone Number': null,
           'allowCalls': true,
           'allowChats': true,
-          'hasReviewed': false,
+          // 'hasReviewed': false,
         });
 
         await store

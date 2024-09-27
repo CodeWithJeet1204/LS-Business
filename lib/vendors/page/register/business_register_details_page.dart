@@ -207,7 +207,7 @@ class _BusinessRegisterDetailsPageState
             .update({
           'Name': nameController.text,
           'Image': businessPhotoUrl ??
-              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1fDf705o-VZ3lVxTLh0jLPyFApbnwGoNHhSpwODOC0g&s',
+              'https://img.freepik.com/premium-vector/shop-clipart-cartoon-style-vector-illustration_761413-4813.jpg?semt=ais_hybrid',
           'Latitude': latitude,
           'Longitude': longitude,
           'City': cityDetectLocation ?? cityPickLocation,
