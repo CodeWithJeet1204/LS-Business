@@ -420,7 +420,8 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                       children: [
                                         Padding(
                                           padding: EdgeInsets.only(
-                                              left: width * 0.05),
+                                            left: width * 0.05,
+                                          ),
                                           child: SizedBox(
                                             width: width * 0.725,
                                             child: AutoSizeText(
@@ -532,7 +533,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                       left: width * 0.055,
                                     ),
                                     child: SizedBox(
-                                      width: width * 0.725,
+                                      width: width * 0.9,
                                       child: AutoSizeText(
                                         userData['Email'] == ''
                                             ? auth.currentUser!.email
@@ -546,6 +547,37 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                     ),
                                   ),
                                 ],
+                              ),
+                            ),
+                            const SizedBox(height: 14),
+
+                            // AADHAAR
+                            Container(
+                              width: width,
+                              height: width * 0.16,
+                              alignment: Alignment.centerLeft,
+                              decoration: BoxDecoration(
+                                color: primary2.withOpacity(0.9),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  left: width * 0.0335,
+                                ),
+                                child: SizedBox(
+                                  width: width * 0.9,
+                                  child: AutoSizeText(
+                                    userData['AadhaarNumber'] == '' ||
+                                            userData['AadhaarNumber'] == null
+                                        ? 'Aadhaar Number: N/A'
+                                        : 'Aadhaar: ${userData['AadhaarNumber']}',
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                             const SizedBox(height: 14),

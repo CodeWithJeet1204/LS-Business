@@ -40,7 +40,7 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
   }
 
   // VERIFY AADHAAR NUMBER
-  void validateAadhaarNumber(String aadhaarNumber) {
+  Future<void> validateAadhaarNumber() async {
     final List<List<int>> d = [
       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
       [1, 2, 3, 4, 0, 6, 7, 8, 9, 5],
@@ -66,7 +66,7 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
     ];
 
     final RegExp aadhaarPattern = RegExp(r'^\d{12}$');
-    if (!aadhaarPattern.hasMatch(aadhaarNumber)) {
+    if (!aadhaarPattern.hasMatch(aadhaarController.text)) {
       return;
     }
 
@@ -85,11 +85,29 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
       return c == 0;
     }
 
-    if (validateVerhoeff(aadhaarNumber)) {
-      setState(() {
-        isAadhaarValidated = true;
-        isAadhaarNotValidated = false;
-      });
+    if (validateVerhoeff(aadhaarController.text)) {
+      final vendorSnap = await store
+          .collection('Business')
+          .doc('Owners')
+          .collection('Users')
+          .where('AadhaarNumber', isEqualTo: aadhaarController.text)
+          .get();
+
+      if (vendorSnap.docs.isEmpty) {
+        setState(() {
+          isAadhaarValidated = true;
+          isAadhaarNotValidated = false;
+        });
+      } else {
+        mySnackBar(
+          context,
+          'This Aadhaar Number is already registered\nTry using different Aadhaar Number',
+        );
+        setState(() {
+          isAadhaarNotValidated = true;
+          isAadhaarValidated = false;
+        });
+      }
     } else {
       setState(() {
         isAadhaarNotValidated = true;
@@ -115,6 +133,14 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
               .doc(auth.currentUser!.uid)
               .update({
             'GSTNumber': gstController.text,
+          });
+
+          await store
+              .collection('Business')
+              .doc('Owners')
+              .collection('Users')
+              .doc(auth.currentUser!.uid)
+              .update({
             'AadhaarNumber': aadhaarController.text,
           });
 
@@ -228,20 +254,25 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
                                 ),
 
                           // VALIDATE
-                          MyButton(
-                            onTap: isAadhaarValidated
-                                ? () {}
-                                : () {
-                                    validateAadhaarNumber(
-                                        aadhaarController.text);
+                          isAadhaarValidated
+                              ? SizedBox(
+                                  height: 80,
+                                  child: Center(
+                                    child: Text(
+                                      'Aadhaar Validated',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                )
+                              : MyButton(
+                                  onTap: () async {
+                                    await validateAadhaarNumber();
                                   },
-                            text: !isAadhaarValidated
-                                ? isAadhaarNotValidated
-                                    ? 'NOT VALID TRY AGAIN'
-                                    : 'VALIDATE AADHAAR'
-                                : 'AADHAAR VALIDATED',
-                            horizontalPadding: 0,
-                          ),
+                                  text: isAadhaarNotValidated
+                                      ? 'TRY AGAIN'
+                                      : 'VALIDATE AADHAAR',
+                                  horizontalPadding: 0,
+                                ),
 
                           const Divider(),
 

@@ -877,41 +877,6 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                               ),
                               const SizedBox(height: 14),
 
-                              // AADHAAR
-                              Container(
-                                width: width,
-                                // height: width * 0.16,
-                                alignment: Alignment.centerLeft,
-                                decoration: BoxDecoration(
-                                  color: primary2.withOpacity(0.9),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                  // horizontal: width * 0.006125,
-                                  vertical: height * 0.0125,
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                    left: width * 0.0335,
-                                  ),
-                                  child: SizedBox(
-                                    width: width * 0.875,
-                                    child: AutoSizeText(
-                                      shopData['AadhaarNumber'] == '' ||
-                                              shopData['AadhaarNumber'] == null
-                                          ? 'Aadhaar Number: N/A'
-                                          : 'Aadhaar: ${shopData['AadhaarNumber']}',
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 14),
-
                               // INDUSTRY
                               // Container(
                               //   width: width,

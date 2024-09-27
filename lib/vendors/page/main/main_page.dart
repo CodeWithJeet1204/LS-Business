@@ -144,7 +144,7 @@ class _MainPageState extends State<MainPage> {
               fromMainPage: true,
             );
           } else if (getUserDetailsAddedData['Image'] != null &&
-              getBusinessDetailsAddedData['AadhaarNumber'] != null &&
+              getUserDetailsAddedData['AadhaarNumber'] != null &&
               (getBusinessDetailsAddedData['MembershipName'] == null ||
                   getBusinessDetailsAddedData['MembershipEndDateTime'] ==
                       null)) {
