@@ -277,7 +277,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 12),
+                      const SizedBox(height: 12),
                       StreamBuilder(
                         stream: productStream,
                         builder: (context, snapshot) {
@@ -345,7 +345,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
 
                             for (var short in shorts.entries) {
                               shortsData['shortsViewsTimestamp'] +=
-                                  short.value['shortsViewsTimestamp'];
+                                  short.value['shortsViewsTimestamp'] ?? [];
                             }
 
                             List<DateTime> productViewTimestamps = [];
@@ -412,7 +412,6 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                             }
 
                             for (var short in shorts.entries) {
-                              print('short.value: ${short.value}');
                               shortsWiseViews[short.value['productName'] ??
                                       short.value['caption']] =
                                   (short.value['shortsViewsTimestamp'] as List)

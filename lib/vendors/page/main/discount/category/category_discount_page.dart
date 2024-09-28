@@ -293,7 +293,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                         ),
                       ),
 
-                      Divider(),
+                      const Divider(),
 
                       // IMAGE
                       InkWell(
@@ -313,7 +313,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: isAddingImage
-                              ? Center(
+                              ? const Center(
                                   child: CircularProgressIndicator(),
                                 )
                               : _image == null

@@ -321,7 +321,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                         ),
                       ),
 
-                      Divider(),
+                      const Divider(),
 
                       // IMAGE
                       InkWell(
@@ -341,7 +341,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: isAddingImage
-                              ? Center(
+                              ? const Center(
                                   child: CircularProgressIndicator(),
                                 )
                               : _image == null

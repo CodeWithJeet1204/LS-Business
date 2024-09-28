@@ -284,7 +284,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                         ),
                       ),
 
-                      Divider(),
+                      const Divider(),
 
                       // IMAGE
                       GestureDetector(
@@ -304,7 +304,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: isAddingImage
-                              ? Center(
+                              ? const Center(
                                   child: CircularProgressIndicator(),
                                 )
                               : _image == null

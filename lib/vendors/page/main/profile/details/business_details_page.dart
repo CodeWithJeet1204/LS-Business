@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:ls_business/auth/login_page.dart';
+import 'package:ls_business/vendors/page/main/main_page.dart';
 import 'package:ls_business/vendors/page/main/profile/details/location_page.dart';
 import 'package:ls_business/vendors/page/main/profile/details/membership_details_page.dart';
 import 'package:ls_business/vendors/page/register/business_social_media_page.dart';
@@ -65,35 +66,47 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
           isChangingImage = true;
         });
 
-        await storage.refFromURL(previousUrl).delete();
-
-        Map<String, dynamic> updatedUserImage = {
-          'Image': im.path,
-        };
+        if (previousUrl !=
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1fDf705o-VZ3lVxTLh0jLPyFApbnwGoNHhSpwODOC0g&s') {
+          await storage.refFromURL(previousUrl).delete();
+        }
 
         Reference ref = storage
             .ref()
             .child('Vendor/Shops/Profile')
             .child(auth.currentUser!.uid);
-        await ref
-            .putFile(File(updatedUserImage['Image']!))
-            .whenComplete(() async {
+        await ref.putFile(File(im.path)).whenComplete(() async {
           await ref.getDownloadURL().then((value) {
             businessPhotoUrl = value;
           });
         });
-        updatedUserImage = {
-          'Image': businessPhotoUrl,
-        };
+
         await store
             .collection('Business')
             .doc('Owners')
             .collection('Shops')
             .doc(auth.currentUser!.uid)
-            .update(updatedUserImage);
+            .update({
+          'Image': businessPhotoUrl,
+        });
+
         setState(() {
           isChangingImage = false;
         });
+
+        if (mounted) {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => const MainPage(),
+            ),
+            (route) => false,
+          );
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const BusinessDetailsPage(),
+            ),
+          );
+        }
       } catch (e) {
         setState(() {
           isChangingImage = false;
@@ -378,14 +391,14 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                               : () async {
                                                   await showImage(
                                                     shopData['Image'] ??
-                                                        'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
+                                                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1fDf705o-VZ3lVxTLh0jLPyFApbnwGoNHhSpwODOC0g&s',
                                                   );
                                                 },
                                           child: CircleAvatar(
                                             radius: width * 0.15,
                                             backgroundImage: NetworkImage(
                                               shopData['Image'] ??
-                                                  'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
+                                                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1fDf705o-VZ3lVxTLh0jLPyFApbnwGoNHhSpwODOC0g&s',
                                             ),
                                             backgroundColor: primary2,
                                           ),
@@ -436,7 +449,9 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                     ),
                                     underline: const SizedBox(),
                                     iconEnabledColor: primaryDark,
-                                    dropdownColor: primary2,
+                                    dropdownColor: shopData['Open']
+                                        ? Colors.green.shade50
+                                        : Colors.red.shade50,
                                     items: ['Open', 'Closed']
                                         .map((e) => DropdownMenuItem(
                                               value: e,
@@ -499,7 +514,11 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                             child: SizedBox(
                                               width: width * 0.725,
                                               child: AutoSizeText(
-                                                shopData['Name'] ?? 'Name: N/A',
+                                                shopData['Name']
+                                                        .toString()
+                                                        .isNotEmpty
+                                                    ? shopData['Name']
+                                                    : 'Name: N/A',
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
@@ -530,9 +549,12 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                               ),
                               const SizedBox(height: 14),
 
-                              // LOCATION
+                              // ADDRESS
                               Container(
                                 width: width,
+                                // height: isChangingDescription
+                                //     ? width * 0.2775
+                                //     : width * 0.175,
                                 decoration: BoxDecoration(
                                   color: primary2.withOpacity(0.9),
                                   borderRadius: BorderRadius.circular(12),
@@ -541,59 +563,65 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                   // horizontal: width * 0.006125,
                                   vertical: height * 0.0125,
                                 ),
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => LocationPage(
-                                          latitude: shopData['Latitude'],
-                                          longitude: shopData['Longitude'],
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  customBorder: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Container(
-                                    width: width,
-                                    // height: 50,
-                                    decoration: BoxDecoration(
-                                      color: primary2.withOpacity(0.9),
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    padding: EdgeInsets.symmetric(
-                                      // horizontal: width * 0.006125,
-                                      vertical: height * 0.0125,
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                            left: width * 0.0335,
+                                child: isChangingAddress
+                                    ? TextField(
+                                        controller: addressController,
+                                        maxLength: 100,
+                                        autofocus: true,
+                                        onTapOutside: (event) =>
+                                            FocusScope.of(context).unfocus(),
+                                        decoration: InputDecoration(
+                                          hintText: 'Change Address',
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
                                           ),
-                                          child: Text(
-                                            'Location',
-                                            style: TextStyle(
-                                              color: primaryDark,
-                                              fontSize: width * 0.05,
-                                              fontWeight: FontWeight.w500,
+                                        ),
+                                      )
+                                    : Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                              left: width * 0.0335,
+                                            ),
+                                            child: SizedBox(
+                                              width: width * 0.725,
+                                              child: AutoSizeText(
+                                                shopData['Address']
+                                                        .toString()
+                                                        .isNotEmpty
+                                                    ? shopData['Address']
+                                                    : 'Address: N/A',
+                                                maxLines: 10,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontSize: width * 0.055,
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        Icon(
-                                          FeatherIcons.chevronRight,
-                                          color: primaryDark,
-                                          size: width * 0.09,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                              right: width * 0.03,
+                                            ),
+                                            child: IconButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  isChangingName = false;
+                                                  isChangingAddress = true;
+                                                  isChangingDescription = false;
+                                                });
+                                              },
+                                              icon: const Icon(
+                                                FeatherIcons.edit,
+                                              ),
+                                              tooltip: 'Edit Address',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                               ),
                               const SizedBox(height: 14),
 
@@ -637,8 +665,11 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                             child: SizedBox(
                                               width: width * 0.725,
                                               child: AutoSizeText(
-                                                shopData['Description'] ??
-                                                    'Description: N/A',
+                                                shopData['Description']
+                                                        .toString()
+                                                        .isNotEmpty
+                                                    ? shopData['Description']
+                                                    : 'Description: N/A',
                                                 maxLines: 10,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
@@ -659,8 +690,9 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                                   isChangingDescription = true;
                                                 });
                                               },
-                                              icon:
-                                                  const Icon(FeatherIcons.edit),
+                                              icon: const Icon(
+                                                FeatherIcons.edit,
+                                              ),
                                               tooltip: 'Edit Description',
                                             ),
                                           ),
@@ -902,83 +934,6 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                               // ),
                               // const SizedBox(height: 14),
 
-                              // MEMBERSHIP
-                              Container(
-                                width: width,
-                                // height: width * 0.16,
-                                alignment: Alignment.centerLeft,
-                                decoration: BoxDecoration(
-                                  color: shopData['MembershipName'] == 'Premium'
-                                      ? const Color.fromRGBO(
-                                          202,
-                                          226,
-                                          238,
-                                          1,
-                                        )
-                                      : shopData['MembershipName'] == 'Gold'
-                                          ? const Color.fromRGBO(
-                                              253,
-                                              243,
-                                              154,
-                                              1,
-                                            )
-                                          : shopData['MembershipName'] ==
-                                                  'Basic'
-                                              ? const Color.fromRGBO(
-                                                  225,
-                                                  225,
-                                                  225,
-                                                  1,
-                                                )
-                                              : const Color.fromRGBO(
-                                                  200,
-                                                  200,
-                                                  200,
-                                                  1,
-                                                ),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: width * 0.006125,
-                                  vertical: height * 0.0125,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(left: width * 0.033),
-                                      child: SizedBox(
-                                        width: width * 0.5975,
-                                        child: AutoSizeText(
-                                          shopData['MembershipName'] ?? 'N/A',
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: width * 0.055,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    MyTextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const MembershipDetailsPage(),
-                                          ),
-                                        );
-                                      },
-                                      text: 'See Details',
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 14),
-
                               // MEMBERSHIP END DATETIME
                               // Container(
                               //   width: width,
@@ -1116,6 +1071,154 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                       ),
                                     ],
                                   ),
+                                ),
+                              ),
+                              const SizedBox(height: 14),
+
+                              // LOCATION
+                              Container(
+                                width: width,
+                                decoration: BoxDecoration(
+                                  color: primary2.withOpacity(0.9),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  // horizontal: width * 0.006125,
+                                  vertical: height * 0.0125,
+                                ),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => LocationPage(
+                                          latitude: shopData['Latitude'],
+                                          longitude: shopData['Longitude'],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  customBorder: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Container(
+                                    width: width,
+                                    // height: 50,
+                                    decoration: BoxDecoration(
+                                      color: primary2.withOpacity(0.9),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    padding: EdgeInsets.symmetric(
+                                      // horizontal: width * 0.006125,
+                                      vertical: height * 0.0125,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            left: width * 0.0335,
+                                          ),
+                                          child: Text(
+                                            'Location',
+                                            style: TextStyle(
+                                              color: primaryDark,
+                                              fontSize: width * 0.05,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                        Icon(
+                                          FeatherIcons.chevronRight,
+                                          color: primaryDark,
+                                          size: width * 0.09,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 14),
+
+                              // MEMBERSHIP
+                              Container(
+                                width: width,
+                                // height: width * 0.16,
+                                alignment: Alignment.centerLeft,
+                                decoration: BoxDecoration(
+                                  color: shopData['MembershipName'] == 'Premium'
+                                      ? const Color.fromRGBO(
+                                          202,
+                                          226,
+                                          238,
+                                          1,
+                                        )
+                                      : shopData['MembershipName'] == 'Gold'
+                                          ? const Color.fromRGBO(
+                                              253,
+                                              243,
+                                              154,
+                                              1,
+                                            )
+                                          : shopData['MembershipName'] ==
+                                                  'Basic'
+                                              ? const Color.fromRGBO(
+                                                  225,
+                                                  225,
+                                                  225,
+                                                  1,
+                                                )
+                                              : const Color.fromRGBO(
+                                                  200,
+                                                  200,
+                                                  200,
+                                                  1,
+                                                ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: width * 0.006125,
+                                  vertical: height * 0.0125,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.only(left: width * 0.033),
+                                      child: SizedBox(
+                                        width: width * 0.5975,
+                                        child: AutoSizeText(
+                                          shopData['MembershipName']
+                                                  .toString()
+                                                  .isNotEmpty
+                                              ? shopData['MembershipName']
+                                              : 'Membership: N/A',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: width * 0.055,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    MyTextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const MembershipDetailsPage(),
+                                          ),
+                                        );
+                                      },
+                                      text: 'See Details',
+                                    ),
+                                  ],
                                 ),
                               ),
                               const SizedBox(height: 14),

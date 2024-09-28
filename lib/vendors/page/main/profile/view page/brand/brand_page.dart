@@ -490,7 +490,7 @@ class _BrandPageState extends State<BrandPage> {
                       );
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => AllBrandPage(),
+                          builder: (context) => const AllBrandPage(),
                         ),
                       );
                     }

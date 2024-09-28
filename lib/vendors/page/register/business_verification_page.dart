@@ -99,10 +99,12 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
           isAadhaarNotValidated = false;
         });
       } else {
-        mySnackBar(
-          context,
-          'This Aadhaar Number is already registered\nTry using different Aadhaar Number',
-        );
+        if (mounted) {
+          mySnackBar(
+            context,
+            'This Aadhaar Number is already registered\nTry using different Aadhaar Number',
+          );
+        }
         setState(() {
           isAadhaarNotValidated = true;
           isAadhaarValidated = false;
@@ -126,6 +128,22 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
         });
 
         try {
+          final gstSnap = await store
+              .collection('Business')
+              .doc('Owners')
+              .collection('Shops')
+              .where('GSTNumber', isEqualTo: gstController.text)
+              .get();
+
+          if (gstSnap.docs.isNotEmpty) {
+            if (mounted) {
+              return mySnackBar(
+                context,
+                'This GST Number is already registered\nRecheck GST Number',
+              );
+            }
+          }
+
           await store
               .collection('Business')
               .doc('Owners')
@@ -255,7 +273,7 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
 
                           // VALIDATE
                           isAadhaarValidated
-                              ? SizedBox(
+                              ? const SizedBox(
                                   height: 80,
                                   child: Center(
                                     child: Text(

@@ -12,7 +12,7 @@ class MyCollapseContainer extends StatefulWidget {
   });
 
   final String text;
-  final width;
+  final double width;
   final Widget children;
   final bool? isExpanded;
 

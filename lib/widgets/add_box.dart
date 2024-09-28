@@ -13,7 +13,7 @@ class AddBox extends StatefulWidget {
   });
 
   final BuildContext context;
-  final width;
+  final double width;
   final IconData icon;
   final String label;
   final Widget page;

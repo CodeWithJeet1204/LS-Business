@@ -134,7 +134,7 @@ class _AddPageState extends State<AddPage> {
                                 width: width,
                                 icon: FeatherIcons.box,
                                 label: 'PRODUCT',
-                                page: AddProductPage1(),
+                                page: const AddProductPage1(),
                               ),
 
                               // STATUS
@@ -143,7 +143,7 @@ class _AddPageState extends State<AddPage> {
                                 width: width,
                                 icon: FeatherIcons.upload,
                                 label: 'STATUS',
-                                page: AddStatusPage(),
+                                page: const AddStatusPage(),
                               ),
 
                               // SHORTS
@@ -152,7 +152,7 @@ class _AddPageState extends State<AddPage> {
                                 width: width,
                                 icon: FeatherIcons.playCircle,
                                 label: 'SHORTS',
-                                page: AddShortsPage(),
+                                page: const AddShortsPage(),
                               ),
 
                               // BRAND
@@ -161,7 +161,7 @@ class _AddPageState extends State<AddPage> {
                                 width: width,
                                 icon: FeatherIcons.award,
                                 label: 'BRAND',
-                                page: AddBrandPage(),
+                                page: const AddBrandPage(),
                               ),
 
                               // BULK PRODUCTS

@@ -89,7 +89,7 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
       isDialog = true;
     });
 
-    final shortsId = Uuid().v4();
+    final shortsId = const Uuid().v4();
 
     Reference shortsRef = storage.ref().child('Vendor/Shorts').child(shortsId);
 
@@ -131,7 +131,7 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
       'vendorId': auth.currentUser!.uid,
       'shortsURL': shortsDownloadUrl,
       'shortsThumbnail': thumbnailDownloadUrl,
-      'viewsTimestamp': [],
+      'shortsViewsTimestamp': [],
       'productId': productId,
       'productName': productName,
       'caption': productId != null ? null : captionController.text,
@@ -194,7 +194,7 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
                     FlickVideoPlayer(
                       flickManager: flickManager,
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     MyTextFormField(
                       hintText: 'Caption',
                       controller: captionController,

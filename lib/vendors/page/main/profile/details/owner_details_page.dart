@@ -52,12 +52,13 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
         setState(() {
           isChangingImage = true;
         });
-        await storage.refFromURL(previousUrl).delete();
+        if (previousUrl !=
+            'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png') {
+          await storage.refFromURL(previousUrl).delete();
+        }
 
-        Reference ref = FirebaseStorage.instance
-            .ref()
-            .child('Vendor/Owners')
-            .child(auth.currentUser!.uid);
+        Reference ref =
+            storage.ref().child('Vendor/Owners').child(auth.currentUser!.uid);
         await ref.putFile(File(im.path)).whenComplete(() async {
           await ref.getDownloadURL().then((value) {
             userPhotoUrl = value;
@@ -329,7 +330,6 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
 
                       if (snapshot.hasData) {
                         final userData = snapshot.data!;
-                        print('Image: ${userData['Image']}');
 
                         return SingleChildScrollView(
                           child: Column(
@@ -342,8 +342,9 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                       height: width * 0.3,
                                       decoration: BoxDecoration(
                                         color: primary,
-                                        borderRadius:
-                                            BorderRadius.circular(100),
+                                        borderRadius: BorderRadius.circular(
+                                          100,
+                                        ),
                                       ),
                                       child: const Center(
                                         child: CircularProgressIndicator(
@@ -376,7 +377,8 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                           child: IconButton.filledTonal(
                                             onPressed: () async {
                                               await changeImage(
-                                                  userData['Image']);
+                                                userData['Image'],
+                                              );
                                             },
                                             icon: Icon(
                                               FeatherIcons.camera,

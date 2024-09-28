@@ -128,7 +128,7 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                               width: width,
                               icon: FeatherIcons.box,
                               label: 'PRODUCT',
-                              page: ProductDiscountPage(),
+                              page: const ProductDiscountPage(),
                             ),
 
                             // BRAND
@@ -137,7 +137,7 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                               width: width,
                               icon: FeatherIcons.award,
                               label: 'BRAND',
-                              page: BrandDiscountPage(),
+                              page: const BrandDiscountPage(),
                             ),
 
                             // CATEGORY
@@ -146,7 +146,7 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                               width: width,
                               icon: FeatherIcons.box,
                               label: 'CATEGORY',
-                              page: CategoryDiscountPage(),
+                              page: const CategoryDiscountPage(),
                             ),
                           ],
                         ),

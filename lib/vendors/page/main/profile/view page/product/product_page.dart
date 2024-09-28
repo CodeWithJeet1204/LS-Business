@@ -987,7 +987,7 @@ class _ProductPageState extends State<ProductPage> {
                   if (context.mounted) {
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
-                        builder: (context) => MainPage(),
+                        builder: (context) => const MainPage(),
                       ),
                       (route) => false,
                     );

@@ -195,7 +195,7 @@ class _BusinessChooseCategoriesPageState
                                 );
                               },
                             ),
-                            Divider(),
+                            const Divider(),
                           ],
                         );
                       }).toList(),
