@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:ls_business/auth/login_page.dart';
+import 'package:ls_business/auth/sign_in_page.dart';
 import 'package:ls_business/vendors/page/main/main_page.dart';
 import 'package:ls_business/vendors/page/main/profile/details/location_page.dart';
 import 'package:ls_business/vendors/page/main/profile/details/membership_details_page.dart';
@@ -241,10 +241,9 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                 try {
                   await auth.signOut();
                   if (context.mounted) {
-                    Navigator.of(context).pop();
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
-                        builder: (context) => const LoginPage(),
+                        builder: (context) => const SignInPage(),
                       ),
                       (route) => false,
                     );

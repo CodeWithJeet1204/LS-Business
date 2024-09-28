@@ -1,5 +1,4 @@
-import 'package:ls_business/auth/login_page.dart';
-import 'package:ls_business/auth/verify/number_verify.dart';
+import 'package:ls_business/auth/sign_in_page.dart';
 import 'package:ls_business/under_development_page.dart';
 import 'package:ls_business/vendors/provider/main_page_provider.dart';
 import 'package:ls_business/vendors/page/register/business_select_categories_page.dart';
@@ -88,14 +87,16 @@ class _MainPageState extends State<MainPage> {
             detailsPage = const OwnerRegisterDetailsPage(
               fromMainPage: true,
             );
-          } else if (getUserDetailsAddedData['Registration'] ==
+          } /* else if (getUserDetailsAddedData['Registration'] ==
                   'phone number' &&
               getUserDetailsAddedData['numberVerified'] == false) {
             detailsPage = NumberVerifyPage(
-              fromMainPage: true,
               phoneNumber: getUserDetailsAddedData['Phone Number'],
+              fromMainPage: true,
+              isLogging: false,
             );
-          } else if (auth.currentUser!.email != null &&
+          }*/
+          else if (auth.currentUser!.email != null &&
               !auth.currentUser!.emailVerified) {
             detailsPage = const EmailVerifyPage(
               // mode: 'vendor',
@@ -187,7 +188,7 @@ class _MainPageState extends State<MainPage> {
           if (mounted) {
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (context) => const LoginPage(),
+                builder: (context) => const SignInPage(),
               ),
               (route) => false,
             );

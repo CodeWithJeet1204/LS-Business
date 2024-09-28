@@ -1,7 +1,5 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ls_business/vendors/firebase/auth_methods.dart';
 import 'package:ls_business/vendors/page/main/main_page.dart';
 import 'package:ls_business/vendors/page/register/owner_register_details_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
@@ -26,7 +24,6 @@ class EmailVerifyPage extends StatefulWidget {
 
 class _EmailVerifyPageState extends State<EmailVerifyPage> {
   final auth = FirebaseAuth.instance;
-  final AuthMethods authMethods = AuthMethods();
   final store = FirebaseFirestore.instance;
   Timer? timer;
   bool isEmailVerified = false;

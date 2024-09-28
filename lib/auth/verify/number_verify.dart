@@ -12,16 +12,18 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 class NumberVerifyPage extends StatefulWidget {
   const NumberVerifyPage({
     super.key,
-    required this.phoneNumber,
-    required this.fromMainPage,
     this.verificationId,
+    required this.phoneNumber,
+    // required this.fromMainPage,
+    required this.isLogging,
     // required this.mode,
   });
 
   // final String mode;
-  final String phoneNumber;
-  final bool fromMainPage;
   final String? verificationId;
+  final String phoneNumber;
+  // final bool fromMainPage;
+  final bool isLogging;
 
   @override
   State<NumberVerifyPage> createState() => _NumberVerifyPageState();
@@ -39,9 +41,9 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
   // INIT STATE
   @override
   void initState() {
-    if (widget.fromMainPage) {
-      sendVerification();
-    }
+    // if (widget.fromMainPage) {
+    //   sendVerification();
+    // }
     super.initState();
   }
 
@@ -53,55 +55,52 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
   }
 
   // SEND VERIFICATION
-  Future<void> sendVerification() async {
-    final userSnap =
-        await store.collection('Users').doc(auth.currentUser!.uid).get();
-
-    final userData = userSnap.data()!;
-
-    final phoneNumber = userData['Phone Number'];
-
-    await auth.verifyPhoneNumber(
-      phoneNumber: '+91 $phoneNumber',
-      verificationCompleted: (_) {
-        setState(() {
-          isPhoneRegistering = false;
-          isDialog = false;
-        });
-      },
-      verificationFailed: (e) {
-        setState(() {
-          isPhoneRegistering = false;
-          isDialog = false;
-        });
-        if (mounted) {
-          mySnackBar(
-            context,
-            e.toString(),
-          );
-        }
-      },
-      codeSent: (
-        String currentVerificationId,
-        int? token,
-      ) {
-        setState(() {
-          verificationId = currentVerificationId;
-        });
-      },
-      codeAutoRetrievalTimeout: (e) {
-        setState(() {
-          isPhoneRegistering = false;
-        });
-        if (mounted) {
-          mySnackBar(
-            context,
-            e.toString(),
-          );
-        }
-      },
-    );
-  }
+  // Future<void> sendVerification() async {
+  //   final userSnap =
+  //       await store.collection('Users').doc(auth.currentUser!.uid).get();
+  //   final userData = userSnap.data()!;
+  //   final phoneNumber = userData['Phone Number'];
+  //   await auth.verifyPhoneNumber(
+  //     phoneNumber: phoneNumber,
+  //     verificationCompleted: (_) {
+  //       setState(() {
+  //         isPhoneRegistering = false;
+  //         isDialog = false;
+  //       });
+  //     },
+  //     verificationFailed: (e) {
+  //       setState(() {
+  //         isPhoneRegistering = false;
+  //         isDialog = false;
+  //       });
+  //       if (mounted) {
+  //         mySnackBar(
+  //           context,
+  //           e.toString(),
+  //         );
+  //       }
+  //     },
+  //     codeSent: (
+  //       String currentVerificationId,
+  //       int? token,
+  //     ) {
+  //       setState(() {
+  //         verificationId = currentVerificationId;
+  //       });
+  //     },
+  //     codeAutoRetrievalTimeout: (e) {
+  //       setState(() {
+  //         isPhoneRegistering = false;
+  //       });
+  //       if (mounted) {
+  //         mySnackBar(
+  //           context,
+  //           e.toString(),
+  //         );
+  //       }
+  //     },
+  //   );
+  // }
 
   // VERIFY
   Future<void> verify() async {
@@ -119,43 +118,44 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
       try {
         await auth.signInWithCredential(credential);
 
-        await auth.currentUser?.reload();
         if (auth.currentUser != null) {
-          // if (widget.mode == 'vendor') {
-          await store
-              .collection('Business')
-              .doc('Owners')
-              .collection('Users')
-              .doc(auth.currentUser!.uid)
-              .set({
-            'Phone Number': '+91 ${widget.phoneNumber}',
-            'Registration': 'phone number',
-            'Image': null,
-            'Email': null,
-            'Name': null,
-            'numberVerified': true,
-            'allowCalls': true,
-            'allowChats': true,
-            // 'hasReviewed': false,
-          });
+          if (!widget.isLogging) {
+            // if (widget.mode == 'vendor') {
+            await store
+                .collection('Business')
+                .doc('Owners')
+                .collection('Users')
+                .doc(auth.currentUser!.uid)
+                .set({
+              'Phone Number': widget.phoneNumber,
+              'Registration': 'phone number',
+              'Image': null,
+              'Email': null,
+              'Name': null,
+              // 'numberVerified': true,
+              'allowCalls': true,
+              'allowChats': true,
+              // 'hasReviewed': false,
+            });
 
-          await store
-              .collection('Business')
-              .doc('Owners')
-              .collection('Shops')
-              .doc(auth.currentUser!.uid)
-              .set({
-            'Name': null,
-            'Registration': 'phone number',
-            'GSTNumber': null,
-            'Description': null,
-            // 'Industry': null,
-            'Image': null,
-            'Type': null,
-            'MembershipName': null,
-            'MembershipDuration': null,
-            'MembershipStartDateTime': null,
-          });
+            await store
+                .collection('Business')
+                .doc('Owners')
+                .collection('Shops')
+                .doc(auth.currentUser!.uid)
+                .set({
+              'Name': null,
+              'Registration': 'phone number',
+              'GSTNumber': null,
+              'Description': null,
+              // 'Industry': null,
+              'Image': null,
+              'Type': null,
+              'MembershipName': null,
+              'MembershipDuration': null,
+              'MembershipStartDateTime': null,
+            });
+          }
           // }
         }
         setState(() {
@@ -166,13 +166,15 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) {
               // if (widget.mode == 'vendor') {
-              if (widget.fromMainPage) {
-                return const MainPage();
-              } else {
-                return const OwnerRegisterDetailsPage(
-                  fromMainPage: false,
-                );
-              }
+              // if (widget.fromMainPage) {
+              //   return const MainPage();
+              // } else {
+              return widget.isLogging
+                  ? const MainPage()
+                  : const OwnerRegisterDetailsPage(
+                      fromMainPage: false,
+                    );
+              // }
               // } else if (widget.mode == 'services') {
               //   if (widget.isLogging) {
               //     return const ServicesMainPage();
@@ -190,6 +192,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
             }),
             (route) => false,
           );
+          widget.isLogging ? mySnackBar(context, 'Signed In') : null;
         }
       } catch (e) {
         setState(() {
@@ -198,7 +201,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
         });
         setState(() {
           if (mounted) {
-            mySnackBar(context, e.toString());
+            mySnackBar(context, 'Error: ${e.toString()}');
           }
         });
       }
