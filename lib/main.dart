@@ -118,76 +118,76 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      // home: Stack(
-      //   children: [
-      //     /*isFirstLaunch
-      //         ? const IntroPageView()
-      //         : */
-      //     StreamBuilder<User?>(
-      //       stream: FirebaseAuth.instance.authStateChanges(),
-      //       builder: (context, authSnapshot) {
-      //         // if (snapshot.hasData) {
-      //         // if (snapshot.data == 'vendor') {
-      //         if (authSnapshot.hasData) {
-      //           if (authSnapshot.data!.emailVerified) {
-      //             return const MainPage();
-      //           } else {
-      //             return const EmailVerifyPage(
-      //               // mode: 'vendor',
-      //               fromMainPage: true,
-      //             );
-      //           }
-      //         } else {
-      //           return const SignInPage(
-      //               // mode: 'vendor',
-      //               );
-      //         }
-      //         // } else if (snapshot.data == 'services') {
-      //         //   if (authSnapshot.hasData) {
-      //         //     if (authSnapshot.data!.email != null) {
-      //         //       if (authSnapshot.data!.emailVerified) {
-      //         //         return const ServicesMainPage();
-      //         //       } else {
-      //         //         return const EmailVerifyPage(
-      //         //           mode: 'services',
-      //         //           isLogging: true,
-      //         //         );
-      //         //       }
-      //         //     } else {
-      //         //       return const LoginPage(mode: 'services');
-      //         //     }
-      //         //   } else {
-      //         //     return const LoginPage(
-      //         //       mode: 'services',
-      //         //     );
-      //         //   }
-      //         // } else if (snapshot.data == 'events') {
-      //         //   if (authSnapshot.hasData) {
-      //         //     if (authSnapshot.data!.emailVerified) {
-      //         //       return const EventsMainPage();
-      //         //     } else {
-      //         //       return const EmailVerifyPage(
-      //         //         mode: 'events',
-      //         //         isLogging: true,
-      //         //       );
-      //         //     }
-      //         // } else {
-      //         //   return const LoginPage(
-      //         //     mode: 'events',
-      //         //   );
-      //         // }
-      //         // } else {
-      //         //   return const SelectModePage();
-      //         // }
-      //         // } else {
-      //         //   return const SelectModePage();
-      //         // }
-      //       },
-      //     ),
-      //     // const ConnectivityNotificationWidget(),
-      //   ],
-      // ),
-      home: const SignInPage(),
+      home: Stack(
+        children: [
+          /*isFirstLaunch
+              ? const IntroPageView()
+              : */
+          StreamBuilder<User?>(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, authSnapshot) {
+              // if (snapshot.hasData) {
+              // if (snapshot.data == 'vendor') {
+              if (authSnapshot.hasData) {
+                if (authSnapshot.data!.emailVerified) {
+                  return const MainPage();
+                } else {
+                  return const EmailVerifyPage(
+                    // mode: 'vendor',
+                    fromMainPage: true,
+                  );
+                }
+              } else {
+                return const SignInPage(
+                    // mode: 'vendor',
+                    );
+              }
+              // } else if (snapshot.data == 'services') {
+              //   if (authSnapshot.hasData) {
+              //     if (authSnapshot.data!.email != null) {
+              //       if (authSnapshot.data!.emailVerified) {
+              //         return const ServicesMainPage();
+              //       } else {
+              //         return const EmailVerifyPage(
+              //           mode: 'services',
+              //           isLogging: true,
+              //         );
+              //       }
+              //     } else {
+              //       return const LoginPage(mode: 'services');
+              //     }
+              //   } else {
+              //     return const LoginPage(
+              //       mode: 'services',
+              //     );
+              //   }
+              // } else if (snapshot.data == 'events') {
+              //   if (authSnapshot.hasData) {
+              //     if (authSnapshot.data!.emailVerified) {
+              //       return const EventsMainPage();
+              //     } else {
+              //       return const EmailVerifyPage(
+              //         mode: 'events',
+              //         isLogging: true,
+              //       );
+              //     }
+              // } else {
+              //   return const LoginPage(
+              //     mode: 'events',
+              //   );
+              // }
+              // } else {
+              //   return const SelectModePage();
+              // }
+              // } else {
+              //   return const SelectModePage();
+              // }
+            },
+          ),
+          // const ConnectivityNotificationWidget(),
+        ],
+      ),
+      // home: const SignInPage(),
     );
   }
 }

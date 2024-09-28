@@ -519,7 +519,7 @@ class _SignInPageState extends State<SignInPage> {
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
-            title: const Text('Register'),
+            title: const Text('Sign In'),
             actions: [
               IconButton(
                 onPressed: () async {

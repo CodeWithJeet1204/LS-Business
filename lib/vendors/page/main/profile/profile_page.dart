@@ -246,7 +246,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     children: [
                       // OWNER DETAILS
                       Expanded(
-                        child: InkWell(
+                        child: GestureDetector(
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
@@ -254,10 +254,6 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             );
                           },
-                          splashColor: primary3,
-                          customBorder: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
                           child: Container(
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
@@ -289,7 +285,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
 
                       Expanded(
-                        child: InkWell(
+                        child: GestureDetector(
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
@@ -298,10 +294,6 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             );
                           },
-                          splashColor: primary3,
-                          customBorder: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
                           child: Container(
                             alignment: Alignment.center,
                             decoration: BoxDecoration(

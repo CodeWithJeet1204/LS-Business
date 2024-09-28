@@ -228,9 +228,49 @@ class _ShortsTileState extends State<ShortsTile> {
                               ],
                             ),
                             Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
                               mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
+                                widget.data['productId'] == null
+                                    ? Container()
+                                    : GestureDetector(
+                                        onTap: () {
+                                          bool wasPlaying = isVideoPlaying;
+                                          if (flickManager
+                                              .flickVideoManager!.isPlaying) {
+                                            flickManager.flickControlManager!
+                                                .togglePlay();
+                                            setState(() {
+                                              isVideoPlaying = false;
+                                            });
+                                          }
+                                          Navigator.of(context)
+                                              .push(
+                                            MaterialPageRoute(
+                                              builder: (context) => ProductPage(
+                                                productId:
+                                                    widget.data['productId'],
+                                                productName:
+                                                    widget.data['productName'],
+                                              ),
+                                            ),
+                                          )
+                                              .then((value) {
+                                            if (wasPlaying) {
+                                              flickManager.flickControlManager!
+                                                  .togglePlay();
+                                            }
+                                            setState(() {
+                                              isVideoPlaying = true;
+                                            });
+                                          });
+                                        },
+                                        child: Icon(
+                                          Icons.link,
+                                          color: white,
+                                          size: width * 0.066,
+                                        ),
+                                      ),
                                 Expanded(
                                   child: Padding(
                                     padding: EdgeInsets.only(
@@ -240,7 +280,19 @@ class _ShortsTileState extends State<ShortsTile> {
                                       onTap: widget.data['productId'] == null
                                           ? null
                                           : () {
-                                              Navigator.of(context).push(
+                                              bool wasPlaying = isVideoPlaying;
+                                              if (flickManager
+                                                  .flickVideoManager!
+                                                  .isPlaying) {
+                                                flickManager
+                                                    .flickControlManager!
+                                                    .togglePlay();
+                                                setState(() {
+                                                  isVideoPlaying = false;
+                                                });
+                                              }
+                                              Navigator.of(context)
+                                                  .push(
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       ProductPage(
@@ -250,7 +302,17 @@ class _ShortsTileState extends State<ShortsTile> {
                                                         .data['productName'],
                                                   ),
                                                 ),
-                                              );
+                                              )
+                                                  .then((value) {
+                                                if (wasPlaying) {
+                                                  flickManager
+                                                      .flickControlManager!
+                                                      .togglePlay();
+                                                }
+                                                setState(() {
+                                                  isVideoPlaying = true;
+                                                });
+                                              });
                                             },
                                       child: Text(
                                         widget.data['productName'] ??

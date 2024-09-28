@@ -153,6 +153,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
 
         final vendorData = vendorSnap.data()!;
 
+        final city = vendorData['City'];
         final latitude = vendorData['Latitude'];
         final longitude = vendorData['Longitude'];
 
@@ -187,6 +188,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
           'categories': [],
           'brands': brandIdList,
           'vendorId': auth.currentUser!.uid,
+          'City': city,
           'Latitude': latitude,
           'Longitude': longitude,
         });
