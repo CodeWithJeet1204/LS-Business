@@ -25,8 +25,8 @@ class AddStatusPage extends StatefulWidget {
 class _AddStatusPageState extends State<AddStatusPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
-  final postKey = GlobalKey<FormState>();
-  final postController = TextEditingController();
+  final statusKey = GlobalKey<FormState>();
+  final captionController = TextEditingController();
   List<File> image = [];
   int currentImageIndex = 0;
   bool isPosting = false;
@@ -69,7 +69,7 @@ class _AddStatusPageState extends State<AddStatusPage> {
 
   // POST
   Future<void> post() async {
-    if (postKey.currentState!.validate()) {
+    if (statusKey.currentState!.validate()) {
       setState(() {
         isPosting = true;
         isDialog = true;
@@ -82,7 +82,7 @@ class _AddStatusPageState extends State<AddStatusPage> {
           try {
             Reference ref = FirebaseStorage.instance
                 .ref()
-                .child('Vendor/Posts')
+                .child('Vendor/Status')
                 .child(const Uuid().v4());
             await ref.putFile(img).whenComplete(() async {
               await ref.getDownloadURL().then((value) {
@@ -99,18 +99,18 @@ class _AddStatusPageState extends State<AddStatusPage> {
         }
 
         for (String imgUrl in imageDownloadUrl) {
-          final String postId = const Uuid().v4();
-          Map<String, dynamic> postInfo = {
-            'postId': postId,
-            'postText': postController.text,
-            'postImage': imgUrl,
-            'postVendorId': auth.currentUser!.uid,
-            'postViews': [],
-            'postDateTime': Timestamp.fromMillisecondsSinceEpoch(
+          final String statusId = const Uuid().v4();
+          Map<String, dynamic> statusInfo = {
+            'statusId': statusId,
+            'statusText': captionController.text,
+            'statusImage': imgUrl,
+            'statusVendorId': auth.currentUser!.uid,
+            'statusViews': [],
+            'statusDateTime': Timestamp.fromMillisecondsSinceEpoch(
               DateTime.now().millisecondsSinceEpoch,
             ),
-            // 'postLikes': 0,
-            // 'postDeleteDateTime': Timestamp.fromMillisecondsSinceEpoch(
+            // 'statusLikes': 0,
+            // 'statusDeleteDateTime': Timestamp.fromMillisecondsSinceEpoch(
             //   DateTime.now()
             //       .add(
             //         Duration(
@@ -134,9 +134,9 @@ class _AddStatusPageState extends State<AddStatusPage> {
           await store
               .collection('Business')
               .doc('Data')
-              .collection('Posts')
-              .doc(postId)
-              .set(postInfo);
+              .collection('Status')
+              .doc(statusId)
+              .set(statusInfo);
         }
 
         setState(() {
@@ -381,14 +381,14 @@ class _AddStatusPageState extends State<AddStatusPage> {
                               ),
                         const SizedBox(height: 8),
                         Form(
-                          key: postKey,
+                          key: statusKey,
                           child: Column(
                             children: [
                               SizedBox(
                                 width: width,
                                 child: TextFormField(
                                   autofocus: false,
-                                  controller: postController,
+                                  controller: captionController,
                                   minLines: 1,
                                   maxLines: 10,
                                   maxLength: 100,

@@ -479,13 +479,13 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                 //     ? width * 0.2775
                                 //     : width * 0.175,
                                 alignment: Alignment.center,
-                                padding: EdgeInsets.symmetric(
-                                  // horizontal: width * 0.006125,
-                                  vertical: height * 0.0125,
-                                ),
                                 decoration: BoxDecoration(
                                   color: primary2.withOpacity(0.9),
                                   borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  // horizontal: width * 0.006125,
+                                  vertical: height * 0.0125,
                                 ),
                                 child: isChangingName
                                     ? TextField(
@@ -502,48 +502,67 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                           ),
                                         ),
                                       )
-                                    : Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                              left: width * 0.0335,
-                                            ),
-                                            child: SizedBox(
-                                              width: width * 0.725,
-                                              child: AutoSizeText(
-                                                shopData['Name']
-                                                        .toString()
-                                                        .isNotEmpty
-                                                    ? shopData['Name']
-                                                    : 'Name: N/A',
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                  fontSize: width * 0.06,
-                                                ),
+                                    : Padding(
+                                        padding: EdgeInsets.only(
+                                          left: width * 0.033,
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Name',
+                                              style: TextStyle(
+                                                color: primaryDark,
+                                                fontSize: width * 0.03,
+                                                fontWeight: FontWeight.w500,
                                               ),
                                             ),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                              right: width * 0.03,
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                SizedBox(
+                                                  width: width * 0.7875,
+                                                  child: AutoSizeText(
+                                                    shopData['Name']
+                                                            .toString()
+                                                            .isNotEmpty
+                                                        ? shopData['Name']
+                                                        : 'Name: N/A',
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      fontSize: width * 0.06,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                    right: width * 0.03,
+                                                  ),
+                                                  child: IconButton(
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        isChangingName = true;
+                                                        isChangingAddress =
+                                                            false;
+                                                        isChangingDescription =
+                                                            false;
+                                                      });
+                                                    },
+                                                    icon: const Icon(
+                                                      FeatherIcons.edit,
+                                                    ),
+                                                    tooltip: 'Edit Name',
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                            child: IconButton(
-                                              onPressed: () {
-                                                setState(() {
-                                                  isChangingName = true;
-                                                  isChangingAddress = false;
-                                                  isChangingDescription = false;
-                                                });
-                                              },
-                                              icon:
-                                                  const Icon(FeatherIcons.edit),
-                                              tooltip: 'Edit Name',
-                                            ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                               ),
                               const SizedBox(height: 14),
@@ -577,49 +596,65 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                           ),
                                         ),
                                       )
-                                    : Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                              left: width * 0.0335,
+                                    : Padding(
+                                        padding: EdgeInsets.only(
+                                          left: width * 0.033,
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Address',
+                                              style: TextStyle(
+                                                color: primaryDark,
+                                                fontSize: width * 0.03,
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                             ),
-                                            child: SizedBox(
-                                              width: width * 0.725,
-                                              child: AutoSizeText(
-                                                shopData['Address']
-                                                        .toString()
-                                                        .isNotEmpty
-                                                    ? shopData['Address']
-                                                    : 'Address: N/A',
-                                                maxLines: 10,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                  fontSize: width * 0.055,
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                SizedBox(
+                                                  width: width * 0.7875,
+                                                  child: AutoSizeText(
+                                                    shopData['Address'] == ''
+                                                        ? 'N/A'
+                                                        : shopData['Address'],
+                                                    maxLines: 10,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      fontSize: width * 0.055,
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                    right: width * 0.03,
+                                                  ),
+                                                  child: IconButton(
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        isChangingName = false;
+                                                        isChangingAddress =
+                                                            true;
+                                                        isChangingDescription =
+                                                            false;
+                                                      });
+                                                    },
+                                                    icon: const Icon(
+                                                      FeatherIcons.edit,
+                                                    ),
+                                                    tooltip: 'Edit Address',
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                              right: width * 0.03,
-                                            ),
-                                            child: IconButton(
-                                              onPressed: () {
-                                                setState(() {
-                                                  isChangingName = false;
-                                                  isChangingAddress = true;
-                                                  isChangingDescription = false;
-                                                });
-                                              },
-                                              icon: const Icon(
-                                                FeatherIcons.edit,
-                                              ),
-                                              tooltip: 'Edit Address',
-                                            ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                               ),
                               const SizedBox(height: 14),
@@ -653,49 +688,67 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                           ),
                                         ),
                                       )
-                                    : Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                              left: width * 0.0335,
+                                    : Padding(
+                                        padding: EdgeInsets.only(
+                                          left: width * 0.033,
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Description',
+                                              style: TextStyle(
+                                                color: primaryDark,
+                                                fontSize: width * 0.03,
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                             ),
-                                            child: SizedBox(
-                                              width: width * 0.725,
-                                              child: AutoSizeText(
-                                                shopData['Description']
-                                                        .toString()
-                                                        .isNotEmpty
-                                                    ? shopData['Description']
-                                                    : 'Description: N/A',
-                                                maxLines: 10,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                  fontSize: width * 0.055,
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                SizedBox(
+                                                  width: width * 0.7875,
+                                                  child: AutoSizeText(
+                                                    shopData['Description'] ==
+                                                            ''
+                                                        ? 'N/A'
+                                                        : shopData[
+                                                            'Description'],
+                                                    maxLines: 10,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      fontSize: width * 0.055,
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                    right: width * 0.03,
+                                                  ),
+                                                  child: IconButton(
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        isChangingName = false;
+                                                        isChangingAddress =
+                                                            false;
+                                                        isChangingDescription =
+                                                            true;
+                                                      });
+                                                    },
+                                                    icon: const Icon(
+                                                      FeatherIcons.edit,
+                                                    ),
+                                                    tooltip: 'Edit Description',
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                              right: width * 0.03,
-                                            ),
-                                            child: IconButton(
-                                              onPressed: () {
-                                                setState(() {
-                                                  isChangingName = false;
-                                                  isChangingAddress = false;
-                                                  isChangingDescription = true;
-                                                });
-                                              },
-                                              icon: const Icon(
-                                                FeatherIcons.edit,
-                                              ),
-                                              tooltip: 'Edit Description',
-                                            ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                               ),
                               const SizedBox(height: 14),
@@ -713,44 +766,58 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                   // horizontal: width * 0.006125,
                                   vertical: height * 0.0125,
                                 ),
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      width: width * 0.855,
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                          left: width * 0.0335,
-                                        ),
-                                        child: SizedBox(
-                                          width: width * 0.8,
-                                          child: AutoSizeText(
-                                            getList(shopData['Type']),
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontSize: width * 0.055,
-                                            ),
-                                          ),
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    left: width * 0.033,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Types',
+                                        style: TextStyle(
+                                          color: primaryDark,
+                                          fontSize: width * 0.03,
+                                          fontWeight: FontWeight.w500,
                                         ),
                                       ),
-                                    ),
-                                    IconButton(
-                                      onPressed: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                BusinessChooseShopTypesPage(
-                                              isEditing: true,
-                                              selectedShopTypes:
-                                                  shopData['Type'],
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: width * 0.8,
+                                            child: SizedBox(
+                                              width: width * 0.8,
+                                              child: AutoSizeText(
+                                                getList(shopData['Type']),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontSize: width * 0.055,
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        );
-                                      },
-                                      icon: const Icon(FeatherIcons.edit),
-                                      tooltip: 'Edit Types',
-                                    ),
-                                  ],
+                                          IconButton(
+                                            onPressed: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      BusinessChooseShopTypesPage(
+                                                    isEditing: true,
+                                                    selectedShopTypes:
+                                                        shopData['Type'],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            icon: const Icon(FeatherIcons.edit),
+                                            tooltip: 'Edit Types',
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 14),
@@ -768,45 +835,60 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                   // horizontal: width * 0.006125,
                                   vertical: height * 0.0125,
                                 ),
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      width: width * 0.855,
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                          left: width * 0.0335,
-                                        ),
-                                        child: SizedBox(
-                                          width: width * 0.8,
-                                          child: AutoSizeText(
-                                            getList(shopData['Categories']),
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontSize: width * 0.055,
-                                            ),
-                                          ),
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    left: width * 0.033,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Categories',
+                                        style: TextStyle(
+                                          color: primaryDark,
+                                          fontSize: width * 0.03,
+                                          fontWeight: FontWeight.w500,
                                         ),
                                       ),
-                                    ),
-                                    IconButton(
-                                      onPressed: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                BusinessChooseCategoriesPage(
-                                              selectedTypes: shopData['Type'],
-                                              isEditing: true,
-                                              selectedCategories:
-                                                  shopData['Categories'],
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: width * 0.8,
+                                            child: SizedBox(
+                                              width: width * 0.8,
+                                              child: AutoSizeText(
+                                                getList(shopData['Categories']),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontSize: width * 0.055,
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        );
-                                      },
-                                      icon: const Icon(FeatherIcons.edit),
-                                      tooltip: 'Edit Categories',
-                                    ),
-                                  ],
+                                          IconButton(
+                                            onPressed: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      BusinessChooseCategoriesPage(
+                                                    selectedTypes:
+                                                        shopData['Type'],
+                                                    isEditing: true,
+                                                    selectedCategories:
+                                                        shopData['Categories'],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            icon: const Icon(FeatherIcons.edit),
+                                            tooltip: 'Edit Categories',
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 14),
@@ -824,47 +906,62 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                   // horizontal: width * 0.006125,
                                   vertical: height * 0.0125,
                                 ),
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      width: width * 0.855,
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                          left: width * 0.0335,
-                                        ),
-                                        child: SizedBox(
-                                          width: width * 0.8,
-                                          child: AutoSizeText(
-                                            getList(shopData['Products']),
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontSize: width * 0.055,
-                                            ),
-                                          ),
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    left: width * 0.033,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Products',
+                                        style: TextStyle(
+                                          color: primaryDark,
+                                          fontSize: width * 0.03,
+                                          fontWeight: FontWeight.w500,
                                         ),
                                       ),
-                                    ),
-                                    IconButton(
-                                      onPressed: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                BusinessChooseProductsPage(
-                                              selectedTypes: shopData['Type'],
-                                              isEditing: true,
-                                              selectedCategories:
-                                                  shopData['Categories'],
-                                              selectedProducts:
-                                                  shopData['Products'],
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: width * 0.8,
+                                            child: SizedBox(
+                                              width: width * 0.8,
+                                              child: AutoSizeText(
+                                                getList(shopData['Products']),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontSize: width * 0.055,
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        );
-                                      },
-                                      icon: const Icon(FeatherIcons.edit),
-                                      tooltip: 'Edit Products',
-                                    ),
-                                  ],
+                                          IconButton(
+                                            onPressed: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      BusinessChooseProductsPage(
+                                                    selectedTypes:
+                                                        shopData['Type'],
+                                                    isEditing: true,
+                                                    selectedCategories:
+                                                        shopData['Categories'],
+                                                    selectedProducts:
+                                                        shopData['Products'],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            icon: const Icon(FeatherIcons.edit),
+                                            tooltip: 'Edit Products',
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 14),
@@ -884,21 +981,34 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                 ),
                                 child: Padding(
                                   padding: EdgeInsets.only(
-                                    left: width * 0.0335,
+                                    left: width * 0.033,
                                   ),
-                                  child: SizedBox(
-                                    width: width * 0.875,
-                                    child: AutoSizeText(
-                                      shopData['GSTNumber'] == '' ||
-                                              shopData['GSTNumber'] == null
-                                          ? 'GST Number: N/A'
-                                          : 'GST: ${shopData['GSTNumber']}',
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontSize: 18,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'GST Number',
+                                        style: TextStyle(
+                                          color: primaryDark,
+                                          fontSize: width * 0.03,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
-                                    ),
+                                      SizedBox(
+                                        width: width * 0.875,
+                                        child: AutoSizeText(
+                                          shopData['GSTNumber'] == ''
+                                              ? 'N/A'
+                                              : shopData['GSTNumber'],
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -914,7 +1024,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                               //     borderRadius: BorderRadius.circular(12),
                               //   ),
                               //   padding: EdgeInsets.only(
-                              //     left: width * 0.0335,
+                              //     left: width * 0.033,
                               //     top: height * 0.006125,
                               //     bottom: height * 0.006125,
                               //   ),
@@ -943,7 +1053,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                               //     borderRadius: BorderRadius.circular(12),
                               //   ),
                               //   padding: EdgeInsets.only(
-                              //     left: width * 0.0335,
+                              //     left: width * 0.033,
                               //     top: height * 0.006125,
                               //     bottom: height * 0.006125,
                               //   ),
@@ -992,7 +1102,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                     children: [
                                       Padding(
                                         padding: EdgeInsets.only(
-                                          left: width * 0.0335,
+                                          left: width * 0.033,
                                         ),
                                         child: Text(
                                           'Timings',
@@ -1052,7 +1162,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                     children: [
                                       Padding(
                                         padding: EdgeInsets.only(
-                                          left: width * 0.0335,
+                                          left: width * 0.033,
                                         ),
                                         child: Text(
                                           'Social Media Links',
@@ -1118,7 +1228,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                       children: [
                                         Padding(
                                           padding: EdgeInsets.only(
-                                            left: width * 0.0335,
+                                            left: width * 0.033,
                                           ),
                                           child: Text(
                                             'Location',
@@ -1178,46 +1288,63 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 padding: EdgeInsets.symmetric(
-                                  horizontal: width * 0.006125,
+                                  // horizontal: width * 0.006125,
                                   vertical: height * 0.0125,
                                 ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(left: width * 0.033),
-                                      child: SizedBox(
-                                        width: width * 0.5975,
-                                        child: AutoSizeText(
-                                          shopData['MembershipName']
-                                                  .toString()
-                                                  .isNotEmpty
-                                              ? shopData['MembershipName']
-                                              : 'Membership: N/A',
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: width * 0.055,
-                                            fontWeight: FontWeight.w700,
-                                          ),
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    left: width * 0.033,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Membership',
+                                        style: TextStyle(
+                                          color: primaryDark,
+                                          fontSize: width * 0.03,
+                                          fontWeight: FontWeight.w500,
                                         ),
                                       ),
-                                    ),
-                                    MyTextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const MembershipDetailsPage(),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          SizedBox(
+                                            width: width * 0.5975,
+                                            child: AutoSizeText(
+                                              shopData['MembershipName']
+                                                      .toString()
+                                                      .isNotEmpty
+                                                  ? shopData['MembershipName']
+                                                  : 'Membership: N/A',
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                color: primaryDark,
+                                                fontSize: width * 0.055,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
                                           ),
-                                        );
-                                      },
-                                      text: 'See Details',
-                                    ),
-                                  ],
+                                          MyTextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const MembershipDetailsPage(),
+                                                ),
+                                              );
+                                            },
+                                            text: 'See Details',
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 14),
@@ -1239,7 +1366,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                   children: [
                                     Padding(
                                       padding: EdgeInsets.only(
-                                        left: width * 0.0335,
+                                        left: width * 0.033,
                                       ),
                                       child: SizedBox(
                                         width: width * 0.725,

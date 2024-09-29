@@ -314,6 +314,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
               child: LayoutBuilder(
                 builder: (context, constraints) {
                   final width = constraints.maxWidth;
+                  final height = constraints.maxHeight;
 
                   return StreamBuilder(
                     stream: userStream,
@@ -394,13 +395,16 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                               // NAME
                               Container(
                                 width: width,
-                                height: isChangingName
-                                    ? width * 0.2775
-                                    : width * 0.175,
+                                // height: isChangingName
+                                //     ? width * 0.2775
+                                //     : width * 0.175,
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                   color: primary2.withOpacity(0.9),
                                   borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  vertical: height * 0.0125,
                                 ),
                                 child: isChangingName
                                     ? TextField(
@@ -416,42 +420,59 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                           ),
                                         ),
                                       )
-                                    : Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                              left: width * 0.05,
-                                            ),
-                                            child: SizedBox(
-                                              width: width * 0.725,
-                                              child: AutoSizeText(
-                                                userData['Name'],
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                  fontSize: width * 0.06,
-                                                ),
+                                    : Padding(
+                                        padding: EdgeInsets.only(
+                                          left: width * 0.033,
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Name',
+                                              style: TextStyle(
+                                                color: primaryDark,
+                                                fontSize: width * 0.03,
+                                                fontWeight: FontWeight.w500,
                                               ),
                                             ),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                              right: width * 0.03,
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                SizedBox(
+                                                  width: width * 0.725,
+                                                  child: AutoSizeText(
+                                                    userData['Name'],
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      fontSize: width * 0.06,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                    right: width * 0.03,
+                                                  ),
+                                                  child: IconButton(
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        isChangingName = true;
+                                                      });
+                                                    },
+                                                    icon: const Icon(
+                                                      FeatherIcons.edit,
+                                                    ),
+                                                    tooltip: 'Edit Name',
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                            child: IconButton(
-                                              onPressed: () {
-                                                setState(() {
-                                                  isChangingName = true;
-                                                });
-                                              },
-                                              icon:
-                                                  const Icon(FeatherIcons.edit),
-                                              tooltip: 'Edit Name',
-                                            ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                               ),
                               const SizedBox(height: 14),
@@ -459,12 +480,15 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                               // PHONE NUMBER
                               Container(
                                 width: width,
-                                height: isChangingNumber
-                                    ? width * 0.2775
-                                    : width * 0.175,
+                                // height: isChangingNumber
+                                //     ? width * 0.2775
+                                //     : width * 0.175,
                                 decoration: BoxDecoration(
                                   color: primary2.withOpacity(0.9),
                                   borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  vertical: height * 0.0125,
                                 ),
                                 child: isChangingNumber
                                     ? TextField(
@@ -480,42 +504,60 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                           ),
                                         ),
                                       )
-                                    : Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                              left: width * 0.055,
-                                            ),
-                                            child: SizedBox(
-                                              width: width * 0.725,
-                                              child: AutoSizeText(
-                                                userData['Phone Number'],
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                  fontSize: width * 0.055,
-                                                ),
+                                    : Padding(
+                                        padding: EdgeInsets.only(
+                                          left: width * 0.033,
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Phone Number',
+                                              style: TextStyle(
+                                                color: primaryDark,
+                                                fontSize: width * 0.03,
+                                                fontWeight: FontWeight.w500,
                                               ),
                                             ),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                              right: width * 0.03,
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                SizedBox(
+                                                  width: width * 0.725,
+                                                  child: AutoSizeText(
+                                                    userData['Phone Number'],
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      fontSize: width * 0.055,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                    right: width * 0.03,
+                                                  ),
+                                                  child: IconButton(
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        isChangingNumber = true;
+                                                      });
+                                                    },
+                                                    icon: const Icon(
+                                                      FeatherIcons.edit,
+                                                    ),
+                                                    tooltip:
+                                                        'Edit Phone Number',
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                            child: IconButton(
-                                              onPressed: () {
-                                                setState(() {
-                                                  isChangingNumber = true;
-                                                });
-                                              },
-                                              icon:
-                                                  const Icon(FeatherIcons.edit),
-                                              tooltip: 'Edit Phone Number',
-                                            ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                               ),
                               const SizedBox(height: 14),
@@ -523,20 +565,31 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                               // EMAIL ADDRESS
                               Container(
                                 width: width,
-                                height: width * 0.16,
+                                // height: width * 0.16,
                                 decoration: BoxDecoration(
                                   color: primary2.withOpacity(0.9),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        left: width * 0.055,
+                                padding: EdgeInsets.symmetric(
+                                  vertical: height * 0.0125,
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    left: width * 0.033,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Email',
+                                        style: TextStyle(
+                                          color: primaryDark,
+                                          fontSize: width * 0.03,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
-                                      child: SizedBox(
+                                      SizedBox(
                                         width: width * 0.9,
                                         child: AutoSizeText(
                                           userData['Email'] == ''
@@ -549,8 +602,8 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 14),
@@ -558,30 +611,49 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                               // AADHAAR
                               Container(
                                 width: width,
-                                height: width * 0.16,
                                 alignment: Alignment.centerLeft,
                                 decoration: BoxDecoration(
                                   color: primary2.withOpacity(0.9),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                    left: width * 0.0335,
-                                  ),
-                                  child: SizedBox(
-                                    width: width * 0.9,
-                                    child: AutoSizeText(
-                                      userData['AadhaarNumber'] == '' ||
-                                              userData['AadhaarNumber'] == null
-                                          ? 'Aadhaar Number: N/A'
-                                          : 'Aadhaar: ${userData['AadhaarNumber']}',
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontSize: 18,
+                                padding: EdgeInsets.symmetric(
+                                  vertical: height * 0.0125,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        left: width * 0.033,
+                                      ),
+                                      child: Text(
+                                        'Aadhaar Number',
+                                        style: TextStyle(
+                                          color: primaryDark,
+                                          fontSize: width * 0.03,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
                                     ),
-                                  ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        left: width * 0.033,
+                                      ),
+                                      child: SizedBox(
+                                        width: width * 0.9,
+                                        child: AutoSizeText(
+                                          userData['AadhaarNumber'] == ''
+                                              ? 'N/A'
+                                              : userData['AadhaarNumber'],
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                               const SizedBox(height: 14),

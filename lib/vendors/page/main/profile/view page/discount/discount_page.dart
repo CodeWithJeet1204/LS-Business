@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:ls_business/vendors/page/main/main_page.dart';
 import 'package:ls_business/vendors/page/main/profile/data/all_discounts_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
@@ -209,6 +210,27 @@ class DISCOUNT extends State<DiscountPage> {
           isAddingImage = false;
           isDialog = false;
         });
+        if (mounted) {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => MainPage(),
+            ),
+            (route) => false,
+          );
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => AllDiscountPage(),
+            ),
+          );
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => DiscountPage(
+                discountId: widget.discountId,
+                discountImageUrl: widget.discountImageUrl,
+              ),
+            ),
+          );
+        }
       } catch (e) {
         setState(() {
           isAddingImage = false;
@@ -237,6 +259,27 @@ class DISCOUNT extends State<DiscountPage> {
           isChangingImage = false;
           isDialog = false;
         });
+        if (mounted) {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => MainPage(),
+            ),
+            (route) => false,
+          );
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => AllDiscountPage(),
+            ),
+          );
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => DiscountPage(
+                discountId: widget.discountId,
+                discountImageUrl: widget.discountImageUrl,
+              ),
+            ),
+          );
+        }
       } catch (e) {
         setState(() {
           isChangingImage = false;
@@ -254,8 +297,9 @@ class DISCOUNT extends State<DiscountPage> {
     try {
       setState(() {
         isChangingImage = true;
+        isDialog = true;
       });
-      await FirebaseStorage.instance.refFromURL(imageUrl).delete();
+      await storage.refFromURL(imageUrl).delete();
       await store
           .collection('Business')
           .doc('Data')
@@ -266,7 +310,29 @@ class DISCOUNT extends State<DiscountPage> {
       });
       setState(() {
         isChangingImage = false;
+        isDialog = false;
       });
+      if (mounted) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => MainPage(),
+          ),
+          (route) => false,
+        );
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => AllDiscountPage(),
+          ),
+        );
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => DiscountPage(
+              discountId: widget.discountId,
+              discountImageUrl: widget.discountImageUrl,
+            ),
+          ),
+        );
+      }
     } catch (e) {
       setState(() {
         isChangingImage = false;

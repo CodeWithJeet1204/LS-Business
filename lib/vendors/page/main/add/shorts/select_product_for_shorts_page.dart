@@ -396,7 +396,7 @@ class _SelectProductForShortsPageState
                                                 width: width * 0.5,
                                                 child: Text(
                                                   productData['productName'],
-                                                  maxLines: 2,
+                                                  maxLines: 1,
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   style: TextStyle(
@@ -541,7 +541,7 @@ class _SelectProductForShortsPageState
                                         ),
                                         title: Text(
                                           productData['productName'],
-                                          maxLines: 2,
+                                          maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             fontSize: width * 0.05,

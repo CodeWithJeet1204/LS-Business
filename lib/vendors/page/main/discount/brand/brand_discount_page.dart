@@ -12,6 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:ls_business/widgets/text_form_field.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -319,12 +320,13 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                                           size: width * 0.25,
                                         ),
                                         Text(
-                                          'SELECT IMAGE',
-                                          maxLines: 2,
+                                          'Select Banner Image\n(If Available)',
+                                          maxLines: 3,
                                           overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.center,
                                           style: TextStyle(
                                             color: primaryDark,
-                                            fontSize: width * 0.06,
+                                            fontSize: width * 0.05,
                                           ),
                                         ),
                                       ],
@@ -394,7 +396,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                               color: Colors.cyan.shade700,
                             ),
                           ),
-                          hintText: 'Discount / Sale Name',
+                          hintText: 'Discount / Sale Name*',
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -437,7 +439,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                                           CrossAxisAlignment.center,
                                       children: [
                                         Text(
-                                          'Start Date',
+                                          'Start Date*',
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
@@ -508,7 +510,8 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 12),
+                                      horizontal: 12,
+                                    ),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -516,7 +519,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                                           CrossAxisAlignment.center,
                                       children: [
                                         Text(
-                                          'End Date',
+                                          'End Date*',
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
@@ -588,7 +591,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                       // SELECT BRAND
                       MyButton(
                         text: selectedBrands.isEmpty
-                            ? 'SELECT BRANDS'
+                            ? 'SELECT BRANDS*'
                             : 'SELECTED BRANDS - ${selectedBrands.length}',
                         onTap: () {
                           Navigator.of(context).push(
@@ -693,28 +696,13 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                         padding: EdgeInsets.only(
                           bottom: MediaQuery.of(context).viewInsets.bottom,
                         ),
-                        child: TextFormField(
+                        child: MyTextFormField(
                           controller: discountController,
-                          onTapOutside: (event) =>
-                              FocusScope.of(context).unfocus(),
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(
-                                color: Colors.cyan.shade700,
-                              ),
-                            ),
-                            hintText: isPercentSelected
-                                ? 'eg. 20%'
-                                : 'eg. Rs. 200 off',
-                          ),
-                          validator: (value) {
-                            if (value != null && value.isEmpty) {
-                              return 'Please enter Discount Amount';
-                            }
-                            return null;
-                          },
+                          hintText: isPercentSelected
+                              ? 'Amount* (eg. 20%)'
+                              : 'Amount* (eg. Rs. 200 off)',
+                          borderRadius: 12,
+                          horizontalPadding: 0,
                         ),
                       ),
                     ],
