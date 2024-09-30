@@ -99,8 +99,8 @@
 //                 isDialog = false;
 //               });
 //               await auth.signInWithEmailAndPassword(
-//                 email: emailController.text.toString(),
-//                 password: passwordController.text.toString(),
+//                 email: emailController.text.toString().trim(),
+//                 password: passwordController.text.toString().trim(),
 //               );
 //               if (mounted) {
 //                 Navigator.of(context).pushAndRemoveUntil(
@@ -136,7 +136,7 @@
 //                 .collection('Users')
 //                 .doc(auth.currentUser!.uid)
 //                 .set({
-//               'Email': emailController.text.toString(),
+//               'Email': emailController.text.toString().trim(),
 //               'Registration': 'email',
 //               'Image': null,
 //               'Name': null,
@@ -299,7 +299,7 @@
 //                 builder: (context) => NumberVerifyPage(
 //                   verificationId: verificationId,
 //                   fromMainPage: false,
-//                   phoneNumber: phoneController.text.toString(),
+//                   phoneNumber: phoneController.text.toString().trim(),
 //                 ),
 //               ),
 //             );

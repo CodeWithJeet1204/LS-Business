@@ -321,7 +321,10 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                                 2,
                                               ),
                                               child: Image.network(
-                                                shopTypeImageUrl,
+                                                shopTypeImageUrl
+                                                    .toString()
+                                                    .toString()
+                                                    .trim(),
                                                 width: width * 0.5,
                                                 height: width * 0.5,
                                                 fit: BoxFit.cover,
@@ -334,7 +337,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                             left: width * 0.02,
                                           ),
                                           child: Text(
-                                            shopTypeName,
+                                            shopTypeName.toString().trim(),
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               color: primaryDark,
@@ -346,7 +349,8 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                       ],
                                     ),
                                   ),
-                                  selectedShopType == shopTypeName
+                                  selectedShopType ==
+                                          shopTypeName.toString().trim()
                                       ? Padding(
                                           padding: const EdgeInsets.only(
                                             right: 4,
@@ -461,14 +465,14 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                             2,
                                           ),
                                           child: Image.network(
-                                            shopTypeImageUrl,
+                                            shopTypeImageUrl.toString().trim(),
                                             width: width * 0.15,
                                             height: width * 0.15,
                                             fit: BoxFit.cover,
                                           ),
                                         ),
                                         title: Text(
-                                          shopTypeName,
+                                          shopTypeName.toString().trim(),
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             fontSize: width * 0.05,
@@ -477,7 +481,8 @@ class _AddProductPage2State extends State<AddProductPage2> {
                                         ),
                                       ),
                                     ),
-                                    selectedShopType == shopTypeName
+                                    selectedShopType ==
+                                            shopTypeName.toString().trim()
                                         ? Padding(
                                             padding: EdgeInsets.only(
                                               right: width * 0.033,

@@ -39,7 +39,7 @@ class _CheckBoxContainerState extends State<CheckBoxContainer> {
           SizedBox(
             width: widget.width * 0.75,
             child: AutoSizeText(
-              widget.text,
+              widget.text.toString().trim(),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(

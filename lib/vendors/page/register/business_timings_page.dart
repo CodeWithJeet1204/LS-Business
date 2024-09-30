@@ -429,7 +429,9 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
                                                       ),
                                                       child: Text(
                                                         weekdayStartTime!
-                                                            .format(context),
+                                                            .format(context)
+                                                            .toString()
+                                                            .trim(),
                                                         maxLines: 1,
                                                         overflow: TextOverflow
                                                             .ellipsis,
@@ -520,7 +522,9 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
                                                       ),
                                                       child: Text(
                                                         weekdayEndTime!
-                                                            .format(context),
+                                                            .format(context)
+                                                            .toString()
+                                                            .trim(),
                                                         maxLines: 1,
                                                         overflow: TextOverflow
                                                             .ellipsis,
@@ -674,7 +678,9 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
                                                       ),
                                                       child: Text(
                                                         saturdayStartTime!
-                                                            .format(context),
+                                                            .format(context)
+                                                            .toString()
+                                                            .trim(),
                                                         maxLines: 1,
                                                         overflow: TextOverflow
                                                             .ellipsis,
@@ -765,7 +771,9 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
                                                       ),
                                                       child: Text(
                                                         saturdayEndTime!
-                                                            .format(context),
+                                                            .format(context)
+                                                            .toString()
+                                                            .trim(),
                                                         maxLines: 1,
                                                         overflow: TextOverflow
                                                             .ellipsis,
@@ -919,7 +927,9 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
                                                       ),
                                                       child: Text(
                                                         sundayStartTime!
-                                                            .format(context),
+                                                            .format(context)
+                                                            .toString()
+                                                            .trim(),
                                                         maxLines: 1,
                                                         overflow: TextOverflow
                                                             .ellipsis,
@@ -1010,7 +1020,9 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
                                                       ),
                                                       child: Text(
                                                         sundayEndTime!
-                                                            .format(context),
+                                                            .format(context)
+                                                            .toString()
+                                                            .trim(),
                                                         maxLines: 1,
                                                         overflow: TextOverflow
                                                             .ellipsis,

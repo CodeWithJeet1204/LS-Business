@@ -64,7 +64,7 @@ class _MembershipCardState extends State<MembershipCard> {
         opacity: widget.isSelected ? 1 : 0.66,
         child: ExpansionTile(
           title: AutoSizeText(
-            widget.name,
+            widget.name.toString().trim(),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(

@@ -148,7 +148,8 @@ class _BusinessChooseCategoriesPageState
                     padding: EdgeInsets.symmetric(horizontal: width * 0.0125),
                     child: Column(
                       children: widget.selectedTypes.map((category) {
-                        final categoryData = categories![category.trim()];
+                        final categoryData =
+                            categories![category.toString().trim()];
 
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -156,7 +157,7 @@ class _BusinessChooseCategoriesPageState
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               child: Text(
-                                category,
+                                category.toString().trim(),
                                 style: const TextStyle(
                                   fontSize: 22,
                                 ),

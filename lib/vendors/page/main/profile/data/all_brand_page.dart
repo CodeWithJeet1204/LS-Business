@@ -276,7 +276,8 @@ class _AllBrandPageState extends State<AllBrandPage> {
                             if (!brandData['brandName']
                                 .toString()
                                 .toLowerCase()
-                                .contains(value.toLowerCase().trim())) {
+                                .contains(
+                                    value.toLowerCase().toString().trim())) {
                               keysToRemove.add(key);
                             }
                           });
@@ -502,7 +503,9 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                                 child: SizedBox(
                                                   width: width * 0.275,
                                                   child: Text(
-                                                    brandData['brandName'],
+                                                    brandData['brandName']
+                                                        .toString()
+                                                        .trim(),
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -613,7 +616,9 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                                   2,
                                                 ),
                                                 child: Image.network(
-                                                  brandData['imageUrl'],
+                                                  brandData['imageUrl']
+                                                      .toString()
+                                                      .trim(),
                                                   width: width * 0.15,
                                                   height: width * 0.15,
                                                   fit: BoxFit.cover,
@@ -637,7 +642,9 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                                 ),
                                               ),
                                         title: Text(
-                                          brandData['brandName'],
+                                          brandData['brandName']
+                                              .toString()
+                                              .trim(),
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(

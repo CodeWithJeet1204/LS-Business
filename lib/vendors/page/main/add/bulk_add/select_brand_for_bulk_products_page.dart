@@ -235,7 +235,7 @@
 //                                             child: SizedBox(
 //                                               width: width * 0.5,
 //                                               child: Text(
-//                                                 brandData['brandName'],
+//                                                 brandData['brandName'].toString().trim(),
 //                                                 maxLines: 1,
 //                                                 overflow: TextOverflow.ellipsis,
 //                                                 style: TextStyle(
@@ -335,7 +335,7 @@
 //                                                 ),
 //                                               ),
 //                                         title: Text(
-//                                           brandSnap['brandName'],
+//                                           brandSnap['brandName'].toString().trim(),
 //                                           maxLines: 1,
 //                                           overflow: TextOverflow.ellipsis,
 //                                           style: TextStyle(

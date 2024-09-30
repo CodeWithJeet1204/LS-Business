@@ -309,7 +309,8 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                             if (!discountData['discountName']
                                 .toString()
                                 .toLowerCase()
-                                .contains(value.toLowerCase().trim())) {
+                                .contains(
+                                    value.toLowerCase().toString().trim())) {
                               keysToRemove.add(key);
                             }
                           });
@@ -483,7 +484,9 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                             2),
                                                     child: Image.network(
                                                       discountData[
-                                                          'discountImageUrl'],
+                                                              'discountImageUrl']
+                                                          .toString()
+                                                          .trim(),
                                                       width: width,
                                                       height: width * 0.4125,
                                                       fit: BoxFit.cover,
@@ -540,7 +543,9 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                                     ),
                                                     child: Text(
                                                       discountData[
-                                                          'discountName'],
+                                                              'discountName']
+                                                          .toString()
+                                                          .trim(),
                                                       maxLines: 1,
                                                       overflow:
                                                           TextOverflow.ellipsis,
@@ -737,43 +742,45 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                                     ),
                                     child: ListTile(
                                       visualDensity: VisualDensity.standard,
-                                      leading:
-                                          discountData['discountImageUrl'] !=
-                                                  null
-                                              ? ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                    2,
-                                                  ),
-                                                  child: Image.network(
-                                                    discountData[
-                                                        'discountImageUrl'],
-                                                    width: width * 0.15,
-                                                    height: width * 0.15,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                )
-                                              : SizedBox(
-                                                  width: width * 0.15,
-                                                  height: width * 0.15,
-                                                  child: const Center(
-                                                    child: Text(
-                                                      'No Image',
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: TextStyle(
-                                                        color: primaryDark2,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                    ),
+                                      leading: discountData[
+                                                  'discountImageUrl'] !=
+                                              null
+                                          ? ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                2,
+                                              ),
+                                              child: Image.network(
+                                                discountData['discountImageUrl']
+                                                    .toString()
+                                                    .trim(),
+                                                width: width * 0.15,
+                                                height: width * 0.15,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            )
+                                          : SizedBox(
+                                              width: width * 0.15,
+                                              height: width * 0.15,
+                                              child: const Center(
+                                                child: Text(
+                                                  'No Image',
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                    color: primaryDark2,
+                                                    fontWeight: FontWeight.w500,
                                                   ),
                                                 ),
+                                              ),
+                                            ),
 
                                       // NAME
                                       title: Text(
-                                        discountData['discountName'],
+                                        discountData['discountName']
+                                            .toString()
+                                            .trim(),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(

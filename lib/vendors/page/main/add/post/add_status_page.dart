@@ -102,7 +102,7 @@ class _AddStatusPageState extends State<AddStatusPage> {
           final String statusId = const Uuid().v4();
           Map<String, dynamic> statusInfo = {
             'statusId': statusId,
-            'statusText': captionController.text,
+            'statusText': captionController.text.toString().trim(),
             'statusImage': imgUrl,
             'statusVendorId': auth.currentUser!.uid,
             'statusViews': [],

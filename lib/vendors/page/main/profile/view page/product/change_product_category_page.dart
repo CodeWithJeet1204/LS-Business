@@ -284,7 +284,7 @@ class _ChangeProductCategoryPageState extends State<ChangeProductCategoryPage> {
                                             borderRadius:
                                                 BorderRadius.circular(2),
                                             child: Image.network(
-                                              imageUrl,
+                                              imageUrl.toString().trim(),
                                               height: width * 0.5,
                                               width: width * 0.5,
                                               fit: BoxFit.cover,
@@ -299,7 +299,7 @@ class _ChangeProductCategoryPageState extends State<ChangeProductCategoryPage> {
                                         child: SizedBox(
                                           width: width * 0.5,
                                           child: Text(
-                                            name,
+                                            name.toString().trim(),
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.center,
@@ -374,14 +374,14 @@ class _ChangeProductCategoryPageState extends State<ChangeProductCategoryPage> {
                                       leading: ClipRRect(
                                         borderRadius: BorderRadius.circular(2),
                                         child: Image.network(
-                                          imageUrl,
+                                          imageUrl.toString().trim(),
                                           width: width * 0.15,
                                           height: width * 0.15,
                                           fit: BoxFit.cover,
                                         ),
                                       ),
                                       title: Text(
-                                        name,
+                                        name.toString().trim(),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(

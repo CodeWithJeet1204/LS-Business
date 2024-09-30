@@ -262,7 +262,8 @@ class _AllProductsPageState extends State<AllProductsPage> {
                             if (!productData['productName']
                                 .toString()
                                 .toLowerCase()
-                                .contains(value.toLowerCase().trim())) {
+                                .contains(
+                                    value.toLowerCase().toString().trim())) {
                               keysToRemove.add(key);
                             }
                           });
@@ -409,7 +410,9 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                               borderRadius:
                                                   BorderRadius.circular(2),
                                               child: Image.network(
-                                                productData['images'][0],
+                                                productData['images'][0]
+                                                    .toString()
+                                                    .trim(),
                                                 width: width * 0.5,
                                                 height: width * 0.5,
                                                 fit: BoxFit.cover,
@@ -439,8 +442,9 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                                   child: SizedBox(
                                                     width: width * 0.275,
                                                     child: Text(
-                                                      productData[
-                                                          'productName'],
+                                                      productData['productName']
+                                                          .toString()
+                                                          .trim(),
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                       maxLines: 1,
@@ -459,9 +463,9 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                                   ),
                                                   child: Text(
                                                     'Rs. ${productData['productPrice']}',
+                                                    maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
-                                                    maxLines: 1,
                                                     style: TextStyle(
                                                       fontSize: width * 0.045,
                                                       fontWeight:
@@ -566,14 +570,18 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                           2,
                                         ),
                                         child: Image.network(
-                                          productData['images'][0],
+                                          productData['images'][0]
+                                              .toString()
+                                              .trim(),
                                           width: width * 0.15,
                                           height: width * 0.15,
                                           fit: BoxFit.cover,
                                         ),
                                       ),
                                       title: Text(
-                                        productData['productName'],
+                                        productData['productName']
+                                            .toString()
+                                            .trim(),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(

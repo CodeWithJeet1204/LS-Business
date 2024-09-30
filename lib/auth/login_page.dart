@@ -128,8 +128,8 @@
 //           return;
 //         } else {
 //           await auth.signInWithEmailAndPassword(
-//             email: emailController.text.toString(),
-//             password: passwordController.text.toString(),
+//             email: emailController.text.toString().trim(),
+//             password: passwordController.text.toString().trim(),
 //           );
 
 //           if (auth.currentUser != null) {

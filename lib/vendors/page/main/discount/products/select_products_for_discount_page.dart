@@ -197,7 +197,8 @@ class _SelectProductForDiscountPageState
                             if (!productData['productName']
                                 .toString()
                                 .toLowerCase()
-                                .contains(value.toLowerCase().trim())) {
+                                .contains(
+                                    value.toLowerCase().toString().trim())) {
                               keysToRemove.add(key);
                             }
                           });
@@ -342,7 +343,9 @@ class _SelectProductForDiscountPageState
                                                         BorderRadius.circular(
                                                             2),
                                                     child: Image.network(
-                                                      productData['images'][0],
+                                                      productData['images'][0]
+                                                          .toString()
+                                                          .trim(),
                                                       width: width * 0.5,
                                                       height: width * 0.5,
                                                       fit: BoxFit.cover,
@@ -360,7 +363,9 @@ class _SelectProductForDiscountPageState
                                                 child: SizedBox(
                                                   width: width * 0.275,
                                                   child: Text(
-                                                    productData['productName'],
+                                                    productData['productName']
+                                                        .toString()
+                                                        .trim(),
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -379,9 +384,9 @@ class _SelectProductForDiscountPageState
                                                 ),
                                                 child: Text(
                                                   'Rs. ${productData['productPrice']}',
+                                                  maxLines: 1,
                                                   overflow:
                                                       TextOverflow.ellipsis,
-                                                  maxLines: 1,
                                                   style: TextStyle(
                                                     fontSize: width * 0.045,
                                                     fontWeight: FontWeight.w600,
@@ -481,14 +486,18 @@ class _SelectProductForDiscountPageState
                                               2,
                                             ),
                                             child: Image.network(
-                                              productData['images'][0],
+                                              productData['images'][0]
+                                                  .toString()
+                                                  .trim(),
                                               width: width * 0.15,
                                               height: width * 0.15,
                                               fit: BoxFit.cover,
                                             ),
                                           ),
                                           title: Text(
-                                            productData['productName'],
+                                            productData['productName']
+                                                .toString()
+                                                .trim(),
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               fontSize: width * 0.05,

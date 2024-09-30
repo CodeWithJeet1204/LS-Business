@@ -202,7 +202,7 @@ class _BusinessChooseProductsPageState
                                 horizontal: width * 0.0225,
                               ),
                               child: Text(
-                                subCategory!,
+                                subCategory!.toString().trim(),
                                 style: TextStyle(
                                   fontSize: width * 0.05,
                                   fontWeight: FontWeight.w500,
@@ -248,7 +248,7 @@ class _BusinessChooseProductsPageState
                                         SizedBox(
                                           width: width * 0.66,
                                           child: AutoSizeText(
-                                            product,
+                                            product.toString().trim(),
                                             style: TextStyle(
                                               fontSize: width * 0.04,
                                             ),

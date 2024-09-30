@@ -52,7 +52,7 @@ class _SelectContainerState extends State<SelectContainer> {
               horizontal: widget.width * 0.003125,
             ),
             child: AutoSizeText(
-              widget.text,
+              widget.text.toString().trim(),
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: primaryDark,

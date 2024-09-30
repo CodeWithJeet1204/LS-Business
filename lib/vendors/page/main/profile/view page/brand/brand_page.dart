@@ -259,12 +259,12 @@ class _BrandPageState extends State<BrandPage> {
       builder: (context) {
         return AlertDialog(
           title: Text(
-            'Remove $productName',
+            'Remove ${productName.toString().trim()}',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
           content: Text(
-            'Are you sure you want to remove $productName from $brandName',
+            'Are you sure you want to remove ${productName.toString().trim()} from ${brandName.toString().trim()}',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -441,8 +441,9 @@ class _BrandPageState extends State<BrandPage> {
         .where('productBrand', isEqualTo: widget.brandName)
         .orderBy('productName')
         .where('productName',
-            isGreaterThanOrEqualTo: searchController.text.toString())
-        .where('productName', isLessThan: '${searchController.text}\uf8ff')
+            isGreaterThanOrEqualTo: searchController.text.toString().trim())
+        .where('productName',
+            isLessThan: '${searchController.text.toString().trim()}\uf8ff')
         .orderBy('datetime', descending: true)
         .snapshots();
 
@@ -646,7 +647,7 @@ class _BrandPageState extends State<BrandPage> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    brandData['brandName'],
+                                    brandData['brandName'].toString().trim(),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
@@ -977,8 +978,9 @@ class _BrandPageState extends State<BrandPage> {
                                                                             0.275,
                                                                         child:
                                                                             Text(
-                                                                          productData[
-                                                                              'productName'],
+                                                                          productData['productName']
+                                                                              .toString()
+                                                                              .trim(),
                                                                           maxLines:
                                                                               1,
                                                                           overflow:
@@ -1009,10 +1011,10 @@ class _BrandPageState extends State<BrandPage> {
                                                                         child:
                                                                             Text(
                                                                           'Rs. ${productData['productPrice']}',
-                                                                          overflow:
-                                                                              TextOverflow.ellipsis,
                                                                           maxLines:
                                                                               1,
+                                                                          overflow:
+                                                                              TextOverflow.ellipsis,
                                                                           style:
                                                                               TextStyle(
                                                                             fontSize:
@@ -1121,7 +1123,9 @@ class _BrandPageState extends State<BrandPage> {
                                                               child:
                                                                   Image.network(
                                                                 productData[
-                                                                    'images'][0],
+                                                                        'images'][0]
+                                                                    .toString()
+                                                                    .trim(),
                                                                 width: width *
                                                                     0.15,
                                                                 height: width *
@@ -1132,7 +1136,9 @@ class _BrandPageState extends State<BrandPage> {
                                                             ),
                                                             title: Text(
                                                               productData[
-                                                                  'productName'],
+                                                                      'productName']
+                                                                  .toString()
+                                                                  .trim(),
                                                               overflow:
                                                                   TextOverflow
                                                                       .ellipsis,
@@ -1147,6 +1153,7 @@ class _BrandPageState extends State<BrandPage> {
                                                             ),
                                                             subtitle: Text(
                                                               'Rs. ${productData['productPrice']}',
+                                                              maxLines: 1,
                                                               overflow:
                                                                   TextOverflow
                                                                       .ellipsis,

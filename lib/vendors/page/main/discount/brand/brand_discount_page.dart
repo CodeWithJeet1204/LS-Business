@@ -179,8 +179,9 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
           'isProducts': false,
           'isCategories': false,
           'isBrands': true,
-          'discountName': nameController.text.toString(),
-          'discountAmount': double.parse(discountController.text),
+          'discountName': nameController.text.toString().trim(),
+          'discountAmount':
+              double.parse(discountController.text.toString().trim()),
           'discountStartDateTime': startDateTime,
           'discountEndDateTime': endDateTime,
           'discountId': discountId,
@@ -476,7 +477,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                                             bottom: width * 0.025,
                                           ),
                                           child: Text(
-                                            startDate!,
+                                            startDate!.toString().trim(),
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
@@ -556,7 +557,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                                             bottom: width * 0.025,
                                           ),
                                           child: Text(
-                                            endDate!,
+                                            endDate!.toString().trim(),
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(

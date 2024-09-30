@@ -264,7 +264,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                   .map((e) => DropdownMenuItem(
                                         value: e,
                                         child: Text(
-                                          e,
+                                          e.toString().trim(),
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                         ),
@@ -792,9 +792,10 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                   getTitlesWidget:
                                                       (value, meta) {
                                                     return Text(
+                                                      value.toStringAsFixed(0),
+                                                      maxLines: 1,
                                                       overflow:
                                                           TextOverflow.ellipsis,
-                                                      value.toStringAsFixed(0),
                                                       style: TextStyle(
                                                         fontSize:
                                                             selectedStringDuration ==
@@ -1043,9 +1044,10 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                                   getTitlesWidget:
                                                       (value, meta) {
                                                     return Text(
+                                                      value.toStringAsFixed(0),
+                                                      maxLines: 1,
                                                       overflow:
                                                           TextOverflow.ellipsis,
-                                                      value.toStringAsFixed(0),
                                                       style: TextStyle(
                                                         fontSize:
                                                             selectedStringDuration ==

@@ -132,7 +132,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
       isDialog = true;
     });
     try {
-      if (controller.text.isEmpty) {
+      if (controller.text.toString().trim().isEmpty) {
         setState(() {
           isSaving = false;
           isChanging = false;
@@ -146,7 +146,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
             .collection('Shops')
             .doc(auth.currentUser!.uid)
             .update({
-          propertyName: controller.text.toString(),
+          propertyName: controller.text.toString().trim(),
         });
 
         setState(() {
@@ -185,7 +185,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
           elevation: 20,
           child: InteractiveViewer(
             child: Image.network(
-              imageUrl,
+              imageUrl.toString().trim(),
             ),
           ),
         );
@@ -454,7 +454,11 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                     items: ['Open', 'Closed']
                                         .map((e) => DropdownMenuItem(
                                               value: e,
-                                              child: Text(e),
+                                              child: Text(
+                                                e.toString().trim(),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
                                             ))
                                         .toList(),
                                     onChanged: (value) async {
@@ -530,6 +534,8 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                                             .toString()
                                                             .isNotEmpty
                                                         ? shopData['Name']
+                                                            .toString()
+                                                            .trim()
                                                         : 'Name: N/A',
                                                     maxLines: 1,
                                                     overflow:
@@ -622,7 +628,9 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                                   child: AutoSizeText(
                                                     shopData['Address'] == ''
                                                         ? 'N/A'
-                                                        : shopData['Address'],
+                                                        : shopData['Address']
+                                                            .toString()
+                                                            .trim(),
                                                     maxLines: 10,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -716,7 +724,9 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                                             ''
                                                         ? 'N/A'
                                                         : shopData[
-                                                            'Description'],
+                                                                'Description']
+                                                            .toString()
+                                                            .trim(),
                                                     maxLines: 10,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -789,7 +799,9 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                             child: SizedBox(
                                               width: width * 0.8,
                                               child: AutoSizeText(
-                                                getList(shopData['Type']),
+                                                getList(shopData['Type'])
+                                                    .toString()
+                                                    .trim(),
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
@@ -858,7 +870,9 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                             child: SizedBox(
                                               width: width * 0.8,
                                               child: AutoSizeText(
-                                                getList(shopData['Categories']),
+                                                getList(shopData['Categories'])
+                                                    .toString()
+                                                    .trim(),
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
@@ -929,7 +943,9 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                             child: SizedBox(
                                               width: width * 0.8,
                                               child: AutoSizeText(
-                                                getList(shopData['Products']),
+                                                getList(shopData['Products'])
+                                                    .toString()
+                                                    .trim(),
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
@@ -1000,7 +1016,9 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                         child: AutoSizeText(
                                           shopData['GSTNumber'] == ''
                                               ? 'N/A'
-                                              : shopData['GSTNumber'],
+                                              : shopData['GSTNumber']
+                                                  .toString()
+                                                  .trim(),
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(
@@ -1320,7 +1338,9 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                                       .toString()
                                                       .isNotEmpty
                                                   ? shopData['MembershipName']
-                                                  : 'Membership: N/A',
+                                                      .toString()
+                                                      .trim()
+                                                  : 'N/A',
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(

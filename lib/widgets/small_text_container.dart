@@ -40,7 +40,7 @@ class SmallTextContainer extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.only(left: width * 0.05),
             child: Text(
-              text,
+              text.toString().trim(),
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(

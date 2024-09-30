@@ -200,7 +200,8 @@ class _SelectBrandForDiscountPageState
                             if (!brandData['brandName']
                                 .toString()
                                 .toLowerCase()
-                                .contains(value.toLowerCase().trim())) {
+                                .contains(
+                                    value.toLowerCase().toString().trim())) {
                               keysToRemove.add(key);
                             }
                           });
@@ -348,7 +349,9 @@ class _SelectBrandForDiscountPageState
                                                           ),
                                                           child: Image.network(
                                                             brandData[
-                                                                'imageUrl'],
+                                                                    'imageUrl']
+                                                                .toString()
+                                                                .trim(),
                                                             width: width * 0.5,
                                                             height: width * 0.5,
                                                             fit: BoxFit.cover,
@@ -380,7 +383,9 @@ class _SelectBrandForDiscountPageState
                                                   0,
                                                 ),
                                                 child: Text(
-                                                  brandData['brandName'],
+                                                  brandData['brandName']
+                                                      .toString()
+                                                      .trim(),
                                                   maxLines: 1,
                                                   overflow:
                                                       TextOverflow.ellipsis,
@@ -481,14 +486,18 @@ class _SelectBrandForDiscountPageState
                                               2,
                                             ),
                                             child: Image.network(
-                                              brandData['imageUrl'],
+                                              brandData['imageUrl']
+                                                  .toString()
+                                                  .trim(),
                                               width: width * 0.15,
                                               height: width * 0.15,
                                               fit: BoxFit.cover,
                                             ),
                                           ),
                                           title: Text(
-                                            brandData['brandName'],
+                                            brandData['brandName']
+                                                .toString()
+                                                .trim(),
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(

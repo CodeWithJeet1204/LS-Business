@@ -190,8 +190,9 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
           'isProducts': false,
           'isCategories': true,
           'isBrands': false,
-          'discountName': nameController.text.toString(),
-          'discountAmount': double.parse(discountController.text),
+          'discountName': nameController.text.toString().trim(),
+          'discountAmount':
+              double.parse(discountController.text.toString().trim()),
           'discountStartDateTime': startDateTime,
           'discountEndDateTime': endDateTime,
           'discountId': discountId,
@@ -487,7 +488,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                             bottom: width * 0.025,
                                           ),
                                           child: Text(
-                                            startDate!,
+                                            startDate!.toString().trim(),
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
@@ -567,7 +568,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                             bottom: width * 0.025,
                                           ),
                                           child: Text(
-                                            endDate!,
+                                            endDate!.toString().trim(),
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(

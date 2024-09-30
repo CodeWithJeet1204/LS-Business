@@ -205,18 +205,18 @@ class _BusinessRegisterDetailsPageState
             .collection('Shops')
             .doc(auth.currentUser!.uid)
             .update({
-          'Name': nameController.text.trim(),
+          'Name': nameController.text.toString().trim(),
           'Image': businessPhotoUrl ??
               'https://img.freepik.com/premium-vector/shop-clipart-cartoon-style-vector-illustration_761413-4813.jpg?semt=ais_hybrid',
           'Latitude': latitude,
           'Longitude': longitude,
           'City': cityDetectLocation ?? cityPickLocation,
-          'Address': addressController.text.trim(),
+          'Address': addressController.text.toString().trim(),
           'Open': true,
           'viewsTimestamp': [],
           'followersTimestamp': {},
-          'Description': descriptionController.text.trim(),
-          // 'GSTNumber': gstController.text.trim(),
+          'Description': descriptionController.text.toString().trim(),
+          // 'GSTNumber': gstController.text.toString().trim(),
           // 'Industry': selectedIndustrySegment,
         });
 

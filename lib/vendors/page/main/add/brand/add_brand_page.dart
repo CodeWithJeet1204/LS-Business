@@ -77,7 +77,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
             .get();
 
         for (QueryDocumentSnapshot doc in previousProducts.docs) {
-          if (doc['brandName'] == brandNameController.text.toString()) {
+          if (doc['brandName'] == brandNameController.text.toString().trim()) {
             if (mounted) {
               mySnackBar(
                 context,
@@ -109,7 +109,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
               .doc(brandId)
               .set({
             'brandId': brandId,
-            'brandName': brandNameController.text.toString(),
+            'brandName': brandNameController.text.toString().trim(),
             'imageUrl': imageUrl,
             'vendorId': auth.currentUser!.uid,
           });
@@ -125,7 +125,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
                 .doc(id)
                 .update({
               'productBrandId': brandId,
-              'productBrand': brandNameController.text..toString(),
+              'productBrand': brandNameController.text.toString().trim(),
             });
           }
 

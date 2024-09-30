@@ -120,7 +120,7 @@
 //                 TextButton(
 //                   onPressed: onNext,
 //                   child: Text(
-//                     nextText,
+//                     nextText.toString().trim(),
 //                     maxLines: 1,
 //                     overflow: TextOverflow.ellipsis,
 //                     style: TextStyle(

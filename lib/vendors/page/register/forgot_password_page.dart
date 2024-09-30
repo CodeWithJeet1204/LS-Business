@@ -74,8 +74,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     MyButton(
                       text: 'FORGET',
                       onTap: () async {
-                        if (emailController.text.contains('@') &&
-                            emailController.text.contains('.co')) {
+                        if (emailController.text
+                                .toString()
+                                .trim()
+                                .contains('@') &&
+                            emailController.text
+                                .toString()
+                                .trim()
+                                .contains('.co')) {
                           setState(() {
                             isForget = true;
                             isDialog = true;
@@ -92,10 +98,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             myEmails.add(email);
                           }
 
-                          if (myEmails.contains(emailController.text)) {
+                          if (myEmails.contains(
+                              emailController.text.toString().trim())) {
                             try {
                               await auth.sendPasswordResetEmail(
-                                email: emailController.text,
+                                email: emailController.text.toString().trim(),
                               );
                               setState(() {
                                 isForget = false;
@@ -104,7 +111,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                               });
                               if (context.mounted) {
                                 mySnackBar(
-                                    context, 'Password Reset Email Sent');
+                                  context,
+                                  'Password Reset Email Sent',
+                                );
                               }
                             } catch (e) {
                               setState(() {
@@ -148,7 +157,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                 MaterialPageRoute(
                                   builder: (context) =>
                                       LoginEmailAfterForgetPassword(
-                                    email: emailController.text,
+                                    email:
+                                        emailController.text.toString().trim(),
                                   ),
                                 ),
                               );

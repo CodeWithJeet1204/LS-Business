@@ -66,7 +66,7 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
     ];
 
     final RegExp aadhaarPattern = RegExp(r'^\d{12}$');
-    if (!aadhaarPattern.hasMatch(aadhaarController.text.trim())) {
+    if (!aadhaarPattern.hasMatch(aadhaarController.text.toString().trim())) {
       return;
     }
 
@@ -85,12 +85,13 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
       return c == 0;
     }
 
-    if (validateVerhoeff(aadhaarController.text.trim())) {
+    if (validateVerhoeff(aadhaarController.text.toString().trim())) {
       final vendorSnap = await store
           .collection('Business')
           .doc('Owners')
           .collection('Users')
-          .where('AadhaarNumber', isEqualTo: aadhaarController.text.trim())
+          .where('AadhaarNumber',
+              isEqualTo: aadhaarController.text.toString().trim())
           .get();
 
       if (vendorSnap.docs.isEmpty) {
@@ -132,7 +133,8 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
               .collection('Business')
               .doc('Owners')
               .collection('Shops')
-              .where('GSTNumber', isEqualTo: gstController.text.trim())
+              .where('GSTNumber',
+                  isEqualTo: gstController.text.toString().trim())
               .get();
 
           if (gstSnap.docs.isNotEmpty) {
@@ -150,7 +152,7 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
               .collection('Shops')
               .doc(auth.currentUser!.uid)
               .update({
-            'GSTNumber': gstController.text.trim(),
+            'GSTNumber': gstController.text.toString().trim(),
           });
 
           await store
@@ -159,7 +161,7 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
               .collection('Users')
               .doc(auth.currentUser!.uid)
               .update({
-            'AadhaarNumber': aadhaarController.text.trim(),
+            'AadhaarNumber': aadhaarController.text.toString().trim(),
           });
 
           if (mounted) {

@@ -134,7 +134,8 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
       'shortsViewsTimestamp': [],
       'productId': productId,
       'productName': productName,
-      'caption': productId != null ? null : captionController.text,
+      'caption':
+          productId != null ? null : captionController.text.toString().trim(),
       'datetime': DateTime.now(),
     });
 

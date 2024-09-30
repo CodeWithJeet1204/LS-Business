@@ -323,7 +323,10 @@ class _AddProductPage3State extends State<AddProductPage3> {
                                                 2,
                                               ),
                                               child: Image.network(
-                                                categoryImageUrl,
+                                                categoryImageUrl
+                                                    .toString()
+                                                    .toString()
+                                                    .trim(),
                                                 width: width * 0.5,
                                                 height: width * 0.5,
                                                 fit: BoxFit.cover,
@@ -336,7 +339,8 @@ class _AddProductPage3State extends State<AddProductPage3> {
                                             left: width * 0.02,
                                           ),
                                           child: Text(
-                                            categoryName,
+                                            categoryName.toString().trim(),
+                                            maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               color: primaryDark,
@@ -348,7 +352,8 @@ class _AddProductPage3State extends State<AddProductPage3> {
                                       ],
                                     ),
                                   ),
-                                  selectedCategory == categoryName
+                                  selectedCategory ==
+                                          categoryName.toString().trim()
                                       ? Padding(
                                           padding: const EdgeInsets.only(
                                             right: 4,
@@ -463,14 +468,15 @@ class _AddProductPage3State extends State<AddProductPage3> {
                                             2,
                                           ),
                                           child: Image.network(
-                                            categoryImageUrl,
+                                            categoryImageUrl.toString().trim(),
                                             width: width * 0.15,
                                             height: width * 0.15,
                                             fit: BoxFit.cover,
                                           ),
                                         ),
                                         title: Text(
-                                          categoryName,
+                                          categoryName.toString().trim(),
+                                          maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             fontSize: width * 0.05,
@@ -479,7 +485,8 @@ class _AddProductPage3State extends State<AddProductPage3> {
                                         ),
                                       ),
                                     ),
-                                    selectedCategory == categoryName
+                                    selectedCategory ==
+                                            categoryName.toString().trim()
                                         ? Padding(
                                             padding: EdgeInsets.only(
                                               right: width * 0.033,

@@ -109,7 +109,7 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
               .collection('Users')
               .doc(auth.currentUser!.uid)
               .update({
-            'Phone Number': phoneController.text,
+            'Phone Number': phoneController.text.toString().trim(),
             'Image': userPhotoUrl ??
                 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
           });
@@ -120,8 +120,8 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
               .collection('Users')
               .doc(auth.currentUser!.uid)
               .update({
-            'Name': nameController.text.trim(),
-            'Email': emailController.text.trim(),
+            'Name': nameController.text.toString().trim(),
+            'Email': emailController.text.toString().trim(),
             'Image': userPhotoUrl ??
                 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
           });
@@ -132,8 +132,8 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
               .collection('Users')
               .doc(auth.currentUser!.uid)
               .update({
-            'Name': nameController.text.trim(),
-            'Phone Number': phoneController.text.trim(),
+            'Name': nameController.text.toString().trim(),
+            'Phone Number': phoneController.text.toString().trim(),
             'Image': userPhotoUrl ??
                 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
           });

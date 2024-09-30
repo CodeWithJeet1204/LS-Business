@@ -38,7 +38,7 @@
 //             ),
 //             const SizedBox(height: 36),
 //             Text(
-//               text,
+//               text.toString().trim(),
 //               maxLines: 3,
 //               overflow: TextOverflow.ellipsis,
 //               style: TextStyle(

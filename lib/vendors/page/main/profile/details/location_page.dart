@@ -225,7 +225,7 @@ class _LocationPageState extends State<LocationPage> {
                               child: CircularProgressIndicator(),
                             )
                           : Text(
-                              address!,
+                              address!.toString().trim(),
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: width * 0.04,

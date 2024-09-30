@@ -262,7 +262,7 @@
 //                                       child: SizedBox(
 //                                         width: width * 0.5,
 //                                         child: Text(
-//                                           name,
+//                                           name.toString().trim(),
 //                                           maxLines: 1,
 //                                           overflow: TextOverflow.ellipsis,
 //                                           textAlign: TextAlign.center,
@@ -339,7 +339,7 @@
 //                                       ),
 //                                     ),
 //                                     title: Text(
-//                                       name,
+//                                       name.toString().trim(),
 //                                       maxLines: 1,
 //                                       overflow: TextOverflow.ellipsis,
 //                                       style: TextStyle(

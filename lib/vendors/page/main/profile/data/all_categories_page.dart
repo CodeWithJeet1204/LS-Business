@@ -409,7 +409,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                                             child: SizedBox(
                                               width: width * 0.5,
                                               child: Text(
-                                                name,
+                                                name.toString().trim(),
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                                 textAlign: TextAlign.center,
@@ -502,14 +502,14 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                                             2,
                                           ),
                                           child: Image.network(
-                                            imageUrl,
+                                            imageUrl.toString().trim(),
                                             width: width * 0.15,
                                             height: width * 0.15,
                                             fit: BoxFit.cover,
                                           ),
                                         ),
                                         title: Text(
-                                          name,
+                                          name.toString().trim(),
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(

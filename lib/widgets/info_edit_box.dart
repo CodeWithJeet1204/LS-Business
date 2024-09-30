@@ -41,7 +41,7 @@ class InfoEditBox extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                head,
+                head.toString().trim(),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
@@ -51,7 +51,7 @@ class InfoEditBox extends StatelessWidget {
               ),
               noOfAnswers == 1
                   ? Text(
-                      content,
+                      content.toString().trim(),
                       maxLines: maxLines,
                       softWrap: true,
                       style: TextStyle(
@@ -62,7 +62,7 @@ class InfoEditBox extends StatelessWidget {
                     )
                   : noOfAnswers == 2
                       ? Text(
-                          content,
+                          content.toString().trim(),
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -102,7 +102,7 @@ class InfoEditBox extends StatelessWidget {
                                           bottom: width * 0.0125,
                                         ),
                                         child: Text(
-                                          e,
+                                          e.toString().trim(),
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           textAlign: TextAlign.center,

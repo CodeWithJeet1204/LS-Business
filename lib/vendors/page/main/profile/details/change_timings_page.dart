@@ -450,7 +450,9 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                   ),
                                                   child: Text(
                                                     weekdayStartTime!
-                                                        .format(context),
+                                                        .format(context)
+                                                        .toString()
+                                                        .trim(),
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -537,7 +539,9 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                   ),
                                                   child: Text(
                                                     weekdayEndTime!
-                                                        .format(context),
+                                                        .format(context)
+                                                        .toString()
+                                                        .trim(),
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -699,7 +703,9 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                   ),
                                                   child: Text(
                                                     saturdayStartTime!
-                                                        .format(context),
+                                                        .format(context)
+                                                        .toString()
+                                                        .trim(),
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -786,7 +792,9 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                   ),
                                                   child: Text(
                                                     saturdayEndTime!
-                                                        .format(context),
+                                                        .format(context)
+                                                        .toString()
+                                                        .trim(),
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -948,7 +956,9 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                   ),
                                                   child: Text(
                                                     sundayStartTime!
-                                                        .format(context),
+                                                        .format(context)
+                                                        .toString()
+                                                        .trim(),
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -1035,7 +1045,9 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                   ),
                                                   child: Text(
                                                     sundayEndTime!
-                                                        .format(context),
+                                                        .format(context)
+                                                        .toString()
+                                                        .trim(),
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,

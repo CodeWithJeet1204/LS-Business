@@ -31,15 +31,15 @@ class _LoginEmailAfterForgetPasswordState
 
   // LOGIN WITH EMAIL
   Future<void> loginWithEmail() async {
-    if (passwordController.text.length > 6) {
+    if (passwordController.text.toString().trim().length > 6) {
       setState(() {
         isEmailLogging = true;
         isDialog = true;
       });
       try {
         await auth.signInWithEmailAndPassword(
-          email: emailController.text.toString(),
-          password: passwordController.text.toString(),
+          email: emailController.text.toString().trim(),
+          password: passwordController.text.toString().trim(),
         );
         if (mounted) {
           mySnackBar(context, 'Signed In');

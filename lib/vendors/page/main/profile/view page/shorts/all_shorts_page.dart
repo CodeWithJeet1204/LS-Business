@@ -184,11 +184,13 @@ class _AllShortsPageState extends State<AllShortsPage> {
                         if (!shortsData['productName']
                                 .toString()
                                 .toLowerCase()
-                                .contains(value.toLowerCase().trim()) &&
+                                .contains(
+                                    value.toLowerCase().toString().trim()) &&
                             !shortsData['caption']
                                 .toString()
                                 .toLowerCase()
-                                .contains(value.toLowerCase().trim())) {
+                                .contains(
+                                    value.toLowerCase().toString().trim())) {
                           keysToRemove.add(key);
                         }
                       });
@@ -288,7 +290,7 @@ class _AllShortsPageState extends State<AllShortsPage> {
                                 alignment: Alignment.center,
                                 children: [
                                   Image.network(
-                                    shortsThumbnail,
+                                    shortsThumbnail.toString().trim(),
                                     fit: BoxFit.cover,
                                   ),
                                   Container(

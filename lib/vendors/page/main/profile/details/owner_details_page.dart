@@ -99,7 +99,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
         isDialog = true;
       });
       if (isChangingName && !isChangingNumber) {
-        if (nameController.text.isEmpty) {
+        if (nameController.text.toString().trim().isEmpty) {
           mySnackBar(context, 'Name should be atleast 1 characters long');
           setState(() {
             isSaving = false;
@@ -113,7 +113,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
               .collection('Users')
               .doc(auth.currentUser!.uid)
               .update({
-            'Name': nameController.text.toString(),
+            'Name': nameController.text.toString().trim(),
           });
         }
         setState(() {
@@ -123,7 +123,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
           isChangingNumber = false;
         });
       } else if (!isChangingName && isChangingNumber) {
-        if (numberController.text.length != 10) {
+        if (numberController.text.toString().trim().length != 10) {
           mySnackBar(context, 'Number should be 10 characters long');
           setState(() {
             isSaving = false;
@@ -137,7 +137,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
               .collection('Users')
               .doc(auth.currentUser!.uid)
               .update({
-            'Phone Number': numberController.text.toString(),
+            'Phone Number': numberController.text.toString().trim(),
           });
           setState(() {
             isSaving = false;
@@ -147,7 +147,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
           });
         }
       } else if (isChangingName && isChangingNumber) {
-        if (nameController.text.isEmpty) {
+        if (nameController.text.toString().trim().isEmpty) {
           setState(() {
             isSaving = false;
             isDialog = false;
@@ -157,7 +157,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
             'Name should be atleast 1 characters long',
           );
         }
-        if (numberController.text.length != 10) {
+        if (numberController.text.toString().trim().length != 10) {
           setState(() {
             isSaving = false;
             isDialog = false;
@@ -170,8 +170,8 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
               .collection('Users')
               .doc(auth.currentUser!.uid)
               .update({
-            'Name': nameController.text.toString(),
-            'Phone Number': numberController.text.toString(),
+            'Name': nameController.text.toString().trim(),
+            'Phone Number': numberController.text.toString().trim(),
           });
           setState(() {
             isSaving = false;
@@ -202,7 +202,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
           elevation: 20,
           child: InteractiveViewer(
             child: Image.network(
-              imageUrl,
+              imageUrl.toString().trim(),
             ),
           ),
         );
@@ -444,7 +444,9 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                                 SizedBox(
                                                   width: width * 0.725,
                                                   child: AutoSizeText(
-                                                    userData['Name'],
+                                                    userData['Name']
+                                                        .toString()
+                                                        .trim(),
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -528,7 +530,9 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                                 SizedBox(
                                                   width: width * 0.725,
                                                   child: AutoSizeText(
-                                                    userData['Phone Number'],
+                                                    userData['Phone Number']
+                                                        .toString()
+                                                        .trim(),
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -594,7 +598,8 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                         child: AutoSizeText(
                                           userData['Email'] == ''
                                               ? auth.currentUser!.email
-                                              : userData['Email'] ?? 'N/A',
+                                              : userData['Email'].trim() ??
+                                                  'N/A',
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
@@ -676,7 +681,8 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                     children: [
                                       Padding(
                                         padding: EdgeInsets.only(
-                                            left: width * 0.025),
+                                          left: width * 0.025,
+                                        ),
                                         child: Text(
                                           'Allow Calls from Users',
                                           style: TextStyle(

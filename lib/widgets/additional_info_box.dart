@@ -33,7 +33,7 @@ class PropertyBox extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 6),
               child: Text(
-                headText,
+                headText.toString().trim(),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(

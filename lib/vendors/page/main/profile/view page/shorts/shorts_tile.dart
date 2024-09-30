@@ -316,7 +316,9 @@ class _ShortsTileState extends State<ShortsTile> {
                                             },
                                       child: Text(
                                         widget.data['productName'] ??
-                                            widget.data['caption'],
+                                            widget.data['caption']
+                                                .toString()
+                                                .trim(),
                                         style: TextStyle(
                                           color: white,
                                           fontSize: width * 0.05,

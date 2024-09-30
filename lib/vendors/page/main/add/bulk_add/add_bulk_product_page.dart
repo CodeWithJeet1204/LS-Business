@@ -156,7 +156,7 @@
 
 //         if (previousProducts.docs.isNotEmpty) {
 //           for (QueryDocumentSnapshot doc in previousProducts.docs) {
-//             if (doc['productName'] == nameController1.text.toString()) {
+//             if (doc['productName'] == nameController1.text.toString().trim()) {
 //               productAlreadyExists = true;
 //               break;
 //             }
@@ -260,7 +260,7 @@
 
 //           if (previousProducts.docs.isNotEmpty) {
 //             for (QueryDocumentSnapshot doc in previousProducts.docs) {
-//               if (doc['productName'] == nameController2.text.toString()) {
+//               if (doc['productName'] == nameController2.text.toString().trim()) {
 //                 productAlreadyExists = true;
 //                 break;
 //               }
@@ -365,7 +365,7 @@
 
 //           if (previousProducts.docs.isNotEmpty) {
 //             for (QueryDocumentSnapshot doc in previousProducts.docs) {
-//               if (doc['productName'] == nameController3.text.toString()) {
+//               if (doc['productName'] == nameController3.text.toString().trim()) {
 //                 productAlreadyExists = true;
 //                 break;
 //               }
@@ -470,7 +470,7 @@
 
 //           if (previousProducts.docs.isNotEmpty) {
 //             for (QueryDocumentSnapshot doc in previousProducts.docs) {
-//               if (doc['productName'] == nameController4.text.toString()) {
+//               if (doc['productName'] == nameController4.text.toString().trim()) {
 //                 productAlreadyExists = true;
 //                 break;
 //               }

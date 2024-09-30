@@ -160,11 +160,11 @@ class _AddProductPage1State extends State<AddProductPage1> {
       if (_image.length < 2) {
         return mySnackBar(context, 'Select atleast 2 image');
       }
-      if (priceController.text.length > 10) {
+      if (priceController.text.toString().trim().length > 10) {
         return mySnackBar(context, 'Max Price is 100 Cr.');
       }
-      if (priceController.text.isNotEmpty) {
-        if (double.parse(priceController.text) < 1) {
+      if (priceController.text.toString().trim().isNotEmpty) {
+        if (double.parse(priceController.text.toString().trim()) < 1) {
           return mySnackBar(context, 'Min Price is 1 Rs.');
         }
       }
@@ -191,7 +191,8 @@ class _AddProductPage1State extends State<AddProductPage1> {
             .doc('Data')
             .collection('Products')
             .where('vendorId', isEqualTo: auth.currentUser!.uid)
-            .where('productName', isEqualTo: nameController.text.toString())
+            .where('productName',
+                isEqualTo: nameController.text.toString().trim())
             .get();
 
         if (previousProducts.docs.isNotEmpty) {
@@ -213,9 +214,11 @@ class _AddProductPage1State extends State<AddProductPage1> {
           final String productId = const Uuid().v4();
           productProvider.add(
             {
-              'productName': nameController.text,
-              'productPrice': double.parse(priceController.text),
-              'productDescription': descriptionController.text,
+              'productName': nameController.text.toString().trim(),
+              'productPrice':
+                  double.parse(priceController.text.toString().trim()),
+              'productDescription':
+                  descriptionController.text.toString().trim(),
               'productBrand': 'No Brand',
               'productBrandId': '0',
               'productShares': 0,

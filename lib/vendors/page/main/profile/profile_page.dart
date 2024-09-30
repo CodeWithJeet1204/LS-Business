@@ -96,7 +96,7 @@ class _ProfilePageState extends State<ProfilePage> {
           elevation: 20,
           child: InteractiveViewer(
             child: Image.network(
-              imageUrl,
+              imageUrl.toString().trim(),
             ),
           ),
         );
@@ -200,7 +200,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 height: height * 0.05,
                               )
                             : Text(
-                                shopData['Name'],
+                                shopData['Name'].toString().trim(),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
@@ -224,7 +224,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 height: height * 0.025,
                               )
                             : Text(
-                                getShopTypes(shopData['Type']),
+                                getShopTypes(shopData['Type'])
+                                    .toString()
+                                    .trim(),
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(

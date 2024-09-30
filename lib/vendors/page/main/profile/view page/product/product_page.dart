@@ -190,6 +190,7 @@ class _ProductPageState extends State<ProductPage> {
                                                   (property as List).add(
                                                       editController.text
                                                           .toString()
+                                                          .trim()
                                                           .toUpperCase());
                                                   Map<String, dynamic>
                                                       newPropertyMap =
@@ -216,6 +217,7 @@ class _ProductPageState extends State<ProductPage> {
                                                   (property as List).add(
                                                       editController.text
                                                           .toString()
+                                                          .trim()
                                                           .toUpperCase());
 
                                                   await FirebaseFirestore
@@ -272,7 +274,10 @@ class _ProductPageState extends State<ProductPage> {
                                                       left: 12,
                                                     ),
                                                     child: Text(
-                                                      property[index],
+                                                      property[index]
+                                                          .toString()
+                                                          .trim(),
+                                                      maxLines: 1,
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                       style: const TextStyle(
@@ -370,6 +375,7 @@ class _ProductPageState extends State<ProductPage> {
                                               newPropertyMap[propertyValue] = [
                                                 editController.text
                                                     .toString()
+                                                    .trim()
                                                     .toUpperCase()
                                               ];
                                               await store
@@ -394,8 +400,12 @@ class _ProductPageState extends State<ProductPage> {
                                                         'productPrice'
                                                     ? editController.text
                                                         .toString()
+                                                        .trim()
                                                     : double.parse(
-                                                        editController.text),
+                                                        editController.text
+                                                            .toString()
+                                                            .trim(),
+                                                      ),
                                               });
                                               editController.clear();
                                             }
@@ -1450,7 +1460,7 @@ class _ProductPageState extends State<ProductPage> {
                                   child: SizedBox(
                                     width: width * 0.785,
                                     child: Text(
-                                      name,
+                                      name.toString().trim(),
                                       maxLines: 10,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
@@ -1524,6 +1534,7 @@ class _ProductPageState extends State<ProductPage> {
                                                           price == 'N/A'
                                                       ? const Text(
                                                           'N/A',
+                                                          maxLines: 1,
                                                           overflow: TextOverflow
                                                               .ellipsis,
                                                         )
@@ -1875,7 +1886,7 @@ class _ProductPageState extends State<ProductPage> {
                                       width: width * 0.75,
                                       child: Text(
                                         description != null && description != ''
-                                            ? description
+                                            ? description.toString().trim()
                                             : 'No Description',
                                         maxLines: 20,
                                         overflow: TextOverflow.ellipsis,
@@ -1957,6 +1968,8 @@ class _ProductPageState extends State<ProductPage> {
                                                     productData['categoryName'] !=
                                                             '0'
                                                         ? category['imageUrl']
+                                                            .toString()
+                                                            .trim()
                                                         : 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
                                                     fit: BoxFit.cover,
                                                     width: productData[
@@ -1980,7 +1993,9 @@ class _ProductPageState extends State<ProductPage> {
                                                             '0'
                                                         ? 'No Category'
                                                         : productData[
-                                                            'categoryName'],
+                                                                'categoryName']
+                                                            .toString()
+                                                            .trim(),
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,

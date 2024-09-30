@@ -52,7 +52,7 @@
 //           .get();
 
 //       for (QueryDocumentSnapshot doc in previousProducts.docs) {
-//         if (doc['categoryName'] == categoryController.text.toString()) {
+//         if (doc['categoryName'] == categoryController.text.toString().trim()) {
 //           if (mounted) {
 //             mySnackBar(
 //               context,
@@ -172,7 +172,7 @@
 //           MyTextButton(
 //             onPressed: () async {
 //               await addCategory(
-//                 categoryController.text.toString(),
+//                 categoryController.text.toString().trim(),
 //                 productsAddedToCategoryProvider,
 //               );
 //             },

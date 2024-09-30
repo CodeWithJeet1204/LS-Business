@@ -223,10 +223,8 @@ class _SelectCategoryForDiscountPageState
                         List<String> keysToRemove = [];
 
                         filteredCategories.forEach((key, categoryData) {
-                          if (!key
-                              .toString()
-                              .toLowerCase()
-                              .contains(value.toLowerCase().trim())) {
+                          if (!key.toString().toLowerCase().contains(
+                              value.toLowerCase().toString().trim())) {
                             keysToRemove.add(key);
                           }
                         });
@@ -391,7 +389,7 @@ class _SelectCategoryForDiscountPageState
                                                 vertical: width * 0.0125,
                                               ),
                                               child: Text(
-                                                categoryName,
+                                                categoryName.toString().trim(),
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                                 textAlign: TextAlign.center,
@@ -470,14 +468,14 @@ class _SelectCategoryForDiscountPageState
                                             2,
                                           ),
                                           child: Image.network(
-                                            categoryImageUrl,
+                                            categoryImageUrl.toString().trim(),
                                             width: width * 0.15,
                                             height: width * 0.15,
                                             fit: BoxFit.cover,
                                           ),
                                         ),
                                         title: Text(
-                                          categoryName,
+                                          categoryName.toString().trim(),
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(

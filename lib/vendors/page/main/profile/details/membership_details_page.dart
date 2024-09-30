@@ -151,7 +151,7 @@ class _MembershipDetailsPageState extends State<MembershipDetailsPage> {
                             ),
                             child: Center(
                               child: Text(
-                                data!['MembershipName'],
+                                data!['MembershipName'].toString().trim(),
                                 style: TextStyle(
                                   color: darkColor,
                                   fontSize: width * 0.1,
@@ -193,10 +193,12 @@ class _MembershipDetailsPageState extends State<MembershipDetailsPage> {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  DateFormat('dd MMMM yyyy').format(
-                                      (data!['MembershipStartDateTime']
+                                  DateFormat('dd MMMM yyyy')
+                                      .format((data!['MembershipStartDateTime']
                                               as Timestamp)
-                                          .toDate()),
+                                          .toDate())
+                                      .toString()
+                                      .trim(),
                                   style: TextStyle(
                                     color: darkColor!,
                                     fontSize: width * 0.05,
@@ -238,10 +240,12 @@ class _MembershipDetailsPageState extends State<MembershipDetailsPage> {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  DateFormat('dd MMMM yyyy').format(
-                                      (data!['MembershipEndDateTime']
+                                  DateFormat('dd MMMM yyyy')
+                                      .format((data!['MembershipEndDateTime']
                                               as Timestamp)
-                                          .toDate()),
+                                          .toDate())
+                                      .toString()
+                                      .trim(),
                                   style: TextStyle(
                                     color: darkColor,
                                     fontSize: width * 0.05,

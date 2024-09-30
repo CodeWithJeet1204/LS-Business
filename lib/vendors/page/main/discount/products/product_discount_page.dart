@@ -137,7 +137,8 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
         }
       }
 
-      if (isPercentSelected && int.parse(discountController.text) >= 100) {
+      if (isPercentSelected &&
+          int.parse(discountController.text.toString().trim()) >= 100) {
         return mySnackBar(context, 'Max Discount is 99.99999999999999999999%');
       }
 
@@ -195,8 +196,9 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
           'isProducts': true,
           'isCategories': false,
           'isBrands': false,
-          'discountName': nameController.text.toString(),
-          'discountAmount': double.parse(discountController.text),
+          'discountName': nameController.text.toString().trim(),
+          'discountAmount':
+              double.parse(discountController.text.toString().trim()),
           'discountStartDateTime': startDateTime,
           'discountEndDateTime': endDateTime,
           'discountId': discountId,
@@ -514,7 +516,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                             bottom: width * 0.025,
                                           ),
                                           child: Text(
-                                            startDate!,
+                                            startDate!.toString().trim(),
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
@@ -594,7 +596,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                             bottom: width * 0.025,
                                           ),
                                           child: Text(
-                                            endDate!,
+                                            endDate!.toString().trim(),
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(

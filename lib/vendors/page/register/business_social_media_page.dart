@@ -45,13 +45,13 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
   void initState() {
     setState(() {
       if (widget.instagram != null) {
-        instaController.text = widget.instagram!.trim();
+        instaController.text = widget.instagram!.toString().trim();
       }
       if (widget.facebook != null) {
-        facebookController.text = widget.facebook!.trim();
+        facebookController.text = widget.facebook!.toString().trim();
       }
       if (widget.website != null) {
-        websiteController.text = widget.website!.trim();
+        websiteController.text = widget.website!.toString().trim();
       }
     });
     super.initState();
@@ -80,9 +80,9 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
           .collection('Shops')
           .doc(auth.currentUser!.uid)
           .update({
-        'Instagram': instaController.text.trim(),
-        'Facebook': facebookController.text.trim(),
-        'Website': websiteController.text.trim(),
+        'Instagram': instaController.text.toString().trim(),
+        'Facebook': facebookController.text.toString().trim(),
+        'Website': websiteController.text.toString().trim(),
       });
 
       setState(() {

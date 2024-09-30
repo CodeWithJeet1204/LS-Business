@@ -256,7 +256,10 @@ class _SelectProductsForCategoryPageState
                                 if (!productData['productName']
                                     .toString()
                                     .toLowerCase()
-                                    .contains(value.toLowerCase().trim())) {
+                                    .contains(value
+                                        .toLowerCase()
+                                        .toString()
+                                        .trim())) {
                                   keysToRemove.add(key);
                                 }
                               });
@@ -436,8 +439,9 @@ class _SelectProductsForCategoryPageState
                                                         2,
                                                       ),
                                                       child: Image.network(
-                                                        productData['images']
-                                                            [0],
+                                                        productData['images'][0]
+                                                            .toString()
+                                                            .trim(),
                                                         width: width * 0.5,
                                                         height: width * 0.5,
                                                         fit: BoxFit.cover,
@@ -455,8 +459,9 @@ class _SelectProductsForCategoryPageState
                                                   child: SizedBox(
                                                     width: width * 0.5,
                                                     child: Text(
-                                                      productData[
-                                                          'productName'],
+                                                      productData['productName']
+                                                          .toString()
+                                                          .trim(),
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                       maxLines: 1,
@@ -589,8 +594,10 @@ class _SelectProductsForCategoryPageState
                                                       ),
                                                     ),
                                                     title: Text(
-                                                      productData[
-                                                          'productName'],
+                                                      productData['productName']
+                                                          .toString()
+                                                          .trim(),
+                                                      maxLines: 1,
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                       style: TextStyle(
@@ -601,6 +608,7 @@ class _SelectProductsForCategoryPageState
                                                     ),
                                                     subtitle: Text(
                                                       'Rs. ${productData['productPrice']}',
+                                                      maxLines: 1,
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                       style: TextStyle(

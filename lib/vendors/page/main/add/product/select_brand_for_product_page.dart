@@ -198,7 +198,7 @@
 //                             if (!brandData['brandName']
 //                                 .toString()
 //                                 .toLowerCase()
-//                                 .contains(value.toLowerCase().trim())) {
+//                                 .contains(value.toLowerCase().toString().trim())) {
 //                               keysToRemove.add(key);
 //                             }
 //                           });

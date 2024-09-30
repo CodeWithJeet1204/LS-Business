@@ -188,7 +188,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                     .map((e) => DropdownMenuItem(
                                           value: e,
                                           child: Text(
-                                            e,
+                                            e.toString().trim(),
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                           ),

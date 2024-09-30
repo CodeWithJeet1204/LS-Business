@@ -292,7 +292,7 @@
 //                             if (!productData['productName']
 //                                 .toString()
 //                                 .toLowerCase()
-//                                 .contains(value.toLowerCase().trim())) {
+//                                 .contains(value.toLowerCase().toString().trim())) {
 //                               keysToRemove.add(key);
 //                             }
 //                           });
@@ -477,7 +477,7 @@
 //                                                     width: width * 0.5,
 //                                                     child: Text(
 //                                                       productData[
-//                                                           'productName'],
+//                                                           'productName'].toString().trim(),
 //                                                       overflow:
 //                                                           TextOverflow.ellipsis,
 //                                                       maxLines: 1,
@@ -504,7 +504,7 @@
 //                                                               productData[
 //                                                                       'productPrice'] !=
 //                                                                   null
-//                                                           ? '''Rs. ${productData['productPrice']}'''
+//                                                           ? 'Rs. ${productData['productPrice']}'
 //                                                           : 'N/A',
 //                                                       overflow:
 //                                                           TextOverflow.ellipsis,
@@ -616,7 +616,7 @@
 //                                                   ),
 //                                                 ),
 //                                                 title: Text(
-//                                                   productData['productName'],
+//                                                   productData['productName'].toString().trim(),
 //                                                   maxLines: 1,
 //                                                   overflow:
 //                                                       TextOverflow.ellipsis,

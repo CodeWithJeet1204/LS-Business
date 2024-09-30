@@ -270,12 +270,12 @@
 //         //                     if (!postData['postProductName']
 //         //                         .toString()
 //         //                         .toLowerCase()
-//         //                         .contains(value.toLowerCase().trim())) {
+//         //                         .contains(value.toLowerCase().toString().trim())) {
 //         //                       if (!postData['postText'] != null &&
 //         //                           !postData['postText']
 //         //                               .toString()
 //         //                               .toLowerCase()
-//         //                               .contains(value.toLowerCase().trim())) {
+//         //                               .contains(value.toLowerCase().toString().trim())) {
 //         //                         keysToRemove.add(key);
 //         //                       } else {
 //         //                         keysToRemove.add(key);

@@ -120,12 +120,12 @@ class _CategoryPageState extends State<CategoryPage> {
       builder: (context) {
         return AlertDialog(
           title: Text(
-            'Remove $productName',
+            'Remove ${productName.toString().trim()}',
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
           content: Text(
-            'Are you sure you want to remove \'$productName\'\nfrom $categoryName',
+            'Are you sure you want to remove ${productName.toString().trim()} from ${categoryName.toString().trim()}',
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
           ),
@@ -297,7 +297,7 @@ class _CategoryPageState extends State<CategoryPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          widget.categoryName,
+                          widget.categoryName.toString().trim(),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -547,7 +547,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                                             2,
                                                           ),
                                                           child: Image.network(
-                                                            imageUrl,
+                                                            imageUrl
+                                                                .toString()
+                                                                .trim(),
                                                             width: width * 0.5,
                                                             height: width * 0.5,
                                                             fit: BoxFit.cover,
@@ -583,7 +585,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                   width: width *
                                                                       0.275,
                                                                   child: Text(
-                                                                    name,
+                                                                    name
+                                                                        .toString()
+                                                                        .trim(),
                                                                     maxLines: 1,
                                                                     overflow:
                                                                         TextOverflow
@@ -642,7 +646,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                 () async {
                                                               await remove(
                                                                 id,
-                                                                name,
+                                                                name
+                                                                    .toString()
+                                                                    .trim(),
                                                                 widget
                                                                     .categoryName,
                                                               );
@@ -727,14 +733,16 @@ class _CategoryPageState extends State<CategoryPage> {
                                                           4,
                                                         ),
                                                         child: Image.network(
-                                                          imageUrl,
+                                                          imageUrl
+                                                              .toString()
+                                                              .trim(),
                                                           width: width * 0.15,
                                                           height: width * 0.15,
                                                           fit: BoxFit.cover,
                                                         ),
                                                       ),
                                                       title: Text(
-                                                        name,
+                                                        name.toString().trim(),
                                                         maxLines: 1,
                                                         overflow: TextOverflow
                                                             .ellipsis,
@@ -763,7 +771,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                                         onPressed: () async {
                                                           await remove(
                                                             id,
-                                                            name,
+                                                            name
+                                                                .toString()
+                                                                .trim(),
                                                             widget.categoryName,
                                                           );
                                                         },

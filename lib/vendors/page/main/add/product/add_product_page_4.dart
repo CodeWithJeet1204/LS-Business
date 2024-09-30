@@ -98,10 +98,11 @@ class _AddProductPage4State extends State<AddProductPage4> {
 
   // ADD TAG
   void addTag() {
-    if (tagController.text.toString().length > 1) {
-      if (!tagList.contains(tagController.text.toString().toUpperCase())) {
+    if (tagController.text.toString().trim().length > 1) {
+      if (!tagList
+          .contains(tagController.text.toString().trim().toUpperCase())) {
         setState(() {
-          tagList.insert(0, tagController.text.toString().toUpperCase());
+          tagList.insert(0, tagController.text.toString().trim().toUpperCase());
           tagController.clear();
         });
       } else {
@@ -122,9 +123,9 @@ class _AddProductPage4State extends State<AddProductPage4> {
 
   // ADD OTHER INFO
   void addOtherInfoValue() {
-    if (otherInfoValueController.text.toString().length > 1) {
+    if (otherInfoValueController.text.toString().trim().length > 1) {
       setState(() {
-        otherInfoList.add(otherInfoValueController.text.toString());
+        otherInfoList.add(otherInfoValueController.text.toString().trim());
       });
       otherInfoValueController.clear();
     } else {
@@ -144,11 +145,12 @@ class _AddProductPage4State extends State<AddProductPage4> {
     if (productKey.currentState!.validate()) {
       if (property0.isEmpty && getCompulsory(0)) {
         if (getNoOfAnswers(0) == 1) {
-          if (property0Controller.text.isEmpty) {
+          if (property0Controller.text.toString().trim().isEmpty) {
             return mySnackBar(
                 context, 'Enter value for ${getPropertiesKeys(0)}');
           }
-          property0.add(property0Controller.text.toString().toUpperCase());
+          property0
+              .add(property0Controller.text.toString().trim().toUpperCase());
         } else if (getNoOfAnswers(0) == 2) {
           return mySnackBar(context, 'Select ${getPropertiesKeys(0)}');
         } else if (getNoOfAnswers(0) == 3) {
@@ -158,11 +160,12 @@ class _AddProductPage4State extends State<AddProductPage4> {
       }
       if (property1.isEmpty && getCompulsory(1)) {
         if (getNoOfAnswers(1) == 1) {
-          if (property1Controller.text.isEmpty) {
+          if (property1Controller.text.toString().trim().isEmpty) {
             return mySnackBar(
                 context, 'Enter value for ${getPropertiesKeys(1)}');
           }
-          property1.add(property1Controller.text.toString().toUpperCase());
+          property1
+              .add(property1Controller.text.toString().trim().toUpperCase());
         } else if (getNoOfAnswers(1) == 2) {
           return mySnackBar(context, 'Select ${getPropertiesKeys(1)}');
         } else if (getNoOfAnswers(1) == 3) {
@@ -172,11 +175,12 @@ class _AddProductPage4State extends State<AddProductPage4> {
       }
       if (property2.isEmpty && getCompulsory(2)) {
         if (getNoOfAnswers(2) == 1) {
-          if (property2Controller.text.isEmpty) {
+          if (property2Controller.text.toString().trim().isEmpty) {
             return mySnackBar(
                 context, 'Enter value for ${getPropertiesKeys(2)}');
           }
-          property2.add(property2Controller.text.toString().toUpperCase());
+          property2
+              .add(property2Controller.text.toString().trim().toUpperCase());
         } else if (getNoOfAnswers(2) == 2) {
           return mySnackBar(context, 'Select ${getPropertiesKeys(2)}');
         } else if (getNoOfAnswers(2) == 3) {
@@ -186,11 +190,12 @@ class _AddProductPage4State extends State<AddProductPage4> {
       }
       if (property3.isEmpty && getCompulsory(3)) {
         if (getNoOfAnswers(3) == 1) {
-          if (property3Controller.text.isEmpty) {
+          if (property3Controller.text.toString().trim().isEmpty) {
             return mySnackBar(
                 context, 'Enter value for ${getPropertiesKeys(3)}');
           }
-          property3.add(property3Controller.text.toString().toUpperCase());
+          property3
+              .add(property3Controller.text.toString().trim().toUpperCase());
         } else if (getNoOfAnswers(3) == 2) {
           return mySnackBar(context, 'Select ${getPropertiesKeys(3)}');
         } else if (getNoOfAnswers(3) == 3) {
@@ -200,11 +205,12 @@ class _AddProductPage4State extends State<AddProductPage4> {
       }
       if (property4.isEmpty && getCompulsory(4)) {
         if (getNoOfAnswers(4) == 1) {
-          if (property4Controller.text.isEmpty) {
+          if (property4Controller.text.toString().trim().isEmpty) {
             return mySnackBar(
                 context, 'Enter value for ${getPropertiesKeys(4)}');
           }
-          property4.add(property4Controller.text.toString().toUpperCase());
+          property4
+              .add(property4Controller.text.toString().trim().toUpperCase());
         } else if (getNoOfAnswers(4) == 2) {
           return mySnackBar(context, 'Select ${getPropertiesKeys(4)}');
         } else if (getNoOfAnswers(4) == 3) {
@@ -214,11 +220,12 @@ class _AddProductPage4State extends State<AddProductPage4> {
       }
       if (property5.isEmpty && getCompulsory(5)) {
         if (getNoOfAnswers(5) == 1) {
-          if (property5Controller.text.isEmpty) {
+          if (property5Controller.text.toString().trim().isEmpty) {
             return mySnackBar(
                 context, 'Enter value for ${getPropertiesKeys(5)}');
           }
-          property5.add(property5Controller.text.toString().toUpperCase());
+          property5
+              .add(property5Controller.text.toString().trim().toUpperCase());
         } else if (getNoOfAnswers(5) == 2) {
           return mySnackBar(context, 'Select ${getPropertiesKeys(5)}');
         } else if (getNoOfAnswers(5) == 3) {
@@ -330,13 +337,17 @@ class _AddProductPage4State extends State<AddProductPage4> {
     return householdCategoryProperties![widget.shopType]!
         .keys
         .toList()[index]
-        .toString();
+        .toString()
+        .trim();
   }
 
   // GET PROPERTIES HINT TEXT
   String getPropertiesHintText(int index) {
-    return householdCategoryProperties![widget.shopType]!.values.toList()[index]
-        ['hintText'];
+    return householdCategoryProperties![widget.shopType]!
+        .values
+        .toList()[index]['hintText']
+        .toString()
+        .trim();
   }
 
   // GET NO. OF ANSWERS
@@ -522,9 +533,10 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                       left: 12,
                                                     ),
                                                     child: Text(
+                                                      tagList[index],
+                                                      maxLines: 1,
                                                       overflow:
                                                           TextOverflow.ellipsis,
-                                                      tagList[index],
                                                       style: const TextStyle(
                                                         color: white,
                                                         fontWeight:
@@ -610,10 +622,14 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                           value:
                                                               e.toUpperCase(),
                                                           child: Text(
+                                                            e
+                                                                .toString()
+                                                                .trim()
+                                                                .toUpperCase(),
+                                                            maxLines: 1,
                                                             overflow:
                                                                 TextOverflow
                                                                     .ellipsis,
-                                                            e.toUpperCase(),
                                                           ),
                                                         ),
                                                       )
@@ -656,10 +672,14 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                   MyTextButton(
                                                     onPressed: () {
                                                       if (property0Controller
-                                                          .text.isNotEmpty) {
+                                                          .text
+                                                          .toString()
+                                                          .trim()
+                                                          .isNotEmpty) {
                                                         if (property0Controller
                                                                 .text
                                                                 .toString()
+                                                                .trim()
                                                                 .length <
                                                             2) {
                                                           return mySnackBar(
@@ -673,6 +693,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                             property0Controller
                                                                 .text
                                                                 .toString()
+                                                                .trim()
                                                                 .toUpperCase(),
                                                           );
                                                           property0Controller
@@ -728,11 +749,13 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                                 left: 12,
                                                               ),
                                                               child: Text(
+                                                                property0[index]
+                                                                    .toString()
+                                                                    .trim(),
+                                                                maxLines: 1,
                                                                 overflow:
                                                                     TextOverflow
                                                                         .ellipsis,
-                                                                property0[
-                                                                    index],
                                                                 style:
                                                                     const TextStyle(
                                                                   color: white,
@@ -827,10 +850,15 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                           value:
                                                               e.toUpperCase(),
                                                           child: Text(
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              e.toUpperCase()),
+                                                            e
+                                                                .toString()
+                                                                .trim()
+                                                                .toUpperCase(),
+                                                            maxLines: 1,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          ),
                                                         ),
                                                       )
                                                       .toList(),
@@ -876,6 +904,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                         if (property1Controller
                                                                 .text
                                                                 .toString()
+                                                                .trim()
                                                                 .length <
                                                             2) {
                                                           return mySnackBar(
@@ -889,6 +918,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                             property1Controller
                                                                 .text
                                                                 .toString()
+                                                                .trim()
                                                                 .toUpperCase(),
                                                           );
                                                           property1Controller
@@ -944,11 +974,13 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                                 left: 12,
                                                               ),
                                                               child: Text(
+                                                                property1[index]
+                                                                    .toString()
+                                                                    .trim(),
+                                                                maxLines: 1,
                                                                 overflow:
                                                                     TextOverflow
                                                                         .ellipsis,
-                                                                property1[
-                                                                    index],
                                                                 style:
                                                                     const TextStyle(
                                                                   color: white,
@@ -1043,10 +1075,15 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                           value:
                                                               e.toUpperCase(),
                                                           child: Text(
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              e.toUpperCase()),
+                                                            e
+                                                                .toString()
+                                                                .trim()
+                                                                .toUpperCase(),
+                                                            maxLines: 1,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          ),
                                                         ),
                                                       )
                                                       .toList(),
@@ -1092,6 +1129,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                         if (property2Controller
                                                                 .text
                                                                 .toString()
+                                                                .trim()
                                                                 .length <
                                                             2) {
                                                           return mySnackBar(
@@ -1105,6 +1143,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                             property2Controller
                                                                 .text
                                                                 .toString()
+                                                                .trim()
                                                                 .toUpperCase(),
                                                           );
                                                           property2Controller
@@ -1160,11 +1199,13 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                                 left: 12,
                                                               ),
                                                               child: Text(
+                                                                property2[index]
+                                                                    .toString()
+                                                                    .trim(),
+                                                                maxLines: 1,
                                                                 overflow:
                                                                     TextOverflow
                                                                         .ellipsis,
-                                                                property2[
-                                                                    index],
                                                                 style:
                                                                     const TextStyle(
                                                                   color: white,
@@ -1259,10 +1300,15 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                           value:
                                                               e.toUpperCase(),
                                                           child: Text(
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              e.toUpperCase()),
+                                                            e
+                                                                .toString()
+                                                                .trim()
+                                                                .toUpperCase(),
+                                                            maxLines: 1,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          ),
                                                         ),
                                                       )
                                                       .toList(),
@@ -1304,10 +1350,14 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                   MyTextButton(
                                                     onPressed: () {
                                                       if (property3Controller
-                                                          .text.isNotEmpty) {
+                                                          .text
+                                                          .toString()
+                                                          .trim()
+                                                          .isNotEmpty) {
                                                         if (property3Controller
                                                                 .text
                                                                 .toString()
+                                                                .trim()
                                                                 .length <
                                                             2) {
                                                           return mySnackBar(
@@ -1321,6 +1371,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                             property3Controller
                                                                 .text
                                                                 .toString()
+                                                                .trim()
                                                                 .toUpperCase(),
                                                           );
                                                           property3Controller
@@ -1376,11 +1427,13 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                                 left: 12,
                                                               ),
                                                               child: Text(
+                                                                property3[index]
+                                                                    .toString()
+                                                                    .trim(),
+                                                                maxLines: 1,
                                                                 overflow:
                                                                     TextOverflow
                                                                         .ellipsis,
-                                                                property3[
-                                                                    index],
                                                                 style:
                                                                     const TextStyle(
                                                                   color: white,
@@ -1475,10 +1528,15 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                           value:
                                                               e.toUpperCase(),
                                                           child: Text(
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              e.toUpperCase()),
+                                                            e
+                                                                .toString()
+                                                                .trim()
+                                                                .toUpperCase(),
+                                                            maxLines: 1,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          ),
                                                         ),
                                                       )
                                                       .toList(),
@@ -1520,10 +1578,14 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                   MyTextButton(
                                                     onPressed: () {
                                                       if (property4Controller
-                                                          .text.isNotEmpty) {
+                                                          .text
+                                                          .toString()
+                                                          .trim()
+                                                          .isNotEmpty) {
                                                         if (property4Controller
                                                                 .text
                                                                 .toString()
+                                                                .trim()
                                                                 .length <
                                                             2) {
                                                           return mySnackBar(
@@ -1592,11 +1654,13 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                                 left: 12,
                                                               ),
                                                               child: Text(
+                                                                property4[index]
+                                                                    .toString()
+                                                                    .trim(),
+                                                                maxLines: 1,
                                                                 overflow:
                                                                     TextOverflow
                                                                         .ellipsis,
-                                                                property4[
-                                                                    index],
                                                                 style:
                                                                     const TextStyle(
                                                                   color: white,
@@ -1691,10 +1755,15 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                           value:
                                                               e.toUpperCase(),
                                                           child: Text(
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              e.toUpperCase()),
+                                                            e
+                                                                .toString()
+                                                                .trim()
+                                                                .toUpperCase(),
+                                                            maxLines: 1,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          ),
                                                         ),
                                                       )
                                                       .toList(),
@@ -1736,10 +1805,14 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                   MyTextButton(
                                                     onPressed: () {
                                                       if (property5Controller
-                                                          .text.isNotEmpty) {
+                                                          .text
+                                                          .toString()
+                                                          .trim()
+                                                          .isNotEmpty) {
                                                         if (property5Controller
                                                                 .text
                                                                 .toString()
+                                                                .trim()
                                                                 .length <
                                                             2) {
                                                           return mySnackBar(
@@ -1753,6 +1826,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                             property5Controller
                                                                 .text
                                                                 .toString()
+                                                                .trim()
                                                                 .toUpperCase(),
                                                           );
                                                           property5Controller
@@ -1808,11 +1882,13 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                                 left: 12,
                                                               ),
                                                               child: Text(
+                                                                property5[index]
+                                                                    .toString()
+                                                                    .trim(),
+                                                                maxLines: 1,
                                                                 overflow:
                                                                     TextOverflow
                                                                         .ellipsis,
-                                                                property5[
-                                                                    index],
                                                                 style:
                                                                     const TextStyle(
                                                                   color: white,
@@ -1960,9 +2036,10 @@ class _AddProductPage4State extends State<AddProductPage4> {
                             //                             left: 12,
                             //                           ),
                             //                           child: Text(
+                            //                             otherInfoList[index].toString().trim(),
+                            //                             maxLines: 1,
                             //                             overflow:
                             //                                 TextOverflow.ellipsis,
-                            //                             otherInfoList[index],
                             //                             style: const TextStyle(
                             //                               color: white,
                             //                               fontWeight:

@@ -104,7 +104,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
 
   // VERIFY
   Future<void> verify() async {
-    if (otpController.text.length == 6) {
+    if (otpController.text.toString().trim().length == 6) {
       setState(() {
         isOTPVerifying = true;
         isDialog = true;
@@ -112,7 +112,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
 
       final credential = PhoneAuthProvider.credential(
         verificationId: widget.verificationId ?? verificationId!,
-        smsCode: otpController.text,
+        smsCode: otpController.text.toString().trim(),
       );
 
       try {

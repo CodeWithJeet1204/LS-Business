@@ -365,10 +365,10 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
         isDialog = true;
       });
       try {
-        if (leaderNameController.text.trim().isNotEmpty) {
+        if (leaderNameController.text.toString().trim().isNotEmpty) {
           final leaderSnap = await store
               .collection('Leaders')
-              .doc(leaderNameController.text.trim().toLowerCase())
+              .doc(leaderNameController.text.toString().trim().toLowerCase())
               .get();
 
           if (leaderSnap.exists) {
@@ -380,7 +380,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
 
             await store
                 .collection('Leaders')
-                .doc(leaderNameController.text.trim().toLowerCase())
+                .doc(leaderNameController.text.toString().trim().toLowerCase())
                 .update({
               'Amount': amount,
             });
@@ -513,10 +513,10 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
           isDialog = true;
         });
         try {
-          if (leaderNameController.text.trim().isNotEmpty) {
+          if (leaderNameController.text.toString().trim().isNotEmpty) {
             final leaderSnap = await store
                 .collection('Leaders')
-                .doc(leaderNameController.text.trim().toLowerCase())
+                .doc(leaderNameController.text.toString().trim().toLowerCase())
                 .get();
 
             if (leaderSnap.exists) {
@@ -528,7 +528,8 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
 
               await store
                   .collection('Leaders')
-                  .doc(leaderNameController.text.trim().toLowerCase())
+                  .doc(
+                      leaderNameController.text.toString().trim().toLowerCase())
                   .update({
                 'Amount': amount,
               });
@@ -791,7 +792,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    offerName,
+                                                    offerName.toString().trim(),
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -803,7 +804,9 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                                                     text: TextSpan(
                                                       children: [
                                                         TextSpan(
-                                                          text: offerMembership,
+                                                          text: offerMembership
+                                                              .toString()
+                                                              .trim(),
                                                           style: TextStyle(
                                                             color: darkColor,
                                                             fontSize:
@@ -959,7 +962,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                                         (e) => DropdownMenuItem(
                                           value: e,
                                           child: Text(
-                                            e,
+                                            e.toString().trim(),
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                           ),

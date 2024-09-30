@@ -40,7 +40,7 @@ class MyButton extends StatelessWidget {
         ),
         alignment: Alignment.center,
         child: AutoSizeText(
-          text,
+          text.toString().trim(),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(

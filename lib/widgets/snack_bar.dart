@@ -6,7 +6,7 @@ void mySnackBar(BuildContext context, String text) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(
-        text,
+        text.toString().trim(),
         style: const TextStyle(
           color: Color.fromARGB(255, 240, 252, 255),
         ),
