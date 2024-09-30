@@ -459,7 +459,8 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                                               DecorationImage(
                                                             image: NetworkImage(
                                                               brandData[
-                                                                  'imageUrl'],
+                                                                      'imageUrl']
+                                                                  .trim(),
                                                             ),
                                                             fit: BoxFit.cover,
                                                           ),

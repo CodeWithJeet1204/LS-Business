@@ -393,7 +393,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                                                   decoration: BoxDecoration(
                                                     image: DecorationImage(
                                                       image: NetworkImage(
-                                                        imageUrl,
+                                                        imageUrl.trim(),
                                                       ),
                                                       fit: BoxFit.cover,
                                                     ),

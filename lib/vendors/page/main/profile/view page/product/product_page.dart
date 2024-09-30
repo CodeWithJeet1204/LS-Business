@@ -6,13 +6,14 @@ import 'package:feather_icons/feather_icons.dart';
 import 'package:ls_business/vendors/page/main/discount/products/product_discount_page.dart';
 import 'package:ls_business/vendors/page/main/main_page.dart';
 import 'package:ls_business/vendors/page/main/profile/data/all_product_page.dart';
+import 'package:ls_business/vendors/page/main/profile/view%20page/brand/brand_page.dart';
 import 'package:ls_business/vendors/page/main/profile/view%20page/category/category_page.dart';
 import 'package:ls_business/vendors/page/main/profile/view%20page/product/change_product_category_page.dart';
 import 'package:ls_business/vendors/page/main/profile/view%20page/product/image_view.dart';
+import 'package:ls_business/vendors/page/main/profile/view%20page/product/select_product_brand_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/image_pick_dialog.dart';
-import 'package:ls_business/widgets/info_box.dart';
 import 'package:ls_business/widgets/info_color_box.dart';
 import 'package:ls_business/widgets/info_edit_box.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
@@ -91,6 +92,26 @@ class _ProductPageState extends State<ProductPage> {
     setState(() {
       maxImages = myMaxImages;
     });
+  }
+
+  // GET BRAND IMAGE URL
+  Future<String?> getBrandImageUrl(String brandId) async {
+    try {
+      final brandSnap = await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Brands')
+          .doc(brandId)
+          .get();
+
+      final brandData = brandSnap.data()!;
+
+      final imageUrl = brandData['imageUrl'];
+
+      return imageUrl;
+    } catch (e) {
+      return null;
+    }
   }
 
   // EDIT INFO
@@ -1041,7 +1062,8 @@ class _ProductPageState extends State<ProductPage> {
                         final price = productData['productPrice'];
                         final String? description =
                             productData['productDescription'];
-                        final String brand = productData['productBrand'];
+                        final String brandId = productData['productBrandId'];
+                        final String brandName = productData['productBrand'];
                         final List images = productData['images'];
                         final List tags = productData['Tags'];
 
@@ -1209,7 +1231,7 @@ class _ProductPageState extends State<ProductPage> {
                                                                 DecorationImage(
                                                               image:
                                                                   NetworkImage(
-                                                                e,
+                                                                e.trim(),
                                                               ),
                                                               fit: BoxFit.cover,
                                                             ),
@@ -2040,10 +2062,149 @@ class _ProductPageState extends State<ProductPage> {
                             const Divider(),
 
                             // BRAND
-                            InfoBox(
-                              text: 'Brand',
-                              value: brand,
-                            ),
+                            brandName.isEmpty
+                                ? Container()
+                                : Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: width * 0.0166,
+                                      horizontal: width * 0.0166,
+                                    ),
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: width * 0.0225,
+                                        horizontal: width * 0.0225,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: primary.withOpacity(0.3),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          InkWell(
+                                            onTap: () async {
+                                              if (brandName != 'No Brand' ||
+                                                  brandId != '0') {
+                                                final brandSnap = await store
+                                                    .collection('Business')
+                                                    .doc('Data')
+                                                    .collection('Brands')
+                                                    .doc(brandId)
+                                                    .get();
+
+                                                final brandData =
+                                                    brandSnap.data()!;
+
+                                                final brandImageUrl =
+                                                    brandData['imageUrl'];
+
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        BrandPage(
+                                                      brandId: brandId,
+                                                      brandName: brandName,
+                                                      imageUrl: brandImageUrl,
+                                                    ),
+                                                  ),
+                                                );
+                                              }
+                                            },
+                                            customBorder:
+                                                RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                12,
+                                              ),
+                                            ),
+                                            splashColor: primary2,
+                                            child: Row(
+                                              children: [
+                                                // BRAND IMAGE
+                                                FutureBuilder(
+                                                    future: getBrandImageUrl(
+                                                        brandId),
+                                                    builder: (context, future) {
+                                                      if (future.hasData) {
+                                                        final brandImageUrl =
+                                                            snapshot.data!;
+
+                                                        return ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                            4,
+                                                          ),
+                                                          child: Image.network(
+                                                            productData['brandId'] !=
+                                                                    '0'
+                                                                ? brandImageUrl
+                                                                    .toString()
+                                                                    .trim()
+                                                                : 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
+                                                            fit: BoxFit.cover,
+                                                            width: brandId !=
+                                                                    '0'
+                                                                ? width * 0.14
+                                                                : width * 0.1,
+                                                            height: brandId !=
+                                                                    '0'
+                                                                ? width * 0.14
+                                                                : width * 0.1,
+                                                          ),
+                                                        );
+                                                      }
+
+                                                      return Container();
+                                                    }),
+                                                SizedBox(width: width * 0.05),
+                                                // BRAND NAME
+                                                SizedBox(
+                                                  width: width * 0.4,
+                                                  child: AutoSizeText(
+                                                    brandId == '0'
+                                                        ? 'No Brand'
+                                                        : brandName
+                                                            .toString()
+                                                            .trim(),
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      color: primaryDark,
+                                                      fontSize: width * 0.0575,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          // CHANGE BRAND
+                                          IconButton(
+                                            onPressed: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      changeProductBrandPage(
+                                                    productId: productData[
+                                                        'productId'],
+                                                    currentBrandId: brandId,
+                                                    productName:
+                                                        widget.productName,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            icon: const Icon(FeatherIcons.edit),
+                                            tooltip: 'Change Brand',
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
 
                             const Divider(),
 

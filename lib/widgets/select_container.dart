@@ -39,7 +39,9 @@ class _SelectContainerState extends State<SelectContainer> {
           borderRadius: BorderRadius.circular(12),
           image: widget.imageUrl != '' && widget.imageUrl != null
               ? DecorationImage(
-                  image: NetworkImage(widget.imageUrl!),
+                  image: NetworkImage(
+                    widget.imageUrl!.trim(),
+                  ),
                   fit: BoxFit.cover,
                   opacity: 0.25,
                 )

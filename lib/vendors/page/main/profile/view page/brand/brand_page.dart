@@ -562,7 +562,8 @@ class _BrandPageState extends State<BrandPage> {
                                                     decoration: BoxDecoration(
                                                       image: DecorationImage(
                                                         image: NetworkImage(
-                                                          brandData['imageUrl'],
+                                                          brandData['imageUrl']
+                                                              .trim(),
                                                         ),
                                                         fit: BoxFit.cover,
                                                       ),

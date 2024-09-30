@@ -901,7 +901,8 @@ class DISCOUNT extends State<DiscountPage> {
                                                     image: DecorationImage(
                                                       image: NetworkImage(
                                                         discountData[
-                                                            'discountImageUrl'],
+                                                                'discountImageUrl']
+                                                            .trim(),
                                                       ),
                                                       fit: BoxFit.cover,
                                                     ),
