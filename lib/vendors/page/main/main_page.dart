@@ -66,6 +66,17 @@ class _MainPageState extends State<MainPage> {
             .doc(auth.currentUser!.uid)
             .get();
 
+        if (!getUserDetailsAdded.exists) {
+          await auth.signOut();
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => SignInPage(),
+            ),
+            (route) => false,
+          );
+          return mySnackBar(context, 'Signed Out');
+        }
+
         final getUserDetailsAddedData = getUserDetailsAdded.data()!;
 
         final getBusinessDetailsAdded = await store

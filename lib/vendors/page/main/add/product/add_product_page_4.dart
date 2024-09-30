@@ -1480,226 +1480,246 @@ class _AddProductPage4State extends State<AddProductPage4> {
                             getPropertiesKeys(4) != '2' &&
                                     getPropertiesKeys(4) != '0' &&
                                     getPropertiesKeys(4) != '1'
-                                ? PropertyBox(
-                                    headText: getCompulsory(4)
-                                        ? '${getPropertiesKeys(4)}*'
-                                        : getPropertiesKeys(4),
-                                    widget1: getNoOfAnswers(4) == 1
-                                        ? TextFormField(
-                                            controller: property4Controller,
-                                            onTapOutside: (event) =>
-                                                FocusScope.of(context)
-                                                    .unfocus(),
-                                            maxLines: getMaxLines(4),
-                                            minLines: 1,
-                                            keyboardType:
-                                                getPropertiesInputType(4),
-                                            decoration: InputDecoration(
-                                              hintText:
-                                                  getPropertiesHintText(4),
-                                              border:
-                                                  const OutlineInputBorder(),
-                                            ),
-                                          )
-                                        : getNoOfAnswers(4) == 2
-                                            ? Container(
-                                                padding: EdgeInsets.symmetric(
-                                                  horizontal: width * 0.0225,
-                                                  vertical: width * 0.0125,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  color: primary3,
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                ),
-                                                child: DropdownButton(
-                                                  dropdownColor: primary3,
-                                                  hint: const Text(
-                                                    'Select',
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                ? Padding(
+                                    padding: EdgeInsets.only(
+                                      bottom: getPropertiesKeys(4) != '2' &&
+                                              getPropertiesKeys(4) != '0' &&
+                                              getPropertiesKeys(4) != '1'
+                                          ? MediaQuery.of(context).size.width
+                                          : 0,
+                                    ),
+                                    child: PropertyBox(
+                                      headText: getCompulsory(4)
+                                          ? '${getPropertiesKeys(4)}*'
+                                          : getPropertiesKeys(4),
+                                      widget1: getNoOfAnswers(4) == 1
+                                          ? TextFormField(
+                                              controller: property4Controller,
+                                              onTapOutside: (event) =>
+                                                  FocusScope.of(context)
+                                                      .unfocus(),
+                                              maxLines: getMaxLines(4),
+                                              minLines: 1,
+                                              keyboardType:
+                                                  getPropertiesInputType(4),
+                                              decoration: InputDecoration(
+                                                hintText:
+                                                    getPropertiesHintText(4),
+                                                border:
+                                                    const OutlineInputBorder(),
+                                              ),
+                                            )
+                                          : getNoOfAnswers(4) == 2
+                                              ? Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                    horizontal: width * 0.0225,
+                                                    vertical: width * 0.0125,
                                                   ),
-                                                  value: propertyValue4,
-                                                  underline: Container(),
-                                                  items: getDropDownItems(4)
-                                                      .map(
-                                                        (e) => DropdownMenuItem(
-                                                          value:
-                                                              e.toUpperCase(),
-                                                          child: Text(
-                                                            e
-                                                                .toString()
-                                                                .trim()
-                                                                .toUpperCase(),
-                                                            maxLines: 1,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
+                                                  decoration: BoxDecoration(
+                                                    color: primary3,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                  ),
+                                                  child: DropdownButton(
+                                                    dropdownColor: primary3,
+                                                    hint: const Text(
+                                                      'Select',
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                    value: propertyValue4,
+                                                    underline: Container(),
+                                                    items: getDropDownItems(4)
+                                                        .map(
+                                                          (e) =>
+                                                              DropdownMenuItem(
+                                                            value:
+                                                                e.toUpperCase(),
+                                                            child: Text(
+                                                              e
+                                                                  .toString()
+                                                                  .trim()
+                                                                  .toUpperCase(),
+                                                              maxLines: 1,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                            ),
                                                           ),
-                                                        ),
-                                                      )
-                                                      .toList(),
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      if (value != null) {
-                                                        propertyValue4 =
-                                                            value.toString();
-                                                        property4.clear();
-                                                        property4.add(
-                                                            propertyValue4!);
-                                                      }
-                                                    });
-                                                  },
-                                                ),
-                                              )
-                                            : Row(
-                                                children: [
-                                                  Expanded(
-                                                    child: TextFormField(
-                                                      controller:
-                                                          property4Controller,
-                                                      onTapOutside: (event) =>
-                                                          FocusScope.of(context)
-                                                              .unfocus(),
-                                                      keyboardType:
-                                                          getPropertiesInputType(
-                                                              4),
-                                                      decoration:
-                                                          InputDecoration(
-                                                        hintText:
-                                                            getPropertiesHintText(
+                                                        )
+                                                        .toList(),
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        if (value != null) {
+                                                          propertyValue4 =
+                                                              value.toString();
+                                                          property4.clear();
+                                                          property4.add(
+                                                              propertyValue4!);
+                                                        }
+                                                      });
+                                                    },
+                                                  ),
+                                                )
+                                              : Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: TextFormField(
+                                                        controller:
+                                                            property4Controller,
+                                                        onTapOutside: (event) =>
+                                                            FocusScope.of(
+                                                                    context)
+                                                                .unfocus(),
+                                                        keyboardType:
+                                                            getPropertiesInputType(
                                                                 4),
-                                                        border:
-                                                            const OutlineInputBorder(),
+                                                        decoration:
+                                                            InputDecoration(
+                                                          hintText:
+                                                              getPropertiesHintText(
+                                                                  4),
+                                                          border:
+                                                              const OutlineInputBorder(),
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  MyTextButton(
-                                                    onPressed: () {
-                                                      if (property4Controller
-                                                          .text
-                                                          .toString()
-                                                          .trim()
-                                                          .isNotEmpty) {
+                                                    MyTextButton(
+                                                      onPressed: () {
                                                         if (property4Controller
-                                                                .text
-                                                                .toString()
-                                                                .trim()
-                                                                .length <
-                                                            2) {
-                                                          return mySnackBar(
-                                                            context,
-                                                            'Answer should be greater than 1',
-                                                          );
-                                                        }
-                                                        setState(() {
-                                                          property4.insert(
-                                                            0,
+                                                            .text
+                                                            .toString()
+                                                            .trim()
+                                                            .isNotEmpty) {
+                                                          if (property4Controller
+                                                                  .text
+                                                                  .toString()
+                                                                  .trim()
+                                                                  .length <
+                                                              2) {
+                                                            return mySnackBar(
+                                                              context,
+                                                              'Answer should be greater than 1',
+                                                            );
+                                                          }
+                                                          setState(() {
+                                                            property4.insert(
+                                                              0,
+                                                              property4Controller
+                                                                  .text
+                                                                  .toString()
+                                                                  .toUpperCase(),
+                                                            );
                                                             property4Controller
-                                                                .text
-                                                                .toString()
-                                                                .toUpperCase(),
-                                                          );
-                                                          property4Controller
-                                                              .clear();
-                                                        });
-                                                      }
-                                                    },
-                                                    text: 'ADD',
-                                                  ),
-                                                ],
-                                              ),
-                                    widget2: getNoOfAnswers(4) <= 2
-                                        ? Container()
-                                        : property4.isNotEmpty
-                                            ? SizedBox(
-                                                height: 50,
-                                                child: ListView.builder(
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  shrinkWrap: true,
-                                                  physics:
-                                                      const ClampingScrollPhysics(),
-                                                  itemCount: property4.length,
-                                                  itemBuilder:
-                                                      ((context, index) {
-                                                    return Padding(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                        horizontal: 4,
-                                                        vertical: 2,
-                                                      ),
-                                                      child: Container(
-                                                        alignment:
-                                                            Alignment.center,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: primaryDark2
-                                                              .withOpacity(
-                                                                  0.75),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(16),
-                                                        ),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                left: 12,
-                                                              ),
-                                                              child: Text(
-                                                                property4[index]
-                                                                    .toString()
-                                                                    .trim(),
-                                                                maxLines: 1,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                style:
-                                                                    const TextStyle(
-                                                                  color: white,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                right: 2,
-                                                              ),
-                                                              child: IconButton(
-                                                                onPressed: () {
-                                                                  setState(() {
-                                                                    property4
-                                                                        .removeAt(
-                                                                            index);
-                                                                  });
-                                                                },
-                                                                icon:
-                                                                    const Icon(
-                                                                  Icons
-                                                                      .highlight_remove_outlined,
-                                                                  color: white,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    );
-                                                  }),
+                                                                .clear();
+                                                          });
+                                                        }
+                                                      },
+                                                      text: 'ADD',
+                                                    ),
+                                                  ],
                                                 ),
-                                              )
-                                            : Container(),
+                                      widget2: getNoOfAnswers(4) <= 2
+                                          ? Container()
+                                          : property4.isNotEmpty
+                                              ? SizedBox(
+                                                  height: 50,
+                                                  child: ListView.builder(
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    shrinkWrap: true,
+                                                    physics:
+                                                        const ClampingScrollPhysics(),
+                                                    itemCount: property4.length,
+                                                    itemBuilder:
+                                                        ((context, index) {
+                                                      return Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                          horizontal: 4,
+                                                          vertical: 2,
+                                                        ),
+                                                        child: Container(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: primaryDark2
+                                                                .withOpacity(
+                                                                    0.75),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        16),
+                                                          ),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                  left: 12,
+                                                                ),
+                                                                child: Text(
+                                                                  property4[
+                                                                          index]
+                                                                      .toString()
+                                                                      .trim(),
+                                                                  maxLines: 1,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  style:
+                                                                      const TextStyle(
+                                                                    color:
+                                                                        white,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                  right: 2,
+                                                                ),
+                                                                child:
+                                                                    IconButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    setState(
+                                                                        () {
+                                                                      property4
+                                                                          .removeAt(
+                                                                              index);
+                                                                    });
+                                                                  },
+                                                                  icon:
+                                                                      const Icon(
+                                                                    Icons
+                                                                        .highlight_remove_outlined,
+                                                                    color:
+                                                                        white,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      );
+                                                    }),
+                                                  ),
+                                                )
+                                              : Container(),
+                                    ),
                                   )
                                 : Container(),
 
@@ -1707,228 +1727,248 @@ class _AddProductPage4State extends State<AddProductPage4> {
                             getPropertiesKeys(5) != '2' &&
                                     getPropertiesKeys(5) != '0' &&
                                     getPropertiesKeys(5) != '1'
-                                ? PropertyBox(
-                                    headText: getCompulsory(5)
-                                        ? '${getPropertiesKeys(5)}*'
-                                        : getPropertiesKeys(5),
-                                    widget1: getNoOfAnswers(5) == 1
-                                        ? TextFormField(
-                                            controller: property5Controller,
-                                            onTapOutside: (event) =>
-                                                FocusScope.of(context)
-                                                    .unfocus(),
-                                            maxLines: getMaxLines(5),
-                                            minLines: 1,
-                                            keyboardType:
-                                                getPropertiesInputType(5),
-                                            decoration: InputDecoration(
-                                              hintText:
-                                                  getPropertiesHintText(5),
-                                              border:
-                                                  const OutlineInputBorder(),
-                                            ),
-                                          )
-                                        : getNoOfAnswers(5) == 2
-                                            ? Container(
-                                                padding: EdgeInsets.symmetric(
-                                                  horizontal: width * 0.0225,
-                                                  vertical: width * 0.0125,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  color: primary3,
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                ),
-                                                child: DropdownButton(
-                                                  dropdownColor: primary3,
-                                                  hint: const Text(
-                                                    'Select',
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                ? Padding(
+                                    padding: EdgeInsets.only(
+                                      bottom: getPropertiesKeys(5) != '2' &&
+                                              getPropertiesKeys(5) != '0' &&
+                                              getPropertiesKeys(5) != '1'
+                                          ? MediaQuery.of(context).size.width
+                                          : 0,
+                                    ),
+                                    child: PropertyBox(
+                                      headText: getCompulsory(5)
+                                          ? '${getPropertiesKeys(5)}*'
+                                          : getPropertiesKeys(5),
+                                      widget1: getNoOfAnswers(5) == 1
+                                          ? TextFormField(
+                                              controller: property5Controller,
+                                              onTapOutside: (event) =>
+                                                  FocusScope.of(context)
+                                                      .unfocus(),
+                                              maxLines: getMaxLines(5),
+                                              minLines: 1,
+                                              keyboardType:
+                                                  getPropertiesInputType(5),
+                                              decoration: InputDecoration(
+                                                hintText:
+                                                    getPropertiesHintText(5),
+                                                border:
+                                                    const OutlineInputBorder(),
+                                              ),
+                                            )
+                                          : getNoOfAnswers(5) == 2
+                                              ? Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                    horizontal: width * 0.0225,
+                                                    vertical: width * 0.0125,
                                                   ),
-                                                  value: propertyValue5,
-                                                  underline: Container(),
-                                                  items: getDropDownItems(5)
-                                                      .map(
-                                                        (e) => DropdownMenuItem(
-                                                          value:
-                                                              e.toUpperCase(),
-                                                          child: Text(
-                                                            e
-                                                                .toString()
-                                                                .trim()
-                                                                .toUpperCase(),
-                                                            maxLines: 1,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
+                                                  decoration: BoxDecoration(
+                                                    color: primary3,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                  ),
+                                                  child: DropdownButton(
+                                                    dropdownColor: primary3,
+                                                    hint: const Text(
+                                                      'Select',
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                    value: propertyValue5,
+                                                    underline: Container(),
+                                                    items: getDropDownItems(5)
+                                                        .map(
+                                                          (e) =>
+                                                              DropdownMenuItem(
+                                                            value:
+                                                                e.toUpperCase(),
+                                                            child: Text(
+                                                              e
+                                                                  .toString()
+                                                                  .trim()
+                                                                  .toUpperCase(),
+                                                              maxLines: 1,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                            ),
                                                           ),
-                                                        ),
-                                                      )
-                                                      .toList(),
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      if (value != null) {
-                                                        propertyValue5 =
-                                                            value.toString();
-                                                        property5.clear();
-                                                        property5.add(
-                                                            propertyValue5!);
-                                                      }
-                                                    });
-                                                  },
-                                                ),
-                                              )
-                                            : Row(
-                                                children: [
-                                                  Expanded(
-                                                    child: TextFormField(
-                                                      controller:
-                                                          property5Controller,
-                                                      onTapOutside: (event) =>
-                                                          FocusScope.of(context)
-                                                              .unfocus(),
-                                                      keyboardType:
-                                                          getPropertiesInputType(
-                                                              5),
-                                                      decoration:
-                                                          InputDecoration(
-                                                        hintText:
-                                                            getPropertiesHintText(
+                                                        )
+                                                        .toList(),
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        if (value != null) {
+                                                          propertyValue5 =
+                                                              value.toString();
+                                                          property5.clear();
+                                                          property5.add(
+                                                              propertyValue5!);
+                                                        }
+                                                      });
+                                                    },
+                                                  ),
+                                                )
+                                              : Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: TextFormField(
+                                                        controller:
+                                                            property5Controller,
+                                                        onTapOutside: (event) =>
+                                                            FocusScope.of(
+                                                                    context)
+                                                                .unfocus(),
+                                                        keyboardType:
+                                                            getPropertiesInputType(
                                                                 5),
-                                                        border:
-                                                            const OutlineInputBorder(),
+                                                        decoration:
+                                                            InputDecoration(
+                                                          hintText:
+                                                              getPropertiesHintText(
+                                                                  5),
+                                                          border:
+                                                              const OutlineInputBorder(),
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  MyTextButton(
-                                                    onPressed: () {
-                                                      if (property5Controller
-                                                          .text
-                                                          .toString()
-                                                          .trim()
-                                                          .isNotEmpty) {
+                                                    MyTextButton(
+                                                      onPressed: () {
                                                         if (property5Controller
-                                                                .text
-                                                                .toString()
-                                                                .trim()
-                                                                .length <
-                                                            2) {
-                                                          return mySnackBar(
-                                                            context,
-                                                            'Answer should be greater than 1',
-                                                          );
-                                                        }
-                                                        setState(() {
-                                                          property5.insert(
-                                                            0,
+                                                            .text
+                                                            .toString()
+                                                            .trim()
+                                                            .isNotEmpty) {
+                                                          if (property5Controller
+                                                                  .text
+                                                                  .toString()
+                                                                  .trim()
+                                                                  .length <
+                                                              2) {
+                                                            return mySnackBar(
+                                                              context,
+                                                              'Answer should be greater than 1',
+                                                            );
+                                                          }
+                                                          setState(() {
+                                                            property5.insert(
+                                                              0,
+                                                              property5Controller
+                                                                  .text
+                                                                  .toString()
+                                                                  .trim()
+                                                                  .toUpperCase(),
+                                                            );
                                                             property5Controller
-                                                                .text
-                                                                .toString()
-                                                                .trim()
-                                                                .toUpperCase(),
-                                                          );
-                                                          property5Controller
-                                                              .clear();
-                                                        });
-                                                      }
-                                                    },
-                                                    text: 'ADD',
-                                                  ),
-                                                ],
-                                              ),
-                                    widget2: getNoOfAnswers(5) <= 2
-                                        ? Container()
-                                        : property5.isNotEmpty
-                                            ? SizedBox(
-                                                height: 50,
-                                                child: ListView.builder(
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  shrinkWrap: true,
-                                                  physics:
-                                                      const ClampingScrollPhysics(),
-                                                  itemCount: property5.length,
-                                                  itemBuilder:
-                                                      ((context, index) {
-                                                    return Padding(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                        horizontal: 4,
-                                                        vertical: 2,
-                                                      ),
-                                                      child: Container(
-                                                        alignment:
-                                                            Alignment.center,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: primaryDark2
-                                                              .withOpacity(
-                                                                  0.75),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(16),
-                                                        ),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                left: 12,
-                                                              ),
-                                                              child: Text(
-                                                                property5[index]
-                                                                    .toString()
-                                                                    .trim(),
-                                                                maxLines: 1,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                style:
-                                                                    const TextStyle(
-                                                                  color: white,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                right: 2,
-                                                              ),
-                                                              child: IconButton(
-                                                                onPressed: () {
-                                                                  setState(() {
-                                                                    property5
-                                                                        .removeAt(
-                                                                      index,
-                                                                    );
-                                                                  });
-                                                                },
-                                                                icon:
-                                                                    const Icon(
-                                                                  Icons
-                                                                      .highlight_remove_outlined,
-                                                                  color: white,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    );
-                                                  }),
+                                                                .clear();
+                                                          });
+                                                        }
+                                                      },
+                                                      text: 'ADD',
+                                                    ),
+                                                  ],
                                                 ),
-                                              )
-                                            : Container(),
+                                      widget2: getNoOfAnswers(5) <= 2
+                                          ? Container()
+                                          : property5.isNotEmpty
+                                              ? SizedBox(
+                                                  height: 50,
+                                                  child: ListView.builder(
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    shrinkWrap: true,
+                                                    physics:
+                                                        const ClampingScrollPhysics(),
+                                                    itemCount: property5.length,
+                                                    itemBuilder:
+                                                        ((context, index) {
+                                                      return Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                          horizontal: 4,
+                                                          vertical: 2,
+                                                        ),
+                                                        child: Container(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: primaryDark2
+                                                                .withOpacity(
+                                                                    0.75),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        16),
+                                                          ),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                  left: 12,
+                                                                ),
+                                                                child: Text(
+                                                                  property5[
+                                                                          index]
+                                                                      .toString()
+                                                                      .trim(),
+                                                                  maxLines: 1,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  style:
+                                                                      const TextStyle(
+                                                                    color:
+                                                                        white,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                  right: 2,
+                                                                ),
+                                                                child:
+                                                                    IconButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    setState(
+                                                                        () {
+                                                                      property5
+                                                                          .removeAt(
+                                                                        index,
+                                                                      );
+                                                                    });
+                                                                  },
+                                                                  icon:
+                                                                      const Icon(
+                                                                    Icons
+                                                                        .highlight_remove_outlined,
+                                                                    color:
+                                                                        white,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      );
+                                                    }),
+                                                  ),
+                                                )
+                                              : Container(),
+                                    ),
                                   )
                                 : Container(),
 

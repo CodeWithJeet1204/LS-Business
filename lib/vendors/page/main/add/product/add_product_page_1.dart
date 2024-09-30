@@ -538,6 +538,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                   hintText: 'Price',
                                   borderRadius: 12,
                                   horizontalPadding: 0,
+                                  keyboardType: TextInputType.number,
                                 ),
                                 const SizedBox(height: 12),
 

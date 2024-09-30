@@ -134,7 +134,6 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
   }
 
   List<PieChartSectionData> productWiseData(Map<String, int> productWiseData) {
-    print('productWIseData: $productWiseData');
     List<PieChartSectionData> pieChartSections = [];
 
     int totalViews = productWiseData.isEmpty

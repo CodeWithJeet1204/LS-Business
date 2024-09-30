@@ -56,7 +56,6 @@
 //             widget.onImageCaptured(image);
 //             Navigator.pop(context);
 //           } catch (e) {
-//             print(e);
 //           }
 //         },
 //         child: Icon(Icons.camera),

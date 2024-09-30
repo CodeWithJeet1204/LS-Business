@@ -135,8 +135,6 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
       }
     }
 
-    // TODO: REPLACE FUTURE.FOREACH WITH FUTURE.WAIT
-
     List<Future> deleteIdFutures = [];
     List<Future> deleteImageUrlFutures = [];
 
@@ -151,7 +149,6 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
       );
     }
     for (String imageUrl in deleteDiscountImageUrls) {
-      print('imageURL: $imageUrl');
       deleteImageUrlFutures.add(storage.refFromURL(imageUrl).delete());
     }
 

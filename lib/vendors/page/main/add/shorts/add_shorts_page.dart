@@ -31,31 +31,36 @@ class AddShortsPageState extends State<AddShortsPage> {
 
   // GET NO OF SHORTS
   Future<void> getNoOfShorts() async {
-    final vendorSnap = await store
-        .collection('Business')
-        .doc('Owners')
-        .collection('Shops')
-        .doc(auth.currentUser!.uid)
-        .get();
+    try {
+      final vendorSnap = await store
+          .collection('Business')
+          .doc('Owners')
+          .collection('Shops')
+          .doc(auth.currentUser!.uid)
+          .get();
 
-    final vendorData = vendorSnap.data()!;
+      final vendorData = vendorSnap.data()!;
 
-    final shortsQuota = vendorData['noOfShorts'];
+      final shortsQuota = vendorData['noOfShorts'];
 
-    final shortsSnap = await store
-        .collection('Business')
-        .doc('Data')
-        .collection('Shorts')
-        .where('vendorId', isEqualTo: auth.currentUser!.uid)
-        .get();
+      final shortsSnap = await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Shorts')
+          .where('vendorId', isEqualTo: auth.currentUser!.uid)
+          .get();
 
-    final currentShortsLength = shortsSnap.docs.length;
+      final currentShortsLength = shortsSnap.docs.length;
+      print('currentSHorts:ength: $currentShortsLength');
 
-    final remainingShorts = shortsQuota - currentShortsLength;
+      final remainingShorts = shortsQuota - currentShortsLength;
 
-    setState(() {
-      noOfShorts = remainingShorts;
-    });
+      setState(() {
+        noOfShorts = remainingShorts;
+      });
+    } catch (e) {
+      return mySnackBar(context, e.toString());
+    }
   }
 
   // SHOW OPTIONS DIALOG

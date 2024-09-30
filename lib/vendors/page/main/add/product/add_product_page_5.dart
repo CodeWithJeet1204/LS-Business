@@ -171,7 +171,7 @@ class _AddProductPage5State extends State<AddProductPage5> {
                   children: [
                     // DELIVERY AVAILABLE
                     CheckBoxContainer(
-                      text: 'Self Delivery Available ?',
+                      text: 'Delivery Available ?',
                       value: isDeliveryAvailable,
                       function: (_) {
                         setState(() {

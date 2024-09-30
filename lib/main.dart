@@ -80,6 +80,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+  // TODO: REPLACE FUTURE.FOREACH WITH FUTURE.WAIT
 
   @override
   Widget build(BuildContext context) {

@@ -41,81 +41,85 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
 
   // VERIFY AADHAAR NUMBER
   Future<void> validateAadhaarNumber() async {
-    final List<List<int>> d = [
-      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-      [1, 2, 3, 4, 0, 6, 7, 8, 9, 5],
-      [2, 3, 4, 0, 1, 7, 8, 9, 5, 6],
-      [3, 4, 0, 1, 2, 8, 9, 5, 6, 7],
-      [4, 0, 1, 2, 3, 9, 5, 6, 7, 8],
-      [5, 9, 8, 7, 6, 0, 4, 3, 2, 1],
-      [6, 5, 9, 8, 7, 1, 0, 4, 3, 2],
-      [7, 6, 5, 9, 8, 2, 1, 0, 4, 3],
-      [8, 7, 6, 5, 9, 3, 2, 1, 0, 4],
-      [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
-    ];
+    if (verifyKey.currentState!.validate()) {
+      final List<List<int>> d = [
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        [1, 2, 3, 4, 0, 6, 7, 8, 9, 5],
+        [2, 3, 4, 0, 1, 7, 8, 9, 5, 6],
+        [3, 4, 0, 1, 2, 8, 9, 5, 6, 7],
+        [4, 0, 1, 2, 3, 9, 5, 6, 7, 8],
+        [5, 9, 8, 7, 6, 0, 4, 3, 2, 1],
+        [6, 5, 9, 8, 7, 1, 0, 4, 3, 2],
+        [7, 6, 5, 9, 8, 2, 1, 0, 4, 3],
+        [8, 7, 6, 5, 9, 3, 2, 1, 0, 4],
+        [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+      ];
 
-    final List<List<int>> p = [
-      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-      [1, 5, 7, 6, 2, 8, 3, 0, 9, 4],
-      [5, 8, 0, 3, 7, 9, 6, 1, 4, 2],
-      [8, 9, 1, 6, 0, 4, 3, 5, 2, 7],
-      [9, 4, 5, 3, 1, 2, 6, 8, 7, 0],
-      [4, 2, 8, 6, 5, 7, 3, 9, 0, 1],
-      [2, 7, 9, 3, 8, 0, 6, 4, 1, 5],
-      [7, 0, 4, 6, 9, 1, 3, 2, 5, 8]
-    ];
+      final List<List<int>> p = [
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        [1, 5, 7, 6, 2, 8, 3, 0, 9, 4],
+        [5, 8, 0, 3, 7, 9, 6, 1, 4, 2],
+        [8, 9, 1, 6, 0, 4, 3, 5, 2, 7],
+        [9, 4, 5, 3, 1, 2, 6, 8, 7, 0],
+        [4, 2, 8, 6, 5, 7, 3, 9, 0, 1],
+        [2, 7, 9, 3, 8, 0, 6, 4, 1, 5],
+        [7, 0, 4, 6, 9, 1, 3, 2, 5, 8]
+      ];
 
-    final RegExp aadhaarPattern = RegExp(r'^\d{12}$');
-    if (!aadhaarPattern.hasMatch(aadhaarController.text.toString().trim())) {
-      return;
-    }
-
-    List<int> stringToReversedIntArray(String num) {
-      return num.split('').map(int.parse).toList().reversed.toList();
-    }
-
-    bool validateVerhoeff(String num) {
-      int c = 0;
-      List<int> myArray = stringToReversedIntArray(num);
-
-      for (int i = 0; i < myArray.length; i++) {
-        c = d[c][p[i % 8][myArray[i]]];
+      final RegExp aadhaarPattern = RegExp(r'^\d{12}$');
+      if (!aadhaarPattern.hasMatch(aadhaarController.text.toString().trim())) {
+        return;
       }
 
-      return c == 0;
-    }
+      List<int> stringToReversedIntArray(String num) {
+        return num.split('').map(int.parse).toList().reversed.toList();
+      }
 
-    if (validateVerhoeff(aadhaarController.text.toString().trim())) {
-      final vendorSnap = await store
-          .collection('Business')
-          .doc('Owners')
-          .collection('Users')
-          .where('AadhaarNumber',
-              isEqualTo: aadhaarController.text.toString().trim())
-          .get();
+      bool validateVerhoeff(String num) {
+        int c = 0;
+        List<int> myArray = stringToReversedIntArray(num);
 
-      if (vendorSnap.docs.isEmpty) {
-        setState(() {
-          isAadhaarValidated = true;
-          isAadhaarNotValidated = false;
-        });
-      } else {
-        if (mounted) {
-          mySnackBar(
-            context,
-            'This Aadhaar Number is already registered\nTry using different Aadhaar Number',
-          );
+        for (int i = 0; i < myArray.length; i++) {
+          c = d[c][p[i % 8][myArray[i]]];
         }
+
+        return c == 0;
+      }
+
+      if (validateVerhoeff(aadhaarController.text.toString().trim())) {
+        final vendorSnap = await store
+            .collection('Business')
+            .doc('Owners')
+            .collection('Users')
+            .where(
+              'AadhaarNumber',
+              isEqualTo: aadhaarController.text.toString().trim(),
+            )
+            .get();
+
+        if (vendorSnap.docs.isEmpty) {
+          setState(() {
+            isAadhaarValidated = true;
+            isAadhaarNotValidated = false;
+          });
+        } else {
+          if (mounted) {
+            mySnackBar(
+              context,
+              'This Aadhaar Number is already registered\nTry using different Aadhaar Number',
+            );
+          }
+          setState(() {
+            isAadhaarNotValidated = true;
+            isAadhaarValidated = false;
+          });
+        }
+      } else {
         setState(() {
           isAadhaarNotValidated = true;
           isAadhaarValidated = false;
         });
       }
-    } else {
-      setState(() {
-        isAadhaarNotValidated = true;
-        isAadhaarValidated = false;
-      });
     }
   }
 
@@ -129,20 +133,24 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
         });
 
         try {
-          final gstSnap = await store
-              .collection('Business')
-              .doc('Owners')
-              .collection('Shops')
-              .where('GSTNumber',
-                  isEqualTo: gstController.text.toString().trim())
-              .get();
+          if (gstController.text.isNotEmpty) {
+            final gstSnap = await store
+                .collection('Business')
+                .doc('Owners')
+                .collection('Shops')
+                .where(
+                  'GSTNumber',
+                  isEqualTo: gstController.text.toString().trim(),
+                )
+                .get();
 
-          if (gstSnap.docs.isNotEmpty) {
-            if (mounted) {
-              return mySnackBar(
-                context,
-                'This GST Number is already registered\nRecheck GST Number',
-              );
+            if (gstSnap.docs.isNotEmpty) {
+              if (mounted) {
+                return mySnackBar(
+                  context,
+                  'This GST Number is already registered\nRecheck GST Number',
+                );
+              }
             }
           }
 
@@ -235,10 +243,13 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // CANNOT BE CHANGED
-                          const Text(
-                            'Aadhaar & GST Number Cannot Be Changed Later',
-                            textAlign: TextAlign.center,
+                          Center(
+                            child: const Text(
+                              'Aadhaar & GST Number Cannot Be Changed Later',
+                              textAlign: TextAlign.center,
+                            ),
                           ),
+                          SizedBox(height: 8),
 
                           // AADHAAR
                           isAadhaarValidated
@@ -248,6 +259,7 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
                                   minLines: 1,
                                   maxLines: 1,
                                   maxLength: 12,
+                                  keyboardType: TextInputType.number,
                                   onTapOutside: (event) =>
                                       FocusScope.of(context).unfocus(),
                                   decoration: InputDecoration(
@@ -327,7 +339,7 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
                             },
                           ),
 
-                          const SizedBox(height: 24),
+                          const SizedBox(height: 36),
 
                           // NEXT
                           MyButton(
