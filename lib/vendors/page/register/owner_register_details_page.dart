@@ -120,8 +120,8 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
               .collection('Users')
               .doc(auth.currentUser!.uid)
               .update({
-            'Name': nameController.text.toString(),
-            'Email': emailController.text.toString(),
+            'Name': nameController.text.trim(),
+            'Email': emailController.text.trim(),
             'Image': userPhotoUrl ??
                 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
           });
@@ -132,8 +132,8 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
               .collection('Users')
               .doc(auth.currentUser!.uid)
               .update({
-            'Name': nameController.text.toString(),
-            'Phone Number': phoneController.text.toString(),
+            'Name': nameController.text.trim(),
+            'Phone Number': phoneController.text.trim(),
             'Image': userPhotoUrl ??
                 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
           });

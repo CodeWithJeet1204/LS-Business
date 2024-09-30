@@ -42,7 +42,6 @@ class _BusinessRegisterDetailsPageState
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
   final addressController = TextEditingController();
-  String? selectedIndustrySegment;
   File? image;
   double? latitude;
   double? longitude;
@@ -55,6 +54,7 @@ class _BusinessRegisterDetailsPageState
   bool isPickingCity = false;
   bool isNext = false;
   bool isDialog = false;
+  // String? selectedIndustrySegment;
 
   // DISPOSE
   @override
@@ -205,18 +205,18 @@ class _BusinessRegisterDetailsPageState
             .collection('Shops')
             .doc(auth.currentUser!.uid)
             .update({
-          'Name': nameController.text,
+          'Name': nameController.text.trim(),
           'Image': businessPhotoUrl ??
               'https://img.freepik.com/premium-vector/shop-clipart-cartoon-style-vector-illustration_761413-4813.jpg?semt=ais_hybrid',
           'Latitude': latitude,
           'Longitude': longitude,
           'City': cityDetectLocation ?? cityPickLocation,
-          'Address': addressController.text,
+          'Address': addressController.text.trim(),
           'Open': true,
           'viewsTimestamp': [],
           'followersTimestamp': {},
-          'Description': descriptionController.text.toString(),
-          // 'GSTNumber': gstController.text.toString(),
+          'Description': descriptionController.text.trim(),
+          // 'GSTNumber': gstController.text.trim(),
           // 'Industry': selectedIndustrySegment,
         });
 

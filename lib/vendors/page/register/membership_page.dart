@@ -365,10 +365,10 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
         isDialog = true;
       });
       try {
-        if (leaderNameController.text.isNotEmpty) {
+        if (leaderNameController.text.trim().isNotEmpty) {
           final leaderSnap = await store
               .collection('Leaders')
-              .doc(leaderNameController.text.toLowerCase())
+              .doc(leaderNameController.text.trim().toLowerCase())
               .get();
 
           if (leaderSnap.exists) {
@@ -380,7 +380,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
 
             await store
                 .collection('Leaders')
-                .doc(leaderNameController.text.toLowerCase())
+                .doc(leaderNameController.text.trim().toLowerCase())
                 .update({
               'Amount': amount,
             });
@@ -513,10 +513,10 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
           isDialog = true;
         });
         try {
-          if (leaderNameController.text.isNotEmpty) {
+          if (leaderNameController.text.trim().isNotEmpty) {
             final leaderSnap = await store
                 .collection('Leaders')
-                .doc(leaderNameController.text.toLowerCase())
+                .doc(leaderNameController.text.trim().toLowerCase())
                 .get();
 
             if (leaderSnap.exists) {
@@ -528,7 +528,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
 
               await store
                   .collection('Leaders')
-                  .doc(leaderNameController.text.toLowerCase())
+                  .doc(leaderNameController.text.trim().toLowerCase())
                   .update({
                 'Amount': amount,
               });

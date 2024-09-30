@@ -66,7 +66,7 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
     ];
 
     final RegExp aadhaarPattern = RegExp(r'^\d{12}$');
-    if (!aadhaarPattern.hasMatch(aadhaarController.text)) {
+    if (!aadhaarPattern.hasMatch(aadhaarController.text.trim())) {
       return;
     }
 
@@ -85,12 +85,12 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
       return c == 0;
     }
 
-    if (validateVerhoeff(aadhaarController.text)) {
+    if (validateVerhoeff(aadhaarController.text.trim())) {
       final vendorSnap = await store
           .collection('Business')
           .doc('Owners')
           .collection('Users')
-          .where('AadhaarNumber', isEqualTo: aadhaarController.text)
+          .where('AadhaarNumber', isEqualTo: aadhaarController.text.trim())
           .get();
 
       if (vendorSnap.docs.isEmpty) {
@@ -132,7 +132,7 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
               .collection('Business')
               .doc('Owners')
               .collection('Shops')
-              .where('GSTNumber', isEqualTo: gstController.text)
+              .where('GSTNumber', isEqualTo: gstController.text.trim())
               .get();
 
           if (gstSnap.docs.isNotEmpty) {
@@ -150,7 +150,7 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
               .collection('Shops')
               .doc(auth.currentUser!.uid)
               .update({
-            'GSTNumber': gstController.text,
+            'GSTNumber': gstController.text.trim(),
           });
 
           await store
@@ -159,7 +159,7 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
               .collection('Users')
               .doc(auth.currentUser!.uid)
               .update({
-            'AadhaarNumber': aadhaarController.text,
+            'AadhaarNumber': aadhaarController.text.trim(),
           });
 
           if (mounted) {
