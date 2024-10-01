@@ -1,5 +1,6 @@
 import 'package:ls_business/auth/sign_in_page.dart';
 import 'package:ls_business/under_development_page.dart';
+import 'package:ls_business/vendors/page/main/update_page.dart';
 import 'package:ls_business/vendors/provider/main_page_provider.dart';
 import 'package:ls_business/vendors/page/register/business_select_categories_page.dart';
 import 'package:ls_business/vendors/page/register/business_select_products_page.dart';
@@ -22,7 +23,9 @@ import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 class MainPage extends StatefulWidget {
   const MainPage({
@@ -47,7 +50,42 @@ class _MainPageState extends State<MainPage> {
 
   // DETAILS ADDED
   Future<void> detailsAdded() async {
+    Future<bool> checkLatestVersion() async {
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      String currentVersion = packageInfo.version;
+
+      final response = await http.get(
+        Uri.parse(
+          'https://play.google.com/store/apps/details?id=com.lsbusiness.package&hl=en',
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        RegExp regex = RegExp(r'Current Version.*?>(\d+\.\d+\.\d+)<');
+        Match? match = regex.firstMatch(response.body);
+        if (match != null) {
+          String playStoreVersion = match.group(1)!;
+          return currentVersion == playStoreVersion;
+        }
+      } else if (response.statusCode == 404) {
+        return true;
+      }
+      return false;
+    }
+
     try {
+      final isLatestVersion = await checkLatestVersion();
+
+      if (!isLatestVersion) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => UpdatePage(),
+          ),
+          (route) => false,
+        );
+        return;
+      }
+
       final developmentSnap =
           await store.collection('Development').doc('Under Development').get();
 

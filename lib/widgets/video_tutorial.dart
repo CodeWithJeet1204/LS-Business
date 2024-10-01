@@ -1,10 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 // SHOW YOUTUBE PLAYER DIALOG
-Future<void> showYouTubePlayerDialog(BuildContext context, String? url) async {
+Future<void> showYouTubePlayerDialog(BuildContext context, String? code) async {
+  final store = FirebaseFirestore.instance;
+
+  final tutorialSnap = await store.collection('Tutorial').doc('Tutorial').get();
+
+  final tutorialData = tutorialSnap.data()!;
+
+  final url = tutorialData[code];
+
   if (url != null) {
     String? videoId = YoutubePlayer.convertUrlToId(url);
     if (videoId != null) {
@@ -12,7 +21,9 @@ Future<void> showYouTubePlayerDialog(BuildContext context, String? url) async {
         await showDialog(
           context: context,
           builder: (BuildContext context) {
-            return YouTubePlayerDialog(videoId: videoId);
+            return YouTubePlayerDialog(
+              videoId: videoId,
+            );
           },
         );
       } else {
