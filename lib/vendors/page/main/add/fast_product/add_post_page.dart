@@ -9,24 +9,26 @@ import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/image_pick_dialog.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
+import 'package:ls_business/widgets/text_form_field.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:uuid/uuid.dart';
 import 'package:ls_business/widgets/video_tutorial.dart';
 
-class AddStatusPage extends StatefulWidget {
-  const AddStatusPage({
+class addPostPage extends StatefulWidget {
+  const addPostPage({
     super.key,
   });
 
   @override
-  State<AddStatusPage> createState() => _AddStatusPageState();
+  State<addPostPage> createState() => _addPostPageState();
 }
 
-class _AddStatusPageState extends State<AddStatusPage> {
+class _addPostPageState extends State<addPostPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
-  final statusKey = GlobalKey<FormState>();
-  final captionController = TextEditingController();
+  final postKey = GlobalKey<FormState>();
+  final nameCaptionController = TextEditingController();
+  final priceController = TextEditingController();
   List<File> image = [];
   int currentImageIndex = 0;
   bool isPosting = false;
@@ -46,8 +48,8 @@ class _AddStatusPageState extends State<AddStatusPage> {
   //   });
   // }
 
-  // ADD STATUS IMAGE
-  Future<void> addStatusImages() async {
+  // ADD FAST PRODUCT IMAGE
+  Future<void> addPostImages() async {
     final images = await showImagePickDialog(context, false);
     for (XFile im in images) {
       setState(() {
@@ -57,8 +59,8 @@ class _AddStatusPageState extends State<AddStatusPage> {
     }
   }
 
-  // REMOVE STATUS IMAGE
-  void removeStatusImages(int index) {
+  // REMOVE FAST PRODUCT IMAGE
+  void removePostImages(int index) {
     setState(() {
       image.removeAt(index);
       if (currentImageIndex == (image.length)) {
@@ -67,9 +69,9 @@ class _AddStatusPageState extends State<AddStatusPage> {
     });
   }
 
-  // POST
-  Future<void> post() async {
-    if (statusKey.currentState!.validate()) {
+  // DONE
+  Future<void> done() async {
+    if (postKey.currentState!.validate()) {
       setState(() {
         isPosting = true;
         isDialog = true;
@@ -82,7 +84,7 @@ class _AddStatusPageState extends State<AddStatusPage> {
           try {
             Reference ref = FirebaseStorage.instance
                 .ref()
-                .child('Vendor/Status')
+                .child('Vendor/Post')
                 .child(const Uuid().v4());
             await ref.putFile(img).whenComplete(() async {
               await ref.getDownloadURL().then((value) {
@@ -97,19 +99,18 @@ class _AddStatusPageState extends State<AddStatusPage> {
             }
           }
         }
-
-        final String statusId = const Uuid().v4();
-        Map<String, dynamic> statusInfo = {
-          'statusId': statusId,
-          'statusText': captionController.text.toString().trim(),
-          'statusImage': imageDownloadUrl,
-          'statusVendorId': auth.currentUser!.uid,
-          'statusViews': [],
-          'statusDateTime': Timestamp.fromMillisecondsSinceEpoch(
+        final String postId = const Uuid().v4();
+        Map<String, dynamic> postInfo = {
+          'postId': postId,
+          'postText': nameCaptionController.text.toString().trim(),
+          'postImage': imageDownloadUrl,
+          'postVendorId': auth.currentUser!.uid,
+          'postViews': [],
+          'postDateTime': Timestamp.fromMillisecondsSinceEpoch(
             DateTime.now().millisecondsSinceEpoch,
           ),
-          // 'statusLikes': 0,
-          // 'statusDeleteDateTime': Timestamp.fromMillisecondsSinceEpoch(
+          // 'postLikes': 0,
+          // 'postDeleteDateTime': Timestamp.fromMillisecondsSinceEpoch(
           //   DateTime.now()
           //       .add(
           //         Duration(
@@ -133,9 +134,9 @@ class _AddStatusPageState extends State<AddStatusPage> {
         await store
             .collection('Business')
             .doc('Data')
-            .collection('Status')
-            .doc(statusId)
-            .set(statusInfo);
+            .collection('Post')
+            .doc(postId)
+            .set(postInfo);
 
         setState(() {
           isPosting = false;
@@ -143,7 +144,7 @@ class _AddStatusPageState extends State<AddStatusPage> {
         });
 
         if (mounted) {
-          mySnackBar(context, 'Posted');
+          mySnackBar(context, 'Added');
           Navigator.of(context).pop();
         }
       } catch (e) {
@@ -168,7 +169,7 @@ class _AddStatusPageState extends State<AddStatusPage> {
         blur: 0.5,
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Add Status'),
+            title: const Text('Add Post'),
             actions: [
               IconButton(
                 onPressed: () async {
@@ -212,7 +213,7 @@ class _AddStatusPageState extends State<AddStatusPage> {
                                 size: Size(width, width),
                                 child: InkWell(
                                   onTap: () async {
-                                    await addStatusImages();
+                                    await addPostImages();
                                   },
                                   customBorder: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(32),
@@ -282,7 +283,7 @@ class _AddStatusPageState extends State<AddStatusPage> {
                                           ),
                                           child: IconButton.filledTonal(
                                             onPressed: () {
-                                              removeStatusImages(
+                                              removePostImages(
                                                 currentImageIndex,
                                               );
                                             },
@@ -337,7 +338,8 @@ class _AddStatusPageState extends State<AddStatusPage> {
                                                     ),
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            4),
+                                                      4,
+                                                    ),
                                                     image: DecorationImage(
                                                       image: FileImage(
                                                         image[index],
@@ -365,7 +367,7 @@ class _AddStatusPageState extends State<AddStatusPage> {
                                         ),
                                         child: IconButton(
                                           onPressed: () async {
-                                            await addStatusImages();
+                                            await addPostImages();
                                           },
                                           icon: Icon(
                                             FeatherIcons.plus,
@@ -379,53 +381,40 @@ class _AddStatusPageState extends State<AddStatusPage> {
                               ),
                         const SizedBox(height: 8),
                         Form(
-                          key: statusKey,
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                width: width,
-                                child: TextFormField(
-                                  autofocus: false,
-                                  controller: captionController,
-                                  minLines: 1,
-                                  maxLines: 10,
-                                  maxLength: 100,
-                                  onTapOutside: (event) =>
-                                      FocusScope.of(context).unfocus(),
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(4),
-                                      borderSide: BorderSide(
-                                        color: Colors.cyan.shade700,
-                                      ),
-                                    ),
-                                    hintText: 'Caption',
-                                  ),
-                                  validator: (value) {
-                                    if (value != null) {
-                                      if (value.isNotEmpty) {
-                                        return null;
-                                      } else {
-                                        return 'Pls enter something';
-                                      }
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ),
-
-                              const SizedBox(height: 8),
-
-                              // DONE
-                              MyButton(
-                                text: 'DONE',
-                                onTap: () async {
-                                  await post();
-                                },
-                                horizontalPadding: 0,
-                              ),
-                            ],
+                          key: postKey,
+                          child: SizedBox(
+                            width: width,
+                            child: MyTextFormField(
+                              controller: nameCaptionController,
+                              hintText: 'Name/Caption*',
+                              maxLines: 10,
+                              borderRadius: 12,
+                              horizontalPadding: 0,
+                            ),
                           ),
+                        ),
+                        const SizedBox(height: 8),
+
+                        // PRICE
+                        SizedBox(
+                          width: width,
+                          child: MyTextFormField(
+                            controller: priceController,
+                            hintText: 'Price',
+                            maxLines: 10,
+                            borderRadius: 12,
+                            horizontalPadding: 0,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+
+                        // DONE
+                        MyButton(
+                          text: 'DONE',
+                          onTap: () async {
+                            await done();
+                          },
+                          horizontalPadding: 0,
                         ),
                       ],
                     ),

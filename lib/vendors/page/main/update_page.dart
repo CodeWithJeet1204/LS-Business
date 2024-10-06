@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:in_app_update/in_app_update.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
-import 'package:ls_business/widgets/text_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UpdatePage extends StatefulWidget {
@@ -22,6 +22,7 @@ class _UpdatePageState extends State<UpdatePage> {
     super.initState();
   }
 
+  // CHECK FOR IMMEDIATE UPDATE
   Future<void> checkForImmediateUpdate() async {
     try {
       _updateInfo = await InAppUpdate.checkForUpdate();
@@ -47,6 +48,7 @@ class _UpdatePageState extends State<UpdatePage> {
     }
   }
 
+  // LAUNCH PLAY STORE
   Future<void> launchPlayStore() async {
     const url =
         'https://play.google.com/store/apps/details?id=com.lsbusiness.package';
@@ -81,14 +83,15 @@ class _UpdatePageState extends State<UpdatePage> {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            SizedBox(height: 12),
+            SizedBox(height: 18),
             isUpdating
                 ? LinearProgressIndicator()
-                : MyTextButton(
-                    onPressed: () async {
+                : MyButton(
+                    onTap: () async {
                       await launchPlayStore();
                     },
                     text: 'UPDATE',
+                    horizontalPadding: 0,
                   ),
           ],
         ),

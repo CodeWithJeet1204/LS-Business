@@ -168,12 +168,13 @@ class _SignInPageState extends State<SignInPage> {
             }*/
 
           if (mounted) {
-            Navigator.of(context).push(
+            Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                 builder: (context) => const EmailVerifyPage(
                   fromMainPage: false,
                 ),
               ),
+              (route) => false,
             );
           }
         } else {
@@ -324,7 +325,7 @@ class _SignInPageState extends State<SignInPage> {
               isPhoneSigningIn = false;
               isDialog = false;
             });
-            Navigator.of(context).push(
+            Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                 builder: (context) => NumberVerifyPage(
                   verificationId: verificationId,
@@ -336,6 +337,7 @@ class _SignInPageState extends State<SignInPage> {
                   // fromMainPage: false,
                 ),
               ),
+              (route) => false,
             );
           },
           codeAutoRetrievalTimeout: (e) {
@@ -607,6 +609,44 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                     const SizedBox(height: 12),
 
+                    // GOOGLE
+                    GestureDetector(
+                      onTap: () async {
+                        await registerGoogle();
+                      },
+                      child: Container(
+                        margin: EdgeInsets.fromLTRB(
+                          width * 0.035,
+                          0,
+                          width * 0.035,
+                          MediaQuery.of(context).viewInsets.bottom,
+                        ),
+                        padding: EdgeInsets.symmetric(
+                          vertical: width * 0.033,
+                        ),
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: primary2.withOpacity(0.75),
+                        ),
+                        child: isGoogleSigningIn
+                            ? const CircularProgressIndicator(
+                                color: primaryDark,
+                              )
+                            : Text(
+                                'Sign In With GOOGLE',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: buttonColor,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: width * 0.045,
+                                ),
+                              ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+
                     // PHONE NUMBER
                     MyCollapseContainer(
                       width: width,
@@ -665,44 +705,6 @@ class _SignInPageState extends State<SignInPage> {
                             ],
                           ),
                         ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-
-                    // GOOGLE
-                    GestureDetector(
-                      onTap: () async {
-                        await registerGoogle();
-                      },
-                      child: Container(
-                        margin: EdgeInsets.fromLTRB(
-                          width * 0.035,
-                          0,
-                          width * 0.035,
-                          MediaQuery.of(context).viewInsets.bottom,
-                        ),
-                        padding: EdgeInsets.symmetric(
-                          vertical: width * 0.033,
-                        ),
-                        alignment: Alignment.center,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: primary2.withOpacity(0.75),
-                        ),
-                        child: isGoogleSigningIn
-                            ? const CircularProgressIndicator(
-                                color: primaryDark,
-                              )
-                            : Text(
-                                'Sign In With GOOGLE',
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  color: buttonColor,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: width * 0.045,
-                                ),
-                              ),
                       ),
                     ),
                   ],

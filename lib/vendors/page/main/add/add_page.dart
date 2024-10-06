@@ -128,13 +128,22 @@ class _AddPageState extends State<AddPage> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              // SINGLE PRODUCT
+                              // PRODUCT
                               AddBox(
                                 context: context,
                                 width: width,
                                 icon: FeatherIcons.box,
                                 label: 'PRODUCT',
                                 page: const AddProductPage1(),
+                              ),
+
+                              // FAST PRODUCT
+                              AddBox(
+                                context: context,
+                                width: width,
+                                icon: FeatherIcons.fastForward,
+                                label: 'FAST PRODUCT',
+                                page: const AddStatusPage(),
                               ),
 
                               // STATUS

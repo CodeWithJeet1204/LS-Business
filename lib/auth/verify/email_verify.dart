@@ -22,6 +22,8 @@ class EmailVerifyPage extends StatefulWidget {
   State<EmailVerifyPage> createState() => _EmailVerifyPageState();
 }
 
+// TODO: CHANGE EMAIL OPTION
+
 class _EmailVerifyPageState extends State<EmailVerifyPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
