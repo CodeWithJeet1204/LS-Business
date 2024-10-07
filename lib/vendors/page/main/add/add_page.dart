@@ -1,4 +1,5 @@
 import 'package:ls_business/vendors/page/main/add/brand/add_brand_page.dart';
+import 'package:ls_business/vendors/page/main/add/fast_product/add_post_page.dart';
 import 'package:ls_business/vendors/page/main/add/post/add_status_page.dart';
 import 'package:ls_business/vendors/provider/main_page_provider.dart';
 import 'package:ls_business/vendors/page/register/membership_page.dart';
@@ -137,13 +138,13 @@ class _AddPageState extends State<AddPage> {
                                 page: const AddProductPage1(),
                               ),
 
-                              // FAST PRODUCT
+                              // POST
                               AddBox(
                                 context: context,
                                 width: width,
-                                icon: FeatherIcons.fastForward,
-                                label: 'FAST PRODUCT',
-                                page: const AddStatusPage(),
+                                icon: FeatherIcons.compass,
+                                label: 'POST',
+                                page: const addPostPage(),
                               ),
 
                               // STATUS

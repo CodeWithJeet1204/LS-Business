@@ -26,6 +26,7 @@ class addPostPage extends StatefulWidget {
 class _addPostPageState extends State<addPostPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
+  final storage = FirebaseStorage.instance;
   final postKey = GlobalKey<FormState>();
   final nameCaptionController = TextEditingController();
   final priceController = TextEditingController();
@@ -48,7 +49,7 @@ class _addPostPageState extends State<addPostPage> {
   //   });
   // }
 
-  // ADD FAST PRODUCT IMAGE
+  // ADD POST IMAGE
   Future<void> addPostImages() async {
     final images = await showImagePickDialog(context, false);
     for (XFile im in images) {
@@ -59,7 +60,7 @@ class _addPostPageState extends State<addPostPage> {
     }
   }
 
-  // REMOVE FAST PRODUCT IMAGE
+  // REMOVE POST IMAGE
   void removePostImages(int index) {
     setState(() {
       image.removeAt(index);
@@ -69,7 +70,7 @@ class _addPostPageState extends State<addPostPage> {
     });
   }
 
-  // DONE
+  // POST
   Future<void> done() async {
     if (postKey.currentState!.validate()) {
       setState(() {
@@ -82,10 +83,8 @@ class _addPostPageState extends State<addPostPage> {
 
         for (File img in image) {
           try {
-            Reference ref = FirebaseStorage.instance
-                .ref()
-                .child('Vendor/Post')
-                .child(const Uuid().v4());
+            Reference ref =
+                storage.ref().child('Vendor/Posts').child(const Uuid().v4());
             await ref.putFile(img).whenComplete(() async {
               await ref.getDownloadURL().then((value) {
                 setState(() {
@@ -144,7 +143,7 @@ class _addPostPageState extends State<addPostPage> {
         });
 
         if (mounted) {
-          mySnackBar(context, 'Added');
+          mySnackBar(context, 'Posted');
           Navigator.of(context).pop();
         }
       } catch (e) {
@@ -386,14 +385,14 @@ class _addPostPageState extends State<addPostPage> {
                             width: width,
                             child: MyTextFormField(
                               controller: nameCaptionController,
-                              hintText: 'Name/Caption*',
+                              hintText: 'Name / Caption*',
                               maxLines: 10,
                               borderRadius: 12,
                               horizontalPadding: 0,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 16),
 
                         // PRICE
                         SizedBox(
@@ -404,9 +403,10 @@ class _addPostPageState extends State<addPostPage> {
                             maxLines: 10,
                             borderRadius: 12,
                             horizontalPadding: 0,
+                            keyboardType: TextInputType.number,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 24),
 
                         // DONE
                         MyButton(
