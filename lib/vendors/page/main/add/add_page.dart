@@ -1,6 +1,6 @@
 import 'package:ls_business/vendors/page/main/add/brand/add_brand_page.dart';
-import 'package:ls_business/vendors/page/main/add/fast_product/add_post_page.dart';
-import 'package:ls_business/vendors/page/main/add/post/add_status_page.dart';
+import 'package:ls_business/vendors/page/main/add/post/add_post_page.dart';
+import 'package:ls_business/vendors/page/main/add/post%20(removed)/add_status_page%20(removed).dart';
 import 'package:ls_business/vendors/provider/main_page_provider.dart';
 import 'package:ls_business/vendors/page/register/membership_page.dart';
 import 'package:ls_business/widgets/text_button.dart';
