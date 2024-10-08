@@ -262,7 +262,7 @@ class AddShortsPageState extends State<AddShortsPage> {
                 final width = constraints.maxWidth;
                 final height = constraints.maxHeight;
 
-                return noOfShorts == 0
+                return noOfShorts! < 1
                     ? const Center(
                         child: Text(
                           'Your Shorts Quota has exhausted\nDelete existing shorts or renew your membership to increase limit',

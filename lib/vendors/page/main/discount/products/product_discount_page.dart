@@ -118,7 +118,6 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
     SelectProductForDiscountProvider provider,
     List<String> productIdList,
   ) async {
-    // End date should be after start date
     if (discountKey.currentState!.validate()) {
       if (startDate == null) {
         return mySnackBar(context, 'Select Start Date');
@@ -138,8 +137,8 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
       }
 
       if (isPercentSelected &&
-          int.parse(discountController.text.toString().trim()) >= 100) {
-        return mySnackBar(context, 'Max Discount is 99.99999999999999999999%');
+          double.parse(discountController.text.toString().trim()) > 99.99) {
+        return mySnackBar(context, 'Max Discount Amount 99.99%');
       }
 
       setState(() {
@@ -149,10 +148,11 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
       try {
         String discountId = const Uuid().v4();
         if (_image != null) {
-          Reference ref = FirebaseStorage.instance
+          Reference ref = await storage
               .ref()
               .child('Vendor/Discounts/Products')
               .child(discountId);
+
           await ref.putFile(_image!).whenComplete(() async {
             await ref.getDownloadURL().then((value) {
               setState(() {
@@ -752,6 +752,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                               : 'Amount* (eg. Rs. 200 off)',
                           borderRadius: 12,
                           horizontalPadding: 0,
+                          keyboardType: TextInputType.number,
                         ),
                       ),
                     ],

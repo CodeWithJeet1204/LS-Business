@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:ls_business/vendors/page/main/profile/view%20page/product/product_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/shimmer_skeleton_container.dart';
@@ -18,6 +19,7 @@ class AllProductsPage extends StatefulWidget {
 class _AllProductsPageState extends State<AllProductsPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
+  final storage = FirebaseStorage.instance;
   final searchController = TextEditingController();
   Map<String, Map<String, dynamic>> allProducts = {};
   Map<String, Map<String, dynamic>> currentProducts = {};
@@ -174,6 +176,19 @@ class _AllProductsPageState extends State<AllProductsPage> {
   // DELETE
   Future<void> delete(String productId) async {
     try {
+      final productSnap = await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Products')
+          .doc(productId)
+          .get();
+
+      final productData = productSnap.data()!;
+
+      final List images = productData['images'];
+      final shortsURL = productData['shortsURL'];
+      final shortsThumbnail = productData['shortsThumbnail'];
+
       await store
           .collection('Business')
           .doc('Data')
@@ -191,6 +206,18 @@ class _AllProductsPageState extends State<AllProductsPage> {
       await Future.forEach(shortsSnap.docs, (short) async {
         await short.reference.delete();
       });
+
+      if (shortsURL != '') {
+        await storage.refFromURL(shortsURL).delete();
+      }
+      if (images.isNotEmpty) {
+        await Future.forEach(images, (image) async {
+          await storage.refFromURL(image).delete();
+        });
+      }
+      if (shortsThumbnail != '') {
+        await storage.refFromURL(shortsThumbnail).delete();
+      }
     } catch (e) {
       if (mounted) {
         return mySnackBar(context, e.toString());
@@ -381,7 +408,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                               productData['productName'],
                                           categoryName:
                                               productData['categoryName'],
-                                          brandId:
+                                          productBrandId:
                                               productData['productBrandId'],
                                         ),
                                       ),
@@ -462,7 +489,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                                     0,
                                                   ),
                                                   child: Text(
-                                                    'Rs. ${productData['productPrice']}',
+                                                    'Rs. ${productData['productPrice'].round()}',
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,

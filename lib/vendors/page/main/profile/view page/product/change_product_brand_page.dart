@@ -180,14 +180,16 @@ class _changeProductBrandPageState extends State<changeProductBrandPage> {
                     isDialog = true;
                   });
                   try {
+                    print('selectedBrandId: $selectedBrandId');
+                    print('selectedBrandName: $selectedBrandName');
                     await store
                         .collection('Business')
                         .doc('Data')
                         .collection('Products')
                         .doc(widget.productId)
-                        .set({
-                      'brandId': selectedBrandId ?? '0',
-                      'brandName': selectedBrandName ?? 'No Brand',
+                        .update({
+                      'productBrandId': selectedBrandId ?? '0',
+                      'productBrand': selectedBrandName ?? 'No Brand',
                     });
                     setState(() {
                       isDialog = false;
@@ -361,20 +363,14 @@ class _changeProductBrandPageState extends State<changeProductBrandPage> {
                                   itemBuilder: ((context, index) {
                                     final brandData = currentBrands[
                                         currentBrands.keys.toList()[index]]!;
+                                    final brandId = brandData['brandId'];
+                                    final brandName = brandData['brandName'];
 
                                     return GestureDetector(
                                       onTap: () {
                                         setState(() {
-                                          if (selectedBrandId =
-                                              brandData['brandId']) {
-                                            selectedBrandId = null;
-                                            selectedBrandName = null;
-                                          } else {
-                                            selectedBrandId =
-                                                brandData['brandId'];
-                                            selectedBrandName =
-                                                brandData['brandName'];
-                                          }
+                                          selectedBrandId = brandId;
+                                          selectedBrandName = brandName;
                                         });
                                       },
                                       child: Stack(
@@ -452,8 +448,7 @@ class _changeProductBrandPageState extends State<changeProductBrandPage> {
                                                   child: SizedBox(
                                                     width: width * 0.5,
                                                     child: Text(
-                                                      brandData['brandName']
-                                                          .trim(),
+                                                      brandName.trim(),
                                                       maxLines: 1,
                                                       overflow:
                                                           TextOverflow.ellipsis,
@@ -468,8 +463,7 @@ class _changeProductBrandPageState extends State<changeProductBrandPage> {
                                               ],
                                             ),
                                           ),
-                                          selectedBrandId ==
-                                                  brandData['brandId']
+                                          selectedBrandId == brandId
                                               ? Container(
                                                   margin: EdgeInsets.all(
                                                     width * 0.01,
@@ -505,6 +499,8 @@ class _changeProductBrandPageState extends State<changeProductBrandPage> {
                                   itemBuilder: ((context, index) {
                                     final brandData = currentBrands[
                                         currentBrands.keys.toList()[index]]!;
+                                    final brandId = brandData['brandId'];
+                                    final brandName = brandData['brandName'];
 
                                     return Stack(
                                       alignment: Alignment.centerRight,
@@ -527,16 +523,8 @@ class _changeProductBrandPageState extends State<changeProductBrandPage> {
                                                 VisualDensity.standard,
                                             onTap: () {
                                               setState(() {
-                                                if (selectedBrandId =
-                                                    brandData['brandId']) {
-                                                  selectedBrandId = null;
-                                                  selectedBrandName = null;
-                                                } else {
-                                                  selectedBrandId =
-                                                      brandData['brandId'];
-                                                  selectedBrandName =
-                                                      brandData['brandName'];
-                                                }
+                                                selectedBrandId = brandId;
+                                                selectedBrandName = brandName;
                                               });
                                             },
                                             leading: brandData['imageUrl'] !=
@@ -572,7 +560,7 @@ class _changeProductBrandPageState extends State<changeProductBrandPage> {
                                                     ),
                                                   ),
                                             title: Text(
-                                              brandData['brandName'].trim(),
+                                              brandName.trim(),
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
@@ -582,7 +570,7 @@ class _changeProductBrandPageState extends State<changeProductBrandPage> {
                                             ),
                                           ),
                                         ),
-                                        selectedBrandId == brandData['brandId']
+                                        selectedBrandId == brandId
                                             ? Padding(
                                                 padding: EdgeInsets.only(
                                                   right: width * 0.025,

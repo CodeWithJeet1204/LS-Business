@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
+  // TODO: ADD HELPING FEATURE (TO HELP ORGANIZATIONS, PEOPLE)
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -86,6 +87,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'LS Business',
+      // TODO: SHARE TO WHATSAPP BUTTON FROM POST
       theme: ThemeData(
         scaffoldBackgroundColor: primary,
         progressIndicatorTheme: const ProgressIndicatorThemeData(

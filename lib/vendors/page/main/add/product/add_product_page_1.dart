@@ -49,7 +49,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
   // INIT STATE
   @override
   void initState() {
-    getProductQuota();
+    getNoOfProduct();
     super.initState();
   }
 
@@ -64,8 +64,8 @@ class _AddProductPage1State extends State<AddProductPage1> {
     super.dispose();
   }
 
-  // GET PRODUCT QUOTA
-  Future<void> getProductQuota() async {
+  // GET NO OF PRODUCT
+  Future<void> getNoOfProduct() async {
     final vendorSnap = await store
         .collection('Business')
         .doc('Owners')
@@ -75,24 +75,37 @@ class _AddProductPage1State extends State<AddProductPage1> {
 
     final vendorData = vendorSnap.data()!;
 
-    final productGallery = vendorData['productGallery'];
-    final myMaxImages = vendorData['maxImages'];
+    final noOfProduct = vendorData['noOfProduct'];
+    final membershipName = vendorData['MembershipName'];
 
-    final productsSnap = await store
-        .collection('Business')
-        .doc('Data')
-        .collection('Products')
-        .where('vendorId', isEqualTo: auth.currentUser!.uid)
-        .get();
+    final membershipSnap =
+        await store.collection('Membership').doc(membershipName).get();
 
-    final currentProductsLength = productsSnap.docs.length;
+    final membershipData = membershipSnap.data()!;
 
-    final difference = productGallery - currentProductsLength;
+    final myMaxImages = membershipData['maxImages'];
 
-    setState(() {
-      remainingProducts = difference;
-      maxImages = myMaxImages;
-    });
+    if (noOfProduct < 1000000000000) {
+      final productsSnap = await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Products')
+          .where('vendorId', isEqualTo: auth.currentUser!.uid)
+          .get();
+
+      final currentProductsLength = productsSnap.docs.length;
+
+      int difference = noOfProduct - currentProductsLength;
+
+      setState(() {
+        remainingProducts = difference;
+        maxImages = myMaxImages;
+      });
+    } else {
+      setState(() {
+        maxImages = myMaxImages;
+      });
+    }
   }
 
   // ADD PRODUCT IMAGE
@@ -284,7 +297,9 @@ class _AddProductPage1State extends State<AddProductPage1> {
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: Text(
-              remainingProducts == 0 ? 'Product Gallery Full' : 'Basic Info',
+              remainingProducts != null && remainingProducts! < 1
+                  ? 'Product Gallery Full'
+                  : 'Basic Info',
             ),
             actions: [
               IconButton(
@@ -301,7 +316,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                 ),
                 tooltip: 'Help',
               ),
-              remainingProducts == 0
+              remainingProducts != null && remainingProducts! < 1
                   ? Container()
                   : MyTextButton(
                       onPressed: () async {
@@ -315,456 +330,462 @@ class _AddProductPage1State extends State<AddProductPage1> {
                     ),
             ],
           ),
-          body: remainingProducts == 0
+          body: remainingProducts != null && remainingProducts! < 1
               ? const Center(
                   child: Text(
                     'Your Product Gallery is full\nDelete older products or renew your membership to increase limit',
                     textAlign: TextAlign.center,
                   ),
                 )
-              : Padding(
-                  padding: EdgeInsets.all(
-                    width * 0.0225,
-                  ),
-                  child: LayoutBuilder(builder: (context, constraints) {
-                    final width = constraints.maxWidth;
-                    return SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // IMAGE
-                          _image.isNotEmpty
-                              ? Column(
-                                  children: [
-                                    Center(
-                                      child: Stack(
-                                        alignment: Alignment.topRight,
+              : SafeArea(
+                  child: Padding(
+                    padding: EdgeInsets.all(
+                      width * 0.0225,
+                    ),
+                    child: LayoutBuilder(builder: (context, constraints) {
+                      final width = constraints.maxWidth;
+                      return SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // IMAGE
+                            _image.isNotEmpty
+                                ? Column(
+                                    children: [
+                                      Center(
+                                        child: Stack(
+                                          alignment: Alignment.topRight,
+                                          children: [
+                                            Container(
+                                              height: width,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                border: Border.all(
+                                                  color: primaryDark,
+                                                  width: 3,
+                                                ),
+                                                image: DecorationImage(
+                                                  image: FileImage(
+                                                    _image[currentImageIndex],
+                                                  ),
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                top: width * 0.015,
+                                                right: width * 0.015,
+                                              ),
+                                              child: IconButton.filledTonal(
+                                                onPressed: () {
+                                                  removeProductImages(
+                                                    currentImageIndex,
+                                                  );
+                                                },
+                                                icon: Icon(
+                                                  FeatherIcons.x,
+                                                  size: width * 0.1,
+                                                ),
+                                                tooltip: 'Remove Image',
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(height: 16),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
                                         children: [
                                           Container(
-                                            height: width,
                                             decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
                                               border: Border.all(
                                                 color: primaryDark,
                                                 width: 3,
                                               ),
-                                              image: DecorationImage(
-                                                image: FileImage(
-                                                  _image[currentImageIndex],
-                                                ),
-                                                fit: BoxFit.cover,
-                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
                                             ),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                              top: width * 0.015,
-                                              right: width * 0.015,
-                                            ),
-                                            child: IconButton.filledTonal(
-                                              onPressed: () {
-                                                removeProductImages(
-                                                  currentImageIndex,
-                                                );
-                                              },
-                                              icon: Icon(
-                                                FeatherIcons.x,
-                                                size: width * 0.1,
-                                              ),
-                                              tooltip: 'Remove Image',
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(height: 16),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: primaryDark,
-                                              width: 3,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                          ),
-                                          padding: const EdgeInsets.all(4),
-                                          width: _image.length - maxImages! == 0
-                                              ? width * 0.975
-                                              : width * 0.775,
-                                          height: width * 0.225,
-                                          child: ListView.builder(
-                                            shrinkWrap: true,
-                                            physics:
-                                                const ClampingScrollPhysics(),
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: _image.length,
-                                            itemBuilder: ((context, index) {
-                                              return GestureDetector(
-                                                onTap: () {
-                                                  setState(() {
-                                                    currentImageIndex = index;
-                                                  });
-                                                },
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(2),
-                                                  child: Container(
-                                                    height: width * 0.18,
-                                                    width: width * 0.18,
-                                                    decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                        width: 0.3,
-                                                        color: primaryDark,
-                                                      ),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              4),
-                                                      image: DecorationImage(
-                                                        image: FileImage(
-                                                          _image[index],
+                                            padding: const EdgeInsets.all(4),
+                                            width:
+                                                _image.length - maxImages! == 0
+                                                    ? width * 0.975
+                                                    : width * 0.775,
+                                            height: width * 0.225,
+                                            child: ListView.builder(
+                                              shrinkWrap: true,
+                                              physics:
+                                                  const ClampingScrollPhysics(),
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: _image.length,
+                                              itemBuilder: ((context, index) {
+                                                return GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      currentImageIndex = index;
+                                                    });
+                                                  },
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(2),
+                                                    child: Container(
+                                                      height: width * 0.18,
+                                                      width: width * 0.18,
+                                                      decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                          width: 0.3,
+                                                          color: primaryDark,
                                                         ),
-                                                        fit: BoxFit.cover,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(4),
+                                                        image: DecorationImage(
+                                                          image: FileImage(
+                                                            _image[index],
+                                                          ),
+                                                          fit: BoxFit.cover,
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                              );
-                                            }),
-                                          ),
-                                        ),
-                                        _image.length - maxImages! == 0
-                                            ? Container()
-                                            : Container(
-                                                height: width * 0.19,
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                    color: primaryDark,
-                                                    width: 3,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                ),
-                                                child: IconButton(
-                                                  splashRadius: width * 0.095,
-                                                  onPressed: () async {
-                                                    await addProductImages();
-                                                  },
-                                                  icon: Icon(
-                                                    FeatherIcons.plus,
-                                                    size: width * 0.115,
-                                                  ),
-                                                ),
-                                              ),
-                                      ],
-                                    ),
-                                  ],
-                                )
-                              : SizedOverflowBox(
-                                  size: Size(width, width),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await addProductImages();
-                                    },
-                                    customBorder: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(32),
-                                    ),
-                                    child: Container(
-                                      width: width,
-                                      height: width,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: primaryDark,
-                                          width: 3,
-                                        ),
-                                        borderRadius: BorderRadius.circular(32),
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          Icon(
-                                            FeatherIcons.upload,
-                                            size: width * 0.4,
-                                          ),
-                                          Text(
-                                            'Select Image',
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontSize: width * 0.09,
-                                              fontWeight: FontWeight.w500,
+                                                );
+                                              }),
                                             ),
                                           ),
-                                          maxImages == null
+                                          _image.length - maxImages! == 0
                                               ? Container()
-                                              : Text(
-                                                  'Max. $maxImages images',
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                    fontSize: width * 0.04,
+                                              : Container(
+                                                  height: width * 0.19,
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                      color: primaryDark,
+                                                      width: 3,
+                                                    ),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                  ),
+                                                  child: IconButton(
+                                                    splashRadius: width * 0.095,
+                                                    onPressed: () async {
+                                                      await addProductImages();
+                                                    },
+                                                    icon: Icon(
+                                                      FeatherIcons.plus,
+                                                      size: width * 0.115,
+                                                    ),
                                                   ),
                                                 ),
                                         ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                          const SizedBox(height: 28),
-
-                          Form(
-                            key: productKey,
-                            child: Column(
-                              children: [
-                                // NAME
-                                MyTextFormField(
-                                  controller: nameController,
-                                  hintText: 'Name',
-                                  borderRadius: 12,
-                                  horizontalPadding: 0,
-                                ),
-                                const SizedBox(height: 12),
-
-                                // PRICE
-                                MyTextFormField(
-                                  controller: priceController,
-                                  hintText: 'Price',
-                                  borderRadius: 12,
-                                  horizontalPadding: 0,
-                                  keyboardType: TextInputType.number,
-                                ),
-                                const SizedBox(height: 12),
-
-                                // DESCRIPTION
-                                MyTextFormField(
-                                  controller: descriptionController,
-                                  hintText: 'Description',
-                                  borderRadius: 12,
-                                  horizontalPadding: 0,
-                                ),
-                                const SizedBox(height: 16),
-
-                                // BRAND
-                                // InkWell(
-                                //   onTap: () {
-                                //     Navigator.of(context).push(
-                                //       MaterialPageRoute(
-                                //         builder: (context) =>
-                                //             const SelectBrandForProductPage(),
-                                //       ),
-                                //     );
-                                //   },
-                                //   splashColor: primary2,
-                                //   radius: width * 0.5,
-                                //   customBorder: RoundedRectangleBorder(
-                                //     borderRadius: BorderRadius.circular(12),
-                                //   ),
-                                //   child: Container(
-                                //     height: width * 0.16,
-                                //     width: width,
-                                //     padding: EdgeInsets.symmetric(
-                                //         horizontal: width * 0.025),
-                                //     alignment: Alignment.centerLeft,
-                                //     decoration: BoxDecoration(
-                                //       color: primary2.withOpacity(0.5),
-                                //       borderRadius: BorderRadius.circular(12),
-                                //     ),
-                                //     child: Row(
-                                //       mainAxisAlignment:
-                                //           MainAxisAlignment.spaceBetween,
-                                //       children: [
-                                //         Text(
-                                //           selectBrandProvider
-                                //                       .selectedBrandName ==
-                                //                   'No Brand'
-                                //               ? 'Select Brand'
-                                //               : selectBrandProvider
-                                //                   .selectedBrandName!,
-                                //           maxLines: 1,
-                                //           overflow: TextOverflow.ellipsis,
-                                //           style: TextStyle(
-                                //             color: primaryDark,
-                                //             fontSize: width * 0.055,
-                                //           ),
-                                //         ),
-                                //         Icon(
-                                //           FeatherIcons.chevronRight,
-                                //           color: primaryDark,
-                                //           size: width * 0.09,
-                                //         ),
-                                //       ],
-                                //     ),
-                                //   ),
-                                // ),
-                                // const SizedBox(height: 16),
-
-                                // AVAILABLE / OUT OF STOCK
-                                Container(
-                                  width: width,
-                                  decoration: BoxDecoration(
-                                    color: primary2.withOpacity(0.75),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  margin: EdgeInsets.only(
-                                    bottom: MediaQuery.of(context)
-                                        .viewInsets
-                                        .bottom,
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            isAvailable = 0;
-                                          });
-                                        },
-                                        child: SizedBox(
-                                          width: width,
-                                          child: Padding(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: width * 0.025,
-                                              vertical: 4,
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                SizedBox(
-                                                  width: width * 0.8,
-                                                  child: AutoSizeText(
-                                                    'Available',
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: TextStyle(
-                                                      color: primaryDark,
-                                                      fontSize: width * 0.05,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Checkbox(
-                                                  activeColor: primaryDark,
-                                                  checkColor: white,
-                                                  value: isAvailable == 0,
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      isAvailable = 0;
-                                                    });
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      const Divider(),
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            isAvailable = 1;
-                                          });
-                                        },
-                                        child: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: width * 0.025,
-                                            vertical: 4,
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              SizedBox(
-                                                width: width * 0.8,
-                                                child: AutoSizeText(
-                                                  'Will be Available Within a Week',
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                    color: primaryDark,
-                                                    fontSize: width * 0.05,
-                                                  ),
-                                                ),
-                                              ),
-                                              Checkbox(
-                                                activeColor: primaryDark,
-                                                checkColor: white,
-                                                value: isAvailable == 1,
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    isAvailable = 1;
-                                                  });
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      const Divider(),
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            isAvailable = 2;
-                                          });
-                                        },
-                                        child: SizedBox(
-                                          width: width,
-                                          child: Padding(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: width * 0.025,
-                                              vertical: 4,
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                SizedBox(
-                                                  width: width * 0.8,
-                                                  child: AutoSizeText(
-                                                    'Out Of Stock',
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: TextStyle(
-                                                      color: primaryDark,
-                                                      fontSize: width * 0.05,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Checkbox(
-                                                  activeColor: primaryDark,
-                                                  checkColor: white,
-                                                  value: isAvailable == 2,
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      isAvailable = 2;
-                                                    });
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
                                       ),
                                     ],
+                                  )
+                                : SizedOverflowBox(
+                                    size: Size(width, width),
+                                    child: InkWell(
+                                      onTap: () async {
+                                        await addProductImages();
+                                      },
+                                      customBorder: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(32),
+                                      ),
+                                      child: Container(
+                                        width: width,
+                                        height: width,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: primaryDark,
+                                            width: 3,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(32),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            Icon(
+                                              FeatherIcons.upload,
+                                              size: width * 0.4,
+                                            ),
+                                            Text(
+                                              'Select Image',
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize: width * 0.09,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            maxImages == null
+                                                ? Container()
+                                                : Text(
+                                                    'Max. $maxImages images',
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      fontSize: width * 0.04,
+                                                    ),
+                                                  ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ],
+                            const SizedBox(height: 28),
+
+                            Form(
+                              key: productKey,
+                              child: Column(
+                                children: [
+                                  // NAME
+                                  MyTextFormField(
+                                    controller: nameController,
+                                    hintText: 'Name',
+                                    borderRadius: 12,
+                                    horizontalPadding: 0,
+                                  ),
+                                  const SizedBox(height: 12),
+
+                                  // PRICE
+                                  MyTextFormField(
+                                    controller: priceController,
+                                    hintText: 'Price',
+                                    borderRadius: 12,
+                                    horizontalPadding: 0,
+                                    keyboardType: TextInputType.number,
+                                  ),
+                                  const SizedBox(height: 12),
+
+                                  // DESCRIPTION
+                                  MyTextFormField(
+                                    controller: descriptionController,
+                                    hintText: 'Description',
+                                    borderRadius: 12,
+                                    horizontalPadding: 0,
+                                  ),
+                                  const SizedBox(height: 16),
+
+                                  // BRAND
+                                  // InkWell(
+                                  //   onTap: () {
+                                  //     Navigator.of(context).push(
+                                  //       MaterialPageRoute(
+                                  //         builder: (context) =>
+                                  //             const SelectBrandForProductPage(),
+                                  //       ),
+                                  //     );
+                                  //   },
+                                  //   splashColor: primary2,
+                                  //   radius: width * 0.5,
+                                  //   customBorder: RoundedRectangleBorder(
+                                  //     borderRadius: BorderRadius.circular(12),
+                                  //   ),
+                                  //   child: Container(
+                                  //     height: width * 0.16,
+                                  //     width: width,
+                                  //     padding: EdgeInsets.symmetric(
+                                  //         horizontal: width * 0.025),
+                                  //     alignment: Alignment.centerLeft,
+                                  //     decoration: BoxDecoration(
+                                  //       color: primary2.withOpacity(0.5),
+                                  //       borderRadius: BorderRadius.circular(12),
+                                  //     ),
+                                  //     child: Row(
+                                  //       mainAxisAlignment:
+                                  //           MainAxisAlignment.spaceBetween,
+                                  //       children: [
+                                  //         Text(
+                                  //           selectBrandProvider
+                                  //                       .selectedBrandName ==
+                                  //                   'No Brand'
+                                  //               ? 'Select Brand'
+                                  //               : selectBrandProvider
+                                  //                   .selectedBrandName!,
+                                  //           maxLines: 1,
+                                  //           overflow: TextOverflow.ellipsis,
+                                  //           style: TextStyle(
+                                  //             color: primaryDark,
+                                  //             fontSize: width * 0.055,
+                                  //           ),
+                                  //         ),
+                                  //         Icon(
+                                  //           FeatherIcons.chevronRight,
+                                  //           color: primaryDark,
+                                  //           size: width * 0.09,
+                                  //         ),
+                                  //       ],
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                  // const SizedBox(height: 16),
+
+                                  // AVAILABLE / OUT OF STOCK
+                                  Container(
+                                    width: width,
+                                    decoration: BoxDecoration(
+                                      color: primary2.withOpacity(0.75),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    margin: EdgeInsets.only(
+                                      bottom: MediaQuery.of(context)
+                                          .viewInsets
+                                          .bottom,
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              isAvailable = 0;
+                                            });
+                                          },
+                                          child: SizedBox(
+                                            width: width,
+                                            child: Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: width * 0.025,
+                                                vertical: 4,
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  SizedBox(
+                                                    width: width * 0.8,
+                                                    child: AutoSizeText(
+                                                      'Available',
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                        color: primaryDark,
+                                                        fontSize: width * 0.05,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Checkbox(
+                                                    activeColor: primaryDark,
+                                                    checkColor: white,
+                                                    value: isAvailable == 0,
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        isAvailable = 0;
+                                                      });
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        const Divider(),
+                                        GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              isAvailable = 1;
+                                            });
+                                          },
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: width * 0.025,
+                                              vertical: 4,
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                SizedBox(
+                                                  width: width * 0.8,
+                                                  child: AutoSizeText(
+                                                    'Will be Available Within a Week',
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      color: primaryDark,
+                                                      fontSize: width * 0.05,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Checkbox(
+                                                  activeColor: primaryDark,
+                                                  checkColor: white,
+                                                  value: isAvailable == 1,
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      isAvailable = 1;
+                                                    });
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        const Divider(),
+                                        GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              isAvailable = 2;
+                                            });
+                                          },
+                                          child: SizedBox(
+                                            width: width,
+                                            child: Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: width * 0.025,
+                                                vertical: 4,
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  SizedBox(
+                                                    width: width * 0.8,
+                                                    child: AutoSizeText(
+                                                      'Out Of Stock',
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                        color: primaryDark,
+                                                        fontSize: width * 0.05,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Checkbox(
+                                                    activeColor: primaryDark,
+                                                    checkColor: white,
+                                                    value: isAvailable == 2,
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        isAvailable = 2;
+                                                      });
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
+                          ],
+                        ),
+                      );
+                    }),
+                  ),
                 ),
         ),
       ),

@@ -125,6 +125,11 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
         return mySnackBar(context, 'Select Brand');
       }
 
+      if (isPercentSelected &&
+          double.parse(discountController.text.toString().trim()) > 99.99) {
+        return mySnackBar(context, 'Max Discount Amount 99.99%');
+      }
+
       setState(() {
         isUploading = true;
         isDialog = true;
@@ -132,10 +137,11 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
       try {
         String discountId = const Uuid().v4();
         if (_image != null) {
-          Reference ref = FirebaseStorage.instance
+          Reference ref = await storage
               .ref()
               .child('Vendor/Discounts/Brands')
               .child(discountId);
+
           await ref.putFile(_image!).whenComplete(() async {
             await ref.getDownloadURL().then((value) {
               setState(() {
@@ -704,6 +710,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                               : 'Amount* (eg. Rs. 200 off)',
                           borderRadius: 12,
                           horizontalPadding: 0,
+                          keyboardType: TextInputType.number,
                         ),
                       ),
                     ],

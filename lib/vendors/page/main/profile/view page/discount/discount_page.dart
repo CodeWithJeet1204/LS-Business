@@ -370,6 +370,7 @@ class DISCOUNT extends State<DiscountPage> {
             ),
             TextButton(
               onPressed: () async {
+                Navigator.of(context).pop();
                 await delete(type);
               },
               child: const Text(
@@ -388,6 +389,9 @@ class DISCOUNT extends State<DiscountPage> {
 
   // DELETE DISCOUNT
   Future<void> delete(String type) async {
+    setState(() {
+      isDialog = true;
+    });
     try {
       if (type == 'Product') {
         final productSnap = await store
@@ -449,17 +453,26 @@ class DISCOUNT extends State<DiscountPage> {
         await storage.refFromURL(widget.discountImageUrl!).delete();
       }
       if (mounted) {
-        Navigator.of(context).pop();
-        Navigator.of(context).pop();
-        Navigator.of(context).pop();
+        setState(() {
+          isDialog = false;
+        });
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => const MainPage(),
+          ),
+          (route) => false,
+        );
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => const AllDiscountPage(),
+            builder: (context) => AllDiscountPage(),
           ),
         );
         mySnackBar(context, 'Discount Deleted');
       }
     } catch (e) {
+      setState(() {
+        isDialog = false;
+      });
       if (mounted) {
         mySnackBar(context, e.toString());
       }

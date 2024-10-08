@@ -54,6 +54,44 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
     });
   }
 
+  // SHOW CHANGE MEMBERSHIP DIALOG
+  Future<void> showChangeMembershipDialog() async {
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Change Membership'),
+          content: const Text(
+            'It will cancel this membership, and you have to get a new Membership by paying',
+          ),
+          actions: [
+            MyTextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              text: 'NO',
+              textColor: primaryDark2,
+            ),
+            MyTextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const SelectMembershipPage(
+                      hasAvailedLaunchOffer: true,
+                    ),
+                  ),
+                );
+              },
+              text: 'YES',
+              textColor: primaryDark2,
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final mainPageProvider = Provider.of<MainPageProvider>(context);
@@ -79,16 +117,11 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                       ),
                     ),
                     MyTextButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const SelectMembershipPage(
-                              hasAvailedLaunchOffer: true,
-                            ),
-                          ),
-                        );
+                      onPressed: () async {
+                        await showChangeMembershipDialog();
                       },
-                      text: 'CHANGE',
+                      text: 'CHANGE MEMBERSHIP',
+                      textColor: Colors.red,
                     ),
                   ],
                 )

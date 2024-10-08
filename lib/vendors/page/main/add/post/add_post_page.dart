@@ -30,11 +30,19 @@ class _addPostPageState extends State<addPostPage> {
   final postKey = GlobalKey<FormState>();
   final nameCaptionController = TextEditingController();
   final priceController = TextEditingController();
-  List<File> image = [];
   int currentImageIndex = 0;
+  int? remainingPost;
+  List<File> image = [];
   bool isPosting = false;
   bool isDialog = false;
   // int imagePostRemaining = 0;
+
+  // INIT STATE
+  @override
+  void initState() {
+    getNoOfPost();
+    super.initState();
+  }
 
   // // GET NO OF POSTS
   // Future<void> getNoOfPosts() async {
@@ -68,6 +76,37 @@ class _addPostPageState extends State<addPostPage> {
         currentImageIndex = image.length - 1;
       }
     });
+  }
+
+  // GET NO OF POST
+  Future<void> getNoOfPost() async {
+    final vendorSnap = await store
+        .collection('Business')
+        .doc('Owners')
+        .collection('Shops')
+        .doc(auth.currentUser!.uid)
+        .get();
+
+    final vendorData = vendorSnap.data()!;
+
+    final noOfPost = vendorData['noOfPost'];
+
+    if (noOfPost < 1000000000000) {
+      final postSnap = await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Post')
+          .where('vendorId', isEqualTo: auth.currentUser!.uid)
+          .get();
+
+      final currentPostLength = postSnap.docs.length;
+
+      int difference = noOfPost - currentPostLength;
+
+      setState(() {
+        remainingPost = difference;
+      });
+    }
   }
 
   // POST
@@ -150,6 +189,8 @@ class _addPostPageState extends State<addPostPage> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
     return PopScope(
       canPop: isDialog ? false : true,
       child: ModalProgressHUD(
@@ -158,7 +199,11 @@ class _addPostPageState extends State<addPostPage> {
         blur: 0.5,
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Add Post'),
+            title: Text(
+              remainingPost != null && remainingPost! < 1
+                  ? 'Post Limit Full'
+                  : 'Add Post',
+            ),
             actions: [
               IconButton(
                 onPressed: () async {
@@ -177,240 +222,260 @@ class _addPostPageState extends State<addPostPage> {
             ],
           ),
           body: SafeArea(
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final width = constraints.maxWidth;
+            child: Padding(
+              padding: EdgeInsets.all(width * 0.0225),
+              child: remainingPost != null && remainingPost! < 1
+                  ? const Center(
+                      child: Text(
+                        'Your Post Limit has reached\nDelete older posts or renew your membership to increase limit',
+                        textAlign: TextAlign.center,
+                      ),
+                    )
+                  : LayoutBuilder(
+                      builder: (context, constraints) {
+                        final width = constraints.maxWidth;
 
-                return SingleChildScrollView(
-                  child: Padding(
-                    padding: EdgeInsets.all(width * 0.0225),
-                    child: Column(
-                      children: [
-                        // Text(
-                        //   'Remaining Image Post - $imagePostRemaining',
-                        //   maxLines: 2,
-                        //   overflow: TextOverflow.ellipsis,
-                        //   style: TextStyle(
-                        //     color: primaryDark,
-                        //     fontWeight: FontWeight.w500,
-                        //     fontSize: width * 0.05,
-                        //   ),
-                        // ),
-                        // SizedBox(height: 8),
-                        image.isEmpty
-                            ? SizedOverflowBox(
-                                size: Size(width, width),
-                                child: InkWell(
-                                  onTap: () async {
-                                    await addPostImages();
-                                  },
-                                  customBorder: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(32),
-                                  ),
-                                  child: Container(
-                                    width: width,
-                                    height: width,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        width: 3,
-                                        color: primaryDark,
-                                      ),
-                                      borderRadius: BorderRadius.circular(32),
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          FeatherIcons.upload,
-                                          size: width * 0.4,
-                                        ),
-                                        SizedBox(height: width * 0.09),
-                                        Text(
-                                          'Select Image',
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: width * 0.09,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Center(
-                                    child: Stack(
-                                      alignment: Alignment.topRight,
-                                      children: [
-                                        Container(
-                                          height: width,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            border: Border.all(
-                                              color: primaryDark,
-                                              width: 3,
-                                            ),
-                                            image: DecorationImage(
-                                              image: FileImage(
-                                                image[currentImageIndex],
-                                              ),
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                            top: width * 0.015,
-                                            right: width * 0.015,
-                                          ),
-                                          child: IconButton.filledTonal(
-                                            onPressed: () {
-                                              removePostImages(
-                                                currentImageIndex,
-                                              );
-                                            },
-                                            icon: Icon(
-                                              FeatherIcons.x,
-                                              size: width * 0.1,
-                                            ),
-                                            tooltip: 'Remove Image',
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(height: 16),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: width * 0.75,
-                                        height: width * 0.225,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: primaryDark,
-                                            width: 3,
-                                          ),
+                        return SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              // Text(
+                              //   'Remaining Image Post - $imagePostRemaining',
+                              //   maxLines: 2,
+                              //   overflow: TextOverflow.ellipsis,
+                              //   style: TextStyle(
+                              //     color: primaryDark,
+                              //     fontWeight: FontWeight.w500,
+                              //     fontSize: width * 0.05,
+                              //   ),
+                              // ),
+                              // SizedBox(height: 8),
+                              image.isEmpty
+                                  ? SizedOverflowBox(
+                                      size: Size(width, width),
+                                      child: InkWell(
+                                        onTap: () async {
+                                          await addPostImages();
+                                        },
+                                        customBorder: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(12),
+                                              BorderRadius.circular(32),
                                         ),
-                                        padding: EdgeInsets.all(width * 0.0125),
-                                        child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          shrinkWrap: true,
-                                          physics:
-                                              const ClampingScrollPhysics(),
-                                          itemCount: image.length,
-                                          itemBuilder: ((context, index) {
-                                            return GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  currentImageIndex = index;
-                                                });
-                                              },
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(2),
-                                                child: Container(
-                                                  height: width * 0.18,
-                                                  width: width * 0.18,
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                      width: 0.3,
-                                                      color: primaryDark,
+                                        child: Container(
+                                          width: width,
+                                          height: width,
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              width: 3,
+                                              color: primaryDark,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(32),
+                                          ),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                FeatherIcons.upload,
+                                                size: width * 0.4,
+                                              ),
+                                              SizedBox(height: width * 0.09),
+                                              Text(
+                                                'Select Image',
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontSize: width * 0.09,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Center(
+                                          child: Stack(
+                                            alignment: Alignment.topRight,
+                                            children: [
+                                              Container(
+                                                height: width,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                  border: Border.all(
+                                                    color: primaryDark,
+                                                    width: 3,
+                                                  ),
+                                                  image: DecorationImage(
+                                                    image: FileImage(
+                                                      image[currentImageIndex],
                                                     ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                      4,
-                                                    ),
-                                                    image: DecorationImage(
-                                                      image: FileImage(
-                                                        image[index],
-                                                      ),
-                                                      fit: BoxFit.cover,
-                                                    ),
+                                                    fit: BoxFit.cover,
                                                   ),
                                                 ),
                                               ),
-                                            );
-                                          }),
-                                        ),
-                                      ),
-                                      SizedBox(width: width * 0.02),
-                                      Container(
-                                        width: width * 0.175,
-                                        height: width * 0.175,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: primaryDark,
-                                            width: 3,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        child: IconButton(
-                                          onPressed: () async {
-                                            await addPostImages();
-                                          },
-                                          icon: Icon(
-                                            FeatherIcons.plus,
-                                            size: width * 0.1,
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                  top: width * 0.015,
+                                                  right: width * 0.015,
+                                                ),
+                                                child: IconButton.filledTonal(
+                                                  onPressed: () {
+                                                    removePostImages(
+                                                      currentImageIndex,
+                                                    );
+                                                  },
+                                                  icon: Icon(
+                                                    FeatherIcons.x,
+                                                    size: width * 0.1,
+                                                  ),
+                                                  tooltip: 'Remove Image',
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                        const SizedBox(height: 16),
+                                        Row(
+                                          children: [
+                                            Container(
+                                              width: width * 0.75,
+                                              height: width * 0.225,
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  color: primaryDark,
+                                                  width: 3,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              padding: EdgeInsets.all(
+                                                  width * 0.0125),
+                                              child: ListView.builder(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                shrinkWrap: true,
+                                                physics:
+                                                    const ClampingScrollPhysics(),
+                                                itemCount: image.length,
+                                                itemBuilder: ((context, index) {
+                                                  return GestureDetector(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        currentImageIndex =
+                                                            index;
+                                                      });
+                                                    },
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                        2,
+                                                      ),
+                                                      child: Container(
+                                                        height: width * 0.18,
+                                                        width: width * 0.18,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                            width: 0.3,
+                                                            color: primaryDark,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                            4,
+                                                          ),
+                                                          image:
+                                                              DecorationImage(
+                                                            image: FileImage(
+                                                              image[index],
+                                                            ),
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                }),
+                                              ),
+                                            ),
+                                            SizedBox(width: width * 0.02),
+                                            Container(
+                                              width: width * 0.175,
+                                              height: width * 0.175,
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  color: primaryDark,
+                                                  width: 3,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              child: IconButton(
+                                                onPressed: () async {
+                                                  await addPostImages();
+                                                },
+                                                icon: Icon(
+                                                  FeatherIcons.plus,
+                                                  size: width * 0.1,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                              const SizedBox(height: 8),
+                              Form(
+                                key: postKey,
+                                child: SizedBox(
+                                  width: width,
+                                  child: MyTextFormField(
+                                    controller: nameCaptionController,
+                                    hintText: 'Name / Caption*',
+                                    maxLines: 10,
+                                    borderRadius: 12,
+                                    horizontalPadding: 0,
                                   ),
-                                ],
+                                ),
                               ),
-                        const SizedBox(height: 8),
-                        Form(
-                          key: postKey,
-                          child: SizedBox(
-                            width: width,
-                            child: MyTextFormField(
-                              controller: nameCaptionController,
-                              hintText: 'Name / Caption*',
-                              maxLines: 10,
-                              borderRadius: 12,
-                              horizontalPadding: 0,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 16),
+                              const SizedBox(height: 16),
 
-                        // PRICE
-                        SizedBox(
-                          width: width,
-                          child: MyTextFormField(
-                            controller: priceController,
-                            hintText: 'Price',
-                            maxLines: 10,
-                            borderRadius: 12,
-                            horizontalPadding: 0,
-                            keyboardType: TextInputType.number,
-                          ),
-                        ),
-                        const SizedBox(height: 24),
+                              // PRICE
+                              SizedBox(
+                                width: width,
+                                child: MyTextFormField(
+                                  controller: priceController,
+                                  hintText: 'Price',
+                                  maxLines: 10,
+                                  borderRadius: 12,
+                                  horizontalPadding: 0,
+                                  keyboardType: TextInputType.number,
+                                ),
+                              ),
+                              const SizedBox(height: 24),
 
-                        // DONE
-                        MyButton(
-                          text: 'DONE',
-                          onTap: () async {
-                            await done();
-                          },
-                          horizontalPadding: 0,
-                        ),
-                      ],
+                              // DONE
+                              remainingPost != null && remainingPost! < 1
+                                  ? Container()
+                                  : MyButton(
+                                      text: 'DONE',
+                                      onTap: () async {
+                                        await done();
+                                      },
+                                      horizontalPadding: 0,
+                                    ),
+                            ],
+                          ),
+                        );
+                      },
                     ),
-                  ),
-                );
-              },
             ),
           ),
         ),

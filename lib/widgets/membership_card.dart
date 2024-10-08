@@ -155,7 +155,8 @@ class _MembershipCardState extends State<MembershipCard> {
                                   ],
                                 ),
                               ),
-                              widget.originalPrice == null
+                              widget.name == 'FREE Registration' ||
+                                      widget.originalPrice == null
                                   ? Container()
                                   : AutoSizeText(
                                       widget.originalPrice!.toStringAsFixed(0),

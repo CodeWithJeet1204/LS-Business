@@ -509,7 +509,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                         shrinkWrap: true,
                                         physics: const ClampingScrollPhysics(),
                                         itemCount: tagList.length,
-                                        itemBuilder: ((context, index) {
+                                        itemBuilder: (context, index) {
                                           return Padding(
                                             padding: const EdgeInsets.symmetric(
                                               horizontal: 4,
@@ -564,7 +564,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                               ),
                                             ),
                                           );
-                                        }),
+                                        },
                                       ),
                                     )
                                   : Container(),

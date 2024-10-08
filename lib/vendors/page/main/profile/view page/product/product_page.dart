@@ -10,7 +10,7 @@ import 'package:ls_business/vendors/page/main/profile/view%20page/brand/brand_pa
 import 'package:ls_business/vendors/page/main/profile/view%20page/category/category_page.dart';
 import 'package:ls_business/vendors/page/main/profile/view%20page/product/change_product_category_page.dart';
 import 'package:ls_business/vendors/page/main/profile/view%20page/product/image_view.dart';
-import 'package:ls_business/vendors/page/main/profile/view%20page/product/select_product_brand_page.dart';
+import 'package:ls_business/vendors/page/main/profile/view%20page/product/change_product_brand_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/image_pick_dialog.dart';
@@ -33,13 +33,13 @@ class ProductPage extends StatefulWidget {
     required this.productName,
     this.fromPost = false,
     this.categoryName,
-    this.brandId,
+    this.productBrandId,
   });
 
   final String productId;
   final String productName;
   final String? categoryName;
-  final String? brandId;
+  final String? productBrandId;
   final bool fromPost;
 
   @override
@@ -87,7 +87,14 @@ class _ProductPageState extends State<ProductPage> {
 
     final vendorData = vendorSnap.data()!;
 
-    final myMaxImages = vendorData['maxImages'];
+    final membershipName = vendorData['MembershipName'];
+
+    final membershipSnap =
+        await store.collection('Membership').doc(membershipName).get();
+
+    final membershipData = membershipSnap.data()!;
+
+    final myMaxImages = membershipData['maxImages'];
 
     setState(() {
       maxImages = myMaxImages;
@@ -95,13 +102,13 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   // GET BRAND IMAGE URL
-  Future<String?> getBrandImageUrl(String brandId) async {
+  Future<String?> getBrandImageUrl(String productBrandId) async {
     try {
       final brandSnap = await store
           .collection('Business')
           .doc('Data')
           .collection('Brands')
-          .doc(brandId)
+          .doc(productBrandId)
           .get();
 
       final brandData = brandSnap.data()!;
@@ -793,13 +800,8 @@ class _ProductPageState extends State<ProductPage> {
       final productData = productSnap.data()!;
 
       final List images = productData['images'];
-
-      await Future.forEach(
-        images,
-        (image) async {
-          await storage.refFromURL(image).delete();
-        },
-      );
+      final shortsURL = productData['shortsURL'];
+      final shortsThumbnail = productData['shortsThumbnail'];
 
       await store
           .collection('Business')
@@ -815,15 +817,21 @@ class _ProductPageState extends State<ProductPage> {
           .where('productId', isEqualTo: widget.productId)
           .get();
 
-      for (QueryDocumentSnapshot doc in shortsSnap.docs) {
-        await doc.reference.delete();
-      }
+      await Future.forEach(shortsSnap.docs, (short) async {
+        await short.reference.delete();
+      });
 
-      await storage
-          .ref()
-          .child('Vendor/Shorts')
-          .child(widget.productId)
-          .delete();
+      if (shortsURL != '') {
+        await storage.refFromURL(shortsURL).delete();
+      }
+      if (images.isNotEmpty) {
+        await Future.forEach(images, (image) async {
+          await storage.refFromURL(image).delete();
+        });
+      }
+      if (shortsThumbnail != '') {
+        await storage.refFromURL(shortsThumbnail).delete();
+      }
 
       if (mounted) {
         mySnackBar(context, 'Product Deleted');
@@ -875,8 +883,7 @@ class _ProductPageState extends State<ProductPage> {
 
       // brands
       if (data['isBrands'] &&
-          (data['brands'] as List).contains(widget.brandId)) {
-        // Check if the discount is active
+          (data['brands'] as List).contains(widget.productBrandId)) {
         if ((data['discountEndDateTime'] as Timestamp)
                 .toDate()
                 .isAfter(DateTime.now()) &&
@@ -1062,8 +1069,9 @@ class _ProductPageState extends State<ProductPage> {
                         final price = productData['productPrice'];
                         final String? description =
                             productData['productDescription'];
-                        final String brandId = productData['productBrandId'];
-                        final String brandName = productData['productBrand'];
+                        final String productBrandId =
+                            productData['productBrandId'];
+                        final String productBrand = productData['productBrand'];
                         final List images = productData['images'];
                         final List tags = productData['Tags'];
 
@@ -2062,7 +2070,7 @@ class _ProductPageState extends State<ProductPage> {
                             const Divider(),
 
                             // BRAND
-                            brandName.isEmpty
+                            productBrand.isEmpty
                                 ? Container()
                                 : Padding(
                                     padding: EdgeInsets.symmetric(
@@ -2084,13 +2092,13 @@ class _ProductPageState extends State<ProductPage> {
                                         children: [
                                           InkWell(
                                             onTap: () async {
-                                              if (brandName != 'No Brand' ||
-                                                  brandId != '0') {
+                                              if (productBrand != 'No Brand' ||
+                                                  productBrandId != '0') {
                                                 final brandSnap = await store
                                                     .collection('Business')
                                                     .doc('Data')
                                                     .collection('Brands')
-                                                    .doc(brandId)
+                                                    .doc(productBrandId)
                                                     .get();
 
                                                 final brandData =
@@ -2103,8 +2111,8 @@ class _ProductPageState extends State<ProductPage> {
                                                   MaterialPageRoute(
                                                     builder: (context) =>
                                                         BrandPage(
-                                                      brandId: brandId,
-                                                      brandName: brandName,
+                                                      brandId: productBrandId,
+                                                      brandName: productBrand,
                                                       imageUrl: brandImageUrl,
                                                     ),
                                                   ),
@@ -2124,11 +2132,12 @@ class _ProductPageState extends State<ProductPage> {
                                                 // BRAND IMAGE
                                                 FutureBuilder(
                                                     future: getBrandImageUrl(
-                                                        brandId),
+                                                      productBrandId,
+                                                    ),
                                                     builder: (context, future) {
                                                       if (future.hasData) {
                                                         final brandImageUrl =
-                                                            snapshot.data!;
+                                                            future.data;
 
                                                         return ClipRRect(
                                                           borderRadius:
@@ -2137,21 +2146,27 @@ class _ProductPageState extends State<ProductPage> {
                                                             4,
                                                           ),
                                                           child: Image.network(
-                                                            productData['brandId'] !=
+                                                            productData['productBrandId'] !=
                                                                     '0'
                                                                 ? brandImageUrl
                                                                     .toString()
                                                                     .trim()
                                                                 : 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
                                                             fit: BoxFit.cover,
-                                                            width: brandId !=
-                                                                    '0'
-                                                                ? width * 0.14
-                                                                : width * 0.1,
-                                                            height: brandId !=
-                                                                    '0'
-                                                                ? width * 0.14
-                                                                : width * 0.1,
+                                                            width:
+                                                                productBrandId !=
+                                                                        '0'
+                                                                    ? width *
+                                                                        0.14
+                                                                    : width *
+                                                                        0.1,
+                                                            height:
+                                                                productBrandId !=
+                                                                        '0'
+                                                                    ? width *
+                                                                        0.14
+                                                                    : width *
+                                                                        0.1,
                                                           ),
                                                         );
                                                       }
@@ -2163,9 +2178,9 @@ class _ProductPageState extends State<ProductPage> {
                                                 SizedBox(
                                                   width: width * 0.4,
                                                   child: AutoSizeText(
-                                                    brandId == '0'
+                                                    productBrandId == '0'
                                                         ? 'No Brand'
-                                                        : brandName
+                                                        : productBrand
                                                             .toString()
                                                             .trim(),
                                                     maxLines: 1,
@@ -2189,11 +2204,11 @@ class _ProductPageState extends State<ProductPage> {
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       changeProductBrandPage(
-                                                    productId: productData[
-                                                        'productId'],
-                                                    currentBrandId: brandId,
+                                                    productId: widget.productId,
                                                     productName:
                                                         widget.productName,
+                                                    currentBrandId:
+                                                        productBrandId,
                                                   ),
                                                 ),
                                               );

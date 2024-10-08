@@ -1,9 +1,7 @@
 import 'package:ls_business/vendors/page/main/add/brand/add_brand_page.dart';
 import 'package:ls_business/vendors/page/main/add/post/add_post_page.dart';
-import 'package:ls_business/vendors/page/main/add/post%20(removed)/add_status_page%20(removed).dart';
+import 'package:ls_business/vendors/page/main/add/status/add_status_page.dart';
 import 'package:ls_business/vendors/provider/main_page_provider.dart';
-import 'package:ls_business/vendors/page/register/membership_page.dart';
-import 'package:ls_business/widgets/text_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:ls_business/vendors/page/main/add/product/add_product_page_1.dart';
@@ -69,147 +67,130 @@ class _AddPageState extends State<AddPage> {
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : isRegistration!
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Center(
-                      child: Text(
-                        'You are currently using \'FREE Registration\' Membership\nThis membership allows you to register your shop details & catalogue only\nThis does not allows you to add products/brands/shorts/status\nGet a paid membership to get benefits',
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    MyTextButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const SelectMembershipPage(
-                              hasAvailedLaunchOffer: true,
-                            ),
-                          ),
-                        );
-                      },
-                      text: 'CHANGE',
-                    ),
-                  ],
-                )
-              : Scaffold(
-                  resizeToAvoidBottomInset: false,
-                  backgroundColor: primary,
-                  appBar: AppBar(
-                    title: const Text(
-                      'ADD',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    actions: [
-                      IconButton(
-                        onPressed: () async {
-                          await showYouTubePlayerDialog(
-                            context,
-                            getYoutubeVideoId(
-                              '',
-                            ),
-                          );
-                        },
-                        icon: const Icon(
-                          Icons.question_mark_outlined,
-                        ),
-                        tooltip: 'Help',
-                      ),
-                    ],
-                  ),
-                  body: SafeArea(
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        final width = constraints.maxWidth;
-                        return SingleChildScrollView(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              // PRODUCT
-                              AddBox(
-                                context: context,
-                                width: width,
-                                icon: FeatherIcons.box,
-                                label: 'PRODUCT',
-                                page: const AddProductPage1(),
-                              ),
-
-                              // POST
-                              AddBox(
-                                context: context,
-                                width: width,
-                                icon: FeatherIcons.compass,
-                                label: 'POST',
-                                page: const addPostPage(),
-                              ),
-
-                              // STATUS
-                              AddBox(
-                                context: context,
-                                width: width,
-                                icon: FeatherIcons.upload,
-                                label: 'STATUS',
-                                page: const AddStatusPage(),
-                              ),
-
-                              // SHORTS
-                              AddBox(
-                                context: context,
-                                width: width,
-                                icon: FeatherIcons.playCircle,
-                                label: 'SHORTS',
-                                page: const AddShortsPage(),
-                              ),
-
-                              // BRAND
-                              AddBox(
-                                context: context,
-                                width: width,
-                                icon: FeatherIcons.award,
-                                label: 'BRAND',
-                                page: const AddBrandPage(),
-                              ),
-
-                              // BULK PRODUCTS
-                              // AddBox(
-                              //   context: context,
-                              //   width: width,
-                              //   icon: FeatherIcons.box,
-                              //   label: 'BULK ADD',
-                              //   onTap: () {
-                              //     Navigator.of(context).push(
-                              //       MaterialPageRoute(
-                              //         builder: (context) => const AddBulkProduct(),
-                              //       ),
-                              //     );
-                              //   },
-                              // ),
-
-                              // CATEGORY
-                              // AddBox(
-                              //   context: context,
-                              //   width: width,
-                              //   icon: FeatherIcons.award,
-                              //   label: 'CATEGORY',
-                              //   onTap: () {
-                              //     Navigator.of(context).push(
-                              //      MaterialPageRoute(
-                              //        builder: (context) => const AddCategoryPage(),
-                              //       ),
-                              //     );
-                              //   },
-                              // ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+          : Scaffold(
+              resizeToAvoidBottomInset: false,
+              backgroundColor: primary,
+              appBar: AppBar(
+                title: const Text(
+                  'ADD',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
+                actions: [
+                  IconButton(
+                    onPressed: () async {
+                      await showYouTubePlayerDialog(
+                        context,
+                        getYoutubeVideoId(
+                          '',
+                        ),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.question_mark_outlined,
+                    ),
+                    tooltip: 'Help',
+                  ),
+                ],
+              ),
+              body: SafeArea(
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final width = constraints.maxWidth;
+                    return SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          // PRODUCT
+                          AddBox(
+                            context: context,
+                            width: width,
+                            icon: FeatherIcons.box,
+                            label: 'PRODUCT',
+                            page: const AddProductPage1(),
+                          ),
+
+                          // POST
+                          isRegistration!
+                              ? Container()
+                              : AddBox(
+                                  context: context,
+                                  width: width,
+                                  icon: FeatherIcons.compass,
+                                  label: 'POST',
+                                  page: const addPostPage(),
+                                ),
+
+                          // STATUS
+                          isRegistration!
+                              ? Container()
+                              : AddBox(
+                                  context: context,
+                                  width: width,
+                                  icon: FeatherIcons.upload,
+                                  label: 'STATUS',
+                                  page: const AddStatusPage(),
+                                ),
+
+                          // SHORTS
+                          isRegistration!
+                              ? Container()
+                              : AddBox(
+                                  context: context,
+                                  width: width,
+                                  icon: FeatherIcons.playCircle,
+                                  label: 'SHORTS',
+                                  page: const AddShortsPage(),
+                                ),
+
+                          // BRAND
+                          isRegistration!
+                              ? Container()
+                              : AddBox(
+                                  context: context,
+                                  width: width,
+                                  icon: FeatherIcons.award,
+                                  label: 'BRAND',
+                                  page: const AddBrandPage(),
+                                ),
+
+                          // BULK PRODUCTS
+                          // AddBox(
+                          //   context: context,
+                          //   width: width,
+                          //   icon: FeatherIcons.box,
+                          //   label: 'BULK ADD',
+                          //   onTap: () {
+                          //     Navigator.of(context).push(
+                          //       MaterialPageRoute(
+                          //         builder: (context) => const AddBulkProduct(),
+                          //       ),
+                          //     );
+                          //   },
+                          // ),
+
+                          // CATEGORY
+                          // AddBox(
+                          //   context: context,
+                          //   width: width,
+                          //   icon: FeatherIcons.award,
+                          //   label: 'CATEGORY',
+                          //   onTap: () {
+                          //     Navigator.of(context).push(
+                          //      MaterialPageRoute(
+                          //        builder: (context) => const AddCategoryPage(),
+                          //       ),
+                          //     );
+                          //   },
+                          // ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
     );
   }
 }

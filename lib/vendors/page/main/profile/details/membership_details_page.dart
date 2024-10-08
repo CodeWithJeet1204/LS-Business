@@ -346,7 +346,7 @@ class _MembershipDetailsPageState extends State<MembershipDetailsPage> {
                             onPressed: () async {
                               await showChangeMembershipDialog();
                             },
-                            text: 'Change Membership',
+                            text: 'CHANGE MEMBERSHIP',
                             textColor: Colors.red,
                           ),
                         ],
