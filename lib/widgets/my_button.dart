@@ -30,9 +30,9 @@ class MyButton extends StatelessWidget {
           color: buttonColor,
         ),
         padding: EdgeInsets.symmetric(
-          vertical: MediaQuery.of(context).size.width < screenSize
-              ? MediaQuery.of(context).size.width * 0.033
-              : MediaQuery.of(context).size.width * 0.0066,
+          vertical: MediaQuery.sizeOf(context).width < screenSize
+              ? MediaQuery.sizeOf(context).width * 0.033
+              : MediaQuery.sizeOf(context).width * 0.0066,
         ),
         margin: EdgeInsets.symmetric(
           horizontal: horizontalPadding,
@@ -45,9 +45,9 @@ class MyButton extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
             color: white,
-            fontSize: MediaQuery.of(context).size.width < screenSize
-                ? MediaQuery.of(context).size.width * 0.045
-                : MediaQuery.of(context).size.width * 0.015,
+            fontSize: MediaQuery.sizeOf(context).width < screenSize
+                ? MediaQuery.sizeOf(context).width * 0.045
+                : MediaQuery.sizeOf(context).width * 0.015,
           ),
         ),
       ),

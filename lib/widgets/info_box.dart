@@ -15,8 +15,8 @@ class InfoBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
-        vertical: MediaQuery.of(context).size.width * 0.0135,
-        horizontal: MediaQuery.of(context).size.width * 0.0025,
+        vertical: MediaQuery.sizeOf(context).width * 0.0135,
+        horizontal: MediaQuery.sizeOf(context).width * 0.0025,
       ),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
@@ -36,7 +36,7 @@ class InfoBox extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: primaryDark2,
-                    fontSize: MediaQuery.of(context).size.width * 0.04,
+                    fontSize: MediaQuery.sizeOf(context).width * 0.04,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -46,7 +46,7 @@ class InfoBox extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: primaryDark,
-                    fontSize: MediaQuery.of(context).size.width * 0.0666,
+                    fontSize: MediaQuery.sizeOf(context).width * 0.0666,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

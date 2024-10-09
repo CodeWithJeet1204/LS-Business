@@ -30,7 +30,7 @@
 //         title: Text('Pay'),
 //       ),
 //       body: SafeArea(
-//         child: MediaQuery.of(context).size.width < screenSize
+//         child: MediaQuery.sizeOf(context).width < screenSize
 //             ? Column(
 //                 crossAxisAlignment: CrossAxisAlignment.center,
 //                 children: [
@@ -92,7 +92,7 @@
 //                       }
 //                     },
 //                     horizontalPadding:
-//                         MediaQuery.of(context).size.width * 0.066,
+//                         MediaQuery.sizeOf(context).width * 0.066,
 //                     isLoading: isPaying,
 //                   ),
 //                   Expanded(
@@ -133,14 +133,14 @@
 //                 children: [
 //                   Container(
 //                     alignment: Alignment.center,
-//                     width: MediaQuery.of(context).size.width * 0.66,
+//                     width: MediaQuery.sizeOf(context).width * 0.66,
 //                     // child: const HeadText(
 //                     //   text: 'PAY',
 //                     // ),
 //                   ),
 //                   Container(
 //                     alignment: Alignment.center,
-//                     width: MediaQuery.of(context).size.width * 0.33,
+//                     width: MediaQuery.sizeOf(context).width * 0.33,
 //                     child: Column(
 //                       mainAxisAlignment: MainAxisAlignment.center,
 //                       children: [
@@ -151,11 +151,11 @@
 //                           textAlign: TextAlign.center,
 //                           style: TextStyle(
 //                             color: primaryDark,
-//                             fontSize: MediaQuery.of(context).size.width * 0.015,
+//                             fontSize: MediaQuery.sizeOf(context).width * 0.015,
 //                           ),
 //                         ),
 //                         SizedBox(
-//                           height: MediaQuery.of(context).size.width * 0.025,
+//                           height: MediaQuery.sizeOf(context).width * 0.025,
 //                         ),
 
 //                         // PAY BUTTON
@@ -192,7 +192,7 @@
 //                             }
 //                           },
 //                           horizontalPadding:
-//                               MediaQuery.of(context).size.width * 0.05,
+//                               MediaQuery.sizeOf(context).width * 0.05,
 //                           isLoading: isPaying,
 //                         ),
 //                       ],

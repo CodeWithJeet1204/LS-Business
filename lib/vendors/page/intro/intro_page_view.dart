@@ -124,7 +124,7 @@
 //                     maxLines: 1,
 //                     overflow: TextOverflow.ellipsis,
 //                     style: TextStyle(
-//                       fontSize: MediaQuery.of(context).size.width * 0.045,
+//                       fontSize: MediaQuery.sizeOf(context).width * 0.045,
 //                       color: const Color.fromARGB(255, 0, 33, 91),
 //                     ),
 //                   ),

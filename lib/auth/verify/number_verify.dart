@@ -216,7 +216,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.sizeOf(context).width;
 
     return PopScope(
       canPop: isDialog ? false : true,
@@ -239,7 +239,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: primaryDark,
-                      fontSize: MediaQuery.of(context).size.width * 0.045,
+                      fontSize: MediaQuery.sizeOf(context).width * 0.045,
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -247,8 +247,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                     hintText: 'OTP - 6 Digits',
                     controller: otpController,
                     borderRadius: 12,
-                    horizontalPadding:
-                        MediaQuery.of(context).size.width * 0.066,
+                    horizontalPadding: MediaQuery.sizeOf(context).width * 0.066,
                     keyboardType: TextInputType.number,
                     autoFillHints: const [AutofillHints.oneTimeCode],
                   ),
@@ -275,7 +274,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
                             await verify();
                           },
                           horizontalPadding:
-                              MediaQuery.of(context).size.width * 0.066,
+                              MediaQuery.sizeOf(context).width * 0.066,
                         ),
                   Expanded(child: Container()),
                 ],

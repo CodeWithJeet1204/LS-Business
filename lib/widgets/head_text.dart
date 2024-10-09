@@ -27,7 +27,7 @@
 //       maxLines: 2,
 //       overflow: TextOverflow.ellipsis,
 //       style: GoogleFonts.josefinSans(
-//         fontSize: MediaQuery.of(context).size.width * 0.085,
+//         fontSize: MediaQuery.sizeOf(context).width * 0.085,
 //         color: primaryDark,
 //         fontWeight: FontWeight.bold,
 //       ),

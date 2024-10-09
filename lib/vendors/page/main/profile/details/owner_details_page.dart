@@ -244,7 +244,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.sizeOf(context).width;
     final userStream = store
         .collection('Business')
         .doc('Owners')

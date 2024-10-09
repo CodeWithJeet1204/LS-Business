@@ -163,7 +163,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.sizeOf(context).width;
 
     final productsAddedToBrandProvider =
         Provider.of<ProductAddedToBrandProvider>(context);

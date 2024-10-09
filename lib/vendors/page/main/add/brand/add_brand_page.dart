@@ -200,7 +200,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
           ),
           body: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.0125,
+              horizontal: MediaQuery.sizeOf(context).width * 0.0125,
             ),
             child: LayoutBuilder(
               builder: (context, constraints) {

@@ -147,7 +147,7 @@ class _changeProductBrandPageState extends State<changeProductBrandPage> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.sizeOf(context).width;
 
     return PopScope(
       canPop: isDialog ? false : true,

@@ -129,7 +129,7 @@ class _SelectProductForDiscountPageState
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.sizeOf(context).width;
 
     final selectedProductsProvider =
         Provider.of<SelectProductForDiscountProvider>(context);

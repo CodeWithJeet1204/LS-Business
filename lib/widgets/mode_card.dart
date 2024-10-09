@@ -25,7 +25,7 @@ class ModeCard extends StatefulWidget {
 class _ModeCardState extends State<ModeCard> {
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.sizeOf(context).width;
 
     return Padding(
       padding: EdgeInsets.symmetric(

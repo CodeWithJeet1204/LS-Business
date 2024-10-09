@@ -93,7 +93,7 @@ class _AnalyticsPageState extends State<AnalyticsPage>
   @override
   Widget build(BuildContext context) {
     final mainPageProvider = Provider.of<MainPageProvider>(context);
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.sizeOf(context).width;
     final TabController tabController = TabController(
       initialIndex: 1,
       length: 2,

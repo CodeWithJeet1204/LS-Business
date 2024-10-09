@@ -207,8 +207,8 @@
 //       ),
 //       body: Padding(
 //         padding: EdgeInsets.symmetric(
-//           vertical: MediaQuery.of(context).size.width * 0.0166,
-//           horizontal: MediaQuery.of(context).size.width * 0.0225,
+//           vertical: MediaQuery.sizeOf(context).width * 0.0166,
+//           horizontal: MediaQuery.sizeOf(context).width * 0.0225,
 //         ),
 //         child: LayoutBuilder(builder: (context, constraints) {
 //           final width = constraints.maxWidth;

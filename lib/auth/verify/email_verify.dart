@@ -135,7 +135,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: primaryDark,
-                fontSize: MediaQuery.of(context).size.width * 0.05,
+                fontSize: MediaQuery.sizeOf(context).width * 0.05,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -144,7 +144,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: primaryDark,
-                fontSize: MediaQuery.of(context).size.width * 0.045,
+                fontSize: MediaQuery.sizeOf(context).width * 0.045,
               ),
             ),
             const SizedBox(height: 20),
@@ -153,7 +153,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
               onTap: () async {
                 await checkEmailVerification(true);
               },
-              horizontalPadding: MediaQuery.of(context).size.width * 0.066,
+              horizontalPadding: MediaQuery.sizeOf(context).width * 0.066,
             ),
             const SizedBox(height: 20),
             Opacity(
@@ -167,7 +167,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
                     : () {
                         return mySnackBar(context, 'Wait for 5 seconds');
                       },
-                horizontalPadding: MediaQuery.of(context).size.width * 0.066,
+                horizontalPadding: MediaQuery.sizeOf(context).width * 0.066,
               ),
             ),
           ],

@@ -231,7 +231,7 @@
 
 //   @override
 //   Widget build(BuildContext context) {
-//     final width = MediaQuery.of(context).size.width;
+//     final width = MediaQuery.sizeOf(context).width;
 
 //     return Scaffold(
 //       resizeToAvoidBottomInset: false,
@@ -254,13 +254,13 @@
 //         ],
 //         bottom: PreferredSize(
 //           preferredSize: Size(
-//             MediaQuery.of(context).size.width,
-//             MediaQuery.of(context).size.width * 0.2,
+//             MediaQuery.sizeOf(context).width,
+//             MediaQuery.sizeOf(context).width * 0.2,
 //           ),
 //           child: Padding(
 //             padding: EdgeInsets.symmetric(
-//               horizontal: MediaQuery.of(context).size.width * 0.0166,
-//               vertical: MediaQuery.of(context).size.width * 0.0225,
+//               horizontal: MediaQuery.sizeOf(context).width * 0.0166,
+//               vertical: MediaQuery.sizeOf(context).width * 0.0225,
 //             ),
 //             child: Row(
 //               mainAxisAlignment: MainAxisAlignment.spaceBetween,

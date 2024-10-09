@@ -124,7 +124,7 @@
 //         ),
 //         bottom: PreferredSize(
 //           preferredSize: Size(
-//             MediaQuery.of(context).size.width,
+//             MediaQuery.sizeOf(context).width,
 //             80,
 //           ),
 //           child: Padding(

@@ -1485,7 +1485,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                       bottom: getPropertiesKeys(4) != '2' &&
                                               getPropertiesKeys(4) != '0' &&
                                               getPropertiesKeys(4) != '1'
-                                          ? MediaQuery.of(context).size.width
+                                          ? MediaQuery.sizeOf(context).width
                                           : 0,
                                     ),
                                     child: PropertyBox(
@@ -1732,7 +1732,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                       bottom: getPropertiesKeys(5) != '2' &&
                                               getPropertiesKeys(5) != '0' &&
                                               getPropertiesKeys(5) != '1'
-                                          ? MediaQuery.of(context).size.width
+                                          ? MediaQuery.sizeOf(context).width
                                           : 0,
                                     ),
                                     child: PropertyBox(

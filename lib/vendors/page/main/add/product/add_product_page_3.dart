@@ -81,7 +81,7 @@ class _AddProductPage3State extends State<AddProductPage3> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.sizeOf(context).width;
 
     return Scaffold(
       appBar: AppBar(

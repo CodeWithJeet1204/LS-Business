@@ -133,7 +133,7 @@ class _AllShortsPageState extends State<AllShortsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.sizeOf(context).width;
 
     return Scaffold(
       appBar: AppBar(

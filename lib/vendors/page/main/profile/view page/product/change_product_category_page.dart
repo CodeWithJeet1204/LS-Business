@@ -165,7 +165,7 @@ class _ChangeProductCategoryPageState extends State<ChangeProductCategoryPage> {
               child: Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: 6,
-                  vertical: MediaQuery.of(context).size.width * 0.0225,
+                  vertical: MediaQuery.sizeOf(context).width * 0.0225,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

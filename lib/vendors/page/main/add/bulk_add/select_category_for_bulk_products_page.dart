@@ -119,8 +119,8 @@
 //             children: [
 //               Padding(
 //                 padding: EdgeInsets.symmetric(
-//                   horizontal: MediaQuery.of(context).size.width * 0.0166,
-//                   vertical: MediaQuery.of(context).size.width * 0.0225,
+//                   horizontal: MediaQuery.sizeOf(context).width * 0.0166,
+//                   vertical: MediaQuery.sizeOf(context).width * 0.0225,
 //                 ),
 //                 child: Row(
 //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

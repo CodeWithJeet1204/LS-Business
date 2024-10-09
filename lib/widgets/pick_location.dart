@@ -45,7 +45,7 @@ class _PickLocationPageState extends State<PickLocationPage> {
         buttonColor: primaryDark,
         buttonText: 'Set Location',
         buttonHeight: 50,
-        buttonWidth: MediaQuery.of(context).size.width * 0.8,
+        buttonWidth: MediaQuery.sizeOf(context).width * 0.8,
         buttonTextColor: white,
         onPicked: (pickedData) async {
           Navigator.of(context)

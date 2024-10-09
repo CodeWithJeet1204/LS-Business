@@ -292,7 +292,7 @@ class _SelectBusinessTimingsPageState extends State<SelectBusinessTimingsPage> {
           body: SafeArea(
             child: Padding(
               padding: EdgeInsets.all(
-                MediaQuery.of(context).size.width * 0.0125,
+                MediaQuery.sizeOf(context).width * 0.0125,
               ),
               child: LayoutBuilder(builder: (context, constraints) {
                 final width = constraints.maxWidth;

@@ -704,7 +704,7 @@
 //       bottomSheet: Padding(
 //         padding: const EdgeInsets.all(8),
 //         child: SizedBox(
-//           width: MediaQuery.of(context).size.width,
+//           width: MediaQuery.sizeOf(context).width,
 //           height: 60,
 //           child: MyButton(
 //             text: 'DONE',
@@ -712,14 +712,14 @@
 //               await save();
 //             },
 //             isLoading: isUploading,
-//             horizontalPadding: MediaQuery.of(context).size.width * 0.0225,
+//             horizontalPadding: MediaQuery.sizeOf(context).width * 0.0225,
 //           ),
 //         ),
 //       ),
 //       body: SafeArea(
 //         child: Padding(
 //           padding: EdgeInsets.symmetric(
-//             horizontal: MediaQuery.of(context).size.width * 0.003125,
+//             horizontal: MediaQuery.sizeOf(context).width * 0.003125,
 //           ),
 //           child: LayoutBuilder(
 //             builder: (context, constraints) {
