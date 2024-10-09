@@ -464,6 +464,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
 
+                  // ignore: prefer_const_constructors
                   Divider(),
 
                   Row(
@@ -477,10 +478,12 @@ class _ProfilePageState extends State<ProfilePage> {
                           if (await canLaunchUrl(Uri.parse(url))) {
                             await launchUrl(Uri.parse(url));
                           } else {
-                            mySnackBar(
-                              context,
-                              'Some error occurred, Try Again Later',
-                            );
+                            if (context.mounted) {
+                              mySnackBar(
+                                context,
+                                'Some error occurred, Try Again Later',
+                              );
+                            }
                           }
                         },
                         child: Text(
@@ -509,10 +512,12 @@ class _ProfilePageState extends State<ProfilePage> {
                           if (await canLaunchUrl(Uri.parse(url))) {
                             await launchUrl(Uri.parse(url));
                           } else {
-                            mySnackBar(
-                              context,
-                              'Some error occurred, Try Again Later',
-                            );
+                            if (context.mounted) {
+                              mySnackBar(
+                                context,
+                                'Some error occurred, Try Again Later',
+                              );
+                            }
                           }
                         },
                         child: Text(

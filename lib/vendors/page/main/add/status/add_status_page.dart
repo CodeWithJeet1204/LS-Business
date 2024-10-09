@@ -260,7 +260,7 @@ class _AddStatusPageState extends State<AddStatusPage> {
           ),
           body: SafeArea(
             child: isStatus == null
-                ? Center(
+                ? const Center(
                     child: CircularProgressIndicator(),
                   )
                 : !isStatus!
@@ -270,7 +270,7 @@ class _AddStatusPageState extends State<AddStatusPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text(
+                              const Text(
                                 'Your current membership doesn\'t support Status',
                                 textAlign: TextAlign.center,
                               ),

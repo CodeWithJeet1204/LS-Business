@@ -2106,17 +2106,18 @@ class _ProductPageState extends State<ProductPage> {
 
                                                 final brandImageUrl =
                                                     brandData['imageUrl'];
-
-                                                Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        BrandPage(
-                                                      brandId: productBrandId,
-                                                      brandName: productBrand,
-                                                      imageUrl: brandImageUrl,
+                                                if (context.mounted) {
+                                                  Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          BrandPage(
+                                                        brandId: productBrandId,
+                                                        brandName: productBrand,
+                                                        imageUrl: brandImageUrl,
+                                                      ),
                                                     ),
-                                                  ),
-                                                );
+                                                  );
+                                                }
                                               }
                                             },
                                             customBorder:
@@ -2203,7 +2204,7 @@ class _ProductPageState extends State<ProductPage> {
                                               Navigator.of(context).push(
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      changeProductBrandPage(
+                                                      ChangeProductBrandPage(
                                                     productId: widget.productId,
                                                     productName:
                                                         widget.productName,

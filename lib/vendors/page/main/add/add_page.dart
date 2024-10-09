@@ -119,7 +119,7 @@ class _AddPageState extends State<AddPage> {
                                   width: width,
                                   icon: FeatherIcons.compass,
                                   label: 'POST',
-                                  page: const addPostPage(),
+                                  page: const AddPostPage(),
                                 ),
 
                           // STATUS

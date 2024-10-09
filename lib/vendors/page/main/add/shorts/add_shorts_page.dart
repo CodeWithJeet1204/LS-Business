@@ -51,7 +51,6 @@ class AddShortsPageState extends State<AddShortsPage> {
           .get();
 
       final currentShortsLength = shortsSnap.docs.length;
-      print('currentSHorts:ength: $currentShortsLength');
 
       final remainingShorts = shortsQuota - currentShortsLength;
 
@@ -59,7 +58,9 @@ class AddShortsPageState extends State<AddShortsPage> {
         noOfShorts = remainingShorts;
       });
     } catch (e) {
-      return mySnackBar(context, e.toString());
+      if (mounted) {
+        return mySnackBar(context, e.toString());
+      }
     }
   }
 

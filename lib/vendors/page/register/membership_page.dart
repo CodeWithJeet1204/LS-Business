@@ -171,7 +171,6 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
       await getLocation().then((coordinates) async {
         if (coordinates != null) {
           city = await getAddress(coordinates.latitude, coordinates.longitude);
-          print('city: $city');
         }
       });
 
@@ -185,7 +184,6 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
       if (offerSnap.docs.isNotEmpty) {
         Map<String, dynamic> myOffers = {};
         final highestOffer = offerSnap.docs[0];
-        print('highestOffer: ${highestOffer.data()}');
 
         final currentOfferData = highestOffer.data();
 
@@ -646,7 +644,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
           ),
           bottomSheet:
               /*membership selectedDuration == 'Duration' && */ !isAvailingOffer
-                  ? SizedBox(
+                  ? const SizedBox(
                       width: 0,
                       height: 0,
                     )
@@ -670,7 +668,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                       ),
                     ),
           body: /*membershipisData == false && */ widget.hasAvailedLaunchOffer
-              ? Center(
+              ? const Center(
                   child: Text(
                     'You have already availed the launch offer, you can change the membership when membership expires',
                     textAlign: TextAlign.center,
@@ -680,7 +678,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                   // ? const Center(
                   //     child: CircularProgressIndicator(),
                   //   )
-                  ? Center(
+                  ? const Center(
                       child: SizedBox(
                         height: 100,
                         child: Column(
@@ -696,7 +694,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                     )
                   : SafeArea(
                       child: !isOffer
-                          ? Center(
+                          ? const Center(
                               child: Text('Some Error Occured'),
                             )
                           : SingleChildScrollView(
@@ -731,7 +729,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                                               style: TextStyle(
                                                 fontSize: width * 0.07,
                                                 fontWeight: FontWeight.w600,
-                                                color: Color.fromARGB(
+                                                color: const Color.fromARGB(
                                                     255, 63, 63, 63),
                                               ),
                                             ),

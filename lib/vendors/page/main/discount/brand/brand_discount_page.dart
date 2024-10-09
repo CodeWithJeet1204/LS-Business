@@ -137,10 +137,8 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
       try {
         String discountId = const Uuid().v4();
         if (_image != null) {
-          Reference ref = await storage
-              .ref()
-              .child('Vendor/Discounts/Brands')
-              .child(discountId);
+          Reference ref =
+              storage.ref().child('Vendor/Discounts/Brands').child(discountId);
 
           await ref.putFile(_image!).whenComplete(() async {
             await ref.getDownloadURL().then((value) {

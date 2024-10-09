@@ -77,13 +77,15 @@ class _MainPageState extends State<MainPage> {
       final isLatestVersion = await checkLatestVersion();
 
       if (!isLatestVersion) {
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => UpdatePage(),
-          ),
-          (route) => false,
-        );
-        return;
+        if (mounted) {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => const UpdatePage(),
+            ),
+            (route) => false,
+          );
+          return;
+        }
       }
 
       final developmentSnap =
@@ -106,13 +108,15 @@ class _MainPageState extends State<MainPage> {
 
         if (!getUserDetailsAdded.exists) {
           await auth.signOut();
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-              builder: (context) => SignInPage(),
-            ),
-            (route) => false,
-          );
-          return mySnackBar(context, 'Signed Out');
+          if (mounted) {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => const SignInPage(),
+              ),
+              (route) => false,
+            );
+            return mySnackBar(context, 'Signed Out');
+          }
         }
 
         final getUserDetailsAddedData = getUserDetailsAdded.data()!;

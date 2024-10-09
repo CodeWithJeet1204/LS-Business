@@ -44,7 +44,9 @@ class _UpdatePageState extends State<UpdatePage> {
         }
       }
     } catch (e) {
-      mySnackBar(context, 'Failed to check for update');
+      if (mounted) {
+        mySnackBar(context, 'Failed to check for update');
+      }
     }
   }
 
@@ -55,7 +57,9 @@ class _UpdatePageState extends State<UpdatePage> {
     if (await canLaunchUrl(Uri.parse(url))) {
       await launchUrl(Uri.parse(url));
     } else {
-      mySnackBar(context, 'Some error occurred, Try Again Later');
+      if (mounted) {
+        mySnackBar(context, 'Some error occurred, Try Again Later');
+      }
     }
   }
 
@@ -65,7 +69,7 @@ class _UpdatePageState extends State<UpdatePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Update This App'),
+        title: const Text('Update This App'),
       ),
       body: SafeArea(
         child: Column(
@@ -83,9 +87,9 @@ class _UpdatePageState extends State<UpdatePage> {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            SizedBox(height: 18),
+            const SizedBox(height: 18),
             isUpdating
-                ? LinearProgressIndicator()
+                ? const LinearProgressIndicator()
                 : MyButton(
                     onTap: () async {
                       await launchPlayStore();

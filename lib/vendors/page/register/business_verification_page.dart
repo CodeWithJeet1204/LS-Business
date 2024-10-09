@@ -243,13 +243,13 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // CANNOT BE CHANGED
-                          Center(
-                            child: const Text(
+                          const Center(
+                            child: Text(
                               'Aadhaar & GST Number Cannot Be Changed Later',
                               textAlign: TextAlign.center,
                             ),
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
 
                           // AADHAAR
                           isAadhaarValidated

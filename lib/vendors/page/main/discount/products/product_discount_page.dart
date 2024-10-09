@@ -148,7 +148,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
       try {
         String discountId = const Uuid().v4();
         if (_image != null) {
-          Reference ref = await storage
+          Reference ref = storage
               .ref()
               .child('Vendor/Discounts/Products')
               .child(discountId);

@@ -14,16 +14,16 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:uuid/uuid.dart';
 import 'package:ls_business/widgets/video_tutorial.dart';
 
-class addPostPage extends StatefulWidget {
-  const addPostPage({
+class AddPostPage extends StatefulWidget {
+  const AddPostPage({
     super.key,
   });
 
   @override
-  State<addPostPage> createState() => _addPostPageState();
+  State<AddPostPage> createState() => _AddPostPageState();
 }
 
-class _addPostPageState extends State<addPostPage> {
+class _AddPostPageState extends State<AddPostPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   final storage = FirebaseStorage.instance;

@@ -213,13 +213,13 @@ class DISCOUNT extends State<DiscountPage> {
         if (mounted) {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-              builder: (context) => MainPage(),
+              builder: (context) => const MainPage(),
             ),
             (route) => false,
           );
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => AllDiscountPage(),
+              builder: (context) => const AllDiscountPage(),
             ),
           );
           Navigator.of(context).push(
@@ -262,13 +262,13 @@ class DISCOUNT extends State<DiscountPage> {
         if (mounted) {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-              builder: (context) => MainPage(),
+              builder: (context) => const MainPage(),
             ),
             (route) => false,
           );
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => AllDiscountPage(),
+              builder: (context) => const AllDiscountPage(),
             ),
           );
           Navigator.of(context).push(
@@ -315,13 +315,13 @@ class DISCOUNT extends State<DiscountPage> {
       if (mounted) {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-            builder: (context) => MainPage(),
+            builder: (context) => const MainPage(),
           ),
           (route) => false,
         );
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => AllDiscountPage(),
+            builder: (context) => const AllDiscountPage(),
           ),
         );
         Navigator.of(context).push(
@@ -464,7 +464,7 @@ class DISCOUNT extends State<DiscountPage> {
         );
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => AllDiscountPage(),
+            builder: (context) => const AllDiscountPage(),
           ),
         );
         mySnackBar(context, 'Discount Deleted');

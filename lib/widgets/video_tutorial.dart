@@ -18,22 +18,30 @@ Future<void> showYouTubePlayerDialog(BuildContext context, String? code) async {
     String? videoId = YoutubePlayer.convertUrlToId(url);
     if (videoId != null) {
       if (videoId.isNotEmpty) {
-        await showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return YouTubePlayerDialog(
-              videoId: videoId,
-            );
-          },
-        );
+        if (context.mounted) {
+          await showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return YouTubePlayerDialog(
+                videoId: videoId,
+              );
+            },
+          );
+        }
       } else {
-        mySnackBar(context, 'Some error occured');
+        if (context.mounted) {
+          mySnackBar(context, 'Some error occured');
+        }
       }
     } else {
-      mySnackBar(context, 'Some error occured');
+      if (context.mounted) {
+        mySnackBar(context, 'Some error occured');
+      }
     }
   } else {
-    mySnackBar(context, 'Some error occured');
+    if (context.mounted) {
+      mySnackBar(context, 'Some error occured');
+    }
   }
 }
 

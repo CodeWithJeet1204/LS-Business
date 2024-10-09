@@ -419,7 +419,7 @@ class _BrandPageState extends State<BrandPage> {
         Navigator.of(context).pop();
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => AllBrandPage(),
+            builder: (context) => const AllBrandPage(),
           ),
         );
         mySnackBar(context, 'Brand Deleted');
@@ -886,7 +886,7 @@ class _BrandPageState extends State<BrandPage> {
                                           final brands = snapshot.data!.docs;
 
                                           return brands.isEmpty
-                                              ? SizedBox(
+                                              ? const SizedBox(
                                                   height: 80,
                                                   child: Center(
                                                     child: Text(

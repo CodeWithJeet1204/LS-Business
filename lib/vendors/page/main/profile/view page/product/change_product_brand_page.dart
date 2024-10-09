@@ -10,8 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:ls_business/widgets/video_tutorial.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-class changeProductBrandPage extends StatefulWidget {
-  const changeProductBrandPage({
+class ChangeProductBrandPage extends StatefulWidget {
+  const ChangeProductBrandPage({
     super.key,
     required this.productId,
     required this.productName,
@@ -23,10 +23,10 @@ class changeProductBrandPage extends StatefulWidget {
   final String currentBrandId;
 
   @override
-  State<changeProductBrandPage> createState() => _changeProductBrandPageState();
+  State<ChangeProductBrandPage> createState() => _ChangeProductBrandPageState();
 }
 
-class _changeProductBrandPageState extends State<changeProductBrandPage> {
+class _ChangeProductBrandPageState extends State<ChangeProductBrandPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   final searchController = TextEditingController();
@@ -180,8 +180,6 @@ class _changeProductBrandPageState extends State<changeProductBrandPage> {
                     isDialog = true;
                   });
                   try {
-                    print('selectedBrandId: $selectedBrandId');
-                    print('selectedBrandName: $selectedBrandName');
                     await store
                         .collection('Business')
                         .doc('Data')
@@ -194,21 +192,25 @@ class _changeProductBrandPageState extends State<changeProductBrandPage> {
                     setState(() {
                       isDialog = false;
                     });
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pop();
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => ProductPage(
-                          productId: widget.productId,
-                          productName: widget.productName,
+                    if (context.mounted) {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => ProductPage(
+                            productId: widget.productId,
+                            productName: widget.productName,
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    }
                   } catch (e) {
                     setState(() {
                       isDialog = false;
                     });
-                    mySnackBar(context, e.toString());
+                    if (context.mounted) {
+                      mySnackBar(context, e.toString());
+                    }
                   }
                 },
                 text: 'DONE',
