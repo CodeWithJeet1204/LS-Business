@@ -21,6 +21,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:ls_business/widgets/video_tutorial.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BusinessDetailsPage extends StatefulWidget {
   const BusinessDetailsPage({super.key});
@@ -1369,7 +1370,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                               ),
                               const SizedBox(height: 14),
 
-                              // DESCRIPTION
+                              // SIGN OUT
                               Container(
                                 width: width,
                                 decoration: BoxDecoration(
@@ -1414,6 +1415,96 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                         ),
                                         color: Colors.red,
                                         tooltip: 'Sign Out',
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 14),
+
+                              // DELETE ACCOUNT
+                              Container(
+                                width: width,
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  // horizontal: width * 0.006125,
+                                  vertical: height * 0.0125,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        left: width * 0.033,
+                                      ),
+                                      child: SizedBox(
+                                        width: width * 0.725,
+                                        child: AutoSizeText(
+                                          'Delete Account',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: width * 0.055,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        right: width * 0.03,
+                                      ),
+                                      child: IconButton(
+                                        onPressed: () async {
+                                          await showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: Text('DELETE Account'),
+                                                content: Text(
+                                                  'Are you sure you want to delete your account?',
+                                                ),
+                                                actions: [
+                                                  MyTextButton(
+                                                    onPressed: () async {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      final Uri url = Uri.parse(
+                                                        'https://find-easy-1204.web.app/delete-account?uid=${auth.currentUser!.uid}',
+                                                      );
+
+                                                      if (await canLaunchUrl(
+                                                          url)) {
+                                                        await launchUrl(url);
+                                                      } else {
+                                                        throw 'Could not launch $url';
+                                                      }
+                                                    },
+                                                    text: 'Yes',
+                                                    textColor: Colors.red,
+                                                  ),
+                                                  MyTextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    text: 'NO',
+                                                    textColor: Colors.green,
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                        icon: Icon(
+                                          FeatherIcons.trash2,
+                                          color: Colors.red.shade100,
+                                        ),
+                                        color: Colors.red,
+                                        tooltip: 'Delete',
                                       ),
                                     ),
                                   ],

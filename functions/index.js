@@ -4,7 +4,7 @@ const sharp = require('sharp');
 
 admin.initializeApp();
 
-exports.checkImageBlur = functions.https.onRequest(async (req, res) => {
+exports.checkImageBlur = functions.region('asia-southeast1').https.onRequest(async (req, res) => {
     const imageBuffer = req.body.image;
 
     try {
@@ -30,7 +30,6 @@ exports.checkImageBlur = functions.https.onRequest(async (req, res) => {
                     data[(y + 1) * width + x] +
                     data[(y + 1) * width + (x + 1)]
                 );
-
                 laplacianSum += laplacianValue;
             }
         }
@@ -42,5 +41,16 @@ exports.checkImageBlur = functions.https.onRequest(async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).send('Error processing image');
+    }
+});
+
+exports.deleteUserAccount = functions.region('asia-southeast1').https.onRequest(async (req, res) => {
+    try {
+        const { userId } = req.body;
+        await admin.auth().deleteUser(userId);
+        res.status(200).send({ success: true, message: 'User account deleted successfully' });
+    } catch (error) {
+        console.error("Error deleting user:", error);
+        res.status(500).send({ success: false, message: error.message });
     }
 });

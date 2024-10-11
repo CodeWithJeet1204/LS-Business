@@ -1,5 +1,5 @@
 name: ls_business
-description: "A new Flutter project."
+description: "Vendor App For Localsearch"
 
 publish_to: "none"
 
@@ -38,6 +38,7 @@ dependencies:
   in_app_update: ^4.2.3
   package_info_plus: ^8.0.2
   flutter_image_compress: ^2.3.0
+  # flutter_automation: any
   # lottie: ^3.0.0
   # shared_preferences: ^2.2.2
   # cached_network_image: ^3.3.1

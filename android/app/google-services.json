@@ -29,6 +29,9 @@
       "api_key": [
         {
           "current_key": "AIzaSyA-CD3MgDBzAsjmp_FlDbofynMMmW6fPsU"
+        },
+        {
+          "current_key": "AIzaSyC-Stg-pGuMhhRpFuRRglcuMPUMdEz4sWM"
         }
       ],
       "services": {
@@ -73,6 +76,9 @@
       "api_key": [
         {
           "current_key": "AIzaSyA-CD3MgDBzAsjmp_FlDbofynMMmW6fPsU"
+        },
+        {
+          "current_key": "AIzaSyC-Stg-pGuMhhRpFuRRglcuMPUMdEz4sWM"
         }
       ],
       "services": {
@@ -95,17 +101,17 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:851488762803:android:eb89214a6ee6397b3979c6",
+        "mobilesdk_app_id": "1:851488762803:android:b7193262178135983979c6",
         "android_client_info": {
-          "package_name": "com.example.find_easy"
+          "package_name": "com.infinitylab.ls_business"
         }
       },
       "oauth_client": [
         {
-          "client_id": "851488762803-utkaj2msum87k8n8l2m0t1fkbs64evub.apps.googleusercontent.com",
+          "client_id": "851488762803-e89775hojktlg4v3tcj3r9t1s56ks7m3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.find_easy",
+            "package_name": "com.infinitylab.ls_business",
             "certificate_hash": "1ba56515ff926ad3c3fc24dd864486310b1db884"
           }
         },
@@ -117,6 +123,9 @@
       "api_key": [
         {
           "current_key": "AIzaSyA-CD3MgDBzAsjmp_FlDbofynMMmW6fPsU"
+        },
+        {
+          "current_key": "AIzaSyC-Stg-pGuMhhRpFuRRglcuMPUMdEz4sWM"
         }
       ],
       "services": {
