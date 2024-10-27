@@ -258,33 +258,33 @@ class _allPostPageState extends State<allPostPage> {
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
-                      setState(() {
+                      setState(() async {
                         if (value.isEmpty) {
-                          currentPost = Map<String, Map<String, dynamic>>.from(
-                            allPost,
-                          );
+                          setState(() {
+                            currentPost =
+                                Map<String, Map<String, dynamic>>.from(allPost);
+                          });
                         } else {
                           Map<String, Map<String, dynamic>> filteredPost =
-                              Map<String, Map<String, dynamic>>.from(
-                            allPost,
-                          );
-                          List<String> keysToRemove = [];
+                              Map<String, Map<String, dynamic>>.from(allPost);
 
-                          filteredPost.forEach((key, postData) {
-                            if (!postData['postText']
-                                .toString()
-                                .toLowerCase()
-                                .contains(
-                                    value.toLowerCase().toString().trim())) {
-                              keysToRemove.add(key);
-                            }
+                          List<String> keysToRemove = await Future.wait(
+                            filteredPost.entries.map((entry) async {
+                              if (!entry.value['postText']
+                                  .toString()
+                                  .toLowerCase()
+                                  .contains(value.toLowerCase().trim())) {
+                                return entry.key;
+                              }
+                              return null;
+                            }),
+                          ).then(
+                              (result) => result.whereType<String>().toList());
+
+                          setState(() {
+                            keysToRemove.forEach(filteredPost.remove);
+                            currentPost = filteredPost;
                           });
-
-                          for (var key in keysToRemove) {
-                            filteredPost.remove(key);
-                          }
-
-                          currentPost = filteredPost;
                         }
                       });
                     },

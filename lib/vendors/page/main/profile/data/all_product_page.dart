@@ -204,18 +204,27 @@ class _AllProductsPageState extends State<AllProductsPage> {
           .where('productId', isEqualTo: productId)
           .get();
 
-      await Future.forEach(shortsSnap.docs, (short) async {
-        await short.reference.delete();
+      List<Future<void>> deleteOperations = [];
+
+      shortsSnap.docs.forEach((short) {
+        deleteOperations.add(short.reference.delete());
       });
+
+      await Future.wait(deleteOperations);
 
       if (shortsURL != '') {
         await storage.refFromURL(shortsURL).delete();
       }
       if (images.isNotEmpty) {
-        await Future.forEach(images, (image) async {
-          await storage.refFromURL(image).delete();
+        List<Future<void>> deleteOperations = [];
+
+        images.forEach((image) {
+          deleteOperations.add(storage.refFromURL(image).delete());
         });
+
+        await Future.wait(deleteOperations);
       }
+
       if (shortsThumbnail != '') {
         await storage.refFromURL(shortsThumbnail).delete();
       }
@@ -286,33 +295,30 @@ class _AllProductsPageState extends State<AllProductsPage> {
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
-                      setState(() {
+                      setState(() async {
                         if (value.isEmpty) {
                           currentProducts =
                               Map<String, Map<String, dynamic>>.from(
-                            allProducts,
-                          );
+                                  allProducts);
                         } else {
                           Map<String, Map<String, dynamic>> filteredProducts =
                               Map<String, Map<String, dynamic>>.from(
-                            allProducts,
-                          );
-                          List<String> keysToRemove = [];
+                                  allProducts);
 
-                          filteredProducts.forEach((key, productData) {
-                            if (!productData['productName']
-                                .toString()
-                                .toLowerCase()
-                                .contains(
-                                    value.toLowerCase().toString().trim())) {
-                              keysToRemove.add(key);
-                            }
-                          });
+                          List<String> keysToRemove = await Future.wait(
+                            filteredProducts.entries.map((entry) async {
+                              if (!entry.value['productName']
+                                  .toString()
+                                  .toLowerCase()
+                                  .contains(value.toLowerCase().trim())) {
+                                return entry.key;
+                              }
+                              return null;
+                            }),
+                          ).then(
+                              (result) => result.whereType<String>().toList());
 
-                          for (var key in keysToRemove) {
-                            filteredProducts.remove(key);
-                          }
-
+                          keysToRemove.forEach(filteredProducts.remove);
                           currentProducts = filteredProducts;
                         }
                       });

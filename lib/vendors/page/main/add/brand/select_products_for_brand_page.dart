@@ -144,17 +144,20 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
     setState(() {
       isDialog = true;
     });
-    for (String id in provider.selectedProducts) {
-      await store
-          .collection('Business')
-          .doc('Data')
-          .collection('Products')
-          .doc(id)
-          .update({
-        'productBrandId': widget.brandId,
-        'productBrand': widget.brandName,
-      });
-    }
+    await Future.wait(
+      provider.selectedProducts.map((id) async {
+        await store
+            .collection('Business')
+            .doc('Data')
+            .collection('Products')
+            .doc(id)
+            .update({
+          'productBrandId': widget.brandId,
+          'productBrand': widget.brandName,
+        });
+      }),
+    );
+
     setState(() {
       isDialog = false;
     });
@@ -237,7 +240,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                           border: OutlineInputBorder(),
                         ),
                         onChanged: (value) {
-                          setState(() {
+                          setState(() async {
                             if (value.isEmpty) {
                               currentProducts =
                                   Map<String, Map<String, dynamic>>.from(
@@ -247,21 +250,18 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                               Map<String, Map<String, dynamic>>
                                   filteredProducts =
                                   Map<String, Map<String, dynamic>>.from(
-                                allProducts,
-                              );
+                                      allProducts);
                               List<String> keysToRemove = [];
 
-                              filteredProducts.forEach((key, productData) {
-                                if (!productData['productName']
+                              await Future.wait(
+                                  filteredProducts.entries.map((entry) async {
+                                if (!entry.value['productName']
                                     .toString()
                                     .toLowerCase()
-                                    .contains(value
-                                        .toLowerCase()
-                                        .toString()
-                                        .trim())) {
-                                  keysToRemove.add(key);
+                                    .contains(value.toLowerCase().trim())) {
+                                  keysToRemove.add(entry.key);
                                 }
-                              });
+                              }));
 
                               for (var key in keysToRemove) {
                                 filteredProducts.remove(key);

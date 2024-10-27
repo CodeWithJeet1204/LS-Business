@@ -479,19 +479,16 @@ class _ProductPageState extends State<ProductPage> {
       final remainingSlots = maxImages! - currentImagesLength;
       final validImages = imageList.take(remainingSlots).toList();
 
-      for (var im in validImages) {
+      await Future.wait(validImages.map((im) async {
         final productImageId = const Uuid().v4();
-
         Reference ref =
             storage.ref().child('Vendor/Products').child(productImageId);
-        await ref.putFile(File(im.path)).whenComplete(() async {
-          await ref.getDownloadURL().then((value) async {
-            setState(() {
-              images.add(value);
-            });
-          });
+        await ref.putFile(File(im.path));
+        final value = await ref.getDownloadURL();
+        setState(() {
+          images.add(value);
         });
-      }
+      }));
 
       await store
           .collection('Business')
@@ -545,17 +542,14 @@ class _ProductPageState extends State<ProductPage> {
           isImageChanging = true;
           isDialog = true;
         });
-        for (var im in imageList) {
+        await Future.wait(imageList.map((im) async {
           final productImageId = const Uuid().v4();
-
           Reference ref =
               storage.ref().child('Vendor/Products').child(productImageId);
-          await ref.putFile(File(im.path)).whenComplete(() async {
-            await ref.getDownloadURL().then((value) async {
-              images.add(value);
-            });
-          });
-        }
+          await ref.putFile(File(im.path));
+          final value = await ref.getDownloadURL();
+          images.add(value);
+        }));
 
         await store
             .collection('Business')
@@ -813,18 +807,24 @@ class _ProductPageState extends State<ProductPage> {
           .where('productId', isEqualTo: widget.productId)
           .get();
 
-      await Future.forEach(shortsSnap.docs, (short) async {
-        await short.reference.delete();
-      });
+      await Future.wait(
+        shortsSnap.docs.map((short) async {
+          await short.reference.delete();
+        }),
+      );
 
       if (shortsURL != '') {
         await storage.refFromURL(shortsURL).delete();
       }
+
       if (images.isNotEmpty) {
-        await Future.forEach(images, (image) async {
-          await storage.refFromURL(image).delete();
-        });
+        await Future.wait(
+          images.map((image) async {
+            await storage.refFromURL(image).delete();
+          }),
+        );
       }
+
       if (shortsThumbnail != '') {
         await storage.refFromURL(shortsThumbnail).delete();
       }

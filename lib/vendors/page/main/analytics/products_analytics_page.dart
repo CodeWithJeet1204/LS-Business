@@ -133,6 +133,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
     return [BarChartRodData(toY: count.toDouble())];
   }
 
+  // PRODUCT WISE DATA
   List<PieChartSectionData> productWiseData(Map<String, int> productWiseData) {
     List<PieChartSectionData> pieChartSections = [];
 

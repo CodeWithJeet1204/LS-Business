@@ -88,7 +88,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'LS Business',
       // TODO: SHARE TO WHATSAPP BUTTON FROM POST
-      // TODO: VIEW POSTS PAGE
       // TODO: ADD HELPING FEATURE (TO HELP ORGANIZATIONS, PEOPLE)
       theme: ThemeData(
         scaffoldBackgroundColor: primary,

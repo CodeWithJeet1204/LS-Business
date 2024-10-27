@@ -175,16 +175,18 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
         final latitude = vendorData['Latitude'];
         final longitude = vendorData['Longitude'];
 
-        for (String id in productIdList) {
-          await store
-              .collection('Business')
-              .doc('Data')
-              .collection('Products')
-              .doc(id)
-              .update({
-            'discountId': discountId,
-          });
-        }
+        await Future.wait(
+          productIdList.map((id) async {
+            await store
+                .collection('Business')
+                .doc('Data')
+                .collection('Products')
+                .doc(id)
+                .update({
+              'discountId': discountId,
+            });
+          }),
+        );
 
         await store
             .collection('Business')

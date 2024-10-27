@@ -183,33 +183,26 @@ class _SelectBrandForDiscountPageState
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
-                      setState(() {
+                      setState(() async {
                         if (value.isEmpty) {
                           currentBrands =
-                              Map<String, Map<String, dynamic>>.from(
-                            allBrands,
-                          );
+                              Map<String, Map<String, dynamic>>.from(allBrands);
                         } else {
                           Map<String, Map<String, dynamic>> filteredBrands =
-                              Map<String, Map<String, dynamic>>.from(
-                            allBrands,
-                          );
-                          List<String> keysToRemove = [];
+                              Map<String, Map<String, dynamic>>.from(allBrands);
+                          List<String> keysToRemove = await Future.wait(
+                            filteredBrands.entries.map((entry) async {
+                              return !entry.value['brandName']
+                                      .toString()
+                                      .toLowerCase()
+                                      .contains(value.toLowerCase().trim())
+                                  ? entry.key
+                                  : null;
+                            }),
+                          ).then(
+                              (result) => result.whereType<String>().toList());
 
-                          filteredBrands.forEach((key, brandData) {
-                            if (!brandData['brandName']
-                                .toString()
-                                .toLowerCase()
-                                .contains(
-                                    value.toLowerCase().toString().trim())) {
-                              keysToRemove.add(key);
-                            }
-                          });
-
-                          for (var key in keysToRemove) {
-                            filteredBrands.remove(key);
-                          }
-
+                          keysToRemove.forEach(filteredBrands.remove);
                           currentBrands = filteredBrands;
                         }
                       });

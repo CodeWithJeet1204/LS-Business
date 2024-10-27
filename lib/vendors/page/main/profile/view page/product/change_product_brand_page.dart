@@ -242,30 +242,21 @@ class _ChangeProductBrandPageState extends State<ChangeProductBrandPage> {
                             if (value.isEmpty) {
                               currentBrands =
                                   Map<String, Map<String, dynamic>>.from(
-                                allBrands,
-                              );
+                                      allBrands);
                             } else {
                               Map<String, Map<String, dynamic>> filteredBrands =
                                   Map<String, Map<String, dynamic>>.from(
-                                allBrands,
-                              );
-                              List<String> keysToRemove = [];
+                                      allBrands);
 
-                              filteredBrands.forEach((key, brandData) {
-                                if (!brandData['brandName']
+                              List<String> keysToRemove =
+                                  filteredBrands.keys.where((key) {
+                                return !filteredBrands[key]!['brandName']
                                     .toString()
                                     .toLowerCase()
-                                    .contains(value
-                                        .toLowerCase()
-                                        .toString()
-                                        .trim())) {
-                                  keysToRemove.add(key);
-                                }
-                              });
+                                    .contains(value.toLowerCase().trim());
+                              }).toList();
 
-                              for (var key in keysToRemove) {
-                                filteredBrands.remove(key);
-                              }
+                              keysToRemove.forEach(filteredBrands.remove);
 
                               currentBrands = filteredBrands;
                             }

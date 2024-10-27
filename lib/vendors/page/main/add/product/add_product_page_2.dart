@@ -148,31 +148,26 @@ class _AddProductPage2State extends State<AddProductPage2> {
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
-                      setState(() {
+                      setState(() async {
                         if (value.isEmpty) {
-                          currentShopTypes = Map<String, dynamic>.from(
-                            allShopTypes,
-                          );
+                          currentShopTypes =
+                              Map<String, dynamic>.from(allShopTypes);
                         } else {
                           Map<String, dynamic> filteredShopTypes =
-                              Map<String, dynamic>.from(
-                            allShopTypes,
-                          );
-                          List<String> keysToRemove = [];
+                              Map<String, dynamic>.from(allShopTypes);
+                          List<String> keysToRemove = await Future.wait(
+                            filteredShopTypes.keys.map((key) async {
+                              return !key
+                                      .toString()
+                                      .toLowerCase()
+                                      .contains(value.toLowerCase())
+                                  ? key
+                                  : null;
+                            }),
+                          ).then(
+                              (result) => result.whereType<String>().toList());
 
-                          filteredShopTypes.forEach((key, imageUrl) {
-                            if (!key
-                                .toString()
-                                .toLowerCase()
-                                .contains(value.toLowerCase())) {
-                              keysToRemove.add(key);
-                            }
-                          });
-
-                          for (var key in keysToRemove) {
-                            filteredShopTypes.remove(key);
-                          }
-
+                          keysToRemove.forEach(filteredShopTypes.remove);
                           currentShopTypes = filteredShopTypes;
                         }
                       });

@@ -182,14 +182,16 @@ class _AllBrandPageState extends State<AllBrandPage> {
           .where('productBrandId', isEqualTo: brandId)
           .get();
 
-      for (final doc in productSnap.docs) {
-        await doc.reference.update(
-          {
-            'productBrand': 'No Brand',
-            'productBrandId': '0',
-          },
-        );
-      }
+      await Future.wait(
+        productSnap.docs.map((doc) async {
+          await doc.reference.update(
+            {
+              'productBrand': 'No Brand',
+              'productBrandId': '0',
+            },
+          );
+        }),
+      );
 
       if (imageUrl != null) {
         await storage.refFromURL(imageUrl).delete();
@@ -273,33 +275,26 @@ class _AllBrandPageState extends State<AllBrandPage> {
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
-                      setState(() {
+                      setState(() async {
                         if (value.isEmpty) {
                           currentBrands =
-                              Map<String, Map<String, dynamic>>.from(
-                            allBrands,
-                          );
+                              Map<String, Map<String, dynamic>>.from(allBrands);
                         } else {
                           Map<String, Map<String, dynamic>> filteredBrands =
-                              Map<String, Map<String, dynamic>>.from(
-                            allBrands,
-                          );
-                          List<String> keysToRemove = [];
+                              Map<String, Map<String, dynamic>>.from(allBrands);
+                          List<String> keysToRemove = await Future.wait(
+                            filteredBrands.entries.map((entry) async {
+                              return !entry.value['brandName']
+                                      .toString()
+                                      .toLowerCase()
+                                      .contains(value.toLowerCase().trim())
+                                  ? entry.key
+                                  : null;
+                            }),
+                          ).then(
+                              (result) => result.whereType<String>().toList());
 
-                          filteredBrands.forEach((key, brandData) {
-                            if (!brandData['brandName']
-                                .toString()
-                                .toLowerCase()
-                                .contains(
-                                    value.toLowerCase().toString().trim())) {
-                              keysToRemove.add(key);
-                            }
-                          });
-
-                          for (var key in keysToRemove) {
-                            filteredBrands.remove(key);
-                          }
-
+                          keysToRemove.forEach(filteredBrands.remove);
                           currentBrands = filteredBrands;
                         }
                       });

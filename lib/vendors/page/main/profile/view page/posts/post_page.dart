@@ -63,16 +63,17 @@ class _PostPageState extends State<PostPage> {
         isImageChanging = true;
         isDialog = true;
       });
-      for (var im in imageList) {
-        final postImageId = const Uuid().v4();
+      await Future.wait(
+        imageList.map((im) async {
+          final postImageId = const Uuid().v4();
+          Reference ref = storage.ref().child('Vendor/Post').child(postImageId);
 
-        Reference ref = storage.ref().child('Vendor/Post').child(postImageId);
-        await ref.putFile(File(im.path)).whenComplete(() async {
-          await ref.getDownloadURL().then((value) async {
-            images.add(value);
-          });
-        });
-      }
+          await ref.putFile(File(im.path));
+          final downloadUrl = await ref.getDownloadURL();
+
+          images.add(downloadUrl);
+        }),
+      );
 
       await store
           .collection('Business')
@@ -385,9 +386,11 @@ class _PostPageState extends State<PostPage> {
     });
     try {
       if (widget.imageUrl != null) {
-        for (var image in widget.imageUrl!) {
-          await storage.refFromURL(image).delete();
-        }
+        await Future.wait(
+          widget.imageUrl!.map((image) async {
+            await storage.refFromURL(image).delete();
+          }),
+        );
       }
       await store
           .collection('Business')

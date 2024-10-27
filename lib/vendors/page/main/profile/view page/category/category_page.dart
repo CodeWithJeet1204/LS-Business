@@ -98,17 +98,23 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   // SEARCH PRODUCTS
-  void searchProducts(String searchText) {
-    setState(() {
+  void searchProducts(String searchText) async {
+    setState(() async {
       Map<String, dynamic> searchedProducts = {};
-      currentProducts.forEach((id, value) {
-        if (value[0]
-            .toString()
-            .toUpperCase()
-            .contains(searchText.toUpperCase())) {
-          searchedProducts[id] = value;
-        }
-      });
+      List<String> keysToRemove = await Future.wait(
+        currentProducts.entries.map((entry) async {
+          if (!entry.value[0]
+              .toString()
+              .toUpperCase()
+              .contains(searchText.toUpperCase())) {
+            return entry.key;
+          }
+          return null;
+        }),
+      ).then((result) => result.whereType<String>().toList());
+
+      keysToRemove.forEach(searchedProducts.remove);
+      currentProducts = searchedProducts;
     });
   }
 

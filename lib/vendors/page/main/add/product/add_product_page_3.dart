@@ -57,14 +57,12 @@ class _AddProductPage3State extends State<AddProductPage3> {
         .get();
 
     final categoriesData = categoriesSnap.data()!;
-
     final householdCategoryData = categoriesData['householdCategoryData'];
-
     final categories = householdCategoryData[widget.shopType]!;
 
-    categories.forEach((categoryName, categoryImageUrl) {
-      myCategories[categoryName] = categoryImageUrl;
-    });
+    await Future.wait(categories.entries.map((entry) async {
+      myCategories[entry.key] = entry.value;
+    }));
 
     final sortedCategories = Map.fromEntries(
       myCategories.entries.toList()..sort((a, b) => a.key.compareTo(b.key)),
@@ -150,31 +148,26 @@ class _AddProductPage3State extends State<AddProductPage3> {
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
-                      setState(() {
+                      setState(() async {
                         if (value.isEmpty) {
-                          currentCategories = Map<String, dynamic>.from(
-                            allCategories,
-                          );
+                          currentCategories =
+                              Map<String, dynamic>.from(allCategories);
                         } else {
                           Map<String, dynamic> filteredCategories =
-                              Map<String, dynamic>.from(
-                            allCategories,
-                          );
-                          List<String> keysToRemove = [];
+                              Map<String, dynamic>.from(allCategories);
+                          List<String> keysToRemove = await Future.wait(
+                            filteredCategories.keys.map((key) async {
+                              return !key
+                                      .toString()
+                                      .toLowerCase()
+                                      .contains(value.toLowerCase())
+                                  ? key
+                                  : null;
+                            }),
+                          ).then(
+                              (result) => result.whereType<String>().toList());
 
-                          filteredCategories.forEach((key, imageUrl) {
-                            if (!key
-                                .toString()
-                                .toLowerCase()
-                                .contains(value.toLowerCase())) {
-                              keysToRemove.add(key);
-                            }
-                          });
-
-                          for (var key in keysToRemove) {
-                            filteredCategories.remove(key);
-                          }
-
+                          keysToRemove.forEach(filteredCategories.remove);
                           currentCategories = filteredCategories;
                         }
                       });

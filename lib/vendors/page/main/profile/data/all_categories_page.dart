@@ -196,31 +196,26 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
-                      setState(() {
+                      setState(() async {
                         if (value.isEmpty) {
-                          currentCategories = Map<String, dynamic>.from(
-                            allCategories,
-                          );
+                          currentCategories =
+                              Map<String, dynamic>.from(allCategories);
                         } else {
                           Map<String, dynamic> filteredCategories =
-                              Map<String, dynamic>.from(
-                            allCategories,
-                          );
-                          List<String> keysToRemove = [];
+                              Map<String, dynamic>.from(allCategories);
+                          List<String> keysToRemove = await Future.wait(
+                            filteredCategories.keys.map((key) async {
+                              return !key
+                                      .toString()
+                                      .toLowerCase()
+                                      .contains(value.toLowerCase())
+                                  ? key
+                                  : null;
+                            }),
+                          ).then(
+                              (result) => result.whereType<String>().toList());
 
-                          filteredCategories.forEach((key, imageUrl) {
-                            if (!key
-                                .toString()
-                                .toLowerCase()
-                                .contains(value.toLowerCase())) {
-                              keysToRemove.add(key);
-                            }
-                          });
-
-                          for (var key in keysToRemove) {
-                            filteredCategories.remove(key);
-                          }
-
+                          keysToRemove.forEach(filteredCategories.remove);
                           currentCategories = filteredCategories;
                         }
                       });

@@ -42,18 +42,16 @@ Future<List<XFile>> pickCompressedImage(
     }
 
     if (images.isNotEmpty) {
-      for (XFile image in images) {
-        // Check if the image is blurred
-        // final isBlurred = await checkIfImageIsBlurred(File(image.path));
+      // Check if the image is blurred
+      // final isBlurred = await checkIfImageIsBlurred(File(image.path));
 
-        // if (isBlurred) {
-        //   if (context.mounted) {
-        //     mySnackBar(context, 'An image is blurred and will be skipped.');
-        //   }
-        //   continue;
-        // }
-
-        // Compress the image if it's not blurred
+      // if (isBlurred) {
+      //   if (context.mounted) {
+      //     mySnackBar(context, 'An image is blurred and will be skipped.');
+      //   }
+      //   continue;
+      // }
+      await Future.wait(images.map((XFile image) async {
         final dir = await pp.getTemporaryDirectory();
         final timestamp = DateTime.now().millisecondsSinceEpoch;
         final targetPath = '${dir.absolute.path}/temp_$timestamp.jpg';
@@ -67,7 +65,7 @@ Future<List<XFile>> pickCompressedImage(
         if (compressedFile != null) {
           results.add(compressedFile);
         }
-      }
+      }));
 
       return results;
     }

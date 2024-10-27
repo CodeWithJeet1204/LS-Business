@@ -49,23 +49,25 @@ class _AddProductPage5State extends State<AddProductPage5> {
       });
       final List<String> imageDownloadUrl = [];
 
-      for (File img in (provider.productInfo['imageFiles'] as List<File>)) {
-        try {
-          Reference ref = FirebaseStorage.instance
-              .ref()
-              .child('Vendor/Products')
-              .child(const Uuid().v4());
-          await ref.putFile(img).whenComplete(() async {
-            await ref.getDownloadURL().then((value) {
+      try {
+        await Future.wait(
+          (provider.productInfo['imageFiles'] as List<File>).map((img) async {
+            Reference ref = FirebaseStorage.instance
+                .ref()
+                .child('Vendor/Products')
+                .child(const Uuid().v4());
+            await ref.putFile(img);
+            String downloadUrl = await ref.getDownloadURL();
+            if (mounted) {
               setState(() {
-                imageDownloadUrl.add(value);
+                imageDownloadUrl.add(downloadUrl);
               });
-            });
-          });
-        } catch (e) {
-          if (mounted) {
-            mySnackBar(context, e.toString());
-          }
+            }
+          }),
+        );
+      } catch (e) {
+        if (mounted) {
+          mySnackBar(context, e.toString());
         }
       }
 

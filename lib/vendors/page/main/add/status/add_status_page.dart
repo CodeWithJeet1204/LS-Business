@@ -112,23 +112,25 @@ class _AddStatusPageState extends State<AddStatusPage> {
       try {
         List imageDownloadUrl = [];
 
-        for (File img in image) {
-          try {
-            Reference ref = FirebaseStorage.instance
-                .ref()
-                .child('Vendor/Status')
-                .child(const Uuid().v4());
-            await ref.putFile(img).whenComplete(() async {
-              await ref.getDownloadURL().then((value) {
+        try {
+          await Future.wait(
+            image.map((img) async {
+              Reference ref = FirebaseStorage.instance
+                  .ref()
+                  .child('Vendor/Status')
+                  .child(const Uuid().v4());
+              await ref.putFile(img);
+              String downloadUrl = await ref.getDownloadURL();
+              if (mounted) {
                 setState(() {
-                  imageDownloadUrl.add(value);
+                  imageDownloadUrl.add(downloadUrl);
                 });
-              });
-            });
-          } catch (e) {
-            if (mounted) {
-              mySnackBar(context, e.toString());
-            }
+              }
+            }),
+          );
+        } catch (e) {
+          if (mounted) {
+            mySnackBar(context, e.toString());
           }
         }
 

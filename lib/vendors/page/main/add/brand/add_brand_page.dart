@@ -117,17 +117,19 @@ class _AddBrandPageState extends State<AddBrandPage> {
             mySnackBar(context, 'Brand Added');
           }
 
-          for (String id in provider.selectedProducts) {
-            await store
-                .collection('Business')
-                .doc('Data')
-                .collection('Products')
-                .doc(id)
-                .update({
-              'productBrandId': brandId,
-              'productBrand': brandNameController.text.toString().trim(),
-            });
-          }
+          await Future.wait(
+            provider.selectedProducts.map((id) async {
+              await store
+                  .collection('Business')
+                  .doc('Data')
+                  .collection('Products')
+                  .doc(id)
+                  .update({
+                'productBrandId': brandId,
+                'productBrand': brandNameController.text.toString().trim(),
+              });
+            }),
+          );
 
           provider.clearProducts();
           setState(() {

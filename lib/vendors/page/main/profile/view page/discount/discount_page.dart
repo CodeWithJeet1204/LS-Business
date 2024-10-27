@@ -95,20 +95,21 @@ class DISCOUNT extends State<DiscountPage> {
   Future<void> getProductData(List discountProducts) async {
     List<Map<String, dynamic>> myProducts = [];
 
-    await Future.forEach(discountProducts, (productId) async {
-      final productSnap = await store
-          .collection('Business')
-          .doc('Data')
-          .collection('Products')
-          .doc(productId)
-          .get();
+    await Future.wait(
+      discountProducts.map((productId) async {
+        final productSnap = await store
+            .collection('Business')
+            .doc('Data')
+            .collection('Products')
+            .doc(productId)
+            .get();
 
-      if (productSnap.exists) {
-        final productData = productSnap.data()!;
-
-        myProducts.add(productData);
-      }
-    });
+        if (productSnap.exists) {
+          final productData = productSnap.data()!;
+          myProducts.add(productData);
+        }
+      }),
+    );
 
     setState(() {
       products = myProducts;
@@ -119,20 +120,21 @@ class DISCOUNT extends State<DiscountPage> {
   Future<void> getBrandData(List discountBrands) async {
     List<Map<String, dynamic>> myBrands = [];
 
-    await Future.forEach(discountBrands, (brand) async {
-      final brandSnap = await store
-          .collection('Business')
-          .doc('Data')
-          .collection('Brands')
-          .doc(brand)
-          .get();
+    await Future.wait(
+      discountBrands.map((brand) async {
+        final brandSnap = await store
+            .collection('Business')
+            .doc('Data')
+            .collection('Brands')
+            .doc(brand)
+            .get();
 
-      if (brandSnap.exists) {
-        final brandData = brandSnap.data()!;
-
-        myBrands.add(brandData);
-      }
-    });
+        if (brandSnap.exists) {
+          final brandData = brandSnap.data()!;
+          myBrands.add(brandData);
+        }
+      }),
+    );
 
     setState(() {
       brands = myBrands;
@@ -401,11 +403,9 @@ class DISCOUNT extends State<DiscountPage> {
             .where('discountId', isEqualTo: widget.discountId)
             .get();
 
-        await Future.forEach(
-          productSnap.docs,
-          (product) async {
+        await Future.wait(
+          productSnap.docs.map((product) async {
             final productData = product.data();
-
             final productId = productData['productId'];
 
             await store
@@ -416,7 +416,7 @@ class DISCOUNT extends State<DiscountPage> {
                 .update({
               'discountId': '',
             });
-          },
+          }),
         );
       } else if (type == 'Brand') {
         final brandSnap = await store
@@ -426,20 +426,21 @@ class DISCOUNT extends State<DiscountPage> {
             .where('discountId', isEqualTo: widget.discountId)
             .get();
 
-        await Future.forEach(brandSnap.docs, (brand) async {
-          final brandData = brand.data();
+        await Future.wait(
+          brandSnap.docs.map((brand) async {
+            final brandData = brand.data();
+            final brandId = brandData['brandId'];
 
-          final brandId = brandData['brandId'];
-
-          await store
-              .collection('Business')
-              .doc('Data')
-              .collection('Brands')
-              .doc(brandId)
-              .update({
-            'discountId': '',
-          });
-        });
+            await store
+                .collection('Business')
+                .doc('Data')
+                .collection('Brands')
+                .doc(brandId)
+                .update({
+              'discountId': '',
+            });
+          }),
+        );
       }
 
       await store

@@ -289,33 +289,30 @@ class _AllDiscountPageState extends State<AllDiscountPage> {
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
-                      setState(() {
+                      setState(() async {
                         if (value.isEmpty) {
                           currentDiscounts =
                               Map<String, Map<String, dynamic>>.from(
-                            allDiscounts,
-                          );
+                                  allDiscounts);
                         } else {
                           Map<String, Map<String, dynamic>> filteredDiscounts =
                               Map<String, Map<String, dynamic>>.from(
-                            allDiscounts,
-                          );
-                          List<String> keysToRemove = [];
+                                  allDiscounts);
 
-                          filteredDiscounts.forEach((key, discountData) {
-                            if (!discountData['discountName']
-                                .toString()
-                                .toLowerCase()
-                                .contains(
-                                    value.toLowerCase().toString().trim())) {
-                              keysToRemove.add(key);
-                            }
-                          });
+                          List<String> keysToRemove = await Future.wait(
+                            filteredDiscounts.entries.map((entry) async {
+                              if (!entry.value['discountName']
+                                  .toString()
+                                  .toLowerCase()
+                                  .contains(value.toLowerCase().trim())) {
+                                return entry.key;
+                              }
+                              return null;
+                            }),
+                          ).then(
+                              (result) => result.whereType<String>().toList());
 
-                          for (var key in keysToRemove) {
-                            filteredDiscounts.remove(key);
-                          }
-
+                          keysToRemove.forEach(filteredDiscounts.remove);
                           currentDiscounts = filteredDiscounts;
                         }
                       });

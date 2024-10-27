@@ -89,11 +89,9 @@ class _AllShortsPageState extends State<AllShortsPage> {
         .limit(noOf)
         .get();
 
-    await Future.forEach(
-      shortsSnap.docs,
-      (short) async {
+    await Future.wait(
+      shortsSnap.docs.map((short) async {
         final shortsData = short.data();
-
         final shortsId = short.id;
         final shortsURL = shortsData['shortsURL'];
         final shortsThumbnail = shortsData['shortsThumbnail'];
@@ -113,7 +111,7 @@ class _AllShortsPageState extends State<AllShortsPage> {
           'datetime': datetime,
           'vendorId': vendorId,
         };
-      },
+      }),
     );
 
     myShorts = Map.fromEntries(
@@ -192,30 +190,25 @@ class _AllShortsPageState extends State<AllShortsPage> {
                     } else {
                       Map<String, Map<String, dynamic>> filteredShorts =
                           Map<String, Map<String, dynamic>>.from(allShorts);
-                      List<String> keysToRemove = [];
 
-                      filteredShorts.forEach((key, shortsData) {
-                        if (!shortsData['productName']
+                      List<String> keysToRemove =
+                          filteredShorts.keys.where((key) {
+                        final shortsData = filteredShorts[key]!;
+                        return !shortsData['productName']
                                 .toString()
                                 .toLowerCase()
-                                .contains(
-                                    value.toLowerCase().toString().trim()) &&
+                                .contains(value.toLowerCase().trim()) &&
                             !shortsData['caption']
                                 .toString()
                                 .toLowerCase()
-                                .contains(
-                                    value.toLowerCase().toString().trim())) {
-                          keysToRemove.add(key);
-                        }
-                      });
+                                .contains(value.toLowerCase().trim());
+                      }).toList();
 
                       for (var key in keysToRemove) {
                         filteredShorts.remove(key);
                       }
 
-                      setState(() {
-                        currentShorts = filteredShorts;
-                      });
+                      currentShorts = filteredShorts;
                     }
                   });
                 },

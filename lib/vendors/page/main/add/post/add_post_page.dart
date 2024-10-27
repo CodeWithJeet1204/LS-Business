@@ -123,21 +123,23 @@ class _AddPostPageState extends State<AddPostPage> {
       try {
         List imageDownloadUrl = [];
 
-        for (File img in image) {
-          try {
-            Reference ref =
-                storage.ref().child('Vendor/Post').child(const Uuid().v4());
-            await ref.putFile(img).whenComplete(() async {
-              await ref.getDownloadURL().then((value) {
+        try {
+          await Future.wait(
+            image.map((img) async {
+              Reference ref =
+                  storage.ref().child('Vendor/Post').child(const Uuid().v4());
+              await ref.putFile(img);
+              String downloadUrl = await ref.getDownloadURL();
+              if (mounted) {
                 setState(() {
-                  imageDownloadUrl.add(value);
+                  imageDownloadUrl.add(downloadUrl);
                 });
-              });
-            });
-          } catch (e) {
-            if (mounted) {
-              mySnackBar(context, e.toString());
-            }
+              }
+            }),
+          );
+        } catch (e) {
+          if (mounted) {
+            mySnackBar(context, e.toString());
           }
         }
 

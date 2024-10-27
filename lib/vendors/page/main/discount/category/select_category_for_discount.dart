@@ -210,31 +210,31 @@ class _SelectCategoryForDiscountPageState
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (value) {
-                      if (value.isEmpty) {
-                        currentCategories =
-                            Map<String, Map<String, dynamic>>.from(
-                          allCategories,
-                        );
-                      } else {
-                        Map<String, Map<String, dynamic>> filteredCategories =
-                            Map<String, Map<String, dynamic>>.from(
-                          allCategories,
-                        );
-                        List<String> keysToRemove = [];
+                      setState(() async {
+                        if (value.isEmpty) {
+                          currentCategories =
+                              Map<String, Map<String, dynamic>>.from(
+                                  allCategories);
+                        } else {
+                          Map<String, Map<String, dynamic>> filteredCategories =
+                              Map<String, Map<String, dynamic>>.from(
+                                  allCategories);
+                          List<String> keysToRemove = await Future.wait(
+                            filteredCategories.entries.map((entry) async {
+                              return !entry.key
+                                      .toString()
+                                      .toLowerCase()
+                                      .contains(value.toLowerCase().trim())
+                                  ? entry.key
+                                  : null;
+                            }),
+                          ).then(
+                              (result) => result.whereType<String>().toList());
 
-                        filteredCategories.forEach((key, categoryData) {
-                          if (!key.toString().toLowerCase().contains(
-                              value.toLowerCase().toString().trim())) {
-                            keysToRemove.add(key);
-                          }
-                        });
-
-                        for (var key in keysToRemove) {
-                          filteredCategories.remove(key);
+                          keysToRemove.forEach(filteredCategories.remove);
+                          currentCategories = filteredCategories;
                         }
-
-                        currentCategories = filteredCategories;
-                      }
+                      });
                     },
                   ),
                 ),

@@ -183,28 +183,21 @@ class _ChangeProductCategoryPageState extends State<ChangeProductCategoryPage> {
                         onChanged: (value) {
                           setState(() {
                             if (value.isEmpty) {
-                              currentCategories = Map<String, dynamic>.from(
-                                allCategories,
-                              );
+                              currentCategories =
+                                  Map<String, dynamic>.from(allCategories);
                             } else {
                               Map<String, dynamic> filteredCategories =
-                                  Map<String, dynamic>.from(
-                                allCategories,
-                              );
-                              List<String> keysToRemove = [];
+                                  Map<String, dynamic>.from(allCategories);
 
-                              filteredCategories.forEach((key, imageUrl) {
-                                if (!key
+                              List<String> keysToRemove =
+                                  filteredCategories.keys.where((key) {
+                                return !key
                                     .toString()
                                     .toLowerCase()
-                                    .contains(value.toLowerCase())) {
-                                  keysToRemove.add(key);
-                                }
-                              });
+                                    .contains(value.toLowerCase());
+                              }).toList();
 
-                              for (var key in keysToRemove) {
-                                filteredCategories.remove(key);
-                              }
+                              keysToRemove.forEach(filteredCategories.remove);
 
                               currentCategories = filteredCategories;
                             }
