@@ -1,416 +1,895 @@
-// import 'package:carousel_slider/carousel_slider.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:feather_icons/feather_icons.dart';
-// import 'package:ls_business/vendors/page/main/profile/view%20page/product/image_view.dart';
-// import 'package:ls_business/vendors/utils/colors.dart';
-// import 'package:ls_business/widgets/info_box.dart';
-// import 'package:ls_business/widgets/snack_bar.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:flutter/material.dart';
-// import 'package:ls_business/widgets/video_tutorial.dart';
+import 'dart:io';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:feather_icons/feather_icons.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:ls_business/vendors/page/main/main_page.dart';
+import 'package:ls_business/vendors/page/main/profile/data/all_posts_page.dart';
+import 'package:ls_business/vendors/page/main/profile/view%20page/product/image_view.dart';
+import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/my_button.dart';
+import 'package:ls_business/widgets/image_pick_dialog.dart';
+import 'package:ls_business/widgets/snack_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:ls_business/widgets/text_button.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:ls_business/widgets/video_tutorial.dart';
+import 'package:uuid/uuid.dart';
 
-// class PostPage extends StatefulWidget {
-//   const PostPage({
-//     super.key,
-//     required this.postId,
-//   });
+class PostPage extends StatefulWidget {
+  const PostPage({
+    super.key,
+    required this.postId,
+    required this.postText,
+    required this.imageUrl,
+  });
 
-//   final String postId;
+  final String postId;
+  final String postText;
+  final List? imageUrl;
 
-//   @override
-//   State<PostPage> createState() => _PostPageState();
-// }
+  @override
+  State<PostPage> createState() => _PostPageState();
+}
 
-// class _PostPageState extends State<PostPage> {
-//   final auth = FirebaseAuth.instance;
-//   final store = FirebaseFirestore.instance;
-//   int _currentIndex = 0;
-//   bool isDiscount = false;
+class _PostPageState extends State<PostPage> {
+  final auth = FirebaseAuth.instance;
+  final store = FirebaseFirestore.instance;
+  final storage = FirebaseStorage.instance;
+  final postTextKey = GlobalKey<FormState>();
+  final searchController = TextEditingController();
+  int _currentIndex = 0;
+  bool isImageChanging = false;
+  bool isChangingName = false;
+  bool isChangingImage = false;
+  bool isGridView = true;
+  bool isDiscount = false;
+  bool isDialog = false;
 
-//   // INIT STATE
-//   @override
-//   void initState() {
-//     super.initState();
-//   }
+  // DISPOSE
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
 
-//   // DELETE POST
-//   Future<void> deletePost(bool isTextPost) async {
-//     try {
-//       if (mounted) {
-//         Navigator.of(context).pop();
-//       }
+  // ADD IMAGES
+  Future<void> addPostImages(List images) async {
+    final List<XFile> imageList = await showImagePickDialog(context, false);
+    try {
+      setState(() {
+        isImageChanging = true;
+        isDialog = true;
+      });
+      for (var im in imageList) {
+        final postImageId = const Uuid().v4();
 
-//       int textPostRemaining = 0;
-//       int imagePostRemaining = 0;
+        Reference ref = storage.ref().child('Vendor/Post').child(postImageId);
+        await ref.putFile(File(im.path)).whenComplete(() async {
+          await ref.getDownloadURL().then((value) async {
+            images.add(value);
+          });
+        });
+      }
 
-//       final vendorSnap = await store
-//           .collection('Business')
-//           .doc('Owners')
-//           .collection('Shops')
-//           .doc(auth.currentUser!.uid)
-//           .get();
+      await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Post')
+          .doc(widget.postId)
+          .update({
+        'postImage': images,
+      });
 
-//       setState(() {
-//         textPostRemaining = vendorSnap['noOfTextPosts'];
-//         imagePostRemaining = vendorSnap['noOfImagePosts'];
-//       });
+      setState(() {
+        isImageChanging = false;
+        isDialog = false;
+      });
 
-//       await store
-//           .collection('Business')
-//           .doc('Data')
-//           .collection('Posts')
-//           .doc(widget.postId)
-//           .delete();
+      if (mounted) {
+        Navigator.of(context).pop();
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => PostPage(
+              postId: widget.postId,
+              postText: widget.postText,
+              imageUrl: widget.imageUrl,
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      setState(() {
+        isImageChanging = false;
+        isDialog = false;
+      });
+      if (mounted) {
+        mySnackBar(context, e.toString());
+      }
+    }
+  }
 
-//       isTextPost
-//           ? await store
-//               .collection('Business')
-//               .doc('Owners')
-//               .collection('Shops')
-//               .doc(auth.currentUser!.uid)
-//               .update({
-//               'noOfTextPosts': textPostRemaining + 1,
-//             })
-//           : await store
-//               .collection('Business')
-//               .doc('Owners')
-//               .collection('Shops')
-//               .doc(auth.currentUser!.uid)
-//               .update({
-//               'noOfImagePosts': imagePostRemaining + 1,
-//             });
+  // CHANGE IMAGE
+  // Future<void> changePostImage(String e, int index, List images) async {
+  //   final XFile im = await showImagePickDialog(context);
+  //   if (im != null) {
+  //     try {
+  //       setState(() {
+  //         isImageChanging = true;
+  //       });
+  //       Reference ref = FirebaseStorage.instance.refFromURL(images[index]);
+  //       await images.removeAt(index);
+  //       await ref.putFile(File(im.path));
+  //       setState(() {
+  //         isImageChanging = false;
+  //       });
+  //     } catch (e) {
+  //       setState(() {
+  //         isImageChanging = false;
+  //       });
+  //       if (mounted) {
+  //         mySnackBar(context, e.toString());
+  //       }
+  //     }
+  //   }
+  // }
 
-//       if (mounted) {
-//         mySnackBar(context, 'Post Deleted');
-//       }
-//     } catch (e) {
-//       if (mounted) {
-//         mySnackBar(context, e.toString());
-//       }
-//     }
-//   }
+  // REMOVE IMAGES
+  Future<void> removePostImages(int index, List images) async {
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text(
+            'Confirm REMOVE',
+          ),
+          content: const Text(
+            'Are you sure you want to remove this image?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'NO',
+                style: TextStyle(
+                  color: Colors.green,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                await storage.refFromURL(images[index]).delete();
+                setState(() {
+                  images.removeAt(index);
+                });
+                await store
+                    .collection('Business')
+                    .doc('Data')
+                    .collection('Post')
+                    .doc(widget.postId)
+                    .update({
+                  'postImage': images,
+                });
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                }
+              },
+              child: const Text(
+                'YES',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
-//   // CONFIRM DELETE
-//   Future<void> confirmDelete(bool isTextPost) async {
-//     await showDialog(
-//       context: context,
-//       builder: (context) {
-//         return AlertDialog(
-//           title: const Text(
-//             'Confirm DELETE',
-//           ),
-//           content: const Text(
-//             'Are you sure you want to delete this Post',
-//           ),
-//           actions: [
-//             TextButton(
-//               onPressed: () {
-//                 Navigator.of(context).pop();
-//               },
-//               child: const Text(
-//                 'NO',
-//                 style: TextStyle(
-//                   color: Colors.green,
-//                   fontWeight: FontWeight.bold,
-//                 ),
-//               ),
-//             ),
-//             TextButton(
-//               onPressed: () async {
-//                 await deletePost(isTextPost);
-//                 if (context.mounted) {
-//                   Navigator.of(context).pop();
-//                 }
-//               },
-//               child: const Text(
-//                 'YES',
-//                 style: TextStyle(
-//                   color: Colors.red,
-//                   fontWeight: FontWeight.w500,
-//                 ),
-//               ),
-//             ),
-//           ],
-//         );
-//       },
-//     );
-//   }
+  // CHANGE POST TEXT
+  // TODO: NOT WORKING
+  Future<void> changePostText(var newText, bool isName) async {
+    if (postTextKey.currentState!.validate()) {
+      try {
+        setState(() {
+          isChangingName = true;
+          isDialog = true;
+        });
+        if (isName) {
+          await store
+              .collection('Business')
+              .doc('Data')
+              .collection('Post')
+              .doc(widget.postId)
+              .update({
+            'postText': newText,
+          });
+        } else {
+          await store
+              .collection('Business')
+              .doc('Data')
+              .collection('Post')
+              .doc(widget.postId)
+              .update({
+            'postPrice': newText,
+          });
+        }
+        setState(() {
+          isChangingName = false;
+          isDialog = false;
+        });
+        if (mounted) {
+          Navigator.of(context).pop();
+        }
+      } catch (e) {
+        if (mounted) {
+          mySnackBar(context, e.toString());
+        }
+      }
+    }
+  }
 
-//   // GET IS TEXT POST
-//   Future<bool> getIsTextPost() async {
-//     bool isTextPost = false;
-//     final postSnap = await store
-//         .collection('Business')
-//         .doc('Data')
-//         .collection('Posts')
-//         .doc(widget.postId)
-//         .get();
+  // CHANGE TEXT
+  Future<void> changeText(bool isName) async {
+    await showDialog(
+      context: context,
+      builder: (context) {
+        final propertyStream = store
+            .collection('Business')
+            .doc('Data')
+            .collection('Post')
+            .doc(widget.postId)
+            .snapshots();
 
-//     final postData = postSnap.data();
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          alignment: Alignment.center,
+          child: SizedBox(
+            height: 180,
+            child: StreamBuilder(
+              stream: propertyStream,
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(
+                    child: Text(
+                      'Something went wrong',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  );
+                }
 
-//     if (postData != null) {
-//       isTextPost = postData['isTextPost'];
-//     }
+                if (snapshot.hasData) {
+                  final postData = snapshot.data!;
+                  var changeText = postData[isName ? 'postText' : 'postPrice'];
 
-//     return isTextPost;
-//   }
+                  return Form(
+                    key: postTextKey,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          TextFormField(
+                            initialValue: changeText.toString(),
+                            autofocus: true,
+                            onTapOutside: (event) =>
+                                FocusScope.of(context).unfocus(),
+                            keyboardType: isName
+                                ? TextInputType.name
+                                : TextInputType.number,
+                            decoration: InputDecoration(
+                              hintText: isName ? 'Name / Caption' : 'Price',
+                              border: OutlineInputBorder(),
+                            ),
+                            onChanged: (value) {
+                              setState(() {
+                                if (isName) {
+                                  changeText = value;
+                                } else {
+                                  changeText = double.parse(value);
+                                }
+                              });
+                            },
+                            validator: (value) {
+                              if (value != null && value.isNotEmpty) {
+                                return null;
+                              } else {
+                                return 'Enter Post ${isName ? 'Name' : 'Price'}';
+                              }
+                            },
+                          ),
+                          MyButton(
+                            text: 'SAVE',
+                            onTap: () async {
+                              await changePostText(changeText, isName);
+                            },
+                            horizontalPadding: 0,
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     final postStream = store
-//         .collection('Business')
-//         .doc('Data')
-//         .collection('Posts')
-//         .doc(widget.postId)
-//         .snapshots();
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
+  }
 
-//     return Scaffold(
-//       resizeToAvoidBottomInset: false,
-//       appBar: AppBar(
-//         actions: [
-//           IconButton(
-//             onPressed: () async {
-//               await showYouTubePlayerDialog(
-//                 context,
-//                 getYoutubeVideoId(
-//                   '',
-//                 ),
-//               );
-//             },
-//             icon: const Icon(
-//               Icons.question_mark_outlined,
-//             ),
-//             tooltip: 'Help',
-//           ),
-//           FutureBuilder(
-//               future: getIsTextPost(),
-//               builder: (context, snapshot) {
-//                 if (snapshot.hasError) {
-//                   return Container();
-//                 }
+  // CONFIRM DELETE
+  Future<void> confirmDelete() async {
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text(
+            'Confirm DELETE',
+          ),
+          content: const Text(
+            'Are you sure you want to delete this Post?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'NO',
+                style: TextStyle(
+                  color: Colors.green,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                await delete();
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                }
+              },
+              child: const Text(
+                'YES',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
-//                 if (snapshot.hasData) {
-//                   return IconButton(
-//                     onPressed: () async {
-//                       await confirmDelete(snapshot.data!);
-//                     },
-//                     icon: const Icon(
-//                       FeatherIcons.trash,
-//                       color: Colors.red,
-//                     ),
-//                   );
-//                 }
+  // DELETE POST
+  Future<void> delete() async {
+    setState(() {
+      isDialog = true;
+    });
+    try {
+      if (widget.imageUrl != null) {
+        for (var image in widget.imageUrl!) {
+          await storage.refFromURL(image).delete();
+        }
+      }
+      await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Post')
+          .doc(widget.postId)
+          .delete();
 
-//                 return Container();
-//               }),
-//         ],
-//       ),
-//       body: Padding(
-//         padding: EdgeInsets.symmetric(
-//           vertical: MediaQuery.sizeOf(context).width * 0.0166,
-//           horizontal: MediaQuery.sizeOf(context).width * 0.0225,
-//         ),
-//         child: LayoutBuilder(builder: (context, constraints) {
-//           final width = constraints.maxWidth;
+      setState(() {
+        isDialog = false;
+      });
+      if (mounted) {
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const allPostPage(),
+          ),
+        );
+        mySnackBar(context, 'Post Deleted');
+      }
+    } catch (e) {
+      setState(() {
+        isDialog = false;
+      });
+      if (mounted) {
+        mySnackBar(context, e.toString());
+      }
+    }
+  }
 
-//           return SingleChildScrollView(
-//             child: SizedBox(
-//               width: width,
-//               child: StreamBuilder(
-//                 stream: postStream,
-//                 builder: ((context, snapshot) {
-//                   if (snapshot.hasError) {
-//                     return const Center(
-//                       child: Text(
-//                         'Something went wrong',
-//                         maxLines: 1,
-//                         overflow: TextOverflow.ellipsis,
-//                       ),
-//                     );
-//                   }
+  @override
+  Widget build(BuildContext context) {
+    // POST STREAM
+    final Stream<DocumentSnapshot<Map<String, dynamic>>> postStream = store
+        .collection('Business')
+        .doc('Data')
+        .collection('Post')
+        .doc(widget.postId)
+        .snapshots();
 
-//                   if (snapshot.hasData) {
-//                     final postData = snapshot.data!;
-//                     final bool isTextPost = postData['isTextPost'];
-//                     final String? name = postData['postText'];
-//                     final int likes = postData['postLikes'];
-//                     final int views = postData['postViews'];
-//                     final Map comments = postData['postComments'];
-//                     final List images =
-//                         isTextPost ? [] : postData['postImages'];
+    return PopScope(
+      canPop: isDialog ? false : true,
+      child: ModalProgressHUD(
+        inAsyncCall: isDialog,
+        color: primaryDark,
+        blur: 0.5,
+        child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            appBar: AppBar(
+              actions: [
+                IconButton(
+                  onPressed: () async {
+                    await showYouTubePlayerDialog(
+                      context,
+                      getYoutubeVideoId(
+                        '',
+                      ),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.question_mark_outlined,
+                  ),
+                  tooltip: 'Help',
+                ),
+                IconButton(
+                  onPressed: () async {
+                    await confirmDelete();
+                    if (context.mounted) {
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                          builder: (context) => const MainPage(),
+                        ),
+                        (route) => false,
+                      );
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const allPostPage(),
+                        ),
+                      );
+                    }
+                  },
+                  icon: const Icon(
+                    FeatherIcons.trash,
+                    color: Colors.red,
+                  ),
+                ),
+              ],
+            ),
+            body: LayoutBuilder(builder: (context, constraints) {
+              return SingleChildScrollView(
+                child: LayoutBuilder(builder: (context, constraints) {
+                  final width = constraints.maxWidth;
 
-//                     return Column(
-//                       crossAxisAlignment: CrossAxisAlignment.start,
-//                       children: [
-//                         !isTextPost
-//                             // IMAGE
-//                             ? CarouselSlider(
-//                                 items: images
-//                                     .map(
-//                                       (e) => Container(
-//                                         alignment: Alignment.center,
-//                                         decoration: BoxDecoration(
-//                                           border: Border.all(
-//                                             color: primaryDark2,
-//                                             width: 1,
-//                                           ),
-//                                           borderRadius:
-//                                               BorderRadius.circular(12),
-//                                         ),
-//                                         child: GestureDetector(
-//                                           onTap: () {
-//                                             Navigator.of(context).push(
-//                                               MaterialPageRoute(
-//                                                 builder: (context) => ImageView(
-//                                                   imagesUrl: images,
-//                                                 ),
-//                                               ),
-//                                             );
-//                                           },
-//                                           child: Center(
-//                                             child: ClipRRect(
-//                                               borderRadius:
-//                                                   BorderRadius.circular(
-//                                                 11,
-//                                               ),
-//                                               child: Container(
-//                                                 decoration: BoxDecoration(
-//                                                   image: DecorationImage(
-//                                                     image: NetworkImage(e),
-//                                                     fit: BoxFit.cover,
-//                                                   ),
-//                                                 ),
-//                                               ),
-//                                             ),
-//                                           ),
-//                                         ),
-//                                       ),
-//                                     )
-//                                     .toList(),
-//                                 options: CarouselOptions(
-//                                   enableInfiniteScroll:
-//                                       images.length > 1 ? true : false,
-//                                   aspectRatio: 1.2,
-//                                   enlargeCenterPage: true,
-//                                   onPageChanged: (index, reason) {
-//                                     setState(() {
-//                                       _currentIndex = index;
-//                                     });
-//                                   },
-//                                 ),
-//                               )
-//                             : Container(),
+                  return StreamBuilder(
+                    stream: postStream,
+                    builder: ((context, snapshot) {
+                      if (snapshot.hasError) {
+                        return const Center(
+                          child: Text(
+                            'Something went wrong',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        );
+                      }
 
-//                         // DOTS
-//                         !isTextPost
-//                             ? images.length > 1
-//                                 ? Row(
-//                                     mainAxisAlignment: MainAxisAlignment.center,
-//                                     children: [
-//                                       Padding(
-//                                         padding: EdgeInsets.symmetric(
-//                                           vertical: width * 0.035,
-//                                         ),
-//                                         child: Row(
-//                                           mainAxisAlignment:
-//                                               MainAxisAlignment.center,
-//                                           crossAxisAlignment:
-//                                               CrossAxisAlignment.center,
-//                                           children: (images).map((e) {
-//                                             int index = images.indexOf(e);
+                      if (snapshot.hasData) {
+                        final postData = snapshot.data!;
 
-//                                             return Container(
-//                                               width: _currentIndex == index
-//                                                   ? 12
-//                                                   : 8,
-//                                               height: _currentIndex == index
-//                                                   ? 12
-//                                                   : 8,
-//                                               margin: const EdgeInsets.all(4),
-//                                               decoration: BoxDecoration(
-//                                                 shape: BoxShape.circle,
-//                                                 color: _currentIndex == index
-//                                                     ? primaryDark
-//                                                     : primary2,
-//                                               ),
-//                                             );
-//                                           }).toList(),
-//                                         ),
-//                                       )
-//                                     ],
-//                                   )
-//                                 : Container()
-//                             : Container(),
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: width * 0.0225,
+                            vertical: 16,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              postData['postImage'] != null
+                                  ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        CarouselSlider(
+                                          items: (postData['postImage'] as List)
+                                              .map(
+                                                (e) => Stack(
+                                                  alignment: Alignment.center,
+                                                  children: [
+                                                    Stack(
+                                                      alignment:
+                                                          Alignment.topCenter,
+                                                      children: [
+                                                        Container(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            border: Border.all(
+                                                              color:
+                                                                  primaryDark2,
+                                                              width: 2,
+                                                            ),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                              12,
+                                                            ),
+                                                          ),
+                                                          child: isImageChanging
+                                                              ? const CircularProgressIndicator()
+                                                              : GestureDetector(
+                                                                  onTap: () {
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .push(
+                                                                      MaterialPageRoute(
+                                                                        builder:
+                                                                            (context) =>
+                                                                                ImageView(
+                                                                          imagesUrl:
+                                                                              postData['postImage'],
+                                                                          shortsThumbnail:
+                                                                              '',
+                                                                          shortsURL:
+                                                                              '',
+                                                                        ),
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                  child:
+                                                                      ClipRRect(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(
+                                                                      10,
+                                                                    ),
+                                                                    child:
+                                                                        Container(
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        image:
+                                                                            DecorationImage(
+                                                                          image:
+                                                                              NetworkImage(
+                                                                            e.trim(),
+                                                                          ),
+                                                                          fit: BoxFit
+                                                                              .cover,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                        ),
+                                                        isImageChanging
+                                                            ? Container()
+                                                            : Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .end,
+                                                                children: [
+                                                                  // e == shortsThumbnail
+                                                                  //     ? SizedBox(
+                                                                  //         width: 1,
+                                                                  //         height: 1,
+                                                                  //       )
+                                                                  //     : Padding(
+                                                                  //         padding:
+                                                                  //             EdgeInsets.only(
+                                                                  //           left: width *
+                                                                  //               0.0125,
+                                                                  //           top: width *
+                                                                  //               0.0125,
+                                                                  //         ),
+                                                                  //         child: IconButton
+                                                                  //             .filledTonal(
+                                                                  //           onPressed:
+                                                                  //               () async {
+                                                                  //             await changePostImage(
+                                                                  //               e,
+                                                                  //               postData['postImage']
+                                                                  //                   .indexOf(
+                                                                  //                       e),
+                                                                  //               postData['postImage'],
+                                                                  //             );
+                                                                  //           },
+                                                                  //           icon: Icon(
+                                                                  //             FeatherIcons
+                                                                  //                 .camera,
+                                                                  //             size:
+                                                                  //                 width * 0.1,
+                                                                  //           ),
+                                                                  //           tooltip:
+                                                                  //               'Change Image',
+                                                                  //         ),
+                                                                  //       ),
+                                                                  Padding(
+                                                                    padding:
+                                                                        EdgeInsets
+                                                                            .only(
+                                                                      right: width *
+                                                                          0.0125,
+                                                                      top: width *
+                                                                          0.0125,
+                                                                    ),
+                                                                    child: IconButton
+                                                                        .filledTonal(
+                                                                      onPressed: postData['postImage'].length <=
+                                                                              2
+                                                                          ? () {
+                                                                              mySnackBar(
+                                                                                context,
+                                                                                'Minimum 2 images are required',
+                                                                              );
+                                                                            }
+                                                                          : () async {
+                                                                              await removePostImages(
+                                                                                postData['postImage'].indexOf(
+                                                                                  e,
+                                                                                ),
+                                                                                postData['postImage'],
+                                                                              );
+                                                                            },
+                                                                      icon:
+                                                                          Icon(
+                                                                        FeatherIcons
+                                                                            .x,
+                                                                        size: width *
+                                                                            0.1,
+                                                                      ),
+                                                                      tooltip:
+                                                                          'Remove Image',
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                              .toList() as List<Widget>,
+                                          options: CarouselOptions(
+                                            enableInfiniteScroll:
+                                                postData['postImage'].length > 1
+                                                    ? true
+                                                    : false,
+                                            aspectRatio: 1.2,
+                                            enlargeCenterPage: true,
+                                            onPageChanged: (index, reason) {
+                                              setState(() {
+                                                _currentIndex = index;
+                                              });
+                                            },
+                                          ),
+                                        ),
 
-//                         images.isEmpty ? Container() : const Divider(),
+                                        // DOTS
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            const SizedBox(),
+                                            postData['postImage'].length > 1
+                                                ? Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      vertical: width * 0.033,
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: (postData[
+                                                                  'postImage']
+                                                              as List<dynamic>)
+                                                          .map((e) {
+                                                        int index = postData[
+                                                                'postImage']
+                                                            .indexOf(e);
 
-//                         // NAME
-//                         name == null
-//                             ? Container()
-//                             : Padding(
-//                                 padding: EdgeInsets.symmetric(
-//                                   horizontal: width * 0.0225,
-//                                 ),
-//                                 child: SizedBox(
-//                                   width: width * 0.785,
-//                                   child: Text(
-//                                     name,
-//                                     maxLines: 10,
-//                                     overflow: TextOverflow.ellipsis,
-//                                     style: TextStyle(
-//                                       color: primaryDark,
-//                                       fontSize: width * 0.06,
-//                                       fontWeight: FontWeight.w500,
-//                                     ),
-//                                   ),
-//                                 ),
-//                               ),
+                                                        return Container(
+                                                          width:
+                                                              _currentIndex ==
+                                                                      index
+                                                                  ? 12
+                                                                  : 8,
+                                                          height:
+                                                              _currentIndex ==
+                                                                      index
+                                                                  ? 12
+                                                                  : 8,
+                                                          margin:
+                                                              const EdgeInsets
+                                                                  .all(4),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            shape:
+                                                                BoxShape.circle,
+                                                            color:
+                                                                _currentIndex ==
+                                                                        index
+                                                                    ? primaryDark
+                                                                    : primary2,
+                                                          ),
+                                                        );
+                                                      }).toList() as List<
+                                                          Widget>,
+                                                    ),
+                                                  )
+                                                : const SizedBox(height: 40),
+                                            GestureDetector(
+                                              onTap: () async {
+                                                await addPostImages(
+                                                  postData['postImage'],
+                                                );
+                                              },
+                                              child: Container(
+                                                height: width * 0.1,
+                                                decoration: BoxDecoration(
+                                                  color: primary,
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                ),
+                                                child: const Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      'Add Image',
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                    Icon(FeatherIcons.plus),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                  : Center(
+                                      child: MyTextButton(
+                                        onPressed: () async {
+                                          await addPostImages(
+                                            postData['postImage'],
+                                          );
+                                        },
+                                        text: 'Add Image',
+                                        textColor: primaryDark2,
+                                      ),
+                                    ),
 
-//                         name == null ? Container() : const Divider(),
+                              // NAME
+                              Container(
+                                width: width,
+                                padding: EdgeInsets.symmetric(
+                                  vertical: width * 0.025,
+                                  horizontal: width * 0.0,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: primary2.withOpacity(0.3),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      width: width * 0.8,
+                                      child: Text(
+                                        postData['postText'].toString().trim(),
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          color: primaryDark,
+                                          fontSize: width * 0.05,
+                                        ),
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () async {
+                                        await changeText(true);
+                                      },
+                                      icon: Icon(
+                                        FeatherIcons.edit,
+                                        size: width * 0.0725,
+                                        color: primaryDark,
+                                      ),
+                                      tooltip: 'Change Name',
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 4),
 
-//                         // LIKES
-//                         InfoBox(
-//                           text: 'LIKES',
-//                           value: likes.toString(),
-//                         ),
+                              // PRICE
+                              Container(
+                                width: width,
+                                padding: EdgeInsets.symmetric(
+                                  vertical: width * 0.025,
+                                  horizontal: width * 0.0,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: primary2.withOpacity(0.3),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      width: width * 0.8,
+                                      child: Text(
+                                        postData['postPrice'] == ''
+                                            ? 'Price: N/A'
+                                            : 'Rs. ${postData['postPrice'].toString().trim()}',
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          color: primaryDark,
+                                          fontSize: width * 0.05,
+                                        ),
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () async {
+                                        await changeText(false);
+                                      },
+                                      icon: Icon(
+                                        FeatherIcons.edit,
+                                        size: width * 0.0725,
+                                        color: primaryDark,
+                                      ),
+                                      tooltip: 'Change Price',
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                            ],
+                          ),
+                        );
+                      }
 
-//                         // VIEWS
-//                         InfoBox(
-//                           text: 'VIEWS',
-//                           value: views.toString(),
-//                         ),
-
-//                         // COMMENTS
-//                         InkWell(
-//                           onTap: () {},
-//                           splashColor: primary2,
-//                           child: Stack(
-//                             alignment: Alignment.centerRight,
-//                             children: [
-//                               InfoBox(
-//                                 text: 'COMMENTS',
-//                                 value: comments.length.toString(),
-//                               ),
-//                               const Padding(
-//                                 padding: EdgeInsets.only(right: 8),
-//                                 child: Icon(FeatherIcons.chevronRight),
-//                               ),
-//                             ],
-//                           ),
-//                         ),
-//                       ],
-//                     );
-//                   }
-
-//                   return const Center(
-//                     child: CircularProgressIndicator(),
-//                   );
-//                 }),
-//               ),
-//             ),
-//           );
-//         }),
-//       ),
-//     );
-//   }
-// }
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }),
+                  );
+                }),
+              );
+            })),
+      ),
+    );
+  }
+}

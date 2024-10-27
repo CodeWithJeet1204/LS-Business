@@ -279,105 +279,101 @@ class _ProductPageState extends State<ProductPage> {
                                         physics: const ClampingScrollPhysics(),
                                         itemCount: property.length,
                                         itemBuilder: ((context, index) {
-                                          return Padding(
-                                            padding: const EdgeInsets.symmetric(
+                                          return Container(
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                              color: primaryDark2
+                                                  .withOpacity(0.75),
+                                              borderRadius:
+                                                  BorderRadius.circular(16),
+                                            ),
+                                            margin: const EdgeInsets.symmetric(
                                               horizontal: 4,
                                               vertical: 2,
                                             ),
-                                            child: Container(
-                                              alignment: Alignment.center,
-                                              decoration: BoxDecoration(
-                                                color: primaryDark2
-                                                    .withOpacity(0.75),
-                                                borderRadius:
-                                                    BorderRadius.circular(16),
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                      left: 12,
-                                                    ),
-                                                    child: Text(
-                                                      property[index]
-                                                          .toString()
-                                                          .trim(),
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: const TextStyle(
-                                                        color: white,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                    left: 12,
+                                                  ),
+                                                  child: Text(
+                                                    property[index]
+                                                        .toString()
+                                                        .trim(),
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: const TextStyle(
+                                                      color: white,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                     ),
                                                   ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                      right: 2,
-                                                    ),
-                                                    child: IconButton(
-                                                      onPressed: () async {
-                                                        // MULTI WORD PORPERTY
-                                                        if (isProperty) {
-                                                          property
-                                                              .removeAt(index);
-                                                          Map<String, dynamic>
-                                                              newPropertyMap =
-                                                              propertyData[
-                                                                  'Properties'];
-                                                          newPropertyMap[
-                                                                  propertyValue] =
-                                                              property;
-                                                          await FirebaseFirestore
-                                                              .instance
-                                                              .collection(
-                                                                  'Business')
-                                                              .doc('Data')
-                                                              .collection(
-                                                                  'Products')
-                                                              .doc(widget
-                                                                  .productId)
-                                                              .update({
-                                                            'Properties':
-                                                                newPropertyMap,
-                                                          });
-                                                          editController
-                                                              .clear();
-                                                          // TAGS
-                                                        } else {
-                                                          property
-                                                              .removeAt(index);
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                    right: 2,
+                                                  ),
+                                                  child: IconButton(
+                                                    onPressed: () async {
+                                                      // MULTI WORD PORPERTY
+                                                      if (isProperty) {
+                                                        property
+                                                            .removeAt(index);
+                                                        Map<String, dynamic>
+                                                            newPropertyMap =
+                                                            propertyData[
+                                                                'Properties'];
+                                                        newPropertyMap[
+                                                                propertyValue] =
+                                                            property;
+                                                        await FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                'Business')
+                                                            .doc('Data')
+                                                            .collection(
+                                                                'Products')
+                                                            .doc(widget
+                                                                .productId)
+                                                            .update({
+                                                          'Properties':
+                                                              newPropertyMap,
+                                                        });
+                                                        editController.clear();
+                                                        // TAGS
+                                                      } else {
+                                                        property
+                                                            .removeAt(index);
 
-                                                          await FirebaseFirestore
-                                                              .instance
-                                                              .collection(
-                                                                  'Business')
-                                                              .doc('Data')
-                                                              .collection(
-                                                                  'Products')
-                                                              .doc(widget
-                                                                  .productId)
-                                                              .update({
-                                                            propertyValue:
-                                                                property,
-                                                          });
-                                                          editController
-                                                              .clear();
-                                                        }
-                                                      },
-                                                      icon: const Icon(
-                                                        FeatherIcons.x,
-                                                        color: white,
-                                                      ),
+                                                        await FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                'Business')
+                                                            .doc('Data')
+                                                            .collection(
+                                                                'Products')
+                                                            .doc(widget
+                                                                .productId)
+                                                            .update({
+                                                          propertyValue:
+                                                              property,
+                                                        });
+                                                        editController.clear();
+                                                      }
+                                                    },
+                                                    icon: const Icon(
+                                                      FeatherIcons.x,
+                                                      color: white,
                                                     ),
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
                                           );
                                         }),

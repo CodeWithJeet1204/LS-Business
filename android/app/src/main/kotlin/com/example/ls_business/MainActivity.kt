@@ -1,4 +1,4 @@
-package com.example.Localsearch
+package com.infinitylab.ls_business
 
 import io.flutter.embedding.android.FlutterActivity
 

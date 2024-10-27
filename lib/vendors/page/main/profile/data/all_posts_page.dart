@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:ls_business/vendors/page/main/add/brand/add_brand_page.dart';
-import 'package:ls_business/vendors/page/main/profile/view%20page/brand/brand_page.dart';
+import 'package:ls_business/vendors/page/main/add/post/add_post_page.dart';
+import 'package:ls_business/vendors/page/main/profile/view%20page/posts/post_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/shimmer_skeleton_container.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
@@ -10,20 +10,20 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:ls_business/widgets/video_tutorial.dart';
 
-class AllBrandPage extends StatefulWidget {
-  const AllBrandPage({super.key});
+class allPostPage extends StatefulWidget {
+  const allPostPage({super.key});
 
   @override
-  State<AllBrandPage> createState() => _AllBrandPageState();
+  State<allPostPage> createState() => _allPostPageState();
 }
 
-class _AllBrandPageState extends State<AllBrandPage> {
+class _allPostPageState extends State<allPostPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   final storage = FirebaseStorage.instance;
   final searchController = TextEditingController();
-  Map<String, Map<String, dynamic>> allBrands = {};
-  Map<String, Map<String, dynamic>> currentBrands = {};
+  Map<String, Map<String, dynamic>> allPost = {};
+  Map<String, Map<String, dynamic>> currentPost = {};
   int? total;
   int noOfGridView = 8;
   bool isLoadMoreGridView = false;
@@ -38,7 +38,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
   @override
   void initState() {
     getTotal();
-    getBrandData();
+    getPostsData();
     scrollControllerGridView.addListener(scrollListenerGridView);
     scrollControllerListView.addListener(scrollListenerListView);
     super.initState();
@@ -62,7 +62,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
           isLoadMoreGridView = true;
         });
         noOfGridView = noOfGridView + 8;
-        await getBrandData();
+        await getPostsData();
         setState(() {
           isLoadMoreGridView = false;
         });
@@ -79,7 +79,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
           isLoadMoreListView = true;
         });
         noOfListView = noOfListView + 12;
-        await getBrandData();
+        await getPostsData();
         setState(() {
           isLoadMoreListView = false;
         });
@@ -92,8 +92,8 @@ class _AllBrandPageState extends State<AllBrandPage> {
     final brandSnap = await store
         .collection('Business')
         .doc('Data')
-        .collection('Brands')
-        .where('vendorId', isEqualTo: auth.currentUser!.uid)
+        .collection('Post')
+        .where('postVendorId', isEqualTo: auth.currentUser!.uid)
         .get();
 
     final brandLength = brandSnap.docs.length;
@@ -103,33 +103,33 @@ class _AllBrandPageState extends State<AllBrandPage> {
     });
   }
 
-  // GET BRAND DATA
-  Future<void> getBrandData() async {
-    Map<String, Map<String, dynamic>> myBrands = {};
-    final brandSnap = await store
+  // GET POSTS DATA
+  Future<void> getPostsData() async {
+    Map<String, Map<String, dynamic>> myPost = {};
+    final postSnap = await store
         .collection('Business')
         .doc('Data')
-        .collection('Brands')
-        .where('vendorId', isEqualTo: auth.currentUser!.uid)
+        .collection('Post')
+        .where('postVendorId', isEqualTo: auth.currentUser!.uid)
         .limit(isGridView ? noOfGridView : noOfListView)
         .get();
 
-    for (var brand in brandSnap.docs) {
-      final brandId = brand.id;
-      final brandData = brand.data();
+    for (var post in postSnap.docs) {
+      final postId = post.id;
+      final postData = post.data();
 
-      myBrands[brandId] = brandData;
+      myPost[postId] = postData;
     }
 
     setState(() {
-      currentBrands = myBrands;
-      allBrands = myBrands;
+      currentPost = myPost;
+      allPost = myPost;
       isData = true;
     });
   }
 
   // CONFIRM DELETE
-  Future<void> confirmDelete(String brandId, String? imageUrl) async {
+  Future<void> confirmDelete(String postId, List? postImage) async {
     await showDialog(
       context: context,
       builder: (context) {
@@ -138,7 +138,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
             'Confirm DELETE',
           ),
           content: const Text(
-            'Are you sure you want to delete this Brand\nProducts in this brand will be set as \'No Brand\'',
+            'Are you sure you want to delete this Post?',
           ),
           actions: [
             TextButton(
@@ -155,7 +155,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
             ),
             TextButton(
               onPressed: () async {
-                await delete(brandId, imageUrl);
+                await delete(postId, postImage);
               },
               child: const Text(
                 'YES',
@@ -172,34 +172,19 @@ class _AllBrandPageState extends State<AllBrandPage> {
   }
 
   // DELETE
-  Future<void> delete(String brandId, String? imageUrl) async {
+  Future<void> delete(String postId, List? postImage) async {
     try {
-      final productSnap = await store
-          .collection('Business')
-          .doc('Data')
-          .collection('Products')
-          .where('vendorId', isEqualTo: auth.currentUser!.uid)
-          .where('productBrandId', isEqualTo: brandId)
-          .get();
-
-      for (final doc in productSnap.docs) {
-        await doc.reference.update(
-          {
-            'productBrand': 'No Brand',
-            'productBrandId': '0',
-          },
-        );
-      }
-
-      if (imageUrl != null) {
-        await storage.refFromURL(imageUrl).delete();
+      if (postImage != null) {
+        for (var image in postImage) {
+          await storage.refFromURL(image).delete();
+        }
       }
 
       await store
           .collection('Business')
           .doc('Data')
-          .collection('Brands')
-          .doc(brandId)
+          .collection('Post')
+          .doc(postId)
           .delete();
 
       if (mounted) {
@@ -220,7 +205,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          'All Brands',
+          'All Posts',
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
@@ -243,14 +228,14 @@ class _AllBrandPageState extends State<AllBrandPage> {
             onPressed: () async {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => AddBrandPage(),
+                  builder: (context) => AddPostPage(),
                 ),
               );
             },
             icon: const Icon(
               Icons.add,
             ),
-            tooltip: 'Add Brand',
+            tooltip: 'Add Post',
           ),
         ],
         bottom: PreferredSize(
@@ -275,19 +260,18 @@ class _AllBrandPageState extends State<AllBrandPage> {
                     onChanged: (value) {
                       setState(() {
                         if (value.isEmpty) {
-                          currentBrands =
-                              Map<String, Map<String, dynamic>>.from(
-                            allBrands,
+                          currentPost = Map<String, Map<String, dynamic>>.from(
+                            allPost,
                           );
                         } else {
-                          Map<String, Map<String, dynamic>> filteredBrands =
+                          Map<String, Map<String, dynamic>> filteredPost =
                               Map<String, Map<String, dynamic>>.from(
-                            allBrands,
+                            allPost,
                           );
                           List<String> keysToRemove = [];
 
-                          filteredBrands.forEach((key, brandData) {
-                            if (!brandData['brandName']
+                          filteredPost.forEach((key, postData) {
+                            if (!postData['postText']
                                 .toString()
                                 .toLowerCase()
                                 .contains(
@@ -297,10 +281,10 @@ class _AllBrandPageState extends State<AllBrandPage> {
                           });
 
                           for (var key in keysToRemove) {
-                            filteredBrands.remove(key);
+                            filteredPost.remove(key);
                           }
 
-                          currentBrands = filteredBrands;
+                          currentPost = filteredPost;
                         }
                       });
                     },
@@ -367,9 +351,9 @@ class _AllBrandPageState extends State<AllBrandPage> {
                       },
                     ),
             )
-          : currentBrands.isEmpty
+          : currentPost.isEmpty
               ? const Center(
-                  child: Text('No Brands'),
+                  child: Text('No Posts'),
                 )
               : SafeArea(
                   child: Padding(
@@ -391,21 +375,21 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                   crossAxisCount: 2,
                                   childAspectRatio: 0.725,
                                 ),
-                                itemCount: noOfGridView > currentBrands.length
-                                    ? currentBrands.length
+                                itemCount: noOfGridView > currentPost.length
+                                    ? currentPost.length
                                     : noOfGridView,
                                 itemBuilder: ((context, index) {
-                                  final brandData = currentBrands[
-                                      currentBrands.keys.toList()[index]]!;
+                                  final postData = currentPost[
+                                      currentPost.keys.toList()[index]]!;
 
                                   return GestureDetector(
                                     onTap: () {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
-                                          builder: (context) => BrandPage(
-                                            brandId: brandData['brandId'],
-                                            brandName: brandData['brandName'],
-                                            imageUrl: brandData['imageUrl'],
+                                          builder: (context) => PostPage(
+                                            postId: postData['postId'],
+                                            postText: postData['postText'],
+                                            imageUrl: postData['postImage'],
                                           ),
                                         ),
                                       );
@@ -426,7 +410,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          brandData['imageUrl'] != null
+                                          postData['postImage'][0] != null
                                               // ? CachedNetworkImage(
                                               //     imageUrl: brandData['imageUrl'],
                                               //     imageBuilder:
@@ -472,8 +456,8 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                                           image:
                                                               DecorationImage(
                                                             image: NetworkImage(
-                                                              brandData[
-                                                                      'imageUrl']
+                                                              postData['postImage']
+                                                                      [0]
                                                                   .trim(),
                                                             ),
                                                             fit: BoxFit.cover,
@@ -501,7 +485,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                                 ),
                                           Divider(
                                             height:
-                                                brandData['imageUrl'] != null
+                                                postData['postImage'][0] != null
                                                     ? 0
                                                     : 10,
                                           ),
@@ -516,9 +500,9 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                                   left: width * 0.02,
                                                 ),
                                                 child: SizedBox(
-                                                  width: width * 0.275,
+                                                  width: width * 0.325,
                                                   child: Text(
-                                                    brandData['brandName']
+                                                    postData['postText']
                                                         .toString()
                                                         .trim(),
                                                     maxLines: 1,
@@ -526,8 +510,6 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                                         TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                       color: primaryDark,
-                                                      fontWeight:
-                                                          FontWeight.w500,
                                                       fontSize: width * 0.06,
                                                     ),
                                                   ),
@@ -536,15 +518,16 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                               IconButton(
                                                 onPressed: () async {
                                                   await confirmDelete(
-                                                    brandData['brandId'],
-                                                    brandData['imageUrl'],
+                                                    postData['postId'],
+                                                    postData['postImage'],
                                                   );
                                                   if (context.mounted) {
                                                     Navigator.of(context).pop();
                                                     Navigator.of(context).push(
                                                       MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              const AllBrandPage()),
+                                                        builder: (context) =>
+                                                            const allPostPage(),
+                                                      ),
                                                     );
                                                   }
                                                 },
@@ -569,21 +552,21 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                 addAutomaticKeepAlives: true,
                                 shrinkWrap: true,
                                 physics: const ClampingScrollPhysics(),
-                                itemCount: noOfListView > currentBrands.length
-                                    ? currentBrands.length
+                                itemCount: noOfListView > currentPost.length
+                                    ? currentPost.length
                                     : noOfListView,
                                 itemBuilder: ((context, index) {
-                                  final brandData = currentBrands[
-                                      currentBrands.keys.toList()[index]]!;
+                                  final postData = currentPost[
+                                      currentPost.keys.toList()[index]]!;
 
                                   return GestureDetector(
                                     onTap: () {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
-                                          builder: (context) => BrandPage(
-                                            brandId: brandData['brandId'],
-                                            brandName: brandData['brandName'],
-                                            imageUrl: brandData['imageUrl'],
+                                          builder: (context) => PostPage(
+                                            postId: postData['postId'],
+                                            postText: postData['postText'],
+                                            imageUrl: postData['postImage'],
                                           ),
                                         ),
                                       );
@@ -602,7 +585,8 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                       ),
                                       child: ListTile(
                                         visualDensity: VisualDensity.standard,
-                                        leading: brandData['imageUrl'] != null
+                                        leading: postData['postImage'][0] !=
+                                                null
                                             // ? CachedNetworkImage(
                                             //     imageUrl: brandData['imageUrl'],
                                             //     imageBuilder:
@@ -631,7 +615,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                                   2,
                                                 ),
                                                 child: Image.network(
-                                                  brandData['imageUrl']
+                                                  postData['postImage'][0]
                                                       .toString()
                                                       .trim(),
                                                   width: width * 0.15,
@@ -657,28 +641,28 @@ class _AllBrandPageState extends State<AllBrandPage> {
                                                 ),
                                               ),
                                         title: Text(
-                                          brandData['brandName']
+                                          postData['postText']
                                               .toString()
                                               .trim(),
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             fontSize: width * 0.06,
-                                            fontWeight: FontWeight.w600,
                                           ),
                                         ),
                                         trailing: IconButton(
                                           onPressed: () async {
                                             await confirmDelete(
-                                              brandData['brandId'],
-                                              brandData['imageUrl'],
+                                              postData['postId'],
+                                              postData['postImage'],
                                             );
                                             if (context.mounted) {
                                               Navigator.of(context).pop();
                                               Navigator.of(context).push(
                                                 MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const AllBrandPage()),
+                                                  builder: (context) =>
+                                                      const allPostPage(),
+                                                ),
                                               );
                                             }
                                           },

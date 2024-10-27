@@ -1,5 +1,6 @@
 import 'package:ls_business/vendors/page/main/profile/data/all_brand_page.dart';
 import 'package:ls_business/vendors/page/main/profile/data/all_discounts_page.dart';
+import 'package:ls_business/vendors/page/main/profile/data/all_posts_page.dart';
 import 'package:ls_business/vendors/page/main/profile/data/all_product_page.dart';
 import 'package:ls_business/vendors/page/main/profile/details/business_details_page.dart';
 import 'package:ls_business/vendors/page/main/profile/details/owner_details_page.dart';
@@ -339,6 +340,20 @@ class _ProfilePageState extends State<ProfilePage> {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => const AllProductsPage(),
+                        ),
+                      );
+                    },
+                    width: width,
+                  ),
+                  const SizedBox(height: 16),
+
+                  // POSTS
+                  SmallTextContainer(
+                    text: 'POSTS',
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const allPostPage(),
                         ),
                       );
                     },

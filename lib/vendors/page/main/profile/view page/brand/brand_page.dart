@@ -361,7 +361,17 @@ class _BrandPageState extends State<BrandPage> {
               onPressed: () async {
                 await delete();
                 if (context.mounted) {
-                  Navigator.of(context).pop();
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (context) => const MainPage(),
+                    ),
+                    (route) => false,
+                  );
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const AllBrandPage(),
+                    ),
+                  );
                 }
               },
               child: const Text(
@@ -493,19 +503,6 @@ class _BrandPageState extends State<BrandPage> {
                 IconButton(
                   onPressed: () async {
                     await confirmDelete();
-                    if (context.mounted) {
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          builder: (context) => const MainPage(),
-                        ),
-                        (route) => false,
-                      );
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const AllBrandPage(),
-                        ),
-                      );
-                    }
                   },
                   icon: const Icon(
                     FeatherIcons.trash,

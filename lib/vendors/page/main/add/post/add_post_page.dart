@@ -91,6 +91,9 @@ class _AddPostPageState extends State<AddPostPage> {
 
     final noOfPost = vendorData['noOfPost'];
 
+    print('noOfPost: $noOfPost');
+    print('noOfPost: ${auth.currentUser!.uid}');
+
     if (noOfPost < 1000000000000) {
       final postSnap = await store
           .collection('Business')
@@ -148,7 +151,9 @@ class _AddPostPageState extends State<AddPostPage> {
             .set({
           'postId': postId,
           'postText': nameCaptionController.text.trim(),
-          'postPrice': double.parse(priceController.text.trim()),
+          'postPrice': priceController.text.isEmpty
+              ? ''
+              : double.parse(priceController.text.trim()),
           'postImage': imageDownloadUrl,
           'postVendorId': auth.currentUser!.uid,
           'postViews': [],

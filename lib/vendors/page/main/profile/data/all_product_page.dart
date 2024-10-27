@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:ls_business/vendors/page/main/add/product/add_product_page_1.dart';
 import 'package:ls_business/vendors/page/main/profile/view%20page/product/product_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/shimmer_skeleton_container.dart';
@@ -247,6 +248,19 @@ class _AllProductsPageState extends State<AllProductsPage> {
               Icons.question_mark_outlined,
             ),
             tooltip: 'Help',
+          ),
+          IconButton(
+            onPressed: () async {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => AddProductPage1(),
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.add,
+            ),
+            tooltip: 'Add Product',
           ),
         ],
         bottom: PreferredSize(

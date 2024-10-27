@@ -782,7 +782,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                     // ALL VIEWS
                                     InfoColorBox(
                                       text: 'VIEWS',
-                                      width: width,
+                                      width: width * 0.9,
                                       property:
                                           shopData['viewsTimestamp'].length,
                                       color: const Color.fromARGB(
@@ -801,7 +801,7 @@ class _ShopAnalyticsPageState extends State<ShopAnalyticsPage> {
                                           if (snapshot.hasData) {
                                             return InfoColorBox(
                                               text: 'FOLLOWERS',
-                                              width: width,
+                                              width: width * 0.9,
                                               property: snapshot.data,
                                               color: const Color.fromRGBO(
                                                 237,

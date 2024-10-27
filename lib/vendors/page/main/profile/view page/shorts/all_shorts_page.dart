@@ -1,3 +1,4 @@
+import 'package:ls_business/vendors/page/main/add/shorts/add_shorts_page.dart';
 import 'package:ls_business/vendors/page/main/profile/view%20page/shorts/shorts_page_view.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/shimmer_skeleton_container.dart';
@@ -152,6 +153,19 @@ class _AllShortsPageState extends State<AllShortsPage> {
               Icons.question_mark_outlined,
             ),
             tooltip: 'Help',
+          ),
+          IconButton(
+            onPressed: () async {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => AddShortsPage(),
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.add,
+            ),
+            tooltip: 'Add Shorts',
           ),
         ],
         bottom: PreferredSize(
