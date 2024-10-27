@@ -38,6 +38,7 @@ dependencies:
   in_app_update: ^4.2.3
   package_info_plus: ^8.0.2
   flutter_image_compress: ^2.3.0
+  share_plus: ^10.1.1
   # flutter_automation: any
   # lottie: ^3.0.0
   # shared_preferences: ^2.2.2

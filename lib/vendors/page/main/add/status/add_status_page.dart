@@ -12,6 +12,7 @@ import 'package:ls_business/widgets/image_pick_dialog.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:ls_business/widgets/text_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:uuid/uuid.dart';
 import 'package:ls_business/widgets/video_tutorial.dart';
 
@@ -232,6 +233,28 @@ class _AddStatusPageState extends State<AddStatusPage> {
     );
   }
 
+  // SHARE
+  Future<void> shareImages() async {
+    if (image.isEmpty) {
+      return mySnackBar(context, 'Select an image');
+    }
+
+    List<String> imagePaths = image.map((file) => file.path).toList();
+
+    for (String path in imagePaths) {
+      if (!await File(path).exists()) {
+        imagePaths.remove(path);
+      }
+    }
+
+    await Share.shareXFiles(
+      imagePaths.map((path) => XFile(path)).toList(),
+      text: captionController.text.isNotEmpty
+          ? captionController.text
+          : 'This products are also available on Localsearch',
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -370,7 +393,8 @@ class _AddStatusPageState extends State<AddStatusPage> {
                                                     decoration: BoxDecoration(
                                                       borderRadius:
                                                           BorderRadius.circular(
-                                                              12),
+                                                        12,
+                                                      ),
                                                       border: Border.all(
                                                         color: primaryDark,
                                                         width: 3,
@@ -419,10 +443,13 @@ class _AddStatusPageState extends State<AddStatusPage> {
                                                     ),
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            12),
+                                                      12,
+                                                    ),
                                                   ),
                                                   padding: EdgeInsets.all(
-                                                      width * 0.0125),
+                                                    width * 0.0125,
+                                                  ),
+                                                  // TODO: CHANGE MEDIAQUERY.SIZE.WIDTH TO MEDIAQUERY.SIZEOF(WIDTH)
                                                   child: ListView.builder(
                                                     scrollDirection:
                                                         Axis.horizontal,
@@ -533,7 +560,7 @@ class _AddStatusPageState extends State<AddStatusPage> {
                                                 if (value.isNotEmpty) {
                                                   return null;
                                                 } else {
-                                                  return 'Pls enter something';
+                                                  return 'Pls enter Caption';
                                                 }
                                               }
                                               return null;
@@ -542,6 +569,41 @@ class _AddStatusPageState extends State<AddStatusPage> {
                                         ),
 
                                         const SizedBox(height: 8),
+
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              await shareImages();
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.green.shade300,
+                                                border: Border.all(
+                                                  color: Colors.green,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              padding: EdgeInsets.all(
+                                                width * 0.0225,
+                                              ),
+                                              margin: EdgeInsets.symmetric(
+                                                horizontal: width * 0.0125,
+                                              ),
+                                              child: Text(
+                                                'Share To Whatsapp',
+                                                style: TextStyle(
+                                                  color: Colors.green.shade900,
+                                                  fontSize: width * 0.033,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+
+                                        const SizedBox(height: 12),
 
                                         // DONE
                                         MyButton(
