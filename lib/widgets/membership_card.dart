@@ -54,7 +54,7 @@ class _MembershipCardState extends State<MembershipCard> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
-    final height = MediaQuery.of(context).size.height;
+    final height = MediaQuery.sizeOf(context).height;
 
     return Padding(
       padding: EdgeInsets.all(

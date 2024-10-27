@@ -86,7 +86,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'LS Business',
-      // TODO: SHARE TO WHATSAPP BUTTON FROM POST
       theme: ThemeData(
         scaffoldBackgroundColor: primary,
         progressIndicatorTheme: const ProgressIndicatorThemeData(
