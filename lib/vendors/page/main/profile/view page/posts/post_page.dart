@@ -39,6 +39,7 @@ class _PostPageState extends State<PostPage> {
   final store = FirebaseFirestore.instance;
   final storage = FirebaseStorage.instance;
   final postTextKey = GlobalKey<FormState>();
+  final textChangeController = TextEditingController();
   final searchController = TextEditingController();
   int _currentIndex = 0;
   bool isImageChanging = false;
@@ -195,7 +196,6 @@ class _PostPageState extends State<PostPage> {
   }
 
   // CHANGE POST TEXT
-  // TODO: NOT WORKING
   Future<void> changePostText(var newText, bool isName) async {
     if (postTextKey.currentState!.validate()) {
       try {
@@ -239,6 +239,7 @@ class _PostPageState extends State<PostPage> {
 
   // CHANGE TEXT
   Future<void> changeText(bool isName) async {
+    bool isInitialized = false;
     await showDialog(
       context: context,
       builder: (context) {
@@ -271,7 +272,12 @@ class _PostPageState extends State<PostPage> {
 
                 if (snapshot.hasData) {
                   final postData = snapshot.data!;
-                  var changeText = postData[isName ? 'postText' : 'postPrice'];
+
+                  if (!isInitialized) {
+                    textChangeController.text =
+                        postData[isName ? 'postText' : 'postPrice'].toString();
+                    isInitialized = true;
+                  }
 
                   return Form(
                     key: postTextKey,
@@ -281,7 +287,7 @@ class _PostPageState extends State<PostPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           TextFormField(
-                            initialValue: changeText.toString(),
+                            controller: textChangeController,
                             autofocus: true,
                             onTapOutside: (event) =>
                                 FocusScope.of(context).unfocus(),
@@ -292,15 +298,6 @@ class _PostPageState extends State<PostPage> {
                               hintText: isName ? 'Name / Caption' : 'Price',
                               border: OutlineInputBorder(),
                             ),
-                            onChanged: (value) {
-                              setState(() {
-                                if (isName) {
-                                  changeText = value;
-                                } else {
-                                  changeText = double.parse(value);
-                                }
-                              });
-                            },
                             validator: (value) {
                               if (value != null && value.isNotEmpty) {
                                 return null;
@@ -312,7 +309,10 @@ class _PostPageState extends State<PostPage> {
                           MyButton(
                             text: 'SAVE',
                             onTap: () async {
-                              await changePostText(changeText, isName);
+                              print(
+                                  'textChangeController.text: ${textChangeController.text}');
+                              await changePostText(
+                                  textChangeController.text, isName);
                             },
                             horizontalPadding: 0,
                           ),

@@ -22,11 +22,11 @@ class EmailVerifyPage extends StatefulWidget {
   State<EmailVerifyPage> createState() => _EmailVerifyPageState();
 }
 
-// TODO: CHANGE EMAIL OPTION
-
 class _EmailVerifyPageState extends State<EmailVerifyPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
+  final changeEmailKey = GlobalKey<FormState>();
+  final emailController = TextEditingController();
   Timer? timer;
   bool isEmailVerified = false;
   bool canResendEmail = false;
@@ -122,6 +122,46 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
     }
   }
 
+  // CHANGE EMAIL
+  // Future<void> changeEmail(double width) async {
+  //   await showDialog(
+  //       context: context,
+  //       builder: (context) {
+  //         return AlertDialog(
+  //           title: Text('Change Email'),
+  //           content: Container(
+  //             width: width * 0.9,
+  //             height: width * 0.35,
+  //             alignment: Alignment.center,
+  //             child: Form(
+  //               key: changeEmailKey,
+  //               child: Column(
+  //                 crossAxisAlignment: CrossAxisAlignment.center,
+  //                 children: [
+  //                   MyTextFormField(
+  //                     hintText: 'Email',
+  //                     controller: emailController,
+  //                     borderRadius: 12,
+  //                     horizontalPadding: 0,
+  //                   ),
+  //                   SizedBox(height: 12),
+  //                   MyButton(
+  //                     text: 'DONE',
+  //                     onTap: () async {
+  //                       if (changeEmailKey.currentState!.validate()) {
+
+  //                       }
+  //                     },
+  //                     horizontalPadding: 0,
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //           ),
+  //         );
+  //       });
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -136,11 +176,26 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
               style: TextStyle(
                 color: primaryDark,
                 fontSize: MediaQuery.sizeOf(context).width * 0.05,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w500,
               ),
             ),
+            // TextButton(
+            //   onPressed: () async {
+            //     await changeEmail(width);
+            //   },
+            //   child: Text(
+            //     'Change Email',
+            //     maxLines: 1,
+            //     overflow: TextOverflow.ellipsis,
+            //     style: TextStyle(
+            //       fontSize: width * 0.025,
+            //       color: primaryDark,
+            //     ),
+            //   ),
+            // ),
+            SizedBox(height: 12),
             Text(
-              'An email has been sent to your account, pls click on it\nTo verify your account\n\nIf you want to resend email click below\n\n(It may take some time for email to arrive)',
+              'An email has been sent to your account, pls click on it\nTo verify your account',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: primaryDark,

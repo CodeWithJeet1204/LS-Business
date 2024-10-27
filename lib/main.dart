@@ -81,14 +81,12 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-  // TODO: REPLACE FUTURE.FOREACH WITH FUTURE.WAIT
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'LS Business',
       // TODO: SHARE TO WHATSAPP BUTTON FROM POST
-      // TODO: ADD HELPING FEATURE (TO HELP ORGANIZATIONS, PEOPLE)
       theme: ThemeData(
         scaffoldBackgroundColor: primary,
         progressIndicatorTheme: const ProgressIndicatorThemeData(
