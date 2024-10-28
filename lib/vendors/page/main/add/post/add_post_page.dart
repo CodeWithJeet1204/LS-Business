@@ -17,7 +17,10 @@ import 'package:ls_business/widgets/video_tutorial.dart';
 class AddPostPage extends StatefulWidget {
   const AddPostPage({
     super.key,
+    // this.imagePaths,
   });
+
+  // final List<String>? imagePaths;
 
   @override
   State<AddPostPage> createState() => _AddPostPageState();
@@ -91,9 +94,6 @@ class _AddPostPageState extends State<AddPostPage> {
 
     final noOfPost = vendorData['noOfPost'];
 
-    print('noOfPost: $noOfPost');
-    print('noOfPost: ${auth.currentUser!.uid}');
-
     if (noOfPost < 1000000000000) {
       final postSnap = await store
           .collection('Business')
@@ -109,11 +109,31 @@ class _AddPostPageState extends State<AddPostPage> {
       setState(() {
         remainingPost = difference;
       });
+
+      if (remainingPost != null && remainingPost! > 1) {
+        // if (widget.imagePaths != null) {
+        //   for (var imagePath in widget.imagePaths!) {
+        //     File file = File(imagePath);
+        //     if (!image.contains(file)) {
+        //       image.add(file);
+        //     }
+        //   }
+        // }
+      }
     }
+
+    // if (widget.imagePaths != null) {
+    //   for (var imagePath in widget.imagePaths!) {
+    //     File file = File(imagePath);
+    //     if (!image.contains(file)) {
+    //       image.add(file);
+    //     }
+    //   }
+    // }
   }
 
   // POST
-  Future<void> done() async {
+  Future<void> post() async {
     if (postKey.currentState!.validate()) {
       setState(() {
         isPosting = true;
@@ -181,6 +201,9 @@ class _AddPostPageState extends State<AddPostPage> {
         if (mounted) {
           mySnackBar(context, 'Posted');
           Navigator.of(context).pop();
+          // if (widget.imagePaths != null) {
+          //   Navigator.of(context).pop();
+          // }
         }
       } catch (e) {
         setState(() {
@@ -211,7 +234,8 @@ class _AddPostPageState extends State<AddPostPage> {
     await Share.shareXFiles(
       imagePaths.map((path) => XFile(path)).toList(),
       text: nameCaptionController.text.isNotEmpty
-          ? nameCaptionController.text
+          ? '''${nameCaptionController.text}
+          This products are also available on Localsearch'''
           : 'This products are also available on Localsearch',
     );
   }
@@ -530,7 +554,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   : MyButton(
                                       text: 'DONE',
                                       onTap: () async {
-                                        await done();
+                                        await post();
                                       },
                                       horizontalPadding: 0,
                                     ),

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:ls_business/auth/sign_in_page.dart';
 import 'package:ls_business/under_development_page.dart';
 import 'package:ls_business/vendors/page/main/update_page.dart';
@@ -39,14 +40,112 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
+  // static const platform = MethodChannel('com.ls_business.share');
+  // List<String> imagePaths = [];
+  late StreamSubscription _intentSub;
+  // final List<SharedMediaFile> _sharedFiles = [];
   Widget? detailsPage;
 
   // INIT STATE
   @override
   void initState() {
     detailsAdded();
+    // platform.setMethodCallHandler(handleMethod);
     super.initState();
   }
+
+  @override
+  void dispose() {
+    _intentSub.cancel();
+    super.dispose();
+  }
+
+  // // HANDLE METHOD
+  // Future<void> handleMethod(MethodCall call) async {
+  //   print('hihihihihih');
+  //   if (call.method == "openSharePage") {
+  //     print('alalalalala');
+  //     setState(() {
+  //       imagePaths = List<String>.from(call.arguments);
+  //     });
+  //     print('imagePaths: $imagePaths');
+  //     await requestStoragePermission();
+  //     var status = await Permission.photos.status;
+  //     if (!status.isGranted) {
+  //       print('Storage permission denied');
+  //       return;
+  //     }
+  //     List<String> localImagePaths = [];
+  //     for (var uri in imagePaths) {
+  //       String? localPath = await checkAndSaveFile(Uri.parse(uri));
+  //       if (localPath != null) {
+  //         localImagePaths.add(localPath);
+  //       } else {
+  //         print('Could not save file for URI: $uri');
+  //       }
+  //     }
+  //     Navigator.of(context).push(
+  //       MaterialPageRoute(
+  //         builder: (context) => SharePage(
+  //           imagePaths: localImagePaths,
+  //         ),
+  //       ),
+  //     );
+  //   }
+  // }
+
+  // // REQUEST STORAGE PERMISSION
+  // Future<void> requestStoragePermission() async {
+  //   var statusImages = await Permission.photos.status;
+  //   var statusVideos = await Permission.videos.status;
+  //   if (!statusImages.isGranted) {
+  //     await Permission.photos.request();
+  //   }
+  //   if (!statusVideos.isGranted) {
+  //     await Permission.videos.request();
+  //   }
+  //   if (await Permission.photos.isGranted &&
+  //       await Permission.videos.isGranted) {
+  //     print('Media permissions granted');
+  //   } else {
+  //     print('Media permissions denied');
+  //   }
+  // }
+
+  // // CHECK AND SAVE FILE
+  // Future<String?> checkAndSaveFile(Uri fileUri) async {
+  //   if (fileUri.scheme == 'content') {
+  //     String? localPath = await saveContentUriToFile(fileUri);
+  //     return localPath;
+  //   }
+  //   String? path = fileUri.toFilePath();
+  //   if (await File(path).exists()) {
+  //     return path;
+  //   }
+  //   return null;
+  // }
+
+  // // SAVE CONTENT URI TO FILE
+  // Future<String?> saveContentUriToFile(Uri contentUri) async {
+  //   if (await Permission.storage.request().isGranted) {
+  //     try {
+  //       Directory tempDir = await getTemporaryDirectory();
+  //       String newPath = '${tempDir.path}/downloaded_file.jpg';
+  //       Response response =
+  //           await Dio().download(contentUri.toString(), newPath);
+  //       if (response.statusCode == 200) {
+  //         return newPath;
+  //       } else {
+  //         print('Download failed with status: ${response.statusCode}');
+  //       }
+  //     } catch (e) {
+  //       print('Error downloading file: $e');
+  //     }
+  //   } else {
+  //     print('Storage permission denied');
+  //   }
+  //   return null;
+  // }
 
   // DETAILS ADDED
   Future<void> detailsAdded() async {
@@ -234,6 +333,41 @@ class _MainPageState extends State<MainPage> {
             }
           } else {
             detailsPage = null;
+            //   print('starting');
+            //   _intentSub =
+            //       ReceiveSharingIntent.instance.getMediaStream().listen((value) {
+            //     setState(() {
+            //       _sharedFiles.clear();
+            //       _sharedFiles.addAll(value.where(
+            //           (file) => file.type.toString().startsWith('image/')));
+            //     });
+            //   }, onError: (err) {
+            //     print("Error receiving shared media: $err");
+            //   });
+
+            //   ReceiveSharingIntent.instance.getInitialMedia().then((value) {
+            //     setState(() {
+            //       _sharedFiles.clear();
+            //       _sharedFiles.addAll(value.where(
+            //           (file) => file.type.toString().startsWith('image/')));
+            //       ReceiveSharingIntent.instance.reset();
+            //     });
+            //   });
+
+            //   print('_sharedFiles: $_sharedFiles');
+
+            //   if (_sharedFiles.isNotEmpty) {
+            //     List<String> imagePaths = _sharedFiles
+            //         .where((file) => file.type == 'image')
+            //         .map((file) => file.path)
+            //         .toList();
+
+            //     print('imagePaths: $imagePaths');
+
+            //     setState(() {
+            //       detailsPage = SharePage(imagePaths: imagePaths);
+            //     });
+            //   }
           }
           // }
         } else {
