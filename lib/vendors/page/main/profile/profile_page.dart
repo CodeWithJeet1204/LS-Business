@@ -440,7 +440,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         // });
 
                         const url =
-                            'https://play.google.com/store/apps/details?id=com.ls_business.package';
+                            'https://play.google.com/store/apps/details?id=com.infinitylab.ls_business';
                         if (await canLaunchUrl(Uri.parse(url))) {
                           await launchUrl(Uri.parse(url));
                         } else {
