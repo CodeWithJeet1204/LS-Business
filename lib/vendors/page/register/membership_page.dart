@@ -505,7 +505,6 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
           isPaying = true;
           isDialog = true;
         });
-        print(1);
         try {
           if (leaderNameController.text.toString().trim().isNotEmpty) {
             final leaderSnap = await store
@@ -540,8 +539,6 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
               }
             }
           }
-          print(2);
-          print('selectedMembership: $selectedMembership');
           final membershipSnap = await store
               .collection('Membership')
               .doc(selectedMembership)
@@ -549,7 +546,6 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
 
           final membershipData = membershipSnap.data()!;
 
-          print('membershipData: $membershipData');
 
           final noOfProduct = membershipData['quota']
               [showReverseDuration(selectedDuration!)]['noOfProduct'];
@@ -558,12 +554,8 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
           final noOfPost = membershipData['quota']
               [showReverseDuration(selectedDuration!)]['noOfPost'];
 
-          print('noOfProduct: $noOfProduct');
-          print('noOfPost: $noOfPost');
-          print('noOfShorts: $noOfShorts');
 
           final maxImages = membershipData['maxImages'];
-          print(3);
 
           
         await store
@@ -582,7 +574,6 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
           'maxImages': maxImages,
         });
 
-          print(5);
           setState(() {
             isPaying = false;
             isDialog = false;

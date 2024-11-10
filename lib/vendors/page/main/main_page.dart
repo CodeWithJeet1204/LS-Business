@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:ls_business/auth/sign_in_page.dart';
 import 'package:ls_business/under_development_page.dart';
 import 'package:ls_business/vendors/page/main/update_page.dart';
@@ -26,7 +27,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
 
 class MainPage extends StatefulWidget {
   const MainPage({
@@ -42,7 +42,7 @@ class _MainPageState extends State<MainPage> {
   final store = FirebaseFirestore.instance;
   // static const platform = MethodChannel('com.ls_business.share');
   // List<String> imagePaths = [];
-  late StreamSubscription _intentSub;
+  // late StreamSubscription _intentSub;
   // final List<SharedMediaFile> _sharedFiles = [];
   Widget? detailsPage;
 
@@ -54,25 +54,22 @@ class _MainPageState extends State<MainPage> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    _intentSub.cancel();
-    super.dispose();
-  }
+  // DISPOSE
+  // @override
+  // void dispose() {
+  //   _intentSub.cancel();
+  //   super.dispose();
+  // }
 
   // // HANDLE METHOD
   // Future<void> handleMethod(MethodCall call) async {
-  //   print('hihihihihih');
   //   if (call.method == "openSharePage") {
-  //     print('alalalalala');
   //     setState(() {
   //       imagePaths = List<String>.from(call.arguments);
   //     });
-  //     print('imagePaths: $imagePaths');
   //     await requestStoragePermission();
   //     var status = await Permission.photos.status;
   //     if (!status.isGranted) {
-  //       print('Storage permission denied');
   //       return;
   //     }
   //     List<String> localImagePaths = [];
@@ -81,7 +78,6 @@ class _MainPageState extends State<MainPage> {
   //       if (localPath != null) {
   //         localImagePaths.add(localPath);
   //       } else {
-  //         print('Could not save file for URI: $uri');
   //       }
   //     }
   //     Navigator.of(context).push(
@@ -106,9 +102,7 @@ class _MainPageState extends State<MainPage> {
   //   }
   //   if (await Permission.photos.isGranted &&
   //       await Permission.videos.isGranted) {
-  //     print('Media permissions granted');
   //   } else {
-  //     print('Media permissions denied');
   //   }
   // }
 
@@ -136,54 +130,62 @@ class _MainPageState extends State<MainPage> {
   //       if (response.statusCode == 200) {
   //         return newPath;
   //       } else {
-  //         print('Download failed with status: ${response.statusCode}');
   //       }
   //     } catch (e) {
-  //       print('Error downloading file: $e');
   //     }
   //   } else {
-  //     print('Storage permission denied');
   //   }
   //   return null;
   // }
 
   // DETAILS ADDED
   Future<void> detailsAdded() async {
-    Future<bool> checkLatestVersion() async {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      String currentVersion = packageInfo.version;
+    bool isPlayStoreVersionNewer(
+        String currentVersion, String playStoreVersion) {
+      List<int> currentParts =
+          currentVersion.split('.').map(int.parse).toList();
+      List<int> playStoreParts =
+          playStoreVersion.split('.').map(int.parse).toList();
 
-      final response = await http.get(
-        Uri.parse(
-          'https://play.google.com/store/apps/details?id=com.lsbusiness.package&hl=en',
-        ),
-      );
-
-      if (response.statusCode == 200) {
-        RegExp regex = RegExp(r'Current Version.*?>(\d+\.\d+\.\d+)<');
-        Match? match = regex.firstMatch(response.body);
-        if (match != null) {
-          String playStoreVersion = match.group(1)!;
-          return currentVersion == playStoreVersion;
-        }
-      } else if (response.statusCode == 404) {
-        return true;
+      for (int i = 0; i < playStoreParts.length; i++) {
+        if (i >= currentParts.length) return true;
+        if (playStoreParts[i] > currentParts[i]) return true;
+        if (playStoreParts[i] < currentParts[i]) return false;
       }
       return false;
     }
 
-    try {
-      final isLatestVersion = await checkLatestVersion();
+    Future<bool> checkLatestVersion() async {
+      try {
+        FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
+        await remoteConfig.ensureInitialized();
+        await remoteConfig.fetchAndActivate();
+        PackageInfo packageInfo = await PackageInfo.fromPlatform();
+        String currentVersion = packageInfo.version;
 
-      if (!isLatestVersion) {
-        if (mounted) {
+        String? playStoreVersion = remoteConfig.getString('latest_version');
+
+        // ignore: unnecessary_null_comparison
+        if (playStoreVersion == null || playStoreVersion.isEmpty) {
+          return false;
+        }
+
+        return isPlayStoreVersionNewer(currentVersion, playStoreVersion);
+      } catch (e) {}
+      return false;
+    }
+
+    try {
+      final isUpdateAvailable = await checkLatestVersion();
+
+      if (isUpdateAvailable) {
+        if (context.mounted) {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder: (context) => const UpdatePage(),
             ),
             (route) => false,
           );
-          return;
         }
       }
 
@@ -333,7 +335,6 @@ class _MainPageState extends State<MainPage> {
             }
           } else {
             detailsPage = null;
-            //   print('starting');
             //   _intentSub =
             //       ReceiveSharingIntent.instance.getMediaStream().listen((value) {
             //     setState(() {
@@ -342,7 +343,6 @@ class _MainPageState extends State<MainPage> {
             //           (file) => file.type.toString().startsWith('image/')));
             //     });
             //   }, onError: (err) {
-            //     print("Error receiving shared media: $err");
             //   });
 
             //   ReceiveSharingIntent.instance.getInitialMedia().then((value) {
@@ -354,15 +354,11 @@ class _MainPageState extends State<MainPage> {
             //     });
             //   });
 
-            //   print('_sharedFiles: $_sharedFiles');
-
             //   if (_sharedFiles.isNotEmpty) {
             //     List<String> imagePaths = _sharedFiles
             //         .where((file) => file.type == 'image')
             //         .map((file) => file.path)
             //         .toList();
-
-            //     print('imagePaths: $imagePaths');
 
             //     setState(() {
             //       detailsPage = SharePage(imagePaths: imagePaths);
@@ -391,8 +387,6 @@ class _MainPageState extends State<MainPage> {
         mySnackBar(context, e.toString());
       }
     }
-
-    setState(() {});
   }
 
   @override

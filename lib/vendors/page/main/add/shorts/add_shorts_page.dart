@@ -176,7 +176,6 @@ class AddShortsPageState extends State<AddShortsPage> {
   //         },
   //       );
   //     } catch (e) {
-  //       print('error: ${e.toString()}');
   //       mySnackBar(context, 'Some error occured');
   //     }
   //   } else {

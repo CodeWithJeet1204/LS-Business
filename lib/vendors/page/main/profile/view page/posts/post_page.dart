@@ -309,8 +309,6 @@ class _PostPageState extends State<PostPage> {
                           MyButton(
                             text: 'SAVE',
                             onTap: () async {
-                              print(
-                                  'textChangeController.text: ${textChangeController.text}');
                               await changePostText(
                                   textChangeController.text, isName);
                             },

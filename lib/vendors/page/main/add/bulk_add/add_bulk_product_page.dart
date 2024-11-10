@@ -687,9 +687,7 @@
 //     //   );
 
 //     //   if (response.statusCode == 200) {
-//     //     print('Notification sent successfully');
 //     //   } else {
-//     //     print('Failed to send notification: ${response.body}');
 //     //   }
 
 //     //   authClient.close();

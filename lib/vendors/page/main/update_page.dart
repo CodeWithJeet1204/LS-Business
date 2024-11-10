@@ -18,11 +18,10 @@ class _UpdatePageState extends State<UpdatePage> {
 
   @override
   void initState() {
-    checkForImmediateUpdate();
     super.initState();
+    checkForImmediateUpdate();
   }
 
-  // CHECK FOR IMMEDIATE UPDATE
   Future<void> checkForImmediateUpdate() async {
     try {
       _updateInfo = await InAppUpdate.checkForUpdate();
@@ -32,12 +31,12 @@ class _UpdatePageState extends State<UpdatePage> {
           setState(() {
             isUpdating = true;
           });
+          // ignore: body_might_complete_normally_catch_error
           await InAppUpdate.performImmediateUpdate().catchError((e) async {
             setState(() {
               isUpdating = false;
             });
             await launchPlayStore();
-            return AppUpdateResult.userDeniedUpdate;
           });
         } else {
           launchPlayStore();
@@ -50,13 +49,19 @@ class _UpdatePageState extends State<UpdatePage> {
     }
   }
 
-  // LAUNCH PLAY STORE
   Future<void> launchPlayStore() async {
-    const url =
-        'https://play.google.com/store/apps/details?id=com.lsbusiness.package';
-    if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url));
-    } else {
+    Uri url = Uri.parse(
+      'https://play.google.com/store/apps/details?id=com.infinitylab.ls_business',
+    );
+    try {
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url);
+      } else {
+        if (mounted) {
+          mySnackBar(context, 'Failed to open Play Store. Try again later.');
+        }
+      }
+    } catch (e) {
       if (mounted) {
         mySnackBar(context, 'Some error occurred, Try Again Later');
       }
@@ -72,32 +77,35 @@ class _UpdatePageState extends State<UpdatePage> {
         title: const Text('Update This App'),
       ),
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              isUpdating
-                  ? 'Updating the App\nPls Wait'
-                  : 'Please update this app to the latest version to continue',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: primaryDark,
-                fontSize: width * 0.05,
-                fontWeight: FontWeight.w500,
+        child: Padding(
+          padding: EdgeInsets.all(width * 0.0225),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                isUpdating
+                    ? 'Updating the App\nPlease Wait'
+                    : 'Please update this app to the latest version to continue',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: primaryDark,
+                  fontSize: width * 0.05,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
-            const SizedBox(height: 18),
-            isUpdating
-                ? const LinearProgressIndicator()
-                : MyButton(
-                    onTap: () async {
-                      await launchPlayStore();
-                    },
-                    text: 'UPDATE',
-                    horizontalPadding: 0,
-                  ),
-          ],
+              const SizedBox(height: 18),
+              isUpdating
+                  ? const LinearProgressIndicator()
+                  : MyButton(
+                      onTap: () async {
+                        await launchPlayStore();
+                      },
+                      text: 'UPDATE',
+                      horizontalPadding: 0,
+                    ),
+            ],
+          ),
         ),
       ),
     );
