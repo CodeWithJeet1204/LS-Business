@@ -3,7 +3,7 @@ description: "Vendor App For Localsearch"
 
 publish_to: "none"
 
-version: 1.0.1+7
+version: 1.0.8+8
 
 environment:
   sdk: ">=3.2.3 <4.0.0"

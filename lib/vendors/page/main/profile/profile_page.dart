@@ -36,8 +36,10 @@ class _ProfilePageState extends State<ProfilePage> {
   // INIT STATE
   @override
   void initState() {
-    getShopType();
     super.initState();
+    if (context.mounted) {
+      getShopType();
+    }
   }
 
   // GET SHOP TYPE

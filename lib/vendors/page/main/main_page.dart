@@ -141,7 +141,9 @@ class _MainPageState extends State<MainPage> {
   // DETAILS ADDED
   Future<void> detailsAdded() async {
     bool isPlayStoreVersionNewer(
-        String currentVersion, String playStoreVersion) {
+      String currentVersion,
+      String playStoreVersion,
+    ) {
       List<int> currentParts =
           currentVersion.split('.').map(int.parse).toList();
       List<int> playStoreParts =
@@ -162,8 +164,11 @@ class _MainPageState extends State<MainPage> {
         await remoteConfig.fetchAndActivate();
         PackageInfo packageInfo = await PackageInfo.fromPlatform();
         String currentVersion = packageInfo.version;
+        print('currentVersion: $currentVersion');
 
         String? playStoreVersion = remoteConfig.getString('latest_version');
+
+        print('playStoreVersion: $playStoreVersion');
 
         // ignore: unnecessary_null_comparison
         if (playStoreVersion == null || playStoreVersion.isEmpty) {
@@ -177,6 +182,7 @@ class _MainPageState extends State<MainPage> {
 
     try {
       final isUpdateAvailable = await checkLatestVersion();
+      print('isUpdateAvailable: $isUpdateAvailable');
 
       if (isUpdateAvailable) {
         if (context.mounted) {
@@ -401,6 +407,8 @@ class _MainPageState extends State<MainPage> {
       loadedPages.contains(2) ? const AddDiscountPage() : Container(),
       const ProfilePage(),
     ];
+
+    // TODO: ADD SHARING IMAGES FROM OTHER APPS TO POST OR STATUS
 
     return detailsPage ??
         Scaffold(
