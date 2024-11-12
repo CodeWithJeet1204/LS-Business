@@ -51,21 +51,24 @@ Future<List<XFile>> pickCompressedImage(
       //   }
       //   continue;
       // }
-      await Future.wait(images.map((XFile image) async {
-        final dir = await pp.getTemporaryDirectory();
-        final timestamp = DateTime.now().millisecondsSinceEpoch;
-        final targetPath = '${dir.absolute.path}/temp_$timestamp.jpg';
+      await Future.forEach(
+        images,
+        (XFile image) async {
+          final dir = await pp.getTemporaryDirectory();
+          final timestamp = DateTime.now().millisecondsSinceEpoch;
+          final targetPath = '${dir.absolute.path}/temp_$timestamp.jpg';
 
-        final compressedFile = await FlutterImageCompress.compressAndGetFile(
-          image.path,
-          targetPath,
-          quality: 50,
-        );
+          final compressedFile = await FlutterImageCompress.compressAndGetFile(
+            image.path,
+            targetPath,
+            quality: 50,
+          );
 
-        if (compressedFile != null) {
-          results.add(compressedFile);
-        }
-      }));
+          if (compressedFile != null) {
+            results.add(compressedFile);
+          }
+        },
+      );
 
       return results;
     }
