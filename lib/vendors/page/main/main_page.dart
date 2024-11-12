@@ -322,6 +322,7 @@ class _MainPageState extends State<MainPage> {
             if (mounted) {
               await showDialog(
                 context: context,
+                barrierDismissible: false,
                 builder: (context) {
                   return AlertDialog(
                     title: const Text('Your Membership Has Expired'),

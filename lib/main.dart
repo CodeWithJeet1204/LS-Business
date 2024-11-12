@@ -1,3 +1,4 @@
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:ls_business/auth/sign_in_page.dart';
 import 'package:ls_business/firebase_options.dart';
 import 'package:ls_business/vendors/page/main/main_page.dart';
@@ -17,11 +18,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     name: 'localsearch',
     options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await Firebase.initializeApp();
+  await FirebaseAppCheck.instance.activate(
+    androidProvider: AndroidProvider.playIntegrity,
   );
 
   // await Messaging().initNotifications();
