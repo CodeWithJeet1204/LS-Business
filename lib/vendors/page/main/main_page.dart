@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:ls_business/auth/sign_in_page.dart';
 import 'package:ls_business/under_development_page.dart';
 import 'package:ls_business/vendors/page/main/update_page.dart';
@@ -159,19 +158,17 @@ class _MainPageState extends State<MainPage> {
 
     Future<bool> checkLatestVersion() async {
       try {
-        FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
-        await remoteConfig.ensureInitialized();
-        await remoteConfig.fetchAndActivate();
         PackageInfo packageInfo = await PackageInfo.fromPlatform();
         String currentVersion = packageInfo.version;
-        print('currentVersion: $currentVersion');
 
-        String? playStoreVersion = remoteConfig.getString('latest_version');
+        final latestVersionSnap =
+            await store.collection('Information').doc('Latest Version').get();
 
-        print('playStoreVersion: $playStoreVersion');
+        final latestVersionData = latestVersionSnap.data()!;
 
-        // ignore: unnecessary_null_comparison
-        if (playStoreVersion == null || playStoreVersion.isEmpty) {
+        String playStoreVersion = latestVersionData['latest_version'];
+
+        if (playStoreVersion.isEmpty) {
           return false;
         }
 
@@ -182,7 +179,6 @@ class _MainPageState extends State<MainPage> {
 
     try {
       final isUpdateAvailable = await checkLatestVersion();
-      print('isUpdateAvailable: $isUpdateAvailable');
 
       if (isUpdateAvailable) {
         if (context.mounted) {

@@ -3,7 +3,7 @@ description: "Vendor App For Localsearch"
 
 publish_to: "none"
 
-version: 1.0.8+8
+version: 1.0.9+9
 
 environment:
   sdk: ">=3.2.3 <4.0.0"
@@ -39,7 +39,6 @@ dependencies:
   package_info_plus: ^8.0.2
   flutter_image_compress: ^2.3.0
   share_plus: ^10.1.1
-  firebase_remote_config: ^5.1.4
   firebase_app_check: ^0.3.1+5
   # permission_handler: ^11.3.1
   # dio: ^5.7.0
