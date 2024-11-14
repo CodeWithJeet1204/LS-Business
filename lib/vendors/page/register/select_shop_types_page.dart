@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ls_business/vendors/page/register/business_select_categories_page.dart';
+import 'package:ls_business/vendors/page/register/select_categories_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/select_container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,8 +8,8 @@ import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:ls_business/widgets/video_tutorial.dart';
 
-class BusinessChooseShopTypesPage extends StatefulWidget {
-  const BusinessChooseShopTypesPage({
+class SelectShopTypesPage extends StatefulWidget {
+  const SelectShopTypesPage({
     super.key,
     this.selectedShopTypes,
     required this.isEditing,
@@ -19,17 +19,14 @@ class BusinessChooseShopTypesPage extends StatefulWidget {
   final List? selectedShopTypes;
 
   @override
-  State<BusinessChooseShopTypesPage> createState() =>
-      _BusinessChooseShopTypesPageState();
+  State<SelectShopTypesPage> createState() => _SelectShopTypesPageState();
 }
 
-class _BusinessChooseShopTypesPageState
-    extends State<BusinessChooseShopTypesPage> {
+class _SelectShopTypesPageState extends State<SelectShopTypesPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   Map<String, dynamic>? shopTypes;
   List selected = [];
-  bool isNext = false;
   bool isDialog = false;
 
   // INIT STATE
@@ -67,7 +64,6 @@ class _BusinessChooseShopTypesPageState
     }
 
     setState(() {
-      isNext = true;
       isDialog = true;
     });
 
@@ -81,14 +77,13 @@ class _BusinessChooseShopTypesPageState
     });
 
     setState(() {
-      isNext = false;
       isDialog = false;
     });
 
     if (mounted) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => BusinessChooseCategoriesPage(
+          builder: (context) => SelectCategoriesPage(
             selectedTypes: selected,
             isEditing: widget.isEditing,
           ),
@@ -175,7 +170,7 @@ class _BusinessChooseShopTypesPageState
             onPressed: () async {
               await next();
             },
-            child: const Icon(Icons.arrow_forward),
+            child: Icon(widget.isEditing ? Icons.done : Icons.arrow_forward),
           ),
         ),
       ),

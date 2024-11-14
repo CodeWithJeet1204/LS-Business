@@ -193,7 +193,9 @@ class MyApp extends StatelessWidget {
           // const ConnectivityNotificationWidget(),
         ],
       ),
-      // home: const SignInPage(),
+      // home: const BusinessTimingsPage(
+      //   fromMainPage: true,
+      // ),
     );
   }
 }

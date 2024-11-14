@@ -10,8 +10,8 @@ import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:ls_business/widgets/video_tutorial.dart';
 
-class BusinessChooseProductsPage extends StatefulWidget {
-  const BusinessChooseProductsPage({
+class SelectProductsPage extends StatefulWidget {
+  const SelectProductsPage({
     super.key,
     required this.selectedCategories,
     required this.selectedTypes,
@@ -25,20 +25,18 @@ class BusinessChooseProductsPage extends StatefulWidget {
   final List? selectedProducts;
 
   @override
-  State<BusinessChooseProductsPage> createState() =>
-      _BusinessChooseProductsPageState();
+  State<SelectProductsPage> createState() => _SelectProductsPageState();
 }
 
-class _BusinessChooseProductsPageState
-    extends State<BusinessChooseProductsPage> {
+class _SelectProductsPageState extends State<SelectProductsPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   Map<String, dynamic>? allProducts;
+  Map<String, bool> selectAll = {};
   List selectedProducts = [];
   int? total;
   int noOf = 4;
   final scrollController = ScrollController();
-  bool isNext = false;
   bool isDialog = false;
 
   // INIT STATE
@@ -49,6 +47,11 @@ class _BusinessChooseProductsPageState
     if (widget.selectedProducts != null) {
       setState(() {
         selectedProducts = widget.selectedProducts!;
+      });
+    }
+    for (var selectedCategory in widget.selectedCategories) {
+      selectAll.addAll({
+        selectedCategory: false,
       });
     }
     super.initState();
@@ -99,48 +102,54 @@ class _BusinessChooseProductsPageState
     if (selectedProducts.isEmpty) {
       return mySnackBar(context, 'Select Atleast One Product');
     }
+    print('selectedProducts: $selectedProducts');
 
-    setState(() {
-      isNext = true;
-      isDialog = true;
-    });
+    try {
+      setState(() {
+        isDialog = true;
+      });
 
-    await store
-        .collection('Business')
-        .doc('Owners')
-        .collection('Shops')
-        .doc(auth.currentUser!.uid)
-        .update({
-      'Products': selectedProducts,
-    });
+      await store
+          .collection('Business')
+          .doc('Owners')
+          .collection('Shops')
+          .doc(auth.currentUser!.uid)
+          .update({
+        'Products': selectedProducts,
+      });
 
-    setState(() {
-      isNext = false;
-      isDialog = false;
-    });
+      setState(() {
+        isDialog = false;
+      });
 
-    if (mounted) {
-      if (widget.isEditing) {
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => const MainPage(),
-          ),
-          (route) => false,
-        );
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const BusinessDetailsPage(),
-          ),
-        );
-      } else {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const SelectBusinessTimingsPage(
-              fromMainPage: false,
+      if (mounted) {
+        if (widget.isEditing) {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => const MainPage(),
             ),
-          ),
-        );
+            (route) => false,
+          );
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const BusinessDetailsPage(),
+            ),
+          );
+        } else {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const BusinessTimingsPage(
+                fromMainPage: false,
+              ),
+            ),
+          );
+        }
       }
+    } catch (e) {
+      setState(() {
+        isDialog = false;
+      });
+      mySnackBar(context, 'Some error occured');
     }
   }
 
@@ -197,17 +206,60 @@ class _BusinessChooseProductsPageState
 
                         return Column(
                           children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: width * 0.0225,
-                              ),
-                              child: Text(
-                                subCategory!.toString().trim(),
-                                style: TextStyle(
-                                  fontSize: width * 0.05,
-                                  fontWeight: FontWeight.w500,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: width * 0.0225,
+                                  ),
+                                  child: Text(
+                                    subCategory!.toString().trim(),
+                                    style: TextStyle(
+                                      fontSize: width * 0.05,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                Checkbox(
+                                  value:
+                                      selectAll[subCategory.toString().trim()],
+                                  onChanged: (value) {
+                                    setState(() {
+                                      selectAll[subCategory.toString().trim()] =
+                                          !selectAll[
+                                              subCategory.toString().trim()]!;
+                                    });
+                                    print(
+                                        'final: ${allProducts![subCategory]}');
+                                    if (selectAll[
+                                        subCategory.toString().trim()]!) {
+                                      for (var product
+                                          in allProducts![subCategory]) {
+                                        if (!selectedProducts
+                                            .contains(product)) {
+                                          setState(() {
+                                            selectedProducts.add(product);
+                                          });
+                                        }
+                                      }
+                                    } else {
+                                      for (var product
+                                          in allProducts![subCategory]) {
+                                        if (selectedProducts
+                                            .contains(product)) {
+                                          setState(() {
+                                            selectedProducts.remove(product);
+                                          });
+                                        }
+                                      }
+                                    }
+                                  },
+                                  activeColor: primaryDark,
+                                  checkColor: primary2,
+                                ),
+                              ],
                             ),
                             ListView.builder(
                               shrinkWrap: true,
@@ -328,9 +380,7 @@ class _BusinessChooseProductsPageState
             onPressed: () async {
               await next();
             },
-            child: isNext
-                ? const CircularProgressIndicator()
-                : Icon(widget.isEditing ? Icons.done : Icons.arrow_forward),
+            child: Icon(widget.isEditing ? Icons.done : Icons.arrow_forward),
           ),
         ),
       ),

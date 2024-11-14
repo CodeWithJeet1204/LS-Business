@@ -26,6 +26,10 @@ class MainActivity : FlutterActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        FirebaseApp.initializeApp(/*context=*/ this);
+        val firebaseAppCheck = FirebaseAppCheck.getInstance()
+        firebaseAppCheck.installAppCheckProviderFactory(
+                DebugAppCheckProviderFactory.getInstance())
         super.onCreate(savedInstanceState)
         handleIncomingIntent(intent)
     }

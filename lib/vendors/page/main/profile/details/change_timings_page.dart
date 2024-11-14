@@ -343,7 +343,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontSize: width * 0.06,
+                        fontSize: width * 0.05,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -428,9 +428,9 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                         },
                                                         icon: Icon(
                                                           FeatherIcons.edit,
-                                                          size: width * 0.066,
+                                                          size: width * 0.055,
                                                         ),
-                                                        tooltip: 'Change Time',
+                                                        tooltip: 'Change',
                                                       )
                                                     : Container(),
                                               ],
@@ -458,7 +458,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                         TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                       color: primaryDark,
-                                                      fontSize: width * 0.066,
+                                                      fontSize: width * 0.055,
                                                       fontWeight:
                                                           FontWeight.w600,
                                                     ),
@@ -517,9 +517,9 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                         },
                                                         icon: Icon(
                                                           FeatherIcons.edit,
-                                                          size: width * 0.066,
+                                                          size: width * 0.055,
                                                         ),
-                                                        tooltip: 'Change Time',
+                                                        tooltip: 'Change',
                                                       )
                                                     : Container(),
                                               ],
@@ -547,7 +547,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                         TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                       color: primaryDark,
-                                                      fontSize: width * 0.066,
+                                                      fontSize: width * 0.055,
                                                       fontWeight:
                                                           FontWeight.w600,
                                                     ),
@@ -596,7 +596,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontSize: width * 0.06,
+                        fontSize: width * 0.05,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -681,9 +681,9 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                         },
                                                         icon: Icon(
                                                           FeatherIcons.edit,
-                                                          size: width * 0.066,
+                                                          size: width * 0.055,
                                                         ),
-                                                        tooltip: 'Change Time',
+                                                        tooltip: 'Change',
                                                       )
                                                     : Container(),
                                               ],
@@ -711,7 +711,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                         TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                       color: primaryDark,
-                                                      fontSize: width * 0.066,
+                                                      fontSize: width * 0.055,
                                                       fontWeight:
                                                           FontWeight.w600,
                                                     ),
@@ -770,9 +770,9 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                         },
                                                         icon: Icon(
                                                           FeatherIcons.edit,
-                                                          size: width * 0.066,
+                                                          size: width * 0.055,
                                                         ),
-                                                        tooltip: 'Change Time',
+                                                        tooltip: 'Change',
                                                       )
                                                     : Container(),
                                               ],
@@ -800,7 +800,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                         TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                       color: primaryDark,
-                                                      fontSize: width * 0.066,
+                                                      fontSize: width * 0.055,
                                                       fontWeight:
                                                           FontWeight.w600,
                                                     ),
@@ -849,7 +849,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontSize: width * 0.06,
+                        fontSize: width * 0.05,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -934,9 +934,9 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                         },
                                                         icon: Icon(
                                                           FeatherIcons.edit,
-                                                          size: width * 0.066,
+                                                          size: width * 0.055,
                                                         ),
-                                                        tooltip: 'Change Time',
+                                                        tooltip: 'Change',
                                                       )
                                                     : Container(),
                                               ],
@@ -964,7 +964,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                         TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                       color: primaryDark,
-                                                      fontSize: width * 0.066,
+                                                      fontSize: width * 0.055,
                                                       fontWeight:
                                                           FontWeight.w600,
                                                     ),
@@ -1023,9 +1023,9 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                         },
                                                         icon: Icon(
                                                           FeatherIcons.edit,
-                                                          size: width * 0.066,
+                                                          size: width * 0.055,
                                                         ),
-                                                        tooltip: 'Change Time',
+                                                        tooltip: 'Change',
                                                       )
                                                     : Container(),
                                               ],
@@ -1053,7 +1053,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                                         TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                       color: primaryDark,
-                                                      fontSize: width * 0.066,
+                                                      fontSize: width * 0.055,
                                                       fontWeight:
                                                           FontWeight.w600,
                                                     ),

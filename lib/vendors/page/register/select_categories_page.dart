@@ -1,15 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ls_business/vendors/page/register/business_select_products_page.dart';
+import 'package:ls_business/vendors/page/register/select_products_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/select_container.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:ls_business/widgets/video_tutorial.dart';
 
-class BusinessChooseCategoriesPage extends StatefulWidget {
-  const BusinessChooseCategoriesPage({
+class SelectCategoriesPage extends StatefulWidget {
+  const SelectCategoriesPage({
     super.key,
     required this.selectedTypes,
     required this.isEditing,
@@ -21,24 +21,28 @@ class BusinessChooseCategoriesPage extends StatefulWidget {
   final List? selectedCategories;
 
   @override
-  State<BusinessChooseCategoriesPage> createState() =>
-      _BusinessChooseCategoriesPageState();
+  State<SelectCategoriesPage> createState() => _SelectCategoriesPageState();
 }
 
-class _BusinessChooseCategoriesPageState
-    extends State<BusinessChooseCategoriesPage> {
+class _SelectCategoriesPageState extends State<SelectCategoriesPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   List<String> selectedCategories = [];
+  Map<String, bool> selectAll = {};
   Map<String, dynamic>? categories;
   String? expandedCategory;
-  bool isNext = false;
   bool isDialog = false;
 
   // INIT STATE
   @override
   void initState() {
     getCategories();
+    print('selectType: ${widget.selectedTypes}');
+    for (var selectedType in widget.selectedTypes) {
+      selectAll.addAll({
+        selectedType: false,
+      });
+    }
     super.initState();
   }
 
@@ -64,35 +68,40 @@ class _BusinessChooseCategoriesPageState
       return mySnackBar(context, 'Select Atleast One Category');
     }
 
-    setState(() {
-      isNext = true;
-      isDialog = true;
-    });
+    try {
+      setState(() {
+        isDialog = true;
+      });
 
-    await store
-        .collection('Business')
-        .doc('Owners')
-        .collection('Shops')
-        .doc(auth.currentUser!.uid)
-        .update({
-      'Categories': selectedCategories,
-    });
+      await store
+          .collection('Business')
+          .doc('Owners')
+          .collection('Shops')
+          .doc(auth.currentUser!.uid)
+          .update({
+        'Categories': selectedCategories,
+      });
 
-    setState(() {
-      isNext = false;
-      isDialog = false;
-    });
+      setState(() {
+        isDialog = false;
+      });
 
-    if (mounted) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => BusinessChooseProductsPage(
-            selectedCategories: selectedCategories,
-            selectedTypes: widget.selectedTypes,
-            isEditing: widget.isEditing,
+      if (mounted) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => SelectProductsPage(
+              selectedCategories: selectedCategories,
+              selectedTypes: widget.selectedTypes,
+              isEditing: widget.isEditing,
+            ),
           ),
-        ),
-      );
+        );
+      }
+    } catch (e) {
+      setState(() {
+        isDialog = false;
+      });
+      mySnackBar(context, 'Some error occured');
     }
   }
 
@@ -154,14 +163,53 @@ class _BusinessChooseCategoriesPageState
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: Text(
-                                category.toString().trim(),
-                                style: const TextStyle(
-                                  fontSize: 22,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 10,
+                                    horizontal: width * 0.0125,
+                                  ),
+                                  child: Text(
+                                    category.toString().trim(),
+                                    style: const TextStyle(
+                                      fontSize: 22,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                Checkbox(
+                                  value: selectAll[category.toString().trim()],
+                                  onChanged: (value) {
+                                    setState(() {
+                                      selectAll[category.toString().trim()] =
+                                          !selectAll[
+                                              category.toString().trim()]!;
+                                    });
+                                    if (selectAll[
+                                        category.toString().trim()]!) {
+                                      for (var entry
+                                          in categoryData!.entries.toList()) {
+                                        if (!selectedCategories
+                                            .contains(entry.key)) {
+                                          selectedCategories.add(entry.key);
+                                        }
+                                      }
+                                    } else {
+                                      for (var entry
+                                          in categoryData!.entries.toList()) {
+                                        if (selectedCategories
+                                            .contains(entry.key)) {
+                                          selectedCategories.remove(entry.key);
+                                        }
+                                      }
+                                    }
+                                  },
+                                  activeColor: primaryDark,
+                                  checkColor: primary2,
+                                ),
+                              ],
                             ),
                             GridView.builder(
                               shrinkWrap: true,
@@ -207,9 +255,7 @@ class _BusinessChooseCategoriesPageState
             onPressed: () async {
               await next();
             },
-            child: isNext
-                ? const CircularProgressIndicator()
-                : const Icon(Icons.arrow_forward),
+            child: const Icon(Icons.arrow_forward),
           ),
         ),
       ),

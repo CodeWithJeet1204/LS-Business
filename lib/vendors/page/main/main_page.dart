@@ -3,8 +3,8 @@ import 'package:ls_business/auth/sign_in_page.dart';
 import 'package:ls_business/under_development_page.dart';
 import 'package:ls_business/vendors/page/main/update_page.dart';
 import 'package:ls_business/vendors/provider/main_page_provider.dart';
-import 'package:ls_business/vendors/page/register/business_select_categories_page.dart';
-import 'package:ls_business/vendors/page/register/business_select_products_page.dart';
+import 'package:ls_business/vendors/page/register/select_categories_page.dart';
+import 'package:ls_business/vendors/page/register/select_products_page.dart';
 import 'package:ls_business/vendors/page/register/business_social_media_page.dart';
 import 'package:ls_business/vendors/page/register/business_timings_page.dart';
 import 'package:ls_business/vendors/page/register/get_location_page.dart';
@@ -15,7 +15,7 @@ import 'package:ls_business/vendors/page/main/add/add_page.dart';
 import 'package:ls_business/vendors/page/main/analytics/analytics_page.dart';
 import 'package:ls_business/vendors/page/main/discount/add_discount_page.dart';
 import 'package:ls_business/vendors/page/main/profile/profile_page.dart';
-import 'package:ls_business/vendors/page/register/business_select_shop_types_page.dart';
+import 'package:ls_business/vendors/page/register/select_shop_types_page.dart';
 import 'package:ls_business/vendors/page/register/business_register_details_page.dart';
 import 'package:ls_business/vendors/page/register/membership_page.dart';
 import 'package:ls_business/vendors/page/register/owner_register_details_page.dart';
@@ -44,6 +44,7 @@ class _MainPageState extends State<MainPage> {
   // late StreamSubscription _intentSub;
   // final List<SharedMediaFile> _sharedFiles = [];
   Widget? detailsPage;
+  bool isGettingData = true;
 
   // INIT STATE
   @override
@@ -276,18 +277,18 @@ class _MainPageState extends State<MainPage> {
             );
           } else if (getBusinessDetailsAddedData['Instagram'] != null &&
               getBusinessDetailsAddedData['Type'] == null) {
-            detailsPage = const BusinessChooseShopTypesPage(
+            detailsPage = const SelectShopTypesPage(
               isEditing: true,
             );
           } else if (getBusinessDetailsAddedData['Type'] != null &&
               getBusinessDetailsAddedData['Categories'] == null) {
-            detailsPage = BusinessChooseCategoriesPage(
+            detailsPage = SelectCategoriesPage(
               selectedTypes: getBusinessDetailsAddedData['Type'],
               isEditing: true,
             );
           } else if (getBusinessDetailsAddedData['Categories'] != null &&
               getBusinessDetailsAddedData['Products'] == null) {
-            detailsPage = BusinessChooseProductsPage(
+            detailsPage = SelectProductsPage(
               selectedTypes: getBusinessDetailsAddedData['Type'],
               selectedCategories: getBusinessDetailsAddedData['Categories'],
               isEditing: true,
@@ -297,7 +298,7 @@ class _MainPageState extends State<MainPage> {
             detailsPage = const GetLocationPage();
           } else if (getBusinessDetailsAddedData['weekdayStartTime'] == null ||
               getBusinessDetailsAddedData['weekdayEndTime'] == null) {
-            detailsPage = const SelectBusinessTimingsPage(
+            detailsPage = const BusinessTimingsPage(
               fromMainPage: true,
             );
           } else if (getUserDetailsAddedData['Image'] != null &&
@@ -337,7 +338,10 @@ class _MainPageState extends State<MainPage> {
               );
             }
           } else {
-            detailsPage = null;
+            setState(() {
+              detailsPage = null;
+              isGettingData = false;
+            });
             //   _intentSub =
             //       ReceiveSharingIntent.instance.getMediaStream().listen((value) {
             //     setState(() {
@@ -407,73 +411,79 @@ class _MainPageState extends State<MainPage> {
 
     // TODO: ADD SHARING IMAGES FROM OTHER APPS TO POST OR STATUS
 
-    return detailsPage ??
-        Scaffold(
-          body: IndexedStack(
-            index: current,
-            children: allPages,
-          ),
-          resizeToAvoidBottomInset: false,
-          bottomNavigationBar: BottomNavigationBar(
-            elevation: 0,
-            backgroundColor: white,
-            selectedLabelStyle: const TextStyle(
-              fontWeight: FontWeight.w500,
-              color: primaryDark,
+    return isGettingData
+        ? Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
             ),
-            useLegacyColorScheme: false,
-            type: BottomNavigationBarType.fixed,
-            selectedIconTheme: const IconThemeData(
-              size: 24,
-              color: primaryDark,
-            ),
-            unselectedIconTheme: IconThemeData(
-              size: 24,
-              color: black.withOpacity(0.5),
-            ),
-            currentIndex: current,
-            onTap: (index) {
-              mainPageProvider.changeIndex(index);
-            },
-            items: const [
-              BottomNavigationBarItem(
-                activeIcon: Icon(
-                  FeatherIcons.barChart,
-                ),
-                icon: Icon(
-                  FeatherIcons.barChart2,
-                ),
-                label: 'Analytics',
+          )
+        : detailsPage ??
+            Scaffold(
+              body: IndexedStack(
+                index: current,
+                children: allPages,
               ),
-              BottomNavigationBarItem(
-                activeIcon: Icon(
-                  FeatherIcons.plusSquare,
+              resizeToAvoidBottomInset: false,
+              bottomNavigationBar: BottomNavigationBar(
+                elevation: 0,
+                backgroundColor: white,
+                selectedLabelStyle: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: primaryDark,
                 ),
-                icon: Icon(
-                  FeatherIcons.plusCircle,
+                useLegacyColorScheme: false,
+                type: BottomNavigationBarType.fixed,
+                selectedIconTheme: const IconThemeData(
+                  size: 24,
+                  color: primaryDark,
                 ),
-                label: 'Add',
+                unselectedIconTheme: IconThemeData(
+                  size: 24,
+                  color: black.withOpacity(0.5),
+                ),
+                currentIndex: current,
+                onTap: (index) {
+                  mainPageProvider.changeIndex(index);
+                },
+                items: const [
+                  BottomNavigationBarItem(
+                    activeIcon: Icon(
+                      FeatherIcons.barChart,
+                    ),
+                    icon: Icon(
+                      FeatherIcons.barChart2,
+                    ),
+                    label: 'Analytics',
+                  ),
+                  BottomNavigationBarItem(
+                    activeIcon: Icon(
+                      FeatherIcons.plusSquare,
+                    ),
+                    icon: Icon(
+                      FeatherIcons.plusCircle,
+                    ),
+                    label: 'Add',
+                  ),
+                  BottomNavigationBarItem(
+                    activeIcon: Icon(
+                      FeatherIcons.percent,
+                    ),
+                    icon: Icon(
+                      Icons.percent_rounded,
+                    ),
+                    label: 'Discount',
+                  ),
+                  BottomNavigationBarItem(
+                    activeIcon: Icon(
+                      FeatherIcons.user,
+                    ),
+                    icon: Icon(
+                      FeatherIcons.user,
+                    ),
+                    label: 'Profile',
+                  ),
+                ],
               ),
-              BottomNavigationBarItem(
-                activeIcon: Icon(
-                  FeatherIcons.percent,
-                ),
-                icon: Icon(
-                  Icons.percent_rounded,
-                ),
-                label: 'Discount',
-              ),
-              BottomNavigationBarItem(
-                activeIcon: Icon(
-                  FeatherIcons.user,
-                ),
-                icon: Icon(
-                  FeatherIcons.user,
-                ),
-                label: 'Profile',
-              ),
-            ],
-          ),
-        );
+            );
   }
 }

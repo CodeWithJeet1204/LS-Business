@@ -1,5 +1,5 @@
 import 'package:ls_business/vendors/page/main/main_page.dart';
-import 'package:ls_business/vendors/page/register/business_select_shop_types_page.dart';
+import 'package:ls_business/vendors/page/register/select_shop_types_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
@@ -102,7 +102,7 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
         } else {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => const BusinessChooseShopTypesPage(
+              builder: (context) => const SelectShopTypesPage(
                 isEditing: false,
               ),
             ),
@@ -146,7 +146,7 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
       if (mounted) {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => const BusinessChooseShopTypesPage(
+            builder: (context) => const SelectShopTypesPage(
               isEditing: false,
             ),
           ),

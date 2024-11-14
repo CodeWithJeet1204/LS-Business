@@ -9,9 +9,9 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:ls_business/vendors/page/main/profile/details/change_timings_page.dart';
-import 'package:ls_business/vendors/page/register/business_select_shop_types_page.dart';
-import 'package:ls_business/vendors/page/register/business_select_categories_page.dart';
-import 'package:ls_business/vendors/page/register/business_select_products_page.dart';
+import 'package:ls_business/vendors/page/register/select_shop_types_page.dart';
+import 'package:ls_business/vendors/page/register/select_categories_page.dart';
+import 'package:ls_business/vendors/page/register/select_products_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/image_pick_dialog.dart';
@@ -67,8 +67,10 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
           isChangingImage = true;
         });
 
+        print('previousUrl: $previousUrl');
+
         if (previousUrl !=
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1fDf705o-VZ3lVxTLh0jLPyFApbnwGoNHhSpwODOC0g&s') {
+            'https://img.freepik.com/premium-vector/shop-clipart-cartoon-style-vector-illustration_761413-4813.jpg?semt=ais_hybrid') {
           await storage.refFromURL(previousUrl).delete();
         }
 
@@ -409,7 +411,8 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                           child: IconButton.filledTonal(
                                             onPressed: () async {
                                               await changeImage(
-                                                  shopData['Image']);
+                                                shopData['Image'],
+                                              );
                                             },
                                             icon: Icon(
                                               FeatherIcons.camera,
@@ -816,7 +819,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                               Navigator.of(context).push(
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      BusinessChooseShopTypesPage(
+                                                      SelectShopTypesPage(
                                                     isEditing: true,
                                                     selectedShopTypes:
                                                         shopData['Type'],
@@ -887,7 +890,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                               Navigator.of(context).push(
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      BusinessChooseCategoriesPage(
+                                                      SelectCategoriesPage(
                                                     selectedTypes:
                                                         shopData['Type'],
                                                     isEditing: true,
@@ -960,7 +963,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                               Navigator.of(context).push(
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      BusinessChooseProductsPage(
+                                                      SelectProductsPage(
                                                     selectedTypes:
                                                         shopData['Type'],
                                                     isEditing: true,
