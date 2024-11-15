@@ -1,4 +1,3 @@
-import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:ls_business/auth/sign_in_page.dart';
 import 'package:ls_business/firebase_options.dart';
 import 'package:ls_business/vendors/page/main/main_page.dart';
@@ -25,12 +24,11 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await Firebase.initializeApp();
-  await FirebaseAppCheck.instance.activate(
-    androidProvider: AndroidProvider.playIntegrity,
-  );
+  // await FirebaseAppCheck.instance.activate(
+  //   androidProvider: AndroidProvider.playIntegrity,
+  // );
 
   // await Messaging().initNotifications();
-  // await FirebaseAppCheck.instance.activate();
 
   runApp(
     MultiProvider(

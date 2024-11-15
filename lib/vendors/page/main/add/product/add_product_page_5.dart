@@ -27,6 +27,7 @@ class AddProductPage5 extends StatefulWidget {
 class _AddProductPage5State extends State<AddProductPage5> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
+  final storage = FirebaseStorage.instance;
   bool isDeliveryAvailable = false;
   bool isCODAvailable = false;
   bool isRefundAvailable = false;
@@ -52,10 +53,8 @@ class _AddProductPage5State extends State<AddProductPage5> {
       try {
         await Future.wait(
           (provider.productInfo['imageFiles'] as List<File>).map((img) async {
-            Reference ref = FirebaseStorage.instance
-                .ref()
-                .child('Vendor/Products')
-                .child(const Uuid().v4());
+            Reference ref =
+                storage.ref().child('Vendor/Products').child(const Uuid().v4());
             await ref.putFile(img);
             String downloadUrl = await ref.getDownloadURL();
             if (mounted) {

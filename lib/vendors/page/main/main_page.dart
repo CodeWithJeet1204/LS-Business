@@ -1,6 +1,10 @@
 import 'dart:async';
+import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:ls_business/auth/sign_in_page.dart';
 import 'package:ls_business/under_development_page.dart';
+import 'package:ls_business/vendors/page/main/add/share/share_page.dart';
+import 'package:ls_business/vendors/page/main/add/shorts/confirm_shorts_page.dart';
 import 'package:ls_business/vendors/page/main/update_page.dart';
 import 'package:ls_business/vendors/provider/main_page_provider.dart';
 import 'package:ls_business/vendors/page/register/select_categories_page.dart';
@@ -25,6 +29,8 @@ import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class MainPage extends StatefulWidget {
@@ -39,10 +45,9 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
-  // static const platform = MethodChannel('com.ls_business.share');
-  // List<String> imagePaths = [];
-  // late StreamSubscription _intentSub;
-  // final List<SharedMediaFile> _sharedFiles = [];
+  static const platform = MethodChannel('com.ls_business.share');
+  List<String> imagePaths = [];
+  late StreamSubscription _intentSub;
   Widget? detailsPage;
   bool isGettingData = true;
 
@@ -50,93 +55,83 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     detailsAdded();
-    // platform.setMethodCallHandler(handleMethod);
+    platform.setMethodCallHandler(handleMethod);
     super.initState();
   }
 
   // DISPOSE
-  // @override
-  // void dispose() {
-  //   _intentSub.cancel();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    _intentSub.cancel();
+    super.dispose();
+  }
 
-  // // HANDLE METHOD
-  // Future<void> handleMethod(MethodCall call) async {
-  //   if (call.method == "openSharePage") {
-  //     setState(() {
-  //       imagePaths = List<String>.from(call.arguments);
-  //     });
-  //     await requestStoragePermission();
-  //     var status = await Permission.photos.status;
-  //     if (!status.isGranted) {
-  //       return;
-  //     }
-  //     List<String> localImagePaths = [];
-  //     for (var uri in imagePaths) {
-  //       String? localPath = await checkAndSaveFile(Uri.parse(uri));
-  //       if (localPath != null) {
-  //         localImagePaths.add(localPath);
-  //       } else {
-  //       }
-  //     }
-  //     Navigator.of(context).push(
-  //       MaterialPageRoute(
-  //         builder: (context) => SharePage(
-  //           imagePaths: localImagePaths,
-  //         ),
-  //       ),
-  //     );
-  //   }
-  // }
+  // CHECK AND SAVE VIDEO
+  Future<String?> checkAndSaveVideo(String contentUri) async {
+    const platform = MethodChannel('com.ls_business.share');
 
-  // // REQUEST STORAGE PERMISSION
-  // Future<void> requestStoragePermission() async {
-  //   var statusImages = await Permission.photos.status;
-  //   var statusVideos = await Permission.videos.status;
-  //   if (!statusImages.isGranted) {
-  //     await Permission.photos.request();
-  //   }
-  //   if (!statusVideos.isGranted) {
-  //     await Permission.videos.request();
-  //   }
-  //   if (await Permission.photos.isGranted &&
-  //       await Permission.videos.isGranted) {
-  //   } else {
-  //   }
-  // }
+    if (await Permission.videos.request().isGranted) {
+      try {
+        final dir = await getExternalStorageDirectory();
+        final filePath = await platform.invokeMethod(
+          'copyVideoFromUri',
+          {
+            "uri": contentUri,
+            "destinationPath": '${dir!.path}/shared_video.mp4'
+          },
+        );
 
-  // // CHECK AND SAVE FILE
-  // Future<String?> checkAndSaveFile(Uri fileUri) async {
-  //   if (fileUri.scheme == 'content') {
-  //     String? localPath = await saveContentUriToFile(fileUri);
-  //     return localPath;
-  //   }
-  //   String? path = fileUri.toFilePath();
-  //   if (await File(path).exists()) {
-  //     return path;
-  //   }
-  //   return null;
-  // }
+        if (filePath != null) {
+          return filePath;
+        }
+      } catch (e) {
+        print('Error saving video: $e');
+      }
+    }
+    return null;
+  }
 
-  // // SAVE CONTENT URI TO FILE
-  // Future<String?> saveContentUriToFile(Uri contentUri) async {
-  //   if (await Permission.storage.request().isGranted) {
-  //     try {
-  //       Directory tempDir = await getTemporaryDirectory();
-  //       String newPath = '${tempDir.path}/downloaded_file.jpg';
-  //       Response response =
-  //           await Dio().download(contentUri.toString(), newPath);
-  //       if (response.statusCode == 200) {
-  //         return newPath;
-  //       } else {
-  //       }
-  //     } catch (e) {
-  //     }
-  //   } else {
-  //   }
-  //   return null;
-  // }
+  // HANDLE METHOD
+  Future<void> handleMethod(MethodCall call) async {
+    if (call.method == "shareImage") {
+      setState(() {
+        imagePaths = List<String>.from(call.arguments);
+      });
+      if (imagePaths.isNotEmpty) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => SharePage(
+              imagePaths: imagePaths,
+            ),
+          ),
+        );
+      }
+    } else if (call.method == "shareVideo") {
+      print('call: ${call.arguments}');
+      if (call.arguments.isNotEmpty) {
+        final videoPath = await checkAndSaveVideo(
+          call.arguments[0],
+        );
+        print('videoFilePath: ${videoPath}');
+
+        if (videoPath != null) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => ConfirmShortsPage(
+                videoFile: File(videoPath),
+                videoPath: call.arguments[0],
+                isShared: true,
+              ),
+            ),
+          );
+        } else {
+          mySnackBar(context, 'Some error occured');
+        }
+      }
+    } else if (call.method == "videoTooLong") {
+      mySnackBar(context, 'Select video less than 30 seconds long');
+    }
+  }
 
   // DETAILS ADDED
   Future<void> detailsAdded() async {
@@ -342,37 +337,35 @@ class _MainPageState extends State<MainPage> {
               detailsPage = null;
               isGettingData = false;
             });
-            //   _intentSub =
-            //       ReceiveSharingIntent.instance.getMediaStream().listen((value) {
-            //     setState(() {
-            //       _sharedFiles.clear();
-            //       _sharedFiles.addAll(value.where(
-            //           (file) => file.type.toString().startsWith('image/')));
-            //     });
-            //   }, onError: (err) {
+            // _intentSub =
+            //     ReceiveSharingIntent.instance.getMediaStream().listen((value) {
+            //   setState(() {
+            //     _sharedFiles.clear();
+            //     _sharedFiles.addAll(value.where(
+            //         (file) => file.type.toString().startsWith('image/')));
             //   });
+            // }, onError: (err) {});
 
-            //   ReceiveSharingIntent.instance.getInitialMedia().then((value) {
-            //     setState(() {
-            //       _sharedFiles.clear();
-            //       _sharedFiles.addAll(value.where(
-            //           (file) => file.type.toString().startsWith('image/')));
-            //       ReceiveSharingIntent.instance.reset();
-            //     });
+            // ReceiveSharingIntent.instance.getInitialMedia().then((value) {
+            //   setState(() {
+            //     _sharedFiles.clear();
+            //     _sharedFiles.addAll(value.where(
+            //         (file) => file.type.toString().startsWith('image/')));
+            //     ReceiveSharingIntent.instance.reset();
             //   });
+            // });
 
-            //   if (_sharedFiles.isNotEmpty) {
-            //     List<String> imagePaths = _sharedFiles
-            //         .where((file) => file.type == 'image')
-            //         .map((file) => file.path)
-            //         .toList();
+            // if (_sharedFiles.isNotEmpty) {
+            //   List<String> imagePaths = _sharedFiles
+            //       .where((file) => file.type == 'image')
+            //       .map((file) => file.path)
+            //       .toList();
 
-            //     setState(() {
-            //       detailsPage = SharePage(imagePaths: imagePaths);
-            //     });
-            //   }
+            //   setState(() {
+            //     detailsPage = SharePage(imagePaths: imagePaths);
+            //   });
+            // }
           }
-          // }
         } else {
           await auth.signOut();
           if (mounted) {
@@ -408,8 +401,6 @@ class _MainPageState extends State<MainPage> {
       loadedPages.contains(2) ? const AddDiscountPage() : Container(),
       const ProfilePage(),
     ];
-
-    // TODO: ADD SHARING IMAGES FROM OTHER APPS TO POST OR STATUS
 
     return isGettingData
         ? Scaffold(

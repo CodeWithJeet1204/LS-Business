@@ -67,8 +67,6 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
           isChangingImage = true;
         });
 
-        print('previousUrl: $previousUrl');
-
         if (previousUrl !=
             'https://img.freepik.com/premium-vector/shop-clipart-cartoon-style-vector-illustration_761413-4813.jpg?semt=ais_hybrid') {
           await storage.refFromURL(previousUrl).delete();

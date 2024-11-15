@@ -18,10 +18,10 @@ import 'package:ls_business/widgets/video_tutorial.dart';
 class AddStatusPage extends StatefulWidget {
   const AddStatusPage({
     super.key,
-    // this.imagePaths,
+    this.imagePaths,
   });
 
-  // final List<String>? imagePaths;
+  final List<String>? imagePaths;
 
   @override
   State<AddStatusPage> createState() => _AddStatusPageState();
@@ -69,16 +69,16 @@ class _AddStatusPageState extends State<AddStatusPage> {
       isStatus = status;
     });
 
-    // if (isStatus != null && isStatus!) {
-    //   if (widget.imagePaths != null) {
-    //     for (var imagePath in widget.imagePaths!) {
-    //       File file = File(imagePath);
-    //       if (!image.contains(file)) {
-    //         image.add(file);
-    //       }
-    //     }
-    //   }
-    // }
+    if (isStatus != null && isStatus!) {
+      if (widget.imagePaths != null) {
+        for (var imagePath in widget.imagePaths!) {
+          File file = File(imagePath);
+          if (!image.contains(file)) {
+            image.add(file);
+          }
+        }
+      }
+    }
   }
 
   // // GET NO OF POSTS
@@ -127,21 +127,19 @@ class _AddStatusPageState extends State<AddStatusPage> {
         List imageDownloadUrl = [];
 
         try {
-          await Future.wait(
-            image.map((img) async {
-              Reference ref = FirebaseStorage.instance
-                  .ref()
-                  .child('Vendor/Status')
-                  .child(const Uuid().v4());
-              await ref.putFile(img);
-              String downloadUrl = await ref.getDownloadURL();
-              if (mounted) {
-                setState(() {
-                  imageDownloadUrl.add(downloadUrl);
-                });
-              }
-            }),
-          );
+          await Future.forEach(image, (img) async {
+            Reference ref = FirebaseStorage.instance
+                .ref()
+                .child('Vendor/Status')
+                .child(const Uuid().v4());
+            await ref.putFile(img);
+            String downloadUrl = await ref.getDownloadURL();
+            if (mounted) {
+              setState(() {
+                imageDownloadUrl.add(downloadUrl);
+              });
+            }
+          });
         } catch (e) {
           if (mounted) {
             mySnackBar(context, e.toString());
@@ -195,11 +193,11 @@ class _AddStatusPageState extends State<AddStatusPage> {
         if (mounted) {
           mySnackBar(context, 'Posted');
           Navigator.of(context).pop();
-          // if (widget.imagePaths != null) {
-          //   if (Navigator.of(context).canPop()) {
-          //     Navigator.of(context).pop();
-          //   }
-          // }
+          if (widget.imagePaths != null) {
+            if (Navigator.of(context).canPop()) {
+              Navigator.of(context).pop();
+            }
+          }
         }
       } catch (e) {
         setState(() {

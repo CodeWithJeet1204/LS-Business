@@ -254,14 +254,17 @@ class _SelectProductsForCategoryPageState
                                   Map<String, Map<String, dynamic>>.from(
                                       allProducts);
                               List<String> keysToRemove = (await Future.wait(
-                                filteredProducts.entries.map((entry) async {
-                                  return !entry.value['productName']
-                                          .toString()
-                                          .toLowerCase()
-                                          .contains(value.toLowerCase().trim())
-                                      ? entry.key
-                                      : null;
-                                }),
+                                filteredProducts.entries.map(
+                                  (entry) async {
+                                    return !entry.value['productName']
+                                            .toString()
+                                            .toLowerCase()
+                                            .contains(
+                                                value.toLowerCase().trim())
+                                        ? entry.key
+                                        : null;
+                                  },
+                                ),
                               ))
                                   .whereType<String>()
                                   .toList();

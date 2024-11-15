@@ -479,16 +479,22 @@ class _ProductPageState extends State<ProductPage> {
       final remainingSlots = maxImages! - currentImagesLength;
       final validImages = imageList.take(remainingSlots).toList();
 
-      await Future.wait(validImages.map((im) async {
-        final productImageId = const Uuid().v4();
-        Reference ref =
-            storage.ref().child('Vendor/Products').child(productImageId);
-        await ref.putFile(File(im.path));
-        final value = await ref.getDownloadURL();
-        setState(() {
-          images.add(value);
-        });
-      }));
+      await Future.wait(
+        validImages.map(
+          (im) async {
+            final productImageId = const Uuid().v4();
+            Reference ref =
+                storage.ref().child('Vendor/Products').child(productImageId);
+            await ref.putFile(File(im.path));
+            final value = await ref.getDownloadURL();
+            if (!images.contains(value)) {
+              setState(() {
+                images.add(value);
+              });
+            }
+          },
+        ),
+      );
 
       await store
           .collection('Business')
@@ -542,14 +548,20 @@ class _ProductPageState extends State<ProductPage> {
           isImageChanging = true;
           isDialog = true;
         });
-        await Future.wait(imageList.map((im) async {
-          final productImageId = const Uuid().v4();
-          Reference ref =
-              storage.ref().child('Vendor/Products').child(productImageId);
-          await ref.putFile(File(im.path));
-          final value = await ref.getDownloadURL();
-          images.add(value);
-        }));
+        await Future.wait(
+          imageList.map(
+            (im) async {
+              final productImageId = const Uuid().v4();
+              Reference ref =
+                  storage.ref().child('Vendor/Products').child(productImageId);
+              await ref.putFile(File(im.path));
+              final value = await ref.getDownloadURL();
+              if (!images.contains(value)) {
+                images.add(value);
+              }
+            },
+          ),
+        );
 
         await store
             .collection('Business')

@@ -11,7 +11,12 @@ import 'package:video_player/video_player.dart';
 import 'package:ls_business/widgets/video_tutorial.dart';
 
 class AddShortsPage extends StatefulWidget {
-  const AddShortsPage({super.key});
+  const AddShortsPage({
+    super.key,
+    this.videoPath,
+  });
+
+  final List? videoPath;
 
   @override
   AddShortsPageState createState() => AddShortsPageState();
@@ -204,6 +209,7 @@ class AddShortsPageState extends State<AddShortsPage> {
               builder: (context) => ConfirmShortsPage(
                 videoFile: videoFile,
                 videoPath: video.path,
+                isShared: false,
               ),
             ),
           );

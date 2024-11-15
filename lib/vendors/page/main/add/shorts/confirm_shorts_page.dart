@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:ls_business/widgets/text_form_field.dart';
@@ -8,12 +9,12 @@ import 'package:ls_business/vendors/page/main/main_page.dart';
 import 'package:ls_business/widgets/my_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
 import 'package:video_compress/video_compress.dart';
-import 'package:video_player/video_player.dart';
 import 'package:ls_business/widgets/video_tutorial.dart';
 
 class ConfirmShortsPage extends StatefulWidget {
@@ -21,10 +22,12 @@ class ConfirmShortsPage extends StatefulWidget {
     super.key,
     required this.videoFile,
     required this.videoPath,
+    required this.isShared,
   });
 
   final File videoFile;
   final String videoPath;
+  final bool isShared;
 
   @override
   State<ConfirmShortsPage> createState() => _ConfirmShortsPageState();
@@ -35,30 +38,77 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
   final store = FirebaseFirestore.instance;
   final storage = FirebaseStorage.instance;
   final captionController = TextEditingController();
-  late FlickManager flickManager;
+  // late FlickManager flickManager;
+  String? sharedVideo;
   Map<String, dynamic>? data;
-  bool isDone = false;
   bool isDialog = false;
+  bool isDone = false;
+  bool isData = false;
 
   // INIT STATE
   @override
   void initState() {
+    if (widget.isShared) {
+      handleReceivedVideo(widget.videoPath);
+    }
     super.initState();
-    flickManager = FlickManager(
-      videoPlayerController: VideoPlayerController.networkUrl(
-        Uri.file(
-          widget.videoFile.path,
-        ),
-      ),
-    );
+    // flickManager = FlickManager(
+    //   videoPlayerController: VideoPlayerController.networkUrl(
+    //     Uri.file(
+    //       widget.videoFile.path,
+    //     ),
+    //   ),
+    // );
   }
 
   // DISPOSE
   @override
   void dispose() {
     captionController.dispose();
-    flickManager.dispose();
+    // flickManager.dispose();
     super.dispose();
+  }
+
+  // CHECK AND SAVE VIDEO
+  Future<String?> checkAndSaveVideo(String contentUri) async {
+    const platform = MethodChannel('com.ls_business.share');
+
+    if (await Permission.videos.request().isGranted) {
+      try {
+        final dir = await getExternalStorageDirectory();
+        final filePath = await platform.invokeMethod(
+          'copyVideoFromUri',
+          {
+            "uri": contentUri,
+            "destinationPath": '${dir!.path}/shared_video.mp4'
+          },
+        );
+
+        if (filePath != null) {
+          return filePath;
+        }
+      } catch (e) {
+        print('Error saving video: $e');
+      }
+    }
+    return null;
+  }
+
+  // HANDLE RECEIVED VIDEO
+  Future<void> handleReceivedVideo(String videoPath) async {
+    String? localFilePath = await checkAndSaveVideo(
+      videoPath,
+    );
+
+    if (localFilePath != null) {
+      setState(() {
+        sharedVideo = localFilePath;
+      });
+    }
+
+    setState(() {
+      isData = true;
+    });
   }
 
   // COMPRESS VIDEO
@@ -78,8 +128,8 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
     return thumbnail;
   }
 
-  // UPLOAD VIDEO
-  Future<void> uploadVideo(
+  // UPLOAD SHORT
+  Future<void> uploadShort(
     String? productId,
     String? productName,
     String videoPath,
@@ -186,15 +236,15 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
             ],
           ),
           body: SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+              child: SingleChildScrollView(
                 child: Column(
                   children: [
                     const SizedBox(height: 4),
-                    FlickVideoPlayer(
-                      flickManager: flickManager,
-                    ),
+                    // FlickVideoPlayer(
+                    //   flickManager: flickManager,
+                    // ),
                     const SizedBox(height: 20),
                     MyTextFormField(
                       hintText: 'Caption',
@@ -203,14 +253,16 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
                       horizontalPadding: 0,
                     ),
                     const SizedBox(height: 15),
+                    Text('OR'),
+                    const SizedBox(height: 15),
                     MyButton(
                       text: data != null
                           ? data!['productName']!
                           : 'Select Product',
                       onTap: () async {
-                        if (flickManager.flickVideoManager!.isPlaying) {
-                          flickManager.flickControlManager!.togglePlay();
-                        }
+                        // if (flickManager.flickVideoManager!.isPlaying) {
+                        //   flickManager.flickControlManager!.togglePlay();
+                        // }
                         Navigator.of(context)
                             .push(
                           MaterialPageRoute(
@@ -227,11 +279,11 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
                       },
                       horizontalPadding: 0,
                     ),
-                    const SizedBox(height: 15),
+                    Divider(height: 30),
                     MyButton(
                       text: 'DONE',
                       onTap: () async {
-                        await uploadVideo(
+                        await uploadShort(
                           data?['productId'],
                           data?['productName'],
                           widget.videoPath,

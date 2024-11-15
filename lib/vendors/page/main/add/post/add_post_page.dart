@@ -17,10 +17,10 @@ import 'package:ls_business/widgets/video_tutorial.dart';
 class AddPostPage extends StatefulWidget {
   const AddPostPage({
     super.key,
-    // this.imagePaths,
+    this.imagePaths,
   });
 
-  // final List<String>? imagePaths;
+  final List<String>? imagePaths;
 
   @override
   State<AddPostPage> createState() => _AddPostPageState();
@@ -111,25 +111,16 @@ class _AddPostPageState extends State<AddPostPage> {
       });
 
       if (remainingPost != null && remainingPost! > 1) {
-        // if (widget.imagePaths != null) {
-        //   for (var imagePath in widget.imagePaths!) {
-        //     File file = File(imagePath);
-        //     if (!image.contains(file)) {
-        //       image.add(file);
-        //     }
-        //   }
-        // }
+        if (widget.imagePaths != null) {
+          for (var imagePath in widget.imagePaths!) {
+            File file = File(imagePath);
+            if (!image.contains(file)) {
+              image.add(file);
+            }
+          }
+        }
       }
     }
-
-    // if (widget.imagePaths != null) {
-    //   for (var imagePath in widget.imagePaths!) {
-    //     File file = File(imagePath);
-    //     if (!image.contains(file)) {
-    //       image.add(file);
-    //     }
-    //   }
-    // }
   }
 
   // POST
@@ -201,9 +192,9 @@ class _AddPostPageState extends State<AddPostPage> {
         if (mounted) {
           mySnackBar(context, 'Posted');
           Navigator.of(context).pop();
-          // if (widget.imagePaths != null) {
-          //   Navigator.of(context).pop();
-          // }
+          if (widget.imagePaths != null) {
+            Navigator.of(context).pop();
+          }
         }
       } catch (e) {
         setState(() {
@@ -409,7 +400,8 @@ class _AddPostPageState extends State<AddPostPage> {
                                                     BorderRadius.circular(12),
                                               ),
                                               padding: EdgeInsets.all(
-                                                  width * 0.0125),
+                                                width * 0.0125,
+                                              ),
                                               child: ListView.builder(
                                                 scrollDirection:
                                                     Axis.horizontal,

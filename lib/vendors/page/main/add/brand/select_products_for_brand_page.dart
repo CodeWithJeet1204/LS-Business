@@ -259,7 +259,9 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                                     .toString()
                                     .toLowerCase()
                                     .contains(value.toLowerCase().trim())) {
-                                  keysToRemove.add(entry.key);
+                                  if (!keysToRemove.contains(entry.key)) {
+                                    keysToRemove.add(entry.key);
+                                  }
                                 }
                               }));
 

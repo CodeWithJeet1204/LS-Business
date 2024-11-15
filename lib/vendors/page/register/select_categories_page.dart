@@ -37,7 +37,6 @@ class _SelectCategoriesPageState extends State<SelectCategoriesPage> {
   @override
   void initState() {
     getCategories();
-    print('selectType: ${widget.selectedTypes}');
     for (var selectedType in widget.selectedTypes) {
       selectAll.addAll({
         selectedType: false,

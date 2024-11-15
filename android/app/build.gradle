@@ -59,3 +59,5 @@ flutter {
 dependencies {
     implementation 'com.google.android.play:integrity:1.4.0'
 }
+
+apply plugin: 'com.google.gms.google-services'

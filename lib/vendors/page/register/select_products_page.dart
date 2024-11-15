@@ -102,7 +102,6 @@ class _SelectProductsPageState extends State<SelectProductsPage> {
     if (selectedProducts.isEmpty) {
       return mySnackBar(context, 'Select Atleast One Product');
     }
-    print('selectedProducts: $selectedProducts');
 
     try {
       setState(() {
@@ -231,8 +230,6 @@ class _SelectProductsPageState extends State<SelectProductsPage> {
                                           !selectAll[
                                               subCategory.toString().trim()]!;
                                     });
-                                    print(
-                                        'final: ${allProducts![subCategory]}');
                                     if (selectAll[
                                         subCategory.toString().trim()]!) {
                                       for (var product

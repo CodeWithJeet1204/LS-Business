@@ -72,7 +72,9 @@ class _PostPageState extends State<PostPage> {
           await ref.putFile(File(im.path));
           final downloadUrl = await ref.getDownloadURL();
 
-          images.add(downloadUrl);
+          if (!images.contains(downloadUrl)) {
+            images.add(downloadUrl);
+          }
         }),
       );
 

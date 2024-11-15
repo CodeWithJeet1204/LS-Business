@@ -1,7 +1,7 @@
 name: ls_business
 description: "Vendor App For Localsearch"
 
-version: 1.0.10+10
+version: 1.0.11+11
 
 environment:
   sdk: ">=3.2.3 <4.0.0"
@@ -37,9 +37,10 @@ dependencies:
   package_info_plus: ^8.0.2
   flutter_image_compress: ^2.3.0
   share_plus: ^10.1.1
-  firebase_app_check: ^0.3.1+5
-  # permission_handler: ^11.3.1
-  # dio: ^5.7.0
+  permission_handler: ^11.3.1
+  dio: ^5.7.0
+  # firebase_app_check: ^0.3.1+5
+  # receive_sharing_intent: ^1.8.1
   # receive_sharing_intent: ^1.8.1
   # flutter_automation: any
   # lottie: ^3.0.0
