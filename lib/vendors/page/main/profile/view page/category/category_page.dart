@@ -137,14 +137,14 @@ class _CategoryPageState extends State<CategoryPage> {
           ),
           actions: [
             MyTextButton(
-              onPressed: () {
+              onTap: () {
                 Navigator.of(context).pop();
               },
               text: 'NO',
               textColor: Colors.green,
             ),
             MyTextButton(
-              onPressed: () async {
+              onTap: () async {
                 try {
                   await store
                       .collection('Business')
@@ -270,15 +270,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(11),
                                   child: Container(
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: NetworkImage(
-                                          categoryImageUrl ??
-                                              'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/800px-ProhibitionSign2.svg.png',
-                                        ),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
+                                    child: categoryImageUrl == null
+                                        ? null
+                                        : Image.network(categoryImageUrl!),
                                   ),
                                 ),
                               ),
@@ -424,7 +418,6 @@ class _CategoryPageState extends State<CategoryPage> {
                       );
                     },
                     text: 'ADD PRODUCT',
-                    horizontalPadding: 0,
                   ),
                   const SizedBox(height: 28),
 

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class MyTextButton extends StatelessWidget {
   const MyTextButton({
     super.key,
-    required this.onPressed,
+    required this.onTap,
     required this.text,
     this.fontSize = 16,
     this.textColor,
@@ -13,12 +13,12 @@ class MyTextButton extends StatelessWidget {
   final String text;
   final double fontSize;
   final Color? textColor;
-  final void Function() onPressed;
+  final void Function() onTap;
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: onPressed,
+      onPressed: onTap,
       child: Text(
         text.toString().trim(),
         maxLines: 3,

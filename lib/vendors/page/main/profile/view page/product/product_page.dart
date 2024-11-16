@@ -210,7 +210,7 @@ class _ProductPageState extends State<ProductPage> {
                                     ),
                                     noOfAnswers != 1
                                         ? MyTextButton(
-                                            onPressed: () async {
+                                            onTap: () async {
                                               if (editKey.currentState!
                                                   .validate()) {
                                                 // MULTI WORD PROPERTY
@@ -448,7 +448,6 @@ class _ProductPageState extends State<ProductPage> {
                                           });
                                         }
                                       },
-                                      horizontalPadding: 0,
                                     )
                                   : Container(),
                             ],
@@ -942,14 +941,14 @@ class _ProductPageState extends State<ProductPage> {
           content: const Text('Are you sure you want to delete this short?'),
           actions: [
             MyTextButton(
-              onPressed: () {
+              onTap: () {
                 Navigator.of(context).pop();
               },
               text: 'NO',
               textColor: Colors.green,
             ),
             MyTextButton(
-              onPressed: () async {
+              onTap: () async {
                 await deleteShort();
               },
               text: 'YES',
@@ -1706,7 +1705,7 @@ class _ProductPageState extends State<ProductPage> {
                                             ),
                                           ),
                                           MyTextButton(
-                                            onPressed: () async {
+                                            onTap: () async {
                                               Navigator.of(context).push(
                                                 MaterialPageRoute(
                                                   builder: (context) =>

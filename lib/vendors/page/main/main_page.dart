@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:ls_business/auth/sign_in_page.dart';
 import 'package:ls_business/under_development_page.dart';
 import 'package:ls_business/vendors/page/main/add/share/share_page.dart';
-import 'package:ls_business/vendors/page/main/add/shorts/confirm_shorts_page.dart';
 import 'package:ls_business/vendors/page/main/update_page.dart';
 import 'package:ls_business/vendors/provider/main_page_provider.dart';
 import 'package:ls_business/vendors/page/register/select_categories_page.dart';
@@ -47,7 +45,7 @@ class _MainPageState extends State<MainPage> {
   final store = FirebaseFirestore.instance;
   static const platform = MethodChannel('com.ls_business.share');
   List<String> imagePaths = [];
-  late StreamSubscription _intentSub;
+  // late StreamSubscription _intentSub;
   Widget? detailsPage;
   bool isGettingData = true;
 
@@ -60,11 +58,11 @@ class _MainPageState extends State<MainPage> {
   }
 
   // DISPOSE
-  @override
-  void dispose() {
-    _intentSub.cancel();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _intentSub.cancel();
+  //   super.dispose();
+  // }
 
   // CHECK AND SAVE VIDEO
   Future<String?> checkAndSaveVideo(String contentUri) async {
@@ -84,9 +82,7 @@ class _MainPageState extends State<MainPage> {
         if (filePath != null) {
           return filePath;
         }
-      } catch (e) {
-        print('Error saving video: $e');
-      }
+      } catch (e) {}
     }
     return null;
   }
@@ -106,15 +102,18 @@ class _MainPageState extends State<MainPage> {
           ),
         );
       }
-    } else if (call.method == "shareVideo") {
-      print('call: ${call.arguments}');
+    } /*else if (call.method == "shareVideo") {
       if (call.arguments.isNotEmpty) {
+        print('arguments: ${call.arguments}');
+        if (call.arguments.length > 1) {
+          mySnackBar(context, 'Only First video is taken');
+        }
         final videoPath = await checkAndSaveVideo(
           call.arguments[0],
         );
-        print('videoFilePath: ${videoPath}');
 
         if (videoPath != null) {
+          print('videoPath: $videoPath');
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => ConfirmShortsPage(
@@ -129,8 +128,8 @@ class _MainPageState extends State<MainPage> {
         }
       }
     } else if (call.method == "videoTooLong") {
-      mySnackBar(context, 'Select video less than 30 seconds long');
-    }
+      mySnackBar(context, 'Select video less than 60 seconds long');
+    }*/
   }
 
   // DETAILS ADDED
@@ -184,6 +183,9 @@ class _MainPageState extends State<MainPage> {
             ),
             (route) => false,
           );
+          setState(() {
+            isGettingData = false;
+          });
         }
       }
 
@@ -197,6 +199,9 @@ class _MainPageState extends State<MainPage> {
 
       if (businessUnderDevelopment) {
         detailsPage = const UnderDevelopmentPage();
+        setState(() {
+          isGettingData = false;
+        });
       } else {
         final getUserDetailsAdded = await store
             .collection('Business')
@@ -214,6 +219,9 @@ class _MainPageState extends State<MainPage> {
               ),
               (route) => false,
             );
+            setState(() {
+              isGettingData = false;
+            });
             return mySnackBar(context, 'Signed Out');
           }
         }
@@ -235,10 +243,16 @@ class _MainPageState extends State<MainPage> {
             detailsPage = const OwnerRegisterDetailsPage(
               fromMainPage: true,
             );
+            setState(() {
+              isGettingData = false;
+            });
           } else if (getUserDetailsAddedData['Image'] == null) {
             detailsPage = const OwnerRegisterDetailsPage(
               fromMainPage: true,
             );
+            setState(() {
+              isGettingData = false;
+            });
           } /* else if (getUserDetailsAddedData['Registration'] ==
                   'phone number' &&
               getUserDetailsAddedData['numberVerified'] == false) {
@@ -254,12 +268,18 @@ class _MainPageState extends State<MainPage> {
               // mode: 'vendor',
               fromMainPage: true,
             );
+            setState(() {
+              isGettingData = false;
+            });
           } else if (getBusinessDetailsAddedData['Name'] == null ||
               getBusinessDetailsAddedData['Latitude'] == null ||
               getBusinessDetailsAddedData['Description'] == null) {
             detailsPage = const BusinessRegisterDetailsPage(
               fromMainPage: true,
             );
+            setState(() {
+              isGettingData = false;
+            });
           } else if (getBusinessDetailsAddedData['Instagram'] == null ||
               getBusinessDetailsAddedData['Facebook'] == null ||
               getBusinessDetailsAddedData['Website'] == null) {
@@ -270,17 +290,26 @@ class _MainPageState extends State<MainPage> {
               website: getBusinessDetailsAddedData['Website'],
               fromMainPage: true,
             );
+            setState(() {
+              isGettingData = false;
+            });
           } else if (getBusinessDetailsAddedData['Instagram'] != null &&
               getBusinessDetailsAddedData['Type'] == null) {
             detailsPage = const SelectShopTypesPage(
               isEditing: true,
             );
+            setState(() {
+              isGettingData = false;
+            });
           } else if (getBusinessDetailsAddedData['Type'] != null &&
               getBusinessDetailsAddedData['Categories'] == null) {
             detailsPage = SelectCategoriesPage(
               selectedTypes: getBusinessDetailsAddedData['Type'],
               isEditing: true,
             );
+            setState(() {
+              isGettingData = false;
+            });
           } else if (getBusinessDetailsAddedData['Categories'] != null &&
               getBusinessDetailsAddedData['Products'] == null) {
             detailsPage = SelectProductsPage(
@@ -288,14 +317,25 @@ class _MainPageState extends State<MainPage> {
               selectedCategories: getBusinessDetailsAddedData['Categories'],
               isEditing: true,
             );
+            setState(() {
+              isGettingData = false;
+            });
           } else if (getBusinessDetailsAddedData['City'] == null ||
               getBusinessDetailsAddedData['Latitude'] == null) {
             detailsPage = const GetLocationPage();
+            setState(() {
+              isGettingData = false;
+            });
           } else if (getBusinessDetailsAddedData['weekdayStartTime'] == null ||
               getBusinessDetailsAddedData['weekdayEndTime'] == null) {
-            detailsPage = const BusinessTimingsPage(
-              fromMainPage: true,
-            );
+            setState(() {
+              detailsPage = const BusinessTimingsPage(
+                fromMainPage: true,
+              );
+              setState(() {
+                isGettingData = false;
+              });
+            });
           } else if (getUserDetailsAddedData['Image'] != null &&
               getUserDetailsAddedData['AadhaarNumber'] != null &&
               (getBusinessDetailsAddedData['MembershipName'] == null ||
@@ -304,6 +344,9 @@ class _MainPageState extends State<MainPage> {
             detailsPage = const SelectMembershipPage(
               hasAvailedLaunchOffer: false,
             );
+            setState(() {
+              isGettingData = false;
+            });
           } else if (DateTime.now().isAfter(
               (getBusinessDetailsAddedData['MembershipEndDateTime']
                       as Timestamp)
@@ -311,6 +354,9 @@ class _MainPageState extends State<MainPage> {
             detailsPage = const SelectMembershipPage(
               hasAvailedLaunchOffer: true,
             );
+            setState(() {
+              isGettingData = false;
+            });
             if (mounted) {
               await showDialog(
                 context: context,
@@ -321,7 +367,7 @@ class _MainPageState extends State<MainPage> {
                     content: const Text('Select New Membership to continue'),
                     actions: [
                       MyTextButton(
-                        onPressed: () {
+                        onTap: () {
                           Navigator.of(context).pop();
                         },
                         text: 'OK',

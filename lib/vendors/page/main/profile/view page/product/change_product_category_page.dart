@@ -110,7 +110,7 @@ class _ChangeProductCategoryPageState extends State<ChangeProductCategoryPage> {
                 tooltip: 'Help',
               ),
               MyTextButton(
-                onPressed: () async {
+                onTap: () async {
                   setState(() {
                     isAdding = true;
                     isDialog = true;

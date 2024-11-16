@@ -125,85 +125,83 @@ class _AddPostPageState extends State<AddPostPage> {
 
   // POST
   Future<void> post() async {
-    if (postKey.currentState!.validate()) {
-      setState(() {
-        isPosting = true;
-        isDialog = true;
-      });
+    setState(() {
+      isPosting = true;
+      isDialog = true;
+    });
+
+    try {
+      List imageDownloadUrl = [];
 
       try {
-        List imageDownloadUrl = [];
-
-        try {
-          await Future.wait(
-            image.map((img) async {
-              Reference ref =
-                  storage.ref().child('Vendor/Post').child(const Uuid().v4());
-              await ref.putFile(img);
-              String downloadUrl = await ref.getDownloadURL();
-              if (mounted) {
-                setState(() {
-                  imageDownloadUrl.add(downloadUrl);
-                });
-              }
-            }),
-          );
-        } catch (e) {
-          if (mounted) {
-            mySnackBar(context, e.toString());
-          }
-        }
-
-        final postId = const Uuid().v4();
-
-        await store
-            .collection('Business')
-            .doc('Data')
-            .collection('Post')
-            .doc(postId)
-            .set({
-          'postId': postId,
-          'postText': nameCaptionController.text.trim(),
-          'postPrice': priceController.text.isEmpty
-              ? ''
-              : double.parse(priceController.text.trim()),
-          'postImage': imageDownloadUrl,
-          'postVendorId': auth.currentUser!.uid,
-          'postViews': [],
-          'postDateTime': DateTime.now(),
-          // 'postLikes': 0,
-          // 'postDeleteDateTime': Timestamp.fromMillisecondsSinceEpoch(
-          //   DateTime.now()
-          //       .add(
-          //         Duration(
-          //           hours: 23,
-          //           minutes: 50,
-          //         ),
-          //       )
-          //       .millisecondsSinceEpoch,
-          // ),
-        });
-
-        setState(() {
-          isPosting = false;
-          isDialog = false;
-        });
-
-        if (mounted) {
-          mySnackBar(context, 'Posted');
-          Navigator.of(context).pop();
-          if (widget.imagePaths != null) {
-            Navigator.of(context).pop();
-          }
-        }
+        await Future.wait(
+          image.map((img) async {
+            Reference ref =
+                storage.ref().child('Vendor/Post').child(const Uuid().v4());
+            await ref.putFile(img);
+            String downloadUrl = await ref.getDownloadURL();
+            if (mounted) {
+              setState(() {
+                imageDownloadUrl.add(downloadUrl);
+              });
+            }
+          }),
+        );
       } catch (e) {
-        setState(() {
-          isPosting = false;
-          isDialog = false;
-        });
         if (mounted) {
           mySnackBar(context, e.toString());
         }
+      }
+
+      final postId = const Uuid().v4();
+
+      await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Post')
+          .doc(postId)
+          .set({
+        'postId': postId,
+        'postText': nameCaptionController.text.trim(),
+        'postPrice': priceController.text.isEmpty
+            ? ''
+            : double.parse(priceController.text.trim()),
+        'postImage': imageDownloadUrl,
+        'postVendorId': auth.currentUser!.uid,
+        'postViews': [],
+        'postDateTime': DateTime.now(),
+        // 'postLikes': 0,
+        // 'postDeleteDateTime': Timestamp.fromMillisecondsSinceEpoch(
+        //   DateTime.now()
+        //       .add(
+        //         Duration(
+        //           hours: 23,
+        //           minutes: 50,
+        //         ),
+        //       )
+        //       .millisecondsSinceEpoch,
+        // ),
+      });
+
+      setState(() {
+        isPosting = false;
+        isDialog = false;
+      });
+
+      if (mounted) {
+        mySnackBar(context, 'Posted');
+        Navigator.of(context).pop();
+        if (widget.imagePaths != null) {
+          Navigator.of(context).pop();
+        }
+      }
+    } catch (e) {
+      setState(() {
+        isPosting = false;
+        isDialog = false;
+      });
+      if (mounted) {
+        mySnackBar(context, e.toString());
       }
     }
   }
@@ -477,17 +475,13 @@ class _AddPostPageState extends State<AddPostPage> {
                                       ],
                                     ),
                               const SizedBox(height: 8),
-                              Form(
-                                key: postKey,
-                                child: SizedBox(
-                                  width: width,
-                                  child: MyTextFormField(
-                                    controller: nameCaptionController,
-                                    hintText: 'Name / Caption*',
-                                    maxLines: 10,
-                                    borderRadius: 12,
-                                    horizontalPadding: 0,
-                                  ),
+                              SizedBox(
+                                width: width,
+                                child: MyTextFormField(
+                                  controller: nameCaptionController,
+                                  hintText: 'Name / Caption*',
+                                  maxLines: 10,
+                                  borderRadius: 12,
                                 ),
                               ),
                               const SizedBox(height: 16),
@@ -500,7 +494,6 @@ class _AddPostPageState extends State<AddPostPage> {
                                   hintText: 'Price',
                                   maxLines: 10,
                                   borderRadius: 12,
-                                  horizontalPadding: 0,
                                   keyboardType: TextInputType.number,
                                 ),
                               ),
@@ -548,7 +541,6 @@ class _AddPostPageState extends State<AddPostPage> {
                                       onTap: () async {
                                         await post();
                                       },
-                                      horizontalPadding: 0,
                                     ),
                             ],
                           ),

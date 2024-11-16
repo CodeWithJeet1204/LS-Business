@@ -175,7 +175,7 @@ class _ChangeProductBrandPageState extends State<ChangeProductBrandPage> {
                 tooltip: 'Help',
               ),
               MyTextButton(
-                onPressed: () async {
+                onTap: () async {
                   setState(() {
                     isDialog = true;
                   });

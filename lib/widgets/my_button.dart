@@ -9,14 +9,14 @@ class MyButton extends StatelessWidget {
     required this.text,
     required this.onTap,
     this.width = double.infinity,
-    required this.horizontalPadding,
+    this.horizontalPadding,
     this.verticalPadding = 0,
   });
 
   final String text;
   final double width;
-  final double horizontalPadding;
-  final double verticalPadding;
+  final double? horizontalPadding;
+  final double? verticalPadding;
   final void Function()? onTap;
 
   @override
@@ -35,8 +35,8 @@ class MyButton extends StatelessWidget {
               : MediaQuery.sizeOf(context).width * 0.0066,
         ),
         margin: EdgeInsets.symmetric(
-          horizontal: horizontalPadding,
-          vertical: verticalPadding,
+          horizontal: horizontalPadding ?? 0,
+          vertical: verticalPadding ?? 0,
         ),
         alignment: Alignment.center,
         child: AutoSizeText(

@@ -100,7 +100,7 @@ class _AddProductPage3State extends State<AddProductPage3> {
             tooltip: 'Help',
           ),
           MyTextButton(
-            onPressed: () {
+            onTap: () {
               if (selectedCategory != null) {
                 final productProvider = Provider.of<AddProductProvider>(
                   context,

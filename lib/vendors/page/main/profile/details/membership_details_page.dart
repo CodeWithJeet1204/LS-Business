@@ -72,14 +72,14 @@ class _MembershipDetailsPageState extends State<MembershipDetailsPage> {
           ),
           actions: [
             MyTextButton(
-              onPressed: () {
+              onTap: () {
                 Navigator.of(context).pop();
               },
               text: 'NO',
               textColor: darkColor!,
             ),
             MyTextButton(
-              onPressed: () {
+              onTap: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).push(
                   MaterialPageRoute(
@@ -343,7 +343,7 @@ class _MembershipDetailsPageState extends State<MembershipDetailsPage> {
                           const SizedBox(height: 24),
 
                           MyTextButton(
-                            onPressed: () async {
+                            onTap: () async {
                               await showChangeMembershipDialog();
                             },
                             text: 'CHANGE MEMBERSHIP',

@@ -203,7 +203,7 @@ class _GetLocationPageState extends State<GetLocationPage> {
                 tooltip: 'Help',
               ),
               MyTextButton(
-                onPressed: () async {
+                onTap: () async {
                   if (displayDetectCity == null && cityPickLocation == null) {
                     return mySnackBar(context, 'Detect / Pick Location');
                   }

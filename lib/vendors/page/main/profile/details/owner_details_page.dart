@@ -296,12 +296,14 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                             ),
                           ),
                         )
-                      : MyButton(
-                          text: 'SAVE',
-                          onTap: () async {
-                            await save();
-                          },
-                          horizontalPadding: 0,
+                      : Padding(
+                          padding: EdgeInsets.all(width * 0.0225),
+                          child: MyButton(
+                            text: 'SAVE',
+                            onTap: () async {
+                              await save();
+                            },
+                          ),
                         ),
                 )
               : const SizedBox(
@@ -498,6 +500,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                         autofocus: true,
                                         onTapOutside: (event) =>
                                             FocusScope.of(context).unfocus(),
+                                        keyboardType: TextInputType.number,
                                         decoration: InputDecoration(
                                           hintText: 'Change Number',
                                           border: OutlineInputBorder(

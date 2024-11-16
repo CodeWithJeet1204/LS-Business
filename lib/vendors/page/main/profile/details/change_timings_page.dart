@@ -313,260 +313,281 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
               child: Column(
                 children: [
                   // WEEKDAY
-                  ExpansionTile(
-                    initiallyExpanded: true,
-                    tilePadding: const EdgeInsets.symmetric(horizontal: 8),
-                    backgroundColor: primary2.withOpacity(0.25),
-                    collapsedBackgroundColor: primary2.withOpacity(0.33),
-                    textColor: primaryDark.withOpacity(0.9),
-                    collapsedTextColor: primaryDark,
-                    iconColor: primaryDark2.withOpacity(0.9),
-                    collapsedIconColor: primaryDark2,
-                    shape: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(
-                        12,
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isWeekday = !isWeekday;
+                      });
+                    },
+                    child: ExpansionTile(
+                      onExpansionChanged: (value) {
+                        setState(() {
+                          isWeekday = value;
+                        });
+                      },
+                      initiallyExpanded: true,
+                      tilePadding: const EdgeInsets.symmetric(horizontal: 8),
+                      backgroundColor: primary2.withOpacity(0.25),
+                      collapsedBackgroundColor: primary2.withOpacity(0.33),
+                      textColor: primaryDark.withOpacity(0.9),
+                      collapsedTextColor: primaryDark,
+                      iconColor: primaryDark2.withOpacity(0.9),
+                      collapsedIconColor: primaryDark2,
+                      shape: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(
+                          12,
+                        ),
+                        borderSide: BorderSide(
+                          color: primaryDark.withOpacity(0.1),
+                        ),
                       ),
-                      borderSide: BorderSide(
-                        color: primaryDark.withOpacity(0.1),
+                      collapsedShape: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(
+                          12,
+                        ),
+                        borderSide: BorderSide(
+                          color: primaryDark.withOpacity(0.33),
+                        ),
                       ),
-                    ),
-                    collapsedShape: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(
-                        12,
+                      title: Text(
+                        'Mon - Fri',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: width * 0.05,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                      borderSide: BorderSide(
-                        color: primaryDark.withOpacity(0.33),
-                      ),
-                    ),
-                    title: Text(
-                      'Mon - Fri',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: width * 0.05,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    trailing: Checkbox(
-                        activeColor: primaryDark,
-                        checkColor: white,
-                        value: isWeekday,
-                        onChanged: (value) async {
-                          if (value == false) {
-                            weekdayStartTime = null;
-                            weekdayEndTime = null;
-                            await store
-                                .collection('Business')
-                                .doc('Owners')
-                                .collection('Shops')
-                                .doc(auth.currentUser!.uid)
-                                .update({
-                              'weekdayStartTime': null,
-                              'weekdayEndTime': null,
+                      trailing: Checkbox(
+                          activeColor: primaryDark,
+                          checkColor: white,
+                          value: isWeekday,
+                          onChanged: (value) async {
+                            if (value == false) {
+                              weekdayStartTime = null;
+                              weekdayEndTime = null;
+                              await store
+                                  .collection('Business')
+                                  .doc('Owners')
+                                  .collection('Shops')
+                                  .doc(auth.currentUser!.uid)
+                                  .update({
+                                'weekdayStartTime': null,
+                                'weekdayEndTime': null,
+                              });
+                            }
+                            setState(() {
+                              isWeekday = value!;
                             });
-                          }
-                          setState(() {
-                            isWeekday = value!;
-                          });
-                        }),
-                    children: [
-                      // TIMES
-                      !isWeekday
-                          ? Container()
-                          : Padding(
-                              padding: EdgeInsets.all(width * 0.0125),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  // START TIME
-                                  GestureDetector(
-                                    onTap: () async {
-                                      await selectWeekdayStartTime();
-                                    },
-                                    child: Container(
-                                      width: width * 0.45,
-                                      decoration: BoxDecoration(
-                                        color: primary3,
-                                        borderRadius: BorderRadius.circular(
-                                          12,
-                                        ),
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 12,
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  'Start Time',
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                    color: primaryDark2,
-                                                    fontSize: width * 0.04,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                                weekdayStartTime != null
-                                                    ? IconButton(
-                                                        onPressed: () async {
-                                                          await selectWeekdayStartTime();
-                                                        },
-                                                        icon: Icon(
-                                                          FeatherIcons.edit,
-                                                          size: width * 0.055,
-                                                        ),
-                                                        tooltip: 'Change',
-                                                      )
-                                                    : Container(),
-                                              ],
-                                            ),
+                          }),
+                      children: [
+                        // TIMES
+                        !isWeekday
+                            ? Container()
+                            : Padding(
+                                padding: EdgeInsets.all(width * 0.0125),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    // START TIME
+                                    GestureDetector(
+                                      onTap: () async {
+                                        await selectWeekdayStartTime();
+                                      },
+                                      child: Container(
+                                        width: width * 0.45,
+                                        decoration: BoxDecoration(
+                                          color: primary3,
+                                          borderRadius: BorderRadius.circular(
+                                            12,
                                           ),
-                                          weekdayStartTime == null
-                                              ? MyTextButton(
-                                                  onPressed: () async {
-                                                    await selectWeekdayStartTime();
-                                                  },
-                                                  text: 'Select Time',
-                                                )
-                                              : Padding(
-                                                  padding: EdgeInsets.only(
-                                                    left: width * 0.036,
-                                                    bottom: width * 0.025,
-                                                  ),
-                                                  child: Text(
-                                                    weekdayStartTime!
-                                                        .format(context)
-                                                        .toString()
-                                                        .trim(),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                horizontal: 12,
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    'Start Time',
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                     style: TextStyle(
-                                                      color: primaryDark,
-                                                      fontSize: width * 0.055,
+                                                      color: primaryDark2,
+                                                      fontSize: width * 0.04,
                                                       fontWeight:
-                                                          FontWeight.w600,
+                                                          FontWeight.w500,
                                                     ),
                                                   ),
-                                                ),
-                                        ],
+                                                  weekdayStartTime != null
+                                                      ? IconButton(
+                                                          onPressed: () async {
+                                                            await selectWeekdayStartTime();
+                                                          },
+                                                          icon: Icon(
+                                                            FeatherIcons.edit,
+                                                            size: width * 0.055,
+                                                          ),
+                                                          tooltip: 'Change',
+                                                        )
+                                                      : Container(),
+                                                ],
+                                              ),
+                                            ),
+                                            weekdayStartTime == null
+                                                ? MyTextButton(
+                                                    onTap: () async {
+                                                      await selectWeekdayStartTime();
+                                                    },
+                                                    text: 'Select Time',
+                                                  )
+                                                : Padding(
+                                                    padding: EdgeInsets.only(
+                                                      left: width * 0.036,
+                                                      bottom: width * 0.025,
+                                                    ),
+                                                    child: Text(
+                                                      weekdayStartTime!
+                                                          .format(context)
+                                                          .toString()
+                                                          .trim(),
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                        color: primaryDark,
+                                                        fontSize: width * 0.055,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                  ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
 
-                                  // END TIME
-                                  GestureDetector(
-                                    onTap: () async {
-                                      await selectWeekdayEndTime();
-                                    },
-                                    child: Container(
-                                      width: width * 0.45,
-                                      decoration: BoxDecoration(
-                                        color: primary3,
-                                        borderRadius: BorderRadius.circular(
-                                          12,
-                                        ),
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 12,
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  'End Time',
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                    color: primaryDark2,
-                                                    fontSize: width * 0.04,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                                weekdayEndTime != null
-                                                    ? IconButton(
-                                                        onPressed: () async {
-                                                          await selectWeekdayEndTime();
-                                                        },
-                                                        icon: Icon(
-                                                          FeatherIcons.edit,
-                                                          size: width * 0.055,
-                                                        ),
-                                                        tooltip: 'Change',
-                                                      )
-                                                    : Container(),
-                                              ],
-                                            ),
+                                    // END TIME
+                                    GestureDetector(
+                                      onTap: () async {
+                                        await selectWeekdayEndTime();
+                                      },
+                                      child: Container(
+                                        width: width * 0.45,
+                                        decoration: BoxDecoration(
+                                          color: primary3,
+                                          borderRadius: BorderRadius.circular(
+                                            12,
                                           ),
-                                          weekdayEndTime == null
-                                              ? MyTextButton(
-                                                  onPressed: () async {
-                                                    await selectWeekdayEndTime();
-                                                  },
-                                                  text: 'Select Time',
-                                                )
-                                              : Padding(
-                                                  padding: EdgeInsets.only(
-                                                    left: width * 0.0366,
-                                                    bottom: width * 0.025,
-                                                  ),
-                                                  child: Text(
-                                                    weekdayEndTime!
-                                                        .format(context)
-                                                        .toString()
-                                                        .trim(),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                horizontal: 12,
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    'End Time',
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                     style: TextStyle(
-                                                      color: primaryDark,
-                                                      fontSize: width * 0.055,
+                                                      color: primaryDark2,
+                                                      fontSize: width * 0.04,
                                                       fontWeight:
-                                                          FontWeight.w600,
+                                                          FontWeight.w500,
                                                     ),
                                                   ),
-                                                ),
-                                        ],
+                                                  weekdayEndTime != null
+                                                      ? IconButton(
+                                                          onPressed: () async {
+                                                            await selectWeekdayEndTime();
+                                                          },
+                                                          icon: Icon(
+                                                            FeatherIcons.edit,
+                                                            size: width * 0.055,
+                                                          ),
+                                                          tooltip: 'Change',
+                                                        )
+                                                      : Container(),
+                                                ],
+                                              ),
+                                            ),
+                                            weekdayEndTime == null
+                                                ? MyTextButton(
+                                                    onTap: () async {
+                                                      await selectWeekdayEndTime();
+                                                    },
+                                                    text: 'Select Time',
+                                                  )
+                                                : Padding(
+                                                    padding: EdgeInsets.only(
+                                                      left: width * 0.0366,
+                                                      bottom: width * 0.025,
+                                                    ),
+                                                    child: Text(
+                                                      weekdayEndTime!
+                                                          .format(context)
+                                                          .toString()
+                                                          .trim(),
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                        color: primaryDark,
+                                                        fontSize: width * 0.055,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                  ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                    ],
+                      ],
+                    ),
                   ),
 
                   const SizedBox(height: 12),
 
                   // SATURDAY
                   ExpansionTile(
+                    onExpansionChanged: (value) {
+                      setState(() {
+                        isSaturday = value;
+                      });
+                    },
                     initiallyExpanded: true,
                     tilePadding: const EdgeInsets.symmetric(horizontal: 8),
                     backgroundColor: primary2.withOpacity(0.25),
@@ -691,7 +712,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                           ),
                                           saturdayStartTime == null
                                               ? MyTextButton(
-                                                  onPressed: () async {
+                                                  onTap: () async {
                                                     await selectSaturdayStartTime();
                                                   },
                                                   text: 'Select Time',
@@ -780,7 +801,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                           ),
                                           saturdayEndTime == null
                                               ? MyTextButton(
-                                                  onPressed: () async {
+                                                  onTap: () async {
                                                     await selectSaturdayEndTime();
                                                   },
                                                   text: 'Select Time',
@@ -820,6 +841,11 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
 
                   // SUNDAY
                   ExpansionTile(
+                    onExpansionChanged: (value) {
+                      setState(() {
+                        isSunday = value;
+                      });
+                    },
                     initiallyExpanded: true,
                     tilePadding: const EdgeInsets.symmetric(horizontal: 8),
                     backgroundColor: primary2.withOpacity(0.25),
@@ -867,8 +893,8 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                 .collection('Shops')
                                 .doc(auth.currentUser!.uid)
                                 .update({
-                              'saturdayStartTime': null,
-                              'saturdayEndTime': null,
+                              'sundayStartTime': null,
+                              'sundayEndTime': null,
                             });
                           }
                           setState(() {
@@ -944,7 +970,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                           ),
                                           sundayStartTime == null
                                               ? MyTextButton(
-                                                  onPressed: () async {
+                                                  onTap: () async {
                                                     await selectSundayStartTime();
                                                   },
                                                   text: 'Select Time',
@@ -1033,7 +1059,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
                                           ),
                                           sundayEndTime == null
                                               ? MyTextButton(
-                                                  onPressed: () async {
+                                                  onTap: () async {
                                                     await selectSundayEndTime();
                                                   },
                                                   text: 'Select Time',

@@ -102,7 +102,7 @@ class _AddProductPage2State extends State<AddProductPage2> {
             tooltip: 'Help',
           ),
           MyTextButton(
-            onPressed: () {
+            onTap: () {
               if (selectedShopType == null) {
                 return mySnackBar(context, 'Select Shop Type');
               }

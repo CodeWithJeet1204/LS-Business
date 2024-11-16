@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/services.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
@@ -16,6 +17,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:ls_business/widgets/video_tutorial.dart';
+import 'package:video_player/video_player.dart';
 
 class ConfirmShortsPage extends StatefulWidget {
   const ConfirmShortsPage({
@@ -38,7 +40,7 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
   final store = FirebaseFirestore.instance;
   final storage = FirebaseStorage.instance;
   final captionController = TextEditingController();
-  // late FlickManager flickManager;
+  late FlickManager flickManager;
   String? sharedVideo;
   Map<String, dynamic>? data;
   bool isDialog = false;
@@ -52,13 +54,13 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
       handleReceivedVideo(widget.videoPath);
     }
     super.initState();
-    // flickManager = FlickManager(
-    //   videoPlayerController: VideoPlayerController.networkUrl(
-    //     Uri.file(
-    //       widget.videoFile.path,
-    //     ),
-    //   ),
-    // );
+    flickManager = FlickManager(
+      videoPlayerController: VideoPlayerController.networkUrl(
+        Uri.file(
+          widget.videoFile.path,
+        ),
+      ),
+    );
   }
 
   // DISPOSE
@@ -242,15 +244,14 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
                 child: Column(
                   children: [
                     const SizedBox(height: 4),
-                    // FlickVideoPlayer(
-                    //   flickManager: flickManager,
-                    // ),
+                    FlickVideoPlayer(
+                      flickManager: flickManager,
+                    ),
                     const SizedBox(height: 20),
                     MyTextFormField(
                       hintText: 'Caption',
                       controller: captionController,
                       borderRadius: 12,
-                      horizontalPadding: 0,
                     ),
                     const SizedBox(height: 15),
                     Text('OR'),
@@ -260,9 +261,9 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
                           ? data!['productName']!
                           : 'Select Product',
                       onTap: () async {
-                        // if (flickManager.flickVideoManager!.isPlaying) {
-                        //   flickManager.flickControlManager!.togglePlay();
-                        // }
+                        if (flickManager.flickVideoManager!.isPlaying) {
+                          flickManager.flickControlManager!.togglePlay();
+                        }
                         Navigator.of(context)
                             .push(
                           MaterialPageRoute(
@@ -277,7 +278,6 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
                           });
                         });
                       },
-                      horizontalPadding: 0,
                     ),
                     Divider(height: 30),
                     MyButton(
@@ -289,7 +289,6 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
                           widget.videoPath,
                         );
                       },
-                      horizontalPadding: 0,
                     ),
                     const SizedBox(height: 12),
                   ],

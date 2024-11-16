@@ -207,7 +207,6 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
                           hintText: 'Instagram (Link)',
                           controller: instaController,
                           borderRadius: 12,
-                          horizontalPadding: 0,
                         ),
 
                         const SizedBox(height: 12),
@@ -217,7 +216,6 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
                           hintText: 'Facebook (Link)',
                           controller: facebookController,
                           borderRadius: 12,
-                          horizontalPadding: 0,
                         ),
 
                         const SizedBox(height: 12),
@@ -227,7 +225,6 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
                           hintText: 'Personal Website (Link)',
                           controller: websiteController,
                           borderRadius: 12,
-                          horizontalPadding: 0,
                         ),
 
                         const SizedBox(height: 24),
@@ -238,7 +235,6 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
                             await next();
                           },
                           text: widget.isChanging ? 'DONE' : 'NEXT',
-                          horizontalPadding: 0,
                         ),
                         const SizedBox(height: 24),
 
@@ -250,7 +246,6 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
                                   await skip();
                                 },
                                 text: 'SKIP',
-                                horizontalPadding: 0,
                               ),
                       ],
                     ),

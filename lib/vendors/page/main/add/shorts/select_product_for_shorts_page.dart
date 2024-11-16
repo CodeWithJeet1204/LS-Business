@@ -167,7 +167,7 @@ class _SelectProductForShortsPageState
             tooltip: 'Help',
           ),
           MyTextButton(
-            onPressed: () {
+            onTap: () {
               if (selectedProductId != null) {
                 Navigator.of(context).pop(data);
               } else {

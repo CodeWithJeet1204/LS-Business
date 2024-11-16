@@ -148,19 +148,16 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
                       hintText: 'Email',
                       controller: emailController,
                       borderRadius: 12,
-                      horizontalPadding: 0,
                     ),
                     SizedBox(height: 12),
                     MyTextFormField(
                       hintText: 'Password',
                       controller: passwordController,
                       borderRadius: 12,
-                      horizontalPadding: 0,
                     ),
                     SizedBox(height: 12),
                     MyButton(
                       text: 'DONE',
-                      horizontalPadding: 0,
                       onTap: () async {
                         if (changeEmailKey.currentState!.validate()) {
                           setState(() {

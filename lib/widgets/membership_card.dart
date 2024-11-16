@@ -326,7 +326,7 @@ class _MembershipCardState extends State<MembershipCard> {
                     ),
                     SizedBox(height: height * 0.003125),
                     MyTextButton(
-                      onPressed: widget.onTap,
+                      onTap: widget.onTap,
                       text: widget.isSelected ? 'SELECTED' : 'Select',
                       textColor: widget.textColor,
                     ),

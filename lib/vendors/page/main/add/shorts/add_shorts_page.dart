@@ -201,7 +201,7 @@ class AddShortsPageState extends State<AddShortsPage> {
       await controller.initialize();
       final duration = controller.value.duration;
 
-      if (duration <= const Duration(seconds: 30)) {
+      if (duration <= const Duration(seconds: 60)) {
         if (context.mounted) {
           Navigator.of(context).pop();
           Navigator.of(context).push(
@@ -219,7 +219,7 @@ class AddShortsPageState extends State<AddShortsPage> {
           Navigator.of(context).pop();
           return mySnackBar(
             context,
-            'Video too long, please select a video of less than 30 seconds',
+            'Video too long, please select a video of less than 60 seconds',
           );
         }
       }

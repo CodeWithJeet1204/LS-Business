@@ -331,7 +331,7 @@
 //                             'Add Products - ${productsAddedToCategoryProvider.selectedProducts.length}',
 //                         onTap: addProduct,
 //                         isLoading: false,
-//                         horizontalPadding: 0,
+//                         
 //                       ),
 //                     ),
 //                   ],

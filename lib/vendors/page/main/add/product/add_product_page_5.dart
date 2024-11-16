@@ -151,7 +151,7 @@ class _AddProductPage5State extends State<AddProductPage5> {
                 tooltip: 'Help',
               ),
               MyTextButton(
-                onPressed: () async {
+                onTap: () async {
                   await save(productProvider);
                 },
                 text: 'DONE',

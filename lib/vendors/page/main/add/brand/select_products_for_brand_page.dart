@@ -201,7 +201,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                 tooltip: 'Help',
               ),
               MyTextButton(
-                onPressed: () async {
+                onTap: () async {
                   if (widget.isFromBrandPage != null) {
                     if (widget.isFromBrandPage!) {
                       await addProductToBrand(

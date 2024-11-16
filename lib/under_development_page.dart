@@ -41,7 +41,7 @@ class UnderDevelopmentPage extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             MyTextButton(
-              onPressed: () {
+              onTap: () {
                 SystemNavigator.pop();
               },
               text: 'OK',

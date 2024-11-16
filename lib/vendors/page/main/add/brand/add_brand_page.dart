@@ -189,15 +189,6 @@ class _AddBrandPageState extends State<AddBrandPage> {
                 ),
                 tooltip: 'Help',
               ),
-              MyTextButton(
-                onPressed: () async {
-                  await addBrand(
-                    productsAddedToBrandProvider,
-                  );
-                },
-                text: 'DONE',
-                textColor: primaryDark2,
-              ),
             ],
           ),
           body: Padding(
@@ -322,16 +313,13 @@ class _AddBrandPageState extends State<AddBrandPage> {
                           hintText: 'Brand Name',
                           controller: brandNameController,
                           borderRadius: 12,
-                          horizontalPadding: 0,
                           autoFillHints: null,
                         ),
 
                         // ADD PRODUCTS
                         Padding(
-                          padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).viewInsets.bottom,
-                          ),
-                          child: MyButton(
+                          padding: EdgeInsets.symmetric(vertical: 8),
+                          child: MyTextButton(
                             text:
                                 'Add Products - ${productsAddedToBrandProvider.selectedProducts.length}',
                             onTap: () {
@@ -342,9 +330,17 @@ class _AddBrandPageState extends State<AddBrandPage> {
                                 ),
                               );
                             },
-                            horizontalPadding: 0,
-                            verticalPadding: width * 0.05,
                           ),
+                        ),
+
+                        // DONE
+                        MyButton(
+                          text: 'DONE',
+                          onTap: () async {
+                            await addBrand(
+                              productsAddedToBrandProvider,
+                            );
+                          },
                         ),
                       ],
                     ),

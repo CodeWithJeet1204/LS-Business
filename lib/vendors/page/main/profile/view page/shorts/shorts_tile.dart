@@ -94,14 +94,14 @@ class _ShortsTileState extends State<ShortsTile> {
                     const Text('Are you sure you want to delete this short?'),
                 actions: [
                   MyTextButton(
-                    onPressed: () {
+                    onTap: () {
                       Navigator.of(context).pop();
                     },
                     text: 'NO',
                     textColor: Colors.green,
                   ),
                   MyTextButton(
-                    onPressed: () async {
+                    onTap: () async {
                       setState(() {
                         isLoading = true;
                       });

@@ -319,7 +319,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
               remainingProducts != null && remainingProducts! < 1
                   ? Container()
                   : MyTextButton(
-                      onPressed: () async {
+                      onTap: () async {
                         await addProduct(
                           addProductProvider,
                           // selectBrandProvider,
@@ -547,7 +547,6 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                     controller: nameController,
                                     hintText: 'Name',
                                     borderRadius: 12,
-                                    horizontalPadding: 0,
                                   ),
                                   const SizedBox(height: 12),
 
@@ -556,7 +555,6 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                     controller: priceController,
                                     hintText: 'Price',
                                     borderRadius: 12,
-                                    horizontalPadding: 0,
                                     keyboardType: TextInputType.number,
                                   ),
                                   const SizedBox(height: 12),
@@ -566,7 +564,6 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                     controller: descriptionController,
                                     hintText: 'Description',
                                     borderRadius: 12,
-                                    horizontalPadding: 0,
                                   ),
                                   const SizedBox(height: 16),
 

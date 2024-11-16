@@ -38,7 +38,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
   String? endDate;
   DateTime? startDateTime;
   DateTime? endDateTime;
-  bool isAddingImage = true;
+  bool isAddingImage = false;
   bool isPercentSelected = true;
   bool isUploading = false;
   bool isDialog = false;
@@ -262,7 +262,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                 tooltip: 'Help',
               ),
               MyTextButton(
-                onPressed: () async {
+                onTap: () async {
                   await addDiscount(
                     selectedBrandProvider,
                     selectedBrands,
@@ -470,7 +470,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                                   ),
                                   startDate == null
                                       ? MyTextButton(
-                                          onPressed: () async {
+                                          onTap: () async {
                                             await selectStartDate();
                                           },
                                           text: 'Select Date',
@@ -550,7 +550,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                                   ),
                                   endDate == null
                                       ? MyTextButton(
-                                          onPressed: () async {
+                                          onTap: () async {
                                             await selectEndDate();
                                           },
                                           text: 'Select Date',
@@ -606,7 +606,6 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                             ),
                           );
                         },
-                        horizontalPadding: 0,
                       ),
                       const SizedBox(height: 20),
 
@@ -707,7 +706,6 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                               ? 'Amount* (eg. 20%)'
                               : 'Amount* (eg. Rs. 200 off)',
                           borderRadius: 12,
-                          horizontalPadding: 0,
                           keyboardType: TextInputType.number,
                         ),
                       ),

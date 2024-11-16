@@ -66,14 +66,14 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
           ),
           actions: [
             MyTextButton(
-              onPressed: () {
+              onTap: () {
                 Navigator.of(context).pop();
               },
               text: 'NO',
               textColor: primaryDark2,
             ),
             MyTextButton(
-              onPressed: () {
+              onTap: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).push(
                   MaterialPageRoute(
@@ -117,7 +117,7 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                       ),
                     ),
                     MyTextButton(
-                      onPressed: () async {
+                      onTap: () async {
                         await showChangeMembershipDialog();
                       },
                       text: 'CHANGE MEMBERSHIP',

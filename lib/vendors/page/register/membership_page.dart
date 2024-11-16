@@ -344,7 +344,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
           ),
           actions: [
             MyTextButton(
-              onPressed: () {
+              onTap: () {
                 Navigator.of(context).pop();
               },
               text: 'OK',
@@ -932,8 +932,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                                                                   ),
                                                                 ),
                                                                 MyTextButton(
-                                                                  onPressed:
-                                                                      () {
+                                                                  onTap: () {
                                                                     setState(
                                                                         () {
                                                                       isAvailingOffer =

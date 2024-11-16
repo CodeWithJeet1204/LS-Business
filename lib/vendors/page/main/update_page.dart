@@ -102,7 +102,6 @@ class _UpdatePageState extends State<UpdatePage> {
                         await launchPlayStore();
                       },
                       text: 'UPDATE',
-                      horizontalPadding: 0,
                     ),
             ],
           ),

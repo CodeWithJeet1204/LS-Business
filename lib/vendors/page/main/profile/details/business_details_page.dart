@@ -307,34 +307,43 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
               ),
             ],
           ),
-          bottomSheet: isChangingName || isChangingDescription
-              ? SizedBox(
-                  width: width,
-                  height: 80,
-                  child: MyButton(
-                    text: 'SAVE',
-                    onTap: () async {
-                      if (isChangingName) {
-                        await save(
-                          nameController,
-                          'Name',
-                          isChangingName,
-                        );
-                      } else if (isChangingDescription) {
-                        await save(
-                          descriptionController,
-                          'Description',
-                          isChangingDescription,
-                        );
-                      }
-                    },
-                    horizontalPadding: 0,
-                  ),
-                )
-              : const SizedBox(
-                  width: 0,
-                  height: 0,
-                ),
+          bottomSheet:
+              isChangingName || isChangingDescription || isChangingAddress
+                  ? SizedBox(
+                      width: width,
+                      height: 80,
+                      child: Padding(
+                        padding: EdgeInsets.all(width * 0.0225),
+                        child: MyButton(
+                          text: 'SAVE',
+                          onTap: () async {
+                            if (isChangingName) {
+                              await save(
+                                nameController,
+                                'Name',
+                                isChangingName,
+                              );
+                            } else if (isChangingDescription) {
+                              await save(
+                                descriptionController,
+                                'Description',
+                                isChangingDescription,
+                              );
+                            } else if (isChangingAddress) {
+                              await save(
+                                addressController,
+                                'Address',
+                                isChangingAddress,
+                              );
+                            }
+                          },
+                        ),
+                      ),
+                    )
+                  : const SizedBox(
+                      width: 0,
+                      height: 0,
+                    ),
           body: SafeArea(
             child: Padding(
               padding: EdgeInsets.symmetric(
@@ -1353,7 +1362,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                             ),
                                           ),
                                           MyTextButton(
-                                            onPressed: () {
+                                            onTap: () {
                                               Navigator.of(context).push(
                                                 MaterialPageRoute(
                                                   builder: (context) =>
@@ -1470,7 +1479,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                                 ),
                                                 actions: [
                                                   MyTextButton(
-                                                    onPressed: () async {
+                                                    onTap: () async {
                                                       Navigator.of(context)
                                                           .pop();
                                                       final Uri url = Uri.parse(
@@ -1488,7 +1497,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                                     textColor: Colors.red,
                                                   ),
                                                   MyTextButton(
-                                                    onPressed: () {
+                                                    onTap: () {
                                                       Navigator.of(context)
                                                           .pop();
                                                     },

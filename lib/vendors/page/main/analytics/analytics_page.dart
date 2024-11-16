@@ -64,14 +64,14 @@ class _AnalyticsPageState extends State<AnalyticsPage>
           ),
           actions: [
             MyTextButton(
-              onPressed: () {
+              onTap: () {
                 Navigator.of(context).pop();
               },
               text: 'NO',
               textColor: primaryDark2,
             ),
             MyTextButton(
-              onPressed: () {
+              onTap: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).push(
                   MaterialPageRoute(
@@ -122,7 +122,7 @@ class _AnalyticsPageState extends State<AnalyticsPage>
                       ),
                     ),
                     MyTextButton(
-                      onPressed: () async {
+                      onTap: () async {
                         await showChangeMembershipDialog();
                       },
                       text: 'CHANGE MEMBERSHIP',

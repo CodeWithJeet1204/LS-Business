@@ -206,7 +206,7 @@ class _SelectProductsForCategoryPageState
                 tooltip: 'Help',
               ),
               MyTextButton(
-                onPressed: widget.fromAddCategoryPage
+                onTap: widget.fromAddCategoryPage
                     ? () {
                         Navigator.of(context).pop();
                       }

@@ -297,7 +297,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                 tooltip: 'Help',
               ),
               MyTextButton(
-                onPressed: () async {
+                onTap: () async {
                   await addDiscount(
                     selectedProductProvider,
                     selectedProducts,
@@ -507,7 +507,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                   ),
                                   startDate == null
                                       ? MyTextButton(
-                                          onPressed: () async {
+                                          onTap: () async {
                                             await selectStartDate();
                                           },
                                           text: 'Select Date',
@@ -587,7 +587,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                   ),
                                   endDate == null
                                       ? MyTextButton(
-                                          onPressed: () async {
+                                          onTap: () async {
                                             await selectEndDate();
                                           },
                                           text: 'Select Date',
@@ -652,7 +652,6 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                                   ),
                                 );
                               },
-                        horizontalPadding: 0,
                       ),
                       const SizedBox(height: 20),
 
@@ -753,7 +752,6 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                               ? 'Amount* (eg. 20%)'
                               : 'Amount* (eg. Rs. 200 off)',
                           borderRadius: 12,
-                          horizontalPadding: 0,
                           keyboardType: TextInputType.number,
                         ),
                       ),

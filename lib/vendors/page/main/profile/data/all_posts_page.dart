@@ -388,7 +388,12 @@ class _allPostPageState extends State<allPostPage> {
                                         MaterialPageRoute(
                                           builder: (context) => PostPage(
                                             postId: postData['postId'],
-                                            postText: postData['postText'],
+                                            postText: postData['postText']
+                                                    .toString()
+                                                    .trim()
+                                                    .isEmpty
+                                                ? 'No Post Name'
+                                                : postData['postText'],
                                             imageUrl: postData['postImage'],
                                           ),
                                         ),
@@ -503,8 +508,13 @@ class _allPostPageState extends State<allPostPage> {
                                                   width: width * 0.325,
                                                   child: Text(
                                                     postData['postText']
-                                                        .toString()
-                                                        .trim(),
+                                                            .toString()
+                                                            .trim()
+                                                            .isEmpty
+                                                        ? 'No Post Name'
+                                                        : postData['postText']
+                                                            .toString()
+                                                            .trim(),
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -565,7 +575,12 @@ class _allPostPageState extends State<allPostPage> {
                                         MaterialPageRoute(
                                           builder: (context) => PostPage(
                                             postId: postData['postId'],
-                                            postText: postData['postText'],
+                                            postText: postData['postText']
+                                                    .toString()
+                                                    .trim()
+                                                    .isEmpty
+                                                ? 'No Post Name'
+                                                : postData['postText'],
                                             imageUrl: postData['postImage'],
                                           ),
                                         ),
@@ -642,8 +657,13 @@ class _allPostPageState extends State<allPostPage> {
                                               ),
                                         title: Text(
                                           postData['postText']
-                                              .toString()
-                                              .trim(),
+                                                  .toString()
+                                                  .trim()
+                                                  .isEmpty
+                                              ? 'No Post Name'
+                                              : postData['postText']
+                                                  .toString()
+                                                  .trim(),
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(

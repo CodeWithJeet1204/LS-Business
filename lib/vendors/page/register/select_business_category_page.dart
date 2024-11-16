@@ -270,7 +270,7 @@
 //                             hintText: 'Other Category Name',
 //                             controller: otherCategoryController,
 //                             borderRadius: 12,
-//                             horizontalPadding: 0,
+//                             
 //                             autoFillHints: null,
 //                           )
 //                         : Container(),
@@ -291,7 +291,7 @@
 //                             await uploadDetails();
 //                           },
 //                           isLoading: isSaving,
-//                           horizontalPadding: 0,
+//                           
 //                         ),
 //                       ),
 //                     ),

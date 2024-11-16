@@ -1,5 +1,5 @@
 package com.infinitylab.ls_business
-
+import android.media.MediaMetadataRetriever
 import android.content.ContentResolver
 import android.content.Intent
 import android.net.Uri
@@ -34,20 +34,22 @@ class MainActivity : FlutterActivity() {
                 } else {
                     result.error("INVALID_ARGUMENT", "Arguments are null", null)
                 }
-            } else if (call.method == "copyVideoFromUri") {
-                val uriString = call.argument<String>("uri")
-                val destPath = call.argument<String>("destinationPath")
-                if (uriString != null && destPath != null) {
-                    val isFileSaved = copyVideoFromUri(Uri.parse(uriString), destPath)
-                    if (isFileSaved) {
-                        result.success(destPath)
-                    } else {
-                        result.error("FILE_SAVE_ERROR", "Error copying the video URI", null)
-                    }
-                } else {
-                    result.error("INVALID_ARGUMENT", "Arguments are null", null)
-                }
-            } else {
+            } 
+            // else if (call.method == "copyVideoFromUri") {
+            //     val uriString = call.argument<String>("uri")
+            //     val destPath = call.argument<String>("destinationPath")
+            //     if (uriString != null && destPath != null) {
+            //         val isFileSaved = copyVideoFromUri(Uri.parse(uriString), destPath)
+            //         if (isFileSaved) {
+            //             result.success(destPath)
+            //         } else {
+            //             result.error("FILE_SAVE_ERROR", "Error copying the video URI", null)
+            //         }
+            //     } else {
+            //         result.error("INVALID_ARGUMENT", "Arguments are null", null)
+            //     }
+            // } 
+            else {
                 result.notImplemented()
             }
         }
@@ -106,9 +108,20 @@ class MainActivity : FlutterActivity() {
                 if (!mediaUris.isNullOrEmpty()) {
                     val uri = mediaUris.first()
 
-                    if (type != null && type.startsWith("video/")) {
-                        methodChannel.invokeMethod("shareVideo", listOf(uri.toString()))
-                    } else if (type != null && type.startsWith("image/")) {
+                    // if (type != null && type.startsWith("video/")) {
+                    //     val retriever = MediaMetadataRetriever()
+                    //     retriever.setDataSource(this, uri)
+                    //     val durationStr = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+                    //     val durationMs = durationStr?.toLong() ?: 0L
+                    //     retriever.release()
+                    //     val durationSeconds = durationMs / 1000
+                    //     if (durationSeconds > 60) {
+                    //         methodChannel.invokeMethod("videoTooLong", null)
+                    //     } else {
+                    //         methodChannel.invokeMethod("shareVideo", listOf(uri.toString()))
+                    //     }
+                    // }
+                    if (type != null && type.startsWith("image/")) {
                         val imagePaths = mediaUris.map { it.toString() }
                         methodChannel.invokeMethod("shareImage", imagePaths)
                     }

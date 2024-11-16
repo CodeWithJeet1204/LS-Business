@@ -30,7 +30,6 @@ class AddStatusPage extends StatefulWidget {
 class _AddStatusPageState extends State<AddStatusPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
-  final statusKey = GlobalKey<FormState>();
   final captionController = TextEditingController();
   List<File> image = [];
   int currentImageIndex = 0;
@@ -117,96 +116,72 @@ class _AddStatusPageState extends State<AddStatusPage> {
 
   // POST
   Future<void> post() async {
-    if (statusKey.currentState!.validate()) {
-      setState(() {
-        isPosting = true;
-        isDialog = true;
-      });
+    setState(() {
+      isPosting = true;
+      isDialog = true;
+    });
+
+    try {
+      List imageDownloadUrl = [];
 
       try {
-        List imageDownloadUrl = [];
-
-        try {
-          await Future.forEach(image, (img) async {
-            Reference ref = FirebaseStorage.instance
-                .ref()
-                .child('Vendor/Status')
-                .child(const Uuid().v4());
-            await ref.putFile(img);
-            String downloadUrl = await ref.getDownloadURL();
-            if (mounted) {
-              setState(() {
-                imageDownloadUrl.add(downloadUrl);
-              });
-            }
-          });
-        } catch (e) {
+        await Future.forEach(image, (img) async {
+          Reference ref = FirebaseStorage.instance
+              .ref()
+              .child('Vendor/Status')
+              .child(const Uuid().v4());
+          await ref.putFile(img);
+          String downloadUrl = await ref.getDownloadURL();
           if (mounted) {
-            mySnackBar(context, e.toString());
+            setState(() {
+              imageDownloadUrl.add(downloadUrl);
+            });
           }
-        }
-
-        final String statusId = const Uuid().v4();
-        Map<String, dynamic> statusInfo = {
-          'statusId': statusId,
-          'statusText': captionController.text.toString().trim(),
-          'statusImage': imageDownloadUrl,
-          'statusVendorId': auth.currentUser!.uid,
-          'statusViews': [],
-          'statusDateTime': Timestamp.fromMillisecondsSinceEpoch(
-            DateTime.now().millisecondsSinceEpoch,
-          ),
-          // 'statusLikes': 0,
-          // 'statusDeleteDateTime': Timestamp.fromMillisecondsSinceEpoch(
-          //   DateTime.now()
-          //       .add(
-          //         Duration(
-          //           hours: 23,
-          //           minutes: 50,
-          //         ),
-          //       )
-          //       .millisecondsSinceEpoch,
-          // ),
-        };
-
-        // await store
-        //     .collection('Business')
-        //     .doc('Owners')
-        //     .collection('Shops')
-        //     .doc(auth.currentUser!.uid)
-        //     .update({
-        //   'noOfImagePosts': imagePostRemaining - 1,
-        // });
-
-        await store
-            .collection('Business')
-            .doc('Data')
-            .collection('Status')
-            .doc(statusId)
-            .set(statusInfo);
-
-        setState(() {
-          isPosting = false;
-          isDialog = false;
         });
-
-        if (mounted) {
-          mySnackBar(context, 'Posted');
-          Navigator.of(context).pop();
-          if (widget.imagePaths != null) {
-            if (Navigator.of(context).canPop()) {
-              Navigator.of(context).pop();
-            }
-          }
-        }
       } catch (e) {
-        setState(() {
-          isPosting = false;
-          isDialog = false;
-        });
         if (mounted) {
           mySnackBar(context, e.toString());
         }
+      }
+
+      final String statusId = const Uuid().v4();
+      await store
+          .collection('Business')
+          .doc('Data')
+          .collection('Status')
+          .doc(statusId)
+          .set({
+        'statusId': statusId,
+        'statusText': captionController.text.toString().trim(),
+        'statusImage': imageDownloadUrl,
+        'statusVendorId': auth.currentUser!.uid,
+        'statusViews': [],
+        'statusDateTime': Timestamp.fromMillisecondsSinceEpoch(
+          DateTime.now().millisecondsSinceEpoch,
+        ),
+      });
+
+      setState(() {
+        isPosting = false;
+        isDialog = false;
+      });
+
+      if (mounted) {
+        mySnackBar(context, 'Posted');
+        Navigator.of(context).pop();
+        if (widget.imagePaths != null) {
+          if (Navigator.of(context).canPop()) {
+            Navigator.of(context).pop();
+          }
+        }
+      }
+    } catch (e) {
+      setState(() {
+        isPosting = false;
+        isDialog = false;
+      });
+      if (mounted) {
+        mySnackBar(context, e.toString());
       }
     }
   }
@@ -223,14 +198,14 @@ class _AddStatusPageState extends State<AddStatusPage> {
           ),
           actions: [
             MyTextButton(
-              onPressed: () {
+              onTap: () {
                 Navigator.of(context).pop();
               },
               text: 'NO',
               textColor: primaryDark2,
             ),
             MyTextButton(
-              onPressed: () {
+              onTap: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).push(
                   MaterialPageRoute(
@@ -266,8 +241,7 @@ class _AddStatusPageState extends State<AddStatusPage> {
     await Share.shareXFiles(
       imagePaths.map((path) => XFile(path)).toList(),
       text: captionController.text.isNotEmpty
-          ? '''${captionController.text}
-          This products are also available on Localsearch'''
+          ? '${captionController.text}\nThis products are also available on Localsearch'
           : 'This products are also available on Localsearch',
     );
   }
@@ -317,7 +291,7 @@ class _AddStatusPageState extends State<AddStatusPage> {
                                 textAlign: TextAlign.center,
                               ),
                               MyTextButton(
-                                onPressed: () async {
+                                onTap: () async {
                                   await showChangeMembershipDialog();
                                 },
                                 text: 'CHANGE MEMBERSHIP',
@@ -546,91 +520,86 @@ class _AddStatusPageState extends State<AddStatusPage> {
                                           ],
                                         ),
                                   const SizedBox(height: 8),
-                                  Form(
-                                    key: statusKey,
-                                    child: Column(
-                                      children: [
-                                        SizedBox(
-                                          width: width,
-                                          child: TextFormField(
-                                            autofocus: false,
-                                            controller: captionController,
-                                            minLines: 1,
-                                            maxLines: 10,
-                                            maxLength: 100,
-                                            onTapOutside: (event) =>
-                                                FocusScope.of(context)
-                                                    .unfocus(),
-                                            decoration: InputDecoration(
-                                              border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(4),
-                                                borderSide: BorderSide(
-                                                  color: Colors.cyan.shade700,
-                                                ),
+                                  Column(
+                                    children: [
+                                      SizedBox(
+                                        width: width,
+                                        child: TextFormField(
+                                          autofocus: false,
+                                          controller: captionController,
+                                          minLines: 1,
+                                          maxLines: 10,
+                                          maxLength: 100,
+                                          onTapOutside: (event) =>
+                                              FocusScope.of(context).unfocus(),
+                                          decoration: InputDecoration(
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                              borderSide: BorderSide(
+                                                color: Colors.cyan.shade700,
                                               ),
-                                              hintText: 'Caption',
                                             ),
-                                            validator: (value) {
-                                              if (value != null) {
-                                                if (value.isNotEmpty) {
-                                                  return null;
-                                                } else {
-                                                  return 'Pls enter Caption';
-                                                }
+                                            hintText: 'Caption',
+                                          ),
+                                          validator: (value) {
+                                            if (value != null) {
+                                              if (value.isNotEmpty) {
+                                                return null;
+                                              } else {
+                                                return 'Pls enter Caption';
                                               }
-                                              return null;
-                                            },
-                                          ),
+                                            }
+                                            return null;
+                                          },
                                         ),
+                                      ),
 
-                                        const SizedBox(height: 8),
+                                      const SizedBox(height: 8),
 
-                                        Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: GestureDetector(
-                                            onTap: () async {
-                                              await shareImages();
-                                            },
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.green.shade300,
-                                                border: Border.all(
-                                                  color: Colors.green,
-                                                ),
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: GestureDetector(
+                                          onTap: () async {
+                                            await shareImages();
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.green.shade300,
+                                              border: Border.all(
+                                                color: Colors.green,
                                               ),
-                                              padding: EdgeInsets.all(
-                                                width * 0.0225,
-                                              ),
-                                              margin: EdgeInsets.symmetric(
-                                                horizontal: width * 0.0125,
-                                              ),
-                                              child: Text(
-                                                'Share To Whatsapp',
-                                                style: TextStyle(
-                                                  color: Colors.green.shade900,
-                                                  fontSize: width * 0.033,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                            padding: EdgeInsets.all(
+                                              width * 0.0225,
+                                            ),
+                                            margin: EdgeInsets.symmetric(
+                                              horizontal: width * 0.0125,
+                                            ),
+                                            child: Text(
+                                              'Share To Whatsapp',
+                                              style: TextStyle(
+                                                color: Colors.green.shade900,
+                                                fontSize: width * 0.033,
+                                                fontWeight: FontWeight.w600,
                                               ),
                                             ),
                                           ),
                                         ),
+                                      ),
 
-                                        const SizedBox(height: 12),
+                                      const SizedBox(height: 12),
 
-                                        // DONE
-                                        MyButton(
-                                          text: 'DONE',
-                                          onTap: () async {
-                                            await post();
-                                          },
-                                          horizontalPadding: 0,
-                                        ),
-                                      ],
-                                    ),
+                                      // DONE
+                                      MyButton(
+                                        text: 'DONE',
+                                        onTap: () async {
+                                          await post();
+                                        },
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),

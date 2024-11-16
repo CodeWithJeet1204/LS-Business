@@ -427,7 +427,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                 tooltip: 'Help',
               ),
               MyTextButton(
-                onPressed: () {
+                onTap: () {
                   addProduct(addProductProvider);
                 },
                 text: 'NEXT',
@@ -490,7 +490,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                     ),
                                   ),
                                   MyTextButton(
-                                    onPressed: addTag,
+                                    onTap: addTag,
                                     text: 'Add',
                                     textColor: primaryDark2,
                                   ),
@@ -670,7 +670,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                     ),
                                                   ),
                                                   MyTextButton(
-                                                    onPressed: () {
+                                                    onTap: () {
                                                       if (property0Controller
                                                           .text
                                                           .toString()
@@ -898,7 +898,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                     ),
                                                   ),
                                                   MyTextButton(
-                                                    onPressed: () {
+                                                    onTap: () {
                                                       if (property1Controller
                                                           .text.isNotEmpty) {
                                                         if (property1Controller
@@ -1123,7 +1123,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                     ),
                                                   ),
                                                   MyTextButton(
-                                                    onPressed: () {
+                                                    onTap: () {
                                                       if (property2Controller
                                                           .text.isNotEmpty) {
                                                         if (property2Controller
@@ -1348,7 +1348,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                     ),
                                                   ),
                                                   MyTextButton(
-                                                    onPressed: () {
+                                                    onTap: () {
                                                       if (property3Controller
                                                           .text
                                                           .toString()
@@ -1587,7 +1587,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                       ),
                                                     ),
                                                     MyTextButton(
-                                                      onPressed: () {
+                                                      onTap: () {
                                                         if (property4Controller
                                                             .text
                                                             .toString()
@@ -1834,7 +1834,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                                                       ),
                                                     ),
                                                     MyTextButton(
-                                                      onPressed: () {
+                                                      onTap: () {
                                                         if (property5Controller
                                                             .text
                                                             .toString()

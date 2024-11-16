@@ -156,7 +156,7 @@ class _SelectBrandForDiscountPageState
             tooltip: 'Help',
           ),
           MyTextButton(
-            onPressed: () {
+            onTap: () {
               Navigator.of(context).pop();
             },
             text: 'DONE',

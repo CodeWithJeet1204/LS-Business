@@ -682,7 +682,6 @@ class DISCOUNT extends State<DiscountPage> {
                                 keyboardType,
                               );
                             },
-                            horizontalPadding: 0,
                           ),
                         ],
                       ),
@@ -977,7 +976,7 @@ class DISCOUNT extends State<DiscountPage> {
                                 )
                               : Center(
                                   child: MyTextButton(
-                                    onPressed: () async {
+                                    onTap: () async {
                                       await addDiscountImage();
                                     },
                                     text: 'Add Image',

@@ -7,7 +7,7 @@ class MyTextFormField extends StatefulWidget {
     required this.hintText,
     required this.controller,
     required this.borderRadius,
-    required this.horizontalPadding,
+    this.horizontalPadding,
     this.autoFillHints,
     this.verticalPadding = 0,
     this.isPassword = false,
@@ -21,8 +21,8 @@ class MyTextFormField extends StatefulWidget {
   final bool autoFocus;
   final Iterable<String>? autoFillHints;
   final double borderRadius;
-  final double horizontalPadding;
-  final double verticalPadding;
+  final double? horizontalPadding;
+  final double? verticalPadding;
   final int? maxLines;
   final TextInputType? keyboardType;
   final TextEditingController controller;
@@ -38,8 +38,8 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: widget.horizontalPadding,
-        vertical: widget.verticalPadding,
+        horizontal: widget.horizontalPadding ?? 0,
+        vertical: widget.verticalPadding ?? 0,
       ),
       child: widget.isPassword
           ? Row(

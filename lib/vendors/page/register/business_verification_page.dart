@@ -303,7 +303,6 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
                                   text: isAadhaarNotValidated
                                       ? 'TRY AGAIN'
                                       : 'VALIDATE AADHAAR',
-                                  horizontalPadding: 0,
                                 ),
 
                           const Divider(),
@@ -347,7 +346,6 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
                               await next();
                             },
                             text: 'NEXT',
-                            horizontalPadding: 0,
                           ),
                         ],
                       ),

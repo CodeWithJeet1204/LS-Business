@@ -430,7 +430,7 @@ class _BusinessTimingsPageState extends State<BusinessTimingsPage> {
                                                 ),
                                                 weekdayStartTime == null
                                                     ? MyTextButton(
-                                                        onPressed: () async {
+                                                        onTap: () async {
                                                           await selectWeekdayStartTime();
                                                         },
                                                         text: 'Select Time',
@@ -527,7 +527,7 @@ class _BusinessTimingsPageState extends State<BusinessTimingsPage> {
                                                 ),
                                                 weekdayEndTime == null
                                                     ? MyTextButton(
-                                                        onPressed: () async {
+                                                        onTap: () async {
                                                           await selectWeekdayEndTime();
                                                         },
                                                         text: 'Select Time',
@@ -572,7 +572,7 @@ class _BusinessTimingsPageState extends State<BusinessTimingsPage> {
                       GestureDetector(
                         onTap: () {
                           setState(() {
-                            isSaturday = !isWeekday;
+                            isSaturday = !isSaturday;
                           });
                         },
                         child: ExpansionTile(
@@ -699,7 +699,7 @@ class _BusinessTimingsPageState extends State<BusinessTimingsPage> {
                                                 ),
                                                 saturdayStartTime == null
                                                     ? MyTextButton(
-                                                        onPressed: () async {
+                                                        onTap: () async {
                                                           await selectSaturdayStartTime();
                                                         },
                                                         text: 'Select Time',
@@ -796,7 +796,7 @@ class _BusinessTimingsPageState extends State<BusinessTimingsPage> {
                                                 ),
                                                 saturdayEndTime == null
                                                     ? MyTextButton(
-                                                        onPressed: () async {
+                                                        onTap: () async {
                                                           await selectSaturdayEndTime();
                                                         },
                                                         text: 'Select Time',
@@ -841,7 +841,7 @@ class _BusinessTimingsPageState extends State<BusinessTimingsPage> {
                       GestureDetector(
                         onTap: () {
                           setState(() {
-                            isSunday = !isWeekday;
+                            isSunday = !isSunday;
                           });
                         },
                         child: ExpansionTile(
@@ -968,7 +968,7 @@ class _BusinessTimingsPageState extends State<BusinessTimingsPage> {
                                                 ),
                                                 sundayStartTime == null
                                                     ? MyTextButton(
-                                                        onPressed: () async {
+                                                        onTap: () async {
                                                           await selectSundayStartTime();
                                                         },
                                                         text: 'Select Time',
@@ -1065,7 +1065,7 @@ class _BusinessTimingsPageState extends State<BusinessTimingsPage> {
                                                 ),
                                                 sundayEndTime == null
                                                     ? MyTextButton(
-                                                        onPressed: () async {
+                                                        onTap: () async {
                                                           await selectSundayEndTime();
                                                         },
                                                         text: 'Select Time',
@@ -1112,7 +1112,6 @@ class _BusinessTimingsPageState extends State<BusinessTimingsPage> {
                         onTap: () async {
                           await next();
                         },
-                        horizontalPadding: 0,
                       ),
                     ],
                   ),

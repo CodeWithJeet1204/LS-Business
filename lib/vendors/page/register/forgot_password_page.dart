@@ -67,7 +67,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       hintText: 'Email*',
                       controller: emailController,
                       borderRadius: 12,
-                      horizontalPadding: 0,
                       autoFillHints: const [],
                     ),
                     const SizedBox(height: 20),
@@ -138,7 +137,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           }
                         }
                       },
-                      horizontalPadding: 0,
                     ),
                     !isSent ? Container() : const SizedBox(height: 12),
                     !isSent
@@ -163,7 +161,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                 ),
                               );
                             },
-                            horizontalPadding: 0,
                           ),
                   ],
                 ),

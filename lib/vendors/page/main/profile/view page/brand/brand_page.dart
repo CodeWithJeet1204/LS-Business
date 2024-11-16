@@ -229,7 +229,6 @@ class _BrandPageState extends State<BrandPage> {
                             onTap: () async {
                               await changeBrandName(brandName);
                             },
-                            horizontalPadding: 0,
                           ),
                         ],
                       ),
@@ -270,14 +269,14 @@ class _BrandPageState extends State<BrandPage> {
           ),
           actions: [
             MyTextButton(
-              onPressed: () {
+              onTap: () {
                 Navigator.of(context).pop();
               },
               text: 'NO',
               textColor: Colors.green,
             ),
             MyTextButton(
-              onPressed: () async {
+              onTap: () async {
                 try {
                   await store
                       .collection('Business')
@@ -636,7 +635,7 @@ class _BrandPageState extends State<BrandPage> {
                                     )
                                   : Center(
                                       child: MyTextButton(
-                                        onPressed: () async {
+                                        onTap: () async {
                                           await changeBrandImage();
                                         },
                                         text: 'Add Image',
@@ -809,7 +808,6 @@ class _BrandPageState extends State<BrandPage> {
                                   );
                                 },
                                 text: 'ADD PRODUCT',
-                                horizontalPadding: 0,
                               ),
                               const SizedBox(height: 28),
 

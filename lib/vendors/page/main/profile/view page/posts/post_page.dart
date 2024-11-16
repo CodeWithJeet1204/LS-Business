@@ -98,7 +98,9 @@ class _PostPageState extends State<PostPage> {
           MaterialPageRoute(
             builder: (context) => PostPage(
               postId: widget.postId,
-              postText: widget.postText,
+              postText: widget.postText.toString().trim().isEmpty
+                  ? 'No Post Name'
+                  : widget.postText,
               imageUrl: widget.imageUrl,
             ),
           ),
@@ -314,7 +316,6 @@ class _PostPageState extends State<PostPage> {
                               await changePostText(
                                   textChangeController.text, isName);
                             },
-                            horizontalPadding: 0,
                           ),
                         ],
                       ),
@@ -780,7 +781,7 @@ class _PostPageState extends State<PostPage> {
                                     )
                                   : Center(
                                       child: MyTextButton(
-                                        onPressed: () async {
+                                        onTap: () async {
                                           await addPostImages(
                                             postData['postImage'],
                                           );
@@ -809,7 +810,14 @@ class _PostPageState extends State<PostPage> {
                                     SizedBox(
                                       width: width * 0.8,
                                       child: Text(
-                                        postData['postText'].toString().trim(),
+                                        postData['postText']
+                                                .toString()
+                                                .trim()
+                                                .isEmpty
+                                            ? 'No Post Name'
+                                            : postData['postText']
+                                                .toString()
+                                                .trim(),
                                         maxLines: 3,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(

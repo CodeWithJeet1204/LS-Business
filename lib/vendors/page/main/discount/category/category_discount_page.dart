@@ -274,7 +274,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                 tooltip: 'Help',
               ),
               MyTextButton(
-                onPressed: () async {
+                onTap: () async {
                   await addDiscount(
                     selectedCategoryProvider,
                     selectedCategories,
@@ -483,7 +483,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                   ),
                                   startDate == null
                                       ? MyTextButton(
-                                          onPressed: () async {
+                                          onTap: () async {
                                             await selectStartDate();
                                           },
                                           text: 'Select Date',
@@ -563,7 +563,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                                   ),
                                   endDate == null
                                       ? MyTextButton(
-                                          onPressed: () async {
+                                          onTap: () async {
                                             await selectEndDate();
                                           },
                                           text: 'Select Date',
@@ -619,7 +619,6 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                             ),
                           );
                         },
-                        horizontalPadding: 0,
                       ),
                       const SizedBox(height: 20),
 
@@ -720,7 +719,6 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                               ? 'Amount* (eg. 20%)'
                               : 'Amount* (eg. Rs. 200 off)',
                           borderRadius: 12,
-                          horizontalPadding: 0,
                           keyboardType: TextInputType.number,
                         ),
                       ),
