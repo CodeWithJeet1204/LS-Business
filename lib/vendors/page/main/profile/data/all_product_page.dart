@@ -509,7 +509,10 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                                     0,
                                                   ),
                                                   child: Text(
-                                                    'Rs. ${productData['productPrice'].round()}',
+                                                    productData['productPrice'] ==
+                                                            0
+                                                        ? 'Rs. N/A'
+                                                        : 'Rs. ${productData['productPrice'].round()}',
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -636,7 +639,9 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                         ),
                                       ),
                                       subtitle: Text(
-                                        'Rs. ${productData['productPrice']}',
+                                        productData['productPrice'] == 0
+                                            ? 'Rs. N/A'
+                                            : 'Rs. ${productData['productPrice'].round()}',
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
@@ -653,8 +658,9 @@ class _AllProductsPageState extends State<AllProductsPage> {
                                             Navigator.of(context).pop();
                                             Navigator.of(context).push(
                                               MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const AllProductsPage()),
+                                                builder: (context) =>
+                                                    const AllProductsPage(),
+                                              ),
                                             );
                                           }
                                         },

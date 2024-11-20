@@ -678,7 +678,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                           children: [
                             CircularProgressIndicator(),
                             SizedBox(height: 12),
-                            Text('Finding Latest & Biggest Offers for you!'),
+                            Text('Just wait a minute'),
                           ],
                         ),
                       ),

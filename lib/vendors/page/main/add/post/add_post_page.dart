@@ -479,7 +479,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                 width: width,
                                 child: MyTextFormField(
                                   controller: nameCaptionController,
-                                  hintText: 'Name / Caption*',
+                                  hintText: 'Name / Caption',
                                   maxLines: 10,
                                   borderRadius: 12,
                                 ),

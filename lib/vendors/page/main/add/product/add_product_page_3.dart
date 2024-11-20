@@ -60,9 +60,9 @@ class _AddProductPage3State extends State<AddProductPage3> {
     final householdCategoryData = categoriesData['householdCategoryData'];
     final categories = householdCategoryData[widget.shopType]!;
 
-    await Future.wait(categories.entries.map((entry) async {
+    categories.entries.forEach((entry) {
       myCategories[entry.key] = entry.value;
-    }));
+    });
 
     final sortedCategories = Map.fromEntries(
       myCategories.entries.toList()..sort((a, b) => a.key.compareTo(b.key)),

@@ -1694,7 +1694,9 @@ class _ProductPageState extends State<ProductPage> {
                                               left: width * 0.02775,
                                             ),
                                             child: Text(
-                                              'Rs. ${productData['productPrice']}',
+                                              productData['productPrice'] == 0
+                                                  ? 'Rs. N/A'
+                                                  : 'Rs. ${productData['productPrice']}',
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
@@ -1704,27 +1706,29 @@ class _ProductPageState extends State<ProductPage> {
                                               ),
                                             ),
                                           ),
-                                          MyTextButton(
-                                            onTap: () async {
-                                              Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ProductDiscountPage(
-                                                    changeSelectedProductDiscount:
-                                                        true,
-                                                    changeSelectedProductDiscountId:
-                                                        productData[
-                                                            'productId'],
-                                                    changeSelectedProductDiscountName:
-                                                        productData[
-                                                            'productName'],
-                                                  ),
+                                          productData['productPrice'] == 0
+                                              ? Container()
+                                              : MyTextButton(
+                                                  onTap: () async {
+                                                    Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ProductDiscountPage(
+                                                          changeSelectedProductDiscount:
+                                                              true,
+                                                          changeSelectedProductDiscountId:
+                                                              productData[
+                                                                  'productId'],
+                                                          changeSelectedProductDiscountName:
+                                                              productData[
+                                                                  'productName'],
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  text: 'Add Discount',
+                                                  textColor: primaryDark2,
                                                 ),
-                                              );
-                                            },
-                                            text: 'Add Discount',
-                                            textColor: primaryDark2,
-                                          ),
                                         ],
                                       ),
 

@@ -82,6 +82,9 @@ class _BusinessRegisterDetailsPageState
 
     if (!serviceEnabled) {
       if (mounted) {
+        setState(() {
+          isDetectingCity = false;
+        });
         mySnackBar(context, 'Turn ON Location Services to Continue');
       }
       return null;
@@ -106,13 +109,11 @@ class _BusinessRegisterDetailsPageState
             latitude = 0;
             longitude = 0;
             cityDetectLocation = 'NONE';
-          });
-
-          setState(() {
             isDetectingCity = false;
           });
           if (mounted) {
             mySnackBar(context, 'Sorry, without location we can\'t Continue');
+            return null;
           }
         } else {
           return await locationPermissionGiven();
@@ -167,6 +168,7 @@ class _BusinessRegisterDetailsPageState
           mySnackBar(context, 'Some error occured');
         }
         setState(() {
+          isDetectingCity = false;
           cityDetectLocation = 'Detect Location';
         });
       }
@@ -446,6 +448,7 @@ class _BusinessRegisterDetailsPageState
                                     setState(() {
                                       cityDetectLocation = null;
                                       isPickingCity = false;
+                                      isDetectingCity = false;
                                     });
                                   },
                                   child: Container(
@@ -523,13 +526,27 @@ class _BusinessRegisterDetailsPageState
                           // const SizedBox(height: 20),
 
                           // DESCRIPTION
-                          MyTextFormField(
-                            hintText: 'Description',
+                          TextFormField(
+                            autofocus: false,
                             controller: descriptionController,
-                            borderRadius: 12,
-                            autoFillHints: null,
-                            maxLines: 10,
                             keyboardType: TextInputType.multiline,
+                            maxLines: 50,
+                            minLines: 1,
+                            onTapOutside: (event) =>
+                                FocusScope.of(context).unfocus(),
+                            textInputAction: TextInputAction.newline,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(
+                                  12,
+                                ),
+                                borderSide: BorderSide(
+                                  color: Colors.cyan.shade700,
+                                ),
+                              ),
+                              hintText: 'Description',
+                            ),
+                            maxLength: 500,
                           ),
                           const SizedBox(height: 12),
 

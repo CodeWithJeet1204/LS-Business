@@ -130,7 +130,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
             return AlertDialog(
               title: Text('Max $maxImages Images Allowed'),
               content: Text(
-                'Your current membership only supports $maxImages maximum',
+                'Maximum $maxImages allowed',
               ),
               actions: [
                 TextButton(
@@ -204,8 +204,10 @@ class _AddProductPage1State extends State<AddProductPage1> {
             .doc('Data')
             .collection('Products')
             .where('vendorId', isEqualTo: auth.currentUser!.uid)
-            .where('productName',
-                isEqualTo: nameController.text.toString().trim())
+            .where(
+              'productName',
+              isEqualTo: nameController.text.toString().trim(),
+            )
             .get();
 
         if (previousProducts.docs.isNotEmpty) {
@@ -228,8 +230,10 @@ class _AddProductPage1State extends State<AddProductPage1> {
           productProvider.add(
             {
               'productName': nameController.text.toString().trim(),
-              'productPrice':
-                  double.parse(priceController.text.toString().trim()),
+              'productPrice': double.parse(
+                  priceController.text.toString().trim().isEmpty
+                      ? '0'
+                      : priceController.text.toString().trim()),
               'productDescription':
                   descriptionController.text.toString().trim(),
               'productBrand': 'No Brand',
@@ -551,19 +555,46 @@ class _AddProductPage1State extends State<AddProductPage1> {
                                   const SizedBox(height: 12),
 
                                   // PRICE
-                                  MyTextFormField(
+                                  TextFormField(
+                                    autofocus: false,
                                     controller: priceController,
-                                    hintText: 'Price',
-                                    borderRadius: 12,
                                     keyboardType: TextInputType.number,
+                                    maxLines: 1,
+                                    minLines: 1,
+                                    onTapOutside: (event) =>
+                                        FocusScope.of(context).unfocus(),
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                        borderSide: BorderSide(
+                                          color: Colors.cyan.shade700,
+                                        ),
+                                      ),
+                                      hintText: 'Price',
+                                    ),
+                                    maxLength: 10,
                                   ),
                                   const SizedBox(height: 12),
 
                                   // DESCRIPTION
-                                  MyTextFormField(
+                                  TextFormField(
+                                    autofocus: false,
                                     controller: descriptionController,
-                                    hintText: 'Description',
-                                    borderRadius: 12,
+                                    keyboardType: TextInputType.multiline,
+                                    textInputAction: TextInputAction.newline,
+                                    maxLines: 20,
+                                    minLines: 1,
+                                    onTapOutside: (event) =>
+                                        FocusScope.of(context).unfocus(),
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                        borderSide: BorderSide(
+                                          color: Colors.cyan.shade700,
+                                        ),
+                                      ),
+                                      hintText: 'Description',
+                                    ),
                                   ),
                                   const SizedBox(height: 16),
 

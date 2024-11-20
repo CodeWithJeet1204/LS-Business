@@ -535,7 +535,9 @@ class _AddStatusPageState extends State<AddStatusPage> {
                                           decoration: InputDecoration(
                                             border: OutlineInputBorder(
                                               borderRadius:
-                                                  BorderRadius.circular(4),
+                                                  BorderRadius.circular(
+                                                12,
+                                              ),
                                               borderSide: BorderSide(
                                                 color: Colors.cyan.shade700,
                                               ),

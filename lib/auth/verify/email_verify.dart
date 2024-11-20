@@ -160,6 +160,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
                       text: 'DONE',
                       onTap: () async {
                         if (changeEmailKey.currentState!.validate()) {
+                          Navigator.of(context).pop();
                           setState(() {
                             isEmailChanging = true;
                             isDialog = true;
