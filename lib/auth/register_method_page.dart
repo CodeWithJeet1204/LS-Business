@@ -479,7 +479,7 @@
 //       child: ModalProgressHUD(
 //         inAsyncCall: isDialog,
 //         color: primaryDark,
-//         blur: 0.5,
+//         blur: 2,
 //         child: Scaffold(
 //           resizeToAvoidBottomInset: false,
 //           appBar: AppBar(
@@ -666,7 +666,7 @@
 //                             color: primary2.withOpacity(0.75),
 //                           ),
 //                           child: isGoogleRegistering
-//                               ? const CircularProgressIndicator(
+//                               ? const LoadingIndicator(
 //                                   color: primaryDark,
 //                                 )
 //                               : Text(
@@ -1031,7 +1031,7 @@
 //             //             //     ),
 //             //             //     child: isGoogleRegistering
 //             //             //         ? const Center(
-//             //             //             child: CircularProgressIndicator(
+//             //             //             child: LoadingIndicator(
 //             //             //               color: primaryDark,
 //             //             //             ),
 //             //             //           )

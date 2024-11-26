@@ -6,6 +6,7 @@ import 'package:ls_business/widgets/info_color_box.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:provider/provider.dart';
 
 class ProductAnalyticsPage extends StatefulWidget {
@@ -1583,7 +1584,7 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                           }
 
                           return const Center(
-                            child: CircularProgressIndicator(),
+                            child: LoadingIndicator(),
                           );
                         },
                       ),

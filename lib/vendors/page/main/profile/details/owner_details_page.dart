@@ -3,6 +3,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/image_pick_dialog.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
@@ -257,7 +258,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
       child: ModalProgressHUD(
         inAsyncCall: isDialog,
         color: primaryDark,
-        blur: 0.5,
+        blur: 2,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
@@ -291,9 +292,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                             color: buttonColor,
                           ),
                           child: const Center(
-                            child: CircularProgressIndicator(
-                              color: white,
-                            ),
+                            child: LoadingIndicator(),
                           ),
                         )
                       : Padding(
@@ -350,9 +349,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                                         ),
                                       ),
                                       child: const Center(
-                                        child: CircularProgressIndicator(
-                                          color: primaryDark,
-                                        ),
+                                        child: LoadingIndicator(),
                                       ),
                                     )
                                   : Stack(
@@ -763,7 +760,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                       }
 
                       return const Center(
-                        child: CircularProgressIndicator(),
+                        child: LoadingIndicator(),
                       );
                     },
                   );

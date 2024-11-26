@@ -6,6 +6,7 @@ import 'package:ls_business/vendors/page/main/main_page.dart';
 import 'package:ls_business/vendors/page/main/profile/data/all_brand_page.dart';
 import 'package:ls_business/vendors/page/main/profile/view%20page/product/product_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/image_pick_dialog.dart';
 import 'package:ls_business/widgets/shimmer_skeleton_container.dart';
@@ -237,7 +238,7 @@ class _BrandPageState extends State<BrandPage> {
                 }
 
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: LoadingIndicator(),
                 );
               },
             ),
@@ -480,7 +481,7 @@ class _BrandPageState extends State<BrandPage> {
       child: ModalProgressHUD(
         inAsyncCall: isDialog,
         color: primaryDark,
-        blur: 0.5,
+        blur: 2,
         child: Scaffold(
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
@@ -557,7 +558,7 @@ class _BrandPageState extends State<BrandPage> {
                                                 BorderRadius.circular(12),
                                           ),
                                           child: isChangingImage
-                                              ? const CircularProgressIndicator()
+                                              ? const LoadingIndicator()
                                               : ClipRRect(
                                                   borderRadius:
                                                       BorderRadius.circular(
@@ -787,7 +788,7 @@ class _BrandPageState extends State<BrandPage> {
                                         }
 
                                         return const Center(
-                                          child: CircularProgressIndicator(),
+                                          child: LoadingIndicator(),
                                         );
                                       })
                                   : Container(),
@@ -1303,7 +1304,7 @@ class _BrandPageState extends State<BrandPage> {
                       }
 
                       return const Center(
-                        child: CircularProgressIndicator(),
+                        child: LoadingIndicator(),
                       );
                     }),
                   );

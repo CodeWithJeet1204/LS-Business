@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ls_business/vendors/page/register/business_register_details_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/image_pick_dialog.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
@@ -178,7 +179,7 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
       child: ModalProgressHUD(
         inAsyncCall: isDialog,
         color: primaryDark,
-        blur: 0.5,
+        blur: 2,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
@@ -202,7 +203,7 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
           ),
           body: userData == null
               ? const Center(
-                  child: CircularProgressIndicator(),
+                  child: LoadingIndicator(),
                 )
               : SafeArea(
                   child: SingleChildScrollView(

@@ -1,6 +1,7 @@
 import 'package:ls_business/vendors/page/main/profile/view%20page/product/product_page.dart';
 import 'package:ls_business/vendors/page/main/profile/view%20page/shorts/all_shorts_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/text_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
@@ -86,7 +87,7 @@ class _ShortsTileState extends State<ShortsTile> {
       builder: (context) {
         return isLoading
             ? const Center(
-                child: CircularProgressIndicator(),
+                child: LoadingIndicator(),
               )
             : AlertDialog(
                 title: const Text('Delete Short'),
@@ -174,9 +175,7 @@ class _ShortsTileState extends State<ShortsTile> {
                           videoFit: BoxFit.contain,
                           playerLoadingFallback: Align(
                             alignment: Alignment.center,
-                            child: CircularProgressIndicator(
-                              color: white,
-                            ),
+                            child: LoadingIndicator(),
                           ),
                         ),
                       ),
@@ -354,9 +353,7 @@ class _ShortsTileState extends State<ShortsTile> {
         : Stack(
             children: [
               const Center(
-                child: CircularProgressIndicator(
-                  color: white,
-                ),
+                child: LoadingIndicator(),
               ),
               Padding(
                 padding: EdgeInsets.all(width * 0.025),

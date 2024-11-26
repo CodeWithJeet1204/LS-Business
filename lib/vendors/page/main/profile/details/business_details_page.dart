@@ -4,6 +4,7 @@ import 'package:ls_business/vendors/page/main/main_page.dart';
 import 'package:ls_business/vendors/page/main/profile/details/location_page.dart';
 import 'package:ls_business/vendors/page/main/profile/details/membership_details_page.dart';
 import 'package:ls_business/vendors/page/register/business_social_media_page.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/text_button.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -285,7 +286,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
       child: ModalProgressHUD(
         inAsyncCall: isDialog,
         color: primaryDark,
-        blur: 0.5,
+        blur: 2,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
@@ -386,9 +387,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                             BorderRadius.circular(100),
                                       ),
                                       child: const Center(
-                                        child: CircularProgressIndicator(
-                                          color: primaryDark,
-                                        ),
+                                        child: LoadingIndicator(),
                                       ),
                                     )
                                   : Stack(
@@ -1531,9 +1530,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                       }
 
                       return const Center(
-                        child: CircularProgressIndicator(
-                          color: primaryDark,
-                        ),
+                        child: LoadingIndicator(),
                       );
                     });
               }),

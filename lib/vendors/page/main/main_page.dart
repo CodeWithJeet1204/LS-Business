@@ -10,6 +10,7 @@ import 'package:ls_business/vendors/page/register/select_products_page.dart';
 import 'package:ls_business/vendors/page/register/business_social_media_page.dart';
 import 'package:ls_business/vendors/page/register/business_timings_page.dart';
 import 'package:ls_business/vendors/page/register/get_location_page.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/text_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
@@ -451,7 +452,7 @@ class _MainPageState extends State<MainPage> {
     return isGettingData
         ? Scaffold(
             body: Center(
-              child: CircularProgressIndicator(),
+              child: LoadingIndicator(),
             ),
           )
         : detailsPage ??

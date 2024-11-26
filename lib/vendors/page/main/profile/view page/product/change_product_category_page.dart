@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ls_business/vendors/page/main/profile/view%20page/product/product_page.dart';
 import 'package:ls_business/vendors/provider/change_category_provider.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/text_button.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -89,7 +90,7 @@ class _ChangeProductCategoryPageState extends State<ChangeProductCategoryPage> {
       child: ModalProgressHUD(
         inAsyncCall: isDialog,
         color: primaryDark,
-        blur: 0.5,
+        blur: 2,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
@@ -226,7 +227,7 @@ class _ChangeProductCategoryPageState extends State<ChangeProductCategoryPage> {
 
             return !isData
                 ? const Center(
-                    child: CircularProgressIndicator(),
+                    child: LoadingIndicator(),
                   )
                 : isGridView
                     ? GridView.builder(

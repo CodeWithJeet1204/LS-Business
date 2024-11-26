@@ -209,7 +209,7 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
       child: ModalProgressHUD(
         inAsyncCall: isDialog,
         color: primaryDark,
-        blur: 0.5,
+        blur: 2,
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Verification'),

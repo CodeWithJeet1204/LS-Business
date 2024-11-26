@@ -3,6 +3,7 @@ import 'package:ls_business/vendors/page/main/add/product/add_product_page_5.dar
 import 'package:ls_business/vendors/provider/add_product_provider.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/additional_info_box.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:ls_business/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -406,7 +407,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
       child: ModalProgressHUD(
         inAsyncCall: isDialog,
         color: primaryDark,
-        blur: 0.5,
+        blur: 2,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
@@ -437,9 +438,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
           ),
           body: householdCategoryProperties == null
               ? const Center(
-                  child: CircularProgressIndicator(
-                    color: primaryDark,
-                  ),
+                  child: LoadingIndicator(),
                 )
               : Padding(
                   padding: const EdgeInsets.all(8),

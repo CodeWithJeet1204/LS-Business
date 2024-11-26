@@ -7,6 +7,7 @@ import 'package:ls_business/vendors/page/main/profile/view%20page/brand/brand_pa
 import 'package:ls_business/vendors/page/main/profile/view%20page/category/category_page.dart';
 import 'package:ls_business/vendors/page/main/profile/view%20page/product/product_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/image_pick_dialog.dart';
 import 'package:ls_business/widgets/info_edit_box.dart';
@@ -690,7 +691,7 @@ class DISCOUNT extends State<DiscountPage> {
                 }
 
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: LoadingIndicator(),
                 );
               },
             ),
@@ -808,7 +809,7 @@ class DISCOUNT extends State<DiscountPage> {
       child: ModalProgressHUD(
         inAsyncCall: isDialog,
         color: primaryDark,
-        blur: 0.5,
+        blur: 2,
         child: Scaffold(
           appBar: AppBar(
             actions: [
@@ -898,7 +899,7 @@ class DISCOUNT extends State<DiscountPage> {
                                         borderRadius: BorderRadius.circular(12),
                                       ),
                                       child: isChangingImage
-                                          ? const CircularProgressIndicator()
+                                          ? const LoadingIndicator()
                                           : ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(
@@ -2331,7 +2332,7 @@ class DISCOUNT extends State<DiscountPage> {
                   }
 
                   return const Center(
-                    child: CircularProgressIndicator(),
+                    child: LoadingIndicator(),
                   );
                 }),
               ),

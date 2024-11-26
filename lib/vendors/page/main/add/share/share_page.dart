@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:ls_business/vendors/page/main/add/post/add_post_page.dart';
 import 'package:ls_business/vendors/page/main/add/status/add_status_page.dart';
 import 'package:ls_business/widgets/add_box.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -104,7 +105,9 @@ class _SharePageState extends State<SharePage> {
       ),
       body: SafeArea(
         child: !isData || isRegistration == null
-            ? Center(child: CircularProgressIndicator())
+            ? Center(
+                child: LoadingIndicator(),
+              )
             : LayoutBuilder(
                 builder: (context, constraints) {
                   final width = constraints.maxWidth;

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ls_business/vendors/page/register/select_products_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/select_container.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -113,7 +114,7 @@ class _SelectCategoriesPageState extends State<SelectCategoriesPage> {
       child: ModalProgressHUD(
         inAsyncCall: isDialog,
         color: primaryDark,
-        blur: 0.5,
+        blur: 2,
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Select Categories'),
@@ -133,23 +134,10 @@ class _SelectCategoriesPageState extends State<SelectCategoriesPage> {
                 tooltip: 'Help',
               ),
             ],
-            // actions: [
-            //   MyTextButton(
-            //     onPressed: () async {
-            //       await store
-            //           .collection('Shop Types And Category Data')
-            //           .doc('Category Properties')
-            //           .set({
-            //         'categoryPropertiesData': householdCategoryProperties,
-            //       });
-            //     },
-            //     text: 'ADD',
-            //   ),
-            // ],
           ),
           body: categories == null
               ? const Center(
-                  child: CircularProgressIndicator(),
+                  child: LoadingIndicator(),
                 )
               : SafeArea(
                   child: SingleChildScrollView(

@@ -267,7 +267,7 @@ class _BusinessTimingsPageState extends State<BusinessTimingsPage> {
       child: ModalProgressHUD(
         inAsyncCall: isDialog,
         color: primaryDark,
-        blur: 0.5,
+        blur: 2,
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Shop Timings'),

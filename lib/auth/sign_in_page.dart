@@ -506,7 +506,7 @@ class _SignInPageState extends State<SignInPage> {
       child: ModalProgressHUD(
         inAsyncCall: isDialog,
         color: primaryDark,
-        blur: 0.5,
+        blur: 2,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
@@ -640,7 +640,7 @@ class _SignInPageState extends State<SignInPage> {
                       //       color: primary2.withOpacity(0.75),
                       //     ),
                       //     child: isGoogleSigningIn
-                      //         ? const CircularProgressIndicator(
+                      //         ? const LoadingIndicator(
                       //             color: primaryDark,
                       //           )
                       //         : Text(

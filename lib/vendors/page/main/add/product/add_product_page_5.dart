@@ -131,7 +131,7 @@ class _AddProductPage5State extends State<AddProductPage5> {
       child: ModalProgressHUD(
         inAsyncCall: isDialog,
         color: primaryDark,
-        blur: 0.5,
+        blur: 2,
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Services Available'),

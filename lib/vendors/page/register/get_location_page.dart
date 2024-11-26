@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:ls_business/vendors/page/main/main_page.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/text_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -183,7 +184,7 @@ class _GetLocationPageState extends State<GetLocationPage> {
       child: ModalProgressHUD(
         inAsyncCall: isDialog,
         color: primaryDark,
-        blur: 0.5,
+        blur: 2,
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Get Location'),
@@ -251,7 +252,7 @@ class _GetLocationPageState extends State<GetLocationPage> {
                       ),
                       padding: EdgeInsets.all(width * 0.025),
                       child: isDetectingCity
-                          ? const CircularProgressIndicator()
+                          ? const LoadingIndicator()
                           : cityPickLocation != null
                               ? const Icon(FeatherIcons.mapPin)
                               : AutoSizeText(
@@ -305,7 +306,7 @@ class _GetLocationPageState extends State<GetLocationPage> {
                       ),
                       padding: EdgeInsets.all(width * 0.025),
                       child: isPickingCity
-                          ? const CircularProgressIndicator()
+                          ? const LoadingIndicator()
                           : cityDetectLocation != null
                               ? const Icon(FeatherIcons.map)
                               : AutoSizeText(

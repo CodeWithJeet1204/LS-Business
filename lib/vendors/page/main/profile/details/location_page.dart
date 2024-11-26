@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/pick_location.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -222,7 +223,7 @@ class _LocationPageState extends State<LocationPage> {
                       padding: EdgeInsets.all(width * 0.025),
                       child: address == null
                           ? const Center(
-                              child: CircularProgressIndicator(),
+                              child: LoadingIndicator(),
                             )
                           : Text(
                               address!.toString().trim(),
@@ -270,7 +271,7 @@ class _LocationPageState extends State<LocationPage> {
                               ),
                               padding: EdgeInsets.all(width * 0.025),
                               child: isDetectingCity
-                                  ? const CircularProgressIndicator()
+                                  ? const LoadingIndicator()
                                   : cityPickLocation != null
                                       ? const Icon(FeatherIcons.mapPin)
                                       : AutoSizeText(

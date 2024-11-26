@@ -14,7 +14,7 @@
 //           child: SizedBox.square(
 //             dimension: 100,
 //             child: Center(
-//               child: CircularProgressIndicator(),
+//               child: LoadingIndicator(),
 //             ),
 //           ),
 //         ),

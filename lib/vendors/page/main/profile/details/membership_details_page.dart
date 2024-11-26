@@ -1,4 +1,5 @@
 import 'package:ls_business/vendors/page/register/membership_page.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/text_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -123,7 +124,7 @@ class _MembershipDetailsPageState extends State<MembershipDetailsPage> {
       body: SafeArea(
         child: data == null
             ? const Center(
-                child: CircularProgressIndicator(),
+                child: LoadingIndicator(),
               )
             : LayoutBuilder(
                 builder: (context, constraints) {

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:ls_business/vendors/page/main/main_page.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/pick_location.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -264,7 +265,7 @@ class _BusinessRegisterDetailsPageState
       child: ModalProgressHUD(
         inAsyncCall: isDialog,
         color: primaryDark,
-        blur: 0.5,
+        blur: 2,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
@@ -396,7 +397,7 @@ class _BusinessRegisterDetailsPageState
                                     ),
                                     padding: EdgeInsets.all(width * 0.025),
                                     child: isDetectingCity
-                                        ? const CircularProgressIndicator()
+                                        ? const LoadingIndicator()
                                         : cityPickLocation != null
                                             ? const Icon(FeatherIcons.mapPin)
                                             : AutoSizeText(
@@ -459,7 +460,7 @@ class _BusinessRegisterDetailsPageState
                                     ),
                                     padding: EdgeInsets.all(width * 0.025),
                                     child: isPickingCity
-                                        ? const CircularProgressIndicator()
+                                        ? const LoadingIndicator()
                                         : cityDetectLocation != null
                                             ? const Icon(FeatherIcons.map)
                                             : AutoSizeText(

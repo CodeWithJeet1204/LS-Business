@@ -12,6 +12,7 @@ import 'package:ls_business/vendors/page/main/profile/view%20page/product/change
 import 'package:ls_business/vendors/page/main/profile/view%20page/product/image_view.dart';
 import 'package:ls_business/vendors/page/main/profile/view%20page/product/change_product_brand_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/image_pick_dialog.dart';
 import 'package:ls_business/widgets/info_color_box.dart';
@@ -457,7 +458,7 @@ class _ProductPageState extends State<ProductPage> {
                     }
 
                     return const Center(
-                      child: CircularProgressIndicator(),
+                      child: LoadingIndicator(),
                     );
                   }),
             ),
@@ -1007,7 +1008,7 @@ class _ProductPageState extends State<ProductPage> {
       child: ModalProgressHUD(
         inAsyncCall: isDialog,
         color: primaryDark,
-        blur: 0.5,
+        blur: 2,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
@@ -1181,7 +1182,7 @@ class _ProductPageState extends State<ProductPage> {
                                                 ),
                                               ),
                                               child: isImageChanging
-                                                  ? const CircularProgressIndicator()
+                                                  ? const LoadingIndicator()
                                                   : GestureDetector(
                                                       onTap: () {
                                                         if (shortsThumbnail !=
@@ -1682,7 +1683,7 @@ class _ProductPageState extends State<ProductPage> {
                                           }
 
                                           return const Center(
-                                            child: CircularProgressIndicator(),
+                                            child: LoadingIndicator(),
                                           );
                                         })
                                     : Column(
@@ -2542,9 +2543,7 @@ class _ProductPageState extends State<ProductPage> {
                       }
 
                       return const Center(
-                        child: CircularProgressIndicator(
-                          color: primaryDark,
-                        ),
+                        child: LoadingIndicator(),
                       );
                     }),
               );

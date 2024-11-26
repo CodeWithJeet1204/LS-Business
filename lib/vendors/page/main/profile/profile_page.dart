@@ -5,6 +5,7 @@ import 'package:ls_business/vendors/page/main/profile/data/all_product_page.dart
 import 'package:ls_business/vendors/page/main/profile/details/business_details_page.dart';
 import 'package:ls_business/vendors/page/main/profile/details/owner_details_page.dart';
 import 'package:ls_business/vendors/page/main/profile/view%20page/shorts/all_shorts_page.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/skeleton_container.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
@@ -136,10 +137,11 @@ class _ProfilePageState extends State<ProfilePage> {
             // onPressed: () async {
             //   await store
             //       .collection('Shop Types And Category Data')
-            //       .doc('Category Properties')
+            //       .doc('Catalogue')
             //       .set({
-            //     'categoryPropertiesData': householdCategoryProperties,
+            //     'catalogueData': householdTypeCategorySubCategory,
             //   });
+            //   print('done');
             // },
             icon: const Icon(
               FeatherIcons.share2,
@@ -179,7 +181,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 radius: width * 0.1195,
                                 backgroundColor: primary2,
                                 child: const Center(
-                                  child: CircularProgressIndicator(),
+                                  child: LoadingIndicator(),
                                 ),
                               )
                             : CircleAvatar(

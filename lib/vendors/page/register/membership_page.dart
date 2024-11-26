@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ls_business/vendors/page/main/main_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:ls_business/widgets/text_button.dart';
@@ -611,7 +612,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
       child: ModalProgressHUD(
         inAsyncCall: isDialog,
         color: primaryDark,
-        blur: 0.5,
+        blur: 2,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
@@ -667,7 +668,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                 )
               : isOfferData == false
                   // ? const Center(
-                  //     child: CircularProgressIndicator(),
+                  //     child: LoadingIndicator(),
                   //   )
                   ? const Center(
                       child: SizedBox(
@@ -676,7 +677,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            CircularProgressIndicator(),
+                            LoadingIndicator(),
                             SizedBox(height: 12),
                             Text('Just wait a minute'),
                           ],

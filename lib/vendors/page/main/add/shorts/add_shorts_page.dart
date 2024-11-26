@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:ls_business/vendors/page/main/add/shorts/confirm_shorts_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -258,7 +259,7 @@ class AddShortsPageState extends State<AddShortsPage> {
       ),
       body: noOfShorts == null
           ? const Center(
-              child: CircularProgressIndicator(),
+              child: LoadingIndicator(),
             )
           : Padding(
               padding: EdgeInsets.all(

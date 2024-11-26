@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ls_business/vendors/page/register/select_categories_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/select_container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -101,7 +102,7 @@ class _SelectShopTypesPageState extends State<SelectShopTypesPage> {
       child: ModalProgressHUD(
         inAsyncCall: isDialog,
         color: primaryDark,
-        blur: 0.5,
+        blur: 2,
         child: Scaffold(
           extendBodyBehindAppBar: true,
           appBar: AppBar(
@@ -125,7 +126,7 @@ class _SelectShopTypesPageState extends State<SelectShopTypesPage> {
           ),
           body: shopTypes == null
               ? const Center(
-                  child: CircularProgressIndicator(),
+                  child: LoadingIndicator(),
                 )
               : SafeArea(
                   child: Padding(

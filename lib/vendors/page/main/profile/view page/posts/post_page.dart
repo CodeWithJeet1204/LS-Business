@@ -7,6 +7,7 @@ import 'package:ls_business/vendors/page/main/main_page.dart';
 import 'package:ls_business/vendors/page/main/profile/data/all_posts_page.dart';
 import 'package:ls_business/vendors/page/main/profile/view%20page/product/image_view.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/image_pick_dialog.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
@@ -324,7 +325,7 @@ class _PostPageState extends State<PostPage> {
                 }
 
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: LoadingIndicator(),
                 );
               },
             ),
@@ -438,7 +439,7 @@ class _PostPageState extends State<PostPage> {
       child: ModalProgressHUD(
         inAsyncCall: isDialog,
         color: primaryDark,
-        blur: 0.5,
+        blur: 2,
         child: Scaffold(
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
@@ -542,7 +543,7 @@ class _PostPageState extends State<PostPage> {
                                                             ),
                                                           ),
                                                           child: isImageChanging
-                                                              ? const CircularProgressIndicator()
+                                                              ? const LoadingIndicator()
                                                               : GestureDetector(
                                                                   onTap: () {
                                                                     Navigator.of(
@@ -893,7 +894,7 @@ class _PostPageState extends State<PostPage> {
                       }
 
                       return const Center(
-                        child: CircularProgressIndicator(),
+                        child: LoadingIndicator(),
                       );
                     }),
                   );

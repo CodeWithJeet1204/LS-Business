@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:ls_business/vendors/page/register/membership_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/image_pick_dialog.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
@@ -116,6 +117,10 @@ class _AddStatusPageState extends State<AddStatusPage> {
 
   // POST
   Future<void> post() async {
+    if (image.isEmpty) {
+      return mySnackBar(context, 'Atleast 1 Image Required');
+    }
+
     setState(() {
       isPosting = true;
       isDialog = true;
@@ -253,7 +258,7 @@ class _AddStatusPageState extends State<AddStatusPage> {
       child: ModalProgressHUD(
         inAsyncCall: isDialog,
         color: primaryDark,
-        blur: 0.5,
+        blur: 2,
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Add Status'),
@@ -277,7 +282,7 @@ class _AddStatusPageState extends State<AddStatusPage> {
           body: SafeArea(
             child: isStatus == null
                 ? const Center(
-                    child: CircularProgressIndicator(),
+                    child: LoadingIndicator(),
                   )
                 : !isStatus!
                     ? Center(

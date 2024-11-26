@@ -1,5 +1,6 @@
 import 'package:ls_business/vendors/provider/main_page_provider.dart';
 import 'package:ls_business/vendors/page/register/membership_page.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/text_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
@@ -103,7 +104,7 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
       },
       child: isRegistration == null
           ? const Center(
-              child: CircularProgressIndicator(),
+              child: LoadingIndicator(),
             )
           : isRegistration!
               ? Column(

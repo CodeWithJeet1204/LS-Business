@@ -217,7 +217,7 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
       child: ModalProgressHUD(
         inAsyncCall: isDialog,
         color: primaryDark,
-        blur: 0.5,
+        blur: 2,
         child: Scaffold(
           appBar: AppBar(
             actions: [

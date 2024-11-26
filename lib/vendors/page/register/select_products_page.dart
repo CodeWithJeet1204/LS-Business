@@ -6,6 +6,7 @@ import 'package:ls_business/vendors/page/main/main_page.dart';
 import 'package:ls_business/vendors/page/main/profile/details/business_details_page.dart';
 import 'package:ls_business/vendors/page/register/business_timings_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:ls_business/widgets/video_tutorial.dart';
@@ -162,7 +163,7 @@ class _SelectProductsPageState extends State<SelectProductsPage> {
       child: ModalProgressHUD(
         inAsyncCall: isDialog,
         color: primaryDark,
-        blur: 0.5,
+        blur: 2,
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Select Products'),
@@ -185,7 +186,7 @@ class _SelectProductsPageState extends State<SelectProductsPage> {
           ),
           body: allProducts == null
               ? const Center(
-                  child: CircularProgressIndicator(),
+                  child: LoadingIndicator(),
                 )
               : SafeArea(
                   child: Padding(

@@ -125,6 +125,10 @@ class _AddPostPageState extends State<AddPostPage> {
 
   // POST
   Future<void> post() async {
+    if (image.isEmpty) {
+      return mySnackBar(context, 'Atleast 1 Image required');
+    }
+
     setState(() {
       isPosting = true;
       isDialog = true;
@@ -238,7 +242,7 @@ class _AddPostPageState extends State<AddPostPage> {
       child: ModalProgressHUD(
         inAsyncCall: isDialog,
         color: primaryDark,
-        blur: 0.5,
+        blur: 2,
         child: Scaffold(
           appBar: AppBar(
             title: Text(

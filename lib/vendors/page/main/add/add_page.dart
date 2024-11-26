@@ -10,6 +10,7 @@ import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ls_business/widgets/add_box.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:ls_business/widgets/video_tutorial.dart';
 
@@ -65,7 +66,7 @@ class _AddPageState extends State<AddPage> {
       },
       child: isRegistration == null
           ? const Center(
-              child: CircularProgressIndicator(),
+              child: LoadingIndicator(),
             )
           : Scaffold(
               resizeToAvoidBottomInset: false,

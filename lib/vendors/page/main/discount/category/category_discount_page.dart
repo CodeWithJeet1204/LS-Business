@@ -4,6 +4,7 @@ import 'package:feather_icons/feather_icons.dart';
 import 'package:ls_business/vendors/page/main/discount/category/select_category_for_discount.dart';
 import 'package:ls_business/vendors/provider/discount_category_provider.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/image_pick_dialog.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
@@ -244,7 +245,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
       child: ModalProgressHUD(
         inAsyncCall: isDialog,
         color: primaryDark,
-        blur: 0.5,
+        blur: 2,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
@@ -325,7 +326,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                           ),
                           child: isAddingImage
                               ? const Center(
-                                  child: CircularProgressIndicator(),
+                                  child: LoadingIndicator(),
                                 )
                               : _image == null
                                   ? Row(

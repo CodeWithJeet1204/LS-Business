@@ -3,6 +3,7 @@ import 'package:feather_icons/feather_icons.dart';
 import 'package:ls_business/vendors/page/main/add/category/select_products_for_category_page.dart';
 import 'package:ls_business/vendors/page/main/profile/view%20page/product/product_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/shimmer_skeleton_container.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
@@ -262,7 +263,7 @@ class _CategoryPageState extends State<CategoryPage> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: isImageChanging
-                            ? const CircularProgressIndicator()
+                            ? const LoadingIndicator()
                             : ClipRRect(
                                 borderRadius: BorderRadius.circular(
                                   11,
@@ -399,7 +400,7 @@ class _CategoryPageState extends State<CategoryPage> {
                               );
                             }
                             return const Center(
-                              child: CircularProgressIndicator(),
+                              child: LoadingIndicator(),
                             );
                           })
                       : Container(),
