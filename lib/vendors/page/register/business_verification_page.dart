@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -210,6 +211,7 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
+        progressIndicator: LoadingIndicator(),
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Verification'),

@@ -1,6 +1,7 @@
 import 'package:ls_business/vendors/page/main/main_page.dart';
 import 'package:ls_business/vendors/page/register/select_shop_types_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:ls_business/widgets/text_form_field.dart';
@@ -171,6 +172,7 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
+        progressIndicator: LoadingIndicator(),
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Social Media Info'),

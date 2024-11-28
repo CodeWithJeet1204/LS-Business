@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:ls_business/vendors/page/main/profile/view%20page/product/product_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/shimmer_skeleton_container.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:ls_business/widgets/text_button.dart';
@@ -153,8 +154,9 @@ class _ChangeProductBrandPageState extends State<ChangeProductBrandPage> {
       canPop: isDialog ? false : true,
       child: ModalProgressHUD(
         inAsyncCall: isDialog,
-        opacity: 0.5,
         color: primaryDark,
+        blur: 2,
+        progressIndicator: LoadingIndicator(),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(

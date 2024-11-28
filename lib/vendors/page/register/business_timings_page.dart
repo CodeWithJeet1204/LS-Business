@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ls_business/vendors/page/register/membership_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:ls_business/widgets/text_button.dart';
@@ -268,6 +269,7 @@ class _BusinessTimingsPageState extends State<BusinessTimingsPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
+        progressIndicator: LoadingIndicator(),
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Shop Timings'),

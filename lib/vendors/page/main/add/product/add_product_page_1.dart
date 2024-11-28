@@ -6,6 +6,7 @@ import 'package:feather_icons/feather_icons.dart';
 import 'package:ls_business/vendors/provider/add_product_provider.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/image_pick_dialog.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:ls_business/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -297,6 +298,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
+        progressIndicator: LoadingIndicator(),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(

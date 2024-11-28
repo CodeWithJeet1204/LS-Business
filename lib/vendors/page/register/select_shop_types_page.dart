@@ -103,6 +103,7 @@ class _SelectShopTypesPageState extends State<SelectShopTypesPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
+        progressIndicator: LoadingIndicator(),
         child: Scaffold(
           extendBodyBehindAppBar: true,
           appBar: AppBar(

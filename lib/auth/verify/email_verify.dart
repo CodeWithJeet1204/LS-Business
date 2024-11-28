@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ls_business/vendors/page/main/main_page.dart';
 import 'package:ls_business/vendors/page/register/owner_register_details_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -260,6 +261,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
+        progressIndicator: LoadingIndicator(),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: SafeArea(

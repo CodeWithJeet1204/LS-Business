@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:ls_business/vendors/provider/products_added_to_brand.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/shimmer_skeleton_container.dart';
 import 'package:ls_business/widgets/text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -177,6 +178,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
+        progressIndicator: LoadingIndicator(),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(

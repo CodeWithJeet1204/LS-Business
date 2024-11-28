@@ -4,6 +4,7 @@ import 'package:feather_icons/feather_icons.dart';
 import 'package:ls_business/vendors/page/main/add/brand/select_products_for_brand_page.dart';
 import 'package:ls_business/vendors/provider/products_added_to_brand.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/image_pick_dialog.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
@@ -167,6 +168,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
+        progressIndicator: LoadingIndicator(),
         child: Scaffold(
           appBar: AppBar(
             title: const Text(

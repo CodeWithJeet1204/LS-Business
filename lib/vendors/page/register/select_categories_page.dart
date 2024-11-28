@@ -115,6 +115,7 @@ class _SelectCategoriesPageState extends State<SelectCategoriesPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
+        progressIndicator: LoadingIndicator(),
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Select Categories'),

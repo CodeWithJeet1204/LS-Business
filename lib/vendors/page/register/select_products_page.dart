@@ -164,6 +164,7 @@ class _SelectProductsPageState extends State<SelectProductsPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
+        progressIndicator: LoadingIndicator(),
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Select Products'),

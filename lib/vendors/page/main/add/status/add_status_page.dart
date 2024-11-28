@@ -259,6 +259,7 @@ class _AddStatusPageState extends State<AddStatusPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
+        progressIndicator: LoadingIndicator(),
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Add Status'),

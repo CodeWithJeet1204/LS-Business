@@ -810,6 +810,7 @@ class DISCOUNT extends State<DiscountPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
+        progressIndicator: LoadingIndicator(),
         child: Scaffold(
           appBar: AppBar(
             actions: [

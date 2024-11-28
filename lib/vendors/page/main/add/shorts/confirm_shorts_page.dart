@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/services.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:ls_business/widgets/text_form_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -218,6 +219,7 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
+        progressIndicator: LoadingIndicator(),
         child: Scaffold(
           appBar: AppBar(
             actions: [

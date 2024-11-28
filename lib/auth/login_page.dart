@@ -609,7 +609,7 @@
 
 //     return PopScope(
 //       canPop: isDialog ? false : true,
-//       child: ModalProgressHUD(
+//       child: gressHUD(
 //         inAsyncCall: isDialog,
 //         color: primaryDark,
 //         blur: 2,

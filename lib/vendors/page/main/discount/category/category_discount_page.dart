@@ -246,6 +246,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
+        progressIndicator: LoadingIndicator(),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(

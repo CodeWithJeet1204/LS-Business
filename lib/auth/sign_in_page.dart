@@ -2,6 +2,7 @@ import 'package:ls_business/vendors/page/main/main_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ls_business/auth/verify/email_verify.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:ls_business/widgets/text_form_field.dart';
@@ -507,6 +508,7 @@ class _SignInPageState extends State<SignInPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
+        progressIndicator: LoadingIndicator(),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
