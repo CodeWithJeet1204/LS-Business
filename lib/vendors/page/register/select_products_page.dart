@@ -36,7 +36,7 @@ class _SelectProductsPageState extends State<SelectProductsPage> {
   Map<String, bool> selectAll = {};
   List selectedProducts = [];
   int? total;
-  int noOf = 4;
+  int noOf = 20;
   final scrollController = ScrollController();
   bool isDialog = false;
 
@@ -62,7 +62,7 @@ class _SelectProductsPageState extends State<SelectProductsPage> {
   void scrollListener() {
     if (total != null && noOf < total!) {
       if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
+          (scrollController.position.maxScrollExtent)) {
         setState(() {
           noOf = noOf + 4;
         });

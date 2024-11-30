@@ -105,7 +105,6 @@ class _MainPageState extends State<MainPage> {
       }
     } /*else if (call.method == "shareVideo") {
       if (call.arguments.isNotEmpty) {
-        print('arguments: ${call.arguments}');
         if (call.arguments.length > 1) {
           mySnackBar(context, 'Only First video is taken');
         }
@@ -114,7 +113,6 @@ class _MainPageState extends State<MainPage> {
         );
 
         if (videoPath != null) {
-          print('videoPath: $videoPath');
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => ConfirmShortsPage(
@@ -158,7 +156,7 @@ class _MainPageState extends State<MainPage> {
         String currentVersion = packageInfo.version;
 
         final latestVersionSnap =
-            await store.collection('Information').doc('Latest Version').get();
+            await store.collection('Information').doc('LS Business').get();
 
         final latestVersionData = latestVersionSnap.data()!;
 

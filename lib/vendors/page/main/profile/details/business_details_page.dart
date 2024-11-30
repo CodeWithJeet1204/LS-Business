@@ -159,9 +159,14 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
         if (mounted) {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-              builder: (context) => const BusinessDetailsPage(),
+              builder: (context) => const MainPage(),
             ),
             (route) => false,
+          );
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => BusinessDetailsPage(),
+            ),
           );
         }
       }
@@ -400,14 +405,14 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                               : () async {
                                                   await showImage(
                                                     shopData['Image'] ??
-                                                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1fDf705o-VZ3lVxTLh0jLPyFApbnwGoNHhSpwODOC0g&s',
+                                                        'https://img.freepik.com/premium-vector/shop-clipart-cartoon-style-vector-illustration_761413-4813.jpg?semt=ais_hybrid',
                                                   );
                                                 },
                                           child: CircleAvatar(
                                             radius: width * 0.15,
                                             backgroundImage: NetworkImage(
                                               shopData['Image'] ??
-                                                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1fDf705o-VZ3lVxTLh0jLPyFApbnwGoNHhSpwODOC0g&s',
+                                                  'https://img.freepik.com/premium-vector/shop-clipart-cartoon-style-vector-illustration_761413-4813.jpg?semt=ais_hybrid',
                                             ),
                                             backgroundColor: primary2,
                                           ),

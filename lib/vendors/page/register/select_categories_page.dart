@@ -160,10 +160,13 @@ class _SelectCategoriesPageState extends State<SelectCategoriesPage> {
                                     vertical: 10,
                                     horizontal: width * 0.0125,
                                   ),
-                                  child: Text(
-                                    category.toString().trim(),
-                                    style: const TextStyle(
-                                      fontSize: 22,
+                                  child: SizedBox(
+                                    width: width * 0.8,
+                                    child: Text(
+                                      category.toString().trim(),
+                                      style: const TextStyle(
+                                        fontSize: 22,
+                                      ),
                                     ),
                                   ),
                                 ),

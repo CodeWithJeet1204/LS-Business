@@ -91,17 +91,19 @@ class _UpdatePageState extends State<UpdatePage> {
                 style: TextStyle(
                   color: primaryDark,
                   fontSize: width * 0.05,
-                  fontWeight: FontWeight.w500,
                 ),
               ),
               const SizedBox(height: 18),
               isUpdating
                   ? const LinearProgressIndicator()
-                  : MyButton(
-                      onTap: () async {
-                        await launchPlayStore();
-                      },
-                      text: 'UPDATE',
+                  : Padding(
+                      padding: EdgeInsets.symmetric(horizontal: width * 0.0125),
+                      child: MyButton(
+                        onTap: () async {
+                          await launchPlayStore();
+                        },
+                        text: 'UPDATE',
+                      ),
                     ),
             ],
           ),

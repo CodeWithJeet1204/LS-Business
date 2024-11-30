@@ -103,15 +103,6 @@ class _AddPageState extends State<AddPage> {
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          // PRODUCT
-                          AddBox(
-                            context: context,
-                            width: width,
-                            icon: FeatherIcons.box,
-                            label: 'PRODUCT',
-                            page: const AddProductPage1(),
-                          ),
-
                           // POST
                           isRegistration!
                               ? Container()
@@ -144,6 +135,15 @@ class _AddPageState extends State<AddPage> {
                                   label: 'SHORTS',
                                   page: const AddShortsPage(),
                                 ),
+
+                          // PRODUCT
+                          AddBox(
+                            context: context,
+                            width: width,
+                            icon: FeatherIcons.box,
+                            label: 'PRODUCT',
+                            page: const AddProductPage1(),
+                          ),
 
                           // BRAND
                           isRegistration!

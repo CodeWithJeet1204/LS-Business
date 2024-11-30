@@ -90,9 +90,7 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
         if (filePath != null) {
           return filePath;
         }
-      } catch (e) {
-        print('Error saving video: $e');
-      }
+      } catch (e) {}
     }
     return null;
   }

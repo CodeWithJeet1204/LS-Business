@@ -172,7 +172,7 @@ class _SelectShopTypesPageState extends State<SelectShopTypesPage> {
             onPressed: () async {
               await next();
             },
-            child: Icon(widget.isEditing ? Icons.done : Icons.arrow_forward),
+            child: Icon(Icons.arrow_forward),
           ),
         ),
       ),

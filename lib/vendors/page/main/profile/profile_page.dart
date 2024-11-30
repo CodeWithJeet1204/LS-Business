@@ -141,7 +141,6 @@ class _ProfilePageState extends State<ProfilePage> {
             //       .set({
             //     'catalogueData': householdTypeCategorySubCategory,
             //   });
-            //   print('done');
             // },
             icon: const Icon(
               FeatherIcons.share2,
@@ -337,20 +336,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     height: height * 0.05,
                   ),
 
-                  // PRODUCTS
-                  SmallTextContainer(
-                    text: 'PRODUCTS',
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const AllProductsPage(),
-                        ),
-                      );
-                    },
-                    width: width,
-                  ),
-                  const SizedBox(height: 16),
-
                   // POSTS
                   SmallTextContainer(
                     text: 'POSTS',
@@ -372,6 +357,20 @@ class _ProfilePageState extends State<ProfilePage> {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => const AllShortsPage(),
+                        ),
+                      );
+                    },
+                    width: width,
+                  ),
+                  const SizedBox(height: 16),
+
+                  // PRODUCTS
+                  SmallTextContainer(
+                    text: 'PRODUCTS',
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const AllProductsPage(),
                         ),
                       );
                     },

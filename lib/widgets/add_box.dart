@@ -75,7 +75,6 @@ class _AddBoxState extends State<AddBox> {
                 style: TextStyle(
                   color: primaryDark,
                   fontSize: widget.width * 0.0775,
-                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),

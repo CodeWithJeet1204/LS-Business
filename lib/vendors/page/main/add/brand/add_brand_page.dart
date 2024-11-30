@@ -31,7 +31,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
   final storage = FirebaseStorage.instance;
   final brandKey = GlobalKey<FormState>();
   final brandNameController = TextEditingController();
-  File? _image;
+  File? image;
   String? imageUrl;
   bool isSaving = false;
   bool isDialog = false;
@@ -46,7 +46,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
   // REMOVE CATEGORY IMAGE
   void removeImage() {
     setState(() {
-      _image = null;
+      image = null;
     });
   }
 
@@ -56,13 +56,17 @@ class _AddBrandPageState extends State<AddBrandPage> {
     if (images.isNotEmpty) {
       final im = images[0];
       setState(() {
-        _image = (File(im.path));
+        image = (File(im.path));
       });
     }
   }
 
   Future<void> addBrand(ProductAddedToBrandProvider provider) async {
     if (brandKey.currentState!.validate()) {
+      if (image == null) {
+        return mySnackBar(context, 'Select an Image');
+      }
+
       try {
         setState(() {
           isSaving = true;
@@ -82,7 +86,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
             if (mounted) {
               mySnackBar(
                 context,
-                'Product with same name already exists',
+                'Brand with same name already exists',
               );
             }
             brandDoesntExists = false;
@@ -91,10 +95,10 @@ class _AddBrandPageState extends State<AddBrandPage> {
 
         if (brandDoesntExists) {
           final String brandId = const Uuid().v4();
-          if (_image != null) {
+          if (image != null) {
             Reference ref = storage.ref().child('Vendor/Brand').child(brandId);
 
-            await ref.putFile(_image!).whenComplete(() async {
+            await ref.putFile(image!).whenComplete(() async {
               await ref.getDownloadURL().then((value) {
                 setState(() {
                   imageUrl = value;
@@ -208,7 +212,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
                       children: [
                         const SizedBox(height: 4),
                         // IMAGE
-                        _image != null
+                        image != null
                             ? Center(
                                 child: Stack(
                                   alignment: Alignment.topRight,
@@ -227,7 +231,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(18),
                                         child: Image(
-                                          image: FileImage(_image!),
+                                          image: FileImage(image!),
                                           fit: BoxFit.cover,
                                         ),
                                       ),
