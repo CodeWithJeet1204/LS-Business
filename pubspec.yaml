@@ -39,6 +39,7 @@ dependencies:
   share_plus: ^10.1.1
   permission_handler: ^11.3.1
   dio: ^5.7.0
+  connectivity_plus: ^6.1.0
   # firebase_app_check: ^0.3.1+5
   # receive_sharing_intent: ^1.8.1
   # receive_sharing_intent: ^1.8.1

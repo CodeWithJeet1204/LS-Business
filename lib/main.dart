@@ -15,6 +15,7 @@ import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:ls_business/vendors/utils/network_connectivity.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
@@ -188,7 +189,7 @@ class MyApp extends StatelessWidget {
               // }
             },
           ),
-          // const ConnectivityNotificationWidget(),
+          const ConnectivityNotificationWidget(),
         ],
       ),
       // home: const OwnerDetailsPage(),
