@@ -3,12 +3,12 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
+import 'package:ls_business/vendors/page/main/add/product/add_product_page_2.dart';
 import 'package:ls_business/vendors/page/main/discount/products/product_discount_page.dart';
 import 'package:ls_business/vendors/page/main/main_page.dart';
 import 'package:ls_business/vendors/page/main/profile/data/all_product_page.dart';
 import 'package:ls_business/vendors/page/main/profile/view%20page/brand/brand_page.dart';
 import 'package:ls_business/vendors/page/main/profile/view%20page/category/category_page.dart';
-import 'package:ls_business/vendors/page/main/profile/view%20page/product/change_product_category_page.dart';
 import 'package:ls_business/vendors/page/main/profile/view%20page/product/image_view.dart';
 import 'package:ls_business/vendors/page/main/profile/view%20page/product/change_product_brand_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
@@ -32,7 +32,6 @@ class ProductPage extends StatefulWidget {
     super.key,
     required this.productId,
     required this.productName,
-    this.fromPost = false,
     this.categoryName,
     this.productBrandId,
   });
@@ -41,7 +40,6 @@ class ProductPage extends StatefulWidget {
   final String productName;
   final String? categoryName;
   final String? productBrandId;
-  final bool fromPost;
 
   @override
   State<ProductPage> createState() => _ProductPageState();
@@ -64,9 +62,9 @@ class _ProductPageState extends State<ProductPage> {
   // INIT STATE
   @override
   void initState() {
-    getMaxImages();
-    ifDiscount();
     getCategoryInfo();
+    ifDiscount();
+    getMaxImages();
     super.initState();
   }
 
@@ -2056,16 +2054,25 @@ class _ProductPageState extends State<ProductPage> {
                                           // CHANGE CATEGORY
                                           IconButton(
                                             onPressed: () async {
+                                              // await Navigator.of(context).push(
+                                              //   MaterialPageRoute(
+                                              //     builder: (context) =>
+                                              //         ChangeProductCategoryPage(
+                                              //       productId: productData[
+                                              //           'productId'],
+                                              //       shopTypes:
+                                              //           category['shopTypes'],
+                                              //       productName: productData[
+                                              //           'productName'],
+                                              //     ),
+                                              //   ),
+                                              // );
                                               await Navigator.of(context).push(
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      ChangeProductCategoryPage(
-                                                    productId: productData[
-                                                        'productId'],
-                                                    shopTypes:
-                                                        category['shopTypes'],
-                                                    productName: productData[
-                                                        'productName'],
+                                                      AddProductPage2(
+                                                    fromProductPageProductId:
+                                                        widget.productId,
                                                   ),
                                                 ),
                                               );

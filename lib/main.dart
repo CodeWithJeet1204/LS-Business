@@ -8,6 +8,7 @@ import 'package:ls_business/vendors/provider/discount_brand_provider.dart';
 import 'package:ls_business/vendors/provider/discount_category_provider.dart';
 import 'package:ls_business/vendors/provider/discount_products_provider.dart';
 import 'package:ls_business/vendors/provider/main_page_provider.dart';
+import 'package:ls_business/vendors/provider/product_change_category_provider.dart';
 import 'package:ls_business/vendors/provider/products_added_to_brand.dart';
 import 'package:ls_business/vendors/provider/products_added_to_category_provider.dart';
 import 'package:ls_business/vendors/provider/shop_type_provider.dart';
@@ -69,6 +70,9 @@ Future<void> main() async {
         // ),
         ChangeNotifierProvider(
           create: (_) => MainPageProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ProductChangeCategoryProvider(),
         ),
       ],
       child: const MyApp(),

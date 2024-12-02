@@ -1,5 +1,6 @@
 import 'package:ls_business/vendors/page/main/add/product/add_product_page_4.dart';
 import 'package:ls_business/vendors/provider/add_product_provider.dart';
+import 'package:ls_business/vendors/provider/product_change_category_provider.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/shimmer_skeleton_container.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
@@ -15,9 +16,11 @@ class AddProductPage3 extends StatefulWidget {
   const AddProductPage3({
     super.key,
     required this.shopType,
+    required this.fromProductPageProductId,
   });
 
   final String shopType;
+  final String? fromProductPageProductId;
 
   @override
   State<AddProductPage3> createState() => _AddProductPage3State();
@@ -102,17 +105,32 @@ class _AddProductPage3State extends State<AddProductPage3> {
           MyTextButton(
             onTap: () {
               if (selectedCategory != null) {
-                final productProvider = Provider.of<AddProductProvider>(
-                  context,
-                  listen: false,
-                );
+                if (widget.fromProductPageProductId != null) {
+                  final productChangeCategoryProvider =
+                      Provider.of<ProductChangeCategoryProvider>(
+                    context,
+                    listen: false,
+                  );
 
-                productProvider.add(
-                  {
-                    'categoryName': selectedCategory,
-                  },
-                  true,
-                );
+                  productChangeCategoryProvider.add(
+                    {
+                      'categoryName': selectedCategory,
+                    },
+                    true,
+                  );
+                } else {
+                  final productProvider = Provider.of<AddProductProvider>(
+                    context,
+                    listen: false,
+                  );
+
+                  productProvider.add(
+                    {
+                      'categoryName': selectedCategory,
+                    },
+                    true,
+                  );
+                }
 
                 if (mounted) {
                   Navigator.of(context).push(
@@ -120,6 +138,8 @@ class _AddProductPage3State extends State<AddProductPage3> {
                       builder: (context) => AddProductPage4(
                         shopType: widget.shopType,
                         category: selectedCategory!,
+                        fromProductPageProductId:
+                            widget.fromProductPageProductId,
                       ),
                     ),
                   );

@@ -1,5 +1,6 @@
 import 'package:ls_business/vendors/page/main/add/product/add_product_page_3.dart';
 import 'package:ls_business/vendors/provider/add_product_provider.dart';
+import 'package:ls_business/vendors/provider/product_change_category_provider.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/shimmer_skeleton_container.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
@@ -12,7 +13,12 @@ import 'package:provider/provider.dart';
 import 'package:ls_business/widgets/video_tutorial.dart';
 
 class AddProductPage2 extends StatefulWidget {
-  const AddProductPage2({super.key});
+  const AddProductPage2({
+    super.key,
+    required this.fromProductPageProductId,
+  });
+
+  final String? fromProductPageProductId;
 
   @override
   State<AddProductPage2> createState() => _AddProductPage2State();
@@ -106,23 +112,40 @@ class _AddProductPage2State extends State<AddProductPage2> {
               if (selectedShopType == null) {
                 return mySnackBar(context, 'Select Shop Type');
               }
-              final productProvider = Provider.of<AddProductProvider>(
-                context,
-                listen: false,
-              );
 
-              productProvider.add(
-                {
-                  'shopTypeName': selectedShopType,
-                },
-                true,
-              );
+              if (widget.fromProductPageProductId != null) {
+                final productChangeCategoryProvider =
+                    Provider.of<ProductChangeCategoryProvider>(
+                  context,
+                  listen: false,
+                );
+
+                productChangeCategoryProvider.add(
+                  {
+                    'shopTypeName': selectedShopType,
+                  },
+                  true,
+                );
+              } else {
+                final productProvider = Provider.of<AddProductProvider>(
+                  context,
+                  listen: false,
+                );
+
+                productProvider.add(
+                  {
+                    'shopTypeName': selectedShopType,
+                  },
+                  true,
+                );
+              }
 
               if (mounted) {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => AddProductPage3(
                       shopType: selectedShopType!,
+                      fromProductPageProductId: widget.fromProductPageProductId,
                     ),
                   ),
                 );

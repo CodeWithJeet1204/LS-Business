@@ -1,3 +1,4 @@
+import 'package:ls_business/vendors/models/household_type_category_subCategory.dart';
 import 'package:ls_business/vendors/page/main/profile/data/all_brand_page.dart';
 import 'package:ls_business/vendors/page/main/profile/data/all_discounts_page.dart';
 import 'package:ls_business/vendors/page/main/profile/data/all_posts_page.dart';
@@ -133,15 +134,16 @@ class _ProfilePageState extends State<ProfilePage> {
             tooltip: 'Help',
           ),
           IconButton(
-            onPressed: () async {},
-            // onPressed: () async {
-            //   await store
-            //       .collection('Shop Types And Category Data')
-            //       .doc('Catalogue')
-            //       .set({
-            //     'catalogueData': householdTypeCategorySubCategory,
-            //   });
-            // },
+            // onPressed: () async {},
+            onPressed: () async {
+              await store
+                  .collection('Shop Types And Category Data')
+                  .doc('Catalogue')
+                  .set({
+                'catalogueData': householdTypeCategorySubCategory,
+              });
+              print('done');
+            },
             icon: const Icon(
               FeatherIcons.share2,
             ),

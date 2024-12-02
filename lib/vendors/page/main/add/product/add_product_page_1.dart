@@ -268,7 +268,9 @@ class _AddProductPage1State extends State<AddProductPage1> {
           if (mounted) {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => const AddProductPage2(),
+                builder: (context) => const AddProductPage2(
+                  fromProductPageProductId: null,
+                ),
               ),
             );
           }
