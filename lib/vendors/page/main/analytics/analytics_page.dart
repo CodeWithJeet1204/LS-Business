@@ -1,3 +1,4 @@
+import 'package:ls_business/vendors/page/main/analytics/post_analytics_page.dart';
 import 'package:ls_business/vendors/page/main/analytics/products_analytics_page.dart';
 import 'package:ls_business/vendors/page/main/analytics/shop_analytics_page.dart';
 import 'package:ls_business/vendors/provider/main_page_provider.dart';
@@ -97,7 +98,7 @@ class _AnalyticsPageState extends State<AnalyticsPage>
     final width = MediaQuery.sizeOf(context).width;
     final TabController tabController = TabController(
       initialIndex: 1,
-      length: 2,
+      length: 3,
       vsync: this,
       animationDuration: const Duration(milliseconds: 400),
     );
@@ -175,7 +176,7 @@ class _AnalyticsPageState extends State<AnalyticsPage>
                         indicatorSize: TabBarIndicatorSize.label,
                         labelColor: primaryDark,
                         labelStyle: const TextStyle(
-                          letterSpacing: 1,
+                          letterSpacing: 0.25,
                           fontWeight: FontWeight.w800,
                         ),
                         unselectedLabelStyle: const TextStyle(
@@ -192,6 +193,9 @@ class _AnalyticsPageState extends State<AnalyticsPage>
                           Tab(
                             text: 'PRODUCTS',
                           ),
+                          Tab(
+                            text: 'POSTS',
+                          ),
                         ],
                       ),
                     ),
@@ -201,6 +205,7 @@ class _AnalyticsPageState extends State<AnalyticsPage>
                     children: const [
                       ShopAnalyticsPage(),
                       ProductAnalyticsPage(),
+                      PostsAnalyticsPage(),
                     ],
                   ),
                 ),

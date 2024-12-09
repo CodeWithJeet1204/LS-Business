@@ -174,6 +174,7 @@ class _AddPostPageState extends State<AddPostPage> {
         'postImage': imageDownloadUrl,
         'postVendorId': auth.currentUser!.uid,
         'postViews': [],
+        'postWishlistTimestamp': {},
         'postDateTime': DateTime.now(),
         // 'postLikes': 0,
         // 'postDeleteDateTime': Timestamp.fromMillisecondsSinceEpoch(

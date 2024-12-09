@@ -40,6 +40,7 @@ class _AddProductPage6State extends State<AddProductPage6> {
   double? deliveryRange;
   double? refundRange;
   int? replacementRange;
+  int? giftWrapExtraRate;
   bool isSaving = false;
   bool isDialog = false;
 
@@ -84,6 +85,7 @@ class _AddProductPage6State extends State<AddProductPage6> {
           'deliveryRange': deliveryRange,
           'refundRange': refundRange,
           'replacementRange': replacementRange,
+          'giftWrapExtraRate': giftWrapExtraRate,
           'images': imageDownloadUrl,
           'shortsThumbnail': '',
           'shortsURL': '',
@@ -377,6 +379,43 @@ class _AddProductPage6State extends State<AddProductPage6> {
                       },
                       width: width,
                     ),
+
+                    // REPLACEMENT DATE RANGE
+                    isGiftWrapAvailable
+                        ? Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: width * 0.025,
+                            ),
+                            child: Container(
+                              width: width,
+                              height: width * 0.125,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: primary2,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: TextFormField(
+                                keyboardType: TextInputType.number,
+                                onTapOutside: (event) =>
+                                    FocusScope.of(context).unfocus(),
+                                decoration: InputDecoration(
+                                  hintText: 'Extra Rate',
+                                  hintStyle: TextStyle(
+                                    color: primaryDark2.withOpacity(0.8),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    giftWrapExtraRate = int.parse(value);
+                                  });
+                                },
+                              ),
+                            ),
+                          )
+                        : Container(),
 
                     const Divider(),
 

@@ -7,6 +7,7 @@ import 'package:ls_business/vendors/page/main/main_page.dart';
 import 'package:ls_business/vendors/page/main/profile/data/all_posts_page.dart';
 import 'package:ls_business/vendors/page/main/profile/view%20page/product/image_view.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
+import 'package:ls_business/widgets/info_color_box.dart';
 import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/image_pick_dialog.dart';
@@ -889,6 +890,30 @@ class _PostPageState extends State<PostPage> {
                                 ),
                               ),
                               const SizedBox(height: 4),
+
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  InfoColorBox(
+                                    width: width,
+                                    property:
+                                        postData['postViewsTimestamp'].length,
+                                    color: Colors.green.shade200,
+                                    text: 'VIEWS',
+                                    isHalf: true,
+                                  ),
+                                  InfoColorBox(
+                                    width: width,
+                                    property: postData['postWishlistTimestamp']
+                                        .length,
+                                    color: Colors.pink.shade200,
+                                    text: 'WISHLIST',
+                                    isHalf: true,
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         );
