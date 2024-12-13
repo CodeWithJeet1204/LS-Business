@@ -651,7 +651,6 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                             : currentPrice != null
                                 ? currentPrice == 0
                                     ? 'Continue FREE'
-                                    // TODO: AFTER LAUNCH - PAYMENT
                                     : 'Pay - $currentPrice'
                                 : '❌❌',
                         onTap: () async {

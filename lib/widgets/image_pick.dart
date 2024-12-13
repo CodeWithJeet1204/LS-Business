@@ -1,3 +1,5 @@
+// import 'package:flutter_image_compress/flutter_image_compress.dart';
+// import 'dart:io';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
@@ -67,6 +69,7 @@ Future<List<XFile>> pickCompressedImage(
           if (compressedFile != null) {
             results.add(compressedFile);
           }
+          // results.add(XFile(targetPath));
         },
       );
 
@@ -84,69 +87,51 @@ Future<List<XFile>> pickCompressedImage(
 // Manually apply the Laplacian filter for edge detection
 // Future<bool> checkIfImageIsBlurred(File imageFile) async {
 //   final image = img.decodeImage(imageFile.readAsBytesSync());
-
 //   if (image == null) return false;
-
 //   final grayscale = img.grayscale(image);
-
 //   List<List<int>> laplacianKernel = [
 //     [0, 1, 0],
 //     [1, -4, 1],
 //     [0, 1, 0]
 //   ];
-
 //   double sum = 0;
 //   double sumSquared = 0;
 //   int pixelCount = 0;
-
 //   for (int y = 1; y < grayscale.height - 1; y++) {
 //     for (int x = 1; x < grayscale.width - 1; x++) {
 //       int laplacianValue = 0;
-
 //       for (int ky = -1; ky <= 1; ky++) {
 //         for (int kx = -1; kx <= 1; kx++) {
 //           img.Pixel pixelValue = grayscale.getPixel(x + kx, y + ky);
 //           int intensity = pixelValue.r.toInt(); // Use the red channel intensity
-
 //           laplacianValue += intensity * laplacianKernel[ky + 1][kx + 1];
 //         }
 //       }
-
 //       sum += laplacianValue;
 //       sumSquared += laplacianValue * laplacianValue;
 //       pixelCount++;
 //     }
 //   }
-
 //   double mean = sum / pixelCount;
 //   double variance = (sumSquared / pixelCount) - (mean * mean);
-
 //   return variance < 25; // Threshold: adjust for stricter blur detection
 // }
-
 // Future<bool> checkIfImageIsBlurred(File imageFile) async {
 //   final conditions = FirebaseModelDownloadConditions(
 //     androidWifiRequired: false,
 //   );
-
 //   final model = await FirebaseModelDownloader.instance.getModel(
 //     'Image_Blur_Detection',
 //     FirebaseModelDownloadType.localModelUpdateInBackground,
 //     conditions,
 //   );
-
 //   final modelFile = model.file;
-
 //   final interpreter = Interpreter.fromFile(modelFile);
-
 //   final image = img.decodeImage(imageFile.readAsBytesSync());
-
 //   if (image == null) {
 //     return false;
 //   }
-
 //   final inputImage = img.copyResize(image, width: 224, height: 224);
-
 //   var input = List.generate(
 //     1, // Batch size
 //     (b) => List.generate(
@@ -164,10 +149,7 @@ Future<List<XFile>> pickCompressedImage(
 //       ),
 //     ),
 //   );
-
 //   var output = List.filled(1, 0).reshape([1, 1]);
-
 //   interpreter.run(input, output);
-
 //   return output[0][0] > 0.3;
 // }

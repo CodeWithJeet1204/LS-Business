@@ -1,7 +1,7 @@
 name: ls_business
 description: "Vendor App For Localsearch"
 
-version: 1.1.18+18
+version: 1.1.20+20
 
 environment:
   sdk: ">=3.2.3 <4.0.0"
@@ -35,11 +35,12 @@ dependencies:
   youtube_player_flutter: ^9.1.0
   in_app_update: ^4.2.3
   package_info_plus: ^8.0.2
-  flutter_image_compress: ^2.3.0
+  # flutter_image_compress: ^2.3.0
   share_plus: ^10.1.1
   permission_handler: ^11.3.1
   dio: ^5.7.0
   connectivity_plus: ^6.1.0
+  flutter_image_compress: ^2.3.0
   # firebase_app_check: ^0.3.1+5
   # receive_sharing_intent: ^1.8.1
   # receive_sharing_intent: ^1.8.1
