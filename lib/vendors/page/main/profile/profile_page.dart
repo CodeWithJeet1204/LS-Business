@@ -134,7 +134,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           IconButton(
             onPressed: () async {
-              final productsCollection = await store
+              final productsCollection = store
                   .collection('Business')
                   .doc('Data')
                   .collection('Products');
@@ -146,7 +146,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   'giftWrapExtraRate': null,
                 });
               }
-              print('done');
             },
             // onPressed: () async {
             //   await store
@@ -357,7 +356,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => const allPostPage(),
+                          builder: (context) => const AllPostsPage(),
                         ),
                       );
                     },

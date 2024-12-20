@@ -211,7 +211,7 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
-        progressIndicator: LoadingIndicator(),
+        progressIndicator: const LoadingIndicator(),
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Verification'),
@@ -286,7 +286,7 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
                             },
                           ),
 
-                          SizedBox(height: 12),
+                          const SizedBox(height: 12),
 
                           // VALIDATE
                           // isAadhaarValidated
@@ -351,10 +351,12 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
                                   !isAadhaarNotValidated) {
                                 await next();
                               } else {
-                                mySnackBar(
-                                  context,
-                                  'Incorrect Aadhaar Number, check again',
-                                );
+                                if (context.mounted) {
+                                  mySnackBar(
+                                    context,
+                                    'Incorrect Aadhaar Number, check again',
+                                  );
+                                }
                               }
                             },
                             text: 'NEXT',

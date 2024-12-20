@@ -10,14 +10,14 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:ls_business/widgets/video_tutorial.dart';
 
-class allPostPage extends StatefulWidget {
-  const allPostPage({super.key});
+class AllPostsPage extends StatefulWidget {
+  const AllPostsPage({super.key});
 
   @override
-  State<allPostPage> createState() => _allPostPageState();
+  State<AllPostsPage> createState() => _AllPostsPageState();
 }
 
-class _allPostPageState extends State<allPostPage> {
+class _AllPostsPageState extends State<AllPostsPage> {
   final auth = FirebaseAuth.instance;
   final store = FirebaseFirestore.instance;
   final storage = FirebaseStorage.instance;
@@ -228,7 +228,7 @@ class _allPostPageState extends State<allPostPage> {
             onPressed: () async {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => AddPostPage(),
+                  builder: (context) => const AddPostPage(),
                 ),
               );
             },
@@ -536,7 +536,7 @@ class _allPostPageState extends State<allPostPage> {
                                                     Navigator.of(context).push(
                                                       MaterialPageRoute(
                                                         builder: (context) =>
-                                                            const allPostPage(),
+                                                            const AllPostsPage(),
                                                       ),
                                                     );
                                                   }
@@ -681,7 +681,7 @@ class _allPostPageState extends State<allPostPage> {
                                               Navigator.of(context).push(
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      const allPostPage(),
+                                                      const AllPostsPage(),
                                                 ),
                                               );
                                             }

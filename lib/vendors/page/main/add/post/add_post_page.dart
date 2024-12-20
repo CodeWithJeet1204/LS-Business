@@ -35,7 +35,7 @@ class _AddPostPageState extends State<AddPostPage> {
   final nameCaptionController = TextEditingController();
   final priceController = TextEditingController();
   int currentImageIndex = 0;
-  int? remainingPost;
+  int? noOfPosts;
   List<File> image = [];
   bool isPosting = false;
   bool isDialog = false;
@@ -100,18 +100,18 @@ class _AddPostPageState extends State<AddPostPage> {
           .collection('Business')
           .doc('Data')
           .collection('Post')
-          .where('vendorId', isEqualTo: auth.currentUser!.uid)
+          .where('postVendorId', isEqualTo: auth.currentUser!.uid)
           .get();
 
       final currentPostLength = postSnap.docs.length;
 
-      int difference = noOfPost - currentPostLength;
+      final difference = noOfPost - currentPostLength;
 
       setState(() {
-        remainingPost = difference;
+        noOfPosts = difference;
       });
 
-      if (remainingPost != null && remainingPost! > 1) {
+      if (noOfPosts != null && noOfPosts! > 1) {
         if (widget.imagePaths != null) {
           for (var imagePath in widget.imagePaths!) {
             File file = File(imagePath);
@@ -173,7 +173,7 @@ class _AddPostPageState extends State<AddPostPage> {
             : double.parse(priceController.text.trim()),
         'postImage': imageDownloadUrl,
         'postVendorId': auth.currentUser!.uid,
-        'postViews': [],
+        'postViewsTimestamp': [],
         'postWishlistTimestamp': {},
         'postDateTime': DateTime.now(),
         // 'postLikes': 0,
@@ -245,11 +245,11 @@ class _AddPostPageState extends State<AddPostPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
-        progressIndicator: LoadingIndicator(),
+        progressIndicator: const LoadingIndicator(),
         child: Scaffold(
           appBar: AppBar(
             title: Text(
-              remainingPost != null && remainingPost! < 1
+              noOfPosts != null && noOfPosts! < 1
                   ? 'Post Limit Full'
                   : 'Add Post',
             ),
@@ -273,7 +273,7 @@ class _AddPostPageState extends State<AddPostPage> {
           body: SafeArea(
             child: Padding(
               padding: EdgeInsets.all(width * 0.0225),
-              child: remainingPost != null && remainingPost! < 1
+              child: noOfPosts != null && noOfPosts! < 1
                   ? const Center(
                       child: Text(
                         'Your Post Limit has reached\nDelete older posts or renew your membership to increase limit',
@@ -287,6 +287,14 @@ class _AddPostPageState extends State<AddPostPage> {
                         return SingleChildScrollView(
                           child: Column(
                             children: [
+                              noOfPosts == null
+                                  ? Container()
+                                  : Text('Remaining Post Quota: $noOfPosts'),
+
+                              noOfPosts == null
+                                  ? Container()
+                                  : const SizedBox(height: 12),
+
                               // Text(
                               //   'Remaining Image Post - $imagePostRemaining',
                               //   maxLines: 2,
@@ -541,7 +549,7 @@ class _AddPostPageState extends State<AddPostPage> {
                               const SizedBox(height: 12),
 
                               // DONE
-                              remainingPost != null && remainingPost! < 1
+                              noOfPosts != null && noOfPosts! < 1
                                   ? Container()
                                   : MyButton(
                                       text: 'DONE',

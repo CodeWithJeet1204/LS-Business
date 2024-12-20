@@ -172,7 +172,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
-        progressIndicator: LoadingIndicator(),
+        progressIndicator: const LoadingIndicator(),
         child: Scaffold(
           appBar: AppBar(
             title: const Text(
@@ -324,7 +324,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
 
                         // ADD PRODUCTS
                         Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8),
+                          padding: const EdgeInsets.symmetric(vertical: 8),
                           child: MyTextButton(
                             text:
                                 'Add Products - ${productsAddedToBrandProvider.selectedProducts.length}',

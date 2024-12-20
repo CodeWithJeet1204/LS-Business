@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'package:ls_business/vendors/page/main/add/shorts/confirm_shorts_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
-import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -257,59 +256,57 @@ class AddShortsPageState extends State<AddShortsPage> {
           ),
         ],
       ),
-      body: noOfShorts == null
-          ? const Center(
-              child: LoadingIndicator(),
-            )
-          : Padding(
-              padding: EdgeInsets.all(
-                width * 0.006125,
-              ),
-              child: LayoutBuilder(builder: (context, constraints) {
-                final width = constraints.maxWidth;
-                final height = constraints.maxHeight;
+      body: Padding(
+        padding: EdgeInsets.all(
+          width * 0.006125,
+        ),
+        child: LayoutBuilder(builder: (context, constraints) {
+          final width = constraints.maxWidth;
+          final height = constraints.maxHeight;
 
-                return noOfShorts! < 1
-                    ? const Center(
-                        child: Text(
-                          'Your Shorts Quota has exhausted\nDelete existing shorts or renew your membership to increase limit',
-                          textAlign: TextAlign.center,
-                        ),
-                      )
-                    : Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text('Remaining Shorts Quota: $noOfShorts'),
-                          SizedBox(height: height * 0.025),
-                          Center(
-                            child: GestureDetector(
-                              onTap: () async {
-                                await showOptionsDialog(context, width);
-                              },
-                              child: Container(
-                                width: 190,
-                                height: 50,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: primary2,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Text(
-                                  'Add Video',
-                                  style: TextStyle(
-                                    color: black,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: width * 0.055,
-                                  ),
-                                ),
-                              ),
+          return noOfShorts != null && noOfShorts! < 1
+              ? const Center(
+                  child: Text(
+                    'Your Shorts Quota has exhausted\nDelete existing shorts or renew your membership to increase limit',
+                    textAlign: TextAlign.center,
+                  ),
+                )
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    noOfShorts == null
+                        ? Container()
+                        : Text('Remaining Shorts Quota: $noOfShorts'),
+                    SizedBox(height: height * 0.025),
+                    Center(
+                      child: GestureDetector(
+                        onTap: () async {
+                          await showOptionsDialog(context, width);
+                        },
+                        child: Container(
+                          width: 190,
+                          height: 50,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: primary2,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            'Add Video',
+                            style: TextStyle(
+                              color: black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: width * 0.055,
                             ),
                           ),
-                        ],
-                      );
-              }),
-            ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+        }),
+      ),
     );
   }
 }

@@ -90,7 +90,11 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
         if (filePath != null) {
           return filePath;
         }
-      } catch (e) {}
+      } catch (e) {
+        if (mounted) {
+          mySnackBar(context, 'Some error occured');
+        }
+      }
     }
     return null;
   }
@@ -217,7 +221,7 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
-        progressIndicator: LoadingIndicator(),
+        progressIndicator: const LoadingIndicator(),
         child: Scaffold(
           appBar: AppBar(
             actions: [
@@ -254,7 +258,7 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
                       borderRadius: 12,
                     ),
                     const SizedBox(height: 15),
-                    Text('OR'),
+                    const Text('OR'),
                     const SizedBox(height: 15),
                     MyButton(
                       text: data != null
@@ -279,7 +283,7 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
                         });
                       },
                     ),
-                    Divider(height: 30),
+                    const Divider(height: 30),
                     MyButton(
                       text: 'DONE',
                       onTap: () async {

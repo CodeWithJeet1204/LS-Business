@@ -63,8 +63,6 @@ class _AddProductPage4State extends State<AddProductPage4> {
 
     final catalogueData = catalogueSnap.data()!;
     final productData = catalogueData['catalogueData'];
-    print('shopType: ${widget.shopType}');
-    print('category: ${widget.category}');
     log('productData: $productData');
     final List products = productData[widget.shopType][widget.category];
 
@@ -85,7 +83,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
-        progressIndicator: LoadingIndicator(),
+        progressIndicator: const LoadingIndicator(),
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Select Product'),
@@ -133,7 +131,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                       setState(() {
                         isDialog = false;
                       });
-                      if (mounted) {
+                      if (context.mounted) {
                         Navigator.of(context).pop();
                         Navigator.of(context).pop();
                         Navigator.of(context).pop();
@@ -222,7 +220,7 @@ class _AddProductPage4State extends State<AddProductPage4> {
                   width: width,
                   child: ListView.builder(
                     shrinkWrap: true,
-                    physics: ClampingScrollPhysics(),
+                    physics: const ClampingScrollPhysics(),
                     itemCount: currentProducts.length,
                     itemBuilder: (context, index) {
                       return GestureDetector(

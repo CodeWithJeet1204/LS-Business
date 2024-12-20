@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ls_business/auth/sign_in_page.dart';
 import 'package:ls_business/vendors/page/main/main_page.dart';
 import 'package:ls_business/vendors/page/register/owner_register_details_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
@@ -8,7 +9,6 @@ import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ls_business/widgets/text_form_field.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class EmailVerifyPage extends StatefulWidget {
@@ -34,7 +34,6 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
   final passwordController = TextEditingController();
   Timer? timer;
   bool isEmailVerified = false;
-  bool isEmailChanging = false;
   bool canResendEmail = false;
   bool isDialog = false;
 
@@ -129,128 +128,6 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
     }
   }
 
-  // CHANGE EMAIL
-  Future<void> changeEmail(double width) async {
-    await showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Change Email'),
-            content: Container(
-              width: width * 0.9,
-              height: width * 0.55,
-              alignment: Alignment.center,
-              child: Form(
-                key: changeEmailKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    MyTextFormField(
-                      hintText: 'Email',
-                      controller: emailController,
-                      borderRadius: 12,
-                    ),
-                    SizedBox(height: 12),
-                    MyTextFormField(
-                      hintText: 'Password',
-                      controller: passwordController,
-                      borderRadius: 12,
-                    ),
-                    SizedBox(height: 12),
-                    MyButton(
-                      text: 'DONE',
-                      onTap: () async {
-                        if (changeEmailKey.currentState!.validate()) {
-                          Navigator.of(context).pop();
-                          setState(() {
-                            isEmailChanging = true;
-                            isDialog = true;
-                          });
-
-                          final userExistsSnap = await store
-                              .collection('Users')
-                              .where(
-                                'Email',
-                                isEqualTo:
-                                    emailController.text.toString().trim(),
-                              )
-                              .where('Registration', isEqualTo: 'email')
-                              .get();
-
-                          if (userExistsSnap.docs.isNotEmpty) {
-                            if (mounted) {
-                              setState(() {
-                                isEmailChanging = false;
-                                isDialog = false;
-                              });
-                              return mySnackBar(
-                                context,
-                                'This account was created in User app, use a different Email here',
-                              );
-                            }
-                          }
-
-                          final vendorExistsSnap = await store
-                              .collection('Business')
-                              .doc('Owners')
-                              .collection('Users')
-                              .where(
-                                'Email',
-                                isEqualTo:
-                                    emailController.text.toString().trim(),
-                              )
-                              .where('Registration', isEqualTo: 'email')
-                              .get();
-
-                          if (vendorExistsSnap.docs.isNotEmpty) {
-                            if (mounted) {
-                              await auth.signInWithEmailAndPassword(
-                                email: emailController.text.trim(),
-                                password: passwordController.text.trim(),
-                              );
-
-                              setState(() {
-                                isEmailChanging = false;
-                                isDialog = false;
-                              });
-
-                              Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                  builder: (context) => const MainPage(),
-                                ),
-                                (route) => false,
-                              );
-
-                              return mySnackBar(
-                                context,
-                                'Signed In',
-                              );
-                            }
-                          }
-
-                          await auth.signInWithEmailAndPassword(
-                            email: emailController.text.trim(),
-                            password: passwordController.text.trim(),
-                          );
-
-                          await sendEmailVerification();
-
-                          setState(() {
-                            isEmailChanging = false;
-                            isDialog = false;
-                          });
-                          Navigator.of(context).pop();
-                        }
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
@@ -261,7 +138,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
-        progressIndicator: LoadingIndicator(),
+        progressIndicator: const LoadingIndicator(),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: SafeArea(
@@ -279,7 +156,12 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
                 ),
                 TextButton(
                   onPressed: () async {
-                    await changeEmail(width);
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => const SignInPage(),
+                      ),
+                      (route) => false,
+                    );
                   },
                   child: Text(
                     'Change Email',
@@ -291,7 +173,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 12),
+                const SizedBox(height: 12),
                 Text(
                   'An email has been sent to your account, pls click on it\nTo verify your account',
                   textAlign: TextAlign.center,

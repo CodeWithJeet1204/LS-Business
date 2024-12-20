@@ -103,7 +103,7 @@ class _SelectShopTypesPageState extends State<SelectShopTypesPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
-        progressIndicator: LoadingIndicator(),
+        progressIndicator: const LoadingIndicator(),
         child: Scaffold(
           extendBodyBehindAppBar: true,
           appBar: AppBar(
@@ -172,7 +172,7 @@ class _SelectShopTypesPageState extends State<SelectShopTypesPage> {
             onPressed: () async {
               await next();
             },
-            child: Icon(Icons.arrow_forward),
+            child: const Icon(Icons.arrow_forward),
           ),
         ),
       ),

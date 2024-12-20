@@ -78,8 +78,8 @@ class _AnalyticsPageState extends State<AnalyticsPage>
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => const SelectMembershipPage(
-                      hasAvailedLaunchOffer: true,
-                    ),
+                        // hasAvailedLaunchOffer: true,
+                        ),
                   ),
                 );
               },

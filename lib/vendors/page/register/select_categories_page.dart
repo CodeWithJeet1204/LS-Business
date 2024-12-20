@@ -101,7 +101,9 @@ class _SelectCategoriesPageState extends State<SelectCategoriesPage> {
       setState(() {
         isDialog = false;
       });
-      mySnackBar(context, 'Some error occured');
+      if (mounted) {
+        mySnackBar(context, 'Some error occured');
+      }
     }
   }
 
@@ -115,7 +117,7 @@ class _SelectCategoriesPageState extends State<SelectCategoriesPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
-        progressIndicator: LoadingIndicator(),
+        progressIndicator: const LoadingIndicator(),
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Select Categories'),

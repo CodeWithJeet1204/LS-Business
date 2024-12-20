@@ -79,8 +79,8 @@ class _AddDiscountPageState extends State<AddDiscountPage> {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => const SelectMembershipPage(
-                      hasAvailedLaunchOffer: true,
-                    ),
+                        // hasAvailedLaunchOffer: true,
+                        ),
                   ),
                 );
               },

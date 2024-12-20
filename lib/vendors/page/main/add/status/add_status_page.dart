@@ -215,8 +215,8 @@ class _AddStatusPageState extends State<AddStatusPage> {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => const SelectMembershipPage(
-                      hasAvailedLaunchOffer: true,
-                    ),
+                        // hasAvailedLaunchOffer: true,
+                        ),
                   ),
                 );
               },
@@ -259,7 +259,7 @@ class _AddStatusPageState extends State<AddStatusPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
-        progressIndicator: LoadingIndicator(),
+        progressIndicator: const LoadingIndicator(),
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Add Status'),

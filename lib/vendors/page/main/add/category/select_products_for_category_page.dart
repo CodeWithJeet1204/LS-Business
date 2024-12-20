@@ -183,7 +183,7 @@ class _SelectProductsForCategoryPageState
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
-        progressIndicator: LoadingIndicator(),
+        progressIndicator: const LoadingIndicator(),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(

@@ -261,7 +261,6 @@ class _PostsAnalyticsPageState extends State<PostsAnalyticsPage> {
                           }
 
                           if (snapshot.hasData) {
-                            print('snapshotData: ${snapshot.data}');
                             if (snapshot.data!.docs.isEmpty) {
                               return const SizedBox(
                                 height: 80,

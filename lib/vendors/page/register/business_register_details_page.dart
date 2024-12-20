@@ -266,7 +266,7 @@ class _BusinessRegisterDetailsPageState
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
-        progressIndicator: LoadingIndicator(),
+        progressIndicator: const LoadingIndicator(),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
@@ -354,7 +354,7 @@ class _BusinessRegisterDetailsPageState
 
                           // ADDRESS
                           MyTextFormField(
-                            hintText: 'Address',
+                            hintText: 'Address*',
                             controller: addressController,
                             borderRadius: 12,
                             autoFillHints: const [],

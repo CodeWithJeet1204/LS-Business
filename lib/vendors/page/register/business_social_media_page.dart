@@ -172,7 +172,7 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
-        progressIndicator: LoadingIndicator(),
+        progressIndicator: const LoadingIndicator(),
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Social Media Info'),

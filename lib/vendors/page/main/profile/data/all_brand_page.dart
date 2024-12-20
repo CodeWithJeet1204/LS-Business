@@ -245,7 +245,7 @@ class _AllBrandPageState extends State<AllBrandPage> {
             onPressed: () async {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => AddBrandPage(),
+                  builder: (context) => const AddBrandPage(),
                 ),
               );
             },

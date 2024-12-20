@@ -414,7 +414,7 @@ class _AddProductPage5State extends State<AddProductPage5> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
-        progressIndicator: LoadingIndicator(),
+        progressIndicator: const LoadingIndicator(),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(

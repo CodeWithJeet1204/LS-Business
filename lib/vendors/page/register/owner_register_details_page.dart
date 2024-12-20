@@ -180,7 +180,7 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
-        progressIndicator: LoadingIndicator(),
+        progressIndicator: const LoadingIndicator(),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
@@ -278,7 +278,7 @@ class _OwnerRegisterDetailsPageState extends State<OwnerRegisterDetailsPage> {
                                       verticalPadding: width * 0.033,
                                       keyboardType: TextInputType.emailAddress,
                                       autoFillHints: const [
-                                        AutofillHints.email
+                                        AutofillHints.email,
                                       ],
                                     ),
 

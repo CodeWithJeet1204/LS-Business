@@ -146,10 +146,12 @@ class _SelectProductsPageState extends State<SelectProductsPage> {
         }
       }
     } catch (e) {
-      setState(() {
-        isDialog = false;
-      });
-      mySnackBar(context, 'Some error occured');
+      if (mounted) {
+        setState(() {
+          isDialog = false;
+        });
+        mySnackBar(context, 'Some error occured');
+      }
     }
   }
 
@@ -164,7 +166,7 @@ class _SelectProductsPageState extends State<SelectProductsPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
-        progressIndicator: LoadingIndicator(),
+        progressIndicator: const LoadingIndicator(),
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Select Products'),

@@ -244,8 +244,8 @@ class _BusinessTimingsPageState extends State<BusinessTimingsPage> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => const SelectMembershipPage(
-                hasAvailedLaunchOffer: false,
-              ),
+                  // hasAvailedLaunchOffer: false,
+                  ),
             ),
           );
         }
@@ -269,7 +269,7 @@ class _BusinessTimingsPageState extends State<BusinessTimingsPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
-        progressIndicator: LoadingIndicator(),
+        progressIndicator: const LoadingIndicator(),
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Shop Timings'),

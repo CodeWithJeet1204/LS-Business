@@ -1007,7 +1007,7 @@ class _ProductPageState extends State<ProductPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
-        progressIndicator: LoadingIndicator(),
+        progressIndicator: const LoadingIndicator(),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
@@ -1800,9 +1800,17 @@ class _ProductPageState extends State<ProductPage> {
                                               activeColor: primaryDark,
                                               checkColor: white,
                                               value: isAvailable == 0,
-                                              onChanged: (value) {
+                                              onChanged: (value) async {
                                                 setState(() {
                                                   isAvailable = 0;
+                                                });
+                                                await store
+                                                    .collection('Business')
+                                                    .doc('Data')
+                                                    .collection('Products')
+                                                    .doc(widget.productId)
+                                                    .update({
+                                                  'isAvailable': 0,
                                                 });
                                               },
                                             ),
@@ -1843,9 +1851,17 @@ class _ProductPageState extends State<ProductPage> {
                                             activeColor: primaryDark,
                                             checkColor: white,
                                             value: isAvailable == 1,
-                                            onChanged: (value) {
+                                            onChanged: (value) async {
                                               setState(() {
                                                 isAvailable = 1;
+                                              });
+                                              await store
+                                                  .collection('Business')
+                                                  .doc('Data')
+                                                  .collection('Products')
+                                                  .doc(widget.productId)
+                                                  .update({
+                                                'isAvailable': 1,
                                               });
                                             },
                                           ),
@@ -1887,9 +1903,17 @@ class _ProductPageState extends State<ProductPage> {
                                               activeColor: primaryDark,
                                               checkColor: white,
                                               value: isAvailable == 2,
-                                              onChanged: (value) {
+                                              onChanged: (value) async {
                                                 setState(() {
                                                   isAvailable = 2;
+                                                });
+                                                await store
+                                                    .collection('Business')
+                                                    .doc('Data')
+                                                    .collection('Products')
+                                                    .doc(widget.productId)
+                                                    .update({
+                                                  'isAvailable': 2,
                                                 });
                                               },
                                             ),

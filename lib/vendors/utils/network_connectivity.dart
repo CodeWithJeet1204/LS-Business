@@ -7,8 +7,9 @@ class ConnectivityNotificationWidget extends StatefulWidget {
   const ConnectivityNotificationWidget({super.key});
 
   @override
-  _ConnectivityNotificationWidgetState createState() =>
-      _ConnectivityNotificationWidgetState();
+  State<ConnectivityNotificationWidget> createState() {
+    return _ConnectivityNotificationWidgetState();
+  }
 }
 
 class _ConnectivityNotificationWidgetState
@@ -84,8 +85,6 @@ class _ConnectivityNotificationWidgetState
                 onTap: () async {
                   final currentStatus =
                       await Connectivity().checkConnectivity();
-
-                  print('connectionStatus: ${currentStatus.first}');
 
                   if (currentStatus.first != ConnectivityResult.none) {
                     if (context.mounted) {

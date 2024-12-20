@@ -7,6 +7,7 @@ import 'package:ls_business/vendors/page/main/add/post/add_post_page.dart';
 import 'package:ls_business/vendors/page/main/add/status/add_status_page.dart';
 import 'package:ls_business/widgets/add_box.dart';
 import 'package:ls_business/widgets/loading_indicator.dart';
+import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -72,7 +73,11 @@ class _SharePageState extends State<SharePage> {
         if (filePath != null) {
           return filePath;
         }
-      } catch (e) {}
+      } catch (e) {
+        if (mounted) {
+          mySnackBar(context, 'Some error occured');
+        }
+      }
     }
     return null;
   }
@@ -101,11 +106,11 @@ class _SharePageState extends State<SharePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Share To'),
+        title: const Text('Share To'),
       ),
       body: SafeArea(
         child: !isData || isRegistration == null
-            ? Center(
+            ? const Center(
                 child: LoadingIndicator(),
               )
             : LayoutBuilder(
@@ -114,7 +119,7 @@ class _SharePageState extends State<SharePage> {
 
                   return SingleChildScrollView(
                     child: isRegistration != null && isRegistration!
-                        ? Center(
+                        ? const Center(
                             child: SizedBox(
                               height: 80,
                               child: Text(

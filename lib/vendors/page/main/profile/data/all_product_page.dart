@@ -206,9 +206,9 @@ class _AllProductsPageState extends State<AllProductsPage> {
 
       List<Future<void>> deleteOperations = [];
 
-      shortsSnap.docs.forEach((short) {
+      for (var short in shortsSnap.docs) {
         deleteOperations.add(short.reference.delete());
-      });
+      }
 
       await Future.wait(deleteOperations);
 
@@ -218,9 +218,9 @@ class _AllProductsPageState extends State<AllProductsPage> {
       if (images.isNotEmpty) {
         List<Future<void>> deleteOperations = [];
 
-        images.forEach((image) {
+        for (var image in images) {
           deleteOperations.add(storage.refFromURL(image).delete());
-        });
+        }
 
         await Future.wait(deleteOperations);
       }
@@ -262,7 +262,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
             onPressed: () async {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => AddProductPage1(),
+                  builder: (context) => const AddProductPage1(),
                 ),
               );
             },

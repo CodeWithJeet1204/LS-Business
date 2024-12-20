@@ -165,7 +165,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
           );
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => BusinessDetailsPage(),
+              builder: (context) => const BusinessDetailsPage(),
             ),
           );
         }
@@ -292,7 +292,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
-        progressIndicator: LoadingIndicator(),
+        progressIndicator: const LoadingIndicator(),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
@@ -999,54 +999,54 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                               const SizedBox(height: 14),
 
                               // GST
-                              Container(
-                                width: width,
-                                // height: width * 0.16,
-                                alignment: Alignment.centerLeft,
-                                decoration: BoxDecoration(
-                                  color: primary2.withOpacity(0.9),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                  // horizontal: width * 0.006125,
-                                  vertical: height * 0.0125,
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                    left: width * 0.033,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'GST Number',
-                                        style: TextStyle(
-                                          color: primaryDark,
-                                          fontSize: width * 0.03,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: width * 0.875,
-                                        child: AutoSizeText(
-                                          shopData['GSTNumber'] == ''
-                                              ? 'N/A'
-                                              : shopData['GSTNumber']
-                                                  .toString()
-                                                  .trim(),
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 14),
+                              // Container(
+                              //   width: width,
+                              //   // height: width * 0.16,
+                              //   alignment: Alignment.centerLeft,
+                              //   decoration: BoxDecoration(
+                              //     color: primary2.withOpacity(0.9),
+                              //     borderRadius: BorderRadius.circular(12),
+                              //   ),
+                              //   padding: EdgeInsets.symmetric(
+                              //     // horizontal: width * 0.006125,
+                              //     vertical: height * 0.0125,
+                              //   ),
+                              //   child: Padding(
+                              //     padding: EdgeInsets.only(
+                              //       left: width * 0.033,
+                              //     ),
+                              //     child: Column(
+                              //       crossAxisAlignment:
+                              //           CrossAxisAlignment.start,
+                              //       children: [
+                              //         Text(
+                              //           'GST Number',
+                              //           style: TextStyle(
+                              //             color: primaryDark,
+                              //             fontSize: width * 0.03,
+                              //             fontWeight: FontWeight.w500,
+                              //           ),
+                              //         ),
+                              //         SizedBox(
+                              //           width: width * 0.875,
+                              //           child: AutoSizeText(
+                              //             shopData['GSTNumber'] == ''
+                              //                 ? 'N/A'
+                              //                 : shopData['GSTNumber']
+                              //                     .toString()
+                              //                     .trim(),
+                              //             maxLines: 2,
+                              //             overflow: TextOverflow.ellipsis,
+                              //             style: const TextStyle(
+                              //               fontSize: 18,
+                              //             ),
+                              //           ),
+                              //         ),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ),
+                              // const SizedBox(height: 14),
 
                               // INDUSTRY
                               // Container(
@@ -1478,8 +1478,9 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                                             context: context,
                                             builder: (context) {
                                               return AlertDialog(
-                                                title: Text('DELETE Account'),
-                                                content: Text(
+                                                title: const Text(
+                                                    'DELETE Account'),
+                                                content: const Text(
                                                   'Are you sure you want to delete your account?',
                                                 ),
                                                 actions: [

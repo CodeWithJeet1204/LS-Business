@@ -16,10 +16,10 @@ import 'package:ls_business/widgets/video_tutorial.dart';
 class SelectMembershipPage extends StatefulWidget {
   const SelectMembershipPage({
     super.key,
-    required this.hasAvailedLaunchOffer,
+    // required this.hasAvailedLaunchOffer,
   });
 
-  final bool hasAvailedLaunchOffer;
+  // final bool hasAvailedLaunchOffer;
 
   @override
   State<SelectMembershipPage> createState() => _SelectMembershipPageState();
@@ -49,9 +49,9 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
   // INIT STATE
   @override
   void initState() {
-    if (!widget.hasAvailedLaunchOffer) {
-      getOffersData();
-    }
+    // if (!widget.hasAvailedLaunchOffer) {
+    getOffersData();
+    // }
     super.initState();
     //membership getMembershipData();
   }
@@ -613,7 +613,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
-        progressIndicator: LoadingIndicator(),
+        progressIndicator: const LoadingIndicator(),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
@@ -659,29 +659,27 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                         horizontalPadding: width * 0.01125,
                       ),
                     ),
-          body: /*membershipisData == false && */ widget.hasAvailedLaunchOffer
+          body: /*membershipisData == false && widget.hasAvailedLaunchOffer
               ? const Center(
                   child: Text(
                     'You have already availed the launch offer, you can change the membership when membership expires',
                     textAlign: TextAlign.center,
                   ),
                 )
-              : isOfferData == false
+              : */
+              isOfferData == false
                   // ? const Center(
                   //     child: LoadingIndicator(),
                   //   )
                   ? const Center(
-                      child: SizedBox(
-                        height: 100,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            LoadingIndicator(),
-                            SizedBox(height: 12),
-                            Text('Just wait a minute'),
-                          ],
-                        ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          LoadingIndicator(),
+                          SizedBox(height: 12),
+                          Text('Just wait a minute'),
+                        ],
                       ),
                     )
                   : SafeArea(

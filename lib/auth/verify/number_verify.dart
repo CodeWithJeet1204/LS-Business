@@ -225,7 +225,7 @@ class _NumberVerifyPageState extends State<NumberVerifyPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
-        progressIndicator: LoadingIndicator(),
+        progressIndicator: const LoadingIndicator(),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: SafeArea(

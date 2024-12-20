@@ -85,8 +85,8 @@ class _MembershipDetailsPageState extends State<MembershipDetailsPage> {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => const SelectMembershipPage(
-                      hasAvailedLaunchOffer: true,
-                    ),
+                        // hasAvailedLaunchOffer: true,
+                        ),
                   ),
                 );
               },

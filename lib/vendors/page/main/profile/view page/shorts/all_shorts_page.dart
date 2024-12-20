@@ -156,7 +156,7 @@ class _AllShortsPageState extends State<AllShortsPage> {
             onPressed: () async {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => AddShortsPage(),
+                  builder: (context) => const AddShortsPage(),
                 ),
               );
             },

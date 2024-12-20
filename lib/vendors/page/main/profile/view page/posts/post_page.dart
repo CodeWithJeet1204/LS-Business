@@ -302,7 +302,7 @@ class _PostPageState extends State<PostPage> {
                                 : TextInputType.number,
                             decoration: InputDecoration(
                               hintText: isName ? 'Name / Caption' : 'Price',
-                              border: OutlineInputBorder(),
+                              border: const OutlineInputBorder(),
                             ),
                             validator: (value) {
                               if (value != null && value.isNotEmpty) {
@@ -410,7 +410,7 @@ class _PostPageState extends State<PostPage> {
         Navigator.of(context).pop();
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => const allPostPage(),
+            builder: (context) => const AllPostsPage(),
           ),
         );
         mySnackBar(context, 'Post Deleted');
@@ -441,7 +441,7 @@ class _PostPageState extends State<PostPage> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
-        progressIndicator: LoadingIndicator(),
+        progressIndicator: const LoadingIndicator(),
         child: Scaffold(
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
@@ -472,11 +472,29 @@ class _PostPageState extends State<PostPage> {
                       );
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => const allPostPage(),
+                          builder: (context) => const AllPostsPage(),
                         ),
                       );
                     }
                   },
+                  // onPressed: () async {
+                  //   final postCollection = await store
+                  //       .collection('Business')
+                  //       .doc('Data')
+                  //       .collection('Post')
+                  //       .get();
+                  //   for (var doc in postCollection.docs) {
+                  //     final docId = doc.id;
+                  //     await store
+                  //         .collection('Business')
+                  //         .doc('Data')
+                  //         .collection('Post')
+                  //         .doc(docId)
+                  //         .update({
+                  //       'postViewsTimestamp': {},
+                  //     });
+                  //   }
+                  // },
                   icon: const Icon(
                     FeatherIcons.trash,
                     color: Colors.red,

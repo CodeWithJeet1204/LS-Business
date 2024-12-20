@@ -40,7 +40,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
   final picker = ImagePicker();
   final List<File> _image = [];
   int currentImageIndex = 0;
-  int? remainingProducts;
+  int? noOfProducts;
   int isAvailable = 0;
   int? maxImages;
   bool? isPost;
@@ -77,14 +77,6 @@ class _AddProductPage1State extends State<AddProductPage1> {
     final vendorData = vendorSnap.data()!;
 
     final noOfProduct = vendorData['noOfProduct'];
-    final membershipName = vendorData['MembershipName'];
-
-    final membershipSnap =
-        await store.collection('Membership').doc(membershipName).get();
-
-    final membershipData = membershipSnap.data()!;
-
-    final myMaxImages = membershipData['maxImages'];
 
     if (noOfProduct < 1000000000000) {
       final productsSnap = await store
@@ -99,14 +91,26 @@ class _AddProductPage1State extends State<AddProductPage1> {
       int difference = noOfProduct - currentProductsLength;
 
       setState(() {
-        remainingProducts = difference;
-        maxImages = myMaxImages;
+        noOfProducts = difference;
       });
     } else {
       setState(() {
-        maxImages = myMaxImages;
+        noOfProducts = 1000000000000;
       });
     }
+
+    final membershipName = vendorData['MembershipName'];
+
+    final membershipSnap =
+        await store.collection('Membership').doc(membershipName).get();
+
+    final membershipData = membershipSnap.data()!;
+
+    final myMaxImages = membershipData['maxImages'];
+
+    setState(() {
+      maxImages = myMaxImages;
+    });
   }
 
   // ADD PRODUCT IMAGE
@@ -300,12 +304,12 @@ class _AddProductPage1State extends State<AddProductPage1> {
         inAsyncCall: isDialog,
         color: primaryDark,
         blur: 2,
-        progressIndicator: LoadingIndicator(),
+        progressIndicator: const LoadingIndicator(),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: Text(
-              remainingProducts != null && remainingProducts! < 1
+              noOfProducts != null && noOfProducts! < 1
                   ? 'Product Gallery Full'
                   : 'Basic Info',
             ),
@@ -324,7 +328,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                 ),
                 tooltip: 'Help',
               ),
-              remainingProducts != null && remainingProducts! < 1
+              noOfProducts != null && noOfProducts! < 1
                   ? Container()
                   : MyTextButton(
                       onTap: () async {
@@ -338,7 +342,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                     ),
             ],
           ),
-          body: remainingProducts != null && remainingProducts! < 1
+          body: noOfProducts != null && noOfProducts! < 1
               ? const Center(
                   child: Text(
                     'Your Product Gallery is full\nDelete older products or renew your membership to increase limit',
@@ -356,6 +360,18 @@ class _AddProductPage1State extends State<AddProductPage1> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            noOfProducts == null
+                                ? Container()
+                                : noOfProducts == 1000000000000
+                                    ? Container()
+                                    : Text(
+                                        'Remaining Products Quota: $noOfProducts',
+                                      ),
+
+                            noOfProducts == 1000000000000
+                                ? Container()
+                                : const SizedBox(height: 12),
+
                             // IMAGE
                             _image.isNotEmpty
                                 ? Column(

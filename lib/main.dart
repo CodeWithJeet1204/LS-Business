@@ -108,6 +108,7 @@ class MyApp extends StatelessWidget {
             fontSize: 22,
             letterSpacing: 1,
           ),
+          // TODO: POSTS ANALYTICS ERROR STILL AND MAHYBE POSTS WISHLIST DATA IS WRONG
           iconTheme: IconThemeData(
             color: primaryDark,
             weight: 1,
@@ -196,7 +197,9 @@ class MyApp extends StatelessWidget {
           const ConnectivityNotificationWidget(),
         ],
       ),
-      // home: const OwnerDetailsPage(),
+      // home: const EmailVerifyPage(
+      //   fromMainPage: true,
+      // ),
     );
   }
 }

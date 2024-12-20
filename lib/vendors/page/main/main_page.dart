@@ -83,7 +83,11 @@ class _MainPageState extends State<MainPage> {
         if (filePath != null) {
           return filePath;
         }
-      } catch (e) {}
+      } catch (e) {
+        if (mounted) {
+          mySnackBar(context, 'Some error occured');
+        }
+      }
     }
     return null;
   }
@@ -167,7 +171,11 @@ class _MainPageState extends State<MainPage> {
         }
 
         return isPlayStoreVersionNewer(currentVersion, playStoreVersion);
-      } catch (e) {}
+      } catch (e) {
+        if (mounted) {
+          mySnackBar(context, 'Some error occured');
+        }
+      }
       return false;
     }
 
@@ -175,7 +183,7 @@ class _MainPageState extends State<MainPage> {
       final isUpdateAvailable = await checkLatestVersion();
 
       if (isUpdateAvailable) {
-        if (context.mounted) {
+        if (mounted) {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder: (context) => const UpdatePage(),
@@ -341,8 +349,8 @@ class _MainPageState extends State<MainPage> {
                   getBusinessDetailsAddedData['MembershipEndDateTime'] ==
                       null)) {
             detailsPage = const SelectMembershipPage(
-              hasAvailedLaunchOffer: false,
-            );
+                // hasAvailedLaunchOffer: false,
+                );
             setState(() {
               isGettingData = false;
             });
@@ -351,8 +359,8 @@ class _MainPageState extends State<MainPage> {
                       as Timestamp)
                   .toDate())) {
             detailsPage = const SelectMembershipPage(
-              hasAvailedLaunchOffer: true,
-            );
+                // hasAvailedLaunchOffer: true,
+                );
             setState(() {
               isGettingData = false;
             });
@@ -448,7 +456,7 @@ class _MainPageState extends State<MainPage> {
     ];
 
     return isGettingData
-        ? Scaffold(
+        ? const Scaffold(
             body: Center(
               child: LoadingIndicator(),
             ),
