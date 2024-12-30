@@ -1,7 +1,7 @@
 name: ls_business
 description: "Vendor App For Localsearch"
 
-version: 1.2.21+21
+version: 1.2.22+22
 
 environment:
   sdk: ">=3.2.3 <4.0.0"

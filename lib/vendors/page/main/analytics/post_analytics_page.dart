@@ -104,23 +104,28 @@ class _PostsAnalyticsPageState extends State<PostsAnalyticsPage> {
     return [BarChartRodData(toY: count.toDouble())];
   }
 
-  // Post Wise DATA
-  List<PieChartSectionData> postWiseData(Map<String, int> postWiseData) {
+  // POST WISE DATA
+  List<PieChartSectionData> postWiseData(Map<String, List> postWiseData) {
     List<PieChartSectionData> pieChartSections = [];
+    print('postWiseData: $postWiseData');
 
     int totalViews = postWiseData.isEmpty
         ? 0
-        : postWiseData.values.reduce((summation, views) => summation + views);
+        : postWiseData.values
+            .reduce((summation, views) => summation + views)[0];
 
     postWiseData.forEach((postId, data) {
-      int dataCount = data;
+      print('data: $data');
+
+      int dataCount = data[0];
+      print('dataCount: $dataCount');
       if (dataCount > 0) {
         double percentage = dataCount / totalViews;
         double value = totalViews * percentage;
 
         PieChartSectionData section = PieChartSectionData(
           value: value.toDouble(),
-          title: postId.length > 8 ? '${postId.substring(0, 8)}...' : postId,
+          title: data[1].length > 8 ? '${data[1].substring(0, 8)}...' : data[1],
           titleStyle: const TextStyle(
             color: primaryDark2,
             fontWeight: FontWeight.w500,
@@ -329,34 +334,38 @@ class _PostsAnalyticsPageState extends State<PostsAnalyticsPage> {
                               }
                             }
 
-                            Map<String, int> postWiseViews = {};
-                            Map<String, int> postWiseWishlist = {};
+                            Map<String, List> postWiseViews = {};
+                            Map<String, List> postWiseWishlist = {};
 
                             for (var post in postsSnap) {
-                              postWiseViews[post['postId']] =
-                                  (post['postViewsTimestamp'] as List).length;
+                              postWiseViews[post['postId']] = [
+                                (post['postViewsTimestamp'] as List).length,
+                                post['postText']
+                              ];
                             }
 
                             for (var post in postsSnap) {
-                              postWiseWishlist[post['postId']] =
-                                  (post['postWishlistTimestamp'] as Map).length;
+                              postWiseWishlist[post['postId']] = [
+                                (post['postWishlistTimestamp'] as Map).length,
+                                post['postText']
+                              ];
                             }
 
-                            String maxpostViewsKey = '-';
+                            String maxpostViewsName = 'No Post Name';
                             int maxpostViewsValue = 0;
-                            postWiseViews.forEach((key, value) {
-                              if (value > maxpostViewsValue) {
-                                maxpostViewsKey = key;
-                                maxpostViewsValue = value;
+                            postWiseViews.forEach((key, list) {
+                              if (list[0] > maxpostViewsValue) {
+                                maxpostViewsValue = list[0];
+                                maxpostViewsName = list[1];
                               }
                             });
 
-                            String maxpostWishlistKey = '-';
+                            String maxpostWishlistName = 'No Post Name';
                             int maxpostWishlistValue = 0;
-                            postWiseWishlist.forEach((key, value) {
-                              if (value > maxpostWishlistValue) {
-                                maxpostWishlistKey = key;
-                                maxpostWishlistValue = value;
+                            postWiseWishlist.forEach((key, list) {
+                              if (list[0] > maxpostWishlistValue) {
+                                maxpostWishlistValue = list[0];
+                                maxpostWishlistName = list[1];
                               }
                             });
 
@@ -1074,7 +1083,9 @@ class _PostsAnalyticsPageState extends State<PostsAnalyticsPage> {
                                   children: [
                                     InfoColorBox(
                                       text: 'Most Viewed',
-                                      property: maxpostViewsKey,
+                                      property: maxpostViewsValue > 0
+                                          ? maxpostViewsName
+                                          : 'None',
                                       width: width,
                                       color: const Color.fromRGBO(
                                         255,
@@ -1086,7 +1097,7 @@ class _PostsAnalyticsPageState extends State<PostsAnalyticsPage> {
                                     ),
                                     InfoColorBox(
                                       text: 'Most Wishlisted',
-                                      property: maxpostWishlistKey,
+                                      property: maxpostWishlistName,
                                       width: width,
                                       color: const Color.fromRGBO(
                                         251,

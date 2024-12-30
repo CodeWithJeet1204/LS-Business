@@ -417,10 +417,16 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
 
                             for (var short in shorts.entries) {
                               shortsWiseViews[short.value['productName'] ??
-                                      short.value['caption']] =
+                                          (short.value['caption'])
+                                              .toString()
+                                              .isEmpty
+                                      ? 'No Name'
+                                      : short.value['caption']] =
                                   (short.value['shortsViewsTimestamp'] as List)
                                       .length;
                             }
+
+                            print('shortsWiseViews: $shortsWiseViews');
 
                             String maxProductViewsKey = '-';
                             int maxProductViewsValue = 0;
