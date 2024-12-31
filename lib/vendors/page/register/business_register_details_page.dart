@@ -276,9 +276,7 @@ class _BusinessRegisterDetailsPageState
                 onPressed: () async {
                   await showYouTubePlayerDialog(
                     context,
-                    getYoutubeVideoId(
-                      '',
-                    ),
+                    'business_register_details_page',
                   );
                 },
                 icon: const Icon(

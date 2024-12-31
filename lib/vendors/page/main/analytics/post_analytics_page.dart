@@ -107,7 +107,6 @@ class _PostsAnalyticsPageState extends State<PostsAnalyticsPage> {
   // POST WISE DATA
   List<PieChartSectionData> postWiseData(Map<String, List> postWiseData) {
     List<PieChartSectionData> pieChartSections = [];
-    print('postWiseData: $postWiseData');
 
     int totalViews = postWiseData.isEmpty
         ? 0
@@ -115,10 +114,7 @@ class _PostsAnalyticsPageState extends State<PostsAnalyticsPage> {
             .reduce((summation, views) => summation + views)[0];
 
     postWiseData.forEach((postId, data) {
-      print('data: $data');
-
       int dataCount = data[0];
-      print('dataCount: $dataCount');
       if (dataCount > 0) {
         double percentage = dataCount / totalViews;
         double value = totalViews * percentage;

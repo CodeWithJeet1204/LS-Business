@@ -192,9 +192,7 @@ class _AddProductsToBrandPageState extends State<AddProductsToBrandPage> {
                 onPressed: () async {
                   await showYouTubePlayerDialog(
                     context,
-                    getYoutubeVideoId(
-                      '',
-                    ),
+                    'select_products_for_brand_page',
                   );
                 },
                 icon: const Icon(

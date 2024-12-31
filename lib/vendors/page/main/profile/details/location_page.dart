@@ -190,9 +190,7 @@ class _LocationPageState extends State<LocationPage> {
             onPressed: () async {
               await showYouTubePlayerDialog(
                 context,
-                getYoutubeVideoId(
-                  '',
-                ),
+                'location_page',
               );
             },
             icon: const Icon(

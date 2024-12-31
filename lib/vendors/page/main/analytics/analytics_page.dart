@@ -140,9 +140,7 @@ class _AnalyticsPageState extends State<AnalyticsPage>
                         onPressed: () async {
                           await showYouTubePlayerDialog(
                             context,
-                            getYoutubeVideoId(
-                              '',
-                            ),
+                            'analytics_page',
                           );
                         },
                         icon: const Icon(

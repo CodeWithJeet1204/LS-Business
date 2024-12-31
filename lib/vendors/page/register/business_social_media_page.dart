@@ -175,15 +175,13 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
         progressIndicator: const LoadingIndicator(),
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Social Media Info'),
+            title: const Text('Business Social Media Links'),
             actions: [
               IconButton(
                 onPressed: () async {
                   await showYouTubePlayerDialog(
                     context,
-                    getYoutubeVideoId(
-                      '',
-                    ),
+                    'business_social_media_page',
                   );
                 },
                 icon: const Icon(

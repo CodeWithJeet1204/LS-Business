@@ -142,9 +142,7 @@ class _AllShortsPageState extends State<AllShortsPage> {
             onPressed: () async {
               await showYouTubePlayerDialog(
                 context,
-                getYoutubeVideoId(
-                  '',
-                ),
+                'all_shorts_page',
               );
             },
             icon: const Icon(

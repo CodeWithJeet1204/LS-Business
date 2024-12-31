@@ -156,9 +156,7 @@ class _SelectProductForShortsPageState
             onPressed: () async {
               await showYouTubePlayerDialog(
                 context,
-                getYoutubeVideoId(
-                  '',
-                ),
+                'select_product_for_shorts_page',
               );
             },
             icon: const Icon(

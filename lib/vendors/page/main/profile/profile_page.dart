@@ -122,9 +122,7 @@ class _ProfilePageState extends State<ProfilePage> {
             onPressed: () async {
               await showYouTubePlayerDialog(
                 context,
-                getYoutubeVideoId(
-                  '',
-                ),
+                'profile_page',
               );
             },
             icon: const Icon(

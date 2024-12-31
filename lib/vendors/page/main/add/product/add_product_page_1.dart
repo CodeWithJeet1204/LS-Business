@@ -175,8 +175,8 @@ class _AddProductPage1State extends State<AddProductPage1> {
     // SelectBrandForProductProvider brandProvider,
   ) async {
     if (productKey.currentState!.validate()) {
-      if (_image.length < 2) {
-        return mySnackBar(context, 'Select atleast 2 image');
+      if (_image.length < 3) {
+        return mySnackBar(context, 'Select atleast 3 image');
       }
       if (priceController.text.toString().trim().length > 10) {
         return mySnackBar(context, 'Max Price is 100 Cr.');
@@ -318,9 +318,7 @@ class _AddProductPage1State extends State<AddProductPage1> {
                 onPressed: () async {
                   await showYouTubePlayerDialog(
                     context,
-                    getYoutubeVideoId(
-                      '',
-                    ),
+                    'add_product_page_1',
                   );
                 },
                 icon: const Icon(

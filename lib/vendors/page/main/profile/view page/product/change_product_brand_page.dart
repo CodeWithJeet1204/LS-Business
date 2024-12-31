@@ -166,9 +166,7 @@ class _ChangeProductBrandPageState extends State<ChangeProductBrandPage> {
                 onPressed: () async {
                   await showYouTubePlayerDialog(
                     context,
-                    getYoutubeVideoId(
-                      '',
-                    ),
+                    'change_product_brand_page',
                   );
                 },
                 icon: const Icon(

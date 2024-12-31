@@ -302,9 +302,7 @@ class _BusinessDetailsPageState extends State<BusinessDetailsPage> {
                 onPressed: () async {
                   await showYouTubePlayerDialog(
                     context,
-                    getYoutubeVideoId(
-                      '',
-                    ),
+                    'business_details_page',
                   );
                 },
                 icon: const Icon(

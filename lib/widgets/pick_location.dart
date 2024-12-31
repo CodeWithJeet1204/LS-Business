@@ -29,9 +29,7 @@ class _PickLocationPageState extends State<PickLocationPage> {
             onPressed: () async {
               await showYouTubePlayerDialog(
                 context,
-                getYoutubeVideoId(
-                  '',
-                ),
+                'pick_location',
               );
             },
             icon: const Icon(

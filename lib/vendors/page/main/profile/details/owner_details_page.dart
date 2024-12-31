@@ -269,9 +269,7 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                 onPressed: () async {
                   await showYouTubePlayerDialog(
                     context,
-                    getYoutubeVideoId(
-                      '',
-                    ),
+                    'owner_details_page',
                   );
                 },
                 icon: const Icon(

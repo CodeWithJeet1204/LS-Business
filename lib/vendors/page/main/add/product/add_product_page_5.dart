@@ -424,9 +424,7 @@ class _AddProductPage5State extends State<AddProductPage5> {
                 onPressed: () async {
                   await showYouTubePlayerDialog(
                     context,
-                    getYoutubeVideoId(
-                      '',
-                    ),
+                    'add_product_page_5',
                   );
                 },
                 icon: const Icon(

@@ -623,9 +623,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                 onPressed: () async {
                   await showYouTubePlayerDialog(
                     context,
-                    getYoutubeVideoId(
-                      '',
-                    ),
+                    'membership_page',
                   );
                 },
                 icon: const Icon(

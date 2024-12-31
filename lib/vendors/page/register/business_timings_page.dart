@@ -278,9 +278,7 @@ class _BusinessTimingsPageState extends State<BusinessTimingsPage> {
                 onPressed: () async {
                   await showYouTubePlayerDialog(
                     context,
-                    getYoutubeVideoId(
-                      '',
-                    ),
+                    'business_timings_page',
                   );
                 },
                 icon: const Icon(

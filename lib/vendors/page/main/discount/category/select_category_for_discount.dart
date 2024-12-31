@@ -173,9 +173,7 @@ class _SelectCategoryForDiscountPageState
             onPressed: () async {
               await showYouTubePlayerDialog(
                 context,
-                getYoutubeVideoId(
-                  '',
-                ),
+                'select_category_for_discount',
               );
             },
             icon: const Icon(

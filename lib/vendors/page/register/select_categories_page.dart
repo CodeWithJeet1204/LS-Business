@@ -126,9 +126,7 @@ class _SelectCategoriesPageState extends State<SelectCategoriesPage> {
                 onPressed: () async {
                   await showYouTubePlayerDialog(
                     context,
-                    getYoutubeVideoId(
-                      '',
-                    ),
+                    'select_categories_page',
                   );
                 },
                 icon: const Icon(

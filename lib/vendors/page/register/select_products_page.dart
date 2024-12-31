@@ -175,9 +175,7 @@ class _SelectProductsPageState extends State<SelectProductsPage> {
                 onPressed: () async {
                   await showYouTubePlayerDialog(
                     context,
-                    getYoutubeVideoId(
-                      '',
-                    ),
+                    'select_products_page',
                   );
                 },
                 icon: const Icon(

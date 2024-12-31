@@ -44,9 +44,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 onPressed: () async {
                   await showYouTubePlayerDialog(
                     context,
-                    getYoutubeVideoId(
-                      '',
-                    ),
+                    'forgot_password_page',
                   );
                 },
                 icon: const Icon(

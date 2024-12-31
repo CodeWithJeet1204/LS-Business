@@ -288,9 +288,7 @@ class _ProductDiscountPageState extends State<ProductDiscountPage> {
                 onPressed: () async {
                   await showYouTubePlayerDialog(
                     context,
-                    getYoutubeVideoId(
-                      '',
-                    ),
+                    'product_discount_page',
                   );
                 },
                 icon: const Icon(

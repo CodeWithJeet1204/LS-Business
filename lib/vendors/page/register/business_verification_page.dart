@@ -220,9 +220,7 @@ class _BusinessVerificationPageState extends State<BusinessVerificationPage> {
                 onPressed: () async {
                   await showYouTubePlayerDialog(
                     context,
-                    getYoutubeVideoId(
-                      '',
-                    ),
+                    'business_verification_page',
                   );
                 },
                 icon: const Icon(

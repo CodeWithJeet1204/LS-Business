@@ -113,9 +113,7 @@ class _SelectShopTypesPageState extends State<SelectShopTypesPage> {
                 onPressed: () async {
                   await showYouTubePlayerDialog(
                     context,
-                    getYoutubeVideoId(
-                      '',
-                    ),
+                    'select_shop_types_page',
                   );
                 },
                 icon: const Icon(

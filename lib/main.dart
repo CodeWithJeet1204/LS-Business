@@ -1,7 +1,6 @@
 import 'package:ls_business/auth/sign_in_page.dart';
 import 'package:ls_business/firebase_options.dart';
 import 'package:ls_business/vendors/page/main/main_page.dart';
-import 'package:ls_business/auth/verify/email_verify.dart';
 import 'package:ls_business/vendors/provider/add_product_provider.dart';
 import 'package:ls_business/vendors/provider/change_category_provider.dart';
 import 'package:ls_business/vendors/provider/discount_brand_provider.dart';
@@ -138,14 +137,7 @@ class MyApp extends StatelessWidget {
               // if (snapshot.hasData) {
               // if (snapshot.data == 'vendor') {
               if (authSnapshot.hasData) {
-                if (authSnapshot.data!.emailVerified) {
-                  return const MainPage();
-                } else {
-                  return const EmailVerifyPage(
-                    // mode: 'vendor',
-                    fromMainPage: true,
-                  );
-                }
+                return const MainPage();
               } else {
                 return const SignInPage(
                     // mode: 'vendor',

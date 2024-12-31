@@ -16,6 +16,7 @@ Future<void> showYouTubePlayerDialog(BuildContext context, String? code) async {
 
   if (url != null) {
     String? videoId = YoutubePlayer.convertUrlToId(url);
+
     if (videoId != null) {
       if (videoId.isNotEmpty) {
         if (context.mounted) {
@@ -40,15 +41,15 @@ Future<void> showYouTubePlayerDialog(BuildContext context, String? code) async {
     }
   } else {
     if (context.mounted) {
-      mySnackBar(context, 'Some error occured');
+      mySnackBar(context, 'Video Not Available');
     }
   }
 }
 
 // GET YOUTUBE VIDEO ID
-String? getYoutubeVideoId(String url) {
-  return YoutubePlayer.convertUrlToId(url);
-}
+// String? getYoutubeVideoId(String url) {
+//   return YoutubePlayer.convertUrlToId(url);
+// }
 
 class YouTubePlayerDialog extends StatefulWidget {
   const YouTubePlayerDialog({

@@ -291,9 +291,7 @@ class _ChangeTimingsPageState extends State<ChangeTimingsPage> {
             onPressed: () async {
               await showYouTubePlayerDialog(
                 context,
-                getYoutubeVideoId(
-                  '',
-                ),
+                'change_timings_page',
               );
             },
             icon: const Icon(

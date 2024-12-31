@@ -1016,9 +1016,7 @@ class _ProductPageState extends State<ProductPage> {
                 onPressed: () async {
                   await showYouTubePlayerDialog(
                     context,
-                    getYoutubeVideoId(
-                      '',
-                    ),
+                    'product_page',
                   );
                 },
                 icon: const Icon(

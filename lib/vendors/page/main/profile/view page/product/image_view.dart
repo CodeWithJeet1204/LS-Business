@@ -62,9 +62,7 @@ class _ImageViewState extends State<ImageView> {
             onPressed: () async {
               await showYouTubePlayerDialog(
                 context,
-                getYoutubeVideoId(
-                  '',
-                ),
+                'image_view',
               );
             },
             icon: const Icon(

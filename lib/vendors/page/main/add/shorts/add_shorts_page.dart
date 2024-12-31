@@ -244,9 +244,7 @@ class AddShortsPageState extends State<AddShortsPage> {
             onPressed: () async {
               await showYouTubePlayerDialog(
                 context,
-                getYoutubeVideoId(
-                  '',
-                ),
+                'add_shorts_page',
               );
             },
             icon: const Icon(

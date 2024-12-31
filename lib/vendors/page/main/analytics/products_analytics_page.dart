@@ -426,8 +426,6 @@ class _ProductAnalyticsPageState extends State<ProductAnalyticsPage> {
                                       .length;
                             }
 
-                            print('shortsWiseViews: $shortsWiseViews');
-
                             String maxProductViewsKey = '-';
                             int maxProductViewsValue = 0;
                             productWiseViews.forEach((key, value) {

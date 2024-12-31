@@ -165,9 +165,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
             onPressed: () async {
               await showYouTubePlayerDialog(
                 context,
-                getYoutubeVideoId(
-                  '',
-                ),
+                'all_categories_page',
               );
             },
             icon: const Icon(

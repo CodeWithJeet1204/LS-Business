@@ -268,9 +268,7 @@ class _AddStatusPageState extends State<AddStatusPage> {
                 onPressed: () async {
                   await showYouTubePlayerDialog(
                     context,
-                    getYoutubeVideoId(
-                      '',
-                    ),
+                    'add_status_page',
                   );
                 },
                 icon: const Icon(

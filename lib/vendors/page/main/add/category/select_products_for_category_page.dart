@@ -197,9 +197,7 @@ class _SelectProductsForCategoryPageState
                 onPressed: () async {
                   await showYouTubePlayerDialog(
                     context,
-                    getYoutubeVideoId(
-                      '',
-                    ),
+                    'select_products_for_category_page',
                   );
                 },
                 icon: const Icon(

@@ -229,9 +229,7 @@ class _ConfirmShortsPageState extends State<ConfirmShortsPage> {
                 onPressed: () async {
                   await showYouTubePlayerDialog(
                     context,
-                    getYoutubeVideoId(
-                      '',
-                    ),
+                    'confirm_shorts_page',
                   );
                 },
                 icon: const Icon(

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:ls_business/auth/sign_in_page.dart';
-import 'package:ls_business/under_development_page.dart';
 import 'package:ls_business/vendors/page/main/add/share/share_page.dart';
 import 'package:ls_business/vendors/page/main/update_page.dart';
 import 'package:ls_business/vendors/provider/main_page_provider.dart';
@@ -22,7 +21,6 @@ import 'package:ls_business/vendors/page/register/select_shop_types_page.dart';
 import 'package:ls_business/vendors/page/register/business_register_details_page.dart';
 import 'package:ls_business/vendors/page/register/membership_page.dart';
 import 'package:ls_business/vendors/page/register/owner_register_details_page.dart';
-import 'package:ls_business/auth/verify/email_verify.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -196,71 +194,71 @@ class _MainPageState extends State<MainPage> {
         }
       }
 
-      final developmentSnap =
-          await store.collection('Development').doc('Under Development').get();
+      // final developmentSnap =
+      //     await store.collection('Development').doc('Under Development').get();
 
-      final developmentData = developmentSnap.data()!;
+      // final developmentData = developmentSnap.data()!;
 
-      final businessUnderDevelopment =
-          developmentData['businessUnderDevelopment'];
+      // final businessUnderDevelopment =
+      //     developmentData['businessUnderDevelopment'];
 
-      if (businessUnderDevelopment) {
-        detailsPage = const UnderDevelopmentPage();
-        setState(() {
-          isGettingData = false;
-        });
-      } else {
-        final getUserDetailsAdded = await store
-            .collection('Business')
-            .doc('Owners')
-            .collection('Users')
-            .doc(auth.currentUser!.uid)
-            .get();
+      // if (businessUnderDevelopment) {
+      //   detailsPage = const UnderDevelopmentPage();
+      //   setState(() {
+      //     isGettingData = false;
+      //   });
+      // } else {
+      final getUserDetailsAdded = await store
+          .collection('Business')
+          .doc('Owners')
+          .collection('Users')
+          .doc(auth.currentUser!.uid)
+          .get();
 
-        if (!getUserDetailsAdded.exists) {
-          await auth.signOut();
-          if (mounted) {
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => const SignInPage(),
-              ),
-              (route) => false,
-            );
-            setState(() {
-              isGettingData = false;
-            });
-            return mySnackBar(context, 'Signed Out');
-          }
+      if (!getUserDetailsAdded.exists) {
+        await auth.signOut();
+        if (mounted) {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => const SignInPage(),
+            ),
+            (route) => false,
+          );
+          setState(() {
+            isGettingData = false;
+          });
+          return mySnackBar(context, 'Signed Out');
         }
+      }
 
-        final getUserDetailsAddedData = getUserDetailsAdded.data()!;
+      final getUserDetailsAddedData = getUserDetailsAdded.data()!;
 
-        final getBusinessDetailsAdded = await store
-            .collection('Business')
-            .doc('Owners')
-            .collection('Shops')
-            .doc(auth.currentUser!.uid)
-            .get();
+      final getBusinessDetailsAdded = await store
+          .collection('Business')
+          .doc('Owners')
+          .collection('Shops')
+          .doc(auth.currentUser!.uid)
+          .get();
 
-        final getBusinessDetailsAddedData = getBusinessDetailsAdded.data()!;
+      final getBusinessDetailsAddedData = getBusinessDetailsAdded.data()!;
 
-        if (getUserDetailsAdded.exists && getBusinessDetailsAdded.exists) {
-          if (getUserDetailsAddedData['Email'] == null ||
-              getUserDetailsAddedData['Phone Number'] == null) {
-            detailsPage = const OwnerRegisterDetailsPage(
-              fromMainPage: true,
-            );
-            setState(() {
-              isGettingData = false;
-            });
-          } else if (getUserDetailsAddedData['Image'] == null) {
-            detailsPage = const OwnerRegisterDetailsPage(
-              fromMainPage: true,
-            );
-            setState(() {
-              isGettingData = false;
-            });
-          } /* else if (getUserDetailsAddedData['Registration'] ==
+      if (getUserDetailsAdded.exists && getBusinessDetailsAdded.exists) {
+        if (getUserDetailsAddedData['Email'] == null ||
+            getUserDetailsAddedData['Phone Number'] == null) {
+          detailsPage = const OwnerRegisterDetailsPage(
+            fromMainPage: true,
+          );
+          setState(() {
+            isGettingData = false;
+          });
+        } else if (getUserDetailsAddedData['Image'] == null) {
+          detailsPage = const OwnerRegisterDetailsPage(
+            fromMainPage: true,
+          );
+          setState(() {
+            isGettingData = false;
+          });
+        } /* else if (getUserDetailsAddedData['Registration'] ==
                   'phone number' &&
               getUserDetailsAddedData['numberVerified'] == false) {
             detailsPage = NumberVerifyPage(
@@ -268,7 +266,7 @@ class _MainPageState extends State<MainPage> {
               fromMainPage: true,
               isLogging: false,
             );
-          }*/
+          }
           else if (auth.currentUser!.email != null &&
               !auth.currentUser!.emailVerified) {
             detailsPage = const EmailVerifyPage(
@@ -278,163 +276,162 @@ class _MainPageState extends State<MainPage> {
             setState(() {
               isGettingData = false;
             });
-          } else if (getBusinessDetailsAddedData['Name'] == null ||
-              getBusinessDetailsAddedData['Latitude'] == null ||
-              getBusinessDetailsAddedData['Description'] == null) {
-            detailsPage = const BusinessRegisterDetailsPage(
+          }*/
+        else if (getBusinessDetailsAddedData['Name'] == null ||
+            getBusinessDetailsAddedData['Latitude'] == null ||
+            getBusinessDetailsAddedData['Description'] == null) {
+          detailsPage = const BusinessRegisterDetailsPage(
+            fromMainPage: true,
+          );
+          setState(() {
+            isGettingData = false;
+          });
+        } else if (getBusinessDetailsAddedData['Instagram'] == null ||
+            getBusinessDetailsAddedData['Facebook'] == null ||
+            getBusinessDetailsAddedData['Website'] == null) {
+          detailsPage = BusinessSocialMediaPage(
+            isChanging: true,
+            instagram: getBusinessDetailsAddedData['Instagram'],
+            facebook: getBusinessDetailsAddedData['Facebook'],
+            website: getBusinessDetailsAddedData['Website'],
+            fromMainPage: true,
+          );
+          setState(() {
+            isGettingData = false;
+          });
+        } else if (getBusinessDetailsAddedData['Instagram'] != null &&
+            getBusinessDetailsAddedData['Type'] == null) {
+          detailsPage = const SelectShopTypesPage(
+            isEditing: true,
+          );
+          setState(() {
+            isGettingData = false;
+          });
+        } else if (getBusinessDetailsAddedData['Type'] != null &&
+            getBusinessDetailsAddedData['Categories'] == null) {
+          detailsPage = SelectCategoriesPage(
+            selectedTypes: getBusinessDetailsAddedData['Type'],
+            isEditing: true,
+          );
+          setState(() {
+            isGettingData = false;
+          });
+        } else if (getBusinessDetailsAddedData['Categories'] != null &&
+            getBusinessDetailsAddedData['Products'] == null) {
+          detailsPage = SelectProductsPage(
+            selectedTypes: getBusinessDetailsAddedData['Type'],
+            selectedCategories: getBusinessDetailsAddedData['Categories'],
+            isEditing: true,
+          );
+          setState(() {
+            isGettingData = false;
+          });
+        } else if (getBusinessDetailsAddedData['City'] == null ||
+            getBusinessDetailsAddedData['Latitude'] == null) {
+          detailsPage = const GetLocationPage();
+          setState(() {
+            isGettingData = false;
+          });
+        } else if (getBusinessDetailsAddedData['weekdayStartTime'] == null ||
+            getBusinessDetailsAddedData['weekdayEndTime'] == null) {
+          setState(() {
+            detailsPage = const BusinessTimingsPage(
               fromMainPage: true,
             );
             setState(() {
               isGettingData = false;
             });
-          } else if (getBusinessDetailsAddedData['Instagram'] == null ||
-              getBusinessDetailsAddedData['Facebook'] == null ||
-              getBusinessDetailsAddedData['Website'] == null) {
-            detailsPage = BusinessSocialMediaPage(
-              isChanging: true,
-              instagram: getBusinessDetailsAddedData['Instagram'],
-              facebook: getBusinessDetailsAddedData['Facebook'],
-              website: getBusinessDetailsAddedData['Website'],
-              fromMainPage: true,
-            );
-            setState(() {
-              isGettingData = false;
-            });
-          } else if (getBusinessDetailsAddedData['Instagram'] != null &&
-              getBusinessDetailsAddedData['Type'] == null) {
-            detailsPage = const SelectShopTypesPage(
-              isEditing: true,
-            );
-            setState(() {
-              isGettingData = false;
-            });
-          } else if (getBusinessDetailsAddedData['Type'] != null &&
-              getBusinessDetailsAddedData['Categories'] == null) {
-            detailsPage = SelectCategoriesPage(
-              selectedTypes: getBusinessDetailsAddedData['Type'],
-              isEditing: true,
-            );
-            setState(() {
-              isGettingData = false;
-            });
-          } else if (getBusinessDetailsAddedData['Categories'] != null &&
-              getBusinessDetailsAddedData['Products'] == null) {
-            detailsPage = SelectProductsPage(
-              selectedTypes: getBusinessDetailsAddedData['Type'],
-              selectedCategories: getBusinessDetailsAddedData['Categories'],
-              isEditing: true,
-            );
-            setState(() {
-              isGettingData = false;
-            });
-          } else if (getBusinessDetailsAddedData['City'] == null ||
-              getBusinessDetailsAddedData['Latitude'] == null) {
-            detailsPage = const GetLocationPage();
-            setState(() {
-              isGettingData = false;
-            });
-          } else if (getBusinessDetailsAddedData['weekdayStartTime'] == null ||
-              getBusinessDetailsAddedData['weekdayEndTime'] == null) {
-            setState(() {
-              detailsPage = const BusinessTimingsPage(
-                fromMainPage: true,
+          });
+        } else if (getUserDetailsAddedData['Image'] != null &&
+            getUserDetailsAddedData['AadhaarNumber'] != null &&
+            (getBusinessDetailsAddedData['MembershipName'] == null ||
+                getBusinessDetailsAddedData['MembershipEndDateTime'] == null)) {
+          detailsPage = const SelectMembershipPage(
+              // hasAvailedLaunchOffer: false,
               );
-              setState(() {
-                isGettingData = false;
-              });
-            });
-          } else if (getUserDetailsAddedData['Image'] != null &&
-              getUserDetailsAddedData['AadhaarNumber'] != null &&
-              (getBusinessDetailsAddedData['MembershipName'] == null ||
-                  getBusinessDetailsAddedData['MembershipEndDateTime'] ==
-                      null)) {
-            detailsPage = const SelectMembershipPage(
-                // hasAvailedLaunchOffer: false,
-                );
-            setState(() {
-              isGettingData = false;
-            });
-          } else if (DateTime.now().isAfter(
-              (getBusinessDetailsAddedData['MembershipEndDateTime']
-                      as Timestamp)
-                  .toDate())) {
-            detailsPage = const SelectMembershipPage(
-                // hasAvailedLaunchOffer: true,
-                );
-            setState(() {
-              isGettingData = false;
-            });
-            if (mounted) {
-              await showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (context) {
-                  return AlertDialog(
-                    title: const Text('Your Membership Has Expired'),
-                    content: const Text('Select New Membership to continue'),
-                    actions: [
-                      MyTextButton(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                        text: 'OK',
-                        textColor: Colors.green,
-                      ),
-                    ],
-                  );
-                },
+          setState(() {
+            isGettingData = false;
+          });
+        } else if (DateTime.now().isAfter(
+            (getBusinessDetailsAddedData['MembershipEndDateTime'] as Timestamp)
+                .toDate())) {
+          detailsPage = const SelectMembershipPage(
+              // hasAvailedLaunchOffer: true,
               );
-            }
-          } else {
-            setState(() {
-              detailsPage = null;
-              isGettingData = false;
-            });
-            // _intentSub =
-            //     ReceiveSharingIntent.instance.getMediaStream().listen((value) {
-            //   setState(() {
-            //     _sharedFiles.clear();
-            //     _sharedFiles.addAll(value.where(
-            //         (file) => file.type.toString().startsWith('image/')));
-            //   });
-            // }, onError: (err) {});
-
-            // ReceiveSharingIntent.instance.getInitialMedia().then((value) {
-            //   setState(() {
-            //     _sharedFiles.clear();
-            //     _sharedFiles.addAll(value.where(
-            //         (file) => file.type.toString().startsWith('image/')));
-            //     ReceiveSharingIntent.instance.reset();
-            //   });
-            // });
-
-            // if (_sharedFiles.isNotEmpty) {
-            //   List<String> imagePaths = _sharedFiles
-            //       .where((file) => file.type == 'image')
-            //       .map((file) => file.path)
-            //       .toList();
-
-            //   setState(() {
-            //     detailsPage = SharePage(imagePaths: imagePaths);
-            //   });
-            // }
+          setState(() {
+            isGettingData = false;
+          });
+          if (mounted) {
+            await showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text('Your Membership Has Expired'),
+                  content: const Text('Select New Membership to continue'),
+                  actions: [
+                    MyTextButton(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      text: 'OK',
+                      textColor: Colors.green,
+                    ),
+                  ],
+                );
+              },
+            );
           }
         } else {
-          await auth.signOut();
-          if (mounted) {
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => const SignInPage(),
-              ),
-              (route) => false,
-            );
-            return mySnackBar(
-              context,
-              'This account was created in User app, use another account to use here',
-            );
-          }
+          setState(() {
+            detailsPage = null;
+            isGettingData = false;
+          });
+          // _intentSub =
+          //     ReceiveSharingIntent.instance.getMediaStream().listen((value) {
+          //   setState(() {
+          //     _sharedFiles.clear();
+          //     _sharedFiles.addAll(value.where(
+          //         (file) => file.type.toString().startsWith('image/')));
+          //   });
+          // }, onError: (err) {});
+
+          // ReceiveSharingIntent.instance.getInitialMedia().then((value) {
+          //   setState(() {
+          //     _sharedFiles.clear();
+          //     _sharedFiles.addAll(value.where(
+          //         (file) => file.type.toString().startsWith('image/')));
+          //     ReceiveSharingIntent.instance.reset();
+          //   });
+          // });
+
+          // if (_sharedFiles.isNotEmpty) {
+          //   List<String> imagePaths = _sharedFiles
+          //       .where((file) => file.type == 'image')
+          //       .map((file) => file.path)
+          //       .toList();
+
+          //   setState(() {
+          //     detailsPage = SharePage(imagePaths: imagePaths);
+          //   });
+          // }
+        }
+      } else {
+        await auth.signOut();
+        if (mounted) {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => const SignInPage(),
+            ),
+            (route) => false,
+          );
+          return mySnackBar(
+            context,
+            'This account was created in User app, use another account to use here',
+          );
         }
       }
+      // }
     } catch (e) {
       if (mounted) {
         mySnackBar(context, e.toString());

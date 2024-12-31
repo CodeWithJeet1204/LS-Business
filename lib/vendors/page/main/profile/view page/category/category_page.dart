@@ -225,9 +225,7 @@ class _CategoryPageState extends State<CategoryPage> {
             onPressed: () async {
               await showYouTubePlayerDialog(
                 context,
-                getYoutubeVideoId(
-                  '',
-                ),
+                'category_page',
               );
             },
             icon: const Icon(

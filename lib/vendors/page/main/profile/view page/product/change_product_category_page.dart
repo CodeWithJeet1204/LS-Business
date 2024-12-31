@@ -101,9 +101,7 @@ class _ChangeProductCategoryPageState extends State<ChangeProductCategoryPage> {
                 onPressed: () async {
                   await showYouTubePlayerDialog(
                     context,
-                    getYoutubeVideoId(
-                      '',
-                    ),
+                    'change_product_category_page',
                   );
                 },
                 icon: const Icon(

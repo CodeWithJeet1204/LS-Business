@@ -214,9 +214,7 @@ class _AllPostsPageState extends State<AllPostsPage> {
             onPressed: () async {
               await showYouTubePlayerDialog(
                 context,
-                getYoutubeVideoId(
-                  '',
-                ),
+                'all_posts_page',
               );
             },
             icon: const Icon(

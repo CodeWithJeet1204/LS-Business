@@ -1,10 +1,12 @@
 import 'package:ls_business/vendors/page/main/main_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ls_business/auth/verify/email_verify.dart';
+import 'package:ls_business/vendors/page/register/forgot_password_page.dart';
+import 'package:ls_business/vendors/page/register/owner_register_details_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/snack_bar.dart';
+import 'package:ls_business/widgets/text_button.dart';
 import 'package:ls_business/widgets/text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -167,7 +169,7 @@ class _SignInPageState extends State<SignInPage> {
           if (mounted) {
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (context) => const EmailVerifyPage(
+                builder: (context) => const OwnerRegisterDetailsPage(
                   fromMainPage: false,
                 ),
               ),
@@ -518,9 +520,7 @@ class _SignInPageState extends State<SignInPage> {
                 onPressed: () async {
                   await showYouTubePlayerDialog(
                     context,
-                    getYoutubeVideoId(
-                      '',
-                    ),
+                    'sign_in_page',
                   );
                 },
                 icon: const Icon(
@@ -559,6 +559,17 @@ class _SignInPageState extends State<SignInPage> {
                         horizontalPadding: width * 0.066,
                         isPassword: true,
                         autoFillHints: const [AutofillHints.newPassword],
+                      ),
+                      const SizedBox(height: 2),
+                      MyTextButton(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const ForgotPasswordPage(),
+                            ),
+                          );
+                        },
+                        text: 'Forgot Password?',
                       ),
                       const SizedBox(height: 8),
                       MyButton(

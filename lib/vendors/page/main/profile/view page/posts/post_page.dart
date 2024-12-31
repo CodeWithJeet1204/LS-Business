@@ -450,9 +450,7 @@ class _PostPageState extends State<PostPage> {
                   onPressed: () async {
                     await showYouTubePlayerDialog(
                       context,
-                      getYoutubeVideoId(
-                        '',
-                      ),
+                      'post_page',
                     );
                   },
                   icon: const Icon(

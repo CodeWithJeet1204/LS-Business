@@ -491,9 +491,7 @@ class _BrandPageState extends State<BrandPage> {
                   onPressed: () async {
                     await showYouTubePlayerDialog(
                       context,
-                      getYoutubeVideoId(
-                        '',
-                      ),
+                      'brand_page',
                     );
                   },
                   icon: const Icon(

@@ -88,9 +88,7 @@ class _LoginEmailAfterForgetPasswordState
                 onPressed: () async {
                   await showYouTubePlayerDialog(
                     context,
-                    getYoutubeVideoId(
-                      '',
-                    ),
+                    'login_email_after_forgot_password',
                   );
                 },
                 icon: const Icon(
