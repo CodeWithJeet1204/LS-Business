@@ -86,8 +86,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             isDialog = true;
                           });
                           List myEmails = [];
-                          final userSnap =
-                              await store.collection('Users').get();
+                          final userSnap = await store
+                              .collection('Business')
+                              .doc('Owners')
+                              .collection('Users')
+                              .get();
 
                           for (var user in userSnap.docs) {
                             final userData = user.data();
@@ -131,7 +134,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             if (context.mounted) {
                               return mySnackBar(
                                 context,
-                                'This email was not used to create User account\nRegister first',
+                                'This email was not used to create Business account\nTry with an email which is registered on Business App',
                               );
                             }
                           }
