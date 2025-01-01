@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:ls_business/vendors/page/main/main_page.dart';
+import 'package:ls_business/vendors/page/register/business_social_media_page.dart';
 import 'package:ls_business/widgets/loading_indicator.dart';
 import 'package:ls_business/widgets/pick_location.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -8,7 +9,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
-import 'package:ls_business/vendors/page/register/business_verification_page.dart';
 import 'package:ls_business/vendors/utils/colors.dart';
 import 'package:ls_business/widgets/my_button.dart';
 import 'package:ls_business/widgets/image_pick_dialog.dart';
@@ -79,51 +79,73 @@ class _BusinessRegisterDetailsPageState
 
   // GET LOCATION
   Future<Position?> getLocation() async {
-    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    try {
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
 
-    if (!serviceEnabled) {
-      if (mounted) {
-        setState(() {
-          isDetectingCity = false;
-        });
-        mySnackBar(context, 'Turn ON Location Services to Continue');
-      }
-      return null;
-    } else {
-      LocationPermission permission = await Geolocator.checkPermission();
-
-      // LOCATION PERMISSION GIVEN
-      Future<Position> locationPermissionGiven() async {
-        return await Geolocator.getCurrentPosition();
-      }
-
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          if (mounted) {
-            mySnackBar(context, 'Pls give Location Permission to Continue');
-          }
-        }
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
+      if (!serviceEnabled) {
+        if (mounted) {
           setState(() {
-            latitude = 0;
-            longitude = 0;
-            cityDetectLocation = 'NONE';
             isDetectingCity = false;
           });
-          if (mounted) {
-            mySnackBar(context, 'Sorry, without location we can\'t Continue');
-            return null;
+          mySnackBar(context, 'Turn ON Location Services to Continue');
+          await Future.delayed(Duration(seconds: 1));
+          await Geolocator.openLocationSettings();
+
+          if (!serviceEnabled) {
+            getLocation();
+          }
+        }
+        return null;
+      } else {
+        LocationPermission permission = await Geolocator.checkPermission();
+
+        // LOCATION PERMISSION GIVEN
+        Future<Position> locationPermissionGiven() async {
+          return await Geolocator.getCurrentPosition();
+        }
+
+        if (permission == LocationPermission.denied) {
+          permission = await Geolocator.requestPermission();
+          if (permission == LocationPermission.denied) {
+            if (mounted) {
+              mySnackBar(context, 'Pls give Location Permission to Continue');
+            }
+
+            permission = await Geolocator.requestPermission();
+            if (permission == LocationPermission.denied) {
+              setState(() {
+                latitude = 0;
+                longitude = 0;
+                cityDetectLocation = 'NONE';
+                isDetectingCity = false;
+              });
+              if (mounted) {
+                mySnackBar(
+                    context, 'Sorry, without location we can\'t Continue');
+                return null;
+              }
+            }
+          } else {
+            return await locationPermissionGiven();
           }
         } else {
           return await locationPermissionGiven();
         }
-      } else {
-        return await locationPermissionGiven();
       }
+      return null;
+    } catch (e) {
+      mySnackBar(
+        context,
+        'Location Permissions are required for app, now to enable it go to app settings and approve the Location Permission',
+      );
+      setState(() {
+        latitude = 0;
+        longitude = 0;
+        cityDetectLocation = 'NONE';
+        isDetectingCity = false;
+      });
+      return null;
     }
-    return null;
   }
 
   // GET ADDRESS
@@ -234,7 +256,10 @@ class _BusinessRegisterDetailsPageState
           } else {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => const BusinessVerificationPage(),
+                builder: (context) => const BusinessSocialMediaPage(
+                  fromMainPage: false,
+                  isChanging: false,
+                ),
               ),
             );
           }
@@ -380,7 +405,14 @@ class _BusinessRegisterDetailsPageState
                                         });
                                       }
 
-                                      await getAddress(latitude!, longitude!);
+                                      if (latitude != null &&
+                                          longitude != null &&
+                                          latitude != 0 &&
+                                          longitude != 0) {
+                                        print('latitude: $latitude');
+                                        print('longitude: $longitude');
+                                        await getAddress(latitude!, longitude!);
+                                      }
                                     });
 
                                     setState(() {

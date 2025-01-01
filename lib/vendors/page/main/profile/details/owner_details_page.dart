@@ -613,54 +613,54 @@ class _OwnerDetailsPageState extends State<OwnerDetailsPage> {
                               const SizedBox(height: 14),
 
                               // AADHAAR
-                              Container(
-                                width: width,
-                                alignment: Alignment.centerLeft,
-                                decoration: BoxDecoration(
-                                  color: primary2.withOpacity(0.9),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                  vertical: height * 0.0125,
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        left: width * 0.033,
-                                      ),
-                                      child: Text(
-                                        'Aadhaar Number',
-                                        style: TextStyle(
-                                          color: primaryDark,
-                                          fontSize: width * 0.03,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        left: width * 0.033,
-                                      ),
-                                      child: SizedBox(
-                                        width: width * 0.9,
-                                        child: AutoSizeText(
-                                          userData['AadhaarNumber'] == ''
-                                              ? 'N/A'
-                                              : userData['AadhaarNumber'],
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 14),
+                              // Container(
+                              //   width: width,
+                              //   alignment: Alignment.centerLeft,
+                              //   decoration: BoxDecoration(
+                              //     color: primary2.withOpacity(0.9),
+                              //     borderRadius: BorderRadius.circular(12),
+                              //   ),
+                              //   padding: EdgeInsets.symmetric(
+                              //     vertical: height * 0.0125,
+                              //   ),
+                              //   child: Column(
+                              //     crossAxisAlignment: CrossAxisAlignment.start,
+                              //     children: [
+                              //       Padding(
+                              //         padding: EdgeInsets.only(
+                              //           left: width * 0.033,
+                              //         ),
+                              //         child: Text(
+                              //           'Aadhaar Number',
+                              //           style: TextStyle(
+                              //             color: primaryDark,
+                              //             fontSize: width * 0.03,
+                              //             fontWeight: FontWeight.w500,
+                              //           ),
+                              //         ),
+                              //       ),
+                              //       Padding(
+                              //         padding: EdgeInsets.only(
+                              //           left: width * 0.033,
+                              //         ),
+                              //         child: SizedBox(
+                              //           width: width * 0.9,
+                              //           child: AutoSizeText(
+                              //             userData['AadhaarNumber'] == ''
+                              //                 ? 'N/A'
+                              //                 : userData['AadhaarNumber'],
+                              //             maxLines: 2,
+                              //             overflow: TextOverflow.ellipsis,
+                              //             style: const TextStyle(
+                              //               fontSize: 18,
+                              //             ),
+                              //           ),
+                              //         ),
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
+                              // const SizedBox(height: 14),
 
                               // ALLOW CALLS
                               InkWell(

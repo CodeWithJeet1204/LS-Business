@@ -33,12 +33,12 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
   //membership Map<String, Map<String, dynamic>> membershipDetails = {};
   //membership Map<String, Map<String, dynamic>> membershipQuota = {};
   //membership Map<String, String> membershipReverseDurations = {};
-  Map<String, dynamic>? offerData;
   DateTime? selectedDurationDateTime;
   //membership String? selectedMembership;
   //membership String? selectedDuration;
   //membership String? selectedPrice;
   int? currentPrice;
+  Map<String, dynamic>? offerData;
   bool isAvailingOffer = false;
   bool isOffer = false;
   bool isData = false;
@@ -718,7 +718,11 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                                                 fontSize: width * 0.07,
                                                 fontWeight: FontWeight.w600,
                                                 color: const Color.fromARGB(
-                                                    255, 63, 63, 63),
+                                                  255,
+                                                  63,
+                                                  63,
+                                                  63,
+                                                ),
                                               ),
                                             ),
                                             SizedBox(height: height * 0.006125),
@@ -955,7 +959,7 @@ class _SelectMembershipPageState extends State<SelectMembershipPage> {
                                                 },
                                               ),
                                             ),
-                                            const Divider(),
+                                            // const Divider(),
                                           ],
                                         ),
 

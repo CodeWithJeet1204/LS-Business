@@ -50,6 +50,7 @@ class _SignInPageState extends State<SignInPage> {
 
   // REGISTER EMAIL
   Future<void> registerEmail() async {
+    print('sign in page startedxxx');
     if (signInEmailFormKey.currentState!.validate()) {
       try {
         setState(() {
@@ -142,6 +143,8 @@ class _SignInPageState extends State<SignInPage> {
             'allowChats': true,
             // 'hasReviewed': false,
           });
+
+          print('sign in page doneeeeee');
 
           await store
               .collection('Business')

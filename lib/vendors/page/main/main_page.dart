@@ -208,6 +208,17 @@ class _MainPageState extends State<MainPage> {
       //     isGettingData = false;
       //   });
       // } else {
+
+      if (auth.currentUser == null) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => SignInPage(),
+          ),
+          (route) => false,
+        );
+        return;
+      }
+
       final getUserDetailsAdded = await store
           .collection('Business')
           .doc('Owners')
@@ -342,8 +353,10 @@ class _MainPageState extends State<MainPage> {
               isGettingData = false;
             });
           });
-        } else if (getUserDetailsAddedData['Image'] != null &&
-            getUserDetailsAddedData['AadhaarNumber'] != null &&
+        } else if (getUserDetailsAddedData['Image'] !=
+                null /*&&
+            getUserDetailsAddedData['AadhaarNumber'] != null*/
+            &&
             (getBusinessDetailsAddedData['MembershipName'] == null ||
                 getBusinessDetailsAddedData['MembershipEndDateTime'] == null)) {
           detailsPage = const SelectMembershipPage(

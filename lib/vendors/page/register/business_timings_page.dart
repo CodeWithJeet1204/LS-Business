@@ -207,12 +207,18 @@ class _BusinessTimingsPageState extends State<BusinessTimingsPage> {
       }
     }
 
+    if (!isWeekday && !isSaturday && !isSunday) {
+      return mySnackBar(context, 'Select atleast one day');
+    }
+
     setState(() {
       isNext = true;
       isDialog = true;
     });
 
     try {
+      print('auth.currentUser!.uid: ${auth.currentUser!.uid}');
+
       await store
           .collection('Business')
           .doc('Owners')
@@ -226,6 +232,8 @@ class _BusinessTimingsPageState extends State<BusinessTimingsPage> {
         'sundayStartTime': convertSundayTimeOfDay()[0],
         'sundayEndTime': convertSundayTimeOfDay()[1],
       });
+
+      print('lalallaa');
 
       setState(() {
         isNext = false;

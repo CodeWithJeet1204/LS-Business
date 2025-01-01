@@ -14,11 +14,11 @@ import 'package:ls_business/widgets/video_tutorial.dart';
 class BusinessSocialMediaPage extends StatefulWidget {
   const BusinessSocialMediaPage({
     super.key,
+    required this.fromMainPage,
     required this.isChanging,
     this.instagram,
     this.facebook,
     this.website,
-    required this.fromMainPage,
   });
 
   final bool isChanging;
@@ -44,6 +44,7 @@ class _BusinessSocialMediaPageState extends State<BusinessSocialMediaPage> {
   // INIT STATE
   @override
   void initState() {
+    print('widget.formMainPage: ${widget.fromMainPage}');
     setState(() {
       if (widget.instagram != null) {
         instaController.text = widget.instagram!.toString().trim();
