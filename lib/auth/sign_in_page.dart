@@ -1,3 +1,4 @@
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ls_business/vendors/page/main/main_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ls_business/vendors/page/register/forgot_password_page.dart';
@@ -36,7 +37,7 @@ class _SignInPageState extends State<SignInPage> {
   // final phoneController = TextEditingController();
   bool isEmailSigningIn = false;
   // bool isPhoneSigningIn = false;
-  // bool isGoogleSigningIn = false;
+  bool isGoogleSigningIn = false;
   bool isDialog = false;
 
   // DISPOSE
@@ -360,148 +361,148 @@ class _SignInPageState extends State<SignInPage> {
   // }
 
   // REGISTER GOOGLE
-  // Future<void> registerGoogle() async {
-  //   try {
-  //     setState(() {
-  //       isGoogleSigningIn = true;
-  //       isDialog = true;
-  //     });
-  //     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-  //     final GoogleSignInAuthentication googleAuth =
-  //         await googleUser!.authentication;
-  //     final credential = GoogleAuthProvider.credential(
-  //       accessToken: googleAuth.accessToken,
-  //       idToken: googleAuth.idToken,
-  //     );
-  //     final vendorCredential = await auth.signInWithCredential(credential);
-  //     if (auth.currentUser != null) {
-  //       final userExistsSnap = await store
-  //           .collection('Users')
-  //           .where('Email', isEqualTo: auth.currentUser!.email)
-  //           .where('Registration', isEqualTo: 'google')
-  //           .get();
-  //       if (userExistsSnap.docs.isNotEmpty) {
-  //         await auth.signOut();
-  //         setState(() {
-  //           isGoogleSigningIn = false;
-  //           isDialog = false;
-  //         });
-  //         if (mounted) {
-  //           return mySnackBar(
-  //             context,
-  //             'This account was created in User app, use a different Google Account here',
-  //           );
-  //         }
-  //       }
-  //       final vendorExistsSnap = await store
-  //           .collection('Business')
-  //           .doc('Owners')
-  //           .collection('Users')
-  //           .where('Email', isEqualTo: auth.currentUser!.email)
-  //           .where('Registration', isEqualTo: 'google')
-  //           .get();
-  //       if (vendorExistsSnap.docs.isNotEmpty &&
-  //           (vendorCredential.additionalUserInfo == null
-  //               ? true
-  //               : !vendorCredential.additionalUserInfo!.isNewUser)) {
-  //         if (mounted) {
-  //           setState(() {
-  //             isGoogleSigningIn = false;
-  //             isDialog = false;
-  //           });
-  //           Navigator.of(context).pushAndRemoveUntil(
-  //             MaterialPageRoute(
-  //               builder: (context) => const MainPage(),
-  //             ),
-  //             (route) => false,
-  //           );
-  //           return mySnackBar(
-  //             context,
-  //             'Signed In',
-  //           );
-  //         }
-  //       }
-  //       // if (widget.mode == 'vendor') {
-  //       await store
-  //           .collection('Business')
-  //           .doc('Owners')
-  //           .collection('Users')
-  //           .doc(auth.currentUser!.uid)
-  //           .set({
-  //         'Email': auth.currentUser!.email,
-  //         'Registration': 'google',
-  //         'Image': null,
-  //         'Name': null,
-  //         'Phone Number': null,
-  //         'allowCalls': true,
-  //         'allowChats': true,
-  //         // 'hasReviewed': false,
-  //       });
-  //       await store
-  //           .collection('Business')
-  //           .doc('Owners')
-  //           .collection('Shops')
-  //           .doc(auth.currentUser!.uid)
-  //           .set({
-  //         'Name': null,
-  //         'Registration': 'google',
-  //         'GSTNumber': null,
-  //         'Description': null,
-  //         // 'Industry': null,
-  //         'Image': null,
-  //         'Type': null,
-  //         'MembershipName': null,
-  //         'MembershipDuration': null,
-  //         'MembershipStartDateTime': null,
-  //       });
-  //       /*}  else if (widget.mode == 'services') {
-  //             // nothing
-  //           } else if (widget.mode == 'events') {
-  //             // code for events
-  //           }*/
-  //     } else {
-  //       setState(() {
-  //         isGoogleSigningIn = false;
-  //         isDialog = false;
-  //       });
-  //       if (mounted) {
-  //         return mySnackBar(
-  //           context,
-  //           'Some error occured\nTry signing with Email / Phone Number',
-  //         );
-  //       }
-  //     }
-  //     if (mounted) {
-  //       Navigator.of(context).pushAndRemoveUntil(
-  //         MaterialPageRoute(builder: (context) {
-  //           // if (widget.mode == 'vendor') {
-  //           return const OwnerRegisterDetailsPage(
-  //             fromMainPage: false,
-  //           );
-  //           // } else if (widget.mode == 'services') {
-  //           //   return const ServicesRegisterDetailsPage();
-  //           // } else if (widget.mode == 'events') {
-  //           //   return const EventsRegisterDetailsPage1();
-  //           // }
-  //           // return const MainPage();
-  //         }),
-  //         (route) => false,
-  //       );
-  //     }
-  //     setState(() {
-  //       isGoogleSigningIn = false;
-  //       isDialog = false;
-  //     });
-  //   } catch (e) {
-  //     setState(() {
-  //       isGoogleSigningIn = false;
-  //       isDialog = false;
-  //     });
-  //     if (mounted) {
-  //       return mySnackBar(context, 'Error: ${e.toString()}');
-  //     }
-  //   }
-  // }
+  Future<void> registerGoogle() async {
+    try {
+      setState(() {
+        isGoogleSigningIn = true;
+        isDialog = true;
+      });
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser!.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      final vendorCredential = await auth.signInWithCredential(credential);
+      if (auth.currentUser != null) {
+        final userExistsSnap = await store
+            .collection('Users')
+            .where('Email', isEqualTo: auth.currentUser!.email)
+            .where('Registration', isEqualTo: 'google')
+            .get();
+        if (userExistsSnap.docs.isNotEmpty) {
+          await auth.signOut();
+          setState(() {
+            isGoogleSigningIn = false;
+            isDialog = false;
+          });
+          if (mounted) {
+            return mySnackBar(
+              context,
+              'This account was created in User app, use a different Google Account here',
+            );
+          }
+        }
+        final vendorExistsSnap = await store
+            .collection('Business')
+            .doc('Owners')
+            .collection('Users')
+            .where('Email', isEqualTo: auth.currentUser!.email)
+            .where('Registration', isEqualTo: 'google')
+            .get();
+        if (vendorExistsSnap.docs.isNotEmpty &&
+            (vendorCredential.additionalUserInfo == null
+                ? true
+                : !vendorCredential.additionalUserInfo!.isNewUser)) {
+          if (mounted) {
+            setState(() {
+              isGoogleSigningIn = false;
+              isDialog = false;
+            });
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => const MainPage(),
+              ),
+              (route) => false,
+            );
+            return mySnackBar(
+              context,
+              'Signed In',
+            );
+          }
+        }
+        // if (widget.mode == 'vendor') {
+        await store
+            .collection('Business')
+            .doc('Owners')
+            .collection('Users')
+            .doc(auth.currentUser!.uid)
+            .set({
+          'Email': auth.currentUser!.email,
+          'Registration': 'google',
+          'Image': null,
+          'Name': null,
+          'Phone Number': null,
+          'allowCalls': true,
+          'allowChats': true,
+          // 'hasReviewed': false,
+        });
+        await store
+            .collection('Business')
+            .doc('Owners')
+            .collection('Shops')
+            .doc(auth.currentUser!.uid)
+            .set({
+          'Name': null,
+          'Registration': 'google',
+          'GSTNumber': null,
+          'Description': null,
+          // 'Industry': null,
+          'Image': null,
+          'Type': null,
+          'MembershipName': null,
+          'MembershipDuration': null,
+          'MembershipStartDateTime': null,
+        });
+        /*}  else if (widget.mode == 'services') {
+              // nothing
+            } else if (widget.mode == 'events') {
+              // code for events
+            }*/
+      } else {
+        setState(() {
+          isGoogleSigningIn = false;
+          isDialog = false;
+        });
+        if (mounted) {
+          return mySnackBar(
+            context,
+            'Some error occured\nTry signing with Email / Phone Number',
+          );
+        }
+      }
+      if (mounted) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) {
+            // if (widget.mode == 'vendor') {
+            return const OwnerRegisterDetailsPage(
+              fromMainPage: false,
+            );
+            // } else if (widget.mode == 'services') {
+            //   return const ServicesRegisterDetailsPage();
+            // } else if (widget.mode == 'events') {
+            //   return const EventsRegisterDetailsPage1();
+            // }
+            // return const MainPage();
+          }),
+          (route) => false,
+        );
+      }
+      setState(() {
+        isGoogleSigningIn = false;
+        isDialog = false;
+      });
+    } catch (e) {
+      setState(() {
+        isGoogleSigningIn = false;
+        isDialog = false;
+      });
+      if (mounted) {
+        return mySnackBar(context, 'Error: ${e.toString()}');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

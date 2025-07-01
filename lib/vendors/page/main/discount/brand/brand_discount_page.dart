@@ -401,7 +401,7 @@ class _BrandDiscountPageState extends State<BrandDiscountPage> {
                               color: Colors.cyan.shade700,
                             ),
                           ),
-                          hintText: 'Discount / Sale Name*',
+                          hintText: 'Sale Name*',
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {

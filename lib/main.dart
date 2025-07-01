@@ -21,7 +21,6 @@ Future<void> main() async {
     name: 'localsearch',
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await Firebase.initializeApp();
 
   // await FirebaseAppCheck.instance.activate(
   //   androidProvider: AndroidProvider.playIntegrity,
@@ -123,6 +122,7 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
+      // TODO: PRICE COMPULSORY FOR POSTS
       debugShowCheckedModeBanner: false,
       // home: Stack(
       //   children: [

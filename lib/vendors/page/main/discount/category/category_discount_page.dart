@@ -413,7 +413,7 @@ class _CategoryDiscountPageState extends State<CategoryDiscountPage> {
                               color: Colors.cyan.shade700,
                             ),
                           ),
-                          hintText: 'Discount / Sale Name*',
+                          hintText: 'Sale Name*',
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
